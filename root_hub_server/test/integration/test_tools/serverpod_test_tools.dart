@@ -22,10 +22,12 @@ import 'package:root_hub_server/src/generated/entities/core/language.dart'
     as _i6;
 import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i7;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i8;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i9;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i10;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -290,8 +292,12 @@ class _CreateMatch {
 
   _i3.Future<_i7.MatchSchedulePairingAttempt> v1(
     _i1.TestSessionBuilder sessionBuilder, {
-    required int minNumberOfPlayers,
-    required int maxNumberOfPlayers,
+    required String title,
+    String? description,
+    String? aditionalLocationInfo,
+    required _i8.MatchPodium minAmountOfPlayers,
+    required _i8.MatchPodium maxAmountOfPlayers,
+    required DateTime attemptedAt,
     required int locationId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -306,8 +312,12 @@ class _CreateMatch {
           endpointPath: 'createMatch',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
-            'minNumberOfPlayers': minNumberOfPlayers,
-            'maxNumberOfPlayers': maxNumberOfPlayers,
+            'title': title,
+            'description': description,
+            'aditionalLocationInfo': aditionalLocationInfo,
+            'minAmountOfPlayers': minAmountOfPlayers,
+            'maxAmountOfPlayers': maxAmountOfPlayers,
+            'attemptedAt': attemptedAt,
             'locationId': locationId,
           }),
           serializationManager: _serializationManager,
@@ -336,7 +346,7 @@ class _GetPlayerMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i8.MatchSubscription>> v1(
+  _i3.Future<List<_i9.MatchSubscription>> v1(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -358,7 +368,7 @@ class _GetPlayerMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i8.MatchSubscription>>);
+                as _i3.Future<List<_i9.MatchSubscription>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -377,7 +387,7 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i8.MatchSubscription> v1(
+  _i3.Future<_i9.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required int scheduledMatchId,
   }) async {
@@ -402,7 +412,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i8.MatchSubscription>);
+                as _i3.Future<_i9.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -421,7 +431,7 @@ class _EmailIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.AuthSuccess> login(
+  _i3.Future<_i10.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String email,
     required String password,
@@ -448,7 +458,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -522,7 +532,7 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<_i9.AuthSuccess> finishRegistration(
+  _i3.Future<_i10.AuthSuccess> finishRegistration(
     _i1.TestSessionBuilder sessionBuilder, {
     required String registrationToken,
     required String password,
@@ -549,7 +559,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -697,7 +707,7 @@ class _JwtRefreshEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.AuthSuccess> refreshAccessToken(
+  _i3.Future<_i10.AuthSuccess> refreshAccessToken(
     _i1.TestSessionBuilder sessionBuilder, {
     required String refreshToken,
   }) async {
@@ -720,7 +730,7 @@ class _JwtRefreshEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

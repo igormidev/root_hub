@@ -20,13 +20,15 @@ import 'package:root_hub_client/src/protocol/entities/core/language.dart'
     as _i5;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
     as _i6;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
+import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
     as _i7;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i8;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _i9;
-import 'protocol.dart' as _i10;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i10;
+import 'protocol.dart' as _i11;
 
 /// {@category Endpoint}
 class EndpointComments extends _i1.EndpointRef {
@@ -76,15 +78,23 @@ class EndpointCreateMatch extends _i1.EndpointRef {
   String get name => 'createMatch';
 
   _i2.Future<_i6.MatchSchedulePairingAttempt> v1({
-    required int minNumberOfPlayers,
-    required int maxNumberOfPlayers,
+    required String title,
+    String? description,
+    String? aditionalLocationInfo,
+    required _i7.MatchPodium minAmountOfPlayers,
+    required _i7.MatchPodium maxAmountOfPlayers,
+    required DateTime attemptedAt,
     required int locationId,
   }) => caller.callServerEndpoint<_i6.MatchSchedulePairingAttempt>(
     'createMatch',
     'v1',
     {
-      'minNumberOfPlayers': minNumberOfPlayers,
-      'maxNumberOfPlayers': maxNumberOfPlayers,
+      'title': title,
+      'description': description,
+      'aditionalLocationInfo': aditionalLocationInfo,
+      'minAmountOfPlayers': minAmountOfPlayers,
+      'maxAmountOfPlayers': maxAmountOfPlayers,
+      'attemptedAt': attemptedAt,
       'locationId': locationId,
     },
   );
@@ -97,8 +107,8 @@ class EndpointGetPlayerMatches extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerMatches';
 
-  _i2.Future<List<_i7.MatchSubscription>> v1() =>
-      caller.callServerEndpoint<List<_i7.MatchSubscription>>(
+  _i2.Future<List<_i8.MatchSubscription>> v1() =>
+      caller.callServerEndpoint<List<_i8.MatchSubscription>>(
         'getPlayerMatches',
         'v1',
         {},
@@ -112,8 +122,8 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
   @override
   String get name => 'subscribeToMatch';
 
-  _i2.Future<_i7.MatchSubscription> v1({required int scheduledMatchId}) =>
-      caller.callServerEndpoint<_i7.MatchSubscription>(
+  _i2.Future<_i8.MatchSubscription> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i8.MatchSubscription>(
         'subscribeToMatch',
         'v1',
         {'scheduledMatchId': scheduledMatchId},
@@ -124,7 +134,7 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i8.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i9.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -140,10 +150,10 @@ class EndpointEmailIdp extends _i8.EndpointEmailIdpBase {
   ///
   /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _i2.Future<_i9.AuthSuccess> login({
+  _i2.Future<_i10.AuthSuccess> login({
     required String email,
     required String password,
-  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i10.AuthSuccess>(
     'emailIdp',
     'login',
     {
@@ -208,10 +218,10 @@ class EndpointEmailIdp extends _i8.EndpointEmailIdpBase {
   ///
   /// Returns a session for the newly created user.
   @override
-  _i2.Future<_i9.AuthSuccess> finishRegistration({
+  _i2.Future<_i10.AuthSuccess> finishRegistration({
     required String registrationToken,
     required String password,
-  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i10.AuthSuccess>(
     'emailIdp',
     'finishRegistration',
     {
@@ -306,7 +316,7 @@ class EndpointEmailIdp extends _i8.EndpointEmailIdpBase {
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
-class EndpointJwtRefresh extends _i9.EndpointRefreshJwtTokens {
+class EndpointJwtRefresh extends _i10.EndpointRefreshJwtTokens {
   EndpointJwtRefresh(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -331,9 +341,9 @@ class EndpointJwtRefresh extends _i9.EndpointRefreshJwtTokens {
   /// This endpoint is unauthenticated, meaning the client won't include any
   /// authentication information with the call.
   @override
-  _i2.Future<_i9.AuthSuccess> refreshAccessToken({
+  _i2.Future<_i10.AuthSuccess> refreshAccessToken({
     required String refreshToken,
-  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i10.AuthSuccess>(
     'jwtRefresh',
     'refreshAccessToken',
     {'refreshToken': refreshToken},
@@ -343,13 +353,13 @@ class EndpointJwtRefresh extends _i9.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i8.Caller(client);
-    serverpod_auth_core = _i9.Caller(client);
+    serverpod_auth_idp = _i9.Caller(client);
+    serverpod_auth_core = _i10.Caller(client);
   }
 
-  late final _i8.Caller serverpod_auth_idp;
+  late final _i9.Caller serverpod_auth_idp;
 
-  late final _i9.Caller serverpod_auth_core;
+  late final _i10.Caller serverpod_auth_core;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -372,7 +382,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i10.Protocol(),
+         _i11.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,

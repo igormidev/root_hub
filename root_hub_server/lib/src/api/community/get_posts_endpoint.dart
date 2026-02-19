@@ -2,7 +2,7 @@ import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
-class PostsEndpoint extends Endpoint {
+class GetPostsEndpoint extends Endpoint {
   Future<PostPagination> v1(
     Session session, {
     required int page,

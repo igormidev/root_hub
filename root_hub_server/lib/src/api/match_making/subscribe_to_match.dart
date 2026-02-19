@@ -43,12 +43,26 @@ class SubscribeToMatch extends Endpoint {
       throw ArgumentError('Already subscribed to this match.');
     }
 
-    final subscription = MatchSubscription(
-      subscribedAt: DateTime.now(),
-      matchSchedulePairingAttemptId: scheduledMatchId,
-      playerDataId: playerData.id!,
+    final subscription = await MatchSubscription.db.insertRow(
+      session,
+      MatchSubscription(
+        subscribedAt: DateTime.now(),
+        matchSchedulePairingAttemptId: scheduledMatchId,
+        playerDataId: playerData.id!,
+      ),
     );
 
-    return await MatchSubscription.db.insertRow(session, subscription);
+    await MatchSubscription.db.attachRow.matchSchedulePairingAttempt(
+      session,
+      subscription,
+      match,
+    );
+    await MatchSubscription.db.attachRow.playerData(
+      session,
+      subscription,
+      playerData,
+    );
+
+    return subscription;
   }
 }

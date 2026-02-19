@@ -20,10 +20,12 @@ import '../auth/email_idp_endpoint.dart' as _i7;
 import '../auth/jwt_refresh_endpoint.dart' as _i8;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
     as _i9;
-import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i10;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _i11;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i12;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -139,14 +141,34 @@ class Endpoints extends _i1.EndpointDispatch {
         'v1': _i1.MethodConnector(
           name: 'v1',
           params: {
-            'minNumberOfPlayers': _i1.ParameterDescription(
-              name: 'minNumberOfPlayers',
-              type: _i1.getType<int>(),
+            'title': _i1.ParameterDescription(
+              name: 'title',
+              type: _i1.getType<String>(),
               nullable: false,
             ),
-            'maxNumberOfPlayers': _i1.ParameterDescription(
-              name: 'maxNumberOfPlayers',
-              type: _i1.getType<int>(),
+            'description': _i1.ParameterDescription(
+              name: 'description',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+            'aditionalLocationInfo': _i1.ParameterDescription(
+              name: 'aditionalLocationInfo',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+            'minAmountOfPlayers': _i1.ParameterDescription(
+              name: 'minAmountOfPlayers',
+              type: _i1.getType<_i10.MatchPodium>(),
+              nullable: false,
+            ),
+            'maxAmountOfPlayers': _i1.ParameterDescription(
+              name: 'maxAmountOfPlayers',
+              type: _i1.getType<_i10.MatchPodium>(),
+              nullable: false,
+            ),
+            'attemptedAt': _i1.ParameterDescription(
+              name: 'attemptedAt',
+              type: _i1.getType<DateTime>(),
               nullable: false,
             ),
             'locationId': _i1.ParameterDescription(
@@ -161,8 +183,12 @@ class Endpoints extends _i1.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async => (endpoints['createMatch'] as _i4.CreateMatch).v1(
                 session,
-                minNumberOfPlayers: params['minNumberOfPlayers'],
-                maxNumberOfPlayers: params['maxNumberOfPlayers'],
+                title: params['title'],
+                description: params['description'],
+                aditionalLocationInfo: params['aditionalLocationInfo'],
+                minAmountOfPlayers: params['minAmountOfPlayers'],
+                maxAmountOfPlayers: params['maxAmountOfPlayers'],
+                attemptedAt: params['attemptedAt'],
                 locationId: params['locationId'],
               ),
         ),
@@ -413,9 +439,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i10.Endpoints()
+    modules['serverpod_auth_idp'] = _i11.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i11.Endpoints()
+    modules['serverpod_auth_core'] = _i12.Endpoints()
       ..initializeEndpoints(server);
   }
 }
