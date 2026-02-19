@@ -14,7 +14,8 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import '../../entities/match_making/google_place_location.dart' as _i2;
 import '../../entities/match_making/manual_input_location.dart' as _i3;
 import '../../entities/match_making/match_schedule.dart' as _i4;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
+import '../../entities/match/played_match.dart' as _i5;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i6;
 
 abstract class Location implements _i1.SerializableModel {
   Location._({
@@ -24,6 +25,7 @@ abstract class Location implements _i1.SerializableModel {
     this.manualInputLocationId,
     this.manualInputLocation,
     this.pairingAttempts,
+    this.playedMatches,
   });
 
   factory Location({
@@ -33,6 +35,7 @@ abstract class Location implements _i1.SerializableModel {
     int? manualInputLocationId,
     _i3.ManualInputLocation? manualInputLocation,
     List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i5.PlayedMatch>? playedMatches,
   }) = _LocationImpl;
 
   factory Location.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -41,19 +44,24 @@ abstract class Location implements _i1.SerializableModel {
       googlePlaceLocationId: jsonSerialization['googlePlaceLocationId'] as int?,
       googlePlaceLocation: jsonSerialization['googlePlaceLocation'] == null
           ? null
-          : _i5.Protocol().deserialize<_i2.GooglePlaceLocation>(
+          : _i6.Protocol().deserialize<_i2.GooglePlaceLocation>(
               jsonSerialization['googlePlaceLocation'],
             ),
       manualInputLocationId: jsonSerialization['manualInputLocationId'] as int?,
       manualInputLocation: jsonSerialization['manualInputLocation'] == null
           ? null
-          : _i5.Protocol().deserialize<_i3.ManualInputLocation>(
+          : _i6.Protocol().deserialize<_i3.ManualInputLocation>(
               jsonSerialization['manualInputLocation'],
             ),
       pairingAttempts: jsonSerialization['pairingAttempts'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i4.MatchSchedulePairingAttempt>>(
+          : _i6.Protocol().deserialize<List<_i4.MatchSchedulePairingAttempt>>(
               jsonSerialization['pairingAttempts'],
+            ),
+      playedMatches: jsonSerialization['playedMatches'] == null
+          ? null
+          : _i6.Protocol().deserialize<List<_i5.PlayedMatch>>(
+              jsonSerialization['playedMatches'],
             ),
     );
   }
@@ -73,6 +81,8 @@ abstract class Location implements _i1.SerializableModel {
 
   List<_i4.MatchSchedulePairingAttempt>? pairingAttempts;
 
+  List<_i5.PlayedMatch>? playedMatches;
+
   /// Returns a shallow copy of this [Location]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -83,6 +93,7 @@ abstract class Location implements _i1.SerializableModel {
     int? manualInputLocationId,
     _i3.ManualInputLocation? manualInputLocation,
     List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i5.PlayedMatch>? playedMatches,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -101,6 +112,8 @@ abstract class Location implements _i1.SerializableModel {
         'pairingAttempts': pairingAttempts?.toJson(
           valueToJson: (v) => v.toJson(),
         ),
+      if (playedMatches != null)
+        'playedMatches': playedMatches?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -120,6 +133,7 @@ class _LocationImpl extends Location {
     int? manualInputLocationId,
     _i3.ManualInputLocation? manualInputLocation,
     List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i5.PlayedMatch>? playedMatches,
   }) : super._(
          id: id,
          googlePlaceLocationId: googlePlaceLocationId,
@@ -127,6 +141,7 @@ class _LocationImpl extends Location {
          manualInputLocationId: manualInputLocationId,
          manualInputLocation: manualInputLocation,
          pairingAttempts: pairingAttempts,
+         playedMatches: playedMatches,
        );
 
   /// Returns a shallow copy of this [Location]
@@ -140,6 +155,7 @@ class _LocationImpl extends Location {
     Object? manualInputLocationId = _Undefined,
     Object? manualInputLocation = _Undefined,
     Object? pairingAttempts = _Undefined,
+    Object? playedMatches = _Undefined,
   }) {
     return Location(
       id: id is int? ? id : this.id,
@@ -158,6 +174,9 @@ class _LocationImpl extends Location {
       pairingAttempts: pairingAttempts is List<_i4.MatchSchedulePairingAttempt>?
           ? pairingAttempts
           : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
+      playedMatches: playedMatches is List<_i5.PlayedMatch>?
+          ? playedMatches
+          : this.playedMatches?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }

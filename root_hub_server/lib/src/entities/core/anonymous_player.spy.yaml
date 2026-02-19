@@ -1,0 +1,5 @@
+class: AnonymousPlayer
+table: anonymous_player
+fields:
+  firstName: String
+  lastName: String

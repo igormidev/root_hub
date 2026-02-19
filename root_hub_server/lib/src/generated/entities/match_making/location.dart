@@ -15,7 +15,8 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import '../../entities/match_making/google_place_location.dart' as _i2;
 import '../../entities/match_making/manual_input_location.dart' as _i3;
 import '../../entities/match_making/match_schedule.dart' as _i4;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
+import '../../entities/match/played_match.dart' as _i5;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i6;
 
 abstract class Location
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -26,6 +27,7 @@ abstract class Location
     this.manualInputLocationId,
     this.manualInputLocation,
     this.pairingAttempts,
+    this.playedMatches,
   });
 
   factory Location({
@@ -35,6 +37,7 @@ abstract class Location
     int? manualInputLocationId,
     _i3.ManualInputLocation? manualInputLocation,
     List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i5.PlayedMatch>? playedMatches,
   }) = _LocationImpl;
 
   factory Location.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -43,19 +46,24 @@ abstract class Location
       googlePlaceLocationId: jsonSerialization['googlePlaceLocationId'] as int?,
       googlePlaceLocation: jsonSerialization['googlePlaceLocation'] == null
           ? null
-          : _i5.Protocol().deserialize<_i2.GooglePlaceLocation>(
+          : _i6.Protocol().deserialize<_i2.GooglePlaceLocation>(
               jsonSerialization['googlePlaceLocation'],
             ),
       manualInputLocationId: jsonSerialization['manualInputLocationId'] as int?,
       manualInputLocation: jsonSerialization['manualInputLocation'] == null
           ? null
-          : _i5.Protocol().deserialize<_i3.ManualInputLocation>(
+          : _i6.Protocol().deserialize<_i3.ManualInputLocation>(
               jsonSerialization['manualInputLocation'],
             ),
       pairingAttempts: jsonSerialization['pairingAttempts'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i4.MatchSchedulePairingAttempt>>(
+          : _i6.Protocol().deserialize<List<_i4.MatchSchedulePairingAttempt>>(
               jsonSerialization['pairingAttempts'],
+            ),
+      playedMatches: jsonSerialization['playedMatches'] == null
+          ? null
+          : _i6.Protocol().deserialize<List<_i5.PlayedMatch>>(
+              jsonSerialization['playedMatches'],
             ),
     );
   }
@@ -77,6 +85,8 @@ abstract class Location
 
   List<_i4.MatchSchedulePairingAttempt>? pairingAttempts;
 
+  List<_i5.PlayedMatch>? playedMatches;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -90,6 +100,7 @@ abstract class Location
     int? manualInputLocationId,
     _i3.ManualInputLocation? manualInputLocation,
     List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i5.PlayedMatch>? playedMatches,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -108,6 +119,8 @@ abstract class Location
         'pairingAttempts': pairingAttempts?.toJson(
           valueToJson: (v) => v.toJson(),
         ),
+      if (playedMatches != null)
+        'playedMatches': playedMatches?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -128,6 +141,10 @@ abstract class Location
         'pairingAttempts': pairingAttempts?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
+      if (playedMatches != null)
+        'playedMatches': playedMatches?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -135,11 +152,13 @@ abstract class Location
     _i2.GooglePlaceLocationInclude? googlePlaceLocation,
     _i3.ManualInputLocationInclude? manualInputLocation,
     _i4.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i5.PlayedMatchIncludeList? playedMatches,
   }) {
     return LocationInclude._(
       googlePlaceLocation: googlePlaceLocation,
       manualInputLocation: manualInputLocation,
       pairingAttempts: pairingAttempts,
+      playedMatches: playedMatches,
     );
   }
 
@@ -179,6 +198,7 @@ class _LocationImpl extends Location {
     int? manualInputLocationId,
     _i3.ManualInputLocation? manualInputLocation,
     List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i5.PlayedMatch>? playedMatches,
   }) : super._(
          id: id,
          googlePlaceLocationId: googlePlaceLocationId,
@@ -186,6 +206,7 @@ class _LocationImpl extends Location {
          manualInputLocationId: manualInputLocationId,
          manualInputLocation: manualInputLocation,
          pairingAttempts: pairingAttempts,
+         playedMatches: playedMatches,
        );
 
   /// Returns a shallow copy of this [Location]
@@ -199,6 +220,7 @@ class _LocationImpl extends Location {
     Object? manualInputLocationId = _Undefined,
     Object? manualInputLocation = _Undefined,
     Object? pairingAttempts = _Undefined,
+    Object? playedMatches = _Undefined,
   }) {
     return Location(
       id: id is int? ? id : this.id,
@@ -217,6 +239,9 @@ class _LocationImpl extends Location {
       pairingAttempts: pairingAttempts is List<_i4.MatchSchedulePairingAttempt>?
           ? pairingAttempts
           : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
+      playedMatches: playedMatches is List<_i5.PlayedMatch>?
+          ? playedMatches
+          : this.playedMatches?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }
@@ -264,6 +289,10 @@ class LocationTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i4.MatchSchedulePairingAttemptTable>? _pairingAttempts;
 
+  _i5.PlayedMatchTable? ___playedMatches;
+
+  _i1.ManyRelation<_i5.PlayedMatchTable>? _playedMatches;
+
   _i2.GooglePlaceLocationTable get googlePlaceLocation {
     if (_googlePlaceLocation != null) return _googlePlaceLocation!;
     _googlePlaceLocation = _i1.createRelationTable(
@@ -305,6 +334,19 @@ class LocationTable extends _i1.Table<int?> {
     return ___pairingAttempts!;
   }
 
+  _i5.PlayedMatchTable get __playedMatches {
+    if (___playedMatches != null) return ___playedMatches!;
+    ___playedMatches = _i1.createRelationTable(
+      relationFieldName: '__playedMatches',
+      field: Location.t.id,
+      foreignField: _i5.PlayedMatch.t.locationId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i5.PlayedMatchTable(tableRelation: foreignTableRelation),
+    );
+    return ___playedMatches!;
+  }
+
   _i1.ManyRelation<_i4.MatchSchedulePairingAttemptTable> get pairingAttempts {
     if (_pairingAttempts != null) return _pairingAttempts!;
     var relationTable = _i1.createRelationTable(
@@ -326,6 +368,25 @@ class LocationTable extends _i1.Table<int?> {
     return _pairingAttempts!;
   }
 
+  _i1.ManyRelation<_i5.PlayedMatchTable> get playedMatches {
+    if (_playedMatches != null) return _playedMatches!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'playedMatches',
+      field: Location.t.id,
+      foreignField: _i5.PlayedMatch.t.locationId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i5.PlayedMatchTable(tableRelation: foreignTableRelation),
+    );
+    _playedMatches = _i1.ManyRelation<_i5.PlayedMatchTable>(
+      tableWithRelations: relationTable,
+      table: _i5.PlayedMatchTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _playedMatches!;
+  }
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -344,6 +405,9 @@ class LocationTable extends _i1.Table<int?> {
     if (relationField == 'pairingAttempts') {
       return __pairingAttempts;
     }
+    if (relationField == 'playedMatches') {
+      return __playedMatches;
+    }
     return null;
   }
 }
@@ -353,10 +417,12 @@ class LocationInclude extends _i1.IncludeObject {
     _i2.GooglePlaceLocationInclude? googlePlaceLocation,
     _i3.ManualInputLocationInclude? manualInputLocation,
     _i4.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i5.PlayedMatchIncludeList? playedMatches,
   }) {
     _googlePlaceLocation = googlePlaceLocation;
     _manualInputLocation = manualInputLocation;
     _pairingAttempts = pairingAttempts;
+    _playedMatches = playedMatches;
   }
 
   _i2.GooglePlaceLocationInclude? _googlePlaceLocation;
@@ -365,11 +431,14 @@ class LocationInclude extends _i1.IncludeObject {
 
   _i4.MatchSchedulePairingAttemptIncludeList? _pairingAttempts;
 
+  _i5.PlayedMatchIncludeList? _playedMatches;
+
   @override
   Map<String, _i1.Include?> get includes => {
     'googlePlaceLocation': _googlePlaceLocation,
     'manualInputLocation': _manualInputLocation,
     'pairingAttempts': _pairingAttempts,
+    'playedMatches': _playedMatches,
   };
 
   @override
@@ -690,6 +759,31 @@ class LocationAttachRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [Location] and the given [PlayedMatch]s
+  /// by setting each [PlayedMatch]'s foreign key `locationId` to refer to this [Location].
+  Future<void> playedMatches(
+    _i1.Session session,
+    Location location,
+    List<_i5.PlayedMatch> playedMatch, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playedMatch.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('playedMatch.id');
+    }
+    if (location.id == null) {
+      throw ArgumentError.notNull('location.id');
+    }
+
+    var $playedMatch = playedMatch
+        .map((e) => e.copyWith(locationId: location.id))
+        .toList();
+    await session.db.update<_i5.PlayedMatch>(
+      $playedMatch,
+      columns: [_i5.PlayedMatch.t.locationId],
+      transaction: transaction,
+    );
+  }
 }
 
 class LocationAttachRowRepository {
@@ -766,6 +860,29 @@ class LocationAttachRowRepository {
     await session.db.updateRow<_i4.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
       columns: [_i4.MatchSchedulePairingAttempt.t.locationId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between this [Location] and the given [PlayedMatch]
+  /// by setting the [PlayedMatch]'s foreign key `locationId` to refer to this [Location].
+  Future<void> playedMatches(
+    _i1.Session session,
+    Location location,
+    _i5.PlayedMatch playedMatch, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playedMatch.id == null) {
+      throw ArgumentError.notNull('playedMatch.id');
+    }
+    if (location.id == null) {
+      throw ArgumentError.notNull('location.id');
+    }
+
+    var $playedMatch = playedMatch.copyWith(locationId: location.id);
+    await session.db.updateRow<_i5.PlayedMatch>(
+      $playedMatch,
+      columns: [_i5.PlayedMatch.t.locationId],
       transaction: transaction,
     );
   }

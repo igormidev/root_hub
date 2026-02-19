@@ -125,6 +125,34 @@ class EndpointGetPosts extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointGetMatchData extends _i1.EndpointRef {
+  EndpointGetMatchData(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getMatchData';
+
+  _i2.Future<void> v1() => caller.callServerEndpoint<void>(
+    'getMatchData',
+    'v1',
+    {},
+  );
+}
+
+/// {@category Endpoint}
+class EndpointRegisterMatchData extends _i1.EndpointRef {
+  EndpointRegisterMatchData(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'registerMatchData';
+
+  _i2.Future<Match> v1() => caller.callServerEndpoint<Match>(
+    'registerMatchData',
+    'v1',
+    {},
+  );
+}
+
+/// {@category Endpoint}
 class EndpointMatchChatGetMessages extends _i1.EndpointRef {
   EndpointMatchChatGetMessages(_i1.EndpointCaller caller) : super(caller);
 
@@ -505,6 +533,8 @@ class Client extends _i1.ServerpodClientShared {
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
     getPosts = EndpointGetPosts(this);
+    getMatchData = EndpointGetMatchData(this);
+    registerMatchData = EndpointRegisterMatchData(this);
     matchChatGetMessages = EndpointMatchChatGetMessages(this);
     matchChatSendMessage = EndpointMatchChatSendMessage(this);
     createMatchSchedule = EndpointCreateMatchSchedule(this);
@@ -523,6 +553,10 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointGetComments getComments;
 
   late final EndpointGetPosts getPosts;
+
+  late final EndpointGetMatchData getMatchData;
+
+  late final EndpointRegisterMatchData registerMatchData;
 
   late final EndpointMatchChatGetMessages matchChatGetMessages;
 
@@ -548,6 +582,8 @@ class Client extends _i1.ServerpodClientShared {
     'createPost': createPost,
     'getComments': getComments,
     'getPosts': getPosts,
+    'getMatchData': getMatchData,
+    'registerMatchData': registerMatchData,
     'matchChatGetMessages': matchChatGetMessages,
     'matchChatSendMessage': matchChatSendMessage,
     'createMatchSchedule': createMatchSchedule,

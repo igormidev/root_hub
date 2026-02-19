@@ -14,7 +14,8 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../../entities/core/country.dart' as _i2;
 import '../../entities/match_making/location.dart' as _i3;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i4;
+import '../../entities/core/player_data.dart' as _i4;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
 
 abstract class ManualInputLocation
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -25,6 +26,8 @@ abstract class ManualInputLocation
     required this.cityName,
     required this.country,
     this.location,
+    required this.playerDataId,
+    this.creator,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -36,6 +39,8 @@ abstract class ManualInputLocation
     required String cityName,
     required _i2.Country country,
     _i3.Location? location,
+    required int playerDataId,
+    _i4.PlayerData? creator,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _ManualInputLocationImpl;
@@ -49,8 +54,14 @@ abstract class ManualInputLocation
       country: _i2.Country.fromJson((jsonSerialization['country'] as String)),
       location: jsonSerialization['location'] == null
           ? null
-          : _i4.Protocol().deserialize<_i3.Location>(
+          : _i5.Protocol().deserialize<_i3.Location>(
               jsonSerialization['location'],
+            ),
+      playerDataId: jsonSerialization['playerDataId'] as int,
+      creator: jsonSerialization['creator'] == null
+          ? null
+          : _i5.Protocol().deserialize<_i4.PlayerData>(
+              jsonSerialization['creator'],
             ),
       createdAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['createdAt'],
@@ -78,6 +89,10 @@ abstract class ManualInputLocation
 
   _i3.Location? location;
 
+  int playerDataId;
+
+  _i4.PlayerData? creator;
+
   DateTime createdAt;
 
   DateTime updatedAt;
@@ -95,6 +110,8 @@ abstract class ManualInputLocation
     String? cityName,
     _i2.Country? country,
     _i3.Location? location,
+    int? playerDataId,
+    _i4.PlayerData? creator,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -108,6 +125,8 @@ abstract class ManualInputLocation
       'cityName': cityName,
       'country': country.toJson(),
       if (location != null) 'location': location?.toJson(),
+      'playerDataId': playerDataId,
+      if (creator != null) 'creator': creator?.toJson(),
       'createdAt': createdAt.toJson(),
       'updatedAt': updatedAt.toJson(),
     };
@@ -123,13 +142,21 @@ abstract class ManualInputLocation
       'cityName': cityName,
       'country': country.toJson(),
       if (location != null) 'location': location?.toJsonForProtocol(),
+      'playerDataId': playerDataId,
+      if (creator != null) 'creator': creator?.toJsonForProtocol(),
       'createdAt': createdAt.toJson(),
       'updatedAt': updatedAt.toJson(),
     };
   }
 
-  static ManualInputLocationInclude include({_i3.LocationInclude? location}) {
-    return ManualInputLocationInclude._(location: location);
+  static ManualInputLocationInclude include({
+    _i3.LocationInclude? location,
+    _i4.PlayerDataInclude? creator,
+  }) {
+    return ManualInputLocationInclude._(
+      location: location,
+      creator: creator,
+    );
   }
 
   static ManualInputLocationIncludeList includeList({
@@ -168,6 +195,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
     required String cityName,
     required _i2.Country country,
     _i3.Location? location,
+    required int playerDataId,
+    _i4.PlayerData? creator,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
@@ -177,6 +206,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
          cityName: cityName,
          country: country,
          location: location,
+         playerDataId: playerDataId,
+         creator: creator,
          createdAt: createdAt,
          updatedAt: updatedAt,
        );
@@ -192,6 +223,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
     String? cityName,
     _i2.Country? country,
     Object? location = _Undefined,
+    int? playerDataId,
+    Object? creator = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -204,6 +237,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
       location: location is _i3.Location?
           ? location
           : this.location?.copyWith(),
+      playerDataId: playerDataId ?? this.playerDataId,
+      creator: creator is _i4.PlayerData? ? creator : this.creator?.copyWith(),
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -234,6 +269,11 @@ class ManualInputLocationUpdateTable
         table.country,
         value,
       );
+
+  _i1.ColumnValue<int, int> playerDataId(int value) => _i1.ColumnValue(
+    table.playerDataId,
+    value,
+  );
 
   _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
       _i1.ColumnValue(
@@ -269,6 +309,10 @@ class ManualInputLocationTable extends _i1.Table<int?> {
       this,
       _i1.EnumSerialization.byName,
     );
+    playerDataId = _i1.ColumnInt(
+      'playerDataId',
+      this,
+    );
     createdAt = _i1.ColumnDateTime(
       'createdAt',
       this,
@@ -291,6 +335,10 @@ class ManualInputLocationTable extends _i1.Table<int?> {
 
   _i3.LocationTable? _location;
 
+  late final _i1.ColumnInt playerDataId;
+
+  _i4.PlayerDataTable? _creator;
+
   late final _i1.ColumnDateTime createdAt;
 
   late final _i1.ColumnDateTime updatedAt;
@@ -308,6 +356,19 @@ class ManualInputLocationTable extends _i1.Table<int?> {
     return _location!;
   }
 
+  _i4.PlayerDataTable get creator {
+    if (_creator != null) return _creator!;
+    _creator = _i1.createRelationTable(
+      relationFieldName: 'creator',
+      field: ManualInputLocation.t.playerDataId,
+      foreignField: _i4.PlayerData.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i4.PlayerDataTable(tableRelation: foreignTableRelation),
+    );
+    return _creator!;
+  }
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -315,6 +376,7 @@ class ManualInputLocationTable extends _i1.Table<int?> {
     description,
     cityName,
     country,
+    playerDataId,
     createdAt,
     updatedAt,
   ];
@@ -324,19 +386,31 @@ class ManualInputLocationTable extends _i1.Table<int?> {
     if (relationField == 'location') {
       return location;
     }
+    if (relationField == 'creator') {
+      return creator;
+    }
     return null;
   }
 }
 
 class ManualInputLocationInclude extends _i1.IncludeObject {
-  ManualInputLocationInclude._({_i3.LocationInclude? location}) {
+  ManualInputLocationInclude._({
+    _i3.LocationInclude? location,
+    _i4.PlayerDataInclude? creator,
+  }) {
     _location = location;
+    _creator = creator;
   }
 
   _i3.LocationInclude? _location;
 
+  _i4.PlayerDataInclude? _creator;
+
   @override
-  Map<String, _i1.Include?> get includes => {'location': _location};
+  Map<String, _i1.Include?> get includes => {
+    'location': _location,
+    'creator': _creator,
+  };
 
   @override
   _i1.Table<int?> get table => ManualInputLocation.t;
@@ -651,6 +725,31 @@ class ManualInputLocationAttachRowRepository {
     await session.db.updateRow<_i3.Location>(
       $location,
       columns: [_i3.Location.t.manualInputLocationId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between the given [ManualInputLocation] and [PlayerData]
+  /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to refer to the [PlayerData].
+  Future<void> creator(
+    _i1.Session session,
+    ManualInputLocation manualInputLocation,
+    _i4.PlayerData creator, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (manualInputLocation.id == null) {
+      throw ArgumentError.notNull('manualInputLocation.id');
+    }
+    if (creator.id == null) {
+      throw ArgumentError.notNull('creator.id');
+    }
+
+    var $manualInputLocation = manualInputLocation.copyWith(
+      playerDataId: creator.id,
+    );
+    await session.db.updateRow<ManualInputLocation>(
+      $manualInputLocation,
+      columns: [ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }

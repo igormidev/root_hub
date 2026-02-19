@@ -9,6 +9,14 @@ fields:
   # Parent wrapper relation
   location: Location?, relation(name=location_manual_input)
 
+  # Creator
+  playerDataId: int
+  creator: PlayerData?, relation(name=player_manual_input_locations, field=playerDataId)
+
   # Timestamps
   createdAt: DateTime
   updatedAt: DateTime
+
+indexes:
+  manual_input_player_data_id_idx:
+    fields: playerDataId

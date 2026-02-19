@@ -15,8 +15,7 @@ class MatchChatGetMessages extends Endpoint {
       session,
       matchChatHistoryId,
       include: MatchChatHistory.include(
-        matchSchedulePairingAttempt:
-            MatchSchedulePairingAttempt.include(),
+        matchSchedulePairingAttempt: MatchSchedulePairingAttempt.include(),
       ),
     );
 

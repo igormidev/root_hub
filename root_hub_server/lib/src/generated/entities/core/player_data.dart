@@ -22,7 +22,8 @@ import '../../entities/community/post_comment.dart' as _i7;
 import '../../entities/match_making/match_schedule.dart' as _i8;
 import '../../entities/match_making/match_subscription.dart' as _i9;
 import '../../entities/match_making/chat/match_chat_message.dart' as _i10;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i11;
+import '../../entities/match_making/manual_input_location.dart' as _i11;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i12;
 
 abstract class PlayerData
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -39,6 +40,7 @@ abstract class PlayerData
     this.currentHosting,
     this.subscriptions,
     this.chatMessages,
+    this.manualInputLocations,
   });
 
   factory PlayerData({
@@ -54,6 +56,7 @@ abstract class PlayerData
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
+    List<_i11.ManualInputLocation>? manualInputLocations,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -64,7 +67,7 @@ abstract class PlayerData
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i11.Protocol().deserialize<_i2.AuthUser>(
+          : _i12.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       currentCountry: jsonSerialization['currentCountry'] == null
@@ -80,33 +83,38 @@ abstract class PlayerData
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i12.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i6.Post>>(
+          : _i12.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i12.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
       currentHosting: jsonSerialization['currentHosting'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i12.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
               jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i9.MatchSubscription>>(
+          : _i12.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i10.MatchChatMessage>>(
+          : _i12.Protocol().deserialize<List<_i10.MatchChatMessage>>(
               jsonSerialization['chatMessages'],
+            ),
+      manualInputLocations: jsonSerialization['manualInputLocations'] == null
+          ? null
+          : _i12.Protocol().deserialize<List<_i11.ManualInputLocation>>(
+              jsonSerialization['manualInputLocations'],
             ),
     );
   }
@@ -141,6 +149,8 @@ abstract class PlayerData
 
   List<_i10.MatchChatMessage>? chatMessages;
 
+  List<_i11.ManualInputLocation>? manualInputLocations;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -160,6 +170,7 @@ abstract class PlayerData
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
+    List<_i11.ManualInputLocation>? manualInputLocations,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -184,6 +195,10 @@ abstract class PlayerData
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
       if (chatMessages != null)
         'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
+      if (manualInputLocations != null)
+        'manualInputLocations': manualInputLocations?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
     };
   }
 
@@ -217,6 +232,10 @@ abstract class PlayerData
         'chatMessages': chatMessages?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
+      if (manualInputLocations != null)
+        'manualInputLocations': manualInputLocations?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -228,6 +247,7 @@ abstract class PlayerData
     _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
     _i10.MatchChatMessageIncludeList? chatMessages,
+    _i11.ManualInputLocationIncludeList? manualInputLocations,
   }) {
     return PlayerDataInclude._(
       authUser: authUser,
@@ -237,6 +257,7 @@ abstract class PlayerData
       currentHosting: currentHosting,
       subscriptions: subscriptions,
       chatMessages: chatMessages,
+      manualInputLocations: manualInputLocations,
     );
   }
 
@@ -282,6 +303,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
+    List<_i11.ManualInputLocation>? manualInputLocations,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -295,6 +317,7 @@ class _PlayerDataImpl extends PlayerData {
          currentHosting: currentHosting,
          subscriptions: subscriptions,
          chatMessages: chatMessages,
+         manualInputLocations: manualInputLocations,
        );
 
   /// Returns a shallow copy of this [PlayerData]
@@ -314,6 +337,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
     Object? chatMessages = _Undefined,
+    Object? manualInputLocations = _Undefined,
   }) {
     return PlayerData(
       id: id is int? ? id : this.id,
@@ -344,6 +368,10 @@ class _PlayerDataImpl extends PlayerData {
       chatMessages: chatMessages is List<_i10.MatchChatMessage>?
           ? chatMessages
           : this.chatMessages?.map((e0) => e0.copyWith()).toList(),
+      manualInputLocations:
+          manualInputLocations is List<_i11.ManualInputLocation>?
+          ? manualInputLocations
+          : this.manualInputLocations?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }
@@ -440,6 +468,10 @@ class PlayerDataTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i10.MatchChatMessageTable>? _chatMessages;
 
+  _i11.ManualInputLocationTable? ___manualInputLocations;
+
+  _i1.ManyRelation<_i11.ManualInputLocationTable>? _manualInputLocations;
+
   _i2.AuthUserTable get authUser {
     if (_authUser != null) return _authUser!;
     _authUser = _i1.createRelationTable(
@@ -531,6 +563,19 @@ class PlayerDataTable extends _i1.Table<int?> {
           _i10.MatchChatMessageTable(tableRelation: foreignTableRelation),
     );
     return ___chatMessages!;
+  }
+
+  _i11.ManualInputLocationTable get __manualInputLocations {
+    if (___manualInputLocations != null) return ___manualInputLocations!;
+    ___manualInputLocations = _i1.createRelationTable(
+      relationFieldName: '__manualInputLocations',
+      field: PlayerData.t.id,
+      foreignField: _i11.ManualInputLocation.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i11.ManualInputLocationTable(tableRelation: foreignTableRelation),
+    );
+    return ___manualInputLocations!;
   }
 
   _i1.ManyRelation<_i5.PlayerInMatchTable> get matchEntries {
@@ -649,6 +694,25 @@ class PlayerDataTable extends _i1.Table<int?> {
     return _chatMessages!;
   }
 
+  _i1.ManyRelation<_i11.ManualInputLocationTable> get manualInputLocations {
+    if (_manualInputLocations != null) return _manualInputLocations!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'manualInputLocations',
+      field: PlayerData.t.id,
+      foreignField: _i11.ManualInputLocation.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i11.ManualInputLocationTable(tableRelation: foreignTableRelation),
+    );
+    _manualInputLocations = _i1.ManyRelation<_i11.ManualInputLocationTable>(
+      tableWithRelations: relationTable,
+      table: _i11.ManualInputLocationTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _manualInputLocations!;
+  }
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -681,6 +745,9 @@ class PlayerDataTable extends _i1.Table<int?> {
     if (relationField == 'chatMessages') {
       return __chatMessages;
     }
+    if (relationField == 'manualInputLocations') {
+      return __manualInputLocations;
+    }
     return null;
   }
 }
@@ -694,6 +761,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
     _i10.MatchChatMessageIncludeList? chatMessages,
+    _i11.ManualInputLocationIncludeList? manualInputLocations,
   }) {
     _authUser = authUser;
     _matchEntries = matchEntries;
@@ -702,6 +770,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _currentHosting = currentHosting;
     _subscriptions = subscriptions;
     _chatMessages = chatMessages;
+    _manualInputLocations = manualInputLocations;
   }
 
   _i2.AuthUserInclude? _authUser;
@@ -718,6 +787,8 @@ class PlayerDataInclude extends _i1.IncludeObject {
 
   _i10.MatchChatMessageIncludeList? _chatMessages;
 
+  _i11.ManualInputLocationIncludeList? _manualInputLocations;
+
   @override
   Map<String, _i1.Include?> get includes => {
     'authUser': _authUser,
@@ -727,6 +798,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     'currentHosting': _currentHosting,
     'subscriptions': _subscriptions,
     'chatMessages': _chatMessages,
+    'manualInputLocations': _manualInputLocations,
   };
 
   @override
@@ -1170,6 +1242,31 @@ class PlayerDataAttachRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [PlayerData] and the given [ManualInputLocation]s
+  /// by setting each [ManualInputLocation]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> manualInputLocations(
+    _i1.Session session,
+    PlayerData playerData,
+    List<_i11.ManualInputLocation> manualInputLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (manualInputLocation.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('manualInputLocation.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $manualInputLocation = manualInputLocation
+        .map((e) => e.copyWith(playerDataId: playerData.id))
+        .toList();
+    await session.db.update<_i11.ManualInputLocation>(
+      $manualInputLocation,
+      columns: [_i11.ManualInputLocation.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataAttachRowRepository {
@@ -1341,6 +1438,31 @@ class PlayerDataAttachRowRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [PlayerData] and the given [ManualInputLocation]
+  /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> manualInputLocations(
+    _i1.Session session,
+    PlayerData playerData,
+    _i11.ManualInputLocation manualInputLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (manualInputLocation.id == null) {
+      throw ArgumentError.notNull('manualInputLocation.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $manualInputLocation = manualInputLocation.copyWith(
+      playerDataId: playerData.id,
+    );
+    await session.db.updateRow<_i11.ManualInputLocation>(
+      $manualInputLocation,
+      columns: [_i11.ManualInputLocation.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataDetachRepository {
@@ -1463,6 +1585,30 @@ class PlayerDataDetachRepository {
       transaction: transaction,
     );
   }
+
+  /// Detaches the relation between this [PlayerData] and the given [ManualInputLocation]
+  /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> manualInputLocations(
+    _i1.Session session,
+    List<_i11.ManualInputLocation> manualInputLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (manualInputLocation.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('manualInputLocation.id');
+    }
+
+    var $manualInputLocation = manualInputLocation
+        .map((e) => e.copyWith(playerDataId: null))
+        .toList();
+    await session.db.update<_i11.ManualInputLocation>(
+      $manualInputLocation,
+      columns: [_i11.ManualInputLocation.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataDetachRowRepository {
@@ -1576,6 +1722,28 @@ class PlayerDataDetachRowRepository {
     await session.db.updateRow<_i10.MatchChatMessage>(
       $matchChatMessage,
       columns: [_i10.MatchChatMessage.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [PlayerData] and the given [ManualInputLocation]
+  /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> manualInputLocations(
+    _i1.Session session,
+    _i11.ManualInputLocation manualInputLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (manualInputLocation.id == null) {
+      throw ArgumentError.notNull('manualInputLocation.id');
+    }
+
+    var $manualInputLocation = manualInputLocation.copyWith(playerDataId: null);
+    await session.db.updateRow<_i11.ManualInputLocation>(
+      $manualInputLocation,
+      columns: [_i11.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }

@@ -315,12 +315,40 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
+    if (t == List<_i19.ManualInputLocation>) {
+      return (data as List)
+              .map((e) => deserialize<_i19.ManualInputLocation>(e))
+              .toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i19.ManualInputLocation>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i19.ManualInputLocation>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == _i1.getType<List<String>?>()) {
       return (data != null
               ? (data as List).map((e) => deserialize<String>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i13.PlayedMatch>) {
+      return (data as List)
+              .map((e) => deserialize<_i13.PlayedMatch>(e))
+              .toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i13.PlayedMatch>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i13.PlayedMatch>(e))
+                    .toList()
               : null)
           as T;
     }

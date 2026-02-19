@@ -11,16 +11,19 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import '../../entities/match/player_in_match.dart' as _i2;
-import '../../entities/match/match_in_person_proof.dart' as _i3;
-import '../../entities/community/post.dart' as _i4;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
+import '../../entities/match_making/location.dart' as _i2;
+import '../../entities/match/player_in_match.dart' as _i3;
+import '../../entities/match/match_in_person_proof.dart' as _i4;
+import '../../entities/community/post.dart' as _i5;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i6;
 
 abstract class PlayedMatch implements _i1.SerializableModel {
   PlayedMatch._({
     this.id,
     required this.matchStartedAt,
     this.matchDuration,
+    required this.locationId,
+    this.location,
     this.players,
     this.inPersonProof,
     this.posts,
@@ -30,9 +33,11 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     int? id,
     required DateTime matchStartedAt,
     Duration? matchDuration,
-    List<_i2.PlayerInMatch>? players,
-    _i3.MatchInPersonProof? inPersonProof,
-    List<_i4.Post>? posts,
+    required int locationId,
+    _i2.Location? location,
+    List<_i3.PlayerInMatch>? players,
+    _i4.MatchInPersonProof? inPersonProof,
+    List<_i5.Post>? posts,
   }) = _PlayedMatchImpl;
 
   factory PlayedMatch.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -46,19 +51,25 @@ abstract class PlayedMatch implements _i1.SerializableModel {
           : _i1.DurationJsonExtension.fromJson(
               jsonSerialization['matchDuration'],
             ),
+      locationId: jsonSerialization['locationId'] as int,
+      location: jsonSerialization['location'] == null
+          ? null
+          : _i6.Protocol().deserialize<_i2.Location>(
+              jsonSerialization['location'],
+            ),
       players: jsonSerialization['players'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i2.PlayerInMatch>>(
+          : _i6.Protocol().deserialize<List<_i3.PlayerInMatch>>(
               jsonSerialization['players'],
             ),
       inPersonProof: jsonSerialization['inPersonProof'] == null
           ? null
-          : _i5.Protocol().deserialize<_i3.MatchInPersonProof>(
+          : _i6.Protocol().deserialize<_i4.MatchInPersonProof>(
               jsonSerialization['inPersonProof'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i4.Post>>(
+          : _i6.Protocol().deserialize<List<_i5.Post>>(
               jsonSerialization['posts'],
             ),
     );
@@ -73,11 +84,15 @@ abstract class PlayedMatch implements _i1.SerializableModel {
 
   Duration? matchDuration;
 
-  List<_i2.PlayerInMatch>? players;
+  int locationId;
 
-  _i3.MatchInPersonProof? inPersonProof;
+  _i2.Location? location;
 
-  List<_i4.Post>? posts;
+  List<_i3.PlayerInMatch>? players;
+
+  _i4.MatchInPersonProof? inPersonProof;
+
+  List<_i5.Post>? posts;
 
   /// Returns a shallow copy of this [PlayedMatch]
   /// with some or all fields replaced by the given arguments.
@@ -86,9 +101,11 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     int? id,
     DateTime? matchStartedAt,
     Duration? matchDuration,
-    List<_i2.PlayerInMatch>? players,
-    _i3.MatchInPersonProof? inPersonProof,
-    List<_i4.Post>? posts,
+    int? locationId,
+    _i2.Location? location,
+    List<_i3.PlayerInMatch>? players,
+    _i4.MatchInPersonProof? inPersonProof,
+    List<_i5.Post>? posts,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -97,6 +114,8 @@ abstract class PlayedMatch implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'matchStartedAt': matchStartedAt.toJson(),
       if (matchDuration != null) 'matchDuration': matchDuration?.toJson(),
+      'locationId': locationId,
+      if (location != null) 'location': location?.toJson(),
       if (players != null)
         'players': players?.toJson(valueToJson: (v) => v.toJson()),
       if (inPersonProof != null) 'inPersonProof': inPersonProof?.toJson(),
@@ -117,13 +136,17 @@ class _PlayedMatchImpl extends PlayedMatch {
     int? id,
     required DateTime matchStartedAt,
     Duration? matchDuration,
-    List<_i2.PlayerInMatch>? players,
-    _i3.MatchInPersonProof? inPersonProof,
-    List<_i4.Post>? posts,
+    required int locationId,
+    _i2.Location? location,
+    List<_i3.PlayerInMatch>? players,
+    _i4.MatchInPersonProof? inPersonProof,
+    List<_i5.Post>? posts,
   }) : super._(
          id: id,
          matchStartedAt: matchStartedAt,
          matchDuration: matchDuration,
+         locationId: locationId,
+         location: location,
          players: players,
          inPersonProof: inPersonProof,
          posts: posts,
@@ -137,6 +160,8 @@ class _PlayedMatchImpl extends PlayedMatch {
     Object? id = _Undefined,
     DateTime? matchStartedAt,
     Object? matchDuration = _Undefined,
+    int? locationId,
+    Object? location = _Undefined,
     Object? players = _Undefined,
     Object? inPersonProof = _Undefined,
     Object? posts = _Undefined,
@@ -147,13 +172,17 @@ class _PlayedMatchImpl extends PlayedMatch {
       matchDuration: matchDuration is Duration?
           ? matchDuration
           : this.matchDuration,
-      players: players is List<_i2.PlayerInMatch>?
+      locationId: locationId ?? this.locationId,
+      location: location is _i2.Location?
+          ? location
+          : this.location?.copyWith(),
+      players: players is List<_i3.PlayerInMatch>?
           ? players
           : this.players?.map((e0) => e0.copyWith()).toList(),
-      inPersonProof: inPersonProof is _i3.MatchInPersonProof?
+      inPersonProof: inPersonProof is _i4.MatchInPersonProof?
           ? inPersonProof
           : this.inPersonProof?.copyWith(),
-      posts: posts is List<_i4.Post>?
+      posts: posts is List<_i5.Post>?
           ? posts
           : this.posts?.map((e0) => e0.copyWith()).toList(),
     );

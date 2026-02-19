@@ -21,7 +21,8 @@ import '../../entities/community/post_comment.dart' as _i7;
 import '../../entities/match_making/match_schedule.dart' as _i8;
 import '../../entities/match_making/match_subscription.dart' as _i9;
 import '../../entities/match_making/chat/match_chat_message.dart' as _i10;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i11;
+import '../../entities/match_making/manual_input_location.dart' as _i11;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i12;
 
 abstract class PlayerData implements _i1.SerializableModel {
   PlayerData._({
@@ -37,6 +38,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     this.currentHosting,
     this.subscriptions,
     this.chatMessages,
+    this.manualInputLocations,
   });
 
   factory PlayerData({
@@ -52,6 +54,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
+    List<_i11.ManualInputLocation>? manualInputLocations,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -62,7 +65,7 @@ abstract class PlayerData implements _i1.SerializableModel {
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i11.Protocol().deserialize<_i2.AuthUser>(
+          : _i12.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       currentCountry: jsonSerialization['currentCountry'] == null
@@ -78,33 +81,38 @@ abstract class PlayerData implements _i1.SerializableModel {
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i12.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i6.Post>>(
+          : _i12.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i12.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
       currentHosting: jsonSerialization['currentHosting'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i12.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
               jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i9.MatchSubscription>>(
+          : _i12.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
-          : _i11.Protocol().deserialize<List<_i10.MatchChatMessage>>(
+          : _i12.Protocol().deserialize<List<_i10.MatchChatMessage>>(
               jsonSerialization['chatMessages'],
+            ),
+      manualInputLocations: jsonSerialization['manualInputLocations'] == null
+          ? null
+          : _i12.Protocol().deserialize<List<_i11.ManualInputLocation>>(
+              jsonSerialization['manualInputLocations'],
             ),
     );
   }
@@ -137,6 +145,8 @@ abstract class PlayerData implements _i1.SerializableModel {
 
   List<_i10.MatchChatMessage>? chatMessages;
 
+  List<_i11.ManualInputLocation>? manualInputLocations;
+
   /// Returns a shallow copy of this [PlayerData]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -153,6 +163,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
+    List<_i11.ManualInputLocation>? manualInputLocations,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -177,6 +188,10 @@ abstract class PlayerData implements _i1.SerializableModel {
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
       if (chatMessages != null)
         'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
+      if (manualInputLocations != null)
+        'manualInputLocations': manualInputLocations?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
     };
   }
 
@@ -202,6 +217,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
+    List<_i11.ManualInputLocation>? manualInputLocations,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -215,6 +231,7 @@ class _PlayerDataImpl extends PlayerData {
          currentHosting: currentHosting,
          subscriptions: subscriptions,
          chatMessages: chatMessages,
+         manualInputLocations: manualInputLocations,
        );
 
   /// Returns a shallow copy of this [PlayerData]
@@ -234,6 +251,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
     Object? chatMessages = _Undefined,
+    Object? manualInputLocations = _Undefined,
   }) {
     return PlayerData(
       id: id is int? ? id : this.id,
@@ -264,6 +282,10 @@ class _PlayerDataImpl extends PlayerData {
       chatMessages: chatMessages is List<_i10.MatchChatMessage>?
           ? chatMessages
           : this.chatMessages?.map((e0) => e0.copyWith()).toList(),
+      manualInputLocations:
+          manualInputLocations is List<_i11.ManualInputLocation>?
+          ? manualInputLocations
+          : this.manualInputLocations?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }

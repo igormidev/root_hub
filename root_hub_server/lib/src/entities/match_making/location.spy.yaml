@@ -6,6 +6,7 @@ fields:
   manualInputLocationId: int?
   manualInputLocation: ManualInputLocation?, relation(name=location_manual_input, field=manualInputLocationId)
   pairingAttempts: List<MatchSchedulePairingAttempt>?, relation(name=pairing_attempt_location)
+  playedMatches: List<PlayedMatch>?, relation(name=location_played_matches)
 
 indexes:
   location_google_place_unique_idx:

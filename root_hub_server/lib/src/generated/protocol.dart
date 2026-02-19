@@ -368,6 +368,12 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'protocol:Country',
         ),
         _i2.ColumnDefinition(
+          name: 'playerDataId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
           name: 'createdAt',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: false,
@@ -380,7 +386,18 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'DateTime',
         ),
       ],
-      foreignKeys: [],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'manual_input_locations_fk_0',
+          columns: ['playerDataId'],
+          referenceTable: 'player_data',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'manual_input_locations_pkey',
@@ -394,6 +411,19 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'manual_input_player_data_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'playerDataId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
         ),
       ],
       managed: true,
@@ -899,8 +929,25 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'Duration?',
         ),
+        _i2.ColumnDefinition(
+          name: 'locationId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
       ],
-      foreignKeys: [],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'played_match_fk_0',
+          columns: ['locationId'],
+          referenceTable: 'locations',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'played_match_pkey',
@@ -914,6 +961,19 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'played_match_location_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'locationId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
         ),
       ],
       managed: true,
@@ -1500,12 +1560,40 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
+    if (t == List<_i22.ManualInputLocation>) {
+      return (data as List)
+              .map((e) => deserialize<_i22.ManualInputLocation>(e))
+              .toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i22.ManualInputLocation>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i22.ManualInputLocation>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == _i1.getType<List<String>?>()) {
       return (data != null
               ? (data as List).map((e) => deserialize<String>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i16.PlayedMatch>) {
+      return (data as List)
+              .map((e) => deserialize<_i16.PlayedMatch>(e))
+              .toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i16.PlayedMatch>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i16.PlayedMatch>(e))
+                    .toList()
               : null)
           as T;
     }

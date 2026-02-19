@@ -13,7 +13,8 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import '../../entities/core/country.dart' as _i2;
 import '../../entities/match_making/location.dart' as _i3;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i4;
+import '../../entities/core/player_data.dart' as _i4;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
 
 abstract class ManualInputLocation implements _i1.SerializableModel {
   ManualInputLocation._({
@@ -23,6 +24,8 @@ abstract class ManualInputLocation implements _i1.SerializableModel {
     required this.cityName,
     required this.country,
     this.location,
+    required this.playerDataId,
+    this.creator,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -34,6 +37,8 @@ abstract class ManualInputLocation implements _i1.SerializableModel {
     required String cityName,
     required _i2.Country country,
     _i3.Location? location,
+    required int playerDataId,
+    _i4.PlayerData? creator,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _ManualInputLocationImpl;
@@ -47,8 +52,14 @@ abstract class ManualInputLocation implements _i1.SerializableModel {
       country: _i2.Country.fromJson((jsonSerialization['country'] as String)),
       location: jsonSerialization['location'] == null
           ? null
-          : _i4.Protocol().deserialize<_i3.Location>(
+          : _i5.Protocol().deserialize<_i3.Location>(
               jsonSerialization['location'],
+            ),
+      playerDataId: jsonSerialization['playerDataId'] as int,
+      creator: jsonSerialization['creator'] == null
+          ? null
+          : _i5.Protocol().deserialize<_i4.PlayerData>(
+              jsonSerialization['creator'],
             ),
       createdAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['createdAt'],
@@ -74,6 +85,10 @@ abstract class ManualInputLocation implements _i1.SerializableModel {
 
   _i3.Location? location;
 
+  int playerDataId;
+
+  _i4.PlayerData? creator;
+
   DateTime createdAt;
 
   DateTime updatedAt;
@@ -88,6 +103,8 @@ abstract class ManualInputLocation implements _i1.SerializableModel {
     String? cityName,
     _i2.Country? country,
     _i3.Location? location,
+    int? playerDataId,
+    _i4.PlayerData? creator,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -101,6 +118,8 @@ abstract class ManualInputLocation implements _i1.SerializableModel {
       'cityName': cityName,
       'country': country.toJson(),
       if (location != null) 'location': location?.toJson(),
+      'playerDataId': playerDataId,
+      if (creator != null) 'creator': creator?.toJson(),
       'createdAt': createdAt.toJson(),
       'updatedAt': updatedAt.toJson(),
     };
@@ -122,6 +141,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
     required String cityName,
     required _i2.Country country,
     _i3.Location? location,
+    required int playerDataId,
+    _i4.PlayerData? creator,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
@@ -131,6 +152,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
          cityName: cityName,
          country: country,
          location: location,
+         playerDataId: playerDataId,
+         creator: creator,
          createdAt: createdAt,
          updatedAt: updatedAt,
        );
@@ -146,6 +169,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
     String? cityName,
     _i2.Country? country,
     Object? location = _Undefined,
+    int? playerDataId,
+    Object? creator = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -158,6 +183,8 @@ class _ManualInputLocationImpl extends ManualInputLocation {
       location: location is _i3.Location?
           ? location
           : this.location?.copyWith(),
+      playerDataId: playerDataId ?? this.playerDataId,
+      creator: creator is _i4.PlayerData? ? creator : this.creator?.copyWith(),
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

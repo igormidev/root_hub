@@ -2,7 +2,13 @@ class: PlayedMatch
 table: played_match
 fields:
   matchStartedAt: DateTime
-  matchDuration: Duration?
+  matchEstimatedDuration: Duration?
+  locationId: int
+  location: Location?, relation(name=location_played_matches, field=locationId)
   players: List<PlayerInMatch>?, relation(name=match_players)
   inPersonProof: MatchInPersonProof?, relation(name=match_in_person_proof)
   posts: List<Post>?, relation(name=post_attached_match)
+
+indexes:
+  played_match_location_id_idx:
+    fields: locationId
