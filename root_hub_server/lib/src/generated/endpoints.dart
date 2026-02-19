@@ -15,7 +15,7 @@ import '../api/community/create_comment_endpoint.dart' as _i2;
 import '../api/community/create_post_endpoint.dart' as _i3;
 import '../api/community/get_comments_endpoint.dart' as _i4;
 import '../api/community/get_posts_endpoint.dart' as _i5;
-import '../api/match_making/create_match.dart' as _i6;
+import '../api/match_making/create_match_schedule.dart' as _i6;
 import '../api/match_making/get_match_location.dart' as _i7;
 import '../api/match_making/get_player_matches.dart' as _i8;
 import '../api/match_making/subscribe_to_match.dart' as _i9;
@@ -58,10 +58,10 @@ class Endpoints extends _i1.EndpointDispatch {
           'getPosts',
           null,
         ),
-      'createMatch': _i6.CreateMatch()
+      'createMatchSchedule': _i6.CreateMatchSchedule()
         ..initialize(
           server,
-          'createMatch',
+          'createMatchSchedule',
           null,
         ),
       'getMatchLocation': _i7.GetMatchLocation()
@@ -235,9 +235,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['createMatch'] = _i1.EndpointConnector(
-      name: 'createMatch',
-      endpoint: endpoints['createMatch']!,
+    connectors['createMatchSchedule'] = _i1.EndpointConnector(
+      name: 'createMatchSchedule',
+      endpoint: endpoints['createMatchSchedule']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
@@ -282,16 +282,18 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['createMatch'] as _i6.CreateMatch).v1(
-                session,
-                title: params['title'],
-                description: params['description'],
-                aditionalLocationInfo: params['aditionalLocationInfo'],
-                minAmountOfPlayers: params['minAmountOfPlayers'],
-                maxAmountOfPlayers: params['maxAmountOfPlayers'],
-                attemptedAt: params['attemptedAt'],
-                locationId: params['locationId'],
-              ),
+              ) async =>
+                  (endpoints['createMatchSchedule'] as _i6.CreateMatchSchedule)
+                      .v1(
+                        session,
+                        title: params['title'],
+                        description: params['description'],
+                        aditionalLocationInfo: params['aditionalLocationInfo'],
+                        minAmountOfPlayers: params['minAmountOfPlayers'],
+                        maxAmountOfPlayers: params['maxAmountOfPlayers'],
+                        attemptedAt: params['attemptedAt'],
+                        locationId: params['locationId'],
+                      ),
         ),
       },
     );

@@ -123,11 +123,11 @@ class EndpointGetPosts extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
-class EndpointCreateMatch extends _i1.EndpointRef {
-  EndpointCreateMatch(_i1.EndpointCaller caller) : super(caller);
+class EndpointCreateMatchSchedule extends _i1.EndpointRef {
+  EndpointCreateMatchSchedule(_i1.EndpointCaller caller) : super(caller);
 
   @override
-  String get name => 'createMatch';
+  String get name => 'createMatchSchedule';
 
   _i2.Future<_i8.MatchSchedulePairingAttempt> v1({
     required String title,
@@ -138,7 +138,7 @@ class EndpointCreateMatch extends _i1.EndpointRef {
     required DateTime attemptedAt,
     required int locationId,
   }) => caller.callServerEndpoint<_i8.MatchSchedulePairingAttempt>(
-    'createMatch',
+    'createMatchSchedule',
     'v1',
     {
       'title': title,
@@ -467,7 +467,7 @@ class Client extends _i1.ServerpodClientShared {
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
     getPosts = EndpointGetPosts(this);
-    createMatch = EndpointCreateMatch(this);
+    createMatchSchedule = EndpointCreateMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
     getPlayerMatches = EndpointGetPlayerMatches(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
@@ -484,7 +484,7 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetPosts getPosts;
 
-  late final EndpointCreateMatch createMatch;
+  late final EndpointCreateMatchSchedule createMatchSchedule;
 
   late final EndpointGetMatchLocation getMatchLocation;
 
@@ -504,7 +504,7 @@ class Client extends _i1.ServerpodClientShared {
     'createPost': createPost,
     'getComments': getComments,
     'getPosts': getPosts,
-    'createMatch': createMatch,
+    'createMatchSchedule': createMatchSchedule,
     'getMatchLocation': getMatchLocation,
     'getPlayerMatches': getPlayerMatches,
     'subscribeToMatch': subscribeToMatch,

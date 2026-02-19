@@ -5,3 +5,4 @@
 ### the conflict by removing and recreating the conflicting migration.
 
 20260219171050610
+20260219221253471-location-inheritance-support

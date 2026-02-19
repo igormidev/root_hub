@@ -29,14 +29,18 @@ import 'entities/core/player_data.dart' as _i14;
 import 'entities/match/match_in_person_proof.dart' as _i15;
 import 'entities/match/played_match.dart' as _i16;
 import 'entities/match/player_in_match.dart' as _i17;
-import 'entities/match_making/location.dart' as _i18;
-import 'entities/match_making/match_schedule.dart' as _i19;
-import 'entities/match_making/match_subscription.dart' as _i20;
-import 'entities/others/pagination_metadata.dart' as _i21;
+import 'entities/match_making/chat/match_chat_history.dart' as _i18;
+import 'entities/match_making/chat/match_chat_message.dart' as _i19;
+import 'entities/match_making/google_place_location.dart' as _i20;
+import 'entities/match_making/location.dart' as _i21;
+import 'entities/match_making/manual_input_location.dart' as _i22;
+import 'entities/match_making/match_schedule.dart' as _i23;
+import 'entities/match_making/match_subscription.dart' as _i24;
+import 'entities/others/pagination_metadata.dart' as _i25;
 import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
-    as _i22;
+    as _i26;
 import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
-    as _i23;
+    as _i27;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match_making/models/location_pagination.dart';
@@ -50,7 +54,11 @@ export 'entities/core/player_data.dart';
 export 'entities/match/match_in_person_proof.dart';
 export 'entities/match/played_match.dart';
 export 'entities/match/player_in_match.dart';
+export 'entities/match_making/chat/match_chat_history.dart';
+export 'entities/match_making/chat/match_chat_message.dart';
+export 'entities/match_making/google_place_location.dart';
 export 'entities/match_making/location.dart';
+export 'entities/match_making/manual_input_location.dart';
 export 'entities/match_making/match_schedule.dart';
 export 'entities/match_making/match_subscription.dart';
 export 'entities/others/pagination_metadata.dart';
@@ -64,8 +72,8 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
     _i2.TableDefinition(
-      name: 'locations',
-      dartName: 'Location',
+      name: 'google_place_locations',
+      dartName: 'GooglePlaceLocation',
       schema: 'public',
       module: 'root_hub',
       columns: [
@@ -74,7 +82,7 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'locations_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'google_place_locations_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'providerPlaceId',
@@ -201,7 +209,7 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'locations_pkey',
+          indexName: 'google_place_locations_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -225,6 +233,165 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'locations',
+      dartName: 'Location',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'locations_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'googlePlaceLocationId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'manualInputLocationId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'locations_fk_0',
+          columns: ['googlePlaceLocationId'],
+          referenceTable: 'google_place_locations',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'locations_fk_1',
+          columns: ['manualInputLocationId'],
+          referenceTable: 'manual_input_locations',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'locations_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'location_google_place_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'googlePlaceLocationId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'location_manual_input_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'manualInputLocationId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'manual_input_locations',
+      dartName: 'ManualInputLocation',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'manual_input_locations_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'title',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'description',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'cityName',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'country',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Country',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'manual_input_locations_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
         ),
       ],
       managed: true,
@@ -983,17 +1150,29 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i17.PlayerInMatch) {
       return _i17.PlayerInMatch.fromJson(data) as T;
     }
-    if (t == _i18.Location) {
-      return _i18.Location.fromJson(data) as T;
+    if (t == _i18.MatchChatHistory) {
+      return _i18.MatchChatHistory.fromJson(data) as T;
     }
-    if (t == _i19.MatchSchedulePairingAttempt) {
-      return _i19.MatchSchedulePairingAttempt.fromJson(data) as T;
+    if (t == _i19.MatchChatMessage) {
+      return _i19.MatchChatMessage.fromJson(data) as T;
     }
-    if (t == _i20.MatchSubscription) {
-      return _i20.MatchSubscription.fromJson(data) as T;
+    if (t == _i20.GooglePlaceLocation) {
+      return _i20.GooglePlaceLocation.fromJson(data) as T;
     }
-    if (t == _i21.PaginationMetadata) {
-      return _i21.PaginationMetadata.fromJson(data) as T;
+    if (t == _i21.Location) {
+      return _i21.Location.fromJson(data) as T;
+    }
+    if (t == _i22.ManualInputLocation) {
+      return _i22.ManualInputLocation.fromJson(data) as T;
+    }
+    if (t == _i23.MatchSchedulePairingAttempt) {
+      return _i23.MatchSchedulePairingAttempt.fromJson(data) as T;
+    }
+    if (t == _i24.MatchSubscription) {
+      return _i24.MatchSubscription.fromJson(data) as T;
+    }
+    if (t == _i25.PaginationMetadata) {
+      return _i25.PaginationMetadata.fromJson(data) as T;
     }
     if (t == _i1.getType<_i5.CommentsPagination?>()) {
       return (data != null ? _i5.CommentsPagination.fromJson(data) : null) as T;
@@ -1035,20 +1214,34 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i17.PlayerInMatch?>()) {
       return (data != null ? _i17.PlayerInMatch.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i18.Location?>()) {
-      return (data != null ? _i18.Location.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i18.MatchChatHistory?>()) {
+      return (data != null ? _i18.MatchChatHistory.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i19.MatchSchedulePairingAttempt?>()) {
+    if (t == _i1.getType<_i19.MatchChatMessage?>()) {
+      return (data != null ? _i19.MatchChatMessage.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i20.GooglePlaceLocation?>()) {
+      return (data != null ? _i20.GooglePlaceLocation.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i21.Location?>()) {
+      return (data != null ? _i21.Location.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i22.ManualInputLocation?>()) {
+      return (data != null ? _i22.ManualInputLocation.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i23.MatchSchedulePairingAttempt?>()) {
       return (data != null
-              ? _i19.MatchSchedulePairingAttempt.fromJson(data)
+              ? _i23.MatchSchedulePairingAttempt.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i20.MatchSubscription?>()) {
-      return (data != null ? _i20.MatchSubscription.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i24.MatchSubscription?>()) {
+      return (data != null ? _i24.MatchSubscription.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i21.PaginationMetadata?>()) {
-      return (data != null ? _i21.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i25.PaginationMetadata?>()) {
+      return (data != null ? _i25.PaginationMetadata.fromJson(data) : null)
           as T;
     }
     if (t == List<_i9.PostComment>) {
@@ -1058,8 +1251,8 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == List<_i8.Post>) {
       return (data as List).map((e) => deserialize<_i8.Post>(e)).toList() as T;
     }
-    if (t == List<_i18.Location>) {
-      return (data as List).map((e) => deserialize<_i18.Location>(e)).toList()
+    if (t == List<_i21.Location>) {
+      return (data as List).map((e) => deserialize<_i21.Location>(e)).toList()
           as T;
     }
     if (t == _i1.getType<List<_i9.PostComment>?>()) {
@@ -1090,32 +1283,32 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i19.MatchSchedulePairingAttempt>) {
+    if (t == List<_i23.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i19.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i23.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i19.MatchSchedulePairingAttempt>?>()) {
+    if (t == _i1.getType<List<_i23.MatchSchedulePairingAttempt>?>()) {
       return (data != null
               ? (data as List)
                     .map(
-                      (e) => deserialize<_i19.MatchSchedulePairingAttempt>(e),
+                      (e) => deserialize<_i23.MatchSchedulePairingAttempt>(e),
                     )
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i20.MatchSubscription>) {
+    if (t == List<_i24.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i20.MatchSubscription>(e))
+              .map((e) => deserialize<_i24.MatchSubscription>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i20.MatchSubscription>?>()) {
+    if (t == _i1.getType<List<_i24.MatchSubscription>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i20.MatchSubscription>(e))
+                    .map((e) => deserialize<_i24.MatchSubscription>(e))
                     .toList()
               : null)
           as T;
@@ -1129,13 +1322,13 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i22.Location>) {
-      return (data as List).map((e) => deserialize<_i22.Location>(e)).toList()
+    if (t == List<_i26.Location>) {
+      return (data as List).map((e) => deserialize<_i26.Location>(e)).toList()
           as T;
     }
-    if (t == List<_i23.MatchSubscription>) {
+    if (t == List<_i27.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i23.MatchSubscription>(e))
+              .map((e) => deserialize<_i27.MatchSubscription>(e))
               .toList()
           as T;
     }
@@ -1166,10 +1359,14 @@ class Protocol extends _i1.SerializationManagerServer {
       _i15.MatchInPersonProof => 'MatchInPersonProof',
       _i16.PlayedMatch => 'PlayedMatch',
       _i17.PlayerInMatch => 'PlayerInMatch',
-      _i18.Location => 'Location',
-      _i19.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
-      _i20.MatchSubscription => 'MatchSubscription',
-      _i21.PaginationMetadata => 'PaginationMetadata',
+      _i18.MatchChatHistory => 'MatchChatHistory',
+      _i19.MatchChatMessage => 'MatchChatMessage',
+      _i20.GooglePlaceLocation => 'GooglePlaceLocation',
+      _i21.Location => 'Location',
+      _i22.ManualInputLocation => 'ManualInputLocation',
+      _i23.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
+      _i24.MatchSubscription => 'MatchSubscription',
+      _i25.PaginationMetadata => 'PaginationMetadata',
       _ => null,
     };
   }
@@ -1210,13 +1407,21 @@ class Protocol extends _i1.SerializationManagerServer {
         return 'PlayedMatch';
       case _i17.PlayerInMatch():
         return 'PlayerInMatch';
-      case _i18.Location():
+      case _i18.MatchChatHistory():
+        return 'MatchChatHistory';
+      case _i19.MatchChatMessage():
+        return 'MatchChatMessage';
+      case _i20.GooglePlaceLocation():
+        return 'GooglePlaceLocation';
+      case _i21.Location():
         return 'Location';
-      case _i19.MatchSchedulePairingAttempt():
+      case _i22.ManualInputLocation():
+        return 'ManualInputLocation';
+      case _i23.MatchSchedulePairingAttempt():
         return 'MatchSchedulePairingAttempt';
-      case _i20.MatchSubscription():
+      case _i24.MatchSubscription():
         return 'MatchSubscription';
-      case _i21.PaginationMetadata():
+      case _i25.PaginationMetadata():
         return 'PaginationMetadata';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -1279,17 +1484,29 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'PlayerInMatch') {
       return deserialize<_i17.PlayerInMatch>(data['data']);
     }
+    if (dataClassName == 'MatchChatHistory') {
+      return deserialize<_i18.MatchChatHistory>(data['data']);
+    }
+    if (dataClassName == 'MatchChatMessage') {
+      return deserialize<_i19.MatchChatMessage>(data['data']);
+    }
+    if (dataClassName == 'GooglePlaceLocation') {
+      return deserialize<_i20.GooglePlaceLocation>(data['data']);
+    }
     if (dataClassName == 'Location') {
-      return deserialize<_i18.Location>(data['data']);
+      return deserialize<_i21.Location>(data['data']);
+    }
+    if (dataClassName == 'ManualInputLocation') {
+      return deserialize<_i22.ManualInputLocation>(data['data']);
     }
     if (dataClassName == 'MatchSchedulePairingAttempt') {
-      return deserialize<_i19.MatchSchedulePairingAttempt>(data['data']);
+      return deserialize<_i23.MatchSchedulePairingAttempt>(data['data']);
     }
     if (dataClassName == 'MatchSubscription') {
-      return deserialize<_i20.MatchSubscription>(data['data']);
+      return deserialize<_i24.MatchSubscription>(data['data']);
     }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i21.PaginationMetadata>(data['data']);
+      return deserialize<_i25.PaginationMetadata>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -1339,12 +1556,16 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i16.PlayedMatch.t;
       case _i17.PlayerInMatch:
         return _i17.PlayerInMatch.t;
-      case _i18.Location:
-        return _i18.Location.t;
-      case _i19.MatchSchedulePairingAttempt:
-        return _i19.MatchSchedulePairingAttempt.t;
-      case _i20.MatchSubscription:
-        return _i20.MatchSubscription.t;
+      case _i20.GooglePlaceLocation:
+        return _i20.GooglePlaceLocation.t;
+      case _i21.Location:
+        return _i21.Location.t;
+      case _i22.ManualInputLocation:
+        return _i22.ManualInputLocation.t;
+      case _i23.MatchSchedulePairingAttempt:
+        return _i23.MatchSchedulePairingAttempt.t;
+      case _i24.MatchSubscription:
+        return _i24.MatchSubscription.t;
     }
     return null;
   }

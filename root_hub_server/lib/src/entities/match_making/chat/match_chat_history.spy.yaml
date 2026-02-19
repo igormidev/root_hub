@@ -1,0 +1,3 @@
+class: MatchChatHistory
+fields:
+  content: String

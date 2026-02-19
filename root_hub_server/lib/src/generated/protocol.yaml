@@ -6,7 +6,7 @@ getComments:
   - v1:
 getPosts:
   - v1:
-createMatch:
+createMatchSchedule:
   - v1:
 getMatchLocation:
   - v1:

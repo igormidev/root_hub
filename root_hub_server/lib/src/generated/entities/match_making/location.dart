@@ -12,98 +12,51 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../entities/match_making/match_schedule.dart' as _i2;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i3;
+import '../../entities/match_making/google_place_location.dart' as _i2;
+import '../../entities/match_making/manual_input_location.dart' as _i3;
+import '../../entities/match_making/match_schedule.dart' as _i4;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
 
 abstract class Location
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Location._({
     this.id,
-    required this.providerPlaceId,
-    required this.name,
-    this.formattedAddress,
-    this.shortFormattedAddress,
-    required this.lat,
-    required this.lng,
-    this.url,
-    this.websiteUri,
-    this.phoneNumber,
-    this.types,
-    this.primaryType,
-    this.rating,
-    this.userRatingCount,
-    this.priceLevel,
-    this.primaryPhotoName,
-    this.timezone,
-    bool? isPublicPlace,
-    this.notes,
+    this.googlePlaceLocationId,
+    this.googlePlaceLocation,
+    this.manualInputLocationId,
+    this.manualInputLocation,
     this.pairingAttempts,
-    required this.createdAt,
-    required this.updatedAt,
-  }) : isPublicPlace = isPublicPlace ?? true;
+  });
 
   factory Location({
     int? id,
-    required String providerPlaceId,
-    required String name,
-    String? formattedAddress,
-    String? shortFormattedAddress,
-    required double lat,
-    required double lng,
-    String? url,
-    String? websiteUri,
-    String? phoneNumber,
-    List<String>? types,
-    String? primaryType,
-    double? rating,
-    int? userRatingCount,
-    String? priceLevel,
-    String? primaryPhotoName,
-    String? timezone,
-    bool? isPublicPlace,
-    String? notes,
-    List<_i2.MatchSchedulePairingAttempt>? pairingAttempts,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    int? googlePlaceLocationId,
+    _i2.GooglePlaceLocation? googlePlaceLocation,
+    int? manualInputLocationId,
+    _i3.ManualInputLocation? manualInputLocation,
+    List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
   }) = _LocationImpl;
 
   factory Location.fromJson(Map<String, dynamic> jsonSerialization) {
     return Location(
       id: jsonSerialization['id'] as int?,
-      providerPlaceId: jsonSerialization['providerPlaceId'] as String,
-      name: jsonSerialization['name'] as String,
-      formattedAddress: jsonSerialization['formattedAddress'] as String?,
-      shortFormattedAddress:
-          jsonSerialization['shortFormattedAddress'] as String?,
-      lat: (jsonSerialization['lat'] as num).toDouble(),
-      lng: (jsonSerialization['lng'] as num).toDouble(),
-      url: jsonSerialization['url'] as String?,
-      websiteUri: jsonSerialization['websiteUri'] as String?,
-      phoneNumber: jsonSerialization['phoneNumber'] as String?,
-      types: jsonSerialization['types'] == null
+      googlePlaceLocationId: jsonSerialization['googlePlaceLocationId'] as int?,
+      googlePlaceLocation: jsonSerialization['googlePlaceLocation'] == null
           ? null
-          : _i3.Protocol().deserialize<List<String>>(
-              jsonSerialization['types'],
+          : _i5.Protocol().deserialize<_i2.GooglePlaceLocation>(
+              jsonSerialization['googlePlaceLocation'],
             ),
-      primaryType: jsonSerialization['primaryType'] as String?,
-      rating: (jsonSerialization['rating'] as num?)?.toDouble(),
-      userRatingCount: jsonSerialization['userRatingCount'] as int?,
-      priceLevel: jsonSerialization['priceLevel'] as String?,
-      primaryPhotoName: jsonSerialization['primaryPhotoName'] as String?,
-      timezone: jsonSerialization['timezone'] as String?,
-      isPublicPlace: jsonSerialization['isPublicPlace'] as bool?,
-      notes: jsonSerialization['notes'] as String?,
+      manualInputLocationId: jsonSerialization['manualInputLocationId'] as int?,
+      manualInputLocation: jsonSerialization['manualInputLocation'] == null
+          ? null
+          : _i5.Protocol().deserialize<_i3.ManualInputLocation>(
+              jsonSerialization['manualInputLocation'],
+            ),
       pairingAttempts: jsonSerialization['pairingAttempts'] == null
           ? null
-          : _i3.Protocol().deserialize<List<_i2.MatchSchedulePairingAttempt>>(
+          : _i5.Protocol().deserialize<List<_i4.MatchSchedulePairingAttempt>>(
               jsonSerialization['pairingAttempts'],
             ),
-      createdAt: _i1.DateTimeJsonExtension.fromJson(
-        jsonSerialization['createdAt'],
-      ),
-      updatedAt: _i1.DateTimeJsonExtension.fromJson(
-        jsonSerialization['updatedAt'],
-      ),
     );
   }
 
@@ -114,47 +67,15 @@ abstract class Location
   @override
   int? id;
 
-  String providerPlaceId;
+  int? googlePlaceLocationId;
 
-  String name;
+  _i2.GooglePlaceLocation? googlePlaceLocation;
 
-  String? formattedAddress;
+  int? manualInputLocationId;
 
-  String? shortFormattedAddress;
+  _i3.ManualInputLocation? manualInputLocation;
 
-  double lat;
-
-  double lng;
-
-  String? url;
-
-  String? websiteUri;
-
-  String? phoneNumber;
-
-  List<String>? types;
-
-  String? primaryType;
-
-  double? rating;
-
-  int? userRatingCount;
-
-  String? priceLevel;
-
-  String? primaryPhotoName;
-
-  String? timezone;
-
-  bool isPublicPlace;
-
-  String? notes;
-
-  List<_i2.MatchSchedulePairingAttempt>? pairingAttempts;
-
-  DateTime createdAt;
-
-  DateTime updatedAt;
+  List<_i4.MatchSchedulePairingAttempt>? pairingAttempts;
 
   @override
   _i1.Table<int?> get table => t;
@@ -164,58 +85,29 @@ abstract class Location
   @_i1.useResult
   Location copyWith({
     int? id,
-    String? providerPlaceId,
-    String? name,
-    String? formattedAddress,
-    String? shortFormattedAddress,
-    double? lat,
-    double? lng,
-    String? url,
-    String? websiteUri,
-    String? phoneNumber,
-    List<String>? types,
-    String? primaryType,
-    double? rating,
-    int? userRatingCount,
-    String? priceLevel,
-    String? primaryPhotoName,
-    String? timezone,
-    bool? isPublicPlace,
-    String? notes,
-    List<_i2.MatchSchedulePairingAttempt>? pairingAttempts,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    int? googlePlaceLocationId,
+    _i2.GooglePlaceLocation? googlePlaceLocation,
+    int? manualInputLocationId,
+    _i3.ManualInputLocation? manualInputLocation,
+    List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       '__className__': 'Location',
       if (id != null) 'id': id,
-      'providerPlaceId': providerPlaceId,
-      'name': name,
-      if (formattedAddress != null) 'formattedAddress': formattedAddress,
-      if (shortFormattedAddress != null)
-        'shortFormattedAddress': shortFormattedAddress,
-      'lat': lat,
-      'lng': lng,
-      if (url != null) 'url': url,
-      if (websiteUri != null) 'websiteUri': websiteUri,
-      if (phoneNumber != null) 'phoneNumber': phoneNumber,
-      if (types != null) 'types': types?.toJson(),
-      if (primaryType != null) 'primaryType': primaryType,
-      if (rating != null) 'rating': rating,
-      if (userRatingCount != null) 'userRatingCount': userRatingCount,
-      if (priceLevel != null) 'priceLevel': priceLevel,
-      if (primaryPhotoName != null) 'primaryPhotoName': primaryPhotoName,
-      if (timezone != null) 'timezone': timezone,
-      'isPublicPlace': isPublicPlace,
-      if (notes != null) 'notes': notes,
+      if (googlePlaceLocationId != null)
+        'googlePlaceLocationId': googlePlaceLocationId,
+      if (googlePlaceLocation != null)
+        'googlePlaceLocation': googlePlaceLocation?.toJson(),
+      if (manualInputLocationId != null)
+        'manualInputLocationId': manualInputLocationId,
+      if (manualInputLocation != null)
+        'manualInputLocation': manualInputLocation?.toJson(),
       if (pairingAttempts != null)
         'pairingAttempts': pairingAttempts?.toJson(
           valueToJson: (v) => v.toJson(),
         ),
-      'createdAt': createdAt.toJson(),
-      'updatedAt': updatedAt.toJson(),
     };
   }
 
@@ -224,38 +116,31 @@ abstract class Location
     return {
       '__className__': 'Location',
       if (id != null) 'id': id,
-      'providerPlaceId': providerPlaceId,
-      'name': name,
-      if (formattedAddress != null) 'formattedAddress': formattedAddress,
-      if (shortFormattedAddress != null)
-        'shortFormattedAddress': shortFormattedAddress,
-      'lat': lat,
-      'lng': lng,
-      if (url != null) 'url': url,
-      if (websiteUri != null) 'websiteUri': websiteUri,
-      if (phoneNumber != null) 'phoneNumber': phoneNumber,
-      if (types != null) 'types': types?.toJson(),
-      if (primaryType != null) 'primaryType': primaryType,
-      if (rating != null) 'rating': rating,
-      if (userRatingCount != null) 'userRatingCount': userRatingCount,
-      if (priceLevel != null) 'priceLevel': priceLevel,
-      if (primaryPhotoName != null) 'primaryPhotoName': primaryPhotoName,
-      if (timezone != null) 'timezone': timezone,
-      'isPublicPlace': isPublicPlace,
-      if (notes != null) 'notes': notes,
+      if (googlePlaceLocationId != null)
+        'googlePlaceLocationId': googlePlaceLocationId,
+      if (googlePlaceLocation != null)
+        'googlePlaceLocation': googlePlaceLocation?.toJsonForProtocol(),
+      if (manualInputLocationId != null)
+        'manualInputLocationId': manualInputLocationId,
+      if (manualInputLocation != null)
+        'manualInputLocation': manualInputLocation?.toJsonForProtocol(),
       if (pairingAttempts != null)
         'pairingAttempts': pairingAttempts?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
-      'createdAt': createdAt.toJson(),
-      'updatedAt': updatedAt.toJson(),
     };
   }
 
   static LocationInclude include({
-    _i2.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i2.GooglePlaceLocationInclude? googlePlaceLocation,
+    _i3.ManualInputLocationInclude? manualInputLocation,
+    _i4.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
   }) {
-    return LocationInclude._(pairingAttempts: pairingAttempts);
+    return LocationInclude._(
+      googlePlaceLocation: googlePlaceLocation,
+      manualInputLocation: manualInputLocation,
+      pairingAttempts: pairingAttempts,
+    );
   }
 
   static LocationIncludeList includeList({
@@ -289,50 +174,18 @@ class _Undefined {}
 class _LocationImpl extends Location {
   _LocationImpl({
     int? id,
-    required String providerPlaceId,
-    required String name,
-    String? formattedAddress,
-    String? shortFormattedAddress,
-    required double lat,
-    required double lng,
-    String? url,
-    String? websiteUri,
-    String? phoneNumber,
-    List<String>? types,
-    String? primaryType,
-    double? rating,
-    int? userRatingCount,
-    String? priceLevel,
-    String? primaryPhotoName,
-    String? timezone,
-    bool? isPublicPlace,
-    String? notes,
-    List<_i2.MatchSchedulePairingAttempt>? pairingAttempts,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    int? googlePlaceLocationId,
+    _i2.GooglePlaceLocation? googlePlaceLocation,
+    int? manualInputLocationId,
+    _i3.ManualInputLocation? manualInputLocation,
+    List<_i4.MatchSchedulePairingAttempt>? pairingAttempts,
   }) : super._(
          id: id,
-         providerPlaceId: providerPlaceId,
-         name: name,
-         formattedAddress: formattedAddress,
-         shortFormattedAddress: shortFormattedAddress,
-         lat: lat,
-         lng: lng,
-         url: url,
-         websiteUri: websiteUri,
-         phoneNumber: phoneNumber,
-         types: types,
-         primaryType: primaryType,
-         rating: rating,
-         userRatingCount: userRatingCount,
-         priceLevel: priceLevel,
-         primaryPhotoName: primaryPhotoName,
-         timezone: timezone,
-         isPublicPlace: isPublicPlace,
-         notes: notes,
+         googlePlaceLocationId: googlePlaceLocationId,
+         googlePlaceLocation: googlePlaceLocation,
+         manualInputLocationId: manualInputLocationId,
+         manualInputLocation: manualInputLocation,
          pairingAttempts: pairingAttempts,
-         createdAt: createdAt,
-         updatedAt: updatedAt,
        );
 
   /// Returns a shallow copy of this [Location]
@@ -341,63 +194,29 @@ class _LocationImpl extends Location {
   @override
   Location copyWith({
     Object? id = _Undefined,
-    String? providerPlaceId,
-    String? name,
-    Object? formattedAddress = _Undefined,
-    Object? shortFormattedAddress = _Undefined,
-    double? lat,
-    double? lng,
-    Object? url = _Undefined,
-    Object? websiteUri = _Undefined,
-    Object? phoneNumber = _Undefined,
-    Object? types = _Undefined,
-    Object? primaryType = _Undefined,
-    Object? rating = _Undefined,
-    Object? userRatingCount = _Undefined,
-    Object? priceLevel = _Undefined,
-    Object? primaryPhotoName = _Undefined,
-    Object? timezone = _Undefined,
-    bool? isPublicPlace,
-    Object? notes = _Undefined,
+    Object? googlePlaceLocationId = _Undefined,
+    Object? googlePlaceLocation = _Undefined,
+    Object? manualInputLocationId = _Undefined,
+    Object? manualInputLocation = _Undefined,
     Object? pairingAttempts = _Undefined,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return Location(
       id: id is int? ? id : this.id,
-      providerPlaceId: providerPlaceId ?? this.providerPlaceId,
-      name: name ?? this.name,
-      formattedAddress: formattedAddress is String?
-          ? formattedAddress
-          : this.formattedAddress,
-      shortFormattedAddress: shortFormattedAddress is String?
-          ? shortFormattedAddress
-          : this.shortFormattedAddress,
-      lat: lat ?? this.lat,
-      lng: lng ?? this.lng,
-      url: url is String? ? url : this.url,
-      websiteUri: websiteUri is String? ? websiteUri : this.websiteUri,
-      phoneNumber: phoneNumber is String? ? phoneNumber : this.phoneNumber,
-      types: types is List<String>?
-          ? types
-          : this.types?.map((e0) => e0).toList(),
-      primaryType: primaryType is String? ? primaryType : this.primaryType,
-      rating: rating is double? ? rating : this.rating,
-      userRatingCount: userRatingCount is int?
-          ? userRatingCount
-          : this.userRatingCount,
-      priceLevel: priceLevel is String? ? priceLevel : this.priceLevel,
-      primaryPhotoName: primaryPhotoName is String?
-          ? primaryPhotoName
-          : this.primaryPhotoName,
-      timezone: timezone is String? ? timezone : this.timezone,
-      isPublicPlace: isPublicPlace ?? this.isPublicPlace,
-      notes: notes is String? ? notes : this.notes,
-      pairingAttempts: pairingAttempts is List<_i2.MatchSchedulePairingAttempt>?
+      googlePlaceLocationId: googlePlaceLocationId is int?
+          ? googlePlaceLocationId
+          : this.googlePlaceLocationId,
+      googlePlaceLocation: googlePlaceLocation is _i2.GooglePlaceLocation?
+          ? googlePlaceLocation
+          : this.googlePlaceLocation?.copyWith(),
+      manualInputLocationId: manualInputLocationId is int?
+          ? manualInputLocationId
+          : this.manualInputLocationId,
+      manualInputLocation: manualInputLocation is _i3.ManualInputLocation?
+          ? manualInputLocation
+          : this.manualInputLocation?.copyWith(),
+      pairingAttempts: pairingAttempts is List<_i4.MatchSchedulePairingAttempt>?
           ? pairingAttempts
           : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
@@ -405,110 +224,15 @@ class _LocationImpl extends Location {
 class LocationUpdateTable extends _i1.UpdateTable<LocationTable> {
   LocationUpdateTable(super.table);
 
-  _i1.ColumnValue<String, String> providerPlaceId(String value) =>
+  _i1.ColumnValue<int, int> googlePlaceLocationId(int? value) =>
       _i1.ColumnValue(
-        table.providerPlaceId,
+        table.googlePlaceLocationId,
         value,
       );
 
-  _i1.ColumnValue<String, String> name(String value) => _i1.ColumnValue(
-    table.name,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> formattedAddress(String? value) =>
+  _i1.ColumnValue<int, int> manualInputLocationId(int? value) =>
       _i1.ColumnValue(
-        table.formattedAddress,
-        value,
-      );
-
-  _i1.ColumnValue<String, String> shortFormattedAddress(String? value) =>
-      _i1.ColumnValue(
-        table.shortFormattedAddress,
-        value,
-      );
-
-  _i1.ColumnValue<double, double> lat(double value) => _i1.ColumnValue(
-    table.lat,
-    value,
-  );
-
-  _i1.ColumnValue<double, double> lng(double value) => _i1.ColumnValue(
-    table.lng,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> url(String? value) => _i1.ColumnValue(
-    table.url,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> websiteUri(String? value) => _i1.ColumnValue(
-    table.websiteUri,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> phoneNumber(String? value) => _i1.ColumnValue(
-    table.phoneNumber,
-    value,
-  );
-
-  _i1.ColumnValue<List<String>, List<String>> types(List<String>? value) =>
-      _i1.ColumnValue(
-        table.types,
-        value,
-      );
-
-  _i1.ColumnValue<String, String> primaryType(String? value) => _i1.ColumnValue(
-    table.primaryType,
-    value,
-  );
-
-  _i1.ColumnValue<double, double> rating(double? value) => _i1.ColumnValue(
-    table.rating,
-    value,
-  );
-
-  _i1.ColumnValue<int, int> userRatingCount(int? value) => _i1.ColumnValue(
-    table.userRatingCount,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> priceLevel(String? value) => _i1.ColumnValue(
-    table.priceLevel,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> primaryPhotoName(String? value) =>
-      _i1.ColumnValue(
-        table.primaryPhotoName,
-        value,
-      );
-
-  _i1.ColumnValue<String, String> timezone(String? value) => _i1.ColumnValue(
-    table.timezone,
-    value,
-  );
-
-  _i1.ColumnValue<bool, bool> isPublicPlace(bool value) => _i1.ColumnValue(
-    table.isPublicPlace,
-    value,
-  );
-
-  _i1.ColumnValue<String, String> notes(String? value) => _i1.ColumnValue(
-    table.notes,
-    value,
-  );
-
-  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
-      _i1.ColumnValue(
-        table.createdAt,
-        value,
-      );
-
-  _i1.ColumnValue<DateTime, DateTime> updatedAt(DateTime value) =>
-      _i1.ColumnValue(
-        table.updatedAt,
+        table.manualInputLocationId,
         value,
       );
 }
@@ -516,165 +240,86 @@ class LocationUpdateTable extends _i1.UpdateTable<LocationTable> {
 class LocationTable extends _i1.Table<int?> {
   LocationTable({super.tableRelation}) : super(tableName: 'locations') {
     updateTable = LocationUpdateTable(this);
-    providerPlaceId = _i1.ColumnString(
-      'providerPlaceId',
+    googlePlaceLocationId = _i1.ColumnInt(
+      'googlePlaceLocationId',
       this,
     );
-    name = _i1.ColumnString(
-      'name',
-      this,
-    );
-    formattedAddress = _i1.ColumnString(
-      'formattedAddress',
-      this,
-    );
-    shortFormattedAddress = _i1.ColumnString(
-      'shortFormattedAddress',
-      this,
-    );
-    lat = _i1.ColumnDouble(
-      'lat',
-      this,
-    );
-    lng = _i1.ColumnDouble(
-      'lng',
-      this,
-    );
-    url = _i1.ColumnString(
-      'url',
-      this,
-    );
-    websiteUri = _i1.ColumnString(
-      'websiteUri',
-      this,
-    );
-    phoneNumber = _i1.ColumnString(
-      'phoneNumber',
-      this,
-    );
-    types = _i1.ColumnSerializable<List<String>>(
-      'types',
-      this,
-    );
-    primaryType = _i1.ColumnString(
-      'primaryType',
-      this,
-    );
-    rating = _i1.ColumnDouble(
-      'rating',
-      this,
-    );
-    userRatingCount = _i1.ColumnInt(
-      'userRatingCount',
-      this,
-    );
-    priceLevel = _i1.ColumnString(
-      'priceLevel',
-      this,
-    );
-    primaryPhotoName = _i1.ColumnString(
-      'primaryPhotoName',
-      this,
-    );
-    timezone = _i1.ColumnString(
-      'timezone',
-      this,
-    );
-    isPublicPlace = _i1.ColumnBool(
-      'isPublicPlace',
-      this,
-      hasDefault: true,
-    );
-    notes = _i1.ColumnString(
-      'notes',
-      this,
-    );
-    createdAt = _i1.ColumnDateTime(
-      'createdAt',
-      this,
-    );
-    updatedAt = _i1.ColumnDateTime(
-      'updatedAt',
+    manualInputLocationId = _i1.ColumnInt(
+      'manualInputLocationId',
       this,
     );
   }
 
   late final LocationUpdateTable updateTable;
 
-  late final _i1.ColumnString providerPlaceId;
+  late final _i1.ColumnInt googlePlaceLocationId;
 
-  late final _i1.ColumnString name;
+  _i2.GooglePlaceLocationTable? _googlePlaceLocation;
 
-  late final _i1.ColumnString formattedAddress;
+  late final _i1.ColumnInt manualInputLocationId;
 
-  late final _i1.ColumnString shortFormattedAddress;
+  _i3.ManualInputLocationTable? _manualInputLocation;
 
-  late final _i1.ColumnDouble lat;
+  _i4.MatchSchedulePairingAttemptTable? ___pairingAttempts;
 
-  late final _i1.ColumnDouble lng;
+  _i1.ManyRelation<_i4.MatchSchedulePairingAttemptTable>? _pairingAttempts;
 
-  late final _i1.ColumnString url;
+  _i2.GooglePlaceLocationTable get googlePlaceLocation {
+    if (_googlePlaceLocation != null) return _googlePlaceLocation!;
+    _googlePlaceLocation = _i1.createRelationTable(
+      relationFieldName: 'googlePlaceLocation',
+      field: Location.t.googlePlaceLocationId,
+      foreignField: _i2.GooglePlaceLocation.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.GooglePlaceLocationTable(tableRelation: foreignTableRelation),
+    );
+    return _googlePlaceLocation!;
+  }
 
-  late final _i1.ColumnString websiteUri;
+  _i3.ManualInputLocationTable get manualInputLocation {
+    if (_manualInputLocation != null) return _manualInputLocation!;
+    _manualInputLocation = _i1.createRelationTable(
+      relationFieldName: 'manualInputLocation',
+      field: Location.t.manualInputLocationId,
+      foreignField: _i3.ManualInputLocation.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.ManualInputLocationTable(tableRelation: foreignTableRelation),
+    );
+    return _manualInputLocation!;
+  }
 
-  late final _i1.ColumnString phoneNumber;
-
-  late final _i1.ColumnSerializable<List<String>> types;
-
-  late final _i1.ColumnString primaryType;
-
-  late final _i1.ColumnDouble rating;
-
-  late final _i1.ColumnInt userRatingCount;
-
-  late final _i1.ColumnString priceLevel;
-
-  late final _i1.ColumnString primaryPhotoName;
-
-  late final _i1.ColumnString timezone;
-
-  late final _i1.ColumnBool isPublicPlace;
-
-  late final _i1.ColumnString notes;
-
-  _i2.MatchSchedulePairingAttemptTable? ___pairingAttempts;
-
-  _i1.ManyRelation<_i2.MatchSchedulePairingAttemptTable>? _pairingAttempts;
-
-  late final _i1.ColumnDateTime createdAt;
-
-  late final _i1.ColumnDateTime updatedAt;
-
-  _i2.MatchSchedulePairingAttemptTable get __pairingAttempts {
+  _i4.MatchSchedulePairingAttemptTable get __pairingAttempts {
     if (___pairingAttempts != null) return ___pairingAttempts!;
     ___pairingAttempts = _i1.createRelationTable(
       relationFieldName: '__pairingAttempts',
       field: Location.t.id,
-      foreignField: _i2.MatchSchedulePairingAttempt.t.locationId,
+      foreignField: _i4.MatchSchedulePairingAttempt.t.locationId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.MatchSchedulePairingAttemptTable(
+          _i4.MatchSchedulePairingAttemptTable(
             tableRelation: foreignTableRelation,
           ),
     );
     return ___pairingAttempts!;
   }
 
-  _i1.ManyRelation<_i2.MatchSchedulePairingAttemptTable> get pairingAttempts {
+  _i1.ManyRelation<_i4.MatchSchedulePairingAttemptTable> get pairingAttempts {
     if (_pairingAttempts != null) return _pairingAttempts!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'pairingAttempts',
       field: Location.t.id,
-      foreignField: _i2.MatchSchedulePairingAttempt.t.locationId,
+      foreignField: _i4.MatchSchedulePairingAttempt.t.locationId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.MatchSchedulePairingAttemptTable(
+          _i4.MatchSchedulePairingAttemptTable(
             tableRelation: foreignTableRelation,
           ),
     );
-    _pairingAttempts = _i1.ManyRelation<_i2.MatchSchedulePairingAttemptTable>(
+    _pairingAttempts = _i1.ManyRelation<_i4.MatchSchedulePairingAttemptTable>(
       tableWithRelations: relationTable,
-      table: _i2.MatchSchedulePairingAttemptTable(
+      table: _i4.MatchSchedulePairingAttemptTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
@@ -684,30 +329,18 @@ class LocationTable extends _i1.Table<int?> {
   @override
   List<_i1.Column> get columns => [
     id,
-    providerPlaceId,
-    name,
-    formattedAddress,
-    shortFormattedAddress,
-    lat,
-    lng,
-    url,
-    websiteUri,
-    phoneNumber,
-    types,
-    primaryType,
-    rating,
-    userRatingCount,
-    priceLevel,
-    primaryPhotoName,
-    timezone,
-    isPublicPlace,
-    notes,
-    createdAt,
-    updatedAt,
+    googlePlaceLocationId,
+    manualInputLocationId,
   ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
+    if (relationField == 'googlePlaceLocation') {
+      return googlePlaceLocation;
+    }
+    if (relationField == 'manualInputLocation') {
+      return manualInputLocation;
+    }
     if (relationField == 'pairingAttempts') {
       return __pairingAttempts;
     }
@@ -717,15 +350,25 @@ class LocationTable extends _i1.Table<int?> {
 
 class LocationInclude extends _i1.IncludeObject {
   LocationInclude._({
-    _i2.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i2.GooglePlaceLocationInclude? googlePlaceLocation,
+    _i3.ManualInputLocationInclude? manualInputLocation,
+    _i4.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
   }) {
+    _googlePlaceLocation = googlePlaceLocation;
+    _manualInputLocation = manualInputLocation;
     _pairingAttempts = pairingAttempts;
   }
 
-  _i2.MatchSchedulePairingAttemptIncludeList? _pairingAttempts;
+  _i2.GooglePlaceLocationInclude? _googlePlaceLocation;
+
+  _i3.ManualInputLocationInclude? _manualInputLocation;
+
+  _i4.MatchSchedulePairingAttemptIncludeList? _pairingAttempts;
 
   @override
   Map<String, _i1.Include?> get includes => {
+    'googlePlaceLocation': _googlePlaceLocation,
+    'manualInputLocation': _manualInputLocation,
     'pairingAttempts': _pairingAttempts,
   };
 
@@ -1028,7 +671,7 @@ class LocationAttachRepository {
   Future<void> pairingAttempts(
     _i1.Session session,
     Location location,
-    List<_i2.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    List<_i4.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
@@ -1041,9 +684,9 @@ class LocationAttachRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
         .map((e) => e.copyWith(locationId: location.id))
         .toList();
-    await session.db.update<_i2.MatchSchedulePairingAttempt>(
+    await session.db.update<_i4.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i2.MatchSchedulePairingAttempt.t.locationId],
+      columns: [_i4.MatchSchedulePairingAttempt.t.locationId],
       transaction: transaction,
     );
   }
@@ -1052,12 +695,62 @@ class LocationAttachRepository {
 class LocationAttachRowRepository {
   const LocationAttachRowRepository._();
 
+  /// Creates a relation between the given [Location] and [GooglePlaceLocation]
+  /// by setting the [Location]'s foreign key `googlePlaceLocationId` to refer to the [GooglePlaceLocation].
+  Future<void> googlePlaceLocation(
+    _i1.Session session,
+    Location location,
+    _i2.GooglePlaceLocation googlePlaceLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (location.id == null) {
+      throw ArgumentError.notNull('location.id');
+    }
+    if (googlePlaceLocation.id == null) {
+      throw ArgumentError.notNull('googlePlaceLocation.id');
+    }
+
+    var $location = location.copyWith(
+      googlePlaceLocationId: googlePlaceLocation.id,
+    );
+    await session.db.updateRow<Location>(
+      $location,
+      columns: [Location.t.googlePlaceLocationId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between the given [Location] and [ManualInputLocation]
+  /// by setting the [Location]'s foreign key `manualInputLocationId` to refer to the [ManualInputLocation].
+  Future<void> manualInputLocation(
+    _i1.Session session,
+    Location location,
+    _i3.ManualInputLocation manualInputLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (location.id == null) {
+      throw ArgumentError.notNull('location.id');
+    }
+    if (manualInputLocation.id == null) {
+      throw ArgumentError.notNull('manualInputLocation.id');
+    }
+
+    var $location = location.copyWith(
+      manualInputLocationId: manualInputLocation.id,
+    );
+    await session.db.updateRow<Location>(
+      $location,
+      columns: [Location.t.manualInputLocationId],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between this [Location] and the given [MatchSchedulePairingAttempt]
   /// by setting the [MatchSchedulePairingAttempt]'s foreign key `locationId` to refer to this [Location].
   Future<void> pairingAttempts(
     _i1.Session session,
     Location location,
-    _i2.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i4.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -1070,9 +763,9 @@ class LocationAttachRowRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
       locationId: location.id,
     );
-    await session.db.updateRow<_i2.MatchSchedulePairingAttempt>(
+    await session.db.updateRow<_i4.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i2.MatchSchedulePairingAttempt.t.locationId],
+      columns: [_i4.MatchSchedulePairingAttempt.t.locationId],
       transaction: transaction,
     );
   }
@@ -1088,7 +781,7 @@ class LocationDetachRepository {
   /// the related record.
   Future<void> pairingAttempts(
     _i1.Session session,
-    List<_i2.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    List<_i4.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
@@ -1098,9 +791,9 @@ class LocationDetachRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
         .map((e) => e.copyWith(locationId: null))
         .toList();
-    await session.db.update<_i2.MatchSchedulePairingAttempt>(
+    await session.db.update<_i4.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i2.MatchSchedulePairingAttempt.t.locationId],
+      columns: [_i4.MatchSchedulePairingAttempt.t.locationId],
       transaction: transaction,
     );
   }
@@ -1109,6 +802,50 @@ class LocationDetachRepository {
 class LocationDetachRowRepository {
   const LocationDetachRowRepository._();
 
+  /// Detaches the relation between this [Location] and the [GooglePlaceLocation] set in `googlePlaceLocation`
+  /// by setting the [Location]'s foreign key `googlePlaceLocationId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> googlePlaceLocation(
+    _i1.Session session,
+    Location location, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (location.id == null) {
+      throw ArgumentError.notNull('location.id');
+    }
+
+    var $location = location.copyWith(googlePlaceLocationId: null);
+    await session.db.updateRow<Location>(
+      $location,
+      columns: [Location.t.googlePlaceLocationId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [Location] and the [ManualInputLocation] set in `manualInputLocation`
+  /// by setting the [Location]'s foreign key `manualInputLocationId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> manualInputLocation(
+    _i1.Session session,
+    Location location, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (location.id == null) {
+      throw ArgumentError.notNull('location.id');
+    }
+
+    var $location = location.copyWith(manualInputLocationId: null);
+    await session.db.updateRow<Location>(
+      $location,
+      columns: [Location.t.manualInputLocationId],
+      transaction: transaction,
+    );
+  }
+
   /// Detaches the relation between this [Location] and the given [MatchSchedulePairingAttempt]
   /// by setting the [MatchSchedulePairingAttempt]'s foreign key `locationId` to `null`.
   ///
@@ -1116,7 +853,7 @@ class LocationDetachRowRepository {
   /// the related record.
   Future<void> pairingAttempts(
     _i1.Session session,
-    _i2.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i4.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -1126,9 +863,9 @@ class LocationDetachRowRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
       locationId: null,
     );
-    await session.db.updateRow<_i2.MatchSchedulePairingAttempt>(
+    await session.db.updateRow<_i4.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i2.MatchSchedulePairingAttempt.t.locationId],
+      columns: [_i4.MatchSchedulePairingAttempt.t.locationId],
       transaction: transaction,
     );
   }

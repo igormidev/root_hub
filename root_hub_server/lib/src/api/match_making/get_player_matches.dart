@@ -25,7 +25,10 @@ class GetPlayerMatches extends Endpoint {
       orderDescending: true,
       include: MatchSubscription.include(
         matchSchedulePairingAttempt: MatchSchedulePairingAttempt.include(
-          location: Location.include(),
+          location: Location.include(
+            googlePlaceLocation: GooglePlaceLocation.include(),
+            manualInputLocation: ManualInputLocation.include(),
+          ),
         ),
       ),
     );

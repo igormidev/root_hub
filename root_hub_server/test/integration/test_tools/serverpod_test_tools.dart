@@ -149,7 +149,7 @@ class TestEndpoints {
 
   late final _GetPostsEndpoint getPosts;
 
-  late final _CreateMatch createMatch;
+  late final _CreateMatchSchedule createMatchSchedule;
 
   late final _GetMatchLocation getMatchLocation;
 
@@ -185,7 +185,7 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
-    createMatch = _CreateMatch(
+    createMatchSchedule = _CreateMatchSchedule(
       endpoints,
       serializationManager,
     );
@@ -402,8 +402,8 @@ class _GetPostsEndpoint {
   }
 }
 
-class _CreateMatch {
-  _CreateMatch(
+class _CreateMatchSchedule {
+  _CreateMatchSchedule(
     this._endpointDispatch,
     this._serializationManager,
   );
@@ -425,13 +425,13 @@ class _CreateMatch {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'createMatch',
+            endpoint: 'createMatchSchedule',
             method: 'v1',
           );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'createMatch',
+          endpointPath: 'createMatchSchedule',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
             'title': title,

@@ -1,0 +1,4 @@
+class: MatchChatMessage
+fields:
+  sentAt: DateTime
+  content: String

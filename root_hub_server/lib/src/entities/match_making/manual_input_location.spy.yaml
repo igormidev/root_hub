@@ -1,0 +1,14 @@
+class: ManualInputLocation
+table: manual_input_locations
+fields:
+  title: String
+  description: String?
+  cityName: String
+  country: Country
+
+  # Parent wrapper relation
+  location: Location?, relation(name=location_manual_input)
+
+  # Timestamps
+  createdAt: DateTime
+  updatedAt: DateTime

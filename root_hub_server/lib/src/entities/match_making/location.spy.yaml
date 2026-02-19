@@ -1,42 +1,16 @@
 class: Location
 table: locations
 fields:
-  # Stable ID from the provider (e.g., Google place_id, Mapbox feature_id)
-  providerPlaceId: String
-
-  # Display info
-  name: String
-  formattedAddress: String?
-  shortFormattedAddress: String?
-
-  # Geo
-  lat: double
-  lng: double
-
-  # Optional extra info (useful for showing details in UI)
-  url: String?
-  websiteUri: String?
-  phoneNumber: String?
-  types: List<String>?
-  primaryType: String?
-  rating: double?
-  userRatingCount: int?
-  priceLevel: String?
-  primaryPhotoName: String?
-  timezone: String?
-
-  # Safety / product controls
-  isPublicPlace: bool, default=true
-  notes: String?
-
-  # Relations
+  googlePlaceLocationId: int?
+  googlePlaceLocation: GooglePlaceLocation?, relation(name=location_google_place, field=googlePlaceLocationId)
+  manualInputLocationId: int?
+  manualInputLocation: ManualInputLocation?, relation(name=location_manual_input, field=manualInputLocationId)
   pairingAttempts: List<MatchSchedulePairingAttempt>?, relation(name=pairing_attempt_location)
 
-  # Timestamps
-  createdAt: DateTime
-  updatedAt: DateTime
-
 indexes:
-  provider_place_id_unique_idx:
-    fields: providerPlaceId
+  location_google_place_unique_idx:
+    fields: googlePlaceLocationId
+    unique: true
+  location_manual_input_unique_idx:
+    fields: manualInputLocationId
     unique: true

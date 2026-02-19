@@ -119,23 +119,23 @@ class GetMatchLocation extends Endpoint {
     }
 
     final now = DateTime.now();
-    final existingRows = await Location.db.find(
+    final existingGoogleRows = await GooglePlaceLocation.db.find(
       session,
       where: (t) =>
           t.providerPlaceId.inSet(uniqueSnapshotsByPlaceId.keys.toSet()),
     );
-    final existingByPlaceId = {
-      for (final row in existingRows) row.providerPlaceId: row,
+    final existingGoogleByPlaceId = {
+      for (final row in existingGoogleRows) row.providerPlaceId: row,
     };
 
-    final toInsert = <Location>[];
-    final toUpdate = <Location>[];
+    final googleRowsToInsert = <GooglePlaceLocation>[];
+    final googleRowsToUpdate = <GooglePlaceLocation>[];
 
     for (final snapshot in uniqueSnapshotsByPlaceId.values) {
-      final existing = existingByPlaceId[snapshot.providerPlaceId];
-      if (existing == null) {
-        toInsert.add(
-          Location(
+      final existingGoogle = existingGoogleByPlaceId[snapshot.providerPlaceId];
+      if (existingGoogle == null) {
+        googleRowsToInsert.add(
+          GooglePlaceLocation(
             providerPlaceId: snapshot.providerPlaceId,
             name: snapshot.name,
             formattedAddress: snapshot.formattedAddress,
@@ -158,8 +158,8 @@ class GetMatchLocation extends Endpoint {
           ),
         );
       } else {
-        toUpdate.add(
-          existing.copyWith(
+        googleRowsToUpdate.add(
+          existingGoogle.copyWith(
             name: snapshot.name,
             formattedAddress: snapshot.formattedAddress,
             shortFormattedAddress: snapshot.shortFormattedAddress,
@@ -181,21 +181,89 @@ class GetMatchLocation extends Endpoint {
       }
     }
 
-    final persistedByPlaceId = <String, Location>{};
-    if (toInsert.isNotEmpty) {
-      final insertedRows = await Location.db.insert(session, toInsert);
+    final persistedGoogleByPlaceId = <String, GooglePlaceLocation>{
+      for (final row in existingGoogleRows) row.providerPlaceId: row,
+    };
+    if (googleRowsToInsert.isNotEmpty) {
+      final insertedRows = await GooglePlaceLocation.db.insert(
+        session,
+        googleRowsToInsert,
+      );
       for (final row in insertedRows) {
-        persistedByPlaceId[row.providerPlaceId] = row;
+        persistedGoogleByPlaceId[row.providerPlaceId] = row;
       }
     }
-    if (toUpdate.isNotEmpty) {
-      final updatedRows = await Location.db.update(session, toUpdate);
+    if (googleRowsToUpdate.isNotEmpty) {
+      final updatedRows = await GooglePlaceLocation.db.update(
+        session,
+        googleRowsToUpdate,
+      );
       for (final row in updatedRows) {
-        persistedByPlaceId[row.providerPlaceId] = row;
+        persistedGoogleByPlaceId[row.providerPlaceId] = row;
       }
     }
-    for (final row in existingRows) {
-      persistedByPlaceId.putIfAbsent(row.providerPlaceId, () => row);
+
+    final googlePlaceLocationIds = persistedGoogleByPlaceId.values
+        .map((row) => row.id)
+        .whereType<int>()
+        .toSet();
+
+    final existingLocationRows = googlePlaceLocationIds.isEmpty
+        ? const <Location>[]
+        : await Location.db.find(
+            session,
+            where: (t) => t.googlePlaceLocationId.inSet(googlePlaceLocationIds),
+          );
+    final existingLocationByGoogleId = {
+      for (final row in existingLocationRows)
+        if (row.googlePlaceLocationId != null) row.googlePlaceLocationId!: row,
+    };
+
+    final googleRowsNeedingWrapper = <GooglePlaceLocation>[];
+    for (final googleRow in persistedGoogleByPlaceId.values) {
+      final googleId = googleRow.id;
+      if (googleId == null) {
+        continue;
+      }
+      if (existingLocationByGoogleId.containsKey(googleId)) {
+        continue;
+      }
+      googleRowsNeedingWrapper.add(googleRow);
+    }
+
+    if (googleRowsNeedingWrapper.isNotEmpty) {
+      await session.db.transaction((transaction) async {
+        for (final googleRow in googleRowsNeedingWrapper) {
+          final wrapperLocation = await Location.db.insertRow(
+            session,
+            Location(),
+            transaction: transaction,
+          );
+          await Location.db.attachRow.googlePlaceLocation(
+            session,
+            wrapperLocation,
+            googleRow,
+            transaction: transaction,
+          );
+        }
+      });
+    }
+
+    final allLocationsForGoogle = googlePlaceLocationIds.isEmpty
+        ? const <Location>[]
+        : await Location.db.find(
+            session,
+            where: (t) => t.googlePlaceLocationId.inSet(googlePlaceLocationIds),
+            include: Location.include(
+              googlePlaceLocation: GooglePlaceLocation.include(),
+            ),
+          );
+    final locationByGoogleProviderPlaceId = <String, Location>{};
+    for (final location in allLocationsForGoogle) {
+      final placeId = location.googlePlaceLocation?.providerPlaceId;
+      if (placeId != null && placeId.isNotEmpty) {
+        locationByGoogleProviderPlaceId[placeId] = location;
+      }
     }
 
     final orderedRows = <Location>[];
@@ -204,7 +272,8 @@ class GetMatchLocation extends Endpoint {
       if (!seen.add(snapshot.providerPlaceId)) {
         continue;
       }
-      final persisted = persistedByPlaceId[snapshot.providerPlaceId];
+      final persisted =
+          locationByGoogleProviderPlaceId[snapshot.providerPlaceId];
       if (persisted != null) {
         orderedRows.add(persisted);
       }

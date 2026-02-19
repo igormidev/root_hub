@@ -24,18 +24,22 @@ import 'entities/core/player_data.dart' as _i11;
 import 'entities/match/match_in_person_proof.dart' as _i12;
 import 'entities/match/played_match.dart' as _i13;
 import 'entities/match/player_in_match.dart' as _i14;
-import 'entities/match_making/location.dart' as _i15;
-import 'entities/match_making/match_schedule.dart' as _i16;
-import 'entities/match_making/match_subscription.dart' as _i17;
-import 'entities/others/pagination_metadata.dart' as _i18;
+import 'entities/match_making/chat/match_chat_history.dart' as _i15;
+import 'entities/match_making/chat/match_chat_message.dart' as _i16;
+import 'entities/match_making/google_place_location.dart' as _i17;
+import 'entities/match_making/location.dart' as _i18;
+import 'entities/match_making/manual_input_location.dart' as _i19;
+import 'entities/match_making/match_schedule.dart' as _i20;
+import 'entities/match_making/match_subscription.dart' as _i21;
+import 'entities/others/pagination_metadata.dart' as _i22;
 import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
-    as _i19;
+    as _i23;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
-    as _i20;
+    as _i24;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
-    as _i21;
+    as _i25;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
-    as _i22;
+    as _i26;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match_making/models/location_pagination.dart';
@@ -49,7 +53,11 @@ export 'entities/core/player_data.dart';
 export 'entities/match/match_in_person_proof.dart';
 export 'entities/match/played_match.dart';
 export 'entities/match/player_in_match.dart';
+export 'entities/match_making/chat/match_chat_history.dart';
+export 'entities/match_making/chat/match_chat_message.dart';
+export 'entities/match_making/google_place_location.dart';
 export 'entities/match_making/location.dart';
+export 'entities/match_making/manual_input_location.dart';
 export 'entities/match_making/match_schedule.dart';
 export 'entities/match_making/match_subscription.dart';
 export 'entities/others/pagination_metadata.dart';
@@ -128,17 +136,29 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i14.PlayerInMatch) {
       return _i14.PlayerInMatch.fromJson(data) as T;
     }
-    if (t == _i15.Location) {
-      return _i15.Location.fromJson(data) as T;
+    if (t == _i15.MatchChatHistory) {
+      return _i15.MatchChatHistory.fromJson(data) as T;
     }
-    if (t == _i16.MatchSchedulePairingAttempt) {
-      return _i16.MatchSchedulePairingAttempt.fromJson(data) as T;
+    if (t == _i16.MatchChatMessage) {
+      return _i16.MatchChatMessage.fromJson(data) as T;
     }
-    if (t == _i17.MatchSubscription) {
-      return _i17.MatchSubscription.fromJson(data) as T;
+    if (t == _i17.GooglePlaceLocation) {
+      return _i17.GooglePlaceLocation.fromJson(data) as T;
     }
-    if (t == _i18.PaginationMetadata) {
-      return _i18.PaginationMetadata.fromJson(data) as T;
+    if (t == _i18.Location) {
+      return _i18.Location.fromJson(data) as T;
+    }
+    if (t == _i19.ManualInputLocation) {
+      return _i19.ManualInputLocation.fromJson(data) as T;
+    }
+    if (t == _i20.MatchSchedulePairingAttempt) {
+      return _i20.MatchSchedulePairingAttempt.fromJson(data) as T;
+    }
+    if (t == _i21.MatchSubscription) {
+      return _i21.MatchSubscription.fromJson(data) as T;
+    }
+    if (t == _i22.PaginationMetadata) {
+      return _i22.PaginationMetadata.fromJson(data) as T;
     }
     if (t == _i1.getType<_i2.CommentsPagination?>()) {
       return (data != null ? _i2.CommentsPagination.fromJson(data) : null) as T;
@@ -180,20 +200,34 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i14.PlayerInMatch?>()) {
       return (data != null ? _i14.PlayerInMatch.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i15.Location?>()) {
-      return (data != null ? _i15.Location.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i15.MatchChatHistory?>()) {
+      return (data != null ? _i15.MatchChatHistory.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i16.MatchSchedulePairingAttempt?>()) {
+    if (t == _i1.getType<_i16.MatchChatMessage?>()) {
+      return (data != null ? _i16.MatchChatMessage.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i17.GooglePlaceLocation?>()) {
+      return (data != null ? _i17.GooglePlaceLocation.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i18.Location?>()) {
+      return (data != null ? _i18.Location.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i19.ManualInputLocation?>()) {
+      return (data != null ? _i19.ManualInputLocation.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i20.MatchSchedulePairingAttempt?>()) {
       return (data != null
-              ? _i16.MatchSchedulePairingAttempt.fromJson(data)
+              ? _i20.MatchSchedulePairingAttempt.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i17.MatchSubscription?>()) {
-      return (data != null ? _i17.MatchSubscription.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i21.MatchSubscription?>()) {
+      return (data != null ? _i21.MatchSubscription.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i18.PaginationMetadata?>()) {
-      return (data != null ? _i18.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i22.PaginationMetadata?>()) {
+      return (data != null ? _i22.PaginationMetadata.fromJson(data) : null)
           as T;
     }
     if (t == List<_i6.PostComment>) {
@@ -203,8 +237,8 @@ class Protocol extends _i1.SerializationManager {
     if (t == List<_i5.Post>) {
       return (data as List).map((e) => deserialize<_i5.Post>(e)).toList() as T;
     }
-    if (t == List<_i15.Location>) {
-      return (data as List).map((e) => deserialize<_i15.Location>(e)).toList()
+    if (t == List<_i18.Location>) {
+      return (data as List).map((e) => deserialize<_i18.Location>(e)).toList()
           as T;
     }
     if (t == _i1.getType<List<_i6.PostComment>?>()) {
@@ -235,32 +269,32 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i16.MatchSchedulePairingAttempt>) {
+    if (t == List<_i20.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i16.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i20.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i16.MatchSchedulePairingAttempt>?>()) {
+    if (t == _i1.getType<List<_i20.MatchSchedulePairingAttempt>?>()) {
       return (data != null
               ? (data as List)
                     .map(
-                      (e) => deserialize<_i16.MatchSchedulePairingAttempt>(e),
+                      (e) => deserialize<_i20.MatchSchedulePairingAttempt>(e),
                     )
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i17.MatchSubscription>) {
+    if (t == List<_i21.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i17.MatchSubscription>(e))
+              .map((e) => deserialize<_i21.MatchSubscription>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i17.MatchSubscription>?>()) {
+    if (t == _i1.getType<List<_i21.MatchSubscription>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i17.MatchSubscription>(e))
+                    .map((e) => deserialize<_i21.MatchSubscription>(e))
                     .toList()
               : null)
           as T;
@@ -274,21 +308,21 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i19.Location>) {
-      return (data as List).map((e) => deserialize<_i19.Location>(e)).toList()
+    if (t == List<_i23.Location>) {
+      return (data as List).map((e) => deserialize<_i23.Location>(e)).toList()
           as T;
     }
-    if (t == List<_i20.MatchSubscription>) {
+    if (t == List<_i24.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i20.MatchSubscription>(e))
+              .map((e) => deserialize<_i24.MatchSubscription>(e))
               .toList()
           as T;
     }
     try {
-      return _i21.Protocol().deserialize<T>(data, t);
+      return _i25.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     try {
-      return _i22.Protocol().deserialize<T>(data, t);
+      return _i26.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -308,10 +342,14 @@ class Protocol extends _i1.SerializationManager {
       _i12.MatchInPersonProof => 'MatchInPersonProof',
       _i13.PlayedMatch => 'PlayedMatch',
       _i14.PlayerInMatch => 'PlayerInMatch',
-      _i15.Location => 'Location',
-      _i16.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
-      _i17.MatchSubscription => 'MatchSubscription',
-      _i18.PaginationMetadata => 'PaginationMetadata',
+      _i15.MatchChatHistory => 'MatchChatHistory',
+      _i16.MatchChatMessage => 'MatchChatMessage',
+      _i17.GooglePlaceLocation => 'GooglePlaceLocation',
+      _i18.Location => 'Location',
+      _i19.ManualInputLocation => 'ManualInputLocation',
+      _i20.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
+      _i21.MatchSubscription => 'MatchSubscription',
+      _i22.PaginationMetadata => 'PaginationMetadata',
       _ => null,
     };
   }
@@ -352,20 +390,28 @@ class Protocol extends _i1.SerializationManager {
         return 'PlayedMatch';
       case _i14.PlayerInMatch():
         return 'PlayerInMatch';
-      case _i15.Location():
+      case _i15.MatchChatHistory():
+        return 'MatchChatHistory';
+      case _i16.MatchChatMessage():
+        return 'MatchChatMessage';
+      case _i17.GooglePlaceLocation():
+        return 'GooglePlaceLocation';
+      case _i18.Location():
         return 'Location';
-      case _i16.MatchSchedulePairingAttempt():
+      case _i19.ManualInputLocation():
+        return 'ManualInputLocation';
+      case _i20.MatchSchedulePairingAttempt():
         return 'MatchSchedulePairingAttempt';
-      case _i17.MatchSubscription():
+      case _i21.MatchSubscription():
         return 'MatchSubscription';
-      case _i18.PaginationMetadata():
+      case _i22.PaginationMetadata():
         return 'PaginationMetadata';
     }
-    className = _i21.Protocol().getClassNameForObject(data);
+    className = _i25.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_idp.$className';
     }
-    className = _i22.Protocol().getClassNameForObject(data);
+    className = _i26.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_core.$className';
     }
@@ -417,25 +463,37 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName == 'PlayerInMatch') {
       return deserialize<_i14.PlayerInMatch>(data['data']);
     }
+    if (dataClassName == 'MatchChatHistory') {
+      return deserialize<_i15.MatchChatHistory>(data['data']);
+    }
+    if (dataClassName == 'MatchChatMessage') {
+      return deserialize<_i16.MatchChatMessage>(data['data']);
+    }
+    if (dataClassName == 'GooglePlaceLocation') {
+      return deserialize<_i17.GooglePlaceLocation>(data['data']);
+    }
     if (dataClassName == 'Location') {
-      return deserialize<_i15.Location>(data['data']);
+      return deserialize<_i18.Location>(data['data']);
+    }
+    if (dataClassName == 'ManualInputLocation') {
+      return deserialize<_i19.ManualInputLocation>(data['data']);
     }
     if (dataClassName == 'MatchSchedulePairingAttempt') {
-      return deserialize<_i16.MatchSchedulePairingAttempt>(data['data']);
+      return deserialize<_i20.MatchSchedulePairingAttempt>(data['data']);
     }
     if (dataClassName == 'MatchSubscription') {
-      return deserialize<_i17.MatchSubscription>(data['data']);
+      return deserialize<_i21.MatchSubscription>(data['data']);
     }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i18.PaginationMetadata>(data['data']);
+      return deserialize<_i22.PaginationMetadata>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
-      return _i21.Protocol().deserializeByClassName(data);
+      return _i25.Protocol().deserializeByClassName(data);
     }
     if (dataClassName.startsWith('serverpod_auth_core.')) {
       data['className'] = dataClassName.substring(20);
-      return _i22.Protocol().deserializeByClassName(data);
+      return _i26.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }
@@ -450,10 +508,10 @@ class Protocol extends _i1.SerializationManager {
       return null;
     }
     try {
-      return _i21.Protocol().mapRecordToJson(record);
+      return _i25.Protocol().mapRecordToJson(record);
     } catch (_) {}
     try {
-      return _i22.Protocol().mapRecordToJson(record);
+      return _i26.Protocol().mapRecordToJson(record);
     } catch (_) {}
     throw Exception('Unsupported record type ${record.runtimeType}');
   }
