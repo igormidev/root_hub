@@ -1,0 +1,4 @@
+class: LocationPagination
+fields:
+  locations: List<Location>
+  paginationMetadata: PaginationMetadata
