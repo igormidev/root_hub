@@ -35,7 +35,7 @@ abstract class PlayerData
     this.matchEntries,
     this.posts,
     this.comments,
-    this.pairingAttempts,
+    this.currentHosting,
     this.subscriptions,
   });
 
@@ -49,7 +49,7 @@ abstract class PlayerData
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
   }) = _PlayerDataImpl;
 
@@ -90,10 +90,10 @@ abstract class PlayerData
           : _i10.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
-      pairingAttempts: jsonSerialization['pairingAttempts'] == null
+      currentHosting: jsonSerialization['currentHosting'] == null
           ? null
           : _i10.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
-              jsonSerialization['pairingAttempts'],
+              jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
@@ -127,7 +127,7 @@ abstract class PlayerData
 
   List<_i7.PostComment>? comments;
 
-  List<_i8.MatchSchedulePairingAttempt>? pairingAttempts;
+  List<_i8.MatchSchedulePairingAttempt>? currentHosting;
 
   List<_i9.MatchSubscription>? subscriptions;
 
@@ -147,7 +147,7 @@ abstract class PlayerData
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
   });
   @override
@@ -165,8 +165,8 @@ abstract class PlayerData
       if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
       if (comments != null)
         'comments': comments?.toJson(valueToJson: (v) => v.toJson()),
-      if (pairingAttempts != null)
-        'pairingAttempts': pairingAttempts?.toJson(
+      if (currentHosting != null)
+        'currentHosting': currentHosting?.toJson(
           valueToJson: (v) => v.toJson(),
         ),
       if (subscriptions != null)
@@ -192,8 +192,8 @@ abstract class PlayerData
         'posts': posts?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (comments != null)
         'comments': comments?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
-      if (pairingAttempts != null)
-        'pairingAttempts': pairingAttempts?.toJson(
+      if (currentHosting != null)
+        'currentHosting': currentHosting?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
       if (subscriptions != null)
@@ -208,7 +208,7 @@ abstract class PlayerData
     _i5.PlayerInMatchIncludeList? matchEntries,
     _i6.PostIncludeList? posts,
     _i7.PostCommentIncludeList? comments,
-    _i8.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
   }) {
     return PlayerDataInclude._(
@@ -216,7 +216,7 @@ abstract class PlayerData
       matchEntries: matchEntries,
       posts: posts,
       comments: comments,
-      pairingAttempts: pairingAttempts,
+      currentHosting: currentHosting,
       subscriptions: subscriptions,
     );
   }
@@ -260,7 +260,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
   }) : super._(
          id: id,
@@ -272,7 +272,7 @@ class _PlayerDataImpl extends PlayerData {
          matchEntries: matchEntries,
          posts: posts,
          comments: comments,
-         pairingAttempts: pairingAttempts,
+         currentHosting: currentHosting,
          subscriptions: subscriptions,
        );
 
@@ -290,7 +290,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
     Object? comments = _Undefined,
-    Object? pairingAttempts = _Undefined,
+    Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
   }) {
     return PlayerData(
@@ -313,9 +313,9 @@ class _PlayerDataImpl extends PlayerData {
       comments: comments is List<_i7.PostComment>?
           ? comments
           : this.comments?.map((e0) => e0.copyWith()).toList(),
-      pairingAttempts: pairingAttempts is List<_i8.MatchSchedulePairingAttempt>?
-          ? pairingAttempts
-          : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
+      currentHosting: currentHosting is List<_i8.MatchSchedulePairingAttempt>?
+          ? currentHosting
+          : this.currentHosting?.map((e0) => e0.copyWith()).toList(),
       subscriptions: subscriptions is List<_i9.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
@@ -403,9 +403,9 @@ class PlayerDataTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i7.PostCommentTable>? _comments;
 
-  _i8.MatchSchedulePairingAttemptTable? ___pairingAttempts;
+  _i8.MatchSchedulePairingAttemptTable? ___currentHosting;
 
-  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>? _pairingAttempts;
+  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>? _currentHosting;
 
   _i9.MatchSubscriptionTable? ___subscriptions;
 
@@ -463,10 +463,10 @@ class PlayerDataTable extends _i1.Table<int?> {
     return ___comments!;
   }
 
-  _i8.MatchSchedulePairingAttemptTable get __pairingAttempts {
-    if (___pairingAttempts != null) return ___pairingAttempts!;
-    ___pairingAttempts = _i1.createRelationTable(
-      relationFieldName: '__pairingAttempts',
+  _i8.MatchSchedulePairingAttemptTable get __currentHosting {
+    if (___currentHosting != null) return ___currentHosting!;
+    ___currentHosting = _i1.createRelationTable(
+      relationFieldName: '__currentHosting',
       field: PlayerData.t.id,
       foreignField: _i8.MatchSchedulePairingAttempt.t.playerDataId,
       tableRelation: tableRelation,
@@ -475,7 +475,7 @@ class PlayerDataTable extends _i1.Table<int?> {
             tableRelation: foreignTableRelation,
           ),
     );
-    return ___pairingAttempts!;
+    return ___currentHosting!;
   }
 
   _i9.MatchSubscriptionTable get __subscriptions {
@@ -548,10 +548,10 @@ class PlayerDataTable extends _i1.Table<int?> {
     return _comments!;
   }
 
-  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable> get pairingAttempts {
-    if (_pairingAttempts != null) return _pairingAttempts!;
+  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable> get currentHosting {
+    if (_currentHosting != null) return _currentHosting!;
     var relationTable = _i1.createRelationTable(
-      relationFieldName: 'pairingAttempts',
+      relationFieldName: 'currentHosting',
       field: PlayerData.t.id,
       foreignField: _i8.MatchSchedulePairingAttempt.t.playerDataId,
       tableRelation: tableRelation,
@@ -560,13 +560,13 @@ class PlayerDataTable extends _i1.Table<int?> {
             tableRelation: foreignTableRelation,
           ),
     );
-    _pairingAttempts = _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>(
+    _currentHosting = _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>(
       tableWithRelations: relationTable,
       table: _i8.MatchSchedulePairingAttemptTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
-    return _pairingAttempts!;
+    return _currentHosting!;
   }
 
   _i1.ManyRelation<_i9.MatchSubscriptionTable> get subscriptions {
@@ -611,8 +611,8 @@ class PlayerDataTable extends _i1.Table<int?> {
     if (relationField == 'comments') {
       return __comments;
     }
-    if (relationField == 'pairingAttempts') {
-      return __pairingAttempts;
+    if (relationField == 'currentHosting') {
+      return __currentHosting;
     }
     if (relationField == 'subscriptions') {
       return __subscriptions;
@@ -627,14 +627,14 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i5.PlayerInMatchIncludeList? matchEntries,
     _i6.PostIncludeList? posts,
     _i7.PostCommentIncludeList? comments,
-    _i8.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
   }) {
     _authUser = authUser;
     _matchEntries = matchEntries;
     _posts = posts;
     _comments = comments;
-    _pairingAttempts = pairingAttempts;
+    _currentHosting = currentHosting;
     _subscriptions = subscriptions;
   }
 
@@ -646,7 +646,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
 
   _i7.PostCommentIncludeList? _comments;
 
-  _i8.MatchSchedulePairingAttemptIncludeList? _pairingAttempts;
+  _i8.MatchSchedulePairingAttemptIncludeList? _currentHosting;
 
   _i9.MatchSubscriptionIncludeList? _subscriptions;
 
@@ -656,7 +656,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     'matchEntries': _matchEntries,
     'posts': _posts,
     'comments': _comments,
-    'pairingAttempts': _pairingAttempts,
+    'currentHosting': _currentHosting,
     'subscriptions': _subscriptions,
   };
 
@@ -1029,7 +1029,7 @@ class PlayerDataAttachRepository {
 
   /// Creates a relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]s
   /// by setting each [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to refer to this [PlayerData].
-  Future<void> pairingAttempts(
+  Future<void> currentHosting(
     _i1.Session session,
     PlayerData playerData,
     List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
@@ -1175,7 +1175,7 @@ class PlayerDataAttachRowRepository {
 
   /// Creates a relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
   /// by setting the [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to refer to this [PlayerData].
-  Future<void> pairingAttempts(
+  Future<void> currentHosting(
     _i1.Session session,
     PlayerData playerData,
     _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
@@ -1278,7 +1278,7 @@ class PlayerDataDetachRepository {
   ///
   /// This removes the association between the two models without deleting
   /// the related record.
-  Future<void> pairingAttempts(
+  Future<void> currentHosting(
     _i1.Session session,
     List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
@@ -1374,7 +1374,7 @@ class PlayerDataDetachRowRepository {
   ///
   /// This removes the association between the two models without deleting
   /// the related record.
-  Future<void> pairingAttempts(
+  Future<void> currentHosting(
     _i1.Session session,
     _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,

@@ -2,6 +2,8 @@ comments:
   - v1:
 posts:
   - v1:
+createMatch:
+  - v1:
 getPlayerMatches:
   - v1:
 subscribeToMatch:

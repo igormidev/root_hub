@@ -23,30 +23,32 @@ abstract class MatchSchedulePairingAttempt
   MatchSchedulePairingAttempt._({
     this.id,
     required this.createdAt,
-    this.aditionalInfo,
-    this.guidelinesDescription,
+    required this.title,
+    this.description,
+    this.aditionalLocationInfo,
     required this.minAmountOfPlayers,
     required this.maxAmountOfPlayers,
     required this.attemptedAt,
     required this.locationId,
     this.location,
     required this.playerDataId,
-    this.playerData,
+    this.host,
     this.subscriptions,
   });
 
   factory MatchSchedulePairingAttempt({
     int? id,
     required DateTime createdAt,
-    String? aditionalInfo,
-    String? guidelinesDescription,
+    required String title,
+    String? description,
+    String? aditionalLocationInfo,
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     _i3.Location? location,
     required int playerDataId,
-    _i4.PlayerData? playerData,
+    _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
   }) = _MatchSchedulePairingAttemptImpl;
 
@@ -58,9 +60,10 @@ abstract class MatchSchedulePairingAttempt
       createdAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['createdAt'],
       ),
-      aditionalInfo: jsonSerialization['aditionalInfo'] as String?,
-      guidelinesDescription:
-          jsonSerialization['guidelinesDescription'] as String?,
+      title: jsonSerialization['title'] as String,
+      description: jsonSerialization['description'] as String?,
+      aditionalLocationInfo:
+          jsonSerialization['aditionalLocationInfo'] as String?,
       minAmountOfPlayers: _i2.MatchPodium.fromJson(
         (jsonSerialization['minAmountOfPlayers'] as String),
       ),
@@ -77,10 +80,10 @@ abstract class MatchSchedulePairingAttempt
               jsonSerialization['location'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
-      playerData: jsonSerialization['playerData'] == null
+      host: jsonSerialization['host'] == null
           ? null
           : _i6.Protocol().deserialize<_i4.PlayerData>(
-              jsonSerialization['playerData'],
+              jsonSerialization['host'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
@@ -99,9 +102,11 @@ abstract class MatchSchedulePairingAttempt
 
   DateTime createdAt;
 
-  String? aditionalInfo;
+  String title;
 
-  String? guidelinesDescription;
+  String? description;
+
+  String? aditionalLocationInfo;
 
   _i2.MatchPodium minAmountOfPlayers;
 
@@ -115,7 +120,7 @@ abstract class MatchSchedulePairingAttempt
 
   int playerDataId;
 
-  _i4.PlayerData? playerData;
+  _i4.PlayerData? host;
 
   List<_i5.MatchSubscription>? subscriptions;
 
@@ -128,15 +133,16 @@ abstract class MatchSchedulePairingAttempt
   MatchSchedulePairingAttempt copyWith({
     int? id,
     DateTime? createdAt,
-    String? aditionalInfo,
-    String? guidelinesDescription,
+    String? title,
+    String? description,
+    String? aditionalLocationInfo,
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
     int? locationId,
     _i3.Location? location,
     int? playerDataId,
-    _i4.PlayerData? playerData,
+    _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
   });
   @override
@@ -145,16 +151,17 @@ abstract class MatchSchedulePairingAttempt
       '__className__': 'MatchSchedulePairingAttempt',
       if (id != null) 'id': id,
       'createdAt': createdAt.toJson(),
-      if (aditionalInfo != null) 'aditionalInfo': aditionalInfo,
-      if (guidelinesDescription != null)
-        'guidelinesDescription': guidelinesDescription,
+      'title': title,
+      if (description != null) 'description': description,
+      if (aditionalLocationInfo != null)
+        'aditionalLocationInfo': aditionalLocationInfo,
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
       'playerDataId': playerDataId,
-      if (playerData != null) 'playerData': playerData?.toJson(),
+      if (host != null) 'host': host?.toJson(),
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
     };
@@ -166,16 +173,17 @@ abstract class MatchSchedulePairingAttempt
       '__className__': 'MatchSchedulePairingAttempt',
       if (id != null) 'id': id,
       'createdAt': createdAt.toJson(),
-      if (aditionalInfo != null) 'aditionalInfo': aditionalInfo,
-      if (guidelinesDescription != null)
-        'guidelinesDescription': guidelinesDescription,
+      'title': title,
+      if (description != null) 'description': description,
+      if (aditionalLocationInfo != null)
+        'aditionalLocationInfo': aditionalLocationInfo,
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJsonForProtocol(),
       'playerDataId': playerDataId,
-      if (playerData != null) 'playerData': playerData?.toJsonForProtocol(),
+      if (host != null) 'host': host?.toJsonForProtocol(),
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
@@ -185,12 +193,12 @@ abstract class MatchSchedulePairingAttempt
 
   static MatchSchedulePairingAttemptInclude include({
     _i3.LocationInclude? location,
-    _i4.PlayerDataInclude? playerData,
+    _i4.PlayerDataInclude? host,
     _i5.MatchSubscriptionIncludeList? subscriptions,
   }) {
     return MatchSchedulePairingAttemptInclude._(
       location: location,
-      playerData: playerData,
+      host: host,
       subscriptions: subscriptions,
     );
   }
@@ -227,28 +235,30 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
   _MatchSchedulePairingAttemptImpl({
     int? id,
     required DateTime createdAt,
-    String? aditionalInfo,
-    String? guidelinesDescription,
+    required String title,
+    String? description,
+    String? aditionalLocationInfo,
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     _i3.Location? location,
     required int playerDataId,
-    _i4.PlayerData? playerData,
+    _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
   }) : super._(
          id: id,
          createdAt: createdAt,
-         aditionalInfo: aditionalInfo,
-         guidelinesDescription: guidelinesDescription,
+         title: title,
+         description: description,
+         aditionalLocationInfo: aditionalLocationInfo,
          minAmountOfPlayers: minAmountOfPlayers,
          maxAmountOfPlayers: maxAmountOfPlayers,
          attemptedAt: attemptedAt,
          locationId: locationId,
          location: location,
          playerDataId: playerDataId,
-         playerData: playerData,
+         host: host,
          subscriptions: subscriptions,
        );
 
@@ -259,26 +269,26 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
   MatchSchedulePairingAttempt copyWith({
     Object? id = _Undefined,
     DateTime? createdAt,
-    Object? aditionalInfo = _Undefined,
-    Object? guidelinesDescription = _Undefined,
+    String? title,
+    Object? description = _Undefined,
+    Object? aditionalLocationInfo = _Undefined,
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
     int? locationId,
     Object? location = _Undefined,
     int? playerDataId,
-    Object? playerData = _Undefined,
+    Object? host = _Undefined,
     Object? subscriptions = _Undefined,
   }) {
     return MatchSchedulePairingAttempt(
       id: id is int? ? id : this.id,
       createdAt: createdAt ?? this.createdAt,
-      aditionalInfo: aditionalInfo is String?
-          ? aditionalInfo
-          : this.aditionalInfo,
-      guidelinesDescription: guidelinesDescription is String?
-          ? guidelinesDescription
-          : this.guidelinesDescription,
+      title: title ?? this.title,
+      description: description is String? ? description : this.description,
+      aditionalLocationInfo: aditionalLocationInfo is String?
+          ? aditionalLocationInfo
+          : this.aditionalLocationInfo,
       minAmountOfPlayers: minAmountOfPlayers ?? this.minAmountOfPlayers,
       maxAmountOfPlayers: maxAmountOfPlayers ?? this.maxAmountOfPlayers,
       attemptedAt: attemptedAt ?? this.attemptedAt,
@@ -287,9 +297,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
           ? location
           : this.location?.copyWith(),
       playerDataId: playerDataId ?? this.playerDataId,
-      playerData: playerData is _i4.PlayerData?
-          ? playerData
-          : this.playerData?.copyWith(),
+      host: host is _i4.PlayerData? ? host : this.host?.copyWith(),
       subscriptions: subscriptions is List<_i5.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
@@ -307,15 +315,19 @@ class MatchSchedulePairingAttemptUpdateTable
         value,
       );
 
-  _i1.ColumnValue<String, String> aditionalInfo(String? value) =>
-      _i1.ColumnValue(
-        table.aditionalInfo,
-        value,
-      );
+  _i1.ColumnValue<String, String> title(String value) => _i1.ColumnValue(
+    table.title,
+    value,
+  );
 
-  _i1.ColumnValue<String, String> guidelinesDescription(String? value) =>
+  _i1.ColumnValue<String, String> description(String? value) => _i1.ColumnValue(
+    table.description,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> aditionalLocationInfo(String? value) =>
       _i1.ColumnValue(
-        table.guidelinesDescription,
+        table.aditionalLocationInfo,
         value,
       );
 
@@ -358,12 +370,16 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
       'createdAt',
       this,
     );
-    aditionalInfo = _i1.ColumnString(
-      'aditionalInfo',
+    title = _i1.ColumnString(
+      'title',
       this,
     );
-    guidelinesDescription = _i1.ColumnString(
-      'guidelinesDescription',
+    description = _i1.ColumnString(
+      'description',
+      this,
+    );
+    aditionalLocationInfo = _i1.ColumnString(
+      'aditionalLocationInfo',
       this,
     );
     minAmountOfPlayers = _i1.ColumnEnum(
@@ -394,9 +410,11 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 
   late final _i1.ColumnDateTime createdAt;
 
-  late final _i1.ColumnString aditionalInfo;
+  late final _i1.ColumnString title;
 
-  late final _i1.ColumnString guidelinesDescription;
+  late final _i1.ColumnString description;
+
+  late final _i1.ColumnString aditionalLocationInfo;
 
   late final _i1.ColumnEnum<_i2.MatchPodium> minAmountOfPlayers;
 
@@ -410,7 +428,7 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 
   late final _i1.ColumnInt playerDataId;
 
-  _i4.PlayerDataTable? _playerData;
+  _i4.PlayerDataTable? _host;
 
   _i5.MatchSubscriptionTable? ___subscriptions;
 
@@ -429,17 +447,17 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     return _location!;
   }
 
-  _i4.PlayerDataTable get playerData {
-    if (_playerData != null) return _playerData!;
-    _playerData = _i1.createRelationTable(
-      relationFieldName: 'playerData',
+  _i4.PlayerDataTable get host {
+    if (_host != null) return _host!;
+    _host = _i1.createRelationTable(
+      relationFieldName: 'host',
       field: MatchSchedulePairingAttempt.t.playerDataId,
       foreignField: _i4.PlayerData.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
           _i4.PlayerDataTable(tableRelation: foreignTableRelation),
     );
-    return _playerData!;
+    return _host!;
   }
 
   _i5.MatchSubscriptionTable get __subscriptions {
@@ -478,8 +496,9 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
   List<_i1.Column> get columns => [
     id,
     createdAt,
-    aditionalInfo,
-    guidelinesDescription,
+    title,
+    description,
+    aditionalLocationInfo,
     minAmountOfPlayers,
     maxAmountOfPlayers,
     attemptedAt,
@@ -492,8 +511,8 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     if (relationField == 'location') {
       return location;
     }
-    if (relationField == 'playerData') {
-      return playerData;
+    if (relationField == 'host') {
+      return host;
     }
     if (relationField == 'subscriptions') {
       return __subscriptions;
@@ -505,24 +524,24 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 class MatchSchedulePairingAttemptInclude extends _i1.IncludeObject {
   MatchSchedulePairingAttemptInclude._({
     _i3.LocationInclude? location,
-    _i4.PlayerDataInclude? playerData,
+    _i4.PlayerDataInclude? host,
     _i5.MatchSubscriptionIncludeList? subscriptions,
   }) {
     _location = location;
-    _playerData = playerData;
+    _host = host;
     _subscriptions = subscriptions;
   }
 
   _i3.LocationInclude? _location;
 
-  _i4.PlayerDataInclude? _playerData;
+  _i4.PlayerDataInclude? _host;
 
   _i5.MatchSubscriptionIncludeList? _subscriptions;
 
   @override
   Map<String, _i1.Include?> get includes => {
     'location': _location,
-    'playerData': _playerData,
+    'host': _host,
     'subscriptions': _subscriptions,
   };
 
@@ -882,21 +901,21 @@ class MatchSchedulePairingAttemptAttachRowRepository {
 
   /// Creates a relation between the given [MatchSchedulePairingAttempt] and [PlayerData]
   /// by setting the [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to refer to the [PlayerData].
-  Future<void> playerData(
+  Future<void> host(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    _i4.PlayerData playerData, {
+    _i4.PlayerData host, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
       throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
     }
-    if (playerData.id == null) {
-      throw ArgumentError.notNull('playerData.id');
+    if (host.id == null) {
+      throw ArgumentError.notNull('host.id');
     }
 
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
-      playerDataId: playerData.id,
+      playerDataId: host.id,
     );
     await session.db.updateRow<MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,

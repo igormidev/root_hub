@@ -33,7 +33,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     this.matchEntries,
     this.posts,
     this.comments,
-    this.pairingAttempts,
+    this.currentHosting,
     this.subscriptions,
   });
 
@@ -47,7 +47,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
   }) = _PlayerDataImpl;
 
@@ -88,10 +88,10 @@ abstract class PlayerData implements _i1.SerializableModel {
           : _i10.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
-      pairingAttempts: jsonSerialization['pairingAttempts'] == null
+      currentHosting: jsonSerialization['currentHosting'] == null
           ? null
           : _i10.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
-              jsonSerialization['pairingAttempts'],
+              jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
@@ -123,7 +123,7 @@ abstract class PlayerData implements _i1.SerializableModel {
 
   List<_i7.PostComment>? comments;
 
-  List<_i8.MatchSchedulePairingAttempt>? pairingAttempts;
+  List<_i8.MatchSchedulePairingAttempt>? currentHosting;
 
   List<_i9.MatchSubscription>? subscriptions;
 
@@ -140,7 +140,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
   });
   @override
@@ -158,8 +158,8 @@ abstract class PlayerData implements _i1.SerializableModel {
       if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
       if (comments != null)
         'comments': comments?.toJson(valueToJson: (v) => v.toJson()),
-      if (pairingAttempts != null)
-        'pairingAttempts': pairingAttempts?.toJson(
+      if (currentHosting != null)
+        'currentHosting': currentHosting?.toJson(
           valueToJson: (v) => v.toJson(),
         ),
       if (subscriptions != null)
@@ -186,7 +186,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
   }) : super._(
          id: id,
@@ -198,7 +198,7 @@ class _PlayerDataImpl extends PlayerData {
          matchEntries: matchEntries,
          posts: posts,
          comments: comments,
-         pairingAttempts: pairingAttempts,
+         currentHosting: currentHosting,
          subscriptions: subscriptions,
        );
 
@@ -216,7 +216,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
     Object? comments = _Undefined,
-    Object? pairingAttempts = _Undefined,
+    Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
   }) {
     return PlayerData(
@@ -239,9 +239,9 @@ class _PlayerDataImpl extends PlayerData {
       comments: comments is List<_i7.PostComment>?
           ? comments
           : this.comments?.map((e0) => e0.copyWith()).toList(),
-      pairingAttempts: pairingAttempts is List<_i8.MatchSchedulePairingAttempt>?
-          ? pairingAttempts
-          : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
+      currentHosting: currentHosting is List<_i8.MatchSchedulePairingAttempt>?
+          ? currentHosting
+          : this.currentHosting?.map((e0) => e0.copyWith()).toList(),
       subscriptions: subscriptions is List<_i9.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),

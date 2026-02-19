@@ -9,7 +9,7 @@ fields:
   matchEntries: List<PlayerInMatch>?, relation(name=player_matches)
   posts: List<Post>?, relation(name=player_posts)
   comments: List<PostComment>?, relation(name=player_comments)
-  pairingAttempts: List<MatchSchedulePairingAttempt>?, relation(name=player_pairing_attempts)
+  currentHosting: List<MatchSchedulePairingAttempt>?, relation(name=hosted_pairing_attempts)
   subscriptions: List<MatchSubscription>?, relation(name=player_subscriptions)
 
 indexes:
