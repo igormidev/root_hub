@@ -1,8 +1,14 @@
-comments:
+createComment:
   - v1:
-posts:
+createPost:
+  - v1:
+getComments:
+  - v1:
+getPosts:
   - v1:
 createMatch:
+  - v1:
+getMatchLocation:
   - v1:
 getPlayerMatches:
   - v1:

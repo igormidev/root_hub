@@ -11,72 +11,172 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../api/community/comments_endpoint.dart' as _i2;
-import '../api/community/posts_endpoint.dart' as _i3;
-import '../api/match_making/create_match.dart' as _i4;
-import '../api/match_making/get_player_matches.dart' as _i5;
-import '../api/match_making/subscribe_to_match.dart' as _i6;
-import '../auth/email_idp_endpoint.dart' as _i7;
-import '../auth/jwt_refresh_endpoint.dart' as _i8;
+import '../api/community/create_comment_endpoint.dart' as _i2;
+import '../api/community/create_post_endpoint.dart' as _i3;
+import '../api/community/get_comments_endpoint.dart' as _i4;
+import '../api/community/get_posts_endpoint.dart' as _i5;
+import '../api/match_making/create_match.dart' as _i6;
+import '../api/match_making/get_match_location.dart' as _i7;
+import '../api/match_making/get_player_matches.dart' as _i8;
+import '../api/match_making/subscribe_to_match.dart' as _i9;
+import '../auth/email_idp_endpoint.dart' as _i10;
+import '../auth/jwt_refresh_endpoint.dart' as _i11;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
-    as _i9;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
-    as _i10;
-import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
-    as _i11;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _i12;
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+    as _i13;
+import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
+    as _i14;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i15;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
   void initializeEndpoints(_i1.Server server) {
     var endpoints = <String, _i1.Endpoint>{
-      'comments': _i2.CommentsEndpoint()
+      'createComment': _i2.CreateCommentEndpoint()
         ..initialize(
           server,
-          'comments',
+          'createComment',
           null,
         ),
-      'posts': _i3.PostsEndpoint()
+      'createPost': _i3.CreatePostEndpoint()
         ..initialize(
           server,
-          'posts',
+          'createPost',
           null,
         ),
-      'createMatch': _i4.CreateMatch()
+      'getComments': _i4.GetCommentsEndpoint()
+        ..initialize(
+          server,
+          'getComments',
+          null,
+        ),
+      'getPosts': _i5.GetPostsEndpoint()
+        ..initialize(
+          server,
+          'getPosts',
+          null,
+        ),
+      'createMatch': _i6.CreateMatch()
         ..initialize(
           server,
           'createMatch',
           null,
         ),
-      'getPlayerMatches': _i5.GetPlayerMatches()
+      'getMatchLocation': _i7.GetMatchLocation()
+        ..initialize(
+          server,
+          'getMatchLocation',
+          null,
+        ),
+      'getPlayerMatches': _i8.GetPlayerMatches()
         ..initialize(
           server,
           'getPlayerMatches',
           null,
         ),
-      'subscribeToMatch': _i6.SubscribeToMatch()
+      'subscribeToMatch': _i9.SubscribeToMatch()
         ..initialize(
           server,
           'subscribeToMatch',
           null,
         ),
-      'emailIdp': _i7.EmailIdpEndpoint()
+      'emailIdp': _i10.EmailIdpEndpoint()
         ..initialize(
           server,
           'emailIdp',
           null,
         ),
-      'jwtRefresh': _i8.JwtRefreshEndpoint()
+      'jwtRefresh': _i11.JwtRefreshEndpoint()
         ..initialize(
           server,
           'jwtRefresh',
           null,
         ),
     };
-    connectors['comments'] = _i1.EndpointConnector(
-      name: 'comments',
-      endpoint: endpoints['comments']!,
+    connectors['createComment'] = _i1.EndpointConnector(
+      name: 'createComment',
+      endpoint: endpoints['createComment']!,
+      methodConnectors: {
+        'v1': _i1.MethodConnector(
+          name: 'v1',
+          params: {
+            'postId': _i1.ParameterDescription(
+              name: 'postId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'content': _i1.ParameterDescription(
+              name: 'content',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'language': _i1.ParameterDescription(
+              name: 'language',
+              type: _i1.getType<_i12.Language>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['createComment'] as _i2.CreateCommentEndpoint).v1(
+                    session,
+                    postId: params['postId'],
+                    content: params['content'],
+                    language: params['language'],
+                  ),
+        ),
+      },
+    );
+    connectors['createPost'] = _i1.EndpointConnector(
+      name: 'createPost',
+      endpoint: endpoints['createPost']!,
+      methodConnectors: {
+        'v1': _i1.MethodConnector(
+          name: 'v1',
+          params: {
+            'title': _i1.ParameterDescription(
+              name: 'title',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'content': _i1.ParameterDescription(
+              name: 'content',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'language': _i1.ParameterDescription(
+              name: 'language',
+              type: _i1.getType<_i12.Language>(),
+              nullable: false,
+            ),
+            'attachedMatchId': _i1.ParameterDescription(
+              name: 'attachedMatchId',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['createPost'] as _i3.CreatePostEndpoint).v1(
+                session,
+                title: params['title'],
+                content: params['content'],
+                language: params['language'],
+                attachedMatchId: params['attachedMatchId'],
+              ),
+        ),
+      },
+    );
+    connectors['getComments'] = _i1.EndpointConnector(
+      name: 'getComments',
+      endpoint: endpoints['getComments']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
@@ -96,17 +196,18 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['comments'] as _i2.CommentsEndpoint).v1(
-                session,
-                postId: params['postId'],
-                page: params['page'],
-              ),
+              ) async =>
+                  (endpoints['getComments'] as _i4.GetCommentsEndpoint).v1(
+                    session,
+                    postId: params['postId'],
+                    page: params['page'],
+                  ),
         ),
       },
     );
-    connectors['posts'] = _i1.EndpointConnector(
-      name: 'posts',
-      endpoint: endpoints['posts']!,
+    connectors['getPosts'] = _i1.EndpointConnector(
+      name: 'getPosts',
+      endpoint: endpoints['getPosts']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
@@ -118,7 +219,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i9.Language?>(),
+              type: _i1.getType<_i12.Language?>(),
               nullable: true,
             ),
           },
@@ -126,7 +227,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['posts'] as _i3.PostsEndpoint).v1(
+              ) async => (endpoints['getPosts'] as _i5.GetPostsEndpoint).v1(
                 session,
                 page: params['page'],
                 language: params['language'],
@@ -158,12 +259,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'minAmountOfPlayers': _i1.ParameterDescription(
               name: 'minAmountOfPlayers',
-              type: _i1.getType<_i10.MatchPodium>(),
+              type: _i1.getType<_i13.MatchPodium>(),
               nullable: false,
             ),
             'maxAmountOfPlayers': _i1.ParameterDescription(
               name: 'maxAmountOfPlayers',
-              type: _i1.getType<_i10.MatchPodium>(),
+              type: _i1.getType<_i13.MatchPodium>(),
               nullable: false,
             ),
             'attemptedAt': _i1.ParameterDescription(
@@ -181,7 +282,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['createMatch'] as _i4.CreateMatch).v1(
+              ) async => (endpoints['createMatch'] as _i6.CreateMatch).v1(
                 session,
                 title: params['title'],
                 description: params['description'],
@@ -191,6 +292,31 @@ class Endpoints extends _i1.EndpointDispatch {
                 attemptedAt: params['attemptedAt'],
                 locationId: params['locationId'],
               ),
+        ),
+      },
+    );
+    connectors['getMatchLocation'] = _i1.EndpointConnector(
+      name: 'getMatchLocation',
+      endpoint: endpoints['getMatchLocation']!,
+      methodConnectors: {
+        'v1': _i1.MethodConnector(
+          name: 'v1',
+          params: {
+            'query': _i1.ParameterDescription(
+              name: 'query',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['getMatchLocation'] as _i7.GetMatchLocation).v1(
+                    session,
+                    query: params['query'],
+                  ),
         ),
       },
     );
@@ -205,7 +331,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['getPlayerMatches'] as _i5.GetPlayerMatches)
+              ) async => (endpoints['getPlayerMatches'] as _i8.GetPlayerMatches)
                   .v1(session),
         ),
       },
@@ -228,7 +354,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['subscribeToMatch'] as _i6.SubscribeToMatch).v1(
+                  (endpoints['subscribeToMatch'] as _i9.SubscribeToMatch).v1(
                     session,
                     scheduledMatchId: params['scheduledMatchId'],
                   ),
@@ -257,7 +383,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint).login(
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint).login(
                 session,
                 email: params['email'],
                 password: params['password'],
@@ -276,7 +402,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .startRegistration(
                     session,
                     email: params['email'],
@@ -300,7 +426,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .verifyRegistrationCode(
                     session,
                     accountRequestId: params['accountRequestId'],
@@ -325,7 +451,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .finishRegistration(
                     session,
                     registrationToken: params['registrationToken'],
@@ -345,7 +471,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .startPasswordReset(
                     session,
                     email: params['email'],
@@ -369,7 +495,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .verifyPasswordResetCode(
                     session,
                     passwordResetRequestId: params['passwordResetRequestId'],
@@ -394,7 +520,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .finishPasswordReset(
                     session,
                     finishPasswordResetToken:
@@ -409,7 +535,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i7.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i10.EmailIdpEndpoint)
                   .hasAccount(session),
         ),
       },
@@ -431,7 +557,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['jwtRefresh'] as _i8.JwtRefreshEndpoint)
+              ) async => (endpoints['jwtRefresh'] as _i11.JwtRefreshEndpoint)
                   .refreshAccessToken(
                     session,
                     refreshToken: params['refreshToken'],
@@ -439,9 +565,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i11.Endpoints()
+    modules['serverpod_auth_idp'] = _i14.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i12.Endpoints()
+    modules['serverpod_auth_core'] = _i15.Endpoints()
       ..initializeEndpoints(server);
   }
 }
