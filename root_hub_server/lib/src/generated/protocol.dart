@@ -22,18 +22,24 @@ import 'entities/community/post.dart' as _i7;
 import 'entities/community/post_comment.dart' as _i8;
 import 'entities/core/country.dart' as _i9;
 import 'entities/core/faction.dart' as _i10;
-import 'entities/match/match_in_person_proof.dart' as _i11;
-import 'entities/match/match_podium.dart' as _i12;
-import 'entities/match/player_in_match.dart' as _i13;
-import 'entities/others/pagination_metadata.dart' as _i14;
+import 'entities/core/language.dart' as _i11;
+import 'entities/core/player_data.dart' as _i12;
+import 'entities/match/match_in_person_proof.dart' as _i13;
+import 'entities/match/match_podium.dart' as _i14;
+import 'entities/match/played_match.dart' as _i15;
+import 'entities/match/player_in_match.dart' as _i16;
+import 'entities/others/pagination_metadata.dart' as _i17;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'entities/community/post.dart';
 export 'entities/community/post_comment.dart';
 export 'entities/core/country.dart';
 export 'entities/core/faction.dart';
+export 'entities/core/language.dart';
+export 'entities/core/player_data.dart';
 export 'entities/match/match_in_person_proof.dart';
 export 'entities/match/match_podium.dart';
+export 'entities/match/played_match.dart';
 export 'entities/match/player_in_match.dart';
 export 'entities/others/pagination_metadata.dart';
 
@@ -110,6 +116,130 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'matchId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'played_match',
+      dartName: 'PlayedMatch',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'played_match_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'matchStartedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'matchDuration',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'Duration?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'played_match_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'player_data',
+      dartName: 'PlayerData',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'player_data_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'authUserId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'currentCountry',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'protocol:Country?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'nationality',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'protocol:Country?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'favoriteFaction',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Faction',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'player_data_fk_0',
+          columns: ['authUserId'],
+          referenceTable: 'serverpod_auth_core_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'player_data_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'auth_user_id_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'authUserId',
             ),
           ],
           type: 'btree',
@@ -237,6 +367,12 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'language',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Language',
         ),
         _i2.ColumnDefinition(
           name: 'attachedMatchId',
@@ -411,17 +547,26 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i10.Faction) {
       return _i10.Faction.fromJson(data) as T;
     }
-    if (t == _i11.MatchInPersonProof) {
-      return _i11.MatchInPersonProof.fromJson(data) as T;
+    if (t == _i11.Language) {
+      return _i11.Language.fromJson(data) as T;
     }
-    if (t == _i12.MatchPodium) {
-      return _i12.MatchPodium.fromJson(data) as T;
+    if (t == _i12.PlayerData) {
+      return _i12.PlayerData.fromJson(data) as T;
     }
-    if (t == _i13.PlayerInMatch) {
-      return _i13.PlayerInMatch.fromJson(data) as T;
+    if (t == _i13.MatchInPersonProof) {
+      return _i13.MatchInPersonProof.fromJson(data) as T;
     }
-    if (t == _i14.PaginationMetadata) {
-      return _i14.PaginationMetadata.fromJson(data) as T;
+    if (t == _i14.MatchPodium) {
+      return _i14.MatchPodium.fromJson(data) as T;
+    }
+    if (t == _i15.PlayedMatch) {
+      return _i15.PlayedMatch.fromJson(data) as T;
+    }
+    if (t == _i16.PlayerInMatch) {
+      return _i16.PlayerInMatch.fromJson(data) as T;
+    }
+    if (t == _i17.PaginationMetadata) {
+      return _i17.PaginationMetadata.fromJson(data) as T;
     }
     if (t == _i1.getType<_i5.CommentsPagination?>()) {
       return (data != null ? _i5.CommentsPagination.fromJson(data) : null) as T;
@@ -441,18 +586,27 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i10.Faction?>()) {
       return (data != null ? _i10.Faction.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i11.MatchInPersonProof?>()) {
-      return (data != null ? _i11.MatchInPersonProof.fromJson(data) : null)
+    if (t == _i1.getType<_i11.Language?>()) {
+      return (data != null ? _i11.Language.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i12.PlayerData?>()) {
+      return (data != null ? _i12.PlayerData.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i13.MatchInPersonProof?>()) {
+      return (data != null ? _i13.MatchInPersonProof.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i12.MatchPodium?>()) {
-      return (data != null ? _i12.MatchPodium.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i14.MatchPodium?>()) {
+      return (data != null ? _i14.MatchPodium.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i13.PlayerInMatch?>()) {
-      return (data != null ? _i13.PlayerInMatch.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i15.PlayedMatch?>()) {
+      return (data != null ? _i15.PlayedMatch.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i14.PaginationMetadata?>()) {
-      return (data != null ? _i14.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i16.PlayerInMatch?>()) {
+      return (data != null ? _i16.PlayerInMatch.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i17.PaginationMetadata?>()) {
+      return (data != null ? _i17.PaginationMetadata.fromJson(data) : null)
           as T;
     }
     if (t == List<_i8.PostComment>) {
@@ -467,6 +621,26 @@ class Protocol extends _i1.SerializationManagerServer {
               ? (data as List)
                     .map((e) => deserialize<_i8.PostComment>(e))
                     .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i16.PlayerInMatch>) {
+      return (data as List)
+              .map((e) => deserialize<_i16.PlayerInMatch>(e))
+              .toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i16.PlayerInMatch>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i16.PlayerInMatch>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == _i1.getType<List<_i7.Post>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<_i7.Post>(e)).toList()
               : null)
           as T;
     }
@@ -490,10 +664,13 @@ class Protocol extends _i1.SerializationManagerServer {
       _i8.PostComment => 'PostComment',
       _i9.Country => 'Country',
       _i10.Faction => 'Faction',
-      _i11.MatchInPersonProof => 'MatchInPersonProof',
-      _i12.MatchPodium => 'MatchPodium',
-      _i13.PlayerInMatch => 'PlayerInMatch',
-      _i14.PaginationMetadata => 'PaginationMetadata',
+      _i11.Language => 'Language',
+      _i12.PlayerData => 'PlayerData',
+      _i13.MatchInPersonProof => 'MatchInPersonProof',
+      _i14.MatchPodium => 'MatchPodium',
+      _i15.PlayedMatch => 'PlayedMatch',
+      _i16.PlayerInMatch => 'PlayerInMatch',
+      _i17.PaginationMetadata => 'PaginationMetadata',
       _ => null,
     };
   }
@@ -520,13 +697,19 @@ class Protocol extends _i1.SerializationManagerServer {
         return 'Country';
       case _i10.Faction():
         return 'Faction';
-      case _i11.MatchInPersonProof():
+      case _i11.Language():
+        return 'Language';
+      case _i12.PlayerData():
+        return 'PlayerData';
+      case _i13.MatchInPersonProof():
         return 'MatchInPersonProof';
-      case _i12.MatchPodium():
+      case _i14.MatchPodium():
         return 'MatchPodium';
-      case _i13.PlayerInMatch():
+      case _i15.PlayedMatch():
+        return 'PlayedMatch';
+      case _i16.PlayerInMatch():
         return 'PlayerInMatch';
-      case _i14.PaginationMetadata():
+      case _i17.PaginationMetadata():
         return 'PaginationMetadata';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -568,17 +751,26 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'Faction') {
       return deserialize<_i10.Faction>(data['data']);
     }
+    if (dataClassName == 'Language') {
+      return deserialize<_i11.Language>(data['data']);
+    }
+    if (dataClassName == 'PlayerData') {
+      return deserialize<_i12.PlayerData>(data['data']);
+    }
     if (dataClassName == 'MatchInPersonProof') {
-      return deserialize<_i11.MatchInPersonProof>(data['data']);
+      return deserialize<_i13.MatchInPersonProof>(data['data']);
     }
     if (dataClassName == 'MatchPodium') {
-      return deserialize<_i12.MatchPodium>(data['data']);
+      return deserialize<_i14.MatchPodium>(data['data']);
+    }
+    if (dataClassName == 'PlayedMatch') {
+      return deserialize<_i15.PlayedMatch>(data['data']);
     }
     if (dataClassName == 'PlayerInMatch') {
-      return deserialize<_i13.PlayerInMatch>(data['data']);
+      return deserialize<_i16.PlayerInMatch>(data['data']);
     }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i14.PaginationMetadata>(data['data']);
+      return deserialize<_i17.PaginationMetadata>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -620,10 +812,14 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i7.Post.t;
       case _i8.PostComment:
         return _i8.PostComment.t;
-      case _i11.MatchInPersonProof:
-        return _i11.MatchInPersonProof.t;
-      case _i13.PlayerInMatch:
-        return _i13.PlayerInMatch.t;
+      case _i12.PlayerData:
+        return _i12.PlayerData.t;
+      case _i13.MatchInPersonProof:
+        return _i13.MatchInPersonProof.t;
+      case _i15.PlayedMatch:
+        return _i15.PlayedMatch.t;
+      case _i16.PlayerInMatch:
+        return _i16.PlayerInMatch.t;
     }
     return null;
   }

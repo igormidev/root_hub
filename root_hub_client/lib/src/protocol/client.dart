@@ -11,12 +11,38 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
-    as _i2;
-import 'dart:async' as _i3;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+import 'dart:async' as _i2;
+import 'package:root_hub_client/src/protocol/api/community/models/comments_pagination.dart'
+    as _i3;
+import 'package:root_hub_client/src/protocol/api/community/models/post_pagination.dart'
     as _i4;
-import 'protocol.dart' as _i5;
+import 'package:root_hub_client/src/protocol/entities/core/language.dart'
+    as _i5;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i6;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i7;
+import 'protocol.dart' as _i8;
+
+/// {@category Endpoint}
+class EndpointComments extends _i1.EndpointRef {
+  EndpointComments(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'comments';
+
+  _i2.Future<_i3.CommentsPagination> getComments({
+    required int postId,
+    required int page,
+  }) => caller.callServerEndpoint<_i3.CommentsPagination>(
+    'comments',
+    'getComments',
+    {
+      'postId': postId,
+      'page': page,
+    },
+  );
+}
 
 /// {@category Endpoint}
 class EndpointPosts extends _i1.EndpointRef {
@@ -24,13 +50,25 @@ class EndpointPosts extends _i1.EndpointRef {
 
   @override
   String get name => 'posts';
+
+  _i2.Future<_i4.PostPagination> getPosts({
+    required int page,
+    _i5.Language? language,
+  }) => caller.callServerEndpoint<_i4.PostPagination>(
+    'posts',
+    'getPosts',
+    {
+      'page': page,
+      'language': language,
+    },
+  );
 }
 
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i6.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -46,10 +84,10 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   ///
   /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _i3.Future<_i4.AuthSuccess> login({
+  _i2.Future<_i7.AuthSuccess> login({
     required String email,
     required String password,
-  }) => caller.callServerEndpoint<_i4.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i7.AuthSuccess>(
     'emailIdp',
     'login',
     {
@@ -69,7 +107,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   /// registration. If the email is already registered, the returned ID will not
   /// be valid.
   @override
-  _i3.Future<_i1.UuidValue> startRegistration({required String email}) =>
+  _i2.Future<_i1.UuidValue> startRegistration({required String email}) =>
       caller.callServerEndpoint<_i1.UuidValue>(
         'emailIdp',
         'startRegistration',
@@ -87,7 +125,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   /// - [EmailAccountRequestExceptionReason.invalid] if no request exists
   ///   for the given [accountRequestId] or [verificationCode] is invalid.
   @override
-  _i3.Future<String> verifyRegistrationCode({
+  _i2.Future<String> verifyRegistrationCode({
     required _i1.UuidValue accountRequestId,
     required String verificationCode,
   }) => caller.callServerEndpoint<String>(
@@ -114,10 +152,10 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   ///
   /// Returns a session for the newly created user.
   @override
-  _i3.Future<_i4.AuthSuccess> finishRegistration({
+  _i2.Future<_i7.AuthSuccess> finishRegistration({
     required String registrationToken,
     required String password,
-  }) => caller.callServerEndpoint<_i4.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i7.AuthSuccess>(
     'emailIdp',
     'finishRegistration',
     {
@@ -140,7 +178,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   ///   made too many attempts trying to request a password reset.
   ///
   @override
-  _i3.Future<_i1.UuidValue> startPasswordReset({required String email}) =>
+  _i2.Future<_i1.UuidValue> startPasswordReset({required String email}) =>
       caller.callServerEndpoint<_i1.UuidValue>(
         'emailIdp',
         'startPasswordReset',
@@ -162,7 +200,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   /// should be overridden to return credentials for the next step instead
   /// of the credentials for setting the password.
   @override
-  _i3.Future<String> verifyPasswordResetCode({
+  _i2.Future<String> verifyPasswordResetCode({
     required _i1.UuidValue passwordResetRequestId,
     required String verificationCode,
   }) => caller.callServerEndpoint<String>(
@@ -189,7 +227,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   ///
   /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _i3.Future<void> finishPasswordReset({
+  _i2.Future<void> finishPasswordReset({
     required String finishPasswordResetToken,
     required String newPassword,
   }) => caller.callServerEndpoint<void>(
@@ -202,7 +240,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
   );
 
   @override
-  _i3.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
+  _i2.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
     'emailIdp',
     'hasAccount',
     {},
@@ -212,7 +250,7 @@ class EndpointEmailIdp extends _i2.EndpointEmailIdpBase {
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
-class EndpointJwtRefresh extends _i4.EndpointRefreshJwtTokens {
+class EndpointJwtRefresh extends _i7.EndpointRefreshJwtTokens {
   EndpointJwtRefresh(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -237,9 +275,9 @@ class EndpointJwtRefresh extends _i4.EndpointRefreshJwtTokens {
   /// This endpoint is unauthenticated, meaning the client won't include any
   /// authentication information with the call.
   @override
-  _i3.Future<_i4.AuthSuccess> refreshAccessToken({
+  _i2.Future<_i7.AuthSuccess> refreshAccessToken({
     required String refreshToken,
-  }) => caller.callServerEndpoint<_i4.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i7.AuthSuccess>(
     'jwtRefresh',
     'refreshAccessToken',
     {'refreshToken': refreshToken},
@@ -249,13 +287,13 @@ class EndpointJwtRefresh extends _i4.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i2.Caller(client);
-    serverpod_auth_core = _i4.Caller(client);
+    serverpod_auth_idp = _i6.Caller(client);
+    serverpod_auth_core = _i7.Caller(client);
   }
 
-  late final _i2.Caller serverpod_auth_idp;
+  late final _i6.Caller serverpod_auth_idp;
 
-  late final _i4.Caller serverpod_auth_core;
+  late final _i7.Caller serverpod_auth_core;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -278,7 +316,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i5.Protocol(),
+         _i8.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -287,11 +325,14 @@ class Client extends _i1.ServerpodClientShared {
          disconnectStreamsOnLostInternetConnection:
              disconnectStreamsOnLostInternetConnection,
        ) {
+    comments = EndpointComments(this);
     posts = EndpointPosts(this);
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     modules = Modules(this);
   }
+
+  late final EndpointComments comments;
 
   late final EndpointPosts posts;
 
@@ -303,6 +344,7 @@ class Client extends _i1.ServerpodClientShared {
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
+    'comments': comments,
     'posts': posts,
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,

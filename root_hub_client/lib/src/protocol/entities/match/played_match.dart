@@ -1,0 +1,161 @@
+/* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
+/*   To generate run: "serverpod generate"    */
+
+// ignore_for_file: implementation_imports
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
+// ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import '../../entities/match/player_in_match.dart' as _i2;
+import '../../entities/match/match_in_person_proof.dart' as _i3;
+import '../../entities/community/post.dart' as _i4;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
+
+abstract class PlayedMatch implements _i1.SerializableModel {
+  PlayedMatch._({
+    this.id,
+    required this.matchStartedAt,
+    this.matchDuration,
+    this.players,
+    this.inPersonProof,
+    this.posts,
+  });
+
+  factory PlayedMatch({
+    int? id,
+    required DateTime matchStartedAt,
+    Duration? matchDuration,
+    List<_i2.PlayerInMatch>? players,
+    _i3.MatchInPersonProof? inPersonProof,
+    List<_i4.Post>? posts,
+  }) = _PlayedMatchImpl;
+
+  factory PlayedMatch.fromJson(Map<String, dynamic> jsonSerialization) {
+    return PlayedMatch(
+      id: jsonSerialization['id'] as int?,
+      matchStartedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['matchStartedAt'],
+      ),
+      matchDuration: jsonSerialization['matchDuration'] == null
+          ? null
+          : _i1.DurationJsonExtension.fromJson(
+              jsonSerialization['matchDuration'],
+            ),
+      players: jsonSerialization['players'] == null
+          ? null
+          : _i5.Protocol().deserialize<List<_i2.PlayerInMatch>>(
+              jsonSerialization['players'],
+            ),
+      inPersonProof: jsonSerialization['inPersonProof'] == null
+          ? null
+          : _i5.Protocol().deserialize<_i3.MatchInPersonProof>(
+              jsonSerialization['inPersonProof'],
+            ),
+      posts: jsonSerialization['posts'] == null
+          ? null
+          : _i5.Protocol().deserialize<List<_i4.Post>>(
+              jsonSerialization['posts'],
+            ),
+    );
+  }
+
+  /// The database id, set if the object has been inserted into the
+  /// database or if it has been fetched from the database. Otherwise,
+  /// the id will be null.
+  int? id;
+
+  DateTime matchStartedAt;
+
+  Duration? matchDuration;
+
+  List<_i2.PlayerInMatch>? players;
+
+  _i3.MatchInPersonProof? inPersonProof;
+
+  List<_i4.Post>? posts;
+
+  /// Returns a shallow copy of this [PlayedMatch]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
+  PlayedMatch copyWith({
+    int? id,
+    DateTime? matchStartedAt,
+    Duration? matchDuration,
+    List<_i2.PlayerInMatch>? players,
+    _i3.MatchInPersonProof? inPersonProof,
+    List<_i4.Post>? posts,
+  });
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      '__className__': 'PlayedMatch',
+      if (id != null) 'id': id,
+      'matchStartedAt': matchStartedAt.toJson(),
+      if (matchDuration != null) 'matchDuration': matchDuration?.toJson(),
+      if (players != null)
+        'players': players?.toJson(valueToJson: (v) => v.toJson()),
+      if (inPersonProof != null) 'inPersonProof': inPersonProof?.toJson(),
+      if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
+    };
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
+  }
+}
+
+class _Undefined {}
+
+class _PlayedMatchImpl extends PlayedMatch {
+  _PlayedMatchImpl({
+    int? id,
+    required DateTime matchStartedAt,
+    Duration? matchDuration,
+    List<_i2.PlayerInMatch>? players,
+    _i3.MatchInPersonProof? inPersonProof,
+    List<_i4.Post>? posts,
+  }) : super._(
+         id: id,
+         matchStartedAt: matchStartedAt,
+         matchDuration: matchDuration,
+         players: players,
+         inPersonProof: inPersonProof,
+         posts: posts,
+       );
+
+  /// Returns a shallow copy of this [PlayedMatch]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
+  @override
+  PlayedMatch copyWith({
+    Object? id = _Undefined,
+    DateTime? matchStartedAt,
+    Object? matchDuration = _Undefined,
+    Object? players = _Undefined,
+    Object? inPersonProof = _Undefined,
+    Object? posts = _Undefined,
+  }) {
+    return PlayedMatch(
+      id: id is int? ? id : this.id,
+      matchStartedAt: matchStartedAt ?? this.matchStartedAt,
+      matchDuration: matchDuration is Duration?
+          ? matchDuration
+          : this.matchDuration,
+      players: players is List<_i2.PlayerInMatch>?
+          ? players
+          : this.players?.map((e0) => e0.copyWith()).toList(),
+      inPersonProof: inPersonProof is _i3.MatchInPersonProof?
+          ? inPersonProof
+          : this.inPersonProof?.copyWith(),
+      posts: posts is List<_i4.Post>?
+          ? posts
+          : this.posts?.map((e0) => e0.copyWith()).toList(),
+    );
+  }
+}

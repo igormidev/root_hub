@@ -1,0 +1,35 @@
+enum: Language
+values:
+    - arabicMSA
+    - arabicEgyptian
+    - arabicGulf
+    - bengali
+    - chinese
+    - dutch
+    - english
+    - french
+    - german
+    - gujarati
+    - hindi
+    - indonesian
+    - italian
+    - japanese
+    - korean
+    - malay
+    - marathi
+    - persian
+    - polish
+    - portugueseBrazil
+    - portuguesePortugal
+    - punjabi
+    - russian
+    - spanish
+    - swahili
+    - tagalog
+    - tamil
+    - telugu
+    - thai
+    - turkish
+    - ukrainian
+    - urdu
+    - vietnamese

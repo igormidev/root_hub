@@ -12,10 +12,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../entities/match/played_match.dart' as _i2;
-import '../../entities/core/player_data.dart' as _i3;
-import '../../entities/community/post_comment.dart' as _i4;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
+import '../../entities/core/language.dart' as _i2;
+import '../../entities/match/played_match.dart' as _i3;
+import '../../entities/core/player_data.dart' as _i4;
+import '../../entities/community/post_comment.dart' as _i5;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i6;
 
 abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Post._({
@@ -24,6 +25,7 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
     required this.title,
     required this.content,
     required this.likesCount,
+    required this.language,
     this.attachedMatchId,
     this.attachedMatch,
     this.authorId,
@@ -37,11 +39,12 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
     required String title,
     required String content,
     required int likesCount,
+    required _i2.Language language,
     int? attachedMatchId,
-    _i2.PlayedMatch? attachedMatch,
+    _i3.PlayedMatch? attachedMatch,
     int? authorId,
-    _i3.PlayerData? author,
-    List<_i4.PostComment>? comments,
+    _i4.PlayerData? author,
+    List<_i5.PostComment>? comments,
   }) = _PostImpl;
 
   factory Post.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -53,21 +56,24 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       title: jsonSerialization['title'] as String,
       content: jsonSerialization['content'] as String,
       likesCount: jsonSerialization['likesCount'] as int,
+      language: _i2.Language.fromJson(
+        (jsonSerialization['language'] as String),
+      ),
       attachedMatchId: jsonSerialization['attachedMatchId'] as int?,
       attachedMatch: jsonSerialization['attachedMatch'] == null
           ? null
-          : _i5.Protocol().deserialize<_i2.PlayedMatch>(
+          : _i6.Protocol().deserialize<_i3.PlayedMatch>(
               jsonSerialization['attachedMatch'],
             ),
       authorId: jsonSerialization['authorId'] as int?,
       author: jsonSerialization['author'] == null
           ? null
-          : _i5.Protocol().deserialize<_i3.PlayerData>(
+          : _i6.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['author'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i4.PostComment>>(
+          : _i6.Protocol().deserialize<List<_i5.PostComment>>(
               jsonSerialization['comments'],
             ),
     );
@@ -88,15 +94,17 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
 
   int likesCount;
 
+  _i2.Language language;
+
   int? attachedMatchId;
 
-  _i2.PlayedMatch? attachedMatch;
+  _i3.PlayedMatch? attachedMatch;
 
   int? authorId;
 
-  _i3.PlayerData? author;
+  _i4.PlayerData? author;
 
-  List<_i4.PostComment>? comments;
+  List<_i5.PostComment>? comments;
 
   @override
   _i1.Table<int?> get table => t;
@@ -110,11 +118,12 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
     String? title,
     String? content,
     int? likesCount,
+    _i2.Language? language,
     int? attachedMatchId,
-    _i2.PlayedMatch? attachedMatch,
+    _i3.PlayedMatch? attachedMatch,
     int? authorId,
-    _i3.PlayerData? author,
-    List<_i4.PostComment>? comments,
+    _i4.PlayerData? author,
+    List<_i5.PostComment>? comments,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -125,6 +134,7 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       'title': title,
       'content': content,
       'likesCount': likesCount,
+      'language': language.toJson(),
       if (attachedMatchId != null) 'attachedMatchId': attachedMatchId,
       if (attachedMatch != null) 'attachedMatch': attachedMatch?.toJson(),
       if (authorId != null) 'authorId': authorId,
@@ -143,6 +153,7 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       'title': title,
       'content': content,
       'likesCount': likesCount,
+      'language': language.toJson(),
       if (attachedMatchId != null) 'attachedMatchId': attachedMatchId,
       if (attachedMatch != null)
         'attachedMatch': attachedMatch?.toJsonForProtocol(),
@@ -154,9 +165,9 @@ abstract class Post implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   }
 
   static PostInclude include({
-    _i2.PlayedMatchInclude? attachedMatch,
-    _i3.PlayerDataInclude? author,
-    _i4.PostCommentIncludeList? comments,
+    _i3.PlayedMatchInclude? attachedMatch,
+    _i4.PlayerDataInclude? author,
+    _i5.PostCommentIncludeList? comments,
   }) {
     return PostInclude._(
       attachedMatch: attachedMatch,
@@ -200,17 +211,19 @@ class _PostImpl extends Post {
     required String title,
     required String content,
     required int likesCount,
+    required _i2.Language language,
     int? attachedMatchId,
-    _i2.PlayedMatch? attachedMatch,
+    _i3.PlayedMatch? attachedMatch,
     int? authorId,
-    _i3.PlayerData? author,
-    List<_i4.PostComment>? comments,
+    _i4.PlayerData? author,
+    List<_i5.PostComment>? comments,
   }) : super._(
          id: id,
          createdAt: createdAt,
          title: title,
          content: content,
          likesCount: likesCount,
+         language: language,
          attachedMatchId: attachedMatchId,
          attachedMatch: attachedMatch,
          authorId: authorId,
@@ -228,6 +241,7 @@ class _PostImpl extends Post {
     String? title,
     String? content,
     int? likesCount,
+    _i2.Language? language,
     Object? attachedMatchId = _Undefined,
     Object? attachedMatch = _Undefined,
     Object? authorId = _Undefined,
@@ -240,15 +254,16 @@ class _PostImpl extends Post {
       title: title ?? this.title,
       content: content ?? this.content,
       likesCount: likesCount ?? this.likesCount,
+      language: language ?? this.language,
       attachedMatchId: attachedMatchId is int?
           ? attachedMatchId
           : this.attachedMatchId,
-      attachedMatch: attachedMatch is _i2.PlayedMatch?
+      attachedMatch: attachedMatch is _i3.PlayedMatch?
           ? attachedMatch
           : this.attachedMatch?.copyWith(),
       authorId: authorId is int? ? authorId : this.authorId,
-      author: author is _i3.PlayerData? ? author : this.author?.copyWith(),
-      comments: comments is List<_i4.PostComment>?
+      author: author is _i4.PlayerData? ? author : this.author?.copyWith(),
+      comments: comments is List<_i5.PostComment>?
           ? comments
           : this.comments?.map((e0) => e0.copyWith()).toList(),
     );
@@ -278,6 +293,12 @@ class PostUpdateTable extends _i1.UpdateTable<PostTable> {
     table.likesCount,
     value,
   );
+
+  _i1.ColumnValue<_i2.Language, _i2.Language> language(_i2.Language value) =>
+      _i1.ColumnValue(
+        table.language,
+        value,
+      );
 
   _i1.ColumnValue<int, int> attachedMatchId(int? value) => _i1.ColumnValue(
     table.attachedMatchId,
@@ -309,6 +330,11 @@ class PostTable extends _i1.Table<int?> {
       'likesCount',
       this,
     );
+    language = _i1.ColumnEnum(
+      'language',
+      this,
+      _i1.EnumSerialization.byName,
+    );
     attachedMatchId = _i1.ColumnInt(
       'attachedMatchId',
       this,
@@ -329,70 +355,72 @@ class PostTable extends _i1.Table<int?> {
 
   late final _i1.ColumnInt likesCount;
 
+  late final _i1.ColumnEnum<_i2.Language> language;
+
   late final _i1.ColumnInt attachedMatchId;
 
-  _i2.PlayedMatchTable? _attachedMatch;
+  _i3.PlayedMatchTable? _attachedMatch;
 
   late final _i1.ColumnInt authorId;
 
-  _i3.PlayerDataTable? _author;
+  _i4.PlayerDataTable? _author;
 
-  _i4.PostCommentTable? ___comments;
+  _i5.PostCommentTable? ___comments;
 
-  _i1.ManyRelation<_i4.PostCommentTable>? _comments;
+  _i1.ManyRelation<_i5.PostCommentTable>? _comments;
 
-  _i2.PlayedMatchTable get attachedMatch {
+  _i3.PlayedMatchTable get attachedMatch {
     if (_attachedMatch != null) return _attachedMatch!;
     _attachedMatch = _i1.createRelationTable(
       relationFieldName: 'attachedMatch',
       field: Post.t.attachedMatchId,
-      foreignField: _i2.PlayedMatch.t.id,
+      foreignField: _i3.PlayedMatch.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.PlayedMatchTable(tableRelation: foreignTableRelation),
+          _i3.PlayedMatchTable(tableRelation: foreignTableRelation),
     );
     return _attachedMatch!;
   }
 
-  _i3.PlayerDataTable get author {
+  _i4.PlayerDataTable get author {
     if (_author != null) return _author!;
     _author = _i1.createRelationTable(
       relationFieldName: 'author',
       field: Post.t.authorId,
-      foreignField: _i3.PlayerData.t.id,
+      foreignField: _i4.PlayerData.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerDataTable(tableRelation: foreignTableRelation),
+          _i4.PlayerDataTable(tableRelation: foreignTableRelation),
     );
     return _author!;
   }
 
-  _i4.PostCommentTable get __comments {
+  _i5.PostCommentTable get __comments {
     if (___comments != null) return ___comments!;
     ___comments = _i1.createRelationTable(
       relationFieldName: '__comments',
       field: Post.t.id,
-      foreignField: _i4.PostComment.t.postId,
+      foreignField: _i5.PostComment.t.postId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i4.PostCommentTable(tableRelation: foreignTableRelation),
+          _i5.PostCommentTable(tableRelation: foreignTableRelation),
     );
     return ___comments!;
   }
 
-  _i1.ManyRelation<_i4.PostCommentTable> get comments {
+  _i1.ManyRelation<_i5.PostCommentTable> get comments {
     if (_comments != null) return _comments!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'comments',
       field: Post.t.id,
-      foreignField: _i4.PostComment.t.postId,
+      foreignField: _i5.PostComment.t.postId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i4.PostCommentTable(tableRelation: foreignTableRelation),
+          _i5.PostCommentTable(tableRelation: foreignTableRelation),
     );
-    _comments = _i1.ManyRelation<_i4.PostCommentTable>(
+    _comments = _i1.ManyRelation<_i5.PostCommentTable>(
       tableWithRelations: relationTable,
-      table: _i4.PostCommentTable(
+      table: _i5.PostCommentTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
@@ -406,6 +434,7 @@ class PostTable extends _i1.Table<int?> {
     title,
     content,
     likesCount,
+    language,
     attachedMatchId,
     authorId,
   ];
@@ -427,20 +456,20 @@ class PostTable extends _i1.Table<int?> {
 
 class PostInclude extends _i1.IncludeObject {
   PostInclude._({
-    _i2.PlayedMatchInclude? attachedMatch,
-    _i3.PlayerDataInclude? author,
-    _i4.PostCommentIncludeList? comments,
+    _i3.PlayedMatchInclude? attachedMatch,
+    _i4.PlayerDataInclude? author,
+    _i5.PostCommentIncludeList? comments,
   }) {
     _attachedMatch = attachedMatch;
     _author = author;
     _comments = comments;
   }
 
-  _i2.PlayedMatchInclude? _attachedMatch;
+  _i3.PlayedMatchInclude? _attachedMatch;
 
-  _i3.PlayerDataInclude? _author;
+  _i4.PlayerDataInclude? _author;
 
-  _i4.PostCommentIncludeList? _comments;
+  _i5.PostCommentIncludeList? _comments;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -748,7 +777,7 @@ class PostAttachRepository {
   Future<void> comments(
     _i1.Session session,
     Post post,
-    List<_i4.PostComment> postComment, {
+    List<_i5.PostComment> postComment, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.any((e) => e.id == null)) {
@@ -761,9 +790,9 @@ class PostAttachRepository {
     var $postComment = postComment
         .map((e) => e.copyWith(postId: post.id))
         .toList();
-    await session.db.update<_i4.PostComment>(
+    await session.db.update<_i5.PostComment>(
       $postComment,
-      columns: [_i4.PostComment.t.postId],
+      columns: [_i5.PostComment.t.postId],
       transaction: transaction,
     );
   }
@@ -777,7 +806,7 @@ class PostAttachRowRepository {
   Future<void> attachedMatch(
     _i1.Session session,
     Post post,
-    _i2.PlayedMatch attachedMatch, {
+    _i3.PlayedMatch attachedMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (post.id == null) {
@@ -800,7 +829,7 @@ class PostAttachRowRepository {
   Future<void> author(
     _i1.Session session,
     Post post,
-    _i3.PlayerData author, {
+    _i4.PlayerData author, {
     _i1.Transaction? transaction,
   }) async {
     if (post.id == null) {
@@ -823,7 +852,7 @@ class PostAttachRowRepository {
   Future<void> comments(
     _i1.Session session,
     Post post,
-    _i4.PostComment postComment, {
+    _i5.PostComment postComment, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.id == null) {
@@ -834,9 +863,9 @@ class PostAttachRowRepository {
     }
 
     var $postComment = postComment.copyWith(postId: post.id);
-    await session.db.updateRow<_i4.PostComment>(
+    await session.db.updateRow<_i5.PostComment>(
       $postComment,
-      columns: [_i4.PostComment.t.postId],
+      columns: [_i5.PostComment.t.postId],
       transaction: transaction,
     );
   }
@@ -852,7 +881,7 @@ class PostDetachRepository {
   /// the related record.
   Future<void> comments(
     _i1.Session session,
-    List<_i4.PostComment> postComment, {
+    List<_i5.PostComment> postComment, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.any((e) => e.id == null)) {
@@ -862,9 +891,9 @@ class PostDetachRepository {
     var $postComment = postComment
         .map((e) => e.copyWith(postId: null))
         .toList();
-    await session.db.update<_i4.PostComment>(
+    await session.db.update<_i5.PostComment>(
       $postComment,
-      columns: [_i4.PostComment.t.postId],
+      columns: [_i5.PostComment.t.postId],
       transaction: transaction,
     );
   }
@@ -924,7 +953,7 @@ class PostDetachRowRepository {
   /// the related record.
   Future<void> comments(
     _i1.Session session,
-    _i4.PostComment postComment, {
+    _i5.PostComment postComment, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.id == null) {
@@ -932,9 +961,9 @@ class PostDetachRowRepository {
     }
 
     var $postComment = postComment.copyWith(postId: null);
-    await session.db.updateRow<_i4.PostComment>(
+    await session.db.updateRow<_i5.PostComment>(
       $postComment,
-      columns: [_i4.PostComment.t.postId],
+      columns: [_i5.PostComment.t.postId],
       transaction: transaction,
     );
   }

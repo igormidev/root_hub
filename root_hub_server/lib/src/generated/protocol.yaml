@@ -1,4 +1,7 @@
+comments:
+  - getComments:
 posts:
+  - getPosts:
 emailIdp:
   - login:
   - startRegistration:

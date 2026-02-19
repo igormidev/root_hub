@@ -6,21 +6,45 @@ class PostsEndpoint extends Endpoint {
   Future<PostPagination> getPosts(
     Session session, {
     required int page,
+    Language? language,
   }) async {
-    Expression<dynamic> whereClaude(PostTable t) {
-      return Constant.bool(true);
+    final pageSize = RootHubSettings.pageSizePosts;
+
+    Expression<dynamic> where(PostTable t) {
+      Expression<dynamic> expr = Constant.bool(true);
+      if (language != null) {
+        expr = t.language.equals(language);
+      }
+      return expr;
     }
 
-    final int totalCount = await Post.db.count(
+    final totalCount = await Post.db.count(session, where: where);
+
+    final posts = await Post.db.find(
       session,
-      where: whereClaude,
-    );
-    final posts = Post.db.find(
-      session,
-      where: whereClaude,
-      limit: RootHubSettings.pageSizePosts,
+      where: where,
+      orderBy: (t) => t.createdAt,
+      orderDescending: true,
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      include: Post.include(
+        author: PlayerData.include(),
+        attachedMatch: PlayedMatch.include(),
+      ),
     );
 
-    throw UnimplementedError();
+    final totalPages = (totalCount / pageSize).ceil();
+
+    return PostPagination(
+      posts: posts,
+      paginationMetadata: PaginationMetadata(
+        currentPage: page,
+        itemsInCurrentPageCount: posts.length,
+        totalItemsCount: totalCount,
+        totalPagesCount: totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      ),
+    );
   }
 }

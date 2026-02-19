@@ -7,7 +7,6 @@ fields:
   nationality: Country?
   favoriteFaction: Faction
   matchEntries: List<PlayerInMatch>?, relation(name=player_matches)
-  perfomances: List<PlayerPerfomanceInMatch>?, relation(name=player_perfomances)
   posts: List<Post>?, relation(name=player_posts)
   comments: List<PostComment>?, relation(name=player_comments)
 

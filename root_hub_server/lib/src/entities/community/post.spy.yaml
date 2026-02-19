@@ -5,6 +5,7 @@ fields:
   title: String
   content: String
   likesCount: int 
+  language: Language
   attachedMatch: PlayedMatch?, relation(name=post_attached_match, optional)
   author: PlayerData?, relation(name=player_posts, optional)
   comments: List<PostComment>?, relation(name=post_comments)
