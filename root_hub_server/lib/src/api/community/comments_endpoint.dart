@@ -3,7 +3,7 @@ import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class CommentsEndpoint extends Endpoint {
-  Future<CommentsPagination> getComments(
+  Future<CommentsPagination> v1(
     Session session, {
     required int postId,
     required int page,

@@ -1,7 +1,11 @@
 comments:
-  - getComments:
+  - v1:
 posts:
-  - getPosts:
+  - v1:
+getPlayerMatches:
+  - v1:
+subscribeToMatch:
+  - v1:
 emailIdp:
   - login:
   - startRegistration:

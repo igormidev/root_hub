@@ -11,14 +11,16 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import '../../entities/community/post.dart' as _i2;
-import '../../entities/core/player_data.dart' as _i3;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i4;
+import '../../entities/core/language.dart' as _i2;
+import '../../entities/community/post.dart' as _i3;
+import '../../entities/core/player_data.dart' as _i4;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
 
 abstract class PostComment implements _i1.SerializableModel {
   PostComment._({
     this.id,
     required this.content,
+    required this.language,
     required this.postId,
     this.post,
     required this.ownerId,
@@ -28,24 +30,28 @@ abstract class PostComment implements _i1.SerializableModel {
   factory PostComment({
     int? id,
     required String content,
+    required _i2.Language language,
     required int postId,
-    _i2.Post? post,
+    _i3.Post? post,
     required int ownerId,
-    _i3.PlayerData? owner,
+    _i4.PlayerData? owner,
   }) = _PostCommentImpl;
 
   factory PostComment.fromJson(Map<String, dynamic> jsonSerialization) {
     return PostComment(
       id: jsonSerialization['id'] as int?,
       content: jsonSerialization['content'] as String,
+      language: _i2.Language.fromJson(
+        (jsonSerialization['language'] as String),
+      ),
       postId: jsonSerialization['postId'] as int,
       post: jsonSerialization['post'] == null
           ? null
-          : _i4.Protocol().deserialize<_i2.Post>(jsonSerialization['post']),
+          : _i5.Protocol().deserialize<_i3.Post>(jsonSerialization['post']),
       ownerId: jsonSerialization['ownerId'] as int,
       owner: jsonSerialization['owner'] == null
           ? null
-          : _i4.Protocol().deserialize<_i3.PlayerData>(
+          : _i5.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['owner'],
             ),
     );
@@ -58,13 +64,15 @@ abstract class PostComment implements _i1.SerializableModel {
 
   String content;
 
+  _i2.Language language;
+
   int postId;
 
-  _i2.Post? post;
+  _i3.Post? post;
 
   int ownerId;
 
-  _i3.PlayerData? owner;
+  _i4.PlayerData? owner;
 
   /// Returns a shallow copy of this [PostComment]
   /// with some or all fields replaced by the given arguments.
@@ -72,10 +80,11 @@ abstract class PostComment implements _i1.SerializableModel {
   PostComment copyWith({
     int? id,
     String? content,
+    _i2.Language? language,
     int? postId,
-    _i2.Post? post,
+    _i3.Post? post,
     int? ownerId,
-    _i3.PlayerData? owner,
+    _i4.PlayerData? owner,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -83,6 +92,7 @@ abstract class PostComment implements _i1.SerializableModel {
       '__className__': 'PostComment',
       if (id != null) 'id': id,
       'content': content,
+      'language': language.toJson(),
       'postId': postId,
       if (post != null) 'post': post?.toJson(),
       'ownerId': ownerId,
@@ -102,13 +112,15 @@ class _PostCommentImpl extends PostComment {
   _PostCommentImpl({
     int? id,
     required String content,
+    required _i2.Language language,
     required int postId,
-    _i2.Post? post,
+    _i3.Post? post,
     required int ownerId,
-    _i3.PlayerData? owner,
+    _i4.PlayerData? owner,
   }) : super._(
          id: id,
          content: content,
+         language: language,
          postId: postId,
          post: post,
          ownerId: ownerId,
@@ -122,6 +134,7 @@ class _PostCommentImpl extends PostComment {
   PostComment copyWith({
     Object? id = _Undefined,
     String? content,
+    _i2.Language? language,
     int? postId,
     Object? post = _Undefined,
     int? ownerId,
@@ -130,10 +143,11 @@ class _PostCommentImpl extends PostComment {
     return PostComment(
       id: id is int? ? id : this.id,
       content: content ?? this.content,
+      language: language ?? this.language,
       postId: postId ?? this.postId,
-      post: post is _i2.Post? ? post : this.post?.copyWith(),
+      post: post is _i3.Post? ? post : this.post?.copyWith(),
       ownerId: ownerId ?? this.ownerId,
-      owner: owner is _i3.PlayerData? ? owner : this.owner?.copyWith(),
+      owner: owner is _i4.PlayerData? ? owner : this.owner?.copyWith(),
     );
   }
 }

@@ -18,7 +18,9 @@ import '../../entities/core/faction.dart' as _i4;
 import '../../entities/match/player_in_match.dart' as _i5;
 import '../../entities/community/post.dart' as _i6;
 import '../../entities/community/post_comment.dart' as _i7;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i8;
+import '../../entities/match_making/match_schedule.dart' as _i8;
+import '../../entities/match_making/match_subscription.dart' as _i9;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i10;
 
 abstract class PlayerData implements _i1.SerializableModel {
   PlayerData._({
@@ -31,6 +33,8 @@ abstract class PlayerData implements _i1.SerializableModel {
     this.matchEntries,
     this.posts,
     this.comments,
+    this.pairingAttempts,
+    this.subscriptions,
   });
 
   factory PlayerData({
@@ -43,6 +47,8 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
+    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i9.MatchSubscription>? subscriptions,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -53,7 +59,7 @@ abstract class PlayerData implements _i1.SerializableModel {
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i8.Protocol().deserialize<_i2.AuthUser>(
+          : _i10.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       currentCountry: jsonSerialization['currentCountry'] == null
@@ -69,18 +75,28 @@ abstract class PlayerData implements _i1.SerializableModel {
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i10.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i6.Post>>(
+          : _i10.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i10.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
+            ),
+      pairingAttempts: jsonSerialization['pairingAttempts'] == null
+          ? null
+          : _i10.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+              jsonSerialization['pairingAttempts'],
+            ),
+      subscriptions: jsonSerialization['subscriptions'] == null
+          ? null
+          : _i10.Protocol().deserialize<List<_i9.MatchSubscription>>(
+              jsonSerialization['subscriptions'],
             ),
     );
   }
@@ -107,6 +123,10 @@ abstract class PlayerData implements _i1.SerializableModel {
 
   List<_i7.PostComment>? comments;
 
+  List<_i8.MatchSchedulePairingAttempt>? pairingAttempts;
+
+  List<_i9.MatchSubscription>? subscriptions;
+
   /// Returns a shallow copy of this [PlayerData]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -120,6 +140,8 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
+    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i9.MatchSubscription>? subscriptions,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -136,6 +158,12 @@ abstract class PlayerData implements _i1.SerializableModel {
       if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
       if (comments != null)
         'comments': comments?.toJson(valueToJson: (v) => v.toJson()),
+      if (pairingAttempts != null)
+        'pairingAttempts': pairingAttempts?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
+      if (subscriptions != null)
+        'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -158,6 +186,8 @@ class _PlayerDataImpl extends PlayerData {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
+    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i9.MatchSubscription>? subscriptions,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -168,6 +198,8 @@ class _PlayerDataImpl extends PlayerData {
          matchEntries: matchEntries,
          posts: posts,
          comments: comments,
+         pairingAttempts: pairingAttempts,
+         subscriptions: subscriptions,
        );
 
   /// Returns a shallow copy of this [PlayerData]
@@ -184,6 +216,8 @@ class _PlayerDataImpl extends PlayerData {
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
     Object? comments = _Undefined,
+    Object? pairingAttempts = _Undefined,
+    Object? subscriptions = _Undefined,
   }) {
     return PlayerData(
       id: id is int? ? id : this.id,
@@ -205,6 +239,12 @@ class _PlayerDataImpl extends PlayerData {
       comments: comments is List<_i7.PostComment>?
           ? comments
           : this.comments?.map((e0) => e0.copyWith()).toList(),
+      pairingAttempts: pairingAttempts is List<_i8.MatchSchedulePairingAttempt>?
+          ? pairingAttempts
+          : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
+      subscriptions: subscriptions is List<_i9.MatchSubscription>?
+          ? subscriptions
+          : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }

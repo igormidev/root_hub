@@ -12,15 +12,17 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../entities/community/post.dart' as _i2;
-import '../../entities/core/player_data.dart' as _i3;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i4;
+import '../../entities/core/language.dart' as _i2;
+import '../../entities/community/post.dart' as _i3;
+import '../../entities/core/player_data.dart' as _i4;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
 
 abstract class PostComment
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   PostComment._({
     this.id,
     required this.content,
+    required this.language,
     required this.postId,
     this.post,
     required this.ownerId,
@@ -30,24 +32,28 @@ abstract class PostComment
   factory PostComment({
     int? id,
     required String content,
+    required _i2.Language language,
     required int postId,
-    _i2.Post? post,
+    _i3.Post? post,
     required int ownerId,
-    _i3.PlayerData? owner,
+    _i4.PlayerData? owner,
   }) = _PostCommentImpl;
 
   factory PostComment.fromJson(Map<String, dynamic> jsonSerialization) {
     return PostComment(
       id: jsonSerialization['id'] as int?,
       content: jsonSerialization['content'] as String,
+      language: _i2.Language.fromJson(
+        (jsonSerialization['language'] as String),
+      ),
       postId: jsonSerialization['postId'] as int,
       post: jsonSerialization['post'] == null
           ? null
-          : _i4.Protocol().deserialize<_i2.Post>(jsonSerialization['post']),
+          : _i5.Protocol().deserialize<_i3.Post>(jsonSerialization['post']),
       ownerId: jsonSerialization['ownerId'] as int,
       owner: jsonSerialization['owner'] == null
           ? null
-          : _i4.Protocol().deserialize<_i3.PlayerData>(
+          : _i5.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['owner'],
             ),
     );
@@ -62,13 +68,15 @@ abstract class PostComment
 
   String content;
 
+  _i2.Language language;
+
   int postId;
 
-  _i2.Post? post;
+  _i3.Post? post;
 
   int ownerId;
 
-  _i3.PlayerData? owner;
+  _i4.PlayerData? owner;
 
   @override
   _i1.Table<int?> get table => t;
@@ -79,10 +87,11 @@ abstract class PostComment
   PostComment copyWith({
     int? id,
     String? content,
+    _i2.Language? language,
     int? postId,
-    _i2.Post? post,
+    _i3.Post? post,
     int? ownerId,
-    _i3.PlayerData? owner,
+    _i4.PlayerData? owner,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -90,6 +99,7 @@ abstract class PostComment
       '__className__': 'PostComment',
       if (id != null) 'id': id,
       'content': content,
+      'language': language.toJson(),
       'postId': postId,
       if (post != null) 'post': post?.toJson(),
       'ownerId': ownerId,
@@ -103,6 +113,7 @@ abstract class PostComment
       '__className__': 'PostComment',
       if (id != null) 'id': id,
       'content': content,
+      'language': language.toJson(),
       'postId': postId,
       if (post != null) 'post': post?.toJsonForProtocol(),
       'ownerId': ownerId,
@@ -111,8 +122,8 @@ abstract class PostComment
   }
 
   static PostCommentInclude include({
-    _i2.PostInclude? post,
-    _i3.PlayerDataInclude? owner,
+    _i3.PostInclude? post,
+    _i4.PlayerDataInclude? owner,
   }) {
     return PostCommentInclude._(
       post: post,
@@ -152,13 +163,15 @@ class _PostCommentImpl extends PostComment {
   _PostCommentImpl({
     int? id,
     required String content,
+    required _i2.Language language,
     required int postId,
-    _i2.Post? post,
+    _i3.Post? post,
     required int ownerId,
-    _i3.PlayerData? owner,
+    _i4.PlayerData? owner,
   }) : super._(
          id: id,
          content: content,
+         language: language,
          postId: postId,
          post: post,
          ownerId: ownerId,
@@ -172,6 +185,7 @@ class _PostCommentImpl extends PostComment {
   PostComment copyWith({
     Object? id = _Undefined,
     String? content,
+    _i2.Language? language,
     int? postId,
     Object? post = _Undefined,
     int? ownerId,
@@ -180,10 +194,11 @@ class _PostCommentImpl extends PostComment {
     return PostComment(
       id: id is int? ? id : this.id,
       content: content ?? this.content,
+      language: language ?? this.language,
       postId: postId ?? this.postId,
-      post: post is _i2.Post? ? post : this.post?.copyWith(),
+      post: post is _i3.Post? ? post : this.post?.copyWith(),
       ownerId: ownerId ?? this.ownerId,
-      owner: owner is _i3.PlayerData? ? owner : this.owner?.copyWith(),
+      owner: owner is _i4.PlayerData? ? owner : this.owner?.copyWith(),
     );
   }
 }
@@ -195,6 +210,12 @@ class PostCommentUpdateTable extends _i1.UpdateTable<PostCommentTable> {
     table.content,
     value,
   );
+
+  _i1.ColumnValue<_i2.Language, _i2.Language> language(_i2.Language value) =>
+      _i1.ColumnValue(
+        table.language,
+        value,
+      );
 
   _i1.ColumnValue<int, int> postId(int value) => _i1.ColumnValue(
     table.postId,
@@ -214,6 +235,11 @@ class PostCommentTable extends _i1.Table<int?> {
       'content',
       this,
     );
+    language = _i1.ColumnEnum(
+      'language',
+      this,
+      _i1.EnumSerialization.byName,
+    );
     postId = _i1.ColumnInt(
       'postId',
       this,
@@ -228,36 +254,38 @@ class PostCommentTable extends _i1.Table<int?> {
 
   late final _i1.ColumnString content;
 
+  late final _i1.ColumnEnum<_i2.Language> language;
+
   late final _i1.ColumnInt postId;
 
-  _i2.PostTable? _post;
+  _i3.PostTable? _post;
 
   late final _i1.ColumnInt ownerId;
 
-  _i3.PlayerDataTable? _owner;
+  _i4.PlayerDataTable? _owner;
 
-  _i2.PostTable get post {
+  _i3.PostTable get post {
     if (_post != null) return _post!;
     _post = _i1.createRelationTable(
       relationFieldName: 'post',
       field: PostComment.t.postId,
-      foreignField: _i2.Post.t.id,
+      foreignField: _i3.Post.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.PostTable(tableRelation: foreignTableRelation),
+          _i3.PostTable(tableRelation: foreignTableRelation),
     );
     return _post!;
   }
 
-  _i3.PlayerDataTable get owner {
+  _i4.PlayerDataTable get owner {
     if (_owner != null) return _owner!;
     _owner = _i1.createRelationTable(
       relationFieldName: 'owner',
       field: PostComment.t.ownerId,
-      foreignField: _i3.PlayerData.t.id,
+      foreignField: _i4.PlayerData.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerDataTable(tableRelation: foreignTableRelation),
+          _i4.PlayerDataTable(tableRelation: foreignTableRelation),
     );
     return _owner!;
   }
@@ -266,6 +294,7 @@ class PostCommentTable extends _i1.Table<int?> {
   List<_i1.Column> get columns => [
     id,
     content,
+    language,
     postId,
     ownerId,
   ];
@@ -284,16 +313,16 @@ class PostCommentTable extends _i1.Table<int?> {
 
 class PostCommentInclude extends _i1.IncludeObject {
   PostCommentInclude._({
-    _i2.PostInclude? post,
-    _i3.PlayerDataInclude? owner,
+    _i3.PostInclude? post,
+    _i4.PlayerDataInclude? owner,
   }) {
     _post = post;
     _owner = owner;
   }
 
-  _i2.PostInclude? _post;
+  _i3.PostInclude? _post;
 
-  _i3.PlayerDataInclude? _owner;
+  _i4.PlayerDataInclude? _owner;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -594,7 +623,7 @@ class PostCommentAttachRowRepository {
   Future<void> post(
     _i1.Session session,
     PostComment postComment,
-    _i2.Post post, {
+    _i3.Post post, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.id == null) {
@@ -617,7 +646,7 @@ class PostCommentAttachRowRepository {
   Future<void> owner(
     _i1.Session session,
     PostComment postComment,
-    _i3.PlayerData owner, {
+    _i4.PlayerData owner, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.id == null) {

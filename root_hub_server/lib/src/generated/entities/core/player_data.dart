@@ -19,7 +19,9 @@ import '../../entities/core/faction.dart' as _i4;
 import '../../entities/match/player_in_match.dart' as _i5;
 import '../../entities/community/post.dart' as _i6;
 import '../../entities/community/post_comment.dart' as _i7;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i8;
+import '../../entities/match_making/match_schedule.dart' as _i8;
+import '../../entities/match_making/match_subscription.dart' as _i9;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i10;
 
 abstract class PlayerData
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -33,6 +35,8 @@ abstract class PlayerData
     this.matchEntries,
     this.posts,
     this.comments,
+    this.pairingAttempts,
+    this.subscriptions,
   });
 
   factory PlayerData({
@@ -45,6 +49,8 @@ abstract class PlayerData
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
+    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i9.MatchSubscription>? subscriptions,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -55,7 +61,7 @@ abstract class PlayerData
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i8.Protocol().deserialize<_i2.AuthUser>(
+          : _i10.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       currentCountry: jsonSerialization['currentCountry'] == null
@@ -71,18 +77,28 @@ abstract class PlayerData
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i10.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i6.Post>>(
+          : _i10.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i10.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
+            ),
+      pairingAttempts: jsonSerialization['pairingAttempts'] == null
+          ? null
+          : _i10.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+              jsonSerialization['pairingAttempts'],
+            ),
+      subscriptions: jsonSerialization['subscriptions'] == null
+          ? null
+          : _i10.Protocol().deserialize<List<_i9.MatchSubscription>>(
+              jsonSerialization['subscriptions'],
             ),
     );
   }
@@ -111,6 +127,10 @@ abstract class PlayerData
 
   List<_i7.PostComment>? comments;
 
+  List<_i8.MatchSchedulePairingAttempt>? pairingAttempts;
+
+  List<_i9.MatchSubscription>? subscriptions;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -127,6 +147,8 @@ abstract class PlayerData
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
+    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i9.MatchSubscription>? subscriptions,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -143,6 +165,12 @@ abstract class PlayerData
       if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
       if (comments != null)
         'comments': comments?.toJson(valueToJson: (v) => v.toJson()),
+      if (pairingAttempts != null)
+        'pairingAttempts': pairingAttempts?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
+      if (subscriptions != null)
+        'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -164,6 +192,14 @@ abstract class PlayerData
         'posts': posts?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (comments != null)
         'comments': comments?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (pairingAttempts != null)
+        'pairingAttempts': pairingAttempts?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
+      if (subscriptions != null)
+        'subscriptions': subscriptions?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -172,12 +208,16 @@ abstract class PlayerData
     _i5.PlayerInMatchIncludeList? matchEntries,
     _i6.PostIncludeList? posts,
     _i7.PostCommentIncludeList? comments,
+    _i8.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i9.MatchSubscriptionIncludeList? subscriptions,
   }) {
     return PlayerDataInclude._(
       authUser: authUser,
       matchEntries: matchEntries,
       posts: posts,
       comments: comments,
+      pairingAttempts: pairingAttempts,
+      subscriptions: subscriptions,
     );
   }
 
@@ -220,6 +260,8 @@ class _PlayerDataImpl extends PlayerData {
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
     List<_i7.PostComment>? comments,
+    List<_i8.MatchSchedulePairingAttempt>? pairingAttempts,
+    List<_i9.MatchSubscription>? subscriptions,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -230,6 +272,8 @@ class _PlayerDataImpl extends PlayerData {
          matchEntries: matchEntries,
          posts: posts,
          comments: comments,
+         pairingAttempts: pairingAttempts,
+         subscriptions: subscriptions,
        );
 
   /// Returns a shallow copy of this [PlayerData]
@@ -246,6 +290,8 @@ class _PlayerDataImpl extends PlayerData {
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
     Object? comments = _Undefined,
+    Object? pairingAttempts = _Undefined,
+    Object? subscriptions = _Undefined,
   }) {
     return PlayerData(
       id: id is int? ? id : this.id,
@@ -267,6 +313,12 @@ class _PlayerDataImpl extends PlayerData {
       comments: comments is List<_i7.PostComment>?
           ? comments
           : this.comments?.map((e0) => e0.copyWith()).toList(),
+      pairingAttempts: pairingAttempts is List<_i8.MatchSchedulePairingAttempt>?
+          ? pairingAttempts
+          : this.pairingAttempts?.map((e0) => e0.copyWith()).toList(),
+      subscriptions: subscriptions is List<_i9.MatchSubscription>?
+          ? subscriptions
+          : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }
@@ -351,6 +403,14 @@ class PlayerDataTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i7.PostCommentTable>? _comments;
 
+  _i8.MatchSchedulePairingAttemptTable? ___pairingAttempts;
+
+  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>? _pairingAttempts;
+
+  _i9.MatchSubscriptionTable? ___subscriptions;
+
+  _i1.ManyRelation<_i9.MatchSubscriptionTable>? _subscriptions;
+
   _i2.AuthUserTable get authUser {
     if (_authUser != null) return _authUser!;
     _authUser = _i1.createRelationTable(
@@ -401,6 +461,34 @@ class PlayerDataTable extends _i1.Table<int?> {
           _i7.PostCommentTable(tableRelation: foreignTableRelation),
     );
     return ___comments!;
+  }
+
+  _i8.MatchSchedulePairingAttemptTable get __pairingAttempts {
+    if (___pairingAttempts != null) return ___pairingAttempts!;
+    ___pairingAttempts = _i1.createRelationTable(
+      relationFieldName: '__pairingAttempts',
+      field: PlayerData.t.id,
+      foreignField: _i8.MatchSchedulePairingAttempt.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i8.MatchSchedulePairingAttemptTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    return ___pairingAttempts!;
+  }
+
+  _i9.MatchSubscriptionTable get __subscriptions {
+    if (___subscriptions != null) return ___subscriptions!;
+    ___subscriptions = _i1.createRelationTable(
+      relationFieldName: '__subscriptions',
+      field: PlayerData.t.id,
+      foreignField: _i9.MatchSubscription.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i9.MatchSubscriptionTable(tableRelation: foreignTableRelation),
+    );
+    return ___subscriptions!;
   }
 
   _i1.ManyRelation<_i5.PlayerInMatchTable> get matchEntries {
@@ -460,6 +548,46 @@ class PlayerDataTable extends _i1.Table<int?> {
     return _comments!;
   }
 
+  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable> get pairingAttempts {
+    if (_pairingAttempts != null) return _pairingAttempts!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'pairingAttempts',
+      field: PlayerData.t.id,
+      foreignField: _i8.MatchSchedulePairingAttempt.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i8.MatchSchedulePairingAttemptTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    _pairingAttempts = _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>(
+      tableWithRelations: relationTable,
+      table: _i8.MatchSchedulePairingAttemptTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _pairingAttempts!;
+  }
+
+  _i1.ManyRelation<_i9.MatchSubscriptionTable> get subscriptions {
+    if (_subscriptions != null) return _subscriptions!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'subscriptions',
+      field: PlayerData.t.id,
+      foreignField: _i9.MatchSubscription.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i9.MatchSubscriptionTable(tableRelation: foreignTableRelation),
+    );
+    _subscriptions = _i1.ManyRelation<_i9.MatchSubscriptionTable>(
+      tableWithRelations: relationTable,
+      table: _i9.MatchSubscriptionTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _subscriptions!;
+  }
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -483,6 +611,12 @@ class PlayerDataTable extends _i1.Table<int?> {
     if (relationField == 'comments') {
       return __comments;
     }
+    if (relationField == 'pairingAttempts') {
+      return __pairingAttempts;
+    }
+    if (relationField == 'subscriptions') {
+      return __subscriptions;
+    }
     return null;
   }
 }
@@ -493,11 +627,15 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i5.PlayerInMatchIncludeList? matchEntries,
     _i6.PostIncludeList? posts,
     _i7.PostCommentIncludeList? comments,
+    _i8.MatchSchedulePairingAttemptIncludeList? pairingAttempts,
+    _i9.MatchSubscriptionIncludeList? subscriptions,
   }) {
     _authUser = authUser;
     _matchEntries = matchEntries;
     _posts = posts;
     _comments = comments;
+    _pairingAttempts = pairingAttempts;
+    _subscriptions = subscriptions;
   }
 
   _i2.AuthUserInclude? _authUser;
@@ -508,12 +646,18 @@ class PlayerDataInclude extends _i1.IncludeObject {
 
   _i7.PostCommentIncludeList? _comments;
 
+  _i8.MatchSchedulePairingAttemptIncludeList? _pairingAttempts;
+
+  _i9.MatchSubscriptionIncludeList? _subscriptions;
+
   @override
   Map<String, _i1.Include?> get includes => {
     'authUser': _authUser,
     'matchEntries': _matchEntries,
     'posts': _posts,
     'comments': _comments,
+    'pairingAttempts': _pairingAttempts,
+    'subscriptions': _subscriptions,
   };
 
   @override
@@ -882,6 +1026,56 @@ class PlayerDataAttachRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]s
+  /// by setting each [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> pairingAttempts(
+    _i1.Session session,
+    PlayerData playerData,
+    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
+        .map((e) => e.copyWith(playerDataId: playerData.id))
+        .toList();
+    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between this [PlayerData] and the given [MatchSubscription]s
+  /// by setting each [MatchSubscription]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> subscriptions(
+    _i1.Session session,
+    PlayerData playerData,
+    List<_i9.MatchSubscription> matchSubscription, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSubscription.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchSubscription.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchSubscription = matchSubscription
+        .map((e) => e.copyWith(playerDataId: playerData.id))
+        .toList();
+    await session.db.update<_i9.MatchSubscription>(
+      $matchSubscription,
+      columns: [_i9.MatchSubscription.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataAttachRowRepository {
@@ -978,6 +1172,56 @@ class PlayerDataAttachRowRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> pairingAttempts(
+    _i1.Session session,
+    PlayerData playerData,
+    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
+      playerDataId: playerData.id,
+    );
+    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between this [PlayerData] and the given [MatchSubscription]
+  /// by setting the [MatchSubscription]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> subscriptions(
+    _i1.Session session,
+    PlayerData playerData,
+    _i9.MatchSubscription matchSubscription, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSubscription.id == null) {
+      throw ArgumentError.notNull('matchSubscription.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchSubscription = matchSubscription.copyWith(
+      playerDataId: playerData.id,
+    );
+    await session.db.updateRow<_i9.MatchSubscription>(
+      $matchSubscription,
+      columns: [_i9.MatchSubscription.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataDetachRepository {
@@ -1028,6 +1272,54 @@ class PlayerDataDetachRepository {
       transaction: transaction,
     );
   }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> pairingAttempts(
+    _i1.Session session,
+    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
+        .map((e) => e.copyWith(playerDataId: null))
+        .toList();
+    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchSubscription]
+  /// by setting the [MatchSubscription]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> subscriptions(
+    _i1.Session session,
+    List<_i9.MatchSubscription> matchSubscription, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSubscription.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchSubscription.id');
+    }
+
+    var $matchSubscription = matchSubscription
+        .map((e) => e.copyWith(playerDataId: null))
+        .toList();
+    await session.db.update<_i9.MatchSubscription>(
+      $matchSubscription,
+      columns: [_i9.MatchSubscription.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataDetachRowRepository {
@@ -1073,6 +1365,52 @@ class PlayerDataDetachRowRepository {
     await session.db.updateRow<_i6.Post>(
       $post,
       columns: [_i6.Post.t.authorId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> pairingAttempts(
+    _i1.Session session,
+    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
+      playerDataId: null,
+    );
+    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchSubscription]
+  /// by setting the [MatchSubscription]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> subscriptions(
+    _i1.Session session,
+    _i9.MatchSubscription matchSubscription, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSubscription.id == null) {
+      throw ArgumentError.notNull('matchSubscription.id');
+    }
+
+    var $matchSubscription = matchSubscription.copyWith(playerDataId: null);
+    await session.db.updateRow<_i9.MatchSubscription>(
+      $matchSubscription,
+      columns: [_i9.MatchSubscription.t.playerDataId],
       transaction: transaction,
     );
   }

@@ -1,0 +1,20 @@
+class: MatchSchedulePairingAttempt
+table: match_schedule_pairing_attempt
+fields:
+  createdAt: DateTime
+  aditionalInfo: String?
+  guidelinesDescription: String?
+  minAmountOfPlayers: MatchPodium
+  maxAmountOfPlayers: MatchPodium
+  attemptedAt: DateTime
+  locationId: int
+  location: Location?, relation(name=pairing_attempt_location, field=locationId)
+  playerDataId: int
+  playerData: PlayerData?, relation(name=player_pairing_attempts, field=playerDataId)
+  subscriptions: List<MatchSubscription>?, relation(name=pairing_attempt_subscriptions)
+
+indexes:
+  location_id_idx:
+    fields: locationId
+  player_data_id_idx:
+    fields: playerDataId

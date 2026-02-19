@@ -1,0 +1,14 @@
+class: MatchSubscription
+table: match_subscriptions
+fields:
+  subscribedAt: DateTime
+  matchSchedulePairingAttemptId: int
+  matchSchedulePairingAttempt: MatchSchedulePairingAttempt?, relation(name=pairing_attempt_subscriptions, field=matchSchedulePairingAttemptId)
+  playerDataId: int
+  playerData: PlayerData?, relation(name=player_subscriptions, field=playerDataId)
+
+indexes:
+  match_schedule_pairing_attempt_id_idx:
+    fields: matchSchedulePairingAttemptId
+  subscription_player_data_id_idx:
+    fields: playerDataId

@@ -13,7 +13,9 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 enum Language implements _i1.SerializableModel {
-  arabic,
+  arabicMSA,
+  arabicEgyptian,
+  arabicGulf,
   bengali,
   chinese,
   dutch,
@@ -30,7 +32,8 @@ enum Language implements _i1.SerializableModel {
   marathi,
   persian,
   polish,
-  portuguese,
+  portugueseBrazil,
+  portuguesePortugal,
   punjabi,
   russian,
   spanish,
@@ -46,8 +49,12 @@ enum Language implements _i1.SerializableModel {
 
   static Language fromJson(String name) {
     switch (name) {
-      case 'arabic':
-        return Language.arabic;
+      case 'arabicMSA':
+        return Language.arabicMSA;
+      case 'arabicEgyptian':
+        return Language.arabicEgyptian;
+      case 'arabicGulf':
+        return Language.arabicGulf;
       case 'bengali':
         return Language.bengali;
       case 'chinese':
@@ -80,8 +87,10 @@ enum Language implements _i1.SerializableModel {
         return Language.persian;
       case 'polish':
         return Language.polish;
-      case 'portuguese':
-        return Language.portuguese;
+      case 'portugueseBrazil':
+        return Language.portugueseBrazil;
+      case 'portuguesePortugal':
+        return Language.portuguesePortugal;
       case 'punjabi':
         return Language.punjabi;
       case 'russian':

@@ -1,0 +1,35 @@
+class: Location
+table: locations
+fields:
+  # Stable ID from the provider (e.g., Google place_id, Mapbox feature_id)
+  providerPlaceId: String
+
+  # Display info
+  name: String
+  formattedAddress: String?
+
+  # Geo
+  lat: double
+  lng: double
+
+  # Optional extra info (useful for showing details in UI)
+  url: String?
+  phoneNumber: String?
+  types: List<String>?
+  timezone: String?
+
+  # Safety / product controls
+  isPublicPlace: bool, default=true
+  notes: String?
+
+  # Relations
+  pairingAttempts: List<MatchSchedulePairingAttempt>?, relation(name=pairing_attempt_location)
+
+  # Timestamps
+  createdAt: DateTime
+  updatedAt: DateTime
+
+indexes:
+  provider_place_id_unique_idx:
+    fields: providerPlaceId
+    unique: true
