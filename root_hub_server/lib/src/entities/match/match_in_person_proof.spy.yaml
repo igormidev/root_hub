@@ -1,0 +1,12 @@
+# Players when submitting a match to the system they should provide some proof that the match actually happened. This entity is used to store that proof.
+class: MatchInPersonProof
+table: match_in_person_proof
+fields:
+  matchId: int
+  match: PlayedMatch?, relation(name=match_in_person_proof, field=matchId)
+  groupPhotoUrl: String
+  boardPhotoUrl: String
+indexes:
+  match_in_person_proof_match_unique_idx:
+    fields: matchId
+    unique: true

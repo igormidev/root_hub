@@ -1,0 +1,17 @@
+class: PlayerData
+table: player_data
+fields:
+  ### The [AuthUser] this profile belongs to
+  authUser: module:serverpod_auth_core:AuthUser?, relation(onDelete=Cascade)
+  currentCountry: Country?
+  nationality: Country?
+  favoriteFaction: Faction
+  matchEntries: List<PlayerInMatch>?, relation(name=player_matches)
+  perfomances: List<PlayerPerfomanceInMatch>?, relation(name=player_perfomances)
+  posts: List<Post>?, relation(name=player_posts)
+  comments: List<PostComment>?, relation(name=player_comments)
+
+indexes:
+  auth_user_id_unique_idx:
+    fields: authUserId
+    unique: true

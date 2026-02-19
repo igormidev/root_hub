@@ -1,0 +1,6 @@
+class: PostComment
+table: post_comment
+fields:
+  content: String
+  post: Post?, relation(name=post_comments)
+  owner: PlayerData?, relation(name=player_comments)

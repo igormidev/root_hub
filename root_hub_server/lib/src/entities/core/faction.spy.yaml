@@ -1,0 +1,12 @@
+enum: Faction
+values:
+    - marquiseDeCat
+    - eyrieDynasties
+    - woodlandAlliance
+    - vagabond
+    - riverfolkCompany
+    - theLizardCult
+    - undergroundDuchy
+    - corvidConspiracy
+    - lordOfTheHundreds
+    - keepersInIron

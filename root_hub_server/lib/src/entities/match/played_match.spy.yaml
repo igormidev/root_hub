@@ -1,0 +1,9 @@
+class: PlayedMatch
+table: played_match
+fields:
+  matchStartedAt: DateTime
+  matchDuration: Duration?
+  playerPerfomances: List<PlayerPerfomanceInMatch>?, relation(name=match_player_perfomances)
+  players: List<PlayerInMatch>?, relation(name=match_players)
+  inPersonProof: MatchInPersonProof?, relation(name=match_in_person_proof)
+  posts: List<Post>?, relation(name=post_attached_match)

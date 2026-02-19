@@ -1,0 +1,8 @@
+enum: MatchPodium
+values:
+    - firstPlace
+    - secondPlace
+    - thirdPlace
+    - fourthPlace
+    - fifthPlace
+    - sixthPlace

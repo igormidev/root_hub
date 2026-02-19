@@ -1,0 +1,4 @@
+class: CommentsPagination
+fields:
+  comments: List<PostComment>
+  paginationMetadata: PaginationMetadata
