@@ -37,10 +37,12 @@ import 'entities/match_making/manual_input_location.dart' as _i22;
 import 'entities/match_making/match_schedule.dart' as _i23;
 import 'entities/match_making/match_subscription.dart' as _i24;
 import 'entities/others/pagination_metadata.dart' as _i25;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
     as _i26;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i27;
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+    as _i28;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match_making/models/location_pagination.dart';
@@ -392,6 +394,177 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'match_chat_history',
+      dartName: 'MatchChatHistory',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'match_chat_history_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'content',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'matchSchedulePairingAttemptId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'match_chat_history_fk_0',
+          columns: ['matchSchedulePairingAttemptId'],
+          referenceTable: 'match_schedule_pairing_attempt',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'match_chat_history_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'chat_history_pairing_attempt_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'matchSchedulePairingAttemptId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'match_chat_message',
+      dartName: 'MatchChatMessage',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'match_chat_message_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'sentAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'content',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'matchChatHistoryId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'playerDataId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'match_chat_message_fk_0',
+          columns: ['matchChatHistoryId'],
+          referenceTable: 'match_chat_history',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'match_chat_message_fk_1',
+          columns: ['playerDataId'],
+          referenceTable: 'player_data',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'match_chat_message_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'chat_message_history_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'matchChatHistoryId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'chat_message_player_data_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'playerDataId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
         ),
       ],
       managed: true,
@@ -1313,6 +1486,20 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
+    if (t == List<_i19.MatchChatMessage>) {
+      return (data as List)
+              .map((e) => deserialize<_i19.MatchChatMessage>(e))
+              .toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i19.MatchChatMessage>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i19.MatchChatMessage>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
@@ -1322,13 +1509,19 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i26.Location>) {
-      return (data as List).map((e) => deserialize<_i26.Location>(e)).toList()
+    if (t == List<_i26.MatchChatMessage>) {
+      return (data as List)
+              .map((e) => deserialize<_i26.MatchChatMessage>(e))
+              .toList()
           as T;
     }
-    if (t == List<_i27.MatchSubscription>) {
+    if (t == List<_i27.Location>) {
+      return (data as List).map((e) => deserialize<_i27.Location>(e)).toList()
+          as T;
+    }
+    if (t == List<_i28.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i27.MatchSubscription>(e))
+              .map((e) => deserialize<_i28.MatchSubscription>(e))
               .toList()
           as T;
     }
@@ -1556,6 +1749,10 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i16.PlayedMatch.t;
       case _i17.PlayerInMatch:
         return _i17.PlayerInMatch.t;
+      case _i18.MatchChatHistory:
+        return _i18.MatchChatHistory.t;
+      case _i19.MatchChatMessage:
+        return _i19.MatchChatMessage.t;
       case _i20.GooglePlaceLocation:
         return _i20.GooglePlaceLocation.t;
       case _i21.Location:

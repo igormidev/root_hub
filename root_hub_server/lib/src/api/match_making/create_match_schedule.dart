@@ -62,6 +62,22 @@ class CreateMatchSchedule extends Endpoint {
         transaction: transaction,
       );
 
+      final chatHistory = await MatchChatHistory.db.insertRow(
+        session,
+        MatchChatHistory(
+          content: '',
+          matchSchedulePairingAttemptId: match.id!,
+        ),
+        transaction: transaction,
+      );
+
+      await MatchChatHistory.db.attachRow.matchSchedulePairingAttempt(
+        session,
+        chatHistory,
+        match,
+        transaction: transaction,
+      );
+
       return match;
     });
   }

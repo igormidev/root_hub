@@ -24,16 +24,18 @@ import 'package:root_hub_server/src/generated/api/community/models/comments_pagi
     as _i7;
 import 'package:root_hub_server/src/generated/api/community/models/post_pagination.dart'
     as _i8;
-import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
     as _i9;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i10;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i11;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i12;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i13;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i14;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -149,6 +151,10 @@ class TestEndpoints {
 
   late final _GetPostsEndpoint getPosts;
 
+  late final _MatchChatGetMessages matchChatGetMessages;
+
+  late final _MatchChatSendMessage matchChatSendMessage;
+
   late final _CreateMatchSchedule createMatchSchedule;
 
   late final _GetMatchLocation getMatchLocation;
@@ -182,6 +188,14 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPosts = _GetPostsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    matchChatGetMessages = _MatchChatGetMessages(
+      endpoints,
+      serializationManager,
+    );
+    matchChatSendMessage = _MatchChatSendMessage(
       endpoints,
       serializationManager,
     );
@@ -402,6 +416,96 @@ class _GetPostsEndpoint {
   }
 }
 
+class _MatchChatGetMessages {
+  _MatchChatGetMessages(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<List<_i9.MatchChatMessage>> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int matchChatHistoryId,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'matchChatGetMessages',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'matchChatGetMessages',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'matchChatHistoryId': matchChatHistoryId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<List<_i9.MatchChatMessage>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _MatchChatSendMessage {
+  _MatchChatSendMessage(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i9.MatchChatMessage> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int matchChatHistoryId,
+    required String content,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'matchChatSendMessage',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'matchChatSendMessage',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'matchChatHistoryId': matchChatHistoryId,
+            'content': content,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i9.MatchChatMessage>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _CreateMatchSchedule {
   _CreateMatchSchedule(
     this._endpointDispatch,
@@ -412,13 +516,13 @@ class _CreateMatchSchedule {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.MatchSchedulePairingAttempt> v1(
+  _i3.Future<_i10.MatchSchedulePairingAttempt> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required String title,
     String? description,
     String? aditionalLocationInfo,
-    required _i10.MatchPodium minAmountOfPlayers,
-    required _i10.MatchPodium maxAmountOfPlayers,
+    required _i11.MatchPodium minAmountOfPlayers,
+    required _i11.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
   }) async {
@@ -449,7 +553,7 @@ class _CreateMatchSchedule {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.MatchSchedulePairingAttempt>);
+                as _i3.Future<_i10.MatchSchedulePairingAttempt>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -468,7 +572,7 @@ class _GetMatchLocation {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i11.Location>> v1(
+  _i3.Future<List<_i12.Location>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required String query,
     required int page,
@@ -495,7 +599,7 @@ class _GetMatchLocation {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i11.Location>>);
+                as _i3.Future<List<_i12.Location>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -514,7 +618,7 @@ class _GetPlayerMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i12.MatchSubscription>> v1(
+  _i3.Future<List<_i13.MatchSubscription>> v1(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -536,7 +640,7 @@ class _GetPlayerMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i12.MatchSubscription>>);
+                as _i3.Future<List<_i13.MatchSubscription>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -555,7 +659,7 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i12.MatchSubscription> v1(
+  _i3.Future<_i13.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required int scheduledMatchId,
   }) async {
@@ -580,7 +684,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i12.MatchSubscription>);
+                as _i3.Future<_i13.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -599,7 +703,7 @@ class _EmailIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i13.AuthSuccess> login(
+  _i3.Future<_i14.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String email,
     required String password,
@@ -626,7 +730,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i13.AuthSuccess>);
+                as _i3.Future<_i14.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -700,7 +804,7 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<_i13.AuthSuccess> finishRegistration(
+  _i3.Future<_i14.AuthSuccess> finishRegistration(
     _i1.TestSessionBuilder sessionBuilder, {
     required String registrationToken,
     required String password,
@@ -727,7 +831,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i13.AuthSuccess>);
+                as _i3.Future<_i14.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -875,7 +979,7 @@ class _JwtRefreshEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i13.AuthSuccess> refreshAccessToken(
+  _i3.Future<_i14.AuthSuccess> refreshAccessToken(
     _i1.TestSessionBuilder sessionBuilder, {
     required String refreshToken,
   }) async {
@@ -898,7 +1002,7 @@ class _JwtRefreshEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i13.AuthSuccess>);
+                as _i3.Future<_i14.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

@@ -1,4 +1,15 @@
 class: MatchChatMessage
+table: match_chat_message
 fields:
   sentAt: DateTime
   content: String
+  matchChatHistoryId: int
+  matchChatHistory: MatchChatHistory?, relation(name=chat_history_messages, field=matchChatHistoryId)
+  playerDataId: int
+  sender: PlayerData?, relation(name=player_chat_messages, field=playerDataId)
+
+indexes:
+  chat_message_history_id_idx:
+    fields: matchChatHistoryId
+  chat_message_player_data_id_idx:
+    fields: playerDataId

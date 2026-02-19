@@ -6,6 +6,10 @@ getComments:
   - v1:
 getPosts:
   - v1:
+matchChatGetMessages:
+  - v1:
+matchChatSendMessage:
+  - v1:
 createMatchSchedule:
   - v1:
 getMatchLocation:

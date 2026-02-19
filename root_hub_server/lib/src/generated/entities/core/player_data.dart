@@ -21,7 +21,8 @@ import '../../entities/community/post.dart' as _i6;
 import '../../entities/community/post_comment.dart' as _i7;
 import '../../entities/match_making/match_schedule.dart' as _i8;
 import '../../entities/match_making/match_subscription.dart' as _i9;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i10;
+import '../../entities/match_making/chat/match_chat_message.dart' as _i10;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i11;
 
 abstract class PlayerData
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -37,6 +38,7 @@ abstract class PlayerData
     this.comments,
     this.currentHosting,
     this.subscriptions,
+    this.chatMessages,
   });
 
   factory PlayerData({
@@ -51,6 +53,7 @@ abstract class PlayerData
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i10.MatchChatMessage>? chatMessages,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -61,7 +64,7 @@ abstract class PlayerData
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i10.Protocol().deserialize<_i2.AuthUser>(
+          : _i11.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       currentCountry: jsonSerialization['currentCountry'] == null
@@ -77,28 +80,33 @@ abstract class PlayerData
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i10.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i11.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i10.Protocol().deserialize<List<_i6.Post>>(
+          : _i11.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i10.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i11.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
       currentHosting: jsonSerialization['currentHosting'] == null
           ? null
-          : _i10.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i11.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
               jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i10.Protocol().deserialize<List<_i9.MatchSubscription>>(
+          : _i11.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
+            ),
+      chatMessages: jsonSerialization['chatMessages'] == null
+          ? null
+          : _i11.Protocol().deserialize<List<_i10.MatchChatMessage>>(
+              jsonSerialization['chatMessages'],
             ),
     );
   }
@@ -131,6 +139,8 @@ abstract class PlayerData
 
   List<_i9.MatchSubscription>? subscriptions;
 
+  List<_i10.MatchChatMessage>? chatMessages;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -149,6 +159,7 @@ abstract class PlayerData
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i10.MatchChatMessage>? chatMessages,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -171,6 +182,8 @@ abstract class PlayerData
         ),
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
+      if (chatMessages != null)
+        'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -200,6 +213,10 @@ abstract class PlayerData
         'subscriptions': subscriptions?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
+      if (chatMessages != null)
+        'chatMessages': chatMessages?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -210,6 +227,7 @@ abstract class PlayerData
     _i7.PostCommentIncludeList? comments,
     _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
+    _i10.MatchChatMessageIncludeList? chatMessages,
   }) {
     return PlayerDataInclude._(
       authUser: authUser,
@@ -218,6 +236,7 @@ abstract class PlayerData
       comments: comments,
       currentHosting: currentHosting,
       subscriptions: subscriptions,
+      chatMessages: chatMessages,
     );
   }
 
@@ -262,6 +281,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i10.MatchChatMessage>? chatMessages,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -274,6 +294,7 @@ class _PlayerDataImpl extends PlayerData {
          comments: comments,
          currentHosting: currentHosting,
          subscriptions: subscriptions,
+         chatMessages: chatMessages,
        );
 
   /// Returns a shallow copy of this [PlayerData]
@@ -292,6 +313,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? comments = _Undefined,
     Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
+    Object? chatMessages = _Undefined,
   }) {
     return PlayerData(
       id: id is int? ? id : this.id,
@@ -319,6 +341,9 @@ class _PlayerDataImpl extends PlayerData {
       subscriptions: subscriptions is List<_i9.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
+      chatMessages: chatMessages is List<_i10.MatchChatMessage>?
+          ? chatMessages
+          : this.chatMessages?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }
@@ -411,6 +436,10 @@ class PlayerDataTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i9.MatchSubscriptionTable>? _subscriptions;
 
+  _i10.MatchChatMessageTable? ___chatMessages;
+
+  _i1.ManyRelation<_i10.MatchChatMessageTable>? _chatMessages;
+
   _i2.AuthUserTable get authUser {
     if (_authUser != null) return _authUser!;
     _authUser = _i1.createRelationTable(
@@ -489,6 +518,19 @@ class PlayerDataTable extends _i1.Table<int?> {
           _i9.MatchSubscriptionTable(tableRelation: foreignTableRelation),
     );
     return ___subscriptions!;
+  }
+
+  _i10.MatchChatMessageTable get __chatMessages {
+    if (___chatMessages != null) return ___chatMessages!;
+    ___chatMessages = _i1.createRelationTable(
+      relationFieldName: '__chatMessages',
+      field: PlayerData.t.id,
+      foreignField: _i10.MatchChatMessage.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i10.MatchChatMessageTable(tableRelation: foreignTableRelation),
+    );
+    return ___chatMessages!;
   }
 
   _i1.ManyRelation<_i5.PlayerInMatchTable> get matchEntries {
@@ -588,6 +630,25 @@ class PlayerDataTable extends _i1.Table<int?> {
     return _subscriptions!;
   }
 
+  _i1.ManyRelation<_i10.MatchChatMessageTable> get chatMessages {
+    if (_chatMessages != null) return _chatMessages!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'chatMessages',
+      field: PlayerData.t.id,
+      foreignField: _i10.MatchChatMessage.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i10.MatchChatMessageTable(tableRelation: foreignTableRelation),
+    );
+    _chatMessages = _i1.ManyRelation<_i10.MatchChatMessageTable>(
+      tableWithRelations: relationTable,
+      table: _i10.MatchChatMessageTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _chatMessages!;
+  }
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -617,6 +678,9 @@ class PlayerDataTable extends _i1.Table<int?> {
     if (relationField == 'subscriptions') {
       return __subscriptions;
     }
+    if (relationField == 'chatMessages') {
+      return __chatMessages;
+    }
     return null;
   }
 }
@@ -629,6 +693,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i7.PostCommentIncludeList? comments,
     _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
+    _i10.MatchChatMessageIncludeList? chatMessages,
   }) {
     _authUser = authUser;
     _matchEntries = matchEntries;
@@ -636,6 +701,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _comments = comments;
     _currentHosting = currentHosting;
     _subscriptions = subscriptions;
+    _chatMessages = chatMessages;
   }
 
   _i2.AuthUserInclude? _authUser;
@@ -650,6 +716,8 @@ class PlayerDataInclude extends _i1.IncludeObject {
 
   _i9.MatchSubscriptionIncludeList? _subscriptions;
 
+  _i10.MatchChatMessageIncludeList? _chatMessages;
+
   @override
   Map<String, _i1.Include?> get includes => {
     'authUser': _authUser,
@@ -658,6 +726,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     'comments': _comments,
     'currentHosting': _currentHosting,
     'subscriptions': _subscriptions,
+    'chatMessages': _chatMessages,
   };
 
   @override
@@ -1076,6 +1145,31 @@ class PlayerDataAttachRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [PlayerData] and the given [MatchChatMessage]s
+  /// by setting each [MatchChatMessage]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> chatMessages(
+    _i1.Session session,
+    PlayerData playerData,
+    List<_i10.MatchChatMessage> matchChatMessage, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatMessage.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchChatMessage.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchChatMessage = matchChatMessage
+        .map((e) => e.copyWith(playerDataId: playerData.id))
+        .toList();
+    await session.db.update<_i10.MatchChatMessage>(
+      $matchChatMessage,
+      columns: [_i10.MatchChatMessage.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataAttachRowRepository {
@@ -1222,6 +1316,31 @@ class PlayerDataAttachRowRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [PlayerData] and the given [MatchChatMessage]
+  /// by setting the [MatchChatMessage]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> chatMessages(
+    _i1.Session session,
+    PlayerData playerData,
+    _i10.MatchChatMessage matchChatMessage, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatMessage.id == null) {
+      throw ArgumentError.notNull('matchChatMessage.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchChatMessage = matchChatMessage.copyWith(
+      playerDataId: playerData.id,
+    );
+    await session.db.updateRow<_i10.MatchChatMessage>(
+      $matchChatMessage,
+      columns: [_i10.MatchChatMessage.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataDetachRepository {
@@ -1320,6 +1439,30 @@ class PlayerDataDetachRepository {
       transaction: transaction,
     );
   }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchChatMessage]
+  /// by setting the [MatchChatMessage]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> chatMessages(
+    _i1.Session session,
+    List<_i10.MatchChatMessage> matchChatMessage, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatMessage.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchChatMessage.id');
+    }
+
+    var $matchChatMessage = matchChatMessage
+        .map((e) => e.copyWith(playerDataId: null))
+        .toList();
+    await session.db.update<_i10.MatchChatMessage>(
+      $matchChatMessage,
+      columns: [_i10.MatchChatMessage.t.playerDataId],
+      transaction: transaction,
+    );
+  }
 }
 
 class PlayerDataDetachRowRepository {
@@ -1411,6 +1554,28 @@ class PlayerDataDetachRowRepository {
     await session.db.updateRow<_i9.MatchSubscription>(
       $matchSubscription,
       columns: [_i9.MatchSubscription.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchChatMessage]
+  /// by setting the [MatchChatMessage]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> chatMessages(
+    _i1.Session session,
+    _i10.MatchChatMessage matchChatMessage, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatMessage.id == null) {
+      throw ArgumentError.notNull('matchChatMessage.id');
+    }
+
+    var $matchChatMessage = matchChatMessage.copyWith(playerDataId: null);
+    await session.db.updateRow<_i10.MatchChatMessage>(
+      $matchChatMessage,
+      columns: [_i10.MatchChatMessage.t.playerDataId],
       transaction: transaction,
     );
   }

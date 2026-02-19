@@ -22,19 +22,21 @@ import 'package:root_hub_client/src/protocol/api/community/models/comments_pagin
     as _i6;
 import 'package:root_hub_client/src/protocol/api/community/models/post_pagination.dart'
     as _i7;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
     as _i8;
-import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
     as _i9;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
+import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
     as _i10;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i11;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i12;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _i13;
-import 'protocol.dart' as _i14;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i14;
+import 'protocol.dart' as _i15;
 
 /// {@category Endpoint}
 class EndpointCreateComment extends _i1.EndpointRef {
@@ -123,21 +125,57 @@ class EndpointGetPosts extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointMatchChatGetMessages extends _i1.EndpointRef {
+  EndpointMatchChatGetMessages(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'matchChatGetMessages';
+
+  _i2.Future<List<_i8.MatchChatMessage>> v1({
+    required int matchChatHistoryId,
+  }) => caller.callServerEndpoint<List<_i8.MatchChatMessage>>(
+    'matchChatGetMessages',
+    'v1',
+    {'matchChatHistoryId': matchChatHistoryId},
+  );
+}
+
+/// {@category Endpoint}
+class EndpointMatchChatSendMessage extends _i1.EndpointRef {
+  EndpointMatchChatSendMessage(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'matchChatSendMessage';
+
+  _i2.Future<_i8.MatchChatMessage> v1({
+    required int matchChatHistoryId,
+    required String content,
+  }) => caller.callServerEndpoint<_i8.MatchChatMessage>(
+    'matchChatSendMessage',
+    'v1',
+    {
+      'matchChatHistoryId': matchChatHistoryId,
+      'content': content,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointCreateMatchSchedule extends _i1.EndpointRef {
   EndpointCreateMatchSchedule(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'createMatchSchedule';
 
-  _i2.Future<_i8.MatchSchedulePairingAttempt> v1({
+  _i2.Future<_i9.MatchSchedulePairingAttempt> v1({
     required String title,
     String? description,
     String? aditionalLocationInfo,
-    required _i9.MatchPodium minAmountOfPlayers,
-    required _i9.MatchPodium maxAmountOfPlayers,
+    required _i10.MatchPodium minAmountOfPlayers,
+    required _i10.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
-  }) => caller.callServerEndpoint<_i8.MatchSchedulePairingAttempt>(
+  }) => caller.callServerEndpoint<_i9.MatchSchedulePairingAttempt>(
     'createMatchSchedule',
     'v1',
     {
@@ -159,10 +197,10 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
   @override
   String get name => 'getMatchLocation';
 
-  _i2.Future<List<_i10.Location>> v1({
+  _i2.Future<List<_i11.Location>> v1({
     required String query,
     required int page,
-  }) => caller.callServerEndpoint<List<_i10.Location>>(
+  }) => caller.callServerEndpoint<List<_i11.Location>>(
     'getMatchLocation',
     'v1',
     {
@@ -179,8 +217,8 @@ class EndpointGetPlayerMatches extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerMatches';
 
-  _i2.Future<List<_i11.MatchSubscription>> v1() =>
-      caller.callServerEndpoint<List<_i11.MatchSubscription>>(
+  _i2.Future<List<_i12.MatchSubscription>> v1() =>
+      caller.callServerEndpoint<List<_i12.MatchSubscription>>(
         'getPlayerMatches',
         'v1',
         {},
@@ -194,8 +232,8 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
   @override
   String get name => 'subscribeToMatch';
 
-  _i2.Future<_i11.MatchSubscription> v1({required int scheduledMatchId}) =>
-      caller.callServerEndpoint<_i11.MatchSubscription>(
+  _i2.Future<_i12.MatchSubscription> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i12.MatchSubscription>(
         'subscribeToMatch',
         'v1',
         {'scheduledMatchId': scheduledMatchId},
@@ -206,7 +244,7 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i12.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i13.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -222,10 +260,10 @@ class EndpointEmailIdp extends _i12.EndpointEmailIdpBase {
   ///
   /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _i2.Future<_i13.AuthSuccess> login({
+  _i2.Future<_i14.AuthSuccess> login({
     required String email,
     required String password,
-  }) => caller.callServerEndpoint<_i13.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i14.AuthSuccess>(
     'emailIdp',
     'login',
     {
@@ -290,10 +328,10 @@ class EndpointEmailIdp extends _i12.EndpointEmailIdpBase {
   ///
   /// Returns a session for the newly created user.
   @override
-  _i2.Future<_i13.AuthSuccess> finishRegistration({
+  _i2.Future<_i14.AuthSuccess> finishRegistration({
     required String registrationToken,
     required String password,
-  }) => caller.callServerEndpoint<_i13.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i14.AuthSuccess>(
     'emailIdp',
     'finishRegistration',
     {
@@ -388,7 +426,7 @@ class EndpointEmailIdp extends _i12.EndpointEmailIdpBase {
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
-class EndpointJwtRefresh extends _i13.EndpointRefreshJwtTokens {
+class EndpointJwtRefresh extends _i14.EndpointRefreshJwtTokens {
   EndpointJwtRefresh(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -413,9 +451,9 @@ class EndpointJwtRefresh extends _i13.EndpointRefreshJwtTokens {
   /// This endpoint is unauthenticated, meaning the client won't include any
   /// authentication information with the call.
   @override
-  _i2.Future<_i13.AuthSuccess> refreshAccessToken({
+  _i2.Future<_i14.AuthSuccess> refreshAccessToken({
     required String refreshToken,
-  }) => caller.callServerEndpoint<_i13.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i14.AuthSuccess>(
     'jwtRefresh',
     'refreshAccessToken',
     {'refreshToken': refreshToken},
@@ -425,13 +463,13 @@ class EndpointJwtRefresh extends _i13.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i12.Caller(client);
-    serverpod_auth_core = _i13.Caller(client);
+    serverpod_auth_idp = _i13.Caller(client);
+    serverpod_auth_core = _i14.Caller(client);
   }
 
-  late final _i12.Caller serverpod_auth_idp;
+  late final _i13.Caller serverpod_auth_idp;
 
-  late final _i13.Caller serverpod_auth_core;
+  late final _i14.Caller serverpod_auth_core;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -454,7 +492,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i14.Protocol(),
+         _i15.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -467,6 +505,8 @@ class Client extends _i1.ServerpodClientShared {
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
     getPosts = EndpointGetPosts(this);
+    matchChatGetMessages = EndpointMatchChatGetMessages(this);
+    matchChatSendMessage = EndpointMatchChatSendMessage(this);
     createMatchSchedule = EndpointCreateMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
     getPlayerMatches = EndpointGetPlayerMatches(this);
@@ -483,6 +523,10 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointGetComments getComments;
 
   late final EndpointGetPosts getPosts;
+
+  late final EndpointMatchChatGetMessages matchChatGetMessages;
+
+  late final EndpointMatchChatSendMessage matchChatSendMessage;
 
   late final EndpointCreateMatchSchedule createMatchSchedule;
 
@@ -504,6 +548,8 @@ class Client extends _i1.ServerpodClientShared {
     'createPost': createPost,
     'getComments': getComments,
     'getPosts': getPosts,
+    'matchChatGetMessages': matchChatGetMessages,
+    'matchChatSendMessage': matchChatSendMessage,
     'createMatchSchedule': createMatchSchedule,
     'getMatchLocation': getMatchLocation,
     'getPlayerMatches': getPlayerMatches,

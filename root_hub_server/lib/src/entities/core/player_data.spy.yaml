@@ -11,6 +11,7 @@ fields:
   comments: List<PostComment>?, relation(name=player_comments)
   currentHosting: List<MatchSchedulePairingAttempt>?, relation(name=hosted_pairing_attempts)
   subscriptions: List<MatchSubscription>?, relation(name=player_subscriptions)
+  chatMessages: List<MatchChatMessage>?, relation(name=player_chat_messages)
 
 indexes:
   auth_user_id_unique_idx:
