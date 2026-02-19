@@ -7,6 +7,7 @@ fields:
   # Display info
   name: String
   formattedAddress: String?
+  shortFormattedAddress: String?
 
   # Geo
   lat: double
@@ -14,8 +15,14 @@ fields:
 
   # Optional extra info (useful for showing details in UI)
   url: String?
+  websiteUri: String?
   phoneNumber: String?
   types: List<String>?
+  primaryType: String?
+  rating: double?
+  userRatingCount: int?
+  priceLevel: String?
+  primaryPhotoName: String?
   timezone: String?
 
   # Safety / product controls

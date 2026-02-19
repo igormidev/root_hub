@@ -25,6 +25,7 @@
       "name": "root_hub_server",
       "version": "0.0.0",
       "dependencies": [
+        "google_maps_apis",
         "serverpod",
         "serverpod_auth_idp_server"
       ],
@@ -232,6 +233,20 @@
       "name": "lints",
       "version": "6.1.0",
       "dependencies": []
+    },
+    {
+      "name": "google_maps_apis",
+      "version": "5.0.0",
+      "dependencies": [
+        "collection",
+        "copy_with_extension",
+        "dio",
+        "http",
+        "json_annotation",
+        "meta",
+        "retrofit",
+        "uuid"
+      ]
     },
     {
       "name": "serverpod_auth_idp_server",
@@ -789,6 +804,60 @@
       ]
     },
     {
+      "name": "uuid",
+      "version": "4.5.2",
+      "dependencies": [
+        "crypto",
+        "fixnum",
+        "meta"
+      ]
+    },
+    {
+      "name": "dio",
+      "version": "5.9.1",
+      "dependencies": [
+        "async",
+        "collection",
+        "dio_web_adapter",
+        "http_parser",
+        "meta",
+        "mime",
+        "path"
+      ]
+    },
+    {
+      "name": "retrofit",
+      "version": "4.9.2",
+      "dependencies": [
+        "dio",
+        "meta"
+      ]
+    },
+    {
+      "name": "copy_with_extension",
+      "version": "12.0.0",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "json_annotation",
+      "version": "4.11.0",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "http",
+      "version": "1.6.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "sign_in_with_apple_server",
       "version": "1.0.0",
       "dependencies": [
@@ -845,16 +914,6 @@
       ]
     },
     {
-      "name": "http",
-      "version": "1.6.0",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta",
-        "web"
-      ]
-    },
-    {
       "name": "googleapis_auth",
       "version": "2.0.0",
       "dependencies": [
@@ -894,15 +953,6 @@
       "name": "vm_service",
       "version": "15.0.2",
       "dependencies": []
-    },
-    {
-      "name": "uuid",
-      "version": "4.5.2",
-      "dependencies": [
-        "crypto",
-        "fixnum",
-        "meta"
-      ]
     },
     {
       "name": "system_resources_2",
@@ -1288,6 +1338,21 @@
       ]
     },
     {
+      "name": "fixnum",
+      "version": "1.1.1",
+      "dependencies": []
+    },
+    {
+      "name": "dio_web_adapter",
+      "version": "2.1.1",
+      "dependencies": [
+        "dio",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "super_string",
       "version": "1.0.3",
       "dependencies": []
@@ -1336,11 +1401,6 @@
         "convert",
         "crypto"
       ]
-    },
-    {
-      "name": "fixnum",
-      "version": "1.1.1",
-      "dependencies": []
     },
     {
       "name": "relic_io",

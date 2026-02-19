@@ -307,6 +307,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<String>(),
               nullable: false,
             ),
+            'page': _i1.ParameterDescription(
+              name: 'page',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
           },
           call:
               (
@@ -316,6 +321,7 @@ class Endpoints extends _i1.EndpointDispatch {
                   (endpoints['getMatchLocation'] as _i7.GetMatchLocation).v1(
                     session,
                     query: params['query'],
+                    page: params['page'],
                   ),
         ),
       },

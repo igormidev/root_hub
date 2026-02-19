@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  copy_with_extension:
+    dependency: transitive
+    description:
+      name: copy_with_extension
+      sha256: "97229d03f8f0a42251ca35ae42936f2bbb8c5cd2387bf13d9c2c3556f15028bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "12.0.0"
   coverage:
     dependency: transitive
     description:
@@ -217,6 +225,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.3"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: b9d46faecab38fc8cc286f80bc4d61a3bb5d4ac49e51ed877b4d6706efe57b25
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.1"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "7586e476d70caecaf1686d21eee7247ea43ef5c345eab9e0cc3583ff13378d78"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   ed25519_edwards:
     dependency: transitive
     description:
@@ -397,6 +421,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3+1"
+  google_maps_apis:
+    dependency: transitive
+    description:
+      name: google_maps_apis
+      sha256: "84923127ba425ab80d332540e24a269c5321cdbbb65e487c98c946410d7a72cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   google_sign_in:
     dependency: transitive
     description:
@@ -525,6 +557,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: cb09e7dac6210041fad964ed7fbee004f14258b4eca4040f72d1234062ace4c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.11.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -837,6 +877,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  retrofit:
+    dependency: transitive
+    description:
+      name: retrofit
+      sha256: "0f629ed26b2c48c66fe54bd548313c6fdf7955be18bff37e08a46dd3f97f8eaf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.9.2"
   retry:
     dependency: transitive
     description:

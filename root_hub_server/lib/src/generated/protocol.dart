@@ -33,8 +33,10 @@ import 'entities/match_making/location.dart' as _i18;
 import 'entities/match_making/match_schedule.dart' as _i19;
 import 'entities/match_making/match_subscription.dart' as _i20;
 import 'entities/others/pagination_metadata.dart' as _i21;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i22;
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+    as _i23;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match_making/models/location_pagination.dart';
@@ -93,6 +95,12 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String?',
         ),
         _i2.ColumnDefinition(
+          name: 'shortFormattedAddress',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
           name: 'lat',
           columnType: _i2.ColumnType.doublePrecision,
           isNullable: false,
@@ -111,6 +119,12 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String?',
         ),
         _i2.ColumnDefinition(
+          name: 'websiteUri',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
           name: 'phoneNumber',
           columnType: _i2.ColumnType.text,
           isNullable: true,
@@ -121,6 +135,36 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.json,
           isNullable: true,
           dartType: 'List<String>?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'primaryType',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'rating',
+          columnType: _i2.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userRatingCount',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'priceLevel',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'primaryPhotoName',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
         ),
         _i2.ColumnDefinition(
           name: 'timezone',
@@ -1085,9 +1129,13 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i22.MatchSubscription>) {
+    if (t == List<_i22.Location>) {
+      return (data as List).map((e) => deserialize<_i22.Location>(e)).toList()
+          as T;
+    }
+    if (t == List<_i23.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i22.MatchSubscription>(e))
+              .map((e) => deserialize<_i23.MatchSubscription>(e))
               .toList()
           as T;
     }

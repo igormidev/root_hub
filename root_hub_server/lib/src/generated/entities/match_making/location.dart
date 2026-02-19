@@ -22,11 +22,18 @@ abstract class Location
     required this.providerPlaceId,
     required this.name,
     this.formattedAddress,
+    this.shortFormattedAddress,
     required this.lat,
     required this.lng,
     this.url,
+    this.websiteUri,
     this.phoneNumber,
     this.types,
+    this.primaryType,
+    this.rating,
+    this.userRatingCount,
+    this.priceLevel,
+    this.primaryPhotoName,
     this.timezone,
     bool? isPublicPlace,
     this.notes,
@@ -40,11 +47,18 @@ abstract class Location
     required String providerPlaceId,
     required String name,
     String? formattedAddress,
+    String? shortFormattedAddress,
     required double lat,
     required double lng,
     String? url,
+    String? websiteUri,
     String? phoneNumber,
     List<String>? types,
+    String? primaryType,
+    double? rating,
+    int? userRatingCount,
+    String? priceLevel,
+    String? primaryPhotoName,
     String? timezone,
     bool? isPublicPlace,
     String? notes,
@@ -59,15 +73,23 @@ abstract class Location
       providerPlaceId: jsonSerialization['providerPlaceId'] as String,
       name: jsonSerialization['name'] as String,
       formattedAddress: jsonSerialization['formattedAddress'] as String?,
+      shortFormattedAddress:
+          jsonSerialization['shortFormattedAddress'] as String?,
       lat: (jsonSerialization['lat'] as num).toDouble(),
       lng: (jsonSerialization['lng'] as num).toDouble(),
       url: jsonSerialization['url'] as String?,
+      websiteUri: jsonSerialization['websiteUri'] as String?,
       phoneNumber: jsonSerialization['phoneNumber'] as String?,
       types: jsonSerialization['types'] == null
           ? null
           : _i3.Protocol().deserialize<List<String>>(
               jsonSerialization['types'],
             ),
+      primaryType: jsonSerialization['primaryType'] as String?,
+      rating: (jsonSerialization['rating'] as num?)?.toDouble(),
+      userRatingCount: jsonSerialization['userRatingCount'] as int?,
+      priceLevel: jsonSerialization['priceLevel'] as String?,
+      primaryPhotoName: jsonSerialization['primaryPhotoName'] as String?,
       timezone: jsonSerialization['timezone'] as String?,
       isPublicPlace: jsonSerialization['isPublicPlace'] as bool?,
       notes: jsonSerialization['notes'] as String?,
@@ -98,15 +120,29 @@ abstract class Location
 
   String? formattedAddress;
 
+  String? shortFormattedAddress;
+
   double lat;
 
   double lng;
 
   String? url;
 
+  String? websiteUri;
+
   String? phoneNumber;
 
   List<String>? types;
+
+  String? primaryType;
+
+  double? rating;
+
+  int? userRatingCount;
+
+  String? priceLevel;
+
+  String? primaryPhotoName;
 
   String? timezone;
 
@@ -131,11 +167,18 @@ abstract class Location
     String? providerPlaceId,
     String? name,
     String? formattedAddress,
+    String? shortFormattedAddress,
     double? lat,
     double? lng,
     String? url,
+    String? websiteUri,
     String? phoneNumber,
     List<String>? types,
+    String? primaryType,
+    double? rating,
+    int? userRatingCount,
+    String? priceLevel,
+    String? primaryPhotoName,
     String? timezone,
     bool? isPublicPlace,
     String? notes,
@@ -151,11 +194,19 @@ abstract class Location
       'providerPlaceId': providerPlaceId,
       'name': name,
       if (formattedAddress != null) 'formattedAddress': formattedAddress,
+      if (shortFormattedAddress != null)
+        'shortFormattedAddress': shortFormattedAddress,
       'lat': lat,
       'lng': lng,
       if (url != null) 'url': url,
+      if (websiteUri != null) 'websiteUri': websiteUri,
       if (phoneNumber != null) 'phoneNumber': phoneNumber,
       if (types != null) 'types': types?.toJson(),
+      if (primaryType != null) 'primaryType': primaryType,
+      if (rating != null) 'rating': rating,
+      if (userRatingCount != null) 'userRatingCount': userRatingCount,
+      if (priceLevel != null) 'priceLevel': priceLevel,
+      if (primaryPhotoName != null) 'primaryPhotoName': primaryPhotoName,
       if (timezone != null) 'timezone': timezone,
       'isPublicPlace': isPublicPlace,
       if (notes != null) 'notes': notes,
@@ -176,11 +227,19 @@ abstract class Location
       'providerPlaceId': providerPlaceId,
       'name': name,
       if (formattedAddress != null) 'formattedAddress': formattedAddress,
+      if (shortFormattedAddress != null)
+        'shortFormattedAddress': shortFormattedAddress,
       'lat': lat,
       'lng': lng,
       if (url != null) 'url': url,
+      if (websiteUri != null) 'websiteUri': websiteUri,
       if (phoneNumber != null) 'phoneNumber': phoneNumber,
       if (types != null) 'types': types?.toJson(),
+      if (primaryType != null) 'primaryType': primaryType,
+      if (rating != null) 'rating': rating,
+      if (userRatingCount != null) 'userRatingCount': userRatingCount,
+      if (priceLevel != null) 'priceLevel': priceLevel,
+      if (primaryPhotoName != null) 'primaryPhotoName': primaryPhotoName,
       if (timezone != null) 'timezone': timezone,
       'isPublicPlace': isPublicPlace,
       if (notes != null) 'notes': notes,
@@ -233,11 +292,18 @@ class _LocationImpl extends Location {
     required String providerPlaceId,
     required String name,
     String? formattedAddress,
+    String? shortFormattedAddress,
     required double lat,
     required double lng,
     String? url,
+    String? websiteUri,
     String? phoneNumber,
     List<String>? types,
+    String? primaryType,
+    double? rating,
+    int? userRatingCount,
+    String? priceLevel,
+    String? primaryPhotoName,
     String? timezone,
     bool? isPublicPlace,
     String? notes,
@@ -249,11 +315,18 @@ class _LocationImpl extends Location {
          providerPlaceId: providerPlaceId,
          name: name,
          formattedAddress: formattedAddress,
+         shortFormattedAddress: shortFormattedAddress,
          lat: lat,
          lng: lng,
          url: url,
+         websiteUri: websiteUri,
          phoneNumber: phoneNumber,
          types: types,
+         primaryType: primaryType,
+         rating: rating,
+         userRatingCount: userRatingCount,
+         priceLevel: priceLevel,
+         primaryPhotoName: primaryPhotoName,
          timezone: timezone,
          isPublicPlace: isPublicPlace,
          notes: notes,
@@ -271,11 +344,18 @@ class _LocationImpl extends Location {
     String? providerPlaceId,
     String? name,
     Object? formattedAddress = _Undefined,
+    Object? shortFormattedAddress = _Undefined,
     double? lat,
     double? lng,
     Object? url = _Undefined,
+    Object? websiteUri = _Undefined,
     Object? phoneNumber = _Undefined,
     Object? types = _Undefined,
+    Object? primaryType = _Undefined,
+    Object? rating = _Undefined,
+    Object? userRatingCount = _Undefined,
+    Object? priceLevel = _Undefined,
+    Object? primaryPhotoName = _Undefined,
     Object? timezone = _Undefined,
     bool? isPublicPlace,
     Object? notes = _Undefined,
@@ -290,13 +370,26 @@ class _LocationImpl extends Location {
       formattedAddress: formattedAddress is String?
           ? formattedAddress
           : this.formattedAddress,
+      shortFormattedAddress: shortFormattedAddress is String?
+          ? shortFormattedAddress
+          : this.shortFormattedAddress,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
       url: url is String? ? url : this.url,
+      websiteUri: websiteUri is String? ? websiteUri : this.websiteUri,
       phoneNumber: phoneNumber is String? ? phoneNumber : this.phoneNumber,
       types: types is List<String>?
           ? types
           : this.types?.map((e0) => e0).toList(),
+      primaryType: primaryType is String? ? primaryType : this.primaryType,
+      rating: rating is double? ? rating : this.rating,
+      userRatingCount: userRatingCount is int?
+          ? userRatingCount
+          : this.userRatingCount,
+      priceLevel: priceLevel is String? ? priceLevel : this.priceLevel,
+      primaryPhotoName: primaryPhotoName is String?
+          ? primaryPhotoName
+          : this.primaryPhotoName,
       timezone: timezone is String? ? timezone : this.timezone,
       isPublicPlace: isPublicPlace ?? this.isPublicPlace,
       notes: notes is String? ? notes : this.notes,
@@ -329,6 +422,12 @@ class LocationUpdateTable extends _i1.UpdateTable<LocationTable> {
         value,
       );
 
+  _i1.ColumnValue<String, String> shortFormattedAddress(String? value) =>
+      _i1.ColumnValue(
+        table.shortFormattedAddress,
+        value,
+      );
+
   _i1.ColumnValue<double, double> lat(double value) => _i1.ColumnValue(
     table.lat,
     value,
@@ -344,6 +443,11 @@ class LocationUpdateTable extends _i1.UpdateTable<LocationTable> {
     value,
   );
 
+  _i1.ColumnValue<String, String> websiteUri(String? value) => _i1.ColumnValue(
+    table.websiteUri,
+    value,
+  );
+
   _i1.ColumnValue<String, String> phoneNumber(String? value) => _i1.ColumnValue(
     table.phoneNumber,
     value,
@@ -352,6 +456,32 @@ class LocationUpdateTable extends _i1.UpdateTable<LocationTable> {
   _i1.ColumnValue<List<String>, List<String>> types(List<String>? value) =>
       _i1.ColumnValue(
         table.types,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> primaryType(String? value) => _i1.ColumnValue(
+    table.primaryType,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> rating(double? value) => _i1.ColumnValue(
+    table.rating,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> userRatingCount(int? value) => _i1.ColumnValue(
+    table.userRatingCount,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> priceLevel(String? value) => _i1.ColumnValue(
+    table.priceLevel,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> primaryPhotoName(String? value) =>
+      _i1.ColumnValue(
+        table.primaryPhotoName,
         value,
       );
 
@@ -398,6 +528,10 @@ class LocationTable extends _i1.Table<int?> {
       'formattedAddress',
       this,
     );
+    shortFormattedAddress = _i1.ColumnString(
+      'shortFormattedAddress',
+      this,
+    );
     lat = _i1.ColumnDouble(
       'lat',
       this,
@@ -410,12 +544,36 @@ class LocationTable extends _i1.Table<int?> {
       'url',
       this,
     );
+    websiteUri = _i1.ColumnString(
+      'websiteUri',
+      this,
+    );
     phoneNumber = _i1.ColumnString(
       'phoneNumber',
       this,
     );
     types = _i1.ColumnSerializable<List<String>>(
       'types',
+      this,
+    );
+    primaryType = _i1.ColumnString(
+      'primaryType',
+      this,
+    );
+    rating = _i1.ColumnDouble(
+      'rating',
+      this,
+    );
+    userRatingCount = _i1.ColumnInt(
+      'userRatingCount',
+      this,
+    );
+    priceLevel = _i1.ColumnString(
+      'priceLevel',
+      this,
+    );
+    primaryPhotoName = _i1.ColumnString(
+      'primaryPhotoName',
       this,
     );
     timezone = _i1.ColumnString(
@@ -449,15 +607,29 @@ class LocationTable extends _i1.Table<int?> {
 
   late final _i1.ColumnString formattedAddress;
 
+  late final _i1.ColumnString shortFormattedAddress;
+
   late final _i1.ColumnDouble lat;
 
   late final _i1.ColumnDouble lng;
 
   late final _i1.ColumnString url;
 
+  late final _i1.ColumnString websiteUri;
+
   late final _i1.ColumnString phoneNumber;
 
   late final _i1.ColumnSerializable<List<String>> types;
+
+  late final _i1.ColumnString primaryType;
+
+  late final _i1.ColumnDouble rating;
+
+  late final _i1.ColumnInt userRatingCount;
+
+  late final _i1.ColumnString priceLevel;
+
+  late final _i1.ColumnString primaryPhotoName;
 
   late final _i1.ColumnString timezone;
 
@@ -515,11 +687,18 @@ class LocationTable extends _i1.Table<int?> {
     providerPlaceId,
     name,
     formattedAddress,
+    shortFormattedAddress,
     lat,
     lng,
     url,
+    websiteUri,
     phoneNumber,
     types,
+    primaryType,
+    rating,
+    userRatingCount,
+    priceLevel,
+    primaryPhotoName,
     timezone,
     isPublicPlace,
     notes,

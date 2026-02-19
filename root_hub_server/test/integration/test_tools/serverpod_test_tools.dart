@@ -468,9 +468,10 @@ class _GetMatchLocation {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i11.Location> v1(
+  _i3.Future<List<_i11.Location>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required String query,
+    required int page,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -483,7 +484,10 @@ class _GetMatchLocation {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getMatchLocation',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({'query': query}),
+          parameters: _i1.testObjectToJson({
+            'query': query,
+            'page': page,
+          }),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -491,7 +495,7 @@ class _GetMatchLocation {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i11.Location>);
+                as _i3.Future<List<_i11.Location>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

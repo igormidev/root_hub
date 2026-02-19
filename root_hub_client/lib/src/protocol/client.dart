@@ -159,12 +159,17 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
   @override
   String get name => 'getMatchLocation';
 
-  _i2.Future<_i10.Location> v1({required String query}) =>
-      caller.callServerEndpoint<_i10.Location>(
-        'getMatchLocation',
-        'v1',
-        {'query': query},
-      );
+  _i2.Future<List<_i10.Location>> v1({
+    required String query,
+    required int page,
+  }) => caller.callServerEndpoint<List<_i10.Location>>(
+    'getMatchLocation',
+    'v1',
+    {
+      'query': query,
+      'page': page,
+    },
+  );
 }
 
 /// {@category Endpoint}
