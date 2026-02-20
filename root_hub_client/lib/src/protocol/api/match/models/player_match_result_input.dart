@@ -18,6 +18,7 @@ abstract class PlayerMatchResultInput implements _i1.SerializableModel {
     this.anonymousPlayerId,
     this.playerDataId,
     required this.didWin,
+    this.scoreInMatch,
     required this.factionUsedInMatch,
   });
 
@@ -25,6 +26,7 @@ abstract class PlayerMatchResultInput implements _i1.SerializableModel {
     int? anonymousPlayerId,
     int? playerDataId,
     required bool didWin,
+    int? scoreInMatch,
     required _i2.Faction factionUsedInMatch,
   }) = _PlayerMatchResultInputImpl;
 
@@ -35,6 +37,7 @@ abstract class PlayerMatchResultInput implements _i1.SerializableModel {
       anonymousPlayerId: jsonSerialization['anonymousPlayerId'] as int?,
       playerDataId: jsonSerialization['playerDataId'] as int?,
       didWin: jsonSerialization['didWin'] as bool,
+      scoreInMatch: jsonSerialization['scoreInMatch'] as int?,
       factionUsedInMatch: _i2.Faction.fromJson(
         (jsonSerialization['factionUsedInMatch'] as String),
       ),
@@ -47,6 +50,8 @@ abstract class PlayerMatchResultInput implements _i1.SerializableModel {
 
   bool didWin;
 
+  int? scoreInMatch;
+
   _i2.Faction factionUsedInMatch;
 
   /// Returns a shallow copy of this [PlayerMatchResultInput]
@@ -56,6 +61,7 @@ abstract class PlayerMatchResultInput implements _i1.SerializableModel {
     int? anonymousPlayerId,
     int? playerDataId,
     bool? didWin,
+    int? scoreInMatch,
     _i2.Faction? factionUsedInMatch,
   });
   @override
@@ -65,6 +71,7 @@ abstract class PlayerMatchResultInput implements _i1.SerializableModel {
       if (anonymousPlayerId != null) 'anonymousPlayerId': anonymousPlayerId,
       if (playerDataId != null) 'playerDataId': playerDataId,
       'didWin': didWin,
+      if (scoreInMatch != null) 'scoreInMatch': scoreInMatch,
       'factionUsedInMatch': factionUsedInMatch.toJson(),
     };
   }
@@ -82,11 +89,13 @@ class _PlayerMatchResultInputImpl extends PlayerMatchResultInput {
     int? anonymousPlayerId,
     int? playerDataId,
     required bool didWin,
+    int? scoreInMatch,
     required _i2.Faction factionUsedInMatch,
   }) : super._(
          anonymousPlayerId: anonymousPlayerId,
          playerDataId: playerDataId,
          didWin: didWin,
+         scoreInMatch: scoreInMatch,
          factionUsedInMatch: factionUsedInMatch,
        );
 
@@ -98,6 +107,7 @@ class _PlayerMatchResultInputImpl extends PlayerMatchResultInput {
     Object? anonymousPlayerId = _Undefined,
     Object? playerDataId = _Undefined,
     bool? didWin,
+    Object? scoreInMatch = _Undefined,
     _i2.Faction? factionUsedInMatch,
   }) {
     return PlayerMatchResultInput(
@@ -106,6 +116,7 @@ class _PlayerMatchResultInputImpl extends PlayerMatchResultInput {
           : this.anonymousPlayerId,
       playerDataId: playerDataId is int? ? playerDataId : this.playerDataId,
       didWin: didWin ?? this.didWin,
+      scoreInMatch: scoreInMatch is int? ? scoreInMatch : this.scoreInMatch,
       factionUsedInMatch: factionUsedInMatch ?? this.factionUsedInMatch,
     );
   }

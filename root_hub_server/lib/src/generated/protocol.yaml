@@ -8,6 +8,8 @@ getPosts:
   - v1:
 getMatchData:
   - v1:
+registerMatchData:
+  - v1:
 matchChatGetMessages:
   - v1:
 matchChatSendMessage:

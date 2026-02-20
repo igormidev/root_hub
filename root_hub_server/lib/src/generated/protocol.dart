@@ -40,12 +40,14 @@ import 'entities/match_making/manual_input_location.dart' as _i25;
 import 'entities/match_making/match_schedule.dart' as _i26;
 import 'entities/match_making/match_subscription.dart' as _i27;
 import 'entities/others/pagination_metadata.dart' as _i28;
-import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i29;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
     as _i30;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i31;
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+    as _i32;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match/models/player_match_result_input.dart';
@@ -1814,19 +1816,25 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i29.MatchChatMessage>) {
+    if (t == List<_i29.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i29.MatchChatMessage>(e))
+              .map((e) => deserialize<_i29.PlayerMatchResultInput>(e))
               .toList()
           as T;
     }
-    if (t == List<_i30.Location>) {
-      return (data as List).map((e) => deserialize<_i30.Location>(e)).toList()
+    if (t == List<_i30.MatchChatMessage>) {
+      return (data as List)
+              .map((e) => deserialize<_i30.MatchChatMessage>(e))
+              .toList()
           as T;
     }
-    if (t == List<_i31.MatchSubscription>) {
+    if (t == List<_i31.Location>) {
+      return (data as List).map((e) => deserialize<_i31.Location>(e)).toList()
+          as T;
+    }
+    if (t == List<_i32.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i31.MatchSubscription>(e))
+              .map((e) => deserialize<_i32.MatchSubscription>(e))
               .toList()
           as T;
     }

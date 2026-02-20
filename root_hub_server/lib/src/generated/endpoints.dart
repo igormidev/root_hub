@@ -16,22 +16,25 @@ import '../api/community/create_post_endpoint.dart' as _i3;
 import '../api/community/get_comments_endpoint.dart' as _i4;
 import '../api/community/get_posts_endpoint.dart' as _i5;
 import '../api/match/get_match_data.dart' as _i6;
-import '../api/match_chat/match_chat_get_messages.dart' as _i7;
-import '../api/match_chat/match_chat_send_message.dart' as _i8;
-import '../api/match_making/create_match_schedule.dart' as _i9;
-import '../api/match_making/get_match_location.dart' as _i10;
-import '../api/match_making/get_player_matches.dart' as _i11;
-import '../api/match_making/subscribe_to_match.dart' as _i12;
-import '../auth/email_idp_endpoint.dart' as _i13;
-import '../auth/jwt_refresh_endpoint.dart' as _i14;
+import '../api/match/register_match_data.dart' as _i7;
+import '../api/match_chat/match_chat_get_messages.dart' as _i8;
+import '../api/match_chat/match_chat_send_message.dart' as _i9;
+import '../api/match_making/create_match_schedule.dart' as _i10;
+import '../api/match_making/get_match_location.dart' as _i11;
+import '../api/match_making/get_player_matches.dart' as _i12;
+import '../api/match_making/subscribe_to_match.dart' as _i13;
+import '../auth/email_idp_endpoint.dart' as _i14;
+import '../auth/jwt_refresh_endpoint.dart' as _i15;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
-    as _i15;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i16;
-import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i17;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i18;
+import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
+    as _i19;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i20;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -67,49 +70,55 @@ class Endpoints extends _i1.EndpointDispatch {
           'getMatchData',
           null,
         ),
-      'matchChatGetMessages': _i7.MatchChatGetMessages()
+      'registerMatchData': _i7.RegisterMatchData()
+        ..initialize(
+          server,
+          'registerMatchData',
+          null,
+        ),
+      'matchChatGetMessages': _i8.MatchChatGetMessages()
         ..initialize(
           server,
           'matchChatGetMessages',
           null,
         ),
-      'matchChatSendMessage': _i8.MatchChatSendMessage()
+      'matchChatSendMessage': _i9.MatchChatSendMessage()
         ..initialize(
           server,
           'matchChatSendMessage',
           null,
         ),
-      'createMatchSchedule': _i9.CreateMatchSchedule()
+      'createMatchSchedule': _i10.CreateMatchSchedule()
         ..initialize(
           server,
           'createMatchSchedule',
           null,
         ),
-      'getMatchLocation': _i10.GetMatchLocation()
+      'getMatchLocation': _i11.GetMatchLocation()
         ..initialize(
           server,
           'getMatchLocation',
           null,
         ),
-      'getPlayerMatches': _i11.GetPlayerMatches()
+      'getPlayerMatches': _i12.GetPlayerMatches()
         ..initialize(
           server,
           'getPlayerMatches',
           null,
         ),
-      'subscribeToMatch': _i12.SubscribeToMatch()
+      'subscribeToMatch': _i13.SubscribeToMatch()
         ..initialize(
           server,
           'subscribeToMatch',
           null,
         ),
-      'emailIdp': _i13.EmailIdpEndpoint()
+      'emailIdp': _i14.EmailIdpEndpoint()
         ..initialize(
           server,
           'emailIdp',
           null,
         ),
-      'jwtRefresh': _i14.JwtRefreshEndpoint()
+      'jwtRefresh': _i15.JwtRefreshEndpoint()
         ..initialize(
           server,
           'jwtRefresh',
@@ -135,7 +144,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i15.Language>(),
+              type: _i1.getType<_i16.Language>(),
               nullable: false,
             ),
           },
@@ -172,7 +181,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i15.Language>(),
+              type: _i1.getType<_i16.Language>(),
               nullable: false,
             ),
             'attachedMatchId': _i1.ParameterDescription(
@@ -240,7 +249,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i15.Language?>(),
+              type: _i1.getType<_i16.Language?>(),
               nullable: true,
             ),
           },
@@ -272,6 +281,56 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['registerMatchData'] = _i1.EndpointConnector(
+      name: 'registerMatchData',
+      endpoint: endpoints['registerMatchData']!,
+      methodConnectors: {
+        'v1': _i1.MethodConnector(
+          name: 'v1',
+          params: {
+            'matchStartedAt': _i1.ParameterDescription(
+              name: 'matchStartedAt',
+              type: _i1.getType<DateTime>(),
+              nullable: false,
+            ),
+            'matchEstimatedDuration': _i1.ParameterDescription(
+              name: 'matchEstimatedDuration',
+              type: _i1.getType<Duration>(),
+              nullable: false,
+            ),
+            'locationId': _i1.ParameterDescription(
+              name: 'locationId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'scheduledPairingAttemptId': _i1.ParameterDescription(
+              name: 'scheduledPairingAttemptId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'players': _i1.ParameterDescription(
+              name: 'players',
+              type: _i1.getType<List<_i17.PlayerMatchResultInput>>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['registerMatchData'] as _i7.RegisterMatchData).v1(
+                    session,
+                    matchStartedAt: params['matchStartedAt'],
+                    matchEstimatedDuration: params['matchEstimatedDuration'],
+                    locationId: params['locationId'],
+                    scheduledPairingAttemptId:
+                        params['scheduledPairingAttemptId'],
+                    players: params['players'],
+                  ),
+        ),
+      },
+    );
     connectors['matchChatGetMessages'] = _i1.EndpointConnector(
       name: 'matchChatGetMessages',
       endpoint: endpoints['matchChatGetMessages']!,
@@ -291,7 +350,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async =>
                   (endpoints['matchChatGetMessages']
-                          as _i7.MatchChatGetMessages)
+                          as _i8.MatchChatGetMessages)
                       .v1(
                         session,
                         matchChatHistoryId: params['matchChatHistoryId'],
@@ -323,7 +382,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async =>
                   (endpoints['matchChatSendMessage']
-                          as _i8.MatchChatSendMessage)
+                          as _i9.MatchChatSendMessage)
                       .v1(
                         session,
                         matchChatHistoryId: params['matchChatHistoryId'],
@@ -356,12 +415,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'minAmountOfPlayers': _i1.ParameterDescription(
               name: 'minAmountOfPlayers',
-              type: _i1.getType<_i16.MatchPodium>(),
+              type: _i1.getType<_i18.MatchPodium>(),
               nullable: false,
             ),
             'maxAmountOfPlayers': _i1.ParameterDescription(
               name: 'maxAmountOfPlayers',
-              type: _i1.getType<_i16.MatchPodium>(),
+              type: _i1.getType<_i18.MatchPodium>(),
               nullable: false,
             ),
             'attemptedAt': _i1.ParameterDescription(
@@ -380,7 +439,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['createMatchSchedule'] as _i9.CreateMatchSchedule)
+                  (endpoints['createMatchSchedule'] as _i10.CreateMatchSchedule)
                       .v1(
                         session,
                         title: params['title'],
@@ -417,7 +476,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['getMatchLocation'] as _i10.GetMatchLocation).v1(
+                  (endpoints['getMatchLocation'] as _i11.GetMatchLocation).v1(
                     session,
                     query: params['query'],
                     page: params['page'],
@@ -437,7 +496,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['getPlayerMatches'] as _i11.GetPlayerMatches).v1(
+                  (endpoints['getPlayerMatches'] as _i12.GetPlayerMatches).v1(
                     session,
                   ),
         ),
@@ -461,7 +520,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['subscribeToMatch'] as _i12.SubscribeToMatch).v1(
+                  (endpoints['subscribeToMatch'] as _i13.SubscribeToMatch).v1(
                     session,
                     scheduledMatchId: params['scheduledMatchId'],
                   ),
@@ -490,7 +549,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint).login(
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint).login(
                 session,
                 email: params['email'],
                 password: params['password'],
@@ -509,7 +568,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .startRegistration(
                     session,
                     email: params['email'],
@@ -533,7 +592,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .verifyRegistrationCode(
                     session,
                     accountRequestId: params['accountRequestId'],
@@ -558,7 +617,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .finishRegistration(
                     session,
                     registrationToken: params['registrationToken'],
@@ -578,7 +637,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .startPasswordReset(
                     session,
                     email: params['email'],
@@ -602,7 +661,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .verifyPasswordResetCode(
                     session,
                     passwordResetRequestId: params['passwordResetRequestId'],
@@ -627,7 +686,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .finishPasswordReset(
                     session,
                     finishPasswordResetToken:
@@ -642,7 +701,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i13.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i14.EmailIdpEndpoint)
                   .hasAccount(session),
         ),
       },
@@ -664,7 +723,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['jwtRefresh'] as _i14.JwtRefreshEndpoint)
+              ) async => (endpoints['jwtRefresh'] as _i15.JwtRefreshEndpoint)
                   .refreshAccessToken(
                     session,
                     refreshToken: params['refreshToken'],
@@ -672,9 +731,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i17.Endpoints()
+    modules['serverpod_auth_idp'] = _i19.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i18.Endpoints()
+    modules['serverpod_auth_core'] = _i20.Endpoints()
       ..initializeEndpoints(server);
   }
 }

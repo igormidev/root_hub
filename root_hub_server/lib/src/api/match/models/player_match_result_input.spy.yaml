@@ -4,4 +4,5 @@ fields:
   anonymousPlayerId: int?
   playerDataId: int?
   didWin: bool
+  scoreInMatch: int? # If null, it means the user was playing by a domination card and not by points
   factionUsedInMatch: Faction
