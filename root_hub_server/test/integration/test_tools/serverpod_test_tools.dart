@@ -36,10 +36,12 @@ import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i13;
 import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i14;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/api/match/models/played_matches_pagination.dart'
     as _i15;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i16;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i17;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -155,7 +157,7 @@ class TestEndpoints {
 
   late final _GetPostsEndpoint getPosts;
 
-  late final _GetMatchData getMatchData;
+  late final _GetMyMatches getMyMatches;
 
   late final _RegisterMatchData registerMatchData;
 
@@ -167,7 +169,7 @@ class TestEndpoints {
 
   late final _GetMatchLocation getMatchLocation;
 
-  late final _GetPlayerMatches getPlayerMatches;
+  late final _GetPlayerSubscribedMatches getPlayerSubscribedMatches;
 
   late final _SubscribeToMatch subscribeToMatch;
 
@@ -199,7 +201,7 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
-    getMatchData = _GetMatchData(
+    getMyMatches = _GetMyMatches(
       endpoints,
       serializationManager,
     );
@@ -223,7 +225,7 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
-    getPlayerMatches = _GetPlayerMatches(
+    getPlayerSubscribedMatches = _GetPlayerSubscribedMatches(
       endpoints,
       serializationManager,
     );
@@ -432,8 +434,8 @@ class _GetPostsEndpoint {
   }
 }
 
-class _GetMatchData {
-  _GetMatchData(
+class _GetMyMatches {
+  _GetMyMatches(
     this._endpointDispatch,
     this._serializationManager,
   );
@@ -442,17 +444,19 @@ class _GetMatchData {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<void> v1(_i1.TestSessionBuilder sessionBuilder) async {
+  _i3.Future<List<_i9.PlayedMatch>> v1(
+    _i1.TestSessionBuilder sessionBuilder,
+  ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'getMatchData',
+            endpoint: 'getMyMatches',
             method: 'v1',
           );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'getMatchData',
+          endpointPath: 'getMyMatches',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({}),
           serializationManager: _serializationManager,
@@ -462,7 +466,7 @@ class _GetMatchData {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<void>);
+                as _i3.Future<List<_i9.PlayedMatch>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -715,8 +719,8 @@ class _GetMatchLocation {
   }
 }
 
-class _GetPlayerMatches {
-  _GetPlayerMatches(
+class _GetPlayerSubscribedMatches {
+  _GetPlayerSubscribedMatches(
     this._endpointDispatch,
     this._serializationManager,
   );
@@ -725,21 +729,22 @@ class _GetPlayerMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i15.MatchSubscription>> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+  _i3.Future<_i15.PlayedMatchesPagination> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int page,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'getPlayerMatches',
+            endpoint: 'getPlayerSubscribedMatches',
             method: 'v1',
           );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'getPlayerMatches',
+          endpointPath: 'getPlayerSubscribedMatches',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'page': page}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -747,7 +752,7 @@ class _GetPlayerMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i15.MatchSubscription>>);
+                as _i3.Future<_i15.PlayedMatchesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -766,7 +771,7 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i15.MatchSubscription> v1(
+  _i3.Future<_i16.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required int scheduledMatchId,
   }) async {
@@ -791,7 +796,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.MatchSubscription>);
+                as _i3.Future<_i16.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -810,7 +815,7 @@ class _EmailIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i16.AuthSuccess> login(
+  _i3.Future<_i17.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String email,
     required String password,
@@ -837,7 +842,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i16.AuthSuccess>);
+                as _i3.Future<_i17.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -911,7 +916,7 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<_i16.AuthSuccess> finishRegistration(
+  _i3.Future<_i17.AuthSuccess> finishRegistration(
     _i1.TestSessionBuilder sessionBuilder, {
     required String registrationToken,
     required String password,
@@ -938,7 +943,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i16.AuthSuccess>);
+                as _i3.Future<_i17.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1086,7 +1091,7 @@ class _JwtRefreshEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i16.AuthSuccess> refreshAccessToken(
+  _i3.Future<_i17.AuthSuccess> refreshAccessToken(
     _i1.TestSessionBuilder sessionBuilder, {
     required String refreshToken,
   }) async {
@@ -1109,7 +1114,7 @@ class _JwtRefreshEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i16.AuthSuccess>);
+                as _i3.Future<_i17.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

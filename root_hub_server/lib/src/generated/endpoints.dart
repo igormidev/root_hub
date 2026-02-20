@@ -15,13 +15,13 @@ import '../api/community/create_comment_endpoint.dart' as _i2;
 import '../api/community/create_post_endpoint.dart' as _i3;
 import '../api/community/get_comments_endpoint.dart' as _i4;
 import '../api/community/get_posts_endpoint.dart' as _i5;
-import '../api/match/get_match_data.dart' as _i6;
+import '../api/match/get_my_played_matches.dart' as _i6;
 import '../api/match/register_match_data.dart' as _i7;
 import '../api/match_chat/match_chat_get_messages.dart' as _i8;
 import '../api/match_chat/match_chat_send_message.dart' as _i9;
 import '../api/match_making/create_match_schedule.dart' as _i10;
 import '../api/match_making/get_match_location.dart' as _i11;
-import '../api/match_making/get_player_matches.dart' as _i12;
+import '../api/match_making/get_player_subscribed_matches.dart' as _i12;
 import '../api/match_making/subscribe_to_match.dart' as _i13;
 import '../auth/email_idp_endpoint.dart' as _i14;
 import '../auth/jwt_refresh_endpoint.dart' as _i15;
@@ -64,10 +64,10 @@ class Endpoints extends _i1.EndpointDispatch {
           'getPosts',
           null,
         ),
-      'getMatchData': _i6.GetMatchData()
+      'getMyMatches': _i6.GetMyMatches()
         ..initialize(
           server,
-          'getMatchData',
+          'getMyMatches',
           null,
         ),
       'registerMatchData': _i7.RegisterMatchData()
@@ -100,10 +100,10 @@ class Endpoints extends _i1.EndpointDispatch {
           'getMatchLocation',
           null,
         ),
-      'getPlayerMatches': _i12.GetPlayerMatches()
+      'getPlayerSubscribedMatches': _i12.GetPlayerSubscribedMatches()
         ..initialize(
           server,
-          'getPlayerMatches',
+          'getPlayerSubscribedMatches',
           null,
         ),
       'subscribeToMatch': _i13.SubscribeToMatch()
@@ -265,9 +265,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['getMatchData'] = _i1.EndpointConnector(
-      name: 'getMatchData',
-      endpoint: endpoints['getMatchData']!,
+    connectors['getMyMatches'] = _i1.EndpointConnector(
+      name: 'getMyMatches',
+      endpoint: endpoints['getMyMatches']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
@@ -277,7 +277,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['getMatchData'] as _i6.GetMatchData).v1(session),
+                  (endpoints['getMyMatches'] as _i6.GetMyMatches).v1(session),
         ),
       },
     );
@@ -484,21 +484,30 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['getPlayerMatches'] = _i1.EndpointConnector(
-      name: 'getPlayerMatches',
-      endpoint: endpoints['getPlayerMatches']!,
+    connectors['getPlayerSubscribedMatches'] = _i1.EndpointConnector(
+      name: 'getPlayerSubscribedMatches',
+      endpoint: endpoints['getPlayerSubscribedMatches']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
-          params: {},
+          params: {
+            'page': _i1.ParameterDescription(
+              name: 'page',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
           call:
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['getPlayerMatches'] as _i12.GetPlayerMatches).v1(
-                    session,
-                  ),
+                  (endpoints['getPlayerSubscribedMatches']
+                          as _i12.GetPlayerSubscribedMatches)
+                      .v1(
+                        session,
+                        page: params['page'],
+                      ),
         ),
       },
     );

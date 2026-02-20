@@ -6,7 +6,7 @@ getComments:
   - v1:
 getPosts:
   - v1:
-getMatchData:
+getMyMatches:
   - v1:
 registerMatchData:
   - v1:
@@ -18,7 +18,7 @@ createMatchSchedule:
   - v1:
 getMatchLocation:
   - v1:
-getPlayerMatches:
+getPlayerSubscribedMatches:
   - v1:
 subscribeToMatch:
   - v1:
