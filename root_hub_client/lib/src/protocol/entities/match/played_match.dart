@@ -21,7 +21,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
   PlayedMatch._({
     this.id,
     required this.matchStartedAt,
-    this.matchDuration,
+    this.matchEstimatedDuration,
     required this.locationId,
     this.location,
     this.players,
@@ -32,7 +32,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
   factory PlayedMatch({
     int? id,
     required DateTime matchStartedAt,
-    Duration? matchDuration,
+    Duration? matchEstimatedDuration,
     required int locationId,
     _i2.Location? location,
     List<_i3.PlayerInMatch>? players,
@@ -46,10 +46,11 @@ abstract class PlayedMatch implements _i1.SerializableModel {
       matchStartedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['matchStartedAt'],
       ),
-      matchDuration: jsonSerialization['matchDuration'] == null
+      matchEstimatedDuration:
+          jsonSerialization['matchEstimatedDuration'] == null
           ? null
           : _i1.DurationJsonExtension.fromJson(
-              jsonSerialization['matchDuration'],
+              jsonSerialization['matchEstimatedDuration'],
             ),
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
@@ -82,7 +83,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
 
   DateTime matchStartedAt;
 
-  Duration? matchDuration;
+  Duration? matchEstimatedDuration;
 
   int locationId;
 
@@ -100,7 +101,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
   PlayedMatch copyWith({
     int? id,
     DateTime? matchStartedAt,
-    Duration? matchDuration,
+    Duration? matchEstimatedDuration,
     int? locationId,
     _i2.Location? location,
     List<_i3.PlayerInMatch>? players,
@@ -113,7 +114,8 @@ abstract class PlayedMatch implements _i1.SerializableModel {
       '__className__': 'PlayedMatch',
       if (id != null) 'id': id,
       'matchStartedAt': matchStartedAt.toJson(),
-      if (matchDuration != null) 'matchDuration': matchDuration?.toJson(),
+      if (matchEstimatedDuration != null)
+        'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
       if (players != null)
@@ -135,7 +137,7 @@ class _PlayedMatchImpl extends PlayedMatch {
   _PlayedMatchImpl({
     int? id,
     required DateTime matchStartedAt,
-    Duration? matchDuration,
+    Duration? matchEstimatedDuration,
     required int locationId,
     _i2.Location? location,
     List<_i3.PlayerInMatch>? players,
@@ -144,7 +146,7 @@ class _PlayedMatchImpl extends PlayedMatch {
   }) : super._(
          id: id,
          matchStartedAt: matchStartedAt,
-         matchDuration: matchDuration,
+         matchEstimatedDuration: matchEstimatedDuration,
          locationId: locationId,
          location: location,
          players: players,
@@ -159,7 +161,7 @@ class _PlayedMatchImpl extends PlayedMatch {
   PlayedMatch copyWith({
     Object? id = _Undefined,
     DateTime? matchStartedAt,
-    Object? matchDuration = _Undefined,
+    Object? matchEstimatedDuration = _Undefined,
     int? locationId,
     Object? location = _Undefined,
     Object? players = _Undefined,
@@ -169,9 +171,9 @@ class _PlayedMatchImpl extends PlayedMatch {
     return PlayedMatch(
       id: id is int? ? id : this.id,
       matchStartedAt: matchStartedAt ?? this.matchStartedAt,
-      matchDuration: matchDuration is Duration?
-          ? matchDuration
-          : this.matchDuration,
+      matchEstimatedDuration: matchEstimatedDuration is Duration?
+          ? matchEstimatedDuration
+          : this.matchEstimatedDuration,
       locationId: locationId ?? this.locationId,
       location: location is _i2.Location?
           ? location

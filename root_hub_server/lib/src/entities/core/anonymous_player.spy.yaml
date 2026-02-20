@@ -3,3 +3,4 @@ table: anonymous_player
 fields:
   firstName: String
   lastName: String
+  createdByPlayer: PlayerData?, relation(name=created_anonymous_players)

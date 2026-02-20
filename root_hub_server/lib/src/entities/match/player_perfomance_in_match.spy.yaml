@@ -1,0 +1,7 @@
+class: PlayerPerfomanceInMatch
+table: player_perfomance_in_match
+fields:
+  # player: [TODO - add relation to player]
+  factionUsedInMatch: Faction
+  didWin: bool
+  scoreInMatch: int? # If null, it means the user was playing by a domination card and not by points

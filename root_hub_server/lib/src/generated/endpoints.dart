@@ -285,7 +285,28 @@ class Endpoints extends _i1.EndpointDispatch {
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
-          params: {},
+          params: {
+            'matchStartedAt': _i1.ParameterDescription(
+              name: 'matchStartedAt',
+              type: _i1.getType<DateTime>(),
+              nullable: false,
+            ),
+            'matchEstimatedDuration': _i1.ParameterDescription(
+              name: 'matchEstimatedDuration',
+              type: _i1.getType<Duration>(),
+              nullable: false,
+            ),
+            'locationId': _i1.ParameterDescription(
+              name: 'locationId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'scheduledPairingAttemptId': _i1.ParameterDescription(
+              name: 'scheduledPairingAttemptId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
           call:
               (
                 _i1.Session session,
@@ -293,6 +314,11 @@ class Endpoints extends _i1.EndpointDispatch {
               ) async =>
                   (endpoints['registerMatchData'] as _i7.RegisterMatchData).v1(
                     session,
+                    matchStartedAt: params['matchStartedAt'],
+                    matchEstimatedDuration: params['matchEstimatedDuration'],
+                    locationId: params['locationId'],
+                    scheduledPairingAttemptId:
+                        params['scheduledPairingAttemptId'],
                   ),
         ),
       },
