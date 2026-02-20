@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 
@@ -13,104 +14,118 @@ class RegisterMatchData extends Endpoint {
     required int scheduledPairingAttemptId,
     required List<PlayerMatchResultInput> players,
   }) async {
-    if (matchEstimatedDuration <= Duration.zero) {
-      throw ArgumentError(
-        'Match estimated duration must be greater than zero.',
-      );
-    }
+    return guardRootHubEndpointErrors(
+      () async {
+        if (matchEstimatedDuration <= Duration.zero) {
+          _throwInvalidRequest(
+            'Match estimated duration must be greater than zero.',
+          );
+        }
 
-    final authenticatedPlayerData = await _getAuthenticatedPlayerData(session);
-
-    final scheduledPairingAttempt = await MatchSchedulePairingAttempt.db
-        .findById(session, scheduledPairingAttemptId);
-    if (scheduledPairingAttempt == null) {
-      throw ArgumentError('Scheduled pairing attempt not found.');
-    }
-
-    final location = await Location.db.findById(session, locationId);
-    if (location == null) {
-      throw ArgumentError('Location not found.');
-    }
-
-    if (scheduledPairingAttempt.locationId != locationId) {
-      throw ArgumentError(
-        'Provided location does not match the scheduled pairing attempt location.',
-      );
-    }
-
-    _validatePlayersCount(
-      playersCount: players.length,
-      minAmountOfPlayers: scheduledPairingAttempt.minAmountOfPlayers,
-      maxAmountOfPlayers: scheduledPairingAttempt.maxAmountOfPlayers,
-    );
-    _validatePlayerResults(players);
-    await _validatePlayerReferencesExist(session, players);
-    await _validateAuthenticatedPlayerCanRegister(
-      session,
-      authenticatedPlayerData: authenticatedPlayerData,
-      scheduledPairingAttempt: scheduledPairingAttempt,
-    );
-    await _validateRegisteredPlayerDataAreParticipants(
-      session,
-      scheduledPairingAttempt: scheduledPairingAttempt,
-      players: players,
-    );
-
-    return await session.db.transaction((transaction) async {
-      final playedMatch = await PlayedMatch.db.insertRow(
-        session,
-        PlayedMatch(
-          matchStartedAt: matchStartedAt,
-          matchEstimatedDuration: matchEstimatedDuration,
-          locationId: location.id!,
-        ),
-        transaction: transaction,
-      );
-
-      final playerPerformances = players
-          .map(
-            (player) => PlayerPerfomanceInMatch(
-              anonymousPlayerId: player.anonymousPlayerId,
-              playerDataId: player.playerDataId,
-              playedMatchId: playedMatch.id!,
-              factionUsedInMatch: player.factionUsedInMatch,
-              didWin: player.didWin,
-              scoreInMatch: player.scoreInMatch,
-            ),
-          )
-          .toList();
-
-      if (playerPerformances.isNotEmpty) {
-        await PlayerPerfomanceInMatch.db.insert(
+        final authenticatedPlayerData = await _getAuthenticatedPlayerData(
           session,
-          playerPerformances,
-          transaction: transaction,
         );
-      }
 
-      final playerDataIds = players
-          .map((player) => player.playerDataId)
-          .whereType<int>()
-          .toSet();
-      final playerInMatchRows = playerDataIds
-          .map(
-            (playerDataId) => PlayerInMatch(
-              playerId: playerDataId,
-              matchId: playedMatch.id!,
-            ),
-          )
-          .toList();
+        final scheduledPairingAttempt = await MatchSchedulePairingAttempt.db
+            .findById(session, scheduledPairingAttemptId);
+        if (scheduledPairingAttempt == null) {
+          _throwNotFound(
+            title: 'Scheduled match not found',
+            description: 'Scheduled pairing attempt not found.',
+          );
+        }
 
-      if (playerInMatchRows.isNotEmpty) {
-        await PlayerInMatch.db.insert(
+        final location = await Location.db.findById(session, locationId);
+        if (location == null) {
+          _throwNotFound(
+            title: 'Location not found',
+            description: 'Location not found.',
+          );
+        }
+
+        if (scheduledPairingAttempt.locationId != locationId) {
+          _throwInvalidRequest(
+            'Provided location does not match the scheduled pairing attempt location.',
+          );
+        }
+
+        _validatePlayersCount(
+          playersCount: players.length,
+          minAmountOfPlayers: scheduledPairingAttempt.minAmountOfPlayers,
+          maxAmountOfPlayers: scheduledPairingAttempt.maxAmountOfPlayers,
+        );
+        _validatePlayerResults(players);
+        await _validatePlayerReferencesExist(session, players);
+        await _validateAuthenticatedPlayerCanRegister(
           session,
-          playerInMatchRows,
-          transaction: transaction,
+          authenticatedPlayerData: authenticatedPlayerData,
+          scheduledPairingAttempt: scheduledPairingAttempt,
         );
-      }
+        await _validateRegisteredPlayerDataAreParticipants(
+          session,
+          scheduledPairingAttempt: scheduledPairingAttempt,
+          players: players,
+        );
 
-      return playedMatch;
-    });
+        return await session.db.transaction((transaction) async {
+          final playedMatch = await PlayedMatch.db.insertRow(
+            session,
+            PlayedMatch(
+              matchStartedAt: matchStartedAt,
+              matchEstimatedDuration: matchEstimatedDuration,
+              locationId: location.id!,
+            ),
+            transaction: transaction,
+          );
+
+          final playerPerformances = players
+              .map(
+                (player) => PlayerPerfomanceInMatch(
+                  anonymousPlayerId: player.anonymousPlayerId,
+                  playerDataId: player.playerDataId,
+                  playedMatchId: playedMatch.id!,
+                  factionUsedInMatch: player.factionUsedInMatch,
+                  didWin: player.didWin,
+                  scoreInMatch: player.scoreInMatch,
+                ),
+              )
+              .toList();
+
+          if (playerPerformances.isNotEmpty) {
+            await PlayerPerfomanceInMatch.db.insert(
+              session,
+              playerPerformances,
+              transaction: transaction,
+            );
+          }
+
+          final playerDataIds = players
+              .map((player) => player.playerDataId)
+              .whereType<int>()
+              .toSet();
+          final playerInMatchRows = playerDataIds
+              .map(
+                (playerDataId) => PlayerInMatch(
+                  playerId: playerDataId,
+                  matchId: playedMatch.id!,
+                ),
+              )
+              .toList();
+
+          if (playerInMatchRows.isNotEmpty) {
+            await PlayerInMatch.db.insert(
+              session,
+              playerInMatchRows,
+              transaction: transaction,
+            );
+          }
+
+          return playedMatch;
+        });
+      },
+      fallbackDescription:
+          'Unable to register this match result right now. Please try again.',
+    );
   }
 
   Future<PlayerData> _getAuthenticatedPlayerData(Session session) async {
@@ -123,7 +138,10 @@ class RegisterMatchData extends Endpoint {
     );
 
     if (playerData == null) {
-      throw ArgumentError('Player profile not found for authenticated user.');
+      _throwNotFound(
+        title: 'Player profile missing',
+        description: 'Player profile not found for authenticated user.',
+      );
     }
 
     return playerData;
@@ -138,7 +156,7 @@ class RegisterMatchData extends Endpoint {
     final maxPlayers = _podiumToPlayersCount(maxAmountOfPlayers);
 
     if (playersCount < minPlayers || playersCount > maxPlayers) {
-      throw ArgumentError(
+      _throwInvalidRequest(
         'Players count must be between $minPlayers and $maxPlayers for this scheduled pairing attempt.',
       );
     }
@@ -163,17 +181,17 @@ class RegisterMatchData extends Endpoint {
 
   void _validatePlayerResults(List<PlayerMatchResultInput> players) {
     if (players.length < 2 || players.length > 6) {
-      throw ArgumentError('Root matches must have between 2 and 6 players.');
+      _throwInvalidRequest('Root matches must have between 2 and 6 players.');
     }
 
     final winnerCount = players.where((player) => player.didWin).length;
     if (winnerCount == 0) {
-      throw ArgumentError(
+      _throwInvalidRequest(
         'A match must have exactly one winner, but none was provided.',
       );
     }
     if (winnerCount > 1) {
-      throw ArgumentError(
+      _throwInvalidRequest(
         'A match must have exactly one winner, but $winnerCount winners were provided.',
       );
     }
@@ -187,14 +205,14 @@ class RegisterMatchData extends Endpoint {
       final hasAnonymousPlayer = player.anonymousPlayerId != null;
       final hasPlayerData = player.playerDataId != null;
       if (hasAnonymousPlayer == hasPlayerData) {
-        throw ArgumentError(
+        _throwInvalidRequest(
           'Each player must provide exactly one identifier: anonymousPlayerId or playerDataId.',
         );
       }
 
       if (player.playerDataId case final playerDataId?) {
         if (!seenPlayerDataIds.add(playerDataId)) {
-          throw ArgumentError(
+          _throwInvalidRequest(
             'Duplicate playerDataId found in players list: $playerDataId.',
           );
         }
@@ -202,7 +220,7 @@ class RegisterMatchData extends Endpoint {
 
       if (player.anonymousPlayerId case final anonymousPlayerId?) {
         if (!seenAnonymousPlayerIds.add(anonymousPlayerId)) {
-          throw ArgumentError(
+          _throwInvalidRequest(
             'Duplicate anonymousPlayerId found in players list: $anonymousPlayerId.',
           );
         }
@@ -210,7 +228,7 @@ class RegisterMatchData extends Endpoint {
 
       if (player.scoreInMatch case final score?) {
         if (score < 0 || score > 30) {
-          throw ArgumentError(
+          _throwInvalidRequest(
             'scoreInMatch must be between 0 and 30 when provided.',
           );
         }
@@ -219,10 +237,10 @@ class RegisterMatchData extends Endpoint {
       if (player.factionUsedInMatch == Faction.vagabond) {
         vagabondCount++;
         if (vagabondCount > 2) {
-          throw ArgumentError('At most 2 players can use Vagabond.');
+          _throwInvalidRequest('At most 2 players can use Vagabond.');
         }
       } else if (!nonVagabondFactions.add(player.factionUsedInMatch)) {
-        throw ArgumentError(
+        _throwInvalidRequest(
           'Faction ${player.factionUsedInMatch.name} is duplicated. Only Vagabond can repeat.',
         );
       }
@@ -233,7 +251,7 @@ class RegisterMatchData extends Endpoint {
     final winnerByDomination = winner.scoreInMatch == null;
 
     if (!winnerByPoints && !winnerByDomination) {
-      throw ArgumentError(
+      _throwInvalidRequest(
         'Winner must have (didWin=true and scoreInMatch=30) or (didWin=true and scoreInMatch=null).',
       );
     }
@@ -242,7 +260,7 @@ class RegisterMatchData extends Endpoint {
       (player) => !player.didWin && player.scoreInMatch == 30,
     );
     if (invalidNonWinners.isNotEmpty) {
-      throw ArgumentError(
+      _throwInvalidRequest(
         'Only the winner can have scoreInMatch equal to 30.',
       );
     }
@@ -276,7 +294,7 @@ class RegisterMatchData extends Endpoint {
 
       if (missingPlayerDataIds.isNotEmpty) {
         final missingIds = missingPlayerDataIds.toList()..sort();
-        throw ArgumentError(
+        _throwInvalidRequest(
           'playerDataId not found for ids: ${missingIds.join(', ')}.',
         );
       }
@@ -297,7 +315,7 @@ class RegisterMatchData extends Endpoint {
 
       if (missingAnonymousPlayerIds.isNotEmpty) {
         final missingIds = missingAnonymousPlayerIds.toList()..sort();
-        throw ArgumentError(
+        _throwInvalidRequest(
           'anonymousPlayerId not found for ids: ${missingIds.join(', ')}.',
         );
       }
@@ -321,7 +339,7 @@ class RegisterMatchData extends Endpoint {
     );
 
     if (isSubscribed == null) {
-      throw ArgumentError(
+      _throwAccessDenied(
         'Only host or subscribed players can register this match result.',
       );
     }
@@ -360,9 +378,33 @@ class RegisterMatchData extends Endpoint {
             .toList()
           ..sort();
     if (nonParticipants.isNotEmpty) {
-      throw ArgumentError(
+      _throwInvalidRequest(
         'These playerDataIds are not participants of the scheduled pairing attempt: ${nonParticipants.join(', ')}.',
       );
     }
+  }
+
+  Never _throwInvalidRequest(String description) {
+    throw RootHubEndpointError.invalidRequest(
+      title: 'Invalid match registration',
+      description: description,
+    );
+  }
+
+  Never _throwNotFound({
+    required String title,
+    required String description,
+  }) {
+    throw RootHubEndpointError.notFound(
+      title: title,
+      description: description,
+    );
+  }
+
+  Never _throwAccessDenied(String description) {
+    throw RootHubEndpointError.accessDenied(
+      title: 'Registration not allowed',
+      description: description,
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -9,36 +10,45 @@ class MatchChatGetMessages extends Endpoint {
     Session session, {
     required int matchChatHistoryId,
   }) async {
-    final playerData = await _getPlayerData(session);
+    return guardRootHubEndpointErrors(
+      () async {
+        final playerData = await _getPlayerData(session);
 
-    final chatHistory = await MatchChatHistory.db.findById(
-      session,
-      matchChatHistoryId,
-      include: MatchChatHistory.include(
-        matchSchedulePairingAttempt: MatchSchedulePairingAttempt.include(),
-      ),
+        final chatHistory = await MatchChatHistory.db.findById(
+          session,
+          matchChatHistoryId,
+          include: MatchChatHistory.include(
+            matchSchedulePairingAttempt: MatchSchedulePairingAttempt.include(),
+          ),
+        );
+
+        if (chatHistory == null) {
+          throw RootHubEndpointError.notFound(
+            title: 'Chat not found',
+            description: 'Chat history not found.',
+          );
+        }
+
+        await _verifyParticipant(
+          session,
+          chatHistory.matchSchedulePairingAttempt!,
+          playerData,
+        );
+
+        final messages = await MatchChatMessage.db.find(
+          session,
+          where: (t) => t.matchChatHistoryId.equals(matchChatHistoryId),
+          include: MatchChatMessage.include(
+            sender: PlayerData.include(),
+          ),
+          orderBy: (t) => t.sentAt,
+        );
+
+        return messages;
+      },
+      fallbackDescription:
+          'Unable to load chat messages right now. Please try again.',
     );
-
-    if (chatHistory == null) {
-      throw ArgumentError('Chat history not found.');
-    }
-
-    await _verifyParticipant(
-      session,
-      chatHistory.matchSchedulePairingAttempt!,
-      playerData,
-    );
-
-    final messages = await MatchChatMessage.db.find(
-      session,
-      where: (t) => t.matchChatHistoryId.equals(matchChatHistoryId),
-      include: MatchChatMessage.include(
-        sender: PlayerData.include(),
-      ),
-      orderBy: (t) => t.sentAt,
-    );
-
-    return messages;
   }
 
   Future<PlayerData> _getPlayerData(Session session) async {
@@ -51,7 +61,10 @@ class MatchChatGetMessages extends Endpoint {
     );
 
     if (playerData == null) {
-      throw ArgumentError('Player profile not found for authenticated user.');
+      throw RootHubEndpointError.notFound(
+        title: 'Player profile missing',
+        description: 'Player profile not found for authenticated user.',
+      );
     }
 
     return playerData;
@@ -73,7 +86,9 @@ class MatchChatGetMessages extends Endpoint {
     );
 
     if (subscription == null) {
-      throw ArgumentError('You are not a participant of this chat.');
+      throw RootHubEndpointError.accessDenied(
+        description: 'You are not a participant of this chat.',
+      );
     }
   }
 }

@@ -1,0 +1,4 @@
+class: SubscribedMatchesPagination
+fields:
+  matches: List<MatchSubscription>
+  paginationMetadata: PaginationMetadata

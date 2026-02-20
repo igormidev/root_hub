@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -10,49 +11,57 @@ class MatchChatSendMessage extends Endpoint {
     required int matchChatHistoryId,
     required String content,
   }) async {
-    final playerData = await _getPlayerData(session);
+    return guardRootHubEndpointErrors(
+      () async {
+        final playerData = await _getPlayerData(session);
 
-    final chatHistory = await MatchChatHistory.db.findById(
-      session,
-      matchChatHistoryId,
-      include: MatchChatHistory.include(
-        matchSchedulePairingAttempt:
-            MatchSchedulePairingAttempt.include(),
-      ),
+        final chatHistory = await MatchChatHistory.db.findById(
+          session,
+          matchChatHistoryId,
+          include: MatchChatHistory.include(
+            matchSchedulePairingAttempt: MatchSchedulePairingAttempt.include(),
+          ),
+        );
+
+        if (chatHistory == null) {
+          throw RootHubEndpointError.notFound(
+            title: 'Chat not found',
+            description: 'Chat history not found.',
+          );
+        }
+
+        await _verifyParticipant(
+          session,
+          chatHistory.matchSchedulePairingAttempt!,
+          playerData,
+        );
+
+        final message = await MatchChatMessage.db.insertRow(
+          session,
+          MatchChatMessage(
+            sentAt: DateTime.now(),
+            content: content,
+            matchChatHistoryId: matchChatHistoryId,
+            playerDataId: playerData.id!,
+          ),
+        );
+
+        await MatchChatMessage.db.attachRow.matchChatHistory(
+          session,
+          message,
+          chatHistory,
+        );
+        await MatchChatMessage.db.attachRow.sender(
+          session,
+          message,
+          playerData,
+        );
+
+        return message;
+      },
+      fallbackDescription:
+          'Unable to send the message right now. Please try again.',
     );
-
-    if (chatHistory == null) {
-      throw ArgumentError('Chat history not found.');
-    }
-
-    await _verifyParticipant(
-      session,
-      chatHistory.matchSchedulePairingAttempt!,
-      playerData,
-    );
-
-    final message = await MatchChatMessage.db.insertRow(
-      session,
-      MatchChatMessage(
-        sentAt: DateTime.now(),
-        content: content,
-        matchChatHistoryId: matchChatHistoryId,
-        playerDataId: playerData.id!,
-      ),
-    );
-
-    await MatchChatMessage.db.attachRow.matchChatHistory(
-      session,
-      message,
-      chatHistory,
-    );
-    await MatchChatMessage.db.attachRow.sender(
-      session,
-      message,
-      playerData,
-    );
-
-    return message;
   }
 
   Future<PlayerData> _getPlayerData(Session session) async {
@@ -65,7 +74,10 @@ class MatchChatSendMessage extends Endpoint {
     );
 
     if (playerData == null) {
-      throw ArgumentError('Player profile not found for authenticated user.');
+      throw RootHubEndpointError.notFound(
+        title: 'Player profile missing',
+        description: 'Player profile not found for authenticated user.',
+      );
     }
 
     return playerData;
@@ -87,7 +99,9 @@ class MatchChatSendMessage extends Endpoint {
     );
 
     if (subscription == null) {
-      throw ArgumentError('You are not a participant of this chat.');
+      throw RootHubEndpointError.accessDenied(
+        description: 'You are not a participant of this chat.',
+      );
     }
   }
 }

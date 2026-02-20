@@ -36,7 +36,7 @@ import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i13;
 import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i14;
-import 'package:root_hub_server/src/generated/api/match/models/played_matches_pagination.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
     as _i15;
 import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i16;
@@ -729,7 +729,7 @@ class _GetPlayerSubscribedMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i15.PlayedMatchesPagination> v1(
+  _i3.Future<_i15.SubscribedMatchesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required int page,
   }) async {
@@ -752,7 +752,7 @@ class _GetPlayerSubscribedMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.PlayedMatchesPagination>);
+                as _i3.Future<_i15.SubscribedMatchesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

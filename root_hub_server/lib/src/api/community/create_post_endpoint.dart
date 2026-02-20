@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/api/community/mixin/create_post_mixin.dart';
+import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -13,12 +14,16 @@ class CreatePostEndpoint extends Endpoint with CreatePostMixin {
     required Language language,
     int? attachedMatchId,
   }) async {
-    return createPost(
-      session,
-      title: title,
-      content: content,
-      language: language,
-      attachedMatchId: attachedMatchId,
+    return guardRootHubEndpointErrors(
+      () => createPost(
+        session,
+        title: title,
+        content: content,
+        language: language,
+        attachedMatchId: attachedMatchId,
+      ),
+      fallbackDescription:
+          'Unable to create the post right now. Please try again.',
     );
   }
 }

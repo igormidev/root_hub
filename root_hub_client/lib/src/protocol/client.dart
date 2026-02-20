@@ -34,7 +34,7 @@ import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
     as _i12;
 import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i13;
-import 'package:root_hub_client/src/protocol/api/match/models/played_matches_pagination.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
     as _i14;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i15;
@@ -264,8 +264,8 @@ class EndpointGetPlayerSubscribedMatches extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerSubscribedMatches';
 
-  _i2.Future<_i14.PlayedMatchesPagination> v1({required int page}) =>
-      caller.callServerEndpoint<_i14.PlayedMatchesPagination>(
+  _i2.Future<_i14.SubscribedMatchesPagination> v1({required int page}) =>
+      caller.callServerEndpoint<_i14.SubscribedMatchesPagination>(
         'getPlayerSubscribedMatches',
         'v1',
         {'page': page},

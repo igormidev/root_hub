@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -18,14 +19,20 @@ mixin CreatePostMixin {
     );
 
     if (playerData == null) {
-      throw ArgumentError('Player profile not found for authenticated user.');
+      throw RootHubEndpointError.notFound(
+        title: 'Player profile missing',
+        description: 'Player profile not found for authenticated user.',
+      );
     }
 
     PlayedMatch? match;
     if (attachedMatchId != null) {
       match = await PlayedMatch.db.findById(session, attachedMatchId);
       if (match == null) {
-        throw ArgumentError('Match with id $attachedMatchId not found.');
+        throw RootHubEndpointError.notFound(
+          title: 'Match not found',
+          description: 'Match with id $attachedMatchId not found.',
+        );
       }
     }
 

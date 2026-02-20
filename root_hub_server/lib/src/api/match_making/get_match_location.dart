@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:google_maps_apis/places_new.dart';
+import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -31,51 +32,64 @@ class GetMatchLocation extends Endpoint {
     required String query,
     required int page,
   }) async {
-    final normalizedQuery = query.trim();
-    if (normalizedQuery.isEmpty) {
-      throw ArgumentError('Query must not be empty.');
-    }
-    if (page < 1) {
-      throw ArgumentError('Page must be greater than or equal to 1.');
-    }
+    return guardRootHubEndpointErrors(
+      () async {
+        final normalizedQuery = query.trim();
+        if (normalizedQuery.isEmpty) {
+          throw RootHubEndpointError.invalidRequest(
+            description: 'Query must not be empty.',
+          );
+        }
+        if (page < 1) {
+          throw RootHubEndpointError.invalidRequest(
+            description: 'Page must be greater than or equal to 1.',
+          );
+        }
 
-    final placesApi = PlacesAPINew(apiKey: _resolveGoogleMapsApiKey(session));
-
-    String? nextPageToken;
-    for (var currentPage = 1; currentPage <= page; currentPage++) {
-      final response = await placesApi.searchText(
-        fields: _placesSearchFieldMask,
-        filter: TextSearchFilter(
-          textQuery: normalizedQuery,
-          pageSize: RootHubSettings.pageSizeLocations,
-          pageToken: nextPageToken,
-          includePureServiceAreaBusinesses: false,
-        ),
-      );
-
-      final placesResponse = _parseSearchResponse(
-        response,
-        requestedPage: currentPage,
-      );
-      final persistedPageLocations = await _upsertPlaces(
-        session,
-        placesResponse.places,
-      );
-
-      if (currentPage == page) {
-        return persistedPageLocations;
-      }
-
-      final token = placesResponse.nextPageToken?.trim();
-      if (token == null || token.isEmpty) {
-        throw ArgumentError(
-          'Page $page is out of range for query "$normalizedQuery".',
+        final placesApi = PlacesAPINew(
+          apiKey: _resolveGoogleMapsApiKey(session),
         );
-      }
-      nextPageToken = token;
-    }
 
-    return const <Location>[];
+        String? nextPageToken;
+        for (var currentPage = 1; currentPage <= page; currentPage++) {
+          final response = await placesApi.searchText(
+            fields: _placesSearchFieldMask,
+            filter: TextSearchFilter(
+              textQuery: normalizedQuery,
+              pageSize: RootHubSettings.pageSizeLocations,
+              pageToken: nextPageToken,
+              includePureServiceAreaBusinesses: false,
+            ),
+          );
+
+          final placesResponse = _parseSearchResponse(
+            response,
+            requestedPage: currentPage,
+          );
+          final persistedPageLocations = await _upsertPlaces(
+            session,
+            placesResponse.places,
+          );
+
+          if (currentPage == page) {
+            return persistedPageLocations;
+          }
+
+          final token = placesResponse.nextPageToken?.trim();
+          if (token == null || token.isEmpty) {
+            throw RootHubEndpointError.invalidRequest(
+              description:
+                  'Page $page is out of range for query "$normalizedQuery".',
+            );
+          }
+          nextPageToken = token;
+        }
+
+        return const <Location>[];
+      },
+      fallbackDescription:
+          'Unable to fetch locations right now. Please try again later.',
+    );
   }
 
   PlacesResponse _parseSearchResponse(
@@ -89,8 +103,10 @@ class GetMatchLocation extends Endpoint {
     final message = response.error?.error?.message?.trim().isNotEmpty == true
         ? response.error!.error!.message!
         : 'Google Places API request failed with HTTP ${response.statusCode}.';
-    throw Exception(
-      'Failed to fetch match locations (page $requestedPage): $message',
+    throw RootHubEndpointError.unexpected(
+      title: 'Location provider error',
+      description:
+          'Failed to fetch match locations (page $requestedPage): $message',
     );
   }
 
@@ -290,9 +306,10 @@ class GetMatchLocation extends Endpoint {
             ?.trim();
 
     if (key == null || key.isEmpty) {
-      throw StateError(
-        'Google Maps API key is not configured. '
-        'Set `googleMapsApiKey` in config/passwords.yaml or `GOOGLE_MAPS_API_KEY`.',
+      throw RootHubEndpointError.configuration(
+        description:
+            'Google Maps API key is not configured. '
+            'Set `googleMapsApiKey` in config/passwords.yaml or `GOOGLE_MAPS_API_KEY`.',
       );
     }
 
