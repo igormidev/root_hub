@@ -13,7 +13,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../../entities/match_making/location.dart' as _i2;
-import '../../entities/match/player_in_match.dart' as _i3;
+import '../../entities/match/player_perfomance_in_match.dart' as _i3;
 import '../../entities/match/match_in_person_proof.dart' as _i4;
 import '../../entities/community/post.dart' as _i5;
 import 'package:root_hub_server/src/generated/protocol.dart' as _i6;
@@ -26,7 +26,7 @@ abstract class PlayedMatch
     this.matchEstimatedDuration,
     required this.locationId,
     this.location,
-    this.players,
+    this.playerPerfomances,
     this.inPersonProof,
     this.posts,
   });
@@ -37,7 +37,7 @@ abstract class PlayedMatch
     Duration? matchEstimatedDuration,
     required int locationId,
     _i2.Location? location,
-    List<_i3.PlayerInMatch>? players,
+    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
     _i4.MatchInPersonProof? inPersonProof,
     List<_i5.Post>? posts,
   }) = _PlayedMatchImpl;
@@ -60,10 +60,10 @@ abstract class PlayedMatch
           : _i6.Protocol().deserialize<_i2.Location>(
               jsonSerialization['location'],
             ),
-      players: jsonSerialization['players'] == null
+      playerPerfomances: jsonSerialization['playerPerfomances'] == null
           ? null
-          : _i6.Protocol().deserialize<List<_i3.PlayerInMatch>>(
-              jsonSerialization['players'],
+          : _i6.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
+              jsonSerialization['playerPerfomances'],
             ),
       inPersonProof: jsonSerialization['inPersonProof'] == null
           ? null
@@ -93,7 +93,7 @@ abstract class PlayedMatch
 
   _i2.Location? location;
 
-  List<_i3.PlayerInMatch>? players;
+  List<_i3.PlayerPerfomanceInMatch>? playerPerfomances;
 
   _i4.MatchInPersonProof? inPersonProof;
 
@@ -111,7 +111,7 @@ abstract class PlayedMatch
     Duration? matchEstimatedDuration,
     int? locationId,
     _i2.Location? location,
-    List<_i3.PlayerInMatch>? players,
+    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
     _i4.MatchInPersonProof? inPersonProof,
     List<_i5.Post>? posts,
   });
@@ -125,8 +125,10 @@ abstract class PlayedMatch
         'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
-      if (players != null)
-        'players': players?.toJson(valueToJson: (v) => v.toJson()),
+      if (playerPerfomances != null)
+        'playerPerfomances': playerPerfomances?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
       if (inPersonProof != null) 'inPersonProof': inPersonProof?.toJson(),
       if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
     };
@@ -142,8 +144,10 @@ abstract class PlayedMatch
         'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJsonForProtocol(),
-      if (players != null)
-        'players': players?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (playerPerfomances != null)
+        'playerPerfomances': playerPerfomances?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
       if (inPersonProof != null)
         'inPersonProof': inPersonProof?.toJsonForProtocol(),
       if (posts != null)
@@ -153,13 +157,13 @@ abstract class PlayedMatch
 
   static PlayedMatchInclude include({
     _i2.LocationInclude? location,
-    _i3.PlayerInMatchIncludeList? players,
+    _i3.PlayerPerfomanceInMatchIncludeList? playerPerfomances,
     _i4.MatchInPersonProofInclude? inPersonProof,
     _i5.PostIncludeList? posts,
   }) {
     return PlayedMatchInclude._(
       location: location,
-      players: players,
+      playerPerfomances: playerPerfomances,
       inPersonProof: inPersonProof,
       posts: posts,
     );
@@ -200,7 +204,7 @@ class _PlayedMatchImpl extends PlayedMatch {
     Duration? matchEstimatedDuration,
     required int locationId,
     _i2.Location? location,
-    List<_i3.PlayerInMatch>? players,
+    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
     _i4.MatchInPersonProof? inPersonProof,
     List<_i5.Post>? posts,
   }) : super._(
@@ -209,7 +213,7 @@ class _PlayedMatchImpl extends PlayedMatch {
          matchEstimatedDuration: matchEstimatedDuration,
          locationId: locationId,
          location: location,
-         players: players,
+         playerPerfomances: playerPerfomances,
          inPersonProof: inPersonProof,
          posts: posts,
        );
@@ -224,7 +228,7 @@ class _PlayedMatchImpl extends PlayedMatch {
     Object? matchEstimatedDuration = _Undefined,
     int? locationId,
     Object? location = _Undefined,
-    Object? players = _Undefined,
+    Object? playerPerfomances = _Undefined,
     Object? inPersonProof = _Undefined,
     Object? posts = _Undefined,
   }) {
@@ -238,9 +242,9 @@ class _PlayedMatchImpl extends PlayedMatch {
       location: location is _i2.Location?
           ? location
           : this.location?.copyWith(),
-      players: players is List<_i3.PlayerInMatch>?
-          ? players
-          : this.players?.map((e0) => e0.copyWith()).toList(),
+      playerPerfomances: playerPerfomances is List<_i3.PlayerPerfomanceInMatch>?
+          ? playerPerfomances
+          : this.playerPerfomances?.map((e0) => e0.copyWith()).toList(),
       inPersonProof: inPersonProof is _i4.MatchInPersonProof?
           ? inPersonProof
           : this.inPersonProof?.copyWith(),
@@ -299,9 +303,9 @@ class PlayedMatchTable extends _i1.Table<int?> {
 
   _i2.LocationTable? _location;
 
-  _i3.PlayerInMatchTable? ___players;
+  _i3.PlayerPerfomanceInMatchTable? ___playerPerfomances;
 
-  _i1.ManyRelation<_i3.PlayerInMatchTable>? _players;
+  _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable>? _playerPerfomances;
 
   _i4.MatchInPersonProofTable? _inPersonProof;
 
@@ -322,17 +326,17 @@ class PlayedMatchTable extends _i1.Table<int?> {
     return _location!;
   }
 
-  _i3.PlayerInMatchTable get __players {
-    if (___players != null) return ___players!;
-    ___players = _i1.createRelationTable(
-      relationFieldName: '__players',
+  _i3.PlayerPerfomanceInMatchTable get __playerPerfomances {
+    if (___playerPerfomances != null) return ___playerPerfomances!;
+    ___playerPerfomances = _i1.createRelationTable(
+      relationFieldName: '__playerPerfomances',
       field: PlayedMatch.t.id,
-      foreignField: _i3.PlayerInMatch.t.matchId,
+      foreignField: _i3.PlayerPerfomanceInMatch.t.playedMatchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerInMatchTable(tableRelation: foreignTableRelation),
+          _i3.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
     );
-    return ___players!;
+    return ___playerPerfomances!;
   }
 
   _i4.MatchInPersonProofTable get inPersonProof {
@@ -361,23 +365,23 @@ class PlayedMatchTable extends _i1.Table<int?> {
     return ___posts!;
   }
 
-  _i1.ManyRelation<_i3.PlayerInMatchTable> get players {
-    if (_players != null) return _players!;
+  _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable> get playerPerfomances {
+    if (_playerPerfomances != null) return _playerPerfomances!;
     var relationTable = _i1.createRelationTable(
-      relationFieldName: 'players',
+      relationFieldName: 'playerPerfomances',
       field: PlayedMatch.t.id,
-      foreignField: _i3.PlayerInMatch.t.matchId,
+      foreignField: _i3.PlayerPerfomanceInMatch.t.playedMatchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerInMatchTable(tableRelation: foreignTableRelation),
+          _i3.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
     );
-    _players = _i1.ManyRelation<_i3.PlayerInMatchTable>(
+    _playerPerfomances = _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable>(
       tableWithRelations: relationTable,
-      table: _i3.PlayerInMatchTable(
+      table: _i3.PlayerPerfomanceInMatchTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
-    return _players!;
+    return _playerPerfomances!;
   }
 
   _i1.ManyRelation<_i5.PostTable> get posts {
@@ -412,8 +416,8 @@ class PlayedMatchTable extends _i1.Table<int?> {
     if (relationField == 'location') {
       return location;
     }
-    if (relationField == 'players') {
-      return __players;
+    if (relationField == 'playerPerfomances') {
+      return __playerPerfomances;
     }
     if (relationField == 'inPersonProof') {
       return inPersonProof;
@@ -428,19 +432,19 @@ class PlayedMatchTable extends _i1.Table<int?> {
 class PlayedMatchInclude extends _i1.IncludeObject {
   PlayedMatchInclude._({
     _i2.LocationInclude? location,
-    _i3.PlayerInMatchIncludeList? players,
+    _i3.PlayerPerfomanceInMatchIncludeList? playerPerfomances,
     _i4.MatchInPersonProofInclude? inPersonProof,
     _i5.PostIncludeList? posts,
   }) {
     _location = location;
-    _players = players;
+    _playerPerfomances = playerPerfomances;
     _inPersonProof = inPersonProof;
     _posts = posts;
   }
 
   _i2.LocationInclude? _location;
 
-  _i3.PlayerInMatchIncludeList? _players;
+  _i3.PlayerPerfomanceInMatchIncludeList? _playerPerfomances;
 
   _i4.MatchInPersonProofInclude? _inPersonProof;
 
@@ -449,7 +453,7 @@ class PlayedMatchInclude extends _i1.IncludeObject {
   @override
   Map<String, _i1.Include?> get includes => {
     'location': _location,
-    'players': _players,
+    'playerPerfomances': _playerPerfomances,
     'inPersonProof': _inPersonProof,
     'posts': _posts,
   };
@@ -748,27 +752,27 @@ class PlayedMatchRepository {
 class PlayedMatchAttachRepository {
   const PlayedMatchAttachRepository._();
 
-  /// Creates a relation between this [PlayedMatch] and the given [PlayerInMatch]s
-  /// by setting each [PlayerInMatch]'s foreign key `matchId` to refer to this [PlayedMatch].
-  Future<void> players(
+  /// Creates a relation between this [PlayedMatch] and the given [PlayerPerfomanceInMatch]s
+  /// by setting each [PlayerPerfomanceInMatch]'s foreign key `playedMatchId` to refer to this [PlayedMatch].
+  Future<void> playerPerfomances(
     _i1.Session session,
     PlayedMatch playedMatch,
-    List<_i3.PlayerInMatch> playerInMatch, {
+    List<_i3.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
-    if (playerInMatch.any((e) => e.id == null)) {
-      throw ArgumentError.notNull('playerInMatch.id');
+    if (playerPerfomanceInMatch.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('playerPerfomanceInMatch.id');
     }
     if (playedMatch.id == null) {
       throw ArgumentError.notNull('playedMatch.id');
     }
 
-    var $playerInMatch = playerInMatch
-        .map((e) => e.copyWith(matchId: playedMatch.id))
+    var $playerPerfomanceInMatch = playerPerfomanceInMatch
+        .map((e) => e.copyWith(playedMatchId: playedMatch.id))
         .toList();
-    await session.db.update<_i3.PlayerInMatch>(
-      $playerInMatch,
-      columns: [_i3.PlayerInMatch.t.matchId],
+    await session.db.update<_i3.PlayerPerfomanceInMatch>(
+      $playerPerfomanceInMatch,
+      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -848,25 +852,27 @@ class PlayedMatchAttachRowRepository {
     );
   }
 
-  /// Creates a relation between this [PlayedMatch] and the given [PlayerInMatch]
-  /// by setting the [PlayerInMatch]'s foreign key `matchId` to refer to this [PlayedMatch].
-  Future<void> players(
+  /// Creates a relation between this [PlayedMatch] and the given [PlayerPerfomanceInMatch]
+  /// by setting the [PlayerPerfomanceInMatch]'s foreign key `playedMatchId` to refer to this [PlayedMatch].
+  Future<void> playerPerfomances(
     _i1.Session session,
     PlayedMatch playedMatch,
-    _i3.PlayerInMatch playerInMatch, {
+    _i3.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
-    if (playerInMatch.id == null) {
-      throw ArgumentError.notNull('playerInMatch.id');
+    if (playerPerfomanceInMatch.id == null) {
+      throw ArgumentError.notNull('playerPerfomanceInMatch.id');
     }
     if (playedMatch.id == null) {
       throw ArgumentError.notNull('playedMatch.id');
     }
 
-    var $playerInMatch = playerInMatch.copyWith(matchId: playedMatch.id);
-    await session.db.updateRow<_i3.PlayerInMatch>(
-      $playerInMatch,
-      columns: [_i3.PlayerInMatch.t.matchId],
+    var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
+      playedMatchId: playedMatch.id,
+    );
+    await session.db.updateRow<_i3.PlayerPerfomanceInMatch>(
+      $playerPerfomanceInMatch,
+      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -898,26 +904,26 @@ class PlayedMatchAttachRowRepository {
 class PlayedMatchDetachRepository {
   const PlayedMatchDetachRepository._();
 
-  /// Detaches the relation between this [PlayedMatch] and the given [PlayerInMatch]
-  /// by setting the [PlayerInMatch]'s foreign key `matchId` to `null`.
+  /// Detaches the relation between this [PlayedMatch] and the given [PlayerPerfomanceInMatch]
+  /// by setting the [PlayerPerfomanceInMatch]'s foreign key `playedMatchId` to `null`.
   ///
   /// This removes the association between the two models without deleting
   /// the related record.
-  Future<void> players(
+  Future<void> playerPerfomances(
     _i1.Session session,
-    List<_i3.PlayerInMatch> playerInMatch, {
+    List<_i3.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
-    if (playerInMatch.any((e) => e.id == null)) {
-      throw ArgumentError.notNull('playerInMatch.id');
+    if (playerPerfomanceInMatch.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('playerPerfomanceInMatch.id');
     }
 
-    var $playerInMatch = playerInMatch
-        .map((e) => e.copyWith(matchId: null))
+    var $playerPerfomanceInMatch = playerPerfomanceInMatch
+        .map((e) => e.copyWith(playedMatchId: null))
         .toList();
-    await session.db.update<_i3.PlayerInMatch>(
-      $playerInMatch,
-      columns: [_i3.PlayerInMatch.t.matchId],
+    await session.db.update<_i3.PlayerPerfomanceInMatch>(
+      $playerPerfomanceInMatch,
+      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -948,24 +954,26 @@ class PlayedMatchDetachRepository {
 class PlayedMatchDetachRowRepository {
   const PlayedMatchDetachRowRepository._();
 
-  /// Detaches the relation between this [PlayedMatch] and the given [PlayerInMatch]
-  /// by setting the [PlayerInMatch]'s foreign key `matchId` to `null`.
+  /// Detaches the relation between this [PlayedMatch] and the given [PlayerPerfomanceInMatch]
+  /// by setting the [PlayerPerfomanceInMatch]'s foreign key `playedMatchId` to `null`.
   ///
   /// This removes the association between the two models without deleting
   /// the related record.
-  Future<void> players(
+  Future<void> playerPerfomances(
     _i1.Session session,
-    _i3.PlayerInMatch playerInMatch, {
+    _i3.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
-    if (playerInMatch.id == null) {
-      throw ArgumentError.notNull('playerInMatch.id');
+    if (playerPerfomanceInMatch.id == null) {
+      throw ArgumentError.notNull('playerPerfomanceInMatch.id');
     }
 
-    var $playerInMatch = playerInMatch.copyWith(matchId: null);
-    await session.db.updateRow<_i3.PlayerInMatch>(
-      $playerInMatch,
-      columns: [_i3.PlayerInMatch.t.matchId],
+    var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
+      playedMatchId: null,
+    );
+    await session.db.updateRow<_i3.PlayerPerfomanceInMatch>(
+      $playerPerfomanceInMatch,
+      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }

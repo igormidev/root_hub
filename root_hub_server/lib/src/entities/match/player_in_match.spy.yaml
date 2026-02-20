@@ -2,7 +2,7 @@ class: PlayerInMatch
 table: player_in_match
 fields:
   player: PlayerData?, relation(name=player_matches)
-  match: PlayedMatch?, relation(name=match_players)
+  match: PlayedMatch?, relation
 indexes:
   player_match_unique_idx:
     fields: playerId, matchId

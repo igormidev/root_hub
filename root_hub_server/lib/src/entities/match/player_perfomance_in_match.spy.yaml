@@ -1,7 +1,9 @@
 class: PlayerPerfomanceInMatch
 table: player_perfomance_in_match
 fields:
-  # player: [TODO - add relation to player]
+  anonymousPlayer: AnonymousPlayer?, relation(name=anonymous_player_perfomances, optional)
+  playerData: PlayerData?, relation(name=player_data_perfomances, optional)
+  playedMatch: PlayedMatch?, relation(name=match_player_perfomances)
   factionUsedInMatch: Faction
   didWin: bool
   scoreInMatch: int? # If null, it means the user was playing by a domination card and not by points

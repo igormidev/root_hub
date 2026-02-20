@@ -5,7 +5,7 @@ fields:
   matchEstimatedDuration: Duration?
   locationId: int
   location: Location?, relation(name=location_played_matches, field=locationId)
-  players: List<PlayerInMatch>?, relation(name=match_players)
+  playerPerfomances: List<PlayerPerfomanceInMatch>?, relation(name=match_player_perfomances)
   inPersonProof: MatchInPersonProof?, relation(name=match_in_person_proof)
   posts: List<Post>?, relation(name=post_attached_match)
 

@@ -4,3 +4,6 @@ fields:
   firstName: String
   lastName: String
   createdByPlayer: PlayerData?, relation(name=created_anonymous_players)
+  perfomances: List<PlayerPerfomanceInMatch>?, relation(name=anonymous_player_perfomances)
+  # Parent wrapper relation
+  player: Player?, relation(name=player_anonymous)

@@ -11,6 +11,7 @@ class RegisterMatchData extends Endpoint {
     required Duration matchEstimatedDuration,
     required int locationId,
     required int scheduledPairingAttemptId,
+    required List<Player> players,
   }) async {
     throw UnimplementedError('Not implemented yet');
   }

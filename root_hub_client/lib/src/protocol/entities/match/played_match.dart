@@ -12,7 +12,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import '../../entities/match_making/location.dart' as _i2;
-import '../../entities/match/player_in_match.dart' as _i3;
+import '../../entities/match/player_perfomance_in_match.dart' as _i3;
 import '../../entities/match/match_in_person_proof.dart' as _i4;
 import '../../entities/community/post.dart' as _i5;
 import 'package:root_hub_client/src/protocol/protocol.dart' as _i6;
@@ -24,7 +24,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     this.matchEstimatedDuration,
     required this.locationId,
     this.location,
-    this.players,
+    this.playerPerfomances,
     this.inPersonProof,
     this.posts,
   });
@@ -35,7 +35,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     Duration? matchEstimatedDuration,
     required int locationId,
     _i2.Location? location,
-    List<_i3.PlayerInMatch>? players,
+    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
     _i4.MatchInPersonProof? inPersonProof,
     List<_i5.Post>? posts,
   }) = _PlayedMatchImpl;
@@ -58,10 +58,10 @@ abstract class PlayedMatch implements _i1.SerializableModel {
           : _i6.Protocol().deserialize<_i2.Location>(
               jsonSerialization['location'],
             ),
-      players: jsonSerialization['players'] == null
+      playerPerfomances: jsonSerialization['playerPerfomances'] == null
           ? null
-          : _i6.Protocol().deserialize<List<_i3.PlayerInMatch>>(
-              jsonSerialization['players'],
+          : _i6.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
+              jsonSerialization['playerPerfomances'],
             ),
       inPersonProof: jsonSerialization['inPersonProof'] == null
           ? null
@@ -89,7 +89,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
 
   _i2.Location? location;
 
-  List<_i3.PlayerInMatch>? players;
+  List<_i3.PlayerPerfomanceInMatch>? playerPerfomances;
 
   _i4.MatchInPersonProof? inPersonProof;
 
@@ -104,7 +104,7 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     Duration? matchEstimatedDuration,
     int? locationId,
     _i2.Location? location,
-    List<_i3.PlayerInMatch>? players,
+    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
     _i4.MatchInPersonProof? inPersonProof,
     List<_i5.Post>? posts,
   });
@@ -118,8 +118,10 @@ abstract class PlayedMatch implements _i1.SerializableModel {
         'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
-      if (players != null)
-        'players': players?.toJson(valueToJson: (v) => v.toJson()),
+      if (playerPerfomances != null)
+        'playerPerfomances': playerPerfomances?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
       if (inPersonProof != null) 'inPersonProof': inPersonProof?.toJson(),
       if (posts != null) 'posts': posts?.toJson(valueToJson: (v) => v.toJson()),
     };
@@ -140,7 +142,7 @@ class _PlayedMatchImpl extends PlayedMatch {
     Duration? matchEstimatedDuration,
     required int locationId,
     _i2.Location? location,
-    List<_i3.PlayerInMatch>? players,
+    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
     _i4.MatchInPersonProof? inPersonProof,
     List<_i5.Post>? posts,
   }) : super._(
@@ -149,7 +151,7 @@ class _PlayedMatchImpl extends PlayedMatch {
          matchEstimatedDuration: matchEstimatedDuration,
          locationId: locationId,
          location: location,
-         players: players,
+         playerPerfomances: playerPerfomances,
          inPersonProof: inPersonProof,
          posts: posts,
        );
@@ -164,7 +166,7 @@ class _PlayedMatchImpl extends PlayedMatch {
     Object? matchEstimatedDuration = _Undefined,
     int? locationId,
     Object? location = _Undefined,
-    Object? players = _Undefined,
+    Object? playerPerfomances = _Undefined,
     Object? inPersonProof = _Undefined,
     Object? posts = _Undefined,
   }) {
@@ -178,9 +180,9 @@ class _PlayedMatchImpl extends PlayedMatch {
       location: location is _i2.Location?
           ? location
           : this.location?.copyWith(),
-      players: players is List<_i3.PlayerInMatch>?
-          ? players
-          : this.players?.map((e0) => e0.copyWith()).toList(),
+      playerPerfomances: playerPerfomances is List<_i3.PlayerPerfomanceInMatch>?
+          ? playerPerfomances
+          : this.playerPerfomances?.map((e0) => e0.copyWith()).toList(),
       inPersonProof: inPersonProof is _i4.MatchInPersonProof?
           ? inPersonProof
           : this.inPersonProof?.copyWith(),
