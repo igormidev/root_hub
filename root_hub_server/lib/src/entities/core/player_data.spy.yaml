@@ -15,8 +15,6 @@ fields:
   manualInputLocations: List<ManualInputLocation>?, relation(name=player_manual_input_locations)
   createdAnonymousPlayers: List<AnonymousPlayer>?, relation(name=created_anonymous_players)
   perfomances: List<PlayerPerfomanceInMatch>?, relation(name=player_data_perfomances)
-  # Parent wrapper relation
-  player: Player?, relation(name=player_data)
 
 indexes:
   auth_user_id_unique_idx:

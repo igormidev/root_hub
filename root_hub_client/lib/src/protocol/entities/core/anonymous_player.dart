@@ -13,8 +13,7 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import '../../entities/core/player_data.dart' as _i2;
 import '../../entities/match/player_perfomance_in_match.dart' as _i3;
-import '../../entities/core/player.dart' as _i4;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i4;
 
 abstract class AnonymousPlayer implements _i1.SerializableModel {
   AnonymousPlayer._({
@@ -24,7 +23,6 @@ abstract class AnonymousPlayer implements _i1.SerializableModel {
     required this.createdByPlayerId,
     this.createdByPlayer,
     this.perfomances,
-    this.player,
   });
 
   factory AnonymousPlayer({
@@ -34,7 +32,6 @@ abstract class AnonymousPlayer implements _i1.SerializableModel {
     required int createdByPlayerId,
     _i2.PlayerData? createdByPlayer,
     List<_i3.PlayerPerfomanceInMatch>? perfomances,
-    _i4.Player? player,
   }) = _AnonymousPlayerImpl;
 
   factory AnonymousPlayer.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -45,17 +42,14 @@ abstract class AnonymousPlayer implements _i1.SerializableModel {
       createdByPlayerId: jsonSerialization['createdByPlayerId'] as int,
       createdByPlayer: jsonSerialization['createdByPlayer'] == null
           ? null
-          : _i5.Protocol().deserialize<_i2.PlayerData>(
+          : _i4.Protocol().deserialize<_i2.PlayerData>(
               jsonSerialization['createdByPlayer'],
             ),
       perfomances: jsonSerialization['perfomances'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
+          : _i4.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
               jsonSerialization['perfomances'],
             ),
-      player: jsonSerialization['player'] == null
-          ? null
-          : _i5.Protocol().deserialize<_i4.Player>(jsonSerialization['player']),
     );
   }
 
@@ -74,8 +68,6 @@ abstract class AnonymousPlayer implements _i1.SerializableModel {
 
   List<_i3.PlayerPerfomanceInMatch>? perfomances;
 
-  _i4.Player? player;
-
   /// Returns a shallow copy of this [AnonymousPlayer]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -86,7 +78,6 @@ abstract class AnonymousPlayer implements _i1.SerializableModel {
     int? createdByPlayerId,
     _i2.PlayerData? createdByPlayer,
     List<_i3.PlayerPerfomanceInMatch>? perfomances,
-    _i4.Player? player,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -99,7 +90,6 @@ abstract class AnonymousPlayer implements _i1.SerializableModel {
       if (createdByPlayer != null) 'createdByPlayer': createdByPlayer?.toJson(),
       if (perfomances != null)
         'perfomances': perfomances?.toJson(valueToJson: (v) => v.toJson()),
-      if (player != null) 'player': player?.toJson(),
     };
   }
 
@@ -119,7 +109,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
     required int createdByPlayerId,
     _i2.PlayerData? createdByPlayer,
     List<_i3.PlayerPerfomanceInMatch>? perfomances,
-    _i4.Player? player,
   }) : super._(
          id: id,
          firstName: firstName,
@@ -127,7 +116,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
          createdByPlayerId: createdByPlayerId,
          createdByPlayer: createdByPlayer,
          perfomances: perfomances,
-         player: player,
        );
 
   /// Returns a shallow copy of this [AnonymousPlayer]
@@ -141,7 +129,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
     int? createdByPlayerId,
     Object? createdByPlayer = _Undefined,
     Object? perfomances = _Undefined,
-    Object? player = _Undefined,
   }) {
     return AnonymousPlayer(
       id: id is int? ? id : this.id,
@@ -154,7 +141,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
       perfomances: perfomances is List<_i3.PlayerPerfomanceInMatch>?
           ? perfomances
           : this.perfomances?.map((e0) => e0.copyWith()).toList(),
-      player: player is _i4.Player? ? player : this.player?.copyWith(),
     );
   }
 }

@@ -1,0 +1,7 @@
+class: PlayerMatchResultInput
+# Will allways have one of them. If is a player that is registered, it will have the playerDataId, if is an anonymous player, it will have the anonymousPlayerId One will be null and the other will have a value – allways
+fields:
+  anonymousPlayerId: int?
+  playerDataId: int?
+  didWin: bool
+  factionUsedInMatch: Faction

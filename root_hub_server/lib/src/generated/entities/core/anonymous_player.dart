@@ -14,8 +14,7 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../../entities/core/player_data.dart' as _i2;
 import '../../entities/match/player_perfomance_in_match.dart' as _i3;
-import '../../entities/core/player.dart' as _i4;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i4;
 
 abstract class AnonymousPlayer
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -26,7 +25,6 @@ abstract class AnonymousPlayer
     required this.createdByPlayerId,
     this.createdByPlayer,
     this.perfomances,
-    this.player,
   });
 
   factory AnonymousPlayer({
@@ -36,7 +34,6 @@ abstract class AnonymousPlayer
     required int createdByPlayerId,
     _i2.PlayerData? createdByPlayer,
     List<_i3.PlayerPerfomanceInMatch>? perfomances,
-    _i4.Player? player,
   }) = _AnonymousPlayerImpl;
 
   factory AnonymousPlayer.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -47,17 +44,14 @@ abstract class AnonymousPlayer
       createdByPlayerId: jsonSerialization['createdByPlayerId'] as int,
       createdByPlayer: jsonSerialization['createdByPlayer'] == null
           ? null
-          : _i5.Protocol().deserialize<_i2.PlayerData>(
+          : _i4.Protocol().deserialize<_i2.PlayerData>(
               jsonSerialization['createdByPlayer'],
             ),
       perfomances: jsonSerialization['perfomances'] == null
           ? null
-          : _i5.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
+          : _i4.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
               jsonSerialization['perfomances'],
             ),
-      player: jsonSerialization['player'] == null
-          ? null
-          : _i5.Protocol().deserialize<_i4.Player>(jsonSerialization['player']),
     );
   }
 
@@ -78,8 +72,6 @@ abstract class AnonymousPlayer
 
   List<_i3.PlayerPerfomanceInMatch>? perfomances;
 
-  _i4.Player? player;
-
   @override
   _i1.Table<int?> get table => t;
 
@@ -93,7 +85,6 @@ abstract class AnonymousPlayer
     int? createdByPlayerId,
     _i2.PlayerData? createdByPlayer,
     List<_i3.PlayerPerfomanceInMatch>? perfomances,
-    _i4.Player? player,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -106,7 +97,6 @@ abstract class AnonymousPlayer
       if (createdByPlayer != null) 'createdByPlayer': createdByPlayer?.toJson(),
       if (perfomances != null)
         'perfomances': perfomances?.toJson(valueToJson: (v) => v.toJson()),
-      if (player != null) 'player': player?.toJson(),
     };
   }
 
@@ -124,19 +114,16 @@ abstract class AnonymousPlayer
         'perfomances': perfomances?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
-      if (player != null) 'player': player?.toJsonForProtocol(),
     };
   }
 
   static AnonymousPlayerInclude include({
     _i2.PlayerDataInclude? createdByPlayer,
     _i3.PlayerPerfomanceInMatchIncludeList? perfomances,
-    _i4.PlayerInclude? player,
   }) {
     return AnonymousPlayerInclude._(
       createdByPlayer: createdByPlayer,
       perfomances: perfomances,
-      player: player,
     );
   }
 
@@ -176,7 +163,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
     required int createdByPlayerId,
     _i2.PlayerData? createdByPlayer,
     List<_i3.PlayerPerfomanceInMatch>? perfomances,
-    _i4.Player? player,
   }) : super._(
          id: id,
          firstName: firstName,
@@ -184,7 +170,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
          createdByPlayerId: createdByPlayerId,
          createdByPlayer: createdByPlayer,
          perfomances: perfomances,
-         player: player,
        );
 
   /// Returns a shallow copy of this [AnonymousPlayer]
@@ -198,7 +183,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
     int? createdByPlayerId,
     Object? createdByPlayer = _Undefined,
     Object? perfomances = _Undefined,
-    Object? player = _Undefined,
   }) {
     return AnonymousPlayer(
       id: id is int? ? id : this.id,
@@ -211,7 +195,6 @@ class _AnonymousPlayerImpl extends AnonymousPlayer {
       perfomances: perfomances is List<_i3.PlayerPerfomanceInMatch>?
           ? perfomances
           : this.perfomances?.map((e0) => e0.copyWith()).toList(),
-      player: player is _i4.Player? ? player : this.player?.copyWith(),
     );
   }
 }
@@ -267,8 +250,6 @@ class AnonymousPlayerTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable>? _perfomances;
 
-  _i4.PlayerTable? _player;
-
   _i2.PlayerDataTable get createdByPlayer {
     if (_createdByPlayer != null) return _createdByPlayer!;
     _createdByPlayer = _i1.createRelationTable(
@@ -293,19 +274,6 @@ class AnonymousPlayerTable extends _i1.Table<int?> {
           _i3.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
     );
     return ___perfomances!;
-  }
-
-  _i4.PlayerTable get player {
-    if (_player != null) return _player!;
-    _player = _i1.createRelationTable(
-      relationFieldName: 'player',
-      field: AnonymousPlayer.t.id,
-      foreignField: _i4.Player.t.anonymousPlayerId,
-      tableRelation: tableRelation,
-      createTable: (foreignTableRelation) =>
-          _i4.PlayerTable(tableRelation: foreignTableRelation),
-    );
-    return _player!;
   }
 
   _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable> get perfomances {
@@ -343,9 +311,6 @@ class AnonymousPlayerTable extends _i1.Table<int?> {
     if (relationField == 'perfomances') {
       return __perfomances;
     }
-    if (relationField == 'player') {
-      return player;
-    }
     return null;
   }
 }
@@ -354,24 +319,19 @@ class AnonymousPlayerInclude extends _i1.IncludeObject {
   AnonymousPlayerInclude._({
     _i2.PlayerDataInclude? createdByPlayer,
     _i3.PlayerPerfomanceInMatchIncludeList? perfomances,
-    _i4.PlayerInclude? player,
   }) {
     _createdByPlayer = createdByPlayer;
     _perfomances = perfomances;
-    _player = player;
   }
 
   _i2.PlayerDataInclude? _createdByPlayer;
 
   _i3.PlayerPerfomanceInMatchIncludeList? _perfomances;
 
-  _i4.PlayerInclude? _player;
-
   @override
   Map<String, _i1.Include?> get includes => {
     'createdByPlayer': _createdByPlayer,
     'perfomances': _perfomances,
-    'player': _player,
   };
 
   @override
@@ -724,29 +684,6 @@ class AnonymousPlayerAttachRowRepository {
     );
   }
 
-  /// Creates a relation between the given [AnonymousPlayer] and [Player]
-  /// by setting the [AnonymousPlayer]'s foreign key `id` to refer to the [Player].
-  Future<void> player(
-    _i1.Session session,
-    AnonymousPlayer anonymousPlayer,
-    _i4.Player player, {
-    _i1.Transaction? transaction,
-  }) async {
-    if (player.id == null) {
-      throw ArgumentError.notNull('player.id');
-    }
-    if (anonymousPlayer.id == null) {
-      throw ArgumentError.notNull('anonymousPlayer.id');
-    }
-
-    var $player = player.copyWith(anonymousPlayerId: anonymousPlayer.id);
-    await session.db.updateRow<_i4.Player>(
-      $player,
-      columns: [_i4.Player.t.anonymousPlayerId],
-      transaction: transaction,
-    );
-  }
-
   /// Creates a relation between this [AnonymousPlayer] and the given [PlayerPerfomanceInMatch]
   /// by setting the [PlayerPerfomanceInMatch]'s foreign key `anonymousPlayerId` to refer to this [AnonymousPlayer].
   Future<void> perfomances(
@@ -803,36 +740,6 @@ class AnonymousPlayerDetachRepository {
 
 class AnonymousPlayerDetachRowRepository {
   const AnonymousPlayerDetachRowRepository._();
-
-  /// Detaches the relation between this [AnonymousPlayer] and the [Player] set in `player`
-  /// by setting the [AnonymousPlayer]'s foreign key `id` to `null`.
-  ///
-  /// This removes the association between the two models without deleting
-  /// the related record.
-  Future<void> player(
-    _i1.Session session,
-    AnonymousPlayer anonymousPlayer, {
-    _i1.Transaction? transaction,
-  }) async {
-    var $player = anonymousPlayer.player;
-
-    if ($player == null) {
-      throw ArgumentError.notNull('anonymousPlayer.player');
-    }
-    if ($player.id == null) {
-      throw ArgumentError.notNull('anonymousPlayer.player.id');
-    }
-    if (anonymousPlayer.id == null) {
-      throw ArgumentError.notNull('anonymousPlayer.id');
-    }
-
-    var $$player = $player.copyWith(anonymousPlayerId: null);
-    await session.db.updateRow<_i4.Player>(
-      $$player,
-      columns: [_i4.Player.t.anonymousPlayerId],
-      transaction: transaction,
-    );
-  }
 
   /// Detaches the relation between this [AnonymousPlayer] and the given [PlayerPerfomanceInMatch]
   /// by setting the [PlayerPerfomanceInMatch]'s foreign key `anonymousPlayerId` to `null`.
