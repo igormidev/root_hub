@@ -45,6 +45,7 @@
         "babel_text",
         "cupertino_icons",
         "flutter",
+        "flutter_animate",
         "flutter_riverpod",
         "freezed_annotation",
         "go_router",
@@ -271,6 +272,14 @@
         "watcher",
         "web_socket_channel",
         "yaml"
+      ]
+    },
+    {
+      "name": "flutter_animate",
+      "version": "4.5.2",
+      "dependencies": [
+        "flutter",
+        "flutter_shaders"
       ]
     },
     {
@@ -1065,6 +1074,14 @@
       "name": "args",
       "version": "2.7.0",
       "dependencies": []
+    },
+    {
+      "name": "flutter_shaders",
+      "version": "0.1.3",
+      "dependencies": [
+        "flutter",
+        "vector_math"
+      ]
     },
     {
       "name": "state_notifier",
