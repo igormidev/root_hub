@@ -10,11 +10,13 @@ With Root Hub, users can:
 - Register match results (winner + factions used), creating the base for future ratings and competitive history.
 
 ## Main User Flow
-1. User authenticates.
-2. User sees the list of available match schedules.
-3. User subscribes to an existing match or creates a new one.
-4. User can interact socially via posts/comments.
-5. After a game, user registers the result and factions.
+1. App validates session and player profile on startup.
+2. If needed, user completes onboarding (favorite faction selection).
+3. User authenticates (email/password or Google when enabled on server).
+4. User sees the list of available match schedules.
+5. User subscribes to an existing match or creates a new one.
+6. User can interact socially via posts/comments.
+7. After a game, user registers the result and factions.
 
 ## Authentication (Serverpod)
 Authentication is handled with **Serverpod auth session management**:
@@ -28,6 +30,10 @@ Required behavior for auth-related features:
 - Never hardcode auth tokens manually.
 - Always rely on `client.auth` + `FlutterAuthSessionManager`.
 - Keep auth/session state in Riverpod providers, not inside widgets.
+- Startup flow is managed by `auth_flow` state/provider:
+  - Checks `client.auth.isAuthenticated`.
+  - Calls `getPlayerData.v1()` to verify profile existence.
+  - Routes users through onboarding -> login -> authenticated area.
 
 ## Architecture
 The app follows feature-first presentation with centralized state management:
@@ -46,8 +52,12 @@ root_hub_flutter/
 │       ├── global_providers/
 │       ├── states/                # ALL Freezed states + matching providers
 │       │   ├── session/
-│       │   └── account/
+│       │   ├── account/
+│       │   ├── auth_flow/
+│       │   └── onboarding/
 │       └── features/              # UI feature modules (screens/widgets/sections/dialogs)
+│           ├── auth/
+│           └── matches/
 ├── assets/
 └── pubspec.yaml
 ```
@@ -137,6 +147,7 @@ These rules are intentionally strict to force component separation and predictab
 - `result_dart`: typed success/failure result handling.
 - `go_router`: app routing.
 - `google_fonts`: project typography (configured in app theme).
+- `flutter_animate`: onboarding and authentication motion design.
 
 ## Typography
 The app theme uses Google Fonts to avoid generic defaults:

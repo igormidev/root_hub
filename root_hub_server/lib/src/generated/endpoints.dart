@@ -26,21 +26,22 @@ import '../api/match_making/get_match_location.dart' as _i13;
 import '../api/match_making/get_player_subscribed_matches.dart' as _i14;
 import '../api/match_making/subscribe_to_match.dart' as _i15;
 import '../auth/email_idp_endpoint.dart' as _i16;
-import '../auth/jwt_refresh_endpoint.dart' as _i17;
+import '../auth/google_idp_endpoint.dart' as _i17;
+import '../auth/jwt_refresh_endpoint.dart' as _i18;
 import 'package:root_hub_server/src/generated/entities/core/faction.dart'
-    as _i18;
-import 'package:root_hub_server/src/generated/entities/core/country.dart'
     as _i19;
-import 'package:root_hub_server/src/generated/entities/core/language.dart'
+import 'package:root_hub_server/src/generated/entities/core/country.dart'
     as _i20;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/core/language.dart'
     as _i21;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i22;
-import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i23;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _i24;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i25;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -136,7 +137,13 @@ class Endpoints extends _i1.EndpointDispatch {
           'emailIdp',
           null,
         ),
-      'jwtRefresh': _i17.JwtRefreshEndpoint()
+      'googleIdp': _i17.GoogleIdpEndpoint()
+        ..initialize(
+          server,
+          'googleIdp',
+          null,
+        ),
+      'jwtRefresh': _i18.JwtRefreshEndpoint()
         ..initialize(
           server,
           'jwtRefresh',
@@ -157,17 +164,17 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'favoriteFaction': _i1.ParameterDescription(
               name: 'favoriteFaction',
-              type: _i1.getType<_i18.Faction>(),
+              type: _i1.getType<_i19.Faction>(),
               nullable: false,
             ),
             'currentCountry': _i1.ParameterDescription(
               name: 'currentCountry',
-              type: _i1.getType<_i19.Country?>(),
+              type: _i1.getType<_i20.Country?>(),
               nullable: true,
             ),
             'nationality': _i1.ParameterDescription(
               name: 'nationality',
-              type: _i1.getType<_i19.Country?>(),
+              type: _i1.getType<_i20.Country?>(),
               nullable: true,
             ),
           },
@@ -221,7 +228,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i20.Language>(),
+              type: _i1.getType<_i21.Language>(),
               nullable: false,
             ),
           },
@@ -258,7 +265,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i20.Language>(),
+              type: _i1.getType<_i21.Language>(),
               nullable: false,
             ),
             'attachedMatchId': _i1.ParameterDescription(
@@ -326,7 +333,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i20.Language?>(),
+              type: _i1.getType<_i21.Language?>(),
               nullable: true,
             ),
           },
@@ -387,7 +394,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'players': _i1.ParameterDescription(
               name: 'players',
-              type: _i1.getType<List<_i21.PlayerMatchResultInput>>(),
+              type: _i1.getType<List<_i22.PlayerMatchResultInput>>(),
               nullable: false,
             ),
           },
@@ -492,12 +499,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'minAmountOfPlayers': _i1.ParameterDescription(
               name: 'minAmountOfPlayers',
-              type: _i1.getType<_i22.MatchPodium>(),
+              type: _i1.getType<_i23.MatchPodium>(),
               nullable: false,
             ),
             'maxAmountOfPlayers': _i1.ParameterDescription(
               name: 'maxAmountOfPlayers',
-              type: _i1.getType<_i22.MatchPodium>(),
+              type: _i1.getType<_i23.MatchPodium>(),
               nullable: false,
             ),
             'attemptedAt': _i1.ParameterDescription(
@@ -792,6 +799,47 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['googleIdp'] = _i1.EndpointConnector(
+      name: 'googleIdp',
+      endpoint: endpoints['googleIdp']!,
+      methodConnectors: {
+        'login': _i1.MethodConnector(
+          name: 'login',
+          params: {
+            'idToken': _i1.ParameterDescription(
+              name: 'idToken',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'accessToken': _i1.ParameterDescription(
+              name: 'accessToken',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['googleIdp'] as _i17.GoogleIdpEndpoint).login(
+                    session,
+                    idToken: params['idToken'],
+                    accessToken: params['accessToken'],
+                  ),
+        ),
+        'hasAccount': _i1.MethodConnector(
+          name: 'hasAccount',
+          params: {},
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['googleIdp'] as _i17.GoogleIdpEndpoint)
+                  .hasAccount(session),
+        ),
+      },
+    );
     connectors['jwtRefresh'] = _i1.EndpointConnector(
       name: 'jwtRefresh',
       endpoint: endpoints['jwtRefresh']!,
@@ -809,7 +857,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['jwtRefresh'] as _i17.JwtRefreshEndpoint)
+              ) async => (endpoints['jwtRefresh'] as _i18.JwtRefreshEndpoint)
                   .refreshAccessToken(
                     session,
                     refreshToken: params['refreshToken'],
@@ -817,9 +865,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i23.Endpoints()
+    modules['serverpod_auth_idp'] = _i24.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i24.Endpoints()
+    modules['serverpod_auth_core'] = _i25.Endpoints()
       ..initializeEndpoints(server);
   }
 }

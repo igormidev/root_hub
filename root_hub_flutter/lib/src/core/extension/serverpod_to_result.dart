@@ -19,6 +19,27 @@ extension FutureServerpodToResultExt<T extends Object> on Future<T> {
   }
 }
 
+final class NullableServerpodValue<T extends Object> {
+  const NullableServerpodValue(this.value);
+
+  final T? value;
+}
+
+extension FutureServerpodToResultNullableExt<T extends Object> on Future<T?> {
+  AsyncResultDart<NullableServerpodValue<T>, RootHubException>
+  get toResult async {
+    try {
+      return Success(NullableServerpodValue(await this));
+    } on RootHubException catch (e, stackTrace) {
+      talker.handle(e, stackTrace);
+      return Failure(e);
+    } catch (e, stackTrace) {
+      talker.handle(e, stackTrace);
+      return Failure(defaultException);
+    }
+  }
+}
+
 extension FutureServerpodToResultVoidExt on Future<void> {
   AsyncResultDart<void, RootHubException> get toResult async {
     try {

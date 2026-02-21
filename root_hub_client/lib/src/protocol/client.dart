@@ -513,6 +513,40 @@ class EndpointEmailIdp extends _i19.EndpointEmailIdpBase {
   );
 }
 
+/// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
+/// are made available on the server and enable Google sign-in on the client.
+/// {@category Endpoint}
+class EndpointGoogleIdp extends _i19.EndpointGoogleIdpBase {
+  EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'googleIdp';
+
+  /// Validates a Google ID token and either logs in the associated user or
+  /// creates a new user account if the Google account ID is not yet known.
+  ///
+  /// If a new user is created an associated [UserProfile] is also created.
+  @override
+  _i2.Future<_i20.AuthSuccess> login({
+    required String idToken,
+    required String? accessToken,
+  }) => caller.callServerEndpoint<_i20.AuthSuccess>(
+    'googleIdp',
+    'login',
+    {
+      'idToken': idToken,
+      'accessToken': accessToken,
+    },
+  );
+
+  @override
+  _i2.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
+    'googleIdp',
+    'hasAccount',
+    {},
+  );
+}
+
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
@@ -606,6 +640,7 @@ class Client extends _i1.ServerpodClientShared {
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
     emailIdp = EndpointEmailIdp(this);
+    googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     modules = Modules(this);
   }
@@ -640,6 +675,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointEmailIdp emailIdp;
 
+  late final EndpointGoogleIdp googleIdp;
+
   late final EndpointJwtRefresh jwtRefresh;
 
   late final Modules modules;
@@ -661,6 +698,7 @@ class Client extends _i1.ServerpodClientShared {
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,
     'subscribeToMatch': subscribeToMatch,
     'emailIdp': emailIdp,
+    'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
   };
 

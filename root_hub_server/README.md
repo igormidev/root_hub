@@ -3,7 +3,7 @@
 Backend for Root Hub. This server provides authentication, match-making APIs, social APIs, match result registration, and location lookup.
 
 ## What This Server Does
-- Authenticates users with Serverpod IDP (email + JWT refresh).
+- Authenticates users with Serverpod IDP (email + Google + JWT refresh).
 - Stores player profiles and game metadata.
 - Supports match schedule creation and subscription.
 - Supports in-match chat.
@@ -90,9 +90,13 @@ root_hub_server/
 
 ## Authentication
 - Server auth is enabled in `lib/server.dart`.
+- Identity providers:
+  - Email provider is always enabled.
+  - Google provider is enabled via `GoogleIdpConfigFromPasswords()`. It requires `googleClientSecret` in `config/passwords.yaml` (JSON from Google OAuth client credentials).
 - Endpoints that require login declare `@override bool get requireLogin => true;`.
 - Auth endpoints are exposed by:
   - `lib/src/auth/email_idp_endpoint.dart`
+  - `lib/src/auth/google_idp_endpoint.dart`
   - `lib/src/auth/jwt_refresh_endpoint.dart`
 
 ## Error Handling Pattern
