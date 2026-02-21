@@ -105,6 +105,11 @@ Generated equivalents are produced into `lib/src/generated/**`.
 
 Do not manually edit generated files under `lib/src/generated/**`.
 
+## Relationship Persistence Rule (Mandatory)
+- Every relationship write in Serverpod **must** use `attachRow` (sometimes referenced as `attatchRow` in team notes).
+- Do not rely on manually assigning relation ids as a replacement for relationship attachment.
+- AI agents working on this backend must not forget this rule. If a change creates/updates relations, verify the implementation uses `attachRow`.
+
 ## Configuration
 - Environment config: `config/development.yaml`, `config/test.yaml`, `config/staging.yaml`, `config/production.yaml`.
 - Secrets: `config/passwords.yaml` (for local/dev secrets and environment-specific secrets).

@@ -23,3 +23,6 @@ If Flutter code was touched, run `dart format` on all changed Flutter Dart files
 
 ## Documentation Rule
 If structural/architectural conventions, folder conventions, or workflow conventions change, update the related README files in the same task.
+
+## Serverpod MCP Rule
+If a task requires changing the Serverpod backend and there is any uncertainty about framework-specific behavior, API usage, generation workflow, or best practice, consult the Serverpod MCP/docs before implementing the change.
