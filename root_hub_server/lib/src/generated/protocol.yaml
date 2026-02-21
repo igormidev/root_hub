@@ -1,3 +1,5 @@
+getAccount:
+  - v1:
 createComment:
   - v1:
 createPost:

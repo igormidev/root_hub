@@ -13,8 +13,8 @@ shoebill_template_flutter/
 │   │   ├── core/              # Core utilities and extensions
 │   │   │   ├── extensions/    # Dart/Flutter extensions
 │   │   │   └── utils/         # Helper functions
-│   │   ├── global_states/     # SHARED freezed states class that will be used between more then one features
-│   │   ├── global_providers/     # SHARED riverpod providers that will be used between more then one features
+│   │   ├── states/     # All freezed states class and there 
+│   │   ├── global_providers/     # All riverpod providers 
 │   │   ├── design_system/     # SHARED UI components and theming
 │   │   │   ├── dialog_message.dart
 │   │   │   └── default_error_snackbar.dart
