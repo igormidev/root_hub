@@ -40,6 +40,22 @@ extension FactionUiExtension on Faction {
     Faction.keepersInIron => 'assets/faction_boards/keepers_in_iron.webp',
   };
 
+  // Default visual for larger surfaces (screens/sections).
+  String get getFactionImage => switch (this) {
+    Faction.marquiseDeCat => 'assets/faction_images/marquise_de_cat.png',
+    Faction.eyrieDynasties => 'assets/faction_images/eyrie_dynasties.png',
+    Faction.woodlandAlliance => 'assets/faction_images/woodland_alliance.webp',
+    Faction.vagabond => 'assets/faction_images/vagabond.png',
+    Faction.riverfolkCompany => 'assets/faction_images/riverfolk_company.png',
+    Faction.theLizardCult => 'assets/faction_images/the_lizard_cult.png',
+    Faction.undergroundDuchy => 'assets/faction_images/underground_duchy.png',
+    Faction.corvidConspiracy => 'assets/faction_images/corvid_conspiracy.png',
+    Faction.lordOfTheHundreds =>
+      'assets/faction_images/lord_of_the_hundreds.png',
+    Faction.keepersInIron => 'assets/faction_images/keepers_in_iron.png',
+  };
+
+  // Preferred for compact UI such as headers, chips and small cards.
   String get factionIcon => getFactionIconPath();
 
   String getFactionIconPath({
