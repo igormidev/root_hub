@@ -31,6 +31,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     this.id,
     required this.authUserId,
     this.authUser,
+    required this.displayName,
     this.currentCountry,
     this.nationality,
     required this.favoriteFaction,
@@ -49,6 +50,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     int? id,
     required _i1.UuidValue authUserId,
     _i2.AuthUser? authUser,
+    required String displayName,
     _i3.Country? currentCountry,
     _i3.Country? nationality,
     required _i4.Faction favoriteFaction,
@@ -74,6 +76,7 @@ abstract class PlayerData implements _i1.SerializableModel {
           : _i14.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
+      displayName: jsonSerialization['displayName'] as String,
       currentCountry: jsonSerialization['currentCountry'] == null
           ? null
           : _i3.Country.fromJson(
@@ -144,6 +147,8 @@ abstract class PlayerData implements _i1.SerializableModel {
   /// The [AuthUser] this profile belongs to
   _i2.AuthUser? authUser;
 
+  String displayName;
+
   _i3.Country? currentCountry;
 
   _i3.Country? nationality;
@@ -175,6 +180,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     int? id,
     _i1.UuidValue? authUserId,
     _i2.AuthUser? authUser,
+    String? displayName,
     _i3.Country? currentCountry,
     _i3.Country? nationality,
     _i4.Faction? favoriteFaction,
@@ -195,6 +201,7 @@ abstract class PlayerData implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'authUserId': authUserId.toJson(),
       if (authUser != null) 'authUser': authUser?.toJson(),
+      'displayName': displayName,
       if (currentCountry != null) 'currentCountry': currentCountry?.toJson(),
       if (nationality != null) 'nationality': nationality?.toJson(),
       'favoriteFaction': favoriteFaction.toJson(),
@@ -237,6 +244,7 @@ class _PlayerDataImpl extends PlayerData {
     int? id,
     required _i1.UuidValue authUserId,
     _i2.AuthUser? authUser,
+    required String displayName,
     _i3.Country? currentCountry,
     _i3.Country? nationality,
     required _i4.Faction favoriteFaction,
@@ -253,6 +261,7 @@ class _PlayerDataImpl extends PlayerData {
          id: id,
          authUserId: authUserId,
          authUser: authUser,
+         displayName: displayName,
          currentCountry: currentCountry,
          nationality: nationality,
          favoriteFaction: favoriteFaction,
@@ -275,6 +284,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? id = _Undefined,
     _i1.UuidValue? authUserId,
     Object? authUser = _Undefined,
+    String? displayName,
     Object? currentCountry = _Undefined,
     Object? nationality = _Undefined,
     _i4.Faction? favoriteFaction,
@@ -294,6 +304,7 @@ class _PlayerDataImpl extends PlayerData {
       authUser: authUser is _i2.AuthUser?
           ? authUser
           : this.authUser?.copyWith(),
+      displayName: displayName ?? this.displayName,
       currentCountry: currentCountry is _i3.Country?
           ? currentCountry
           : this.currentCountry,

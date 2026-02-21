@@ -3,6 +3,7 @@ table: player_data
 fields:
   ### The [AuthUser] this profile belongs to
   authUser: module:serverpod_auth_core:AuthUser?, relation(onDelete=Cascade)
+  displayName: String
   currentCountry: Country?
   nationality: Country?
   favoriteFaction: Faction

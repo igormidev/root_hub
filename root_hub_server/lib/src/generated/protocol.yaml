@@ -1,3 +1,5 @@
+createPlayerData:
+  - v1:
 getAccount:
   - v1:
 createComment:
