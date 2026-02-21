@@ -12,7 +12,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../api/account/create_player_data.dart' as _i2;
-import '../api/account/get_account.dart' as _i3;
+import '../api/account/get_player_data.dart' as _i3;
 import '../api/community/create_comment_endpoint.dart' as _i4;
 import '../api/community/create_post_endpoint.dart' as _i5;
 import '../api/community/get_comments_endpoint.dart' as _i6;
@@ -52,10 +52,10 @@ class Endpoints extends _i1.EndpointDispatch {
           'createPlayerData',
           null,
         ),
-      'getAccount': _i3.GetAccount()
+      'getPlayerData': _i3.GetPlayerData()
         ..initialize(
           server,
-          'getAccount',
+          'getPlayerData',
           null,
         ),
       'createComment': _i4.CreateCommentEndpoint()
@@ -186,9 +186,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['getAccount'] = _i1.EndpointConnector(
-      name: 'getAccount',
-      endpoint: endpoints['getAccount']!,
+    connectors['getPlayerData'] = _i1.EndpointConnector(
+      name: 'getPlayerData',
+      endpoint: endpoints['getPlayerData']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
@@ -198,7 +198,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['getAccount'] as _i3.GetAccount).v1(session),
+                  (endpoints['getPlayerData'] as _i3.GetPlayerData).v1(session),
         ),
       },
     );

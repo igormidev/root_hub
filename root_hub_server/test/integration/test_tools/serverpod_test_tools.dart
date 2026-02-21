@@ -157,7 +157,7 @@ void withServerpod(
 class TestEndpoints {
   late final _CreatePlayerData createPlayerData;
 
-  late final _GetAccount getAccount;
+  late final _GetPlayerData getPlayerData;
 
   late final _CreateCommentEndpoint createComment;
 
@@ -199,7 +199,7 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
-    getAccount = _GetAccount(
+    getPlayerData = _GetPlayerData(
       endpoints,
       serializationManager,
     );
@@ -312,8 +312,8 @@ class _CreatePlayerData {
   }
 }
 
-class _GetAccount {
-  _GetAccount(
+class _GetPlayerData {
+  _GetPlayerData(
     this._endpointDispatch,
     this._serializationManager,
   );
@@ -326,13 +326,13 @@ class _GetAccount {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'getAccount',
+            endpoint: 'getPlayerData',
             method: 'v1',
           );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'getAccount',
+          endpointPath: 'getPlayerData',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({}),
           serializationManager: _serializationManager,

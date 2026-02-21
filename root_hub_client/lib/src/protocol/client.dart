@@ -73,15 +73,15 @@ class EndpointCreatePlayerData extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
-class EndpointGetAccount extends _i1.EndpointRef {
-  EndpointGetAccount(_i1.EndpointCaller caller) : super(caller);
+class EndpointGetPlayerData extends _i1.EndpointRef {
+  EndpointGetPlayerData(_i1.EndpointCaller caller) : super(caller);
 
   @override
-  String get name => 'getAccount';
+  String get name => 'getPlayerData';
 
   _i2.Future<_i3.PlayerData?> v1() =>
       caller.callServerEndpoint<_i3.PlayerData?>(
-        'getAccount',
+        'getPlayerData',
         'v1',
         {},
       );
@@ -592,7 +592,7 @@ class Client extends _i1.ServerpodClientShared {
              disconnectStreamsOnLostInternetConnection,
        ) {
     createPlayerData = EndpointCreatePlayerData(this);
-    getAccount = EndpointGetAccount(this);
+    getPlayerData = EndpointGetPlayerData(this);
     createComment = EndpointCreateComment(this);
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
@@ -612,7 +612,7 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointCreatePlayerData createPlayerData;
 
-  late final EndpointGetAccount getAccount;
+  late final EndpointGetPlayerData getPlayerData;
 
   late final EndpointCreateComment createComment;
 
@@ -647,7 +647,7 @@ class Client extends _i1.ServerpodClientShared {
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
     'createPlayerData': createPlayerData,
-    'getAccount': getAccount,
+    'getPlayerData': getPlayerData,
     'createComment': createComment,
     'createPost': createPost,
     'getComments': getComments,

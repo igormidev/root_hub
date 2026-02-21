@@ -3,7 +3,7 @@ import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart';
 
-class GetAccount extends Endpoint {
+class GetPlayerData extends Endpoint {
   @override
   bool get requireLogin => true;
 

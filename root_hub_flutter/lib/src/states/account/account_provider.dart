@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
-import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/account/account_state.dart';
 
 /// Notifier for managing account state.
@@ -29,7 +29,7 @@ class AccountStateNotifier extends Notifier<AccountState> {
     state = AccountState.loading();
 
     try {
-      final accountInfo = await ref.read(clientProvider).getAccount.v1();
+      final accountInfo = await ref.read(clientProvider).getPlayerData.v1();
 
       scrappableIdToBeAttached = null;
       if (accountInfo == null) {
