@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/app_config.dart';
+import 'package:root_hub_flutter/src/core/theme/app_theme.dart';
 import 'package:root_hub_flutter/src/core/utils/custom_talker_riverpod_observer.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/go_router_providers.dart';
@@ -12,7 +13,6 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-
 
 late String serverUrl;
 
@@ -86,11 +86,16 @@ class _RouterApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Shoebill Template',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        useMaterial3: true,
+      title: 'Root Hub',
+      theme: buildAppTheme(
+        seedColor: const Color(0xFF6A3D1F),
+        brightness: Brightness.light,
       ),
+      darkTheme: buildAppTheme(
+        seedColor: const Color(0xFF6A3D1F),
+        brightness: Brightness.dark,
+      ),
+      themeMode: ThemeMode.system,
       // localizationsDelegates: S.localizationsDelegates,
       // supportedLocales: S.supportedLocales,
       routerConfig: router,

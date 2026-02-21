@@ -8,6 +8,6 @@ workspace:
   - root_hub_client
   - root_hub_server
   - root_hub_flutter
+  - root_hub_flutter_lints
 dependency_overrides:
   flutter_secure_storage: ^10.0.0
-

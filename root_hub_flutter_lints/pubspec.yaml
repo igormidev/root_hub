@@ -1,0 +1,17 @@
+name: root_hub_flutter_lints
+description: Custom lint rules for the Root Hub Flutter app.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '^3.8.0'
+
+resolution: workspace
+
+dependencies:
+  analyzer: ^8.4.0
+  custom_lint_builder: ^0.8.1
+  path: ^1.9.1
+
+executables:
+  check_flutter_feature_lints:

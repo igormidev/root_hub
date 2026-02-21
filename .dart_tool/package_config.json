@@ -27,7 +27,13 @@
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/analyzer-8.4.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/analyzer-8.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "analyzer_plugin",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/analyzer_plugin-0.13.10",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -152,10 +158,22 @@
       "languageVersion": "3.8"
     },
     {
+      "name": "ci",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/ci-0.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cli_config",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/cli_config-0.2.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "cli_util",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/cli_util-0.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
     },
     {
       "name": "clock",
@@ -228,6 +246,30 @@
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
       "languageVersion": "3.1"
+    },
+    {
+      "name": "custom_lint",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/custom_lint-0.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "custom_lint_builder",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/custom_lint_builder-0.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "custom_lint_core",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/custom_lint_core-0.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "custom_lint_visitor",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/custom_lint_visitor-1.0.0+8.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "dart_jsonwebtoken",
@@ -522,6 +564,12 @@
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/hooks-1.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.9"
+    },
+    {
+      "name": "hotreloader",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/hotreloader-4.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "http",
@@ -852,6 +900,12 @@
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/riverpod-3.2.1",
       "packageUri": "lib/",
       "languageVersion": "3.7"
+    },
+    {
+      "name": "rxdart",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/rxdart-0.28.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "serverpod",
@@ -1330,6 +1384,12 @@
     {
       "name": "root_hub_flutter",
       "rootUri": "../root_hub_flutter",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "root_hub_flutter_lints",
+      "rootUri": "../root_hub_flutter_lints",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     }

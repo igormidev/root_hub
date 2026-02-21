@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Builds a [ThemeData] for the application based on the seed color and brightness.
 ///
@@ -12,12 +13,37 @@ ThemeData buildAppTheme({
     seedColor: seedColor,
     brightness: brightness,
   );
+  final baseTextTheme = GoogleFonts.nunitoSansTextTheme(
+    ThemeData(
+      brightness: brightness,
+      useMaterial3: true,
+    ).textTheme,
+  );
+  final headingTextTheme = GoogleFonts.cinzelTextTheme(baseTextTheme);
+  final textTheme = baseTextTheme.copyWith(
+    displayLarge: headingTextTheme.displayLarge,
+    displayMedium: headingTextTheme.displayMedium,
+    displaySmall: headingTextTheme.displaySmall,
+    headlineLarge: headingTextTheme.headlineLarge,
+    headlineMedium: headingTextTheme.headlineMedium,
+    headlineSmall: headingTextTheme.headlineSmall,
+    titleLarge: headingTextTheme.titleLarge,
+  );
 
   return ThemeData(
     colorScheme: colorScheme,
     brightness: brightness,
-    cupertinoOverrideTheme: const CupertinoThemeData(
-      textTheme: CupertinoTextThemeData(),
+    textTheme: textTheme,
+    cupertinoOverrideTheme: CupertinoThemeData(
+      textTheme: CupertinoTextThemeData(
+        textStyle: GoogleFonts.nunitoSans(),
+        navTitleTextStyle: GoogleFonts.cinzel(
+          fontWeight: FontWeight.w600,
+        ),
+        navLargeTitleTextStyle: GoogleFonts.cinzel(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     ),
     useMaterial3: true,
     filledButtonTheme: FilledButtonThemeData(
