@@ -143,6 +143,16 @@ The app theme uses Google Fonts to avoid generic defaults:
 - Headings: `Cinzel`
 - Body/UI text: `Nunito Sans`
 
+## Faction Assets
+- Board images are stored in `assets/faction_boards/` and exposed via `getFactionBoardImage` in `lib/src/core/extension/faction_ui_extension.dart`.
+- Faction icon symbols are stored in `assets/faction_icons/` with size folders:
+  - `assets/faction_icons/80/`
+  - `assets/faction_icons/256/`
+  - `assets/faction_icons/512/`
+  - `assets/faction_icons/1024/`
+- Use these icon assets in UI anywhere a faction should be represented with an icon (lists, cards, match details, results, etc.).
+- `factionIcon` returns the default icon path (`256` size), and `getFactionIconPath(size: ...)` allows selecting a specific size.
+
 ## Daily Commands
 ```bash
 flutter pub get
