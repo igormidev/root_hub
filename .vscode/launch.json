@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter (DEBUG-LOCAL)",
+      "type": "dart",
+      "request": "launch",
+      "program": "root_hub_flutter/lib/main.dart",
+      "args": [
+        "--dart-define=API_URL=http://localhost:8080",
+      ],
+    },
+  ]
+}

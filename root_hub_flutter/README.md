@@ -12,13 +12,11 @@ shoebill_template_flutter/
 │   ├── src/
 │   │   ├── core/              # Core utilities and extensions
 │   │   │   ├── extensions/    # Dart/Flutter extensions
-│   │   │   ├── utils/         # Helper functions
-│   │   │   └── constants/     # App constants
+│   │   │   └── utils/         # Helper functions
 │   │   ├── global_states/     # SHARED freezed states class that will be used between more then one features
 │   │   ├── global_providers/     # SHARED riverpod providers that will be used between more then one features
 │   │   ├── design_system/     # SHARED UI components and theming
-│   │   │   ├── theme/         # App theme configuration
-│   │   │   ├── widgets/       # Reusable widgets
+│   │   │   ├── dialog_message.dart
 │   │   │   └── default_error_snackbar.dart
 │   │   └── features/          # Feature modules
 │   │       ├── auth/  # The auth module

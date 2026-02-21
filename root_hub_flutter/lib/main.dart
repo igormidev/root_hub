@@ -1,76 +1,99 @@
-import 'package:root_hub_client/root_hub_client.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:serverpod_flutter/serverpod_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/src/core/app_config.dart';
+import 'package:root_hub_flutter/src/core/utils/custom_talker_riverpod_observer.dart';
+import 'package:root_hub_flutter/src/core/utils/talker.dart';
+import 'package:root_hub_flutter/src/global_providers/go_router_providers.dart';
+import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
+import 'package:serverpod_flutter/serverpod_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
-/// Sets up a global client object that can be used to talk to the server from
-/// anywhere in our app. The client is generated from your server code
-/// and is set up to connect to a Serverpod running on a local server on
-/// the default port. You will need to modify this to connect to staging or
-/// production servers.
-/// In a larger app, you may want to use the dependency injection of your choice
-/// instead of using a global client object. This is just a simple example.
-late final Client client;
 
 late String serverUrl;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // When you are running the app on a physical device, you need to set the
-  // server URL to the IP address of your computer. You can find the IP
-  // address by running `ipconfig` on Windows or `ifconfig` on Mac/Linux.
-  //
-  // You can set the variable when running or building your app like this:
-  // E.g. `flutter run --dart-define=SERVER_URL=https://api.example.com/`.
-  //
-  // Otherwise, the server URL is fetched from the assets/config.json file or
-  // defaults to http://$localhost:8080/ if not found.
-  final serverUrl = await getServerUrl();
+  const serverUrlFromEnv = String.fromEnvironment('SERVER_URL');
+  final config = await AppConfig.loadConfig();
+  final serverUrl = serverUrlFromEnv.isEmpty
+      ? config.apiUrl ?? 'http://localhost:8080/'
+      : serverUrlFromEnv;
 
-  client = Client(serverUrl)
-    ..connectivityMonitor = FlutterConnectivityMonitor()
-    ..authSessionManager = FlutterAuthSessionManager();
+  final Client client =
+      Client(
+          serverUrl,
+          connectionTimeout: Duration(minutes: 2),
+        )
+        ..connectivityMonitor = FlutterConnectivityMonitor()
+        ..authSessionManager = FlutterAuthSessionManager();
 
-  client.auth.initialize();
+  await client.auth.initialize();
+  final pref = await SharedPreferences.getInstance();
 
-  runApp(const MyApp());
+  runApp(
+    MyApp(
+      client: client,
+      sharedPreferences: pref,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Client client;
+  final SharedPreferences sharedPreferences;
+  const MyApp({
+    super.key,
+    required this.client,
+    required this.sharedPreferences,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Serverpod Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(title: 'Serverpod Example'),
+    return TalkerWrapper(
+      talker: talker,
+      options: const TalkerWrapperOptions(
+        enableErrorAlerts: kDebugMode,
+        enableExceptionAlerts: kDebugMode,
+      ),
+      child: ProviderScope(
+        observers: [
+          if (kDebugMode)
+            CustomTalkerRiverpodObserver(talker: talker, maxStateLength: 500),
+        ],
+        overrides: [
+          clientProvider.overrideWithValue(client),
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        ],
+        child: const _RouterApp(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+/// Inner widget that consumes the router provider.
+/// This needs to be a separate ConsumerWidget so it can access the ProviderScope.
+class _RouterApp extends ConsumerWidget {
+  const _RouterApp();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      // To test authentication in this example app, uncomment the line below
-      // and comment out the line above. This wraps the GreetingsScreen with a
-      // SignInScreen, which automatically shows a sign-in UI when the user is
-      // not authenticated and displays the GreetingsScreen once they sign in.
-      //
-      // body: SignInScreen(
-      //   child: GreetingsScreen(
-      //     onSignOut: () async {
-      //       await client.auth.signOutDevice();
-      //     },
-      //   ),
-      // ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      title: 'Shoebill Template',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        useMaterial3: true,
+      ),
+      // localizationsDelegates: S.localizationsDelegates,
+      // supportedLocales: S.supportedLocales,
+      routerConfig: router,
     );
   }
 }
