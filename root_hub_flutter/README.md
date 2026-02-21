@@ -54,10 +54,14 @@ root_hub_flutter/
 │       │   ├── session/
 │       │   ├── account/
 │       │   ├── auth_flow/
-│       │   └── onboarding/
+│       │   ├── onboarding/
+│       │   └── dashboard/
 │       └── features/              # UI feature modules (screens/widgets/sections/dialogs)
 │           ├── auth/
-│           └── matches/
+│           ├── dashboard/
+│           ├── home/
+│           ├── match/
+│           └── shop/
 ├── assets/
 └── pubspec.yaml
 ```

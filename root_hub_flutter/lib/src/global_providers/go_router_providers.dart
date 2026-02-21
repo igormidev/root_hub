@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_loading_screen.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_login_screen.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_onboarding_screen.dart';
-import 'package:root_hub_flutter/src/features/matches/match_lobby_screen.dart';
+import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_screen.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -15,7 +15,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 const _loadingPath = '/';
 const _onboardingPath = '/auth/onboarding';
 const _loginPath = '/auth/login';
-const _matchesPath = '/matches';
+const _dashboardPath = '/dashboard';
 
 /// Notifier for managing GoRouter configuration.
 class RouterNotifier extends Notifier<GoRouter> {
@@ -46,8 +46,8 @@ class RouterNotifier extends Notifier<GoRouter> {
           builder: (context, state) => const AuthLoginScreen(),
         ),
         GoRoute(
-          path: _matchesPath,
-          builder: (context, state) => const MatchLobbyScreen(),
+          path: _dashboardPath,
+          builder: (context, state) => const DashboardScreen(),
         ),
       ],
     );
@@ -61,7 +61,7 @@ class RouterNotifier extends Notifier<GoRouter> {
       loading: (_) => _loadingPath,
       requiresOnboarding: (_) => _onboardingPath,
       requiresLogin: (_) => _loginPath,
-      authenticated: (_) => _matchesPath,
+      authenticated: (_) => _dashboardPath,
       error: (_) => _loginPath,
     );
 
