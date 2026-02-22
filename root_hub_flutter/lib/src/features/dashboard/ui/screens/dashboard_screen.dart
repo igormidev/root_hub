@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -104,13 +105,34 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Future<void> _pickAndUploadProfileImage() async {
-    final selectedImage = await _imagePicker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1024,
-      maxHeight: 1024,
-      imageQuality: 90,
-      requestFullMetadata: false,
-    );
+    final source = await _pickImageSource();
+    if (!mounted || source == null) {
+      return;
+    }
+
+    XFile? selectedImage;
+    try {
+      selectedImage = await _imagePicker.pickImage(
+        source: source,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 90,
+        requestFullMetadata: false,
+      );
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+
+      await showErrorDialog(
+        context,
+        title: 'Unable to access camera or gallery',
+        description:
+            'Allow camera and photo permissions in system settings and try again.',
+      );
+      return;
+    }
+
     if (selectedImage == null) {
       return;
     }
@@ -127,6 +149,78 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       context,
       title: result.title,
       description: result.description,
+    );
+  }
+
+  Future<ImageSource?> _pickImageSource() async {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.iOS) {
+      return _showIosImageSourceDialog();
+    }
+
+    return _showAndroidImageSourceDialog();
+  }
+
+  Future<ImageSource?> _showIosImageSourceDialog() {
+    return showCupertinoModalPopup<ImageSource>(
+      context: context,
+      builder: (dialogContext) {
+        return CupertinoActionSheet(
+          title: const Text('Change profile photo'),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(ImageSource.camera);
+              },
+              child: const Text('Take Photo'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(ImageSource.gallery);
+              },
+              child: const Text('Choose from Library'),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<ImageSource?> _showAndroidImageSourceDialog() {
+    return showModalBottomSheet<ImageSource>(
+      context: context,
+      showDragHandle: true,
+      builder: (dialogContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_camera_rounded),
+                title: const Text('Take Photo'),
+                onTap: () {
+                  Navigator.of(dialogContext).pop(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_rounded),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(dialogContext).pop(ImageSource.gallery);
+                },
+              ),
+              const SizedBox(height: 4),
+            ],
+          ),
+        );
+      },
     );
   }
 

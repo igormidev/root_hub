@@ -49,5 +49,7 @@
 	<string>Your location is used to find nearby ROOT match schedules.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your profile image is used to personalize your Root Hub account.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Your camera can be used to capture a profile image.</string>
 </dict>
 </plist>
