@@ -7,17 +7,84 @@ import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
 
-class AuthOnboardingScreen extends ConsumerWidget {
+class AuthOnboardingScreen extends ConsumerStatefulWidget {
   const AuthOnboardingScreen({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AuthOnboardingScreen> createState() =>
+      _AuthOnboardingScreenState();
+}
+
+class _AuthOnboardingScreenState extends ConsumerState<AuthOnboardingScreen> {
+  static const _fadeStartOffset = 8.0;
+  static const _fadeRampDistance = 28.0;
+  static const _fadeStops = <double>[0.00, 0.04, 0.09, 0.14, 0.20, 1.00];
+  static const _fadeTargetAlphas = <int>[0, 42, 115, 186, 255, 255];
+
+  late final ScrollController _gridScrollController;
+  double _topFadeProgress = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _gridScrollController = ScrollController()..addListener(_onGridScroll);
+  }
+
+  @override
+  void dispose() {
+    _gridScrollController
+      ..removeListener(_onGridScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onGridScroll() {
+    if (!_gridScrollController.hasClients) {
+      return;
+    }
+
+    final nextProgress = _fadeProgressForOffset(_gridScrollController.offset);
+    if ((nextProgress - _topFadeProgress).abs() < 0.01) {
+      return;
+    }
+
+    setState(() {
+      _topFadeProgress = nextProgress;
+    });
+  }
+
+  double _fadeProgressForOffset(double offset) {
+    if (offset <= _fadeStartOffset) {
+      return 0;
+    }
+
+    if (offset >= _fadeStartOffset + _fadeRampDistance) {
+      return 1;
+    }
+
+    return (offset - _fadeStartOffset) / _fadeRampDistance;
+  }
+
+  List<Color> _buildTopMaskColors() {
+    return _fadeTargetAlphas
+        .map((targetAlpha) {
+          final interpolatedAlpha =
+              (255 + (targetAlpha - 255) * _topFadeProgress).round();
+          return Color.fromARGB(interpolatedAlpha, 0, 0, 0);
+        })
+        .toList(growable: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final selectedFaction = ref.watch(onboardingProvider).selectedFaction;
     final hasSelectedFaction = selectedFaction != null;
-    final topPadding = MediaQuery.viewPaddingOf(context).top;
+    final viewPadding = MediaQuery.viewPaddingOf(context);
+    final topPadding = viewPadding.top;
+    final maskColors = _buildTopMaskColors();
 
     return Scaffold(
       body: Container(
@@ -51,7 +118,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
                       .fadeIn(duration: 400.ms)
                       .slideY(begin: -0.2, end: 0, duration: 400.ms),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -68,110 +135,130 @@ class AuthOnboardingScreen extends ConsumerWidget {
             Expanded(
               child: Stack(
                 children: [
-                  GridView.builder(
-                    padding: EdgeInsets.only(
-                      bottom: hasSelectedFaction ? 60 : 0,
-                    ),
-                    itemCount: Faction.values.length,
-                    physics: const BouncingScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0,
-                          childAspectRatio: 0.75,
-                        ),
-                    itemBuilder: (context, index) {
-                      final faction = Faction.values[index];
-                      final isSelected = selectedFaction == faction;
+                  ShaderMask(
+                    blendMode: BlendMode.dstIn,
+                    shaderCallback: (bounds) {
+                      return LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: maskColors,
+                        stops: _fadeStops,
+                      ).createShader(bounds);
+                    },
+                    child: GridView.builder(
+                      controller: _gridScrollController,
+                      padding: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        bottom: hasSelectedFaction ? 110 : 0,
+                      ),
+                      itemCount: Faction.values.length,
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 0.75,
+                          ),
+                      itemBuilder: (context, index) {
+                        final faction = Faction.values[index];
+                        final isSelected = selectedFaction == faction;
 
-                      return Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-                            child: GestureDetector(
-                              onTap: () {
-                                ref
-                                    .read(onboardingProvider.notifier)
-                                    .selectFaction(faction);
-                              },
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 220),
-                                curve: Curves.easeOutCubic,
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? faction.factionColor
-                                        : colorScheme.outlineVariant,
-                                    width: isSelected ? 2.6 : 1.2,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: isSelected ? 24 : 12,
-                                      spreadRadius: isSelected ? 1 : 0,
-                                      offset: const Offset(0, 8),
+                        return Padding(
+                              // padding: EdgeInsets.zero,
+                              padding: const EdgeInsets.fromLTRB(6, 0, 6, 12),
+                              child: GestureDetector(
+                                onTap: () {
+                                  final notifier = ref.read(
+                                    onboardingProvider.notifier,
+                                  );
+                                  if (isSelected) {
+                                    notifier.unselectFaction();
+                                    return;
+                                  }
+                                  notifier.selectFaction(faction);
+                                },
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 220),
+                                  curve: Curves.easeOutCubic,
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(22),
+                                    border: Border.all(
                                       color: isSelected
-                                          ? faction.factionColor.withValues(
-                                              alpha: 0.28,
-                                            )
-                                          : colorScheme.shadow.withValues(
-                                              alpha: 0.08,
-                                            ),
+                                          ? faction.factionColor
+                                          : colorScheme.outlineVariant,
+                                      width: isSelected ? 2.6 : 1.2,
                                     ),
-                                  ],
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      colorScheme.surfaceContainerHighest
-                                          .withValues(
-                                            alpha: isSelected ? 0.9 : 0.6,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: isSelected ? 24 : 12,
+                                        spreadRadius: isSelected ? 1 : 0,
+                                        offset: const Offset(0, 8),
+                                        color: isSelected
+                                            ? faction.factionColor.withValues(
+                                                alpha: 0.28,
+                                              )
+                                            : colorScheme.shadow.withValues(
+                                                alpha: 0.08,
+                                              ),
+                                      ),
+                                    ],
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        colorScheme.surfaceContainerHighest
+                                            .withValues(
+                                              alpha: isSelected ? 0.9 : 0.6,
+                                            ),
+                                        colorScheme.surfaceContainer.withValues(
+                                          alpha: isSelected ? 0.95 : 0.72,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Hero(
+                                          tag:
+                                              'faction-image-${faction.toJson()}',
+                                          child: Image.asset(
+                                            faction.getFactionImage,
+                                            fit: BoxFit.contain,
                                           ),
-                                      colorScheme.surfaceContainer.withValues(
-                                        alpha: isSelected ? 0.95 : 0.72,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        _formatFactionName(faction),
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.nunitoSans(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 13,
+                                          letterSpacing: 0.2,
+                                          color: isSelected
+                                              ? faction.factionColor
+                                              : colorScheme.onSurface,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Hero(
-                                        tag:
-                                            'faction-image-${faction.toJson()}',
-                                        child: Image.asset(
-                                          faction.getFactionImage,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      _formatFactionName(faction),
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.nunitoSans(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 13,
-                                        letterSpacing: 0.2,
-                                        color: isSelected
-                                            ? faction.factionColor
-                                            : colorScheme.onSurface,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
-                            ),
-                          )
-                          .animate(delay: (90 * index).ms)
-                          .fadeIn(duration: 450.ms)
-                          .slideY(begin: 0.18, end: 0, duration: 450.ms);
-                    },
+                            )
+                            .animate(delay: (90 * index).ms)
+                            .fadeIn(duration: 250.ms)
+                            .slideY(begin: 0.18, end: 0, duration: 450.ms);
+                      },
+                    ),
                   ),
                   Positioned(
                     left: 16,
                     right: 16,
-                    bottom: 12,
+                    bottom: viewPadding.bottom,
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       switchInCurve: Curves.easeOutCubic,
@@ -180,9 +267,15 @@ class AuthOnboardingScreen extends ConsumerWidget {
                           ? Builder(
                               builder: (context) {
                                 final faction = selectedFaction;
+                                final useDarkForeground =
+                                    faction == Faction.riverfolkCompany ||
+                                    faction == Faction.keepersInIron;
+                                final foregroundColor = useDarkForeground
+                                    ? Colors.black
+                                    : Colors.white;
                                 return SizedBox(
                                       key: ValueKey(faction.toJson()),
-                                      height: 54,
+                                      height: 58,
                                       width: double.infinity,
                                       child: ElevatedButton(
                                         onPressed: () async {
@@ -190,7 +283,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
                                               .read(
                                                 onboardingProvider.notifier,
                                               )
-                                              .selectFaction(faction);
+                                              .persistSelectedFaction();
                                           ref
                                               .read(
                                                 authFlowProvider.notifier,
@@ -200,7 +293,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0,
                                           backgroundColor: faction.factionColor,
-                                          foregroundColor: Colors.white,
+                                          foregroundColor: foregroundColor,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
                                               16,
@@ -209,9 +302,12 @@ class AuthOnboardingScreen extends ConsumerWidget {
                                         ),
                                         child: Text(
                                           'Continue',
-                                          style: GoogleFonts.nunitoSans(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w800,
+                                          style: GoogleFonts.getFont(
+                                            'MedievalSharp',
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 0.7,
+                                            color: foregroundColor,
                                           ),
                                         ),
                                       ),

@@ -4,7 +4,7 @@ import 'package:root_hub_flutter/src/global_providers/shared_preferences_provide
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_state.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingState> {
-  static const _selectedFactionKey = 'new_auth_onboarding_selected_faction';
+  static const _selectedFactionKey = 'auth_onboarding_selected_faction_new';
 
   @override
   OnboardingState build() {
@@ -16,8 +16,20 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     );
   }
 
-  Future<void> selectFaction(Faction faction) async {
+  void selectFaction(Faction faction) {
     state = state.copyWith(selectedFaction: faction);
+  }
+
+  void unselectFaction() {
+    state = const OnboardingState();
+  }
+
+  Future<void> persistSelectedFaction() async {
+    final faction = state.selectedFaction;
+    if (faction == null) {
+      return;
+    }
+
     await ref
         .read(sharedPreferencesProvider)
         .setString(_selectedFactionKey, faction.toJson());
