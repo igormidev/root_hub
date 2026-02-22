@@ -1,0 +1,7 @@
+class: GeoLocation
+table: geo_locations
+fields:
+  x: double
+  y: double
+  ratio: double
+  playerData: PlayerData?, relation(name=player_current_geo_location)

@@ -4,8 +4,8 @@ fields:
   ### The [AuthUser] this profile belongs to
   authUser: module:serverpod_auth_core:AuthUser?, relation(onDelete=Cascade)
   displayName: String
-  currentCountry: Country?
-  nationality: Country?
+  currentLocationId: int?
+  currentLocation: GeoLocation?, relation(name=player_current_geo_location, field=currentLocationId)
   favoriteFaction: Faction
   matchEntries: List<PlayerInMatch>?, relation(name=player_matches)
   posts: List<Post>?, relation(name=player_posts)
@@ -20,4 +20,7 @@ fields:
 indexes:
   auth_user_id_unique_idx:
     fields: authUserId
+    unique: true
+  player_current_location_unique_idx:
+    fields: currentLocationId
     unique: true

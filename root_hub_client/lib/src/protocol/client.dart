@@ -15,7 +15,8 @@ import 'dart:async' as _i2;
 import 'package:root_hub_client/src/protocol/entities/core/player_data.dart'
     as _i3;
 import 'package:root_hub_client/src/protocol/entities/core/faction.dart' as _i4;
-import 'package:root_hub_client/src/protocol/entities/core/country.dart' as _i5;
+import 'package:root_hub_client/src/protocol/entities/core/geo_location.dart'
+    as _i5;
 import 'package:root_hub_client/src/protocol/entities/community/post_comment.dart'
     as _i6;
 import 'package:root_hub_client/src/protocol/entities/core/language.dart'
@@ -58,16 +59,14 @@ class EndpointCreatePlayerData extends _i1.EndpointRef {
   _i2.Future<_i3.PlayerData> v1({
     required String displayName,
     required _i4.Faction favoriteFaction,
-    _i5.Country? currentCountry,
-    _i5.Country? nationality,
+    required _i5.GeoLocation currentLocation,
   }) => caller.callServerEndpoint<_i3.PlayerData>(
     'createPlayerData',
     'v1',
     {
       'displayName': displayName,
       'favoriteFaction': favoriteFaction,
-      'currentCountry': currentCountry,
-      'nationality': nationality,
+      'currentLocation': currentLocation,
     },
   );
 }

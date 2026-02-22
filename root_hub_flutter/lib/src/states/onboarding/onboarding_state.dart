@@ -7,5 +7,7 @@ part 'onboarding_state.freezed.dart';
 abstract class OnboardingState with _$OnboardingState {
   const factory OnboardingState({
     Faction? selectedFaction,
+    @Default('') String displayName,
+    GeoLocation? currentLocation,
   }) = _OnboardingState;
 }

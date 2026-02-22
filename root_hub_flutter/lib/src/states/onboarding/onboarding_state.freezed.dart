@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OnboardingState {
 
- Faction? get selectedFaction;
+ Faction? get selectedFaction; String get displayName; GeoLocation? get currentLocation;
 /// Create a copy of OnboardingState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $OnboardingStateCopyWith<OnboardingState> get copyWith => _$OnboardingStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnboardingState&&(identical(other.selectedFaction, selectedFaction) || other.selectedFaction == selectedFaction));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnboardingState&&(identical(other.selectedFaction, selectedFaction) || other.selectedFaction == selectedFaction)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.currentLocation, currentLocation) || other.currentLocation == currentLocation));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedFaction);
+int get hashCode => Object.hash(runtimeType,selectedFaction,displayName,currentLocation);
 
 @override
 String toString() {
-  return 'OnboardingState(selectedFaction: $selectedFaction)';
+  return 'OnboardingState(selectedFaction: $selectedFaction, displayName: $displayName, currentLocation: $currentLocation)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $OnboardingStateCopyWith<$Res>  {
   factory $OnboardingStateCopyWith(OnboardingState value, $Res Function(OnboardingState) _then) = _$OnboardingStateCopyWithImpl;
 @useResult
 $Res call({
- Faction? selectedFaction
+ Faction? selectedFaction, String displayName, GeoLocation? currentLocation
 });
 
 
@@ -62,10 +62,12 @@ class _$OnboardingStateCopyWithImpl<$Res>
 
 /// Create a copy of OnboardingState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selectedFaction = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? selectedFaction = freezed,Object? displayName = null,Object? currentLocation = freezed,}) {
   return _then(_self.copyWith(
 selectedFaction: freezed == selectedFaction ? _self.selectedFaction : selectedFaction // ignore: cast_nullable_to_non_nullable
-as Faction?,
+as Faction?,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,currentLocation: freezed == currentLocation ? _self.currentLocation : currentLocation // ignore: cast_nullable_to_non_nullable
+as GeoLocation?,
   ));
 }
 
@@ -150,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Faction? selectedFaction)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Faction? selectedFaction,  String displayName,  GeoLocation? currentLocation)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OnboardingState() when $default != null:
-return $default(_that.selectedFaction);case _:
+return $default(_that.selectedFaction,_that.displayName,_that.currentLocation);case _:
   return orElse();
 
 }
@@ -171,10 +173,10 @@ return $default(_that.selectedFaction);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Faction? selectedFaction)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Faction? selectedFaction,  String displayName,  GeoLocation? currentLocation)  $default,) {final _that = this;
 switch (_that) {
 case _OnboardingState():
-return $default(_that.selectedFaction);case _:
+return $default(_that.selectedFaction,_that.displayName,_that.currentLocation);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -191,10 +193,10 @@ return $default(_that.selectedFaction);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Faction? selectedFaction)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Faction? selectedFaction,  String displayName,  GeoLocation? currentLocation)?  $default,) {final _that = this;
 switch (_that) {
 case _OnboardingState() when $default != null:
-return $default(_that.selectedFaction);case _:
+return $default(_that.selectedFaction,_that.displayName,_that.currentLocation);case _:
   return null;
 
 }
@@ -206,10 +208,12 @@ return $default(_that.selectedFaction);case _:
 
 
 class _OnboardingState implements OnboardingState {
-  const _OnboardingState({this.selectedFaction});
+  const _OnboardingState({this.selectedFaction, this.displayName = '', this.currentLocation});
   
 
 @override final  Faction? selectedFaction;
+@override@JsonKey() final  String displayName;
+@override final  GeoLocation? currentLocation;
 
 /// Create a copy of OnboardingState
 /// with the given fields replaced by the non-null parameter values.
@@ -221,16 +225,16 @@ _$OnboardingStateCopyWith<_OnboardingState> get copyWith => __$OnboardingStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnboardingState&&(identical(other.selectedFaction, selectedFaction) || other.selectedFaction == selectedFaction));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnboardingState&&(identical(other.selectedFaction, selectedFaction) || other.selectedFaction == selectedFaction)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.currentLocation, currentLocation) || other.currentLocation == currentLocation));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedFaction);
+int get hashCode => Object.hash(runtimeType,selectedFaction,displayName,currentLocation);
 
 @override
 String toString() {
-  return 'OnboardingState(selectedFaction: $selectedFaction)';
+  return 'OnboardingState(selectedFaction: $selectedFaction, displayName: $displayName, currentLocation: $currentLocation)';
 }
 
 
@@ -241,7 +245,7 @@ abstract mixin class _$OnboardingStateCopyWith<$Res> implements $OnboardingState
   factory _$OnboardingStateCopyWith(_OnboardingState value, $Res Function(_OnboardingState) _then) = __$OnboardingStateCopyWithImpl;
 @override @useResult
 $Res call({
- Faction? selectedFaction
+ Faction? selectedFaction, String displayName, GeoLocation? currentLocation
 });
 
 
@@ -258,10 +262,12 @@ class __$OnboardingStateCopyWithImpl<$Res>
 
 /// Create a copy of OnboardingState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selectedFaction = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? selectedFaction = freezed,Object? displayName = null,Object? currentLocation = freezed,}) {
   return _then(_OnboardingState(
 selectedFaction: freezed == selectedFaction ? _self.selectedFaction : selectedFaction // ignore: cast_nullable_to_non_nullable
-as Faction?,
+as Faction?,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,currentLocation: freezed == currentLocation ? _self.currentLocation : currentLocation // ignore: cast_nullable_to_non_nullable
+as GeoLocation?,
   ));
 }
 

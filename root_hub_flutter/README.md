@@ -12,7 +12,7 @@ With Root Hub, users can:
 
 ## Main User Flow
 1. App validates session and player profile on startup.
-2. If needed, user completes onboarding (favorite faction selection).
+2. If needed, user completes onboarding (favorite faction + display name + mandatory device location coordinates and match search ratio).
 3. User authenticates (email/password or Google when enabled on server).
 4. User sees the list of available match schedules.
 5. User subscribes to an existing match or creates a new one.
@@ -34,7 +34,7 @@ Required behavior for auth-related features:
 - Startup flow is managed by `auth_flow` state/provider:
   - Checks `client.auth.isAuthenticated`.
   - Calls `getPlayerData.v1()` to verify profile existence.
-  - Routes users through onboarding -> login -> authenticated area.
+  - Routes users through onboarding faction -> onboarding profile -> login -> authenticated area.
 
 ## Architecture
 The app follows feature-first presentation with centralized state management:

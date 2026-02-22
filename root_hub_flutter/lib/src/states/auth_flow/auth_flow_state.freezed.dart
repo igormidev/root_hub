@@ -55,12 +55,13 @@ extension AuthFlowStatePatterns on AuthFlowState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthFlowLoading value)?  loading,TResult Function( _AuthFlowRequiresOnboarding value)?  requiresOnboarding,TResult Function( _AuthFlowRequiresLogin value)?  requiresLogin,TResult Function( _AuthFlowAuthenticated value)?  authenticated,TResult Function( _AuthFlowError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthFlowLoading value)?  loading,TResult Function( _AuthFlowRequiresOnboarding value)?  requiresOnboarding,TResult Function( _AuthFlowRequiresOnboardingProfile value)?  requiresOnboardingProfile,TResult Function( _AuthFlowRequiresLogin value)?  requiresLogin,TResult Function( _AuthFlowAuthenticated value)?  authenticated,TResult Function( _AuthFlowError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AuthFlowLoading() when loading != null:
 return loading(_that);case _AuthFlowRequiresOnboarding() when requiresOnboarding != null:
-return requiresOnboarding(_that);case _AuthFlowRequiresLogin() when requiresLogin != null:
+return requiresOnboarding(_that);case _AuthFlowRequiresOnboardingProfile() when requiresOnboardingProfile != null:
+return requiresOnboardingProfile(_that);case _AuthFlowRequiresLogin() when requiresLogin != null:
 return requiresLogin(_that);case _AuthFlowAuthenticated() when authenticated != null:
 return authenticated(_that);case _AuthFlowError() when error != null:
 return error(_that);case _:
@@ -81,12 +82,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthFlowLoading value)  loading,required TResult Function( _AuthFlowRequiresOnboarding value)  requiresOnboarding,required TResult Function( _AuthFlowRequiresLogin value)  requiresLogin,required TResult Function( _AuthFlowAuthenticated value)  authenticated,required TResult Function( _AuthFlowError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthFlowLoading value)  loading,required TResult Function( _AuthFlowRequiresOnboarding value)  requiresOnboarding,required TResult Function( _AuthFlowRequiresOnboardingProfile value)  requiresOnboardingProfile,required TResult Function( _AuthFlowRequiresLogin value)  requiresLogin,required TResult Function( _AuthFlowAuthenticated value)  authenticated,required TResult Function( _AuthFlowError value)  error,}){
 final _that = this;
 switch (_that) {
 case _AuthFlowLoading():
 return loading(_that);case _AuthFlowRequiresOnboarding():
-return requiresOnboarding(_that);case _AuthFlowRequiresLogin():
+return requiresOnboarding(_that);case _AuthFlowRequiresOnboardingProfile():
+return requiresOnboardingProfile(_that);case _AuthFlowRequiresLogin():
 return requiresLogin(_that);case _AuthFlowAuthenticated():
 return authenticated(_that);case _AuthFlowError():
 return error(_that);case _:
@@ -106,12 +108,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthFlowLoading value)?  loading,TResult? Function( _AuthFlowRequiresOnboarding value)?  requiresOnboarding,TResult? Function( _AuthFlowRequiresLogin value)?  requiresLogin,TResult? Function( _AuthFlowAuthenticated value)?  authenticated,TResult? Function( _AuthFlowError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthFlowLoading value)?  loading,TResult? Function( _AuthFlowRequiresOnboarding value)?  requiresOnboarding,TResult? Function( _AuthFlowRequiresOnboardingProfile value)?  requiresOnboardingProfile,TResult? Function( _AuthFlowRequiresLogin value)?  requiresLogin,TResult? Function( _AuthFlowAuthenticated value)?  authenticated,TResult? Function( _AuthFlowError value)?  error,}){
 final _that = this;
 switch (_that) {
 case _AuthFlowLoading() when loading != null:
 return loading(_that);case _AuthFlowRequiresOnboarding() when requiresOnboarding != null:
-return requiresOnboarding(_that);case _AuthFlowRequiresLogin() when requiresLogin != null:
+return requiresOnboarding(_that);case _AuthFlowRequiresOnboardingProfile() when requiresOnboardingProfile != null:
+return requiresOnboardingProfile(_that);case _AuthFlowRequiresLogin() when requiresLogin != null:
 return requiresLogin(_that);case _AuthFlowAuthenticated() when authenticated != null:
 return authenticated(_that);case _AuthFlowError() when error != null:
 return error(_that);case _:
@@ -131,11 +134,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function()?  requiresOnboarding,TResult Function()?  requiresLogin,TResult Function( PlayerData playerData)?  authenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function()?  requiresOnboarding,TResult Function()?  requiresOnboardingProfile,TResult Function()?  requiresLogin,TResult Function( PlayerData playerData)?  authenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthFlowLoading() when loading != null:
 return loading();case _AuthFlowRequiresOnboarding() when requiresOnboarding != null:
-return requiresOnboarding();case _AuthFlowRequiresLogin() when requiresLogin != null:
+return requiresOnboarding();case _AuthFlowRequiresOnboardingProfile() when requiresOnboardingProfile != null:
+return requiresOnboardingProfile();case _AuthFlowRequiresLogin() when requiresLogin != null:
 return requiresLogin();case _AuthFlowAuthenticated() when authenticated != null:
 return authenticated(_that.playerData);case _AuthFlowError() when error != null:
 return error(_that.message);case _:
@@ -156,11 +160,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function()  requiresOnboarding,required TResult Function()  requiresLogin,required TResult Function( PlayerData playerData)  authenticated,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function()  requiresOnboarding,required TResult Function()  requiresOnboardingProfile,required TResult Function()  requiresLogin,required TResult Function( PlayerData playerData)  authenticated,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _AuthFlowLoading():
 return loading();case _AuthFlowRequiresOnboarding():
-return requiresOnboarding();case _AuthFlowRequiresLogin():
+return requiresOnboarding();case _AuthFlowRequiresOnboardingProfile():
+return requiresOnboardingProfile();case _AuthFlowRequiresLogin():
 return requiresLogin();case _AuthFlowAuthenticated():
 return authenticated(_that.playerData);case _AuthFlowError():
 return error(_that.message);case _:
@@ -180,11 +185,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function()?  requiresOnboarding,TResult? Function()?  requiresLogin,TResult? Function( PlayerData playerData)?  authenticated,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function()?  requiresOnboarding,TResult? Function()?  requiresOnboardingProfile,TResult? Function()?  requiresLogin,TResult? Function( PlayerData playerData)?  authenticated,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _AuthFlowLoading() when loading != null:
 return loading();case _AuthFlowRequiresOnboarding() when requiresOnboarding != null:
-return requiresOnboarding();case _AuthFlowRequiresLogin() when requiresLogin != null:
+return requiresOnboarding();case _AuthFlowRequiresOnboardingProfile() when requiresOnboardingProfile != null:
+return requiresOnboardingProfile();case _AuthFlowRequiresLogin() when requiresLogin != null:
 return requiresLogin();case _AuthFlowAuthenticated() when authenticated != null:
 return authenticated(_that.playerData);case _AuthFlowError() when error != null:
 return error(_that.message);case _:
@@ -251,6 +257,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AuthFlowState.requiresOnboarding()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _AuthFlowRequiresOnboardingProfile implements AuthFlowState {
+  const _AuthFlowRequiresOnboardingProfile();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthFlowRequiresOnboardingProfile);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthFlowState.requiresOnboardingProfile()';
 }
 
 

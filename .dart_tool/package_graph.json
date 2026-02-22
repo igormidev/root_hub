@@ -27,6 +27,7 @@
       "version": "0.0.0",
       "dependencies": [
         "google_maps_apis",
+        "http",
         "serverpod",
         "serverpod_auth_core_server",
         "serverpod_auth_idp_server"
@@ -48,6 +49,7 @@
         "flutter_animate",
         "flutter_riverpod",
         "freezed_annotation",
+        "geolocator",
         "go_router",
         "google_fonts",
         "result_dart",
@@ -289,6 +291,19 @@
       ]
     },
     {
+      "name": "geolocator",
+      "version": "14.0.2",
+      "dependencies": [
+        "flutter",
+        "geolocator_android",
+        "geolocator_apple",
+        "geolocator_linux",
+        "geolocator_platform_interface",
+        "geolocator_web",
+        "geolocator_windows"
+      ]
+    },
+    {
       "name": "flutter_animate",
       "version": "4.5.2",
       "dependencies": [
@@ -505,6 +520,16 @@
       "name": "lints",
       "version": "6.1.0",
       "dependencies": []
+    },
+    {
+      "name": "http",
+      "version": "1.6.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
     },
     {
       "name": "google_maps_apis",
@@ -1116,6 +1141,64 @@
       ]
     },
     {
+      "name": "geolocator_linux",
+      "version": "0.2.4",
+      "dependencies": [
+        "dbus",
+        "flutter",
+        "geoclue",
+        "geolocator_platform_interface",
+        "gsettings",
+        "package_info_plus"
+      ]
+    },
+    {
+      "name": "geolocator_windows",
+      "version": "0.2.5",
+      "dependencies": [
+        "flutter",
+        "geolocator_platform_interface"
+      ]
+    },
+    {
+      "name": "geolocator_web",
+      "version": "4.1.3",
+      "dependencies": [
+        "flutter",
+        "flutter_web_plugins",
+        "geolocator_platform_interface",
+        "web"
+      ]
+    },
+    {
+      "name": "geolocator_apple",
+      "version": "2.3.13",
+      "dependencies": [
+        "flutter",
+        "geolocator_platform_interface"
+      ]
+    },
+    {
+      "name": "geolocator_android",
+      "version": "5.0.2",
+      "dependencies": [
+        "flutter",
+        "geolocator_platform_interface",
+        "meta",
+        "uuid"
+      ]
+    },
+    {
+      "name": "geolocator_platform_interface",
+      "version": "4.2.6",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "plugin_platform_interface",
+        "vector_math"
+      ]
+    },
+    {
       "name": "flutter_shaders",
       "version": "0.1.3",
       "dependencies": [
@@ -1369,16 +1452,6 @@
       "dependencies": []
     },
     {
-      "name": "http",
-      "version": "1.6.0",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta",
-        "web"
-      ]
-    },
-    {
       "name": "webkit_inspection_protocol",
       "version": "1.2.1",
       "dependencies": [
@@ -1480,6 +1553,16 @@
       "dependencies": [
         "flutter_lints",
         "lints"
+      ]
+    },
+    {
+      "name": "http_parser",
+      "version": "4.1.2",
+      "dependencies": [
+        "collection",
+        "source_span",
+        "string_scanner",
+        "typed_data"
       ]
     },
     {
@@ -1772,19 +1855,51 @@
       ]
     },
     {
-      "name": "http_parser",
-      "version": "4.1.2",
-      "dependencies": [
-        "collection",
-        "source_span",
-        "string_scanner",
-        "typed_data"
-      ]
-    },
-    {
       "name": "fixnum",
       "version": "1.1.1",
       "dependencies": []
+    },
+    {
+      "name": "package_info_plus",
+      "version": "9.0.0",
+      "dependencies": [
+        "clock",
+        "ffi",
+        "flutter",
+        "flutter_web_plugins",
+        "http",
+        "meta",
+        "package_info_plus_platform_interface",
+        "path",
+        "web",
+        "win32"
+      ]
+    },
+    {
+      "name": "gsettings",
+      "version": "0.2.8",
+      "dependencies": [
+        "dbus",
+        "xdg_directories"
+      ]
+    },
+    {
+      "name": "geoclue",
+      "version": "0.1.1",
+      "dependencies": [
+        "dbus",
+        "meta"
+      ]
+    },
+    {
+      "name": "dbus",
+      "version": "0.7.12",
+      "dependencies": [
+        "args",
+        "ffi",
+        "meta",
+        "xml"
+      ]
     },
     {
       "name": "url_launcher_platform_interface",
@@ -2191,13 +2306,12 @@
       ]
     },
     {
-      "name": "dbus",
-      "version": "0.7.12",
+      "name": "package_info_plus_platform_interface",
+      "version": "3.2.1",
       "dependencies": [
-        "args",
-        "ffi",
+        "flutter",
         "meta",
-        "xml"
+        "plugin_platform_interface"
       ]
     },
     {

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_loading_screen.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_login_screen.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_onboarding_screen.dart';
+import 'package:root_hub_flutter/src/features/auth/auth_onboarding_profile_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_screen.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
@@ -14,6 +15,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 const _loadingPath = '/';
 const _onboardingPath = '/auth/onboarding';
+const _onboardingProfilePath = '/auth/onboarding/profile';
 const _loginPath = '/auth/login';
 const _dashboardPath = '/dashboard';
 
@@ -42,6 +44,10 @@ class RouterNotifier extends Notifier<GoRouter> {
           builder: (context, state) => const AuthOnboardingScreen(),
         ),
         GoRoute(
+          path: _onboardingProfilePath,
+          builder: (context, state) => const AuthOnboardingProfileScreen(),
+        ),
+        GoRoute(
           path: _loginPath,
           builder: (context, state) => const AuthLoginScreen(),
         ),
@@ -60,6 +66,7 @@ class RouterNotifier extends Notifier<GoRouter> {
     final target = authFlowState.map(
       loading: (_) => _loadingPath,
       requiresOnboarding: (_) => _onboardingPath,
+      requiresOnboardingProfile: (_) => _onboardingProfilePath,
       requiresLogin: (_) => _loginPath,
       authenticated: (_) => _dashboardPath,
       error: (_) => _loginPath,

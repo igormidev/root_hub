@@ -8,6 +8,8 @@ abstract class AuthFlowState with _$AuthFlowState {
   const factory AuthFlowState.loading() = _AuthFlowLoading;
   const factory AuthFlowState.requiresOnboarding() =
       _AuthFlowRequiresOnboarding;
+  const factory AuthFlowState.requiresOnboardingProfile() =
+      _AuthFlowRequiresOnboardingProfile;
   const factory AuthFlowState.requiresLogin() = _AuthFlowRequiresLogin;
   const factory AuthFlowState.authenticated({
     required PlayerData playerData,

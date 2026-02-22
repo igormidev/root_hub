@@ -11,8 +11,7 @@ class CreatePlayerData extends Endpoint {
     Session session, {
     required String displayName,
     required Faction favoriteFaction,
-    Country? currentCountry,
-    Country? nationality,
+    required GeoLocation currentLocation,
   }) async {
     return guardRootHubEndpointErrors(
       () async {
@@ -20,6 +19,11 @@ class CreatePlayerData extends Endpoint {
         if (normalizedDisplayName.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
             description: 'Display name cannot be empty.',
+          );
+        }
+        if (currentLocation.ratio <= 0) {
+          throw RootHubEndpointError.invalidRequest(
+            description: 'Location ratio must be greater than zero.',
           );
         }
 
@@ -47,13 +51,21 @@ class CreatePlayerData extends Endpoint {
           final createdAccount = await session.db.transaction((
             transaction,
           ) async {
+            final insertedLocation = await GeoLocation.db.insertRow(
+              session,
+              GeoLocation(
+                x: currentLocation.x,
+                y: currentLocation.y,
+                ratio: currentLocation.ratio,
+              ),
+              transaction: transaction,
+            );
+
             final insertedAccount = await PlayerData.db.insertRow(
               session,
               PlayerData(
                 authUserId: authUserId,
                 displayName: normalizedDisplayName,
-                currentCountry: currentCountry,
-                nationality: nationality,
                 favoriteFaction: favoriteFaction,
               ),
               transaction: transaction,
@@ -66,13 +78,23 @@ class CreatePlayerData extends Endpoint {
               transaction: transaction,
             );
 
+            await PlayerData.db.attachRow.currentLocation(
+              session,
+              insertedAccount,
+              insertedLocation,
+              transaction: transaction,
+            );
+
             return insertedAccount;
           });
 
           return await PlayerData.db.findById(
                 session,
                 createdAccount.id!,
-                include: PlayerData.include(authUser: AuthUser.include()),
+                include: PlayerData.include(
+                  authUser: AuthUser.include(),
+                  currentLocation: GeoLocation.include(),
+                ),
               ) ??
               createdAccount;
         } on DatabaseException {
@@ -98,7 +120,10 @@ class CreatePlayerData extends Endpoint {
     return PlayerData.db.findFirstRow(
       session,
       where: (t) => t.authUserId.equals(authUserId),
-      include: PlayerData.include(authUser: AuthUser.include()),
+      include: PlayerData.include(
+        authUser: AuthUser.include(),
+        currentLocation: GeoLocation.include(),
+      ),
     );
   }
 }

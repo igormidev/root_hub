@@ -108,6 +108,9 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
         requiresOnboarding: (_) {
           _requestedLoginCompletion = false;
         },
+        requiresOnboardingProfile: (_) {
+          _requestedLoginCompletion = false;
+        },
         requiresLogin: (_) {
           _requestedLoginCompletion = false;
         },

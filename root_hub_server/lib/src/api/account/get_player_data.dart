@@ -25,7 +25,10 @@ class GetPlayerData extends Endpoint {
     return PlayerData.db.findFirstRow(
       session,
       where: (t) => t.authUserId.equals(authUserId),
-      include: PlayerData.include(authUser: AuthUser.include()),
+      include: PlayerData.include(
+        authUser: AuthUser.include(),
+        currentLocation: GeoLocation.include(),
+      ),
     );
   }
 }

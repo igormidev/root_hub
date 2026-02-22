@@ -13,7 +13,7 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _i2;
-import '../../entities/core/country.dart' as _i3;
+import '../../entities/core/geo_location.dart' as _i3;
 import '../../entities/core/faction.dart' as _i4;
 import '../../entities/match/player_in_match.dart' as _i5;
 import '../../entities/community/post.dart' as _i6;
@@ -32,8 +32,8 @@ abstract class PlayerData implements _i1.SerializableModel {
     required this.authUserId,
     this.authUser,
     required this.displayName,
-    this.currentCountry,
-    this.nationality,
+    this.currentLocationId,
+    this.currentLocation,
     required this.favoriteFaction,
     this.matchEntries,
     this.posts,
@@ -51,8 +51,8 @@ abstract class PlayerData implements _i1.SerializableModel {
     required _i1.UuidValue authUserId,
     _i2.AuthUser? authUser,
     required String displayName,
-    _i3.Country? currentCountry,
-    _i3.Country? nationality,
+    int? currentLocationId,
+    _i3.GeoLocation? currentLocation,
     required _i4.Faction favoriteFaction,
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
@@ -77,14 +77,12 @@ abstract class PlayerData implements _i1.SerializableModel {
               jsonSerialization['authUser'],
             ),
       displayName: jsonSerialization['displayName'] as String,
-      currentCountry: jsonSerialization['currentCountry'] == null
+      currentLocationId: jsonSerialization['currentLocationId'] as int?,
+      currentLocation: jsonSerialization['currentLocation'] == null
           ? null
-          : _i3.Country.fromJson(
-              (jsonSerialization['currentCountry'] as String),
+          : _i14.Protocol().deserialize<_i3.GeoLocation>(
+              jsonSerialization['currentLocation'],
             ),
-      nationality: jsonSerialization['nationality'] == null
-          ? null
-          : _i3.Country.fromJson((jsonSerialization['nationality'] as String)),
       favoriteFaction: _i4.Faction.fromJson(
         (jsonSerialization['favoriteFaction'] as String),
       ),
@@ -149,9 +147,9 @@ abstract class PlayerData implements _i1.SerializableModel {
 
   String displayName;
 
-  _i3.Country? currentCountry;
+  int? currentLocationId;
 
-  _i3.Country? nationality;
+  _i3.GeoLocation? currentLocation;
 
   _i4.Faction favoriteFaction;
 
@@ -181,8 +179,8 @@ abstract class PlayerData implements _i1.SerializableModel {
     _i1.UuidValue? authUserId,
     _i2.AuthUser? authUser,
     String? displayName,
-    _i3.Country? currentCountry,
-    _i3.Country? nationality,
+    int? currentLocationId,
+    _i3.GeoLocation? currentLocation,
     _i4.Faction? favoriteFaction,
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
@@ -202,8 +200,8 @@ abstract class PlayerData implements _i1.SerializableModel {
       'authUserId': authUserId.toJson(),
       if (authUser != null) 'authUser': authUser?.toJson(),
       'displayName': displayName,
-      if (currentCountry != null) 'currentCountry': currentCountry?.toJson(),
-      if (nationality != null) 'nationality': nationality?.toJson(),
+      if (currentLocationId != null) 'currentLocationId': currentLocationId,
+      if (currentLocation != null) 'currentLocation': currentLocation?.toJson(),
       'favoriteFaction': favoriteFaction.toJson(),
       if (matchEntries != null)
         'matchEntries': matchEntries?.toJson(valueToJson: (v) => v.toJson()),
@@ -245,8 +243,8 @@ class _PlayerDataImpl extends PlayerData {
     required _i1.UuidValue authUserId,
     _i2.AuthUser? authUser,
     required String displayName,
-    _i3.Country? currentCountry,
-    _i3.Country? nationality,
+    int? currentLocationId,
+    _i3.GeoLocation? currentLocation,
     required _i4.Faction favoriteFaction,
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
@@ -262,8 +260,8 @@ class _PlayerDataImpl extends PlayerData {
          authUserId: authUserId,
          authUser: authUser,
          displayName: displayName,
-         currentCountry: currentCountry,
-         nationality: nationality,
+         currentLocationId: currentLocationId,
+         currentLocation: currentLocation,
          favoriteFaction: favoriteFaction,
          matchEntries: matchEntries,
          posts: posts,
@@ -285,8 +283,8 @@ class _PlayerDataImpl extends PlayerData {
     _i1.UuidValue? authUserId,
     Object? authUser = _Undefined,
     String? displayName,
-    Object? currentCountry = _Undefined,
-    Object? nationality = _Undefined,
+    Object? currentLocationId = _Undefined,
+    Object? currentLocation = _Undefined,
     _i4.Faction? favoriteFaction,
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
@@ -305,10 +303,12 @@ class _PlayerDataImpl extends PlayerData {
           ? authUser
           : this.authUser?.copyWith(),
       displayName: displayName ?? this.displayName,
-      currentCountry: currentCountry is _i3.Country?
-          ? currentCountry
-          : this.currentCountry,
-      nationality: nationality is _i3.Country? ? nationality : this.nationality,
+      currentLocationId: currentLocationId is int?
+          ? currentLocationId
+          : this.currentLocationId,
+      currentLocation: currentLocation is _i3.GeoLocation?
+          ? currentLocation
+          : this.currentLocation?.copyWith(),
       favoriteFaction: favoriteFaction ?? this.favoriteFaction,
       matchEntries: matchEntries is List<_i5.PlayerInMatch>?
           ? matchEntries

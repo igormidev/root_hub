@@ -65,7 +65,7 @@ root_hub_server/
 ## API Modules
 
 ### `account`
-- `create_player_data.dart`: creates `PlayerData` for authenticated user (idempotent conflict handling).
+- `create_player_data.dart`: creates `PlayerData` for authenticated user (display name, favorite faction, mandatory current geolocation coordinates + search ratio; idempotent conflict handling).
 - `get_account.dart`: returns authenticated user profile.
 
 ### `community`

@@ -22,34 +22,35 @@ import 'entities/community/post_comment.dart' as _i9;
 import 'entities/core/anonymous_player.dart' as _i10;
 import 'entities/core/country.dart' as _i11;
 import 'entities/core/faction.dart' as _i12;
-import 'entities/core/language.dart' as _i13;
-import 'entities/core/match_podium.dart' as _i14;
-import 'entities/core/player_data.dart' as _i15;
-import 'entities/match/match_in_person_proof.dart' as _i16;
-import 'entities/match/played_match.dart' as _i17;
-import 'entities/match/player_in_match.dart' as _i18;
-import 'entities/match/player_perfomance_in_match.dart' as _i19;
-import 'entities/match_making/chat/match_chat_history.dart' as _i20;
-import 'entities/match_making/chat/match_chat_message.dart' as _i21;
-import 'entities/match_making/google_place_location.dart' as _i22;
-import 'entities/match_making/location.dart' as _i23;
-import 'entities/match_making/manual_input_location.dart' as _i24;
-import 'entities/match_making/match_schedule.dart' as _i25;
-import 'entities/match_making/match_subscription.dart' as _i26;
-import 'entities/others/pagination_metadata.dart' as _i27;
-import 'entities/others/root_hub_exception.dart' as _i28;
+import 'entities/core/geo_location.dart' as _i13;
+import 'entities/core/language.dart' as _i14;
+import 'entities/core/match_podium.dart' as _i15;
+import 'entities/core/player_data.dart' as _i16;
+import 'entities/match/match_in_person_proof.dart' as _i17;
+import 'entities/match/played_match.dart' as _i18;
+import 'entities/match/player_in_match.dart' as _i19;
+import 'entities/match/player_perfomance_in_match.dart' as _i20;
+import 'entities/match_making/chat/match_chat_history.dart' as _i21;
+import 'entities/match_making/chat/match_chat_message.dart' as _i22;
+import 'entities/match_making/google_place_location.dart' as _i23;
+import 'entities/match_making/location.dart' as _i24;
+import 'entities/match_making/manual_input_location.dart' as _i25;
+import 'entities/match_making/match_schedule.dart' as _i26;
+import 'entities/match_making/match_subscription.dart' as _i27;
+import 'entities/others/pagination_metadata.dart' as _i28;
+import 'entities/others/root_hub_exception.dart' as _i29;
 import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
-    as _i29;
-import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
     as _i30;
-import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
+import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
     as _i31;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
     as _i32;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i33;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _i34;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i35;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match/models/played_matches_pagination.dart';
@@ -61,6 +62,7 @@ export 'entities/community/post_comment.dart';
 export 'entities/core/anonymous_player.dart';
 export 'entities/core/country.dart';
 export 'entities/core/faction.dart';
+export 'entities/core/geo_location.dart';
 export 'entities/core/language.dart';
 export 'entities/core/match_podium.dart';
 export 'entities/core/player_data.dart';
@@ -146,53 +148,56 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i12.Faction) {
       return _i12.Faction.fromJson(data) as T;
     }
-    if (t == _i13.Language) {
-      return _i13.Language.fromJson(data) as T;
+    if (t == _i13.GeoLocation) {
+      return _i13.GeoLocation.fromJson(data) as T;
     }
-    if (t == _i14.MatchPodium) {
-      return _i14.MatchPodium.fromJson(data) as T;
+    if (t == _i14.Language) {
+      return _i14.Language.fromJson(data) as T;
     }
-    if (t == _i15.PlayerData) {
-      return _i15.PlayerData.fromJson(data) as T;
+    if (t == _i15.MatchPodium) {
+      return _i15.MatchPodium.fromJson(data) as T;
     }
-    if (t == _i16.MatchInPersonProof) {
-      return _i16.MatchInPersonProof.fromJson(data) as T;
+    if (t == _i16.PlayerData) {
+      return _i16.PlayerData.fromJson(data) as T;
     }
-    if (t == _i17.PlayedMatch) {
-      return _i17.PlayedMatch.fromJson(data) as T;
+    if (t == _i17.MatchInPersonProof) {
+      return _i17.MatchInPersonProof.fromJson(data) as T;
     }
-    if (t == _i18.PlayerInMatch) {
-      return _i18.PlayerInMatch.fromJson(data) as T;
+    if (t == _i18.PlayedMatch) {
+      return _i18.PlayedMatch.fromJson(data) as T;
     }
-    if (t == _i19.PlayerPerfomanceInMatch) {
-      return _i19.PlayerPerfomanceInMatch.fromJson(data) as T;
+    if (t == _i19.PlayerInMatch) {
+      return _i19.PlayerInMatch.fromJson(data) as T;
     }
-    if (t == _i20.MatchChatHistory) {
-      return _i20.MatchChatHistory.fromJson(data) as T;
+    if (t == _i20.PlayerPerfomanceInMatch) {
+      return _i20.PlayerPerfomanceInMatch.fromJson(data) as T;
     }
-    if (t == _i21.MatchChatMessage) {
-      return _i21.MatchChatMessage.fromJson(data) as T;
+    if (t == _i21.MatchChatHistory) {
+      return _i21.MatchChatHistory.fromJson(data) as T;
     }
-    if (t == _i22.GooglePlaceLocation) {
-      return _i22.GooglePlaceLocation.fromJson(data) as T;
+    if (t == _i22.MatchChatMessage) {
+      return _i22.MatchChatMessage.fromJson(data) as T;
     }
-    if (t == _i23.Location) {
-      return _i23.Location.fromJson(data) as T;
+    if (t == _i23.GooglePlaceLocation) {
+      return _i23.GooglePlaceLocation.fromJson(data) as T;
     }
-    if (t == _i24.ManualInputLocation) {
-      return _i24.ManualInputLocation.fromJson(data) as T;
+    if (t == _i24.Location) {
+      return _i24.Location.fromJson(data) as T;
     }
-    if (t == _i25.MatchSchedulePairingAttempt) {
-      return _i25.MatchSchedulePairingAttempt.fromJson(data) as T;
+    if (t == _i25.ManualInputLocation) {
+      return _i25.ManualInputLocation.fromJson(data) as T;
     }
-    if (t == _i26.MatchSubscription) {
-      return _i26.MatchSubscription.fromJson(data) as T;
+    if (t == _i26.MatchSchedulePairingAttempt) {
+      return _i26.MatchSchedulePairingAttempt.fromJson(data) as T;
     }
-    if (t == _i27.PaginationMetadata) {
-      return _i27.PaginationMetadata.fromJson(data) as T;
+    if (t == _i27.MatchSubscription) {
+      return _i27.MatchSubscription.fromJson(data) as T;
     }
-    if (t == _i28.RootHubException) {
-      return _i28.RootHubException.fromJson(data) as T;
+    if (t == _i28.PaginationMetadata) {
+      return _i28.PaginationMetadata.fromJson(data) as T;
+    }
+    if (t == _i29.RootHubException) {
+      return _i29.RootHubException.fromJson(data) as T;
     }
     if (t == _i1.getType<_i2.CommentsPagination?>()) {
       return (data != null ? _i2.CommentsPagination.fromJson(data) : null) as T;
@@ -232,61 +237,64 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i12.Faction?>()) {
       return (data != null ? _i12.Faction.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i13.Language?>()) {
-      return (data != null ? _i13.Language.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i13.GeoLocation?>()) {
+      return (data != null ? _i13.GeoLocation.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i14.MatchPodium?>()) {
-      return (data != null ? _i14.MatchPodium.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i14.Language?>()) {
+      return (data != null ? _i14.Language.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i15.PlayerData?>()) {
-      return (data != null ? _i15.PlayerData.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i15.MatchPodium?>()) {
+      return (data != null ? _i15.MatchPodium.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i16.MatchInPersonProof?>()) {
-      return (data != null ? _i16.MatchInPersonProof.fromJson(data) : null)
+    if (t == _i1.getType<_i16.PlayerData?>()) {
+      return (data != null ? _i16.PlayerData.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i17.MatchInPersonProof?>()) {
+      return (data != null ? _i17.MatchInPersonProof.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i17.PlayedMatch?>()) {
-      return (data != null ? _i17.PlayedMatch.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i18.PlayedMatch?>()) {
+      return (data != null ? _i18.PlayedMatch.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i18.PlayerInMatch?>()) {
-      return (data != null ? _i18.PlayerInMatch.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i19.PlayerInMatch?>()) {
+      return (data != null ? _i19.PlayerInMatch.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i19.PlayerPerfomanceInMatch?>()) {
-      return (data != null ? _i19.PlayerPerfomanceInMatch.fromJson(data) : null)
+    if (t == _i1.getType<_i20.PlayerPerfomanceInMatch?>()) {
+      return (data != null ? _i20.PlayerPerfomanceInMatch.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i20.MatchChatHistory?>()) {
-      return (data != null ? _i20.MatchChatHistory.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i21.MatchChatHistory?>()) {
+      return (data != null ? _i21.MatchChatHistory.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i21.MatchChatMessage?>()) {
-      return (data != null ? _i21.MatchChatMessage.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i22.MatchChatMessage?>()) {
+      return (data != null ? _i22.MatchChatMessage.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i22.GooglePlaceLocation?>()) {
-      return (data != null ? _i22.GooglePlaceLocation.fromJson(data) : null)
+    if (t == _i1.getType<_i23.GooglePlaceLocation?>()) {
+      return (data != null ? _i23.GooglePlaceLocation.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i23.Location?>()) {
-      return (data != null ? _i23.Location.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i24.Location?>()) {
+      return (data != null ? _i24.Location.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i24.ManualInputLocation?>()) {
-      return (data != null ? _i24.ManualInputLocation.fromJson(data) : null)
+    if (t == _i1.getType<_i25.ManualInputLocation?>()) {
+      return (data != null ? _i25.ManualInputLocation.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i25.MatchSchedulePairingAttempt?>()) {
+    if (t == _i1.getType<_i26.MatchSchedulePairingAttempt?>()) {
       return (data != null
-              ? _i25.MatchSchedulePairingAttempt.fromJson(data)
+              ? _i26.MatchSchedulePairingAttempt.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i26.MatchSubscription?>()) {
-      return (data != null ? _i26.MatchSubscription.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i27.MatchSubscription?>()) {
+      return (data != null ? _i27.MatchSubscription.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i27.PaginationMetadata?>()) {
-      return (data != null ? _i27.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i28.PaginationMetadata?>()) {
+      return (data != null ? _i28.PaginationMetadata.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i28.RootHubException?>()) {
-      return (data != null ? _i28.RootHubException.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i29.RootHubException?>()) {
+      return (data != null ? _i29.RootHubException.fromJson(data) : null) as T;
     }
     if (t == List<_i9.PostComment>) {
       return (data as List).map((e) => deserialize<_i9.PostComment>(e)).toList()
@@ -295,14 +303,14 @@ class Protocol extends _i1.SerializationManager {
     if (t == List<_i8.Post>) {
       return (data as List).map((e) => deserialize<_i8.Post>(e)).toList() as T;
     }
-    if (t == List<_i26.MatchSubscription>) {
+    if (t == List<_i27.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i26.MatchSubscription>(e))
+              .map((e) => deserialize<_i27.MatchSubscription>(e))
               .toList()
           as T;
     }
-    if (t == List<_i23.Location>) {
-      return (data as List).map((e) => deserialize<_i23.Location>(e)).toList()
+    if (t == List<_i24.Location>) {
+      return (data as List).map((e) => deserialize<_i24.Location>(e)).toList()
           as T;
     }
     if (t == _i1.getType<List<_i9.PostComment>?>()) {
@@ -313,30 +321,30 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i19.PlayerPerfomanceInMatch>) {
+    if (t == List<_i20.PlayerPerfomanceInMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i19.PlayerPerfomanceInMatch>(e))
+              .map((e) => deserialize<_i20.PlayerPerfomanceInMatch>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i19.PlayerPerfomanceInMatch>?>()) {
+    if (t == _i1.getType<List<_i20.PlayerPerfomanceInMatch>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i19.PlayerPerfomanceInMatch>(e))
+                    .map((e) => deserialize<_i20.PlayerPerfomanceInMatch>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i18.PlayerInMatch>) {
+    if (t == List<_i19.PlayerInMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i18.PlayerInMatch>(e))
+              .map((e) => deserialize<_i19.PlayerInMatch>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i18.PlayerInMatch>?>()) {
+    if (t == _i1.getType<List<_i19.PlayerInMatch>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i18.PlayerInMatch>(e))
+                    .map((e) => deserialize<_i19.PlayerInMatch>(e))
                     .toList()
               : null)
           as T;
@@ -347,54 +355,54 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i25.MatchSchedulePairingAttempt>) {
+    if (t == List<_i26.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i25.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i26.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i25.MatchSchedulePairingAttempt>?>()) {
+    if (t == _i1.getType<List<_i26.MatchSchedulePairingAttempt>?>()) {
       return (data != null
               ? (data as List)
                     .map(
-                      (e) => deserialize<_i25.MatchSchedulePairingAttempt>(e),
+                      (e) => deserialize<_i26.MatchSchedulePairingAttempt>(e),
                     )
                     .toList()
               : null)
           as T;
     }
-    if (t == _i1.getType<List<_i26.MatchSubscription>?>()) {
+    if (t == _i1.getType<List<_i27.MatchSubscription>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i26.MatchSubscription>(e))
+                    .map((e) => deserialize<_i27.MatchSubscription>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i21.MatchChatMessage>) {
+    if (t == List<_i22.MatchChatMessage>) {
       return (data as List)
-              .map((e) => deserialize<_i21.MatchChatMessage>(e))
+              .map((e) => deserialize<_i22.MatchChatMessage>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i21.MatchChatMessage>?>()) {
+    if (t == _i1.getType<List<_i22.MatchChatMessage>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i21.MatchChatMessage>(e))
+                    .map((e) => deserialize<_i22.MatchChatMessage>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i24.ManualInputLocation>) {
+    if (t == List<_i25.ManualInputLocation>) {
       return (data as List)
-              .map((e) => deserialize<_i24.ManualInputLocation>(e))
+              .map((e) => deserialize<_i25.ManualInputLocation>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i24.ManualInputLocation>?>()) {
+    if (t == _i1.getType<List<_i25.ManualInputLocation>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i24.ManualInputLocation>(e))
+                    .map((e) => deserialize<_i25.ManualInputLocation>(e))
                     .toList()
               : null)
           as T;
@@ -422,47 +430,47 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i17.PlayedMatch>) {
+    if (t == List<_i18.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i17.PlayedMatch>(e))
+              .map((e) => deserialize<_i18.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i17.PlayedMatch>?>()) {
+    if (t == _i1.getType<List<_i18.PlayedMatch>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i17.PlayedMatch>(e))
+                    .map((e) => deserialize<_i18.PlayedMatch>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i29.PlayedMatch>) {
+    if (t == List<_i30.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i29.PlayedMatch>(e))
+              .map((e) => deserialize<_i30.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i30.PlayerMatchResultInput>) {
+    if (t == List<_i31.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i30.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i31.PlayerMatchResultInput>(e))
               .toList()
           as T;
     }
-    if (t == List<_i31.MatchChatMessage>) {
+    if (t == List<_i32.MatchChatMessage>) {
       return (data as List)
-              .map((e) => deserialize<_i31.MatchChatMessage>(e))
+              .map((e) => deserialize<_i32.MatchChatMessage>(e))
               .toList()
           as T;
     }
-    if (t == List<_i32.Location>) {
-      return (data as List).map((e) => deserialize<_i32.Location>(e)).toList()
+    if (t == List<_i33.Location>) {
+      return (data as List).map((e) => deserialize<_i33.Location>(e)).toList()
           as T;
     }
-    try {
-      return _i33.Protocol().deserialize<T>(data, t);
-    } on _i1.DeserializationTypeNotFoundException catch (_) {}
     try {
       return _i34.Protocol().deserialize<T>(data, t);
+    } on _i1.DeserializationTypeNotFoundException catch (_) {}
+    try {
+      return _i35.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -480,22 +488,23 @@ class Protocol extends _i1.SerializationManager {
       _i10.AnonymousPlayer => 'AnonymousPlayer',
       _i11.Country => 'Country',
       _i12.Faction => 'Faction',
-      _i13.Language => 'Language',
-      _i14.MatchPodium => 'MatchPodium',
-      _i15.PlayerData => 'PlayerData',
-      _i16.MatchInPersonProof => 'MatchInPersonProof',
-      _i17.PlayedMatch => 'PlayedMatch',
-      _i18.PlayerInMatch => 'PlayerInMatch',
-      _i19.PlayerPerfomanceInMatch => 'PlayerPerfomanceInMatch',
-      _i20.MatchChatHistory => 'MatchChatHistory',
-      _i21.MatchChatMessage => 'MatchChatMessage',
-      _i22.GooglePlaceLocation => 'GooglePlaceLocation',
-      _i23.Location => 'Location',
-      _i24.ManualInputLocation => 'ManualInputLocation',
-      _i25.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
-      _i26.MatchSubscription => 'MatchSubscription',
-      _i27.PaginationMetadata => 'PaginationMetadata',
-      _i28.RootHubException => 'RootHubException',
+      _i13.GeoLocation => 'GeoLocation',
+      _i14.Language => 'Language',
+      _i15.MatchPodium => 'MatchPodium',
+      _i16.PlayerData => 'PlayerData',
+      _i17.MatchInPersonProof => 'MatchInPersonProof',
+      _i18.PlayedMatch => 'PlayedMatch',
+      _i19.PlayerInMatch => 'PlayerInMatch',
+      _i20.PlayerPerfomanceInMatch => 'PlayerPerfomanceInMatch',
+      _i21.MatchChatHistory => 'MatchChatHistory',
+      _i22.MatchChatMessage => 'MatchChatMessage',
+      _i23.GooglePlaceLocation => 'GooglePlaceLocation',
+      _i24.Location => 'Location',
+      _i25.ManualInputLocation => 'ManualInputLocation',
+      _i26.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
+      _i27.MatchSubscription => 'MatchSubscription',
+      _i28.PaginationMetadata => 'PaginationMetadata',
+      _i29.RootHubException => 'RootHubException',
       _ => null,
     };
   }
@@ -532,44 +541,46 @@ class Protocol extends _i1.SerializationManager {
         return 'Country';
       case _i12.Faction():
         return 'Faction';
-      case _i13.Language():
+      case _i13.GeoLocation():
+        return 'GeoLocation';
+      case _i14.Language():
         return 'Language';
-      case _i14.MatchPodium():
+      case _i15.MatchPodium():
         return 'MatchPodium';
-      case _i15.PlayerData():
+      case _i16.PlayerData():
         return 'PlayerData';
-      case _i16.MatchInPersonProof():
+      case _i17.MatchInPersonProof():
         return 'MatchInPersonProof';
-      case _i17.PlayedMatch():
+      case _i18.PlayedMatch():
         return 'PlayedMatch';
-      case _i18.PlayerInMatch():
+      case _i19.PlayerInMatch():
         return 'PlayerInMatch';
-      case _i19.PlayerPerfomanceInMatch():
+      case _i20.PlayerPerfomanceInMatch():
         return 'PlayerPerfomanceInMatch';
-      case _i20.MatchChatHistory():
+      case _i21.MatchChatHistory():
         return 'MatchChatHistory';
-      case _i21.MatchChatMessage():
+      case _i22.MatchChatMessage():
         return 'MatchChatMessage';
-      case _i22.GooglePlaceLocation():
+      case _i23.GooglePlaceLocation():
         return 'GooglePlaceLocation';
-      case _i23.Location():
+      case _i24.Location():
         return 'Location';
-      case _i24.ManualInputLocation():
+      case _i25.ManualInputLocation():
         return 'ManualInputLocation';
-      case _i25.MatchSchedulePairingAttempt():
+      case _i26.MatchSchedulePairingAttempt():
         return 'MatchSchedulePairingAttempt';
-      case _i26.MatchSubscription():
+      case _i27.MatchSubscription():
         return 'MatchSubscription';
-      case _i27.PaginationMetadata():
+      case _i28.PaginationMetadata():
         return 'PaginationMetadata';
-      case _i28.RootHubException():
+      case _i29.RootHubException():
         return 'RootHubException';
     }
-    className = _i33.Protocol().getClassNameForObject(data);
+    className = _i34.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_idp.$className';
     }
-    className = _i34.Protocol().getClassNameForObject(data);
+    className = _i35.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_core.$className';
     }
@@ -615,61 +626,64 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName == 'Faction') {
       return deserialize<_i12.Faction>(data['data']);
     }
+    if (dataClassName == 'GeoLocation') {
+      return deserialize<_i13.GeoLocation>(data['data']);
+    }
     if (dataClassName == 'Language') {
-      return deserialize<_i13.Language>(data['data']);
+      return deserialize<_i14.Language>(data['data']);
     }
     if (dataClassName == 'MatchPodium') {
-      return deserialize<_i14.MatchPodium>(data['data']);
+      return deserialize<_i15.MatchPodium>(data['data']);
     }
     if (dataClassName == 'PlayerData') {
-      return deserialize<_i15.PlayerData>(data['data']);
+      return deserialize<_i16.PlayerData>(data['data']);
     }
     if (dataClassName == 'MatchInPersonProof') {
-      return deserialize<_i16.MatchInPersonProof>(data['data']);
+      return deserialize<_i17.MatchInPersonProof>(data['data']);
     }
     if (dataClassName == 'PlayedMatch') {
-      return deserialize<_i17.PlayedMatch>(data['data']);
+      return deserialize<_i18.PlayedMatch>(data['data']);
     }
     if (dataClassName == 'PlayerInMatch') {
-      return deserialize<_i18.PlayerInMatch>(data['data']);
+      return deserialize<_i19.PlayerInMatch>(data['data']);
     }
     if (dataClassName == 'PlayerPerfomanceInMatch') {
-      return deserialize<_i19.PlayerPerfomanceInMatch>(data['data']);
+      return deserialize<_i20.PlayerPerfomanceInMatch>(data['data']);
     }
     if (dataClassName == 'MatchChatHistory') {
-      return deserialize<_i20.MatchChatHistory>(data['data']);
+      return deserialize<_i21.MatchChatHistory>(data['data']);
     }
     if (dataClassName == 'MatchChatMessage') {
-      return deserialize<_i21.MatchChatMessage>(data['data']);
+      return deserialize<_i22.MatchChatMessage>(data['data']);
     }
     if (dataClassName == 'GooglePlaceLocation') {
-      return deserialize<_i22.GooglePlaceLocation>(data['data']);
+      return deserialize<_i23.GooglePlaceLocation>(data['data']);
     }
     if (dataClassName == 'Location') {
-      return deserialize<_i23.Location>(data['data']);
+      return deserialize<_i24.Location>(data['data']);
     }
     if (dataClassName == 'ManualInputLocation') {
-      return deserialize<_i24.ManualInputLocation>(data['data']);
+      return deserialize<_i25.ManualInputLocation>(data['data']);
     }
     if (dataClassName == 'MatchSchedulePairingAttempt') {
-      return deserialize<_i25.MatchSchedulePairingAttempt>(data['data']);
+      return deserialize<_i26.MatchSchedulePairingAttempt>(data['data']);
     }
     if (dataClassName == 'MatchSubscription') {
-      return deserialize<_i26.MatchSubscription>(data['data']);
+      return deserialize<_i27.MatchSubscription>(data['data']);
     }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i27.PaginationMetadata>(data['data']);
+      return deserialize<_i28.PaginationMetadata>(data['data']);
     }
     if (dataClassName == 'RootHubException') {
-      return deserialize<_i28.RootHubException>(data['data']);
+      return deserialize<_i29.RootHubException>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
-      return _i33.Protocol().deserializeByClassName(data);
+      return _i34.Protocol().deserializeByClassName(data);
     }
     if (dataClassName.startsWith('serverpod_auth_core.')) {
       data['className'] = dataClassName.substring(20);
-      return _i34.Protocol().deserializeByClassName(data);
+      return _i35.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }
@@ -684,10 +698,10 @@ class Protocol extends _i1.SerializationManager {
       return null;
     }
     try {
-      return _i33.Protocol().mapRecordToJson(record);
+      return _i34.Protocol().mapRecordToJson(record);
     } catch (_) {}
     try {
-      return _i34.Protocol().mapRecordToJson(record);
+      return _i35.Protocol().mapRecordToJson(record);
     } catch (_) {}
     throw Exception('Unsupported record type ${record.runtimeType}');
   }

@@ -18,7 +18,7 @@ import 'package:root_hub_server/src/generated/entities/core/player_data.dart'
     as _i4;
 import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i5;
-import 'package:root_hub_server/src/generated/entities/core/country.dart'
+import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
     as _i6;
 import 'package:root_hub_server/src/generated/entities/community/post_comment.dart'
     as _i7;
@@ -282,8 +282,7 @@ class _CreatePlayerData {
     _i1.TestSessionBuilder sessionBuilder, {
     required String displayName,
     required _i5.Faction favoriteFaction,
-    _i6.Country? currentCountry,
-    _i6.Country? nationality,
+    required _i6.GeoLocation currentLocation,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -299,8 +298,7 @@ class _CreatePlayerData {
           parameters: _i1.testObjectToJson({
             'displayName': displayName,
             'favoriteFaction': favoriteFaction,
-            'currentCountry': currentCountry,
-            'nationality': nationality,
+            'currentLocation': currentLocation,
           }),
           serializationManager: _serializationManager,
         );

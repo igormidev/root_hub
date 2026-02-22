@@ -30,7 +30,7 @@ import '../auth/google_idp_endpoint.dart' as _i17;
 import '../auth/jwt_refresh_endpoint.dart' as _i18;
 import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i19;
-import 'package:root_hub_server/src/generated/entities/core/country.dart'
+import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
     as _i20;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
     as _i21;
@@ -167,15 +167,10 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<_i19.Faction>(),
               nullable: false,
             ),
-            'currentCountry': _i1.ParameterDescription(
-              name: 'currentCountry',
-              type: _i1.getType<_i20.Country?>(),
-              nullable: true,
-            ),
-            'nationality': _i1.ParameterDescription(
-              name: 'nationality',
-              type: _i1.getType<_i20.Country?>(),
-              nullable: true,
+            'currentLocation': _i1.ParameterDescription(
+              name: 'currentLocation',
+              type: _i1.getType<_i20.GeoLocation>(),
+              nullable: false,
             ),
           },
           call:
@@ -187,8 +182,7 @@ class Endpoints extends _i1.EndpointDispatch {
                     session,
                     displayName: params['displayName'],
                     favoriteFaction: params['favoriteFaction'],
-                    currentCountry: params['currentCountry'],
-                    nationality: params['nationality'],
+                    currentLocation: params['currentLocation'],
                   ),
         ),
       },

@@ -288,7 +288,7 @@ class _AuthOnboardingScreenState extends ConsumerState<AuthOnboardingScreen> {
                                               .read(
                                                 authFlowProvider.notifier,
                                               )
-                                              .moveToLoginAfterOnboarding();
+                                              .moveToOnboardingProfile();
                                         },
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0,

@@ -56,6 +56,10 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     state = const AuthFlowState.requiresLogin();
   }
 
+  void moveToOnboardingProfile() {
+    state = const AuthFlowState.requiresOnboardingProfile();
+  }
+
   Future<void> completeLogin() async {
     await bootstrap();
   }
@@ -103,14 +107,20 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
           return;
         }
 
-        final selectedFaction = ref.read(onboardingProvider).selectedFaction;
+        final onboardingState = ref.read(onboardingProvider);
+        final selectedFaction = onboardingState.selectedFaction;
         if (selectedFaction == null) {
           _setStateIfCurrent(runId, const AuthFlowState.requiresOnboarding());
           return;
         }
 
-        final displayName = await _resolveDisplayName();
-        if (!_isCurrent(runId)) {
+        final displayName = onboardingState.displayName.trim();
+        final currentLocation = onboardingState.currentLocation;
+        if (displayName.isEmpty || currentLocation == null) {
+          _setStateIfCurrent(
+            runId,
+            const AuthFlowState.requiresOnboardingProfile(),
+          );
           return;
         }
 
@@ -120,6 +130,7 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
             .v1(
               displayName: displayName,
               favoriteFaction: selectedFaction,
+              currentLocation: currentLocation,
             )
             .toResult;
 
@@ -197,55 +208,6 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
         .toResult;
   }
 
-  Future<String> _resolveDisplayName() async {
-    final profileResult = await ref
-        .read(clientProvider)
-        .modules
-        .serverpod_auth_core
-        .userProfileInfo
-        .get()
-        .toResult;
-
-    return profileResult.fold(
-      (profile) => _firstNonEmpty(
-        [
-          profile.fullName,
-          profile.userName,
-          _emailPrefix(profile.email),
-        ],
-        fallback: 'Root Player',
-      ),
-      (_) => 'Root Player',
-    );
-  }
-
-  String _emailPrefix(String? email) {
-    if (email == null || email.trim().isEmpty) {
-      return '';
-    }
-
-    final atIndex = email.indexOf('@');
-    if (atIndex <= 0) {
-      return email.trim();
-    }
-
-    return email.substring(0, atIndex).trim();
-  }
-
-  String _firstNonEmpty(
-    List<String?> candidates, {
-    required String fallback,
-  }) {
-    for (final candidate in candidates) {
-      final trimmed = candidate?.trim();
-      if (trimmed != null && trimmed.isNotEmpty) {
-        return trimmed;
-      }
-    }
-
-    return fallback;
-  }
-
   String _extractErrorMessage(
     RootHubException error, {
     required String fallback,
@@ -284,12 +246,17 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
   }
 
   void _setFallbackUnauthenticatedState(int runId) {
-    final selectedFaction = ref.read(onboardingProvider).selectedFaction;
+    final onboardingState = ref.read(onboardingProvider);
+    final selectedFaction = onboardingState.selectedFaction;
+    final hasDisplayName = onboardingState.displayName.trim().isNotEmpty;
+    final hasCurrentLocation = onboardingState.currentLocation != null;
     _setStateIfCurrent(
       runId,
       selectedFaction == null
           ? const AuthFlowState.requiresOnboarding()
-          : const AuthFlowState.requiresLogin(),
+          : hasDisplayName && hasCurrentLocation
+          ? const AuthFlowState.requiresLogin()
+          : const AuthFlowState.requiresOnboardingProfile(),
     );
   }
 }

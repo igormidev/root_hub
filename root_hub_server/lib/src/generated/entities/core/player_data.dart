@@ -14,7 +14,7 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _i2;
-import '../../entities/core/country.dart' as _i3;
+import '../../entities/core/geo_location.dart' as _i3;
 import '../../entities/core/faction.dart' as _i4;
 import '../../entities/match/player_in_match.dart' as _i5;
 import '../../entities/community/post.dart' as _i6;
@@ -34,8 +34,8 @@ abstract class PlayerData
     required this.authUserId,
     this.authUser,
     required this.displayName,
-    this.currentCountry,
-    this.nationality,
+    this.currentLocationId,
+    this.currentLocation,
     required this.favoriteFaction,
     this.matchEntries,
     this.posts,
@@ -53,8 +53,8 @@ abstract class PlayerData
     required _i1.UuidValue authUserId,
     _i2.AuthUser? authUser,
     required String displayName,
-    _i3.Country? currentCountry,
-    _i3.Country? nationality,
+    int? currentLocationId,
+    _i3.GeoLocation? currentLocation,
     required _i4.Faction favoriteFaction,
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
@@ -79,14 +79,12 @@ abstract class PlayerData
               jsonSerialization['authUser'],
             ),
       displayName: jsonSerialization['displayName'] as String,
-      currentCountry: jsonSerialization['currentCountry'] == null
+      currentLocationId: jsonSerialization['currentLocationId'] as int?,
+      currentLocation: jsonSerialization['currentLocation'] == null
           ? null
-          : _i3.Country.fromJson(
-              (jsonSerialization['currentCountry'] as String),
+          : _i14.Protocol().deserialize<_i3.GeoLocation>(
+              jsonSerialization['currentLocation'],
             ),
-      nationality: jsonSerialization['nationality'] == null
-          ? null
-          : _i3.Country.fromJson((jsonSerialization['nationality'] as String)),
       favoriteFaction: _i4.Faction.fromJson(
         (jsonSerialization['favoriteFaction'] as String),
       ),
@@ -153,9 +151,9 @@ abstract class PlayerData
 
   String displayName;
 
-  _i3.Country? currentCountry;
+  int? currentLocationId;
 
-  _i3.Country? nationality;
+  _i3.GeoLocation? currentLocation;
 
   _i4.Faction favoriteFaction;
 
@@ -188,8 +186,8 @@ abstract class PlayerData
     _i1.UuidValue? authUserId,
     _i2.AuthUser? authUser,
     String? displayName,
-    _i3.Country? currentCountry,
-    _i3.Country? nationality,
+    int? currentLocationId,
+    _i3.GeoLocation? currentLocation,
     _i4.Faction? favoriteFaction,
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
@@ -209,8 +207,8 @@ abstract class PlayerData
       'authUserId': authUserId.toJson(),
       if (authUser != null) 'authUser': authUser?.toJson(),
       'displayName': displayName,
-      if (currentCountry != null) 'currentCountry': currentCountry?.toJson(),
-      if (nationality != null) 'nationality': nationality?.toJson(),
+      if (currentLocationId != null) 'currentLocationId': currentLocationId,
+      if (currentLocation != null) 'currentLocation': currentLocation?.toJson(),
       'favoriteFaction': favoriteFaction.toJson(),
       if (matchEntries != null)
         'matchEntries': matchEntries?.toJson(valueToJson: (v) => v.toJson()),
@@ -246,8 +244,9 @@ abstract class PlayerData
       'authUserId': authUserId.toJson(),
       if (authUser != null) 'authUser': authUser?.toJsonForProtocol(),
       'displayName': displayName,
-      if (currentCountry != null) 'currentCountry': currentCountry?.toJson(),
-      if (nationality != null) 'nationality': nationality?.toJson(),
+      if (currentLocationId != null) 'currentLocationId': currentLocationId,
+      if (currentLocation != null)
+        'currentLocation': currentLocation?.toJsonForProtocol(),
       'favoriteFaction': favoriteFaction.toJson(),
       if (matchEntries != null)
         'matchEntries': matchEntries?.toJson(
@@ -286,6 +285,7 @@ abstract class PlayerData
 
   static PlayerDataInclude include({
     _i2.AuthUserInclude? authUser,
+    _i3.GeoLocationInclude? currentLocation,
     _i5.PlayerInMatchIncludeList? matchEntries,
     _i6.PostIncludeList? posts,
     _i7.PostCommentIncludeList? comments,
@@ -298,6 +298,7 @@ abstract class PlayerData
   }) {
     return PlayerDataInclude._(
       authUser: authUser,
+      currentLocation: currentLocation,
       matchEntries: matchEntries,
       posts: posts,
       comments: comments,
@@ -344,8 +345,8 @@ class _PlayerDataImpl extends PlayerData {
     required _i1.UuidValue authUserId,
     _i2.AuthUser? authUser,
     required String displayName,
-    _i3.Country? currentCountry,
-    _i3.Country? nationality,
+    int? currentLocationId,
+    _i3.GeoLocation? currentLocation,
     required _i4.Faction favoriteFaction,
     List<_i5.PlayerInMatch>? matchEntries,
     List<_i6.Post>? posts,
@@ -361,8 +362,8 @@ class _PlayerDataImpl extends PlayerData {
          authUserId: authUserId,
          authUser: authUser,
          displayName: displayName,
-         currentCountry: currentCountry,
-         nationality: nationality,
+         currentLocationId: currentLocationId,
+         currentLocation: currentLocation,
          favoriteFaction: favoriteFaction,
          matchEntries: matchEntries,
          posts: posts,
@@ -384,8 +385,8 @@ class _PlayerDataImpl extends PlayerData {
     _i1.UuidValue? authUserId,
     Object? authUser = _Undefined,
     String? displayName,
-    Object? currentCountry = _Undefined,
-    Object? nationality = _Undefined,
+    Object? currentLocationId = _Undefined,
+    Object? currentLocation = _Undefined,
     _i4.Faction? favoriteFaction,
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
@@ -404,10 +405,12 @@ class _PlayerDataImpl extends PlayerData {
           ? authUser
           : this.authUser?.copyWith(),
       displayName: displayName ?? this.displayName,
-      currentCountry: currentCountry is _i3.Country?
-          ? currentCountry
-          : this.currentCountry,
-      nationality: nationality is _i3.Country? ? nationality : this.nationality,
+      currentLocationId: currentLocationId is int?
+          ? currentLocationId
+          : this.currentLocationId,
+      currentLocation: currentLocation is _i3.GeoLocation?
+          ? currentLocation
+          : this.currentLocation?.copyWith(),
       favoriteFaction: favoriteFaction ?? this.favoriteFaction,
       matchEntries: matchEntries is List<_i5.PlayerInMatch>?
           ? matchEntries
@@ -457,18 +460,10 @@ class PlayerDataUpdateTable extends _i1.UpdateTable<PlayerDataTable> {
     value,
   );
 
-  _i1.ColumnValue<_i3.Country, _i3.Country> currentCountry(
-    _i3.Country? value,
-  ) => _i1.ColumnValue(
-    table.currentCountry,
+  _i1.ColumnValue<int, int> currentLocationId(int? value) => _i1.ColumnValue(
+    table.currentLocationId,
     value,
   );
-
-  _i1.ColumnValue<_i3.Country, _i3.Country> nationality(_i3.Country? value) =>
-      _i1.ColumnValue(
-        table.nationality,
-        value,
-      );
 
   _i1.ColumnValue<_i4.Faction, _i4.Faction> favoriteFaction(
     _i4.Faction value,
@@ -489,15 +484,9 @@ class PlayerDataTable extends _i1.Table<int?> {
       'displayName',
       this,
     );
-    currentCountry = _i1.ColumnEnum(
-      'currentCountry',
+    currentLocationId = _i1.ColumnInt(
+      'currentLocationId',
       this,
-      _i1.EnumSerialization.byName,
-    );
-    nationality = _i1.ColumnEnum(
-      'nationality',
-      this,
-      _i1.EnumSerialization.byName,
     );
     favoriteFaction = _i1.ColumnEnum(
       'favoriteFaction',
@@ -515,9 +504,9 @@ class PlayerDataTable extends _i1.Table<int?> {
 
   late final _i1.ColumnString displayName;
 
-  late final _i1.ColumnEnum<_i3.Country> currentCountry;
+  late final _i1.ColumnInt currentLocationId;
 
-  late final _i1.ColumnEnum<_i3.Country> nationality;
+  _i3.GeoLocationTable? _currentLocation;
 
   late final _i1.ColumnEnum<_i4.Faction> favoriteFaction;
 
@@ -568,6 +557,19 @@ class PlayerDataTable extends _i1.Table<int?> {
           _i2.AuthUserTable(tableRelation: foreignTableRelation),
     );
     return _authUser!;
+  }
+
+  _i3.GeoLocationTable get currentLocation {
+    if (_currentLocation != null) return _currentLocation!;
+    _currentLocation = _i1.createRelationTable(
+      relationFieldName: 'currentLocation',
+      field: PlayerData.t.currentLocationId,
+      foreignField: _i3.GeoLocation.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.GeoLocationTable(tableRelation: foreignTableRelation),
+    );
+    return _currentLocation!;
   }
 
   _i5.PlayerInMatchTable get __matchEntries {
@@ -869,8 +871,7 @@ class PlayerDataTable extends _i1.Table<int?> {
     id,
     authUserId,
     displayName,
-    currentCountry,
-    nationality,
+    currentLocationId,
     favoriteFaction,
   ];
 
@@ -878,6 +879,9 @@ class PlayerDataTable extends _i1.Table<int?> {
   _i1.Table? getRelationTable(String relationField) {
     if (relationField == 'authUser') {
       return authUser;
+    }
+    if (relationField == 'currentLocation') {
+      return currentLocation;
     }
     if (relationField == 'matchEntries') {
       return __matchEntries;
@@ -913,6 +917,7 @@ class PlayerDataTable extends _i1.Table<int?> {
 class PlayerDataInclude extends _i1.IncludeObject {
   PlayerDataInclude._({
     _i2.AuthUserInclude? authUser,
+    _i3.GeoLocationInclude? currentLocation,
     _i5.PlayerInMatchIncludeList? matchEntries,
     _i6.PostIncludeList? posts,
     _i7.PostCommentIncludeList? comments,
@@ -924,6 +929,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i13.PlayerPerfomanceInMatchIncludeList? perfomances,
   }) {
     _authUser = authUser;
+    _currentLocation = currentLocation;
     _matchEntries = matchEntries;
     _posts = posts;
     _comments = comments;
@@ -936,6 +942,8 @@ class PlayerDataInclude extends _i1.IncludeObject {
   }
 
   _i2.AuthUserInclude? _authUser;
+
+  _i3.GeoLocationInclude? _currentLocation;
 
   _i5.PlayerInMatchIncludeList? _matchEntries;
 
@@ -958,6 +966,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
   @override
   Map<String, _i1.Include?> get includes => {
     'authUser': _authUser,
+    'currentLocation': _currentLocation,
     'matchEntries': _matchEntries,
     'posts': _posts,
     'comments': _comments,
@@ -1513,6 +1522,31 @@ class PlayerDataAttachRowRepository {
     );
   }
 
+  /// Creates a relation between the given [PlayerData] and [GeoLocation]
+  /// by setting the [PlayerData]'s foreign key `currentLocationId` to refer to the [GeoLocation].
+  Future<void> currentLocation(
+    _i1.Session session,
+    PlayerData playerData,
+    _i3.GeoLocation currentLocation, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+    if (currentLocation.id == null) {
+      throw ArgumentError.notNull('currentLocation.id');
+    }
+
+    var $playerData = playerData.copyWith(
+      currentLocationId: currentLocation.id,
+    );
+    await session.db.updateRow<PlayerData>(
+      $playerData,
+      columns: [PlayerData.t.currentLocationId],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between this [PlayerData] and the given [PlayerInMatch]
   /// by setting the [PlayerInMatch]'s foreign key `playerId` to refer to this [PlayerData].
   Future<void> matchEntries(
@@ -1905,6 +1939,28 @@ class PlayerDataDetachRepository {
 
 class PlayerDataDetachRowRepository {
   const PlayerDataDetachRowRepository._();
+
+  /// Detaches the relation between this [PlayerData] and the [GeoLocation] set in `currentLocation`
+  /// by setting the [PlayerData]'s foreign key `currentLocationId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> currentLocation(
+    _i1.Session session,
+    PlayerData playerData, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $playerData = playerData.copyWith(currentLocationId: null);
+    await session.db.updateRow<PlayerData>(
+      $playerData,
+      columns: [PlayerData.t.currentLocationId],
+      transaction: transaction,
+    );
+  }
 
   /// Detaches the relation between this [PlayerData] and the given [PlayerInMatch]
   /// by setting the [PlayerInMatch]'s foreign key `playerId` to `null`.
