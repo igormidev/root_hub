@@ -16,6 +16,8 @@ class AuthOnboardingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final selectedFaction = ref.watch(onboardingProvider).selectedFaction;
+    final hasSelectedFaction = selectedFaction != null;
+    final topPadding = MediaQuery.viewPaddingOf(context).top;
 
     return Scaffold(
       body: Container(
@@ -30,120 +32,134 @@ class AuthOnboardingScreen extends ConsumerWidget {
             ],
           ),
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 22, 16, 16),
-            child: Column(
-              children: [
-                Text(
-                      'Choose Your Faction',
-                      style: GoogleFonts.cinzel(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.1,
-                        color: colorScheme.onSurface,
-                      ),
-                    )
-                    .animate()
-                    .fadeIn(duration: 400.ms)
-                    .slideY(begin: -0.2, end: 0, duration: 400.ms),
-                const SizedBox(height: 10),
-                Text(
-                  'Pick your favorite ROOT faction before entering the hub.',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 15,
-                    color: colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ).animate().fadeIn(delay: 120.ms, duration: 420.ms),
-                const SizedBox(height: 18),
-                Expanded(
-                  child: GridView.builder(
+        child: Column(
+          children: [
+            SizedBox(height: topPadding + 22),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child:
+                  Text(
+                        'Choose Your Faction',
+                        style: GoogleFonts.cinzel(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.1,
+                          color: colorScheme.onSurface,
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(duration: 400.ms)
+                      .slideY(begin: -0.2, end: 0, duration: 400.ms),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Pick your favorite ROOT faction before entering the hub.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunitoSans(
+                  fontSize: 15,
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                ),
+              ).animate().fadeIn(delay: 120.ms, duration: 420.ms),
+            ),
+            const SizedBox(height: 18),
+            Expanded(
+              child: Stack(
+                children: [
+                  GridView.builder(
+                    padding: EdgeInsets.only(
+                      bottom: hasSelectedFaction ? 60 : 0,
+                    ),
                     itemCount: Faction.values.length,
                     physics: const BouncingScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 0,
                           childAspectRatio: 0.75,
                         ),
                     itemBuilder: (context, index) {
                       final faction = Faction.values[index];
                       final isSelected = selectedFaction == faction;
 
-                      return GestureDetector(
-                            onTap: () {
-                              ref
-                                  .read(onboardingProvider.notifier)
-                                  .selectFaction(faction);
-                            },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 220),
-                              curve: Curves.easeOutCubic,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(22),
-                                border: Border.all(
-                                  color: isSelected
-                                      ? faction.factionColor
-                                      : colorScheme.outlineVariant,
-                                  width: isSelected ? 2.6 : 1.2,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: isSelected ? 24 : 12,
-                                    spreadRadius: isSelected ? 1 : 0,
-                                    offset: const Offset(0, 8),
+                      return Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+                            child: GestureDetector(
+                              onTap: () {
+                                ref
+                                    .read(onboardingProvider.notifier)
+                                    .selectFaction(faction);
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 220),
+                                curve: Curves.easeOutCubic,
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  border: Border.all(
                                     color: isSelected
-                                        ? faction.factionColor.withValues(
-                                            alpha: 0.28,
-                                          )
-                                        : colorScheme.shadow.withValues(
-                                            alpha: 0.08,
-                                          ),
+                                        ? faction.factionColor
+                                        : colorScheme.outlineVariant,
+                                    width: isSelected ? 2.6 : 1.2,
                                   ),
-                                ],
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    colorScheme.surfaceContainerHighest
-                                        .withValues(
-                                          alpha: isSelected ? 0.9 : 0.6,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: isSelected ? 24 : 12,
+                                      spreadRadius: isSelected ? 1 : 0,
+                                      offset: const Offset(0, 8),
+                                      color: isSelected
+                                          ? faction.factionColor.withValues(
+                                              alpha: 0.28,
+                                            )
+                                          : colorScheme.shadow.withValues(
+                                              alpha: 0.08,
+                                            ),
+                                    ),
+                                  ],
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      colorScheme.surfaceContainerHighest
+                                          .withValues(
+                                            alpha: isSelected ? 0.9 : 0.6,
+                                          ),
+                                      colorScheme.surfaceContainer.withValues(
+                                        alpha: isSelected ? 0.95 : 0.72,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Hero(
+                                        tag:
+                                            'faction-image-${faction.toJson()}',
+                                        child: Image.asset(
+                                          faction.getFactionImage,
+                                          fit: BoxFit.contain,
                                         ),
-                                    colorScheme.surfaceContainer.withValues(
-                                      alpha: isSelected ? 0.95 : 0.72,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      _formatFactionName(faction),
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.nunitoSans(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 13,
+                                        letterSpacing: 0.2,
+                                        color: isSelected
+                                            ? faction.factionColor
+                                            : colorScheme.onSurface,
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Hero(
-                                      tag: 'faction-image-${faction.toJson()}',
-                                      child: Image.asset(
-                                        faction.getFactionImage,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    _formatFactionName(faction),
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.nunitoSans(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 13,
-                                      letterSpacing: 0.2,
-                                      color: isSelected
-                                          ? faction.factionColor
-                                          : colorScheme.onSurface,
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           )
@@ -152,51 +168,70 @@ class AuthOnboardingScreen extends ConsumerWidget {
                           .slideY(begin: 0.18, end: 0, duration: 450.ms);
                     },
                   ),
-                ),
-                const SizedBox(height: 10),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeInCubic,
-                  child: selectedFaction == null
-                      ? const SizedBox(height: 54)
-                      : SizedBox(
-                              key: ValueKey(selectedFaction.toJson()),
-                              height: 54,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  await ref
-                                      .read(onboardingProvider.notifier)
-                                      .selectFaction(selectedFaction);
-                                  ref
-                                      .read(authFlowProvider.notifier)
-                                      .moveToLoginAfterOnboarding();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  backgroundColor: selectedFaction.factionColor,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Continue',
-                                  style: GoogleFonts.nunitoSans(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 12,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      child: hasSelectedFaction
+                          ? Builder(
+                              builder: (context) {
+                                final faction = selectedFaction;
+                                return SizedBox(
+                                      key: ValueKey(faction.toJson()),
+                                      height: 54,
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          await ref
+                                              .read(
+                                                onboardingProvider.notifier,
+                                              )
+                                              .selectFaction(faction);
+                                          ref
+                                              .read(
+                                                authFlowProvider.notifier,
+                                              )
+                                              .moveToLoginAfterOnboarding();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0,
+                                          backgroundColor: faction.factionColor,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Continue',
+                                          style: GoogleFonts.nunitoSans(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .animate()
+                                    .fadeIn(duration: 240.ms)
+                                    .slideY(
+                                      begin: 0.25,
+                                      end: 0,
+                                      duration: 240.ms,
+                                    );
+                              },
                             )
-                            .animate()
-                            .fadeIn(duration: 240.ms)
-                            .slideY(begin: 0.25, end: 0, duration: 240.ms),
-                ),
-              ],
+                          : const SizedBox.shrink(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

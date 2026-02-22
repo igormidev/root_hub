@@ -1,5 +1,6 @@
 # AGENTS
 Root Hub is a mobile app for the **ROOT** board game community. It has a lot of things to unify the community of root.
+The app is only available for mobile platforms, and all screens must be adapted for mobile usage.
 
 ## Required Reading Order
 1. Read `/Users/igor/PersonalProjects/root_hub/README.md`.

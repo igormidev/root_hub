@@ -2,6 +2,7 @@
 
 Root Hub is a mobile app for the **ROOT** board game community.
 The main goal is to solve a real problem: players do not have one unified place to find matches.
+The app is only available for mobile platforms, and every screen must be adapted for mobile layouts.
 
 With Root Hub, users can:
 - Find open match schedules created by other players.

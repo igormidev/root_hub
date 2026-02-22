@@ -4,7 +4,7 @@ import 'package:root_hub_flutter/src/global_providers/shared_preferences_provide
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_state.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingState> {
-  static const _selectedFactionKey = 'auth_onboarding_selected_faction';
+  static const _selectedFactionKey = 'new_auth_onboarding_selected_faction';
 
   @override
   OnboardingState build() {

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/account/account_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -11,6 +12,9 @@ import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart'
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 class AuthFlowNotifier extends Notifier<AuthFlowState> {
+  static const _authValidationTimeout = Duration(seconds: 6);
+  static const _playerDataTimeout = Duration(seconds: 10);
+
   bool _hasBootstrapped = false;
   int _activeRunId = 0;
 
@@ -18,7 +22,7 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
   AuthFlowState build() {
     final sessionManager = ref.read(sessionManagerProvider);
     void handleSessionChanges() {
-      unawaited(bootstrap());
+      unawaited(bootstrap(showLoading: false));
     }
 
     sessionManager.authInfoListenable.addListener(handleSessionChanges);
@@ -34,10 +38,18 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     return const AuthFlowState.loading();
   }
 
-  Future<void> bootstrap() async {
+  Future<void> bootstrap({bool showLoading = true}) async {
     final runId = _nextRunId();
-    _setStateIfCurrent(runId, const AuthFlowState.loading());
-    await _resolveInitialFlow(runId);
+    if (showLoading) {
+      _setStateIfCurrent(runId, const AuthFlowState.loading());
+    }
+
+    try {
+      await _resolveInitialFlow(runId);
+    } catch (error, stackTrace) {
+      talker.handle(error, stackTrace);
+      _setFallbackUnauthenticatedState(runId);
+    }
   }
 
   void moveToLoginAfterOnboarding() {
@@ -45,26 +57,36 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
   }
 
   Future<void> completeLogin() async {
-    final runId = _nextRunId();
-    _setStateIfCurrent(runId, const AuthFlowState.loading());
-    await _ensureAuthenticatedPlayer(runId);
+    await bootstrap();
   }
 
   Future<void> _resolveInitialFlow(int runId) async {
-    final client = ref.read(clientProvider);
-    final selectedFaction = ref.read(onboardingProvider).selectedFaction;
+    final hasValidSession = await _hasValidSession();
 
-    if (!client.auth.isAuthenticated) {
-      _setStateIfCurrent(
-        runId,
-        selectedFaction == null
-            ? const AuthFlowState.requiresOnboarding()
-            : const AuthFlowState.requiresLogin(),
-      );
+    if (!hasValidSession) {
+      _setFallbackUnauthenticatedState(runId);
       return;
     }
 
     await _ensureAuthenticatedPlayer(runId);
+  }
+
+  Future<bool> _hasValidSession() async {
+    final client = ref.read(clientProvider);
+    if (!client.auth.isAuthenticated) {
+      return false;
+    }
+
+    try {
+      final isValid = await client.auth.validateAuthentication(
+        timeout: _authValidationTimeout,
+      );
+      return isValid && client.auth.isAuthenticated;
+    } catch (error, stackTrace) {
+      talker.handle(error, stackTrace);
+      await client.auth.updateSignedInUser(null);
+      return false;
+    }
   }
 
   Future<void> _ensureAuthenticatedPlayer(int runId) async {
@@ -167,7 +189,12 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
 
   AsyncResultDart<NullableServerpodValue<PlayerData>, RootHubException>
   _getPlayerData() {
-    return ref.read(clientProvider).getPlayerData.v1().toResult;
+    return ref
+        .read(clientProvider)
+        .getPlayerData
+        .v1()
+        .timeout(_playerDataTimeout)
+        .toResult;
   }
 
   Future<String> _resolveDisplayName() async {
@@ -253,6 +280,16 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     _setStateIfCurrent(
       runId,
       AuthFlowState.authenticated(playerData: playerData),
+    );
+  }
+
+  void _setFallbackUnauthenticatedState(int runId) {
+    final selectedFaction = ref.read(onboardingProvider).selectedFaction;
+    _setStateIfCurrent(
+      runId,
+      selectedFaction == null
+          ? const AuthFlowState.requiresOnboarding()
+          : const AuthFlowState.requiresLogin(),
     );
   }
 }
