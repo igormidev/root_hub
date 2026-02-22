@@ -304,12 +304,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                         child:
                             Container(
                                   width: double.infinity,
-                                  padding: const EdgeInsets.fromLTRB(
-                                    16,
-                                    18,
-                                    16,
-                                    16,
-                                  ),
+                                  padding: EdgeInsets.zero,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(24),
                                     border: Border.all(
