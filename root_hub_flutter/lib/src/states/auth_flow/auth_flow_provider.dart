@@ -12,6 +12,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 class AuthFlowNotifier extends Notifier<AuthFlowState> {
   bool _hasBootstrapped = false;
+  int _activeRunId = 0;
 
   @override
   AuthFlowState build() {
@@ -34,8 +35,9 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
   }
 
   Future<void> bootstrap() async {
-    state = const AuthFlowState.loading();
-    await _resolveInitialFlow();
+    final runId = _nextRunId();
+    _setStateIfCurrent(runId, const AuthFlowState.loading());
+    await _resolveInitialFlow(runId);
   }
 
   void moveToLoginAfterOnboarding() {
@@ -43,24 +45,53 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
   }
 
   Future<void> completeLogin() async {
-    state = const AuthFlowState.loading();
+    final runId = _nextRunId();
+    _setStateIfCurrent(runId, const AuthFlowState.loading());
+    await _ensureAuthenticatedPlayer(runId);
+  }
 
+  Future<void> _resolveInitialFlow(int runId) async {
+    final client = ref.read(clientProvider);
+    final selectedFaction = ref.read(onboardingProvider).selectedFaction;
+
+    if (!client.auth.isAuthenticated) {
+      _setStateIfCurrent(
+        runId,
+        selectedFaction == null
+            ? const AuthFlowState.requiresOnboarding()
+            : const AuthFlowState.requiresLogin(),
+      );
+      return;
+    }
+
+    await _ensureAuthenticatedPlayer(runId);
+  }
+
+  Future<void> _ensureAuthenticatedPlayer(int runId) async {
     final getPlayerResult = await _getPlayerData();
     await getPlayerResult.fold(
       (playerValue) async {
+        if (!_isCurrent(runId)) {
+          return;
+        }
+
         final playerData = playerValue.value;
         if (playerData != null) {
-          _setAuthenticated(playerData);
+          _setAuthenticated(runId, playerData);
           return;
         }
 
         final selectedFaction = ref.read(onboardingProvider).selectedFaction;
         if (selectedFaction == null) {
-          state = const AuthFlowState.requiresOnboarding();
+          _setStateIfCurrent(runId, const AuthFlowState.requiresOnboarding());
           return;
         }
 
         final displayName = await _resolveDisplayName();
+        if (!_isCurrent(runId)) {
+          return;
+        }
+
         final createPlayerResult = await ref
             .read(clientProvider)
             .createPlayerData
@@ -72,33 +103,47 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
 
         await createPlayerResult.fold(
           (createdPlayerData) async {
+            if (!_isCurrent(runId)) {
+              return;
+            }
+
             await ref.read(onboardingProvider.notifier).clearSelection();
-            _setAuthenticated(createdPlayerData);
+            _setAuthenticated(runId, createdPlayerData);
           },
           (createError) async {
             final fallbackPlayerResult = await _getPlayerData();
-            fallbackPlayerResult.fold(
+            await fallbackPlayerResult.fold(
               (fallbackPlayerValue) {
+                if (!_isCurrent(runId)) {
+                  return;
+                }
+
                 final fallbackPlayerData = fallbackPlayerValue.value;
                 if (fallbackPlayerData == null) {
-                  state = AuthFlowState.error(
-                    message: _extractErrorMessage(
-                      createError,
-                      fallback:
-                          'Unable to finish account setup. Please try again.',
+                  _setStateIfCurrent(
+                    runId,
+                    AuthFlowState.error(
+                      message: _extractErrorMessage(
+                        createError,
+                        fallback:
+                            'Unable to finish account setup. Please try again.',
+                      ),
                     ),
                   );
                   return;
                 }
 
-                _setAuthenticated(fallbackPlayerData);
+                _setAuthenticated(runId, fallbackPlayerData);
               },
-              (_) {
-                state = AuthFlowState.error(
-                  message: _extractErrorMessage(
-                    createError,
-                    fallback:
-                        'Unable to finish account setup. Please try again.',
+              (_) async {
+                _setStateIfCurrent(
+                  runId,
+                  AuthFlowState.error(
+                    message: _extractErrorMessage(
+                      createError,
+                      fallback:
+                          'Unable to finish account setup. Please try again.',
+                    ),
                   ),
                 );
               },
@@ -107,45 +152,13 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
         );
       },
       (error) async {
-        state = AuthFlowState.error(
-          message: _extractErrorMessage(
-            error,
-            fallback: 'Unable to load account details. Please try again.',
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _resolveInitialFlow() async {
-    final client = ref.read(clientProvider);
-    final selectedFaction = ref.read(onboardingProvider).selectedFaction;
-
-    if (!client.auth.isAuthenticated) {
-      state = selectedFaction == null
-          ? const AuthFlowState.requiresOnboarding()
-          : const AuthFlowState.requiresLogin();
-      return;
-    }
-
-    final getPlayerResult = await _getPlayerData();
-    getPlayerResult.fold(
-      (playerValue) {
-        final playerData = playerValue.value;
-        if (playerData != null) {
-          _setAuthenticated(playerData);
-          return;
-        }
-
-        state = selectedFaction == null
-            ? const AuthFlowState.requiresOnboarding()
-            : const AuthFlowState.requiresLogin();
-      },
-      (error) {
-        state = AuthFlowState.error(
-          message: _extractErrorMessage(
-            error,
-            fallback: 'Unable to validate your session. Please try again.',
+        _setStateIfCurrent(
+          runId,
+          AuthFlowState.error(
+            message: _extractErrorMessage(
+              error,
+              fallback: 'Unable to load account details. Please try again.',
+            ),
           ),
         );
       },
@@ -221,9 +234,26 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     return fallback;
   }
 
-  void _setAuthenticated(PlayerData playerData) {
+  int _nextRunId() {
+    _activeRunId += 1;
+    return _activeRunId;
+  }
+
+  bool _isCurrent(int runId) => runId == _activeRunId;
+
+  void _setStateIfCurrent(int runId, AuthFlowState nextState) {
+    if (!_isCurrent(runId)) {
+      return;
+    }
+    state = nextState;
+  }
+
+  void _setAuthenticated(int runId, PlayerData playerData) {
     ref.read(accountProvider.notifier).setUser(playerData);
-    state = AuthFlowState.authenticated(playerData: playerData);
+    _setStateIfCurrent(
+      runId,
+      AuthFlowState.authenticated(playerData: playerData),
+    );
   }
 }
 

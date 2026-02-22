@@ -93,6 +93,9 @@ root_hub_server/
 - Identity providers:
   - Email provider is always enabled.
   - Google provider is enabled via `GoogleIdpConfigFromPasswords()`. It requires `googleClientSecret` in `config/passwords.yaml` (JSON from Google OAuth client credentials).
+- Verification and password-reset emails are sent through Resend HTTP API (same transport strategy used in `zenscrap_server`).
+  - Required secret: `resendApiKey` in `config/passwords.yaml`.
+  - Email template includes ROOT art and verification code formatting.
 - Endpoints that require login declare `@override bool get requireLogin => true;`.
 - Auth endpoints are exposed by:
   - `lib/src/auth/email_idp_endpoint.dart`
@@ -117,6 +120,9 @@ Do not manually edit generated files under `lib/src/generated/**`.
 ## Configuration
 - Environment config: `config/development.yaml`, `config/test.yaml`, `config/staging.yaml`, `config/production.yaml`.
 - Secrets: `config/passwords.yaml` (for local/dev secrets and environment-specific secrets).
+- Auth email secrets:
+  - `resendApiKey` for verification / password reset emails.
+  - `googleClientSecret` for Google IDP sign-in.
 - Google Places key used by `get_match_location.dart`:
   - `googleMapsApiKey` in `config/passwords.yaml`, or
   - `GOOGLE_MAPS_API_KEY` environment variable.

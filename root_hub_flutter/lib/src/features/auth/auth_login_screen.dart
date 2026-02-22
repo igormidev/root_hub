@@ -102,7 +102,17 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
     final client = ref.read(clientProvider);
 
     ref.listen<AuthFlowState>(authFlowProvider, (_, state) {
-      state.mapOrNull(
+      state.map(
+        loading: (_) {},
+        requiresOnboarding: (_) {
+          _requestedLoginCompletion = false;
+        },
+        requiresLogin: (_) {
+          _requestedLoginCompletion = false;
+        },
+        authenticated: (_) {
+          _requestedLoginCompletion = false;
+        },
         error: (errorState) {
           _requestedLoginCompletion = false;
           ScaffoldMessenger.of(context).showSnackBar(
