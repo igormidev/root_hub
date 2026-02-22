@@ -208,15 +208,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
                       child: Row(
                         children: [
-                          IconButton.filledTonal(
-                            onPressed: playerData == null
-                                ? null
-                                : () {
-                                    _scaffoldKey.currentState?.openDrawer();
-                                  },
-                            icon: const Icon(Icons.menu_rounded),
-                          ),
-                          const SizedBox(width: 8),
                           Image.asset(
                             'assets/app_logo.png',
                             width: 42,
@@ -248,6 +239,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 ),
                               ],
                             ),
+                          ),
+                          const SizedBox(width: 14),
+                          IconButton.filledTonal(
+                            onPressed: playerData == null
+                                ? null
+                                : () {
+                                    _scaffoldKey.currentState?.openDrawer();
+                                  },
+                            icon: const Icon(Icons.menu_rounded),
                           ),
                         ],
                       ),
