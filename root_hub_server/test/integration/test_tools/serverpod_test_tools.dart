@@ -186,6 +186,8 @@ class TestEndpoints {
 
   late final _GetPlayerSubscribedMatches getPlayerSubscribedMatches;
 
+  late final _GetTablesInArea getTablesInArea;
+
   late final _SubscribeToMatch subscribeToMatch;
 
   late final _EmailIdpEndpoint emailIdp;
@@ -259,6 +261,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPlayerSubscribedMatches = _GetPlayerSubscribedMatches(
+      endpoints,
+      serializationManager,
+    );
+    getTablesInArea = _GetTablesInArea(
       endpoints,
       serializationManager,
     );
@@ -967,11 +973,11 @@ class _CreateMatchSchedule {
     _i1.TestSessionBuilder sessionBuilder, {
     required String title,
     String? description,
-    String? aditionalLocationInfo,
     required _i18.MatchPodium minAmountOfPlayers,
     required _i18.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
+    required bool hostWillPlay,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -987,11 +993,11 @@ class _CreateMatchSchedule {
           parameters: _i1.testObjectToJson({
             'title': title,
             'description': description,
-            'aditionalLocationInfo': aditionalLocationInfo,
             'minAmountOfPlayers': minAmountOfPlayers,
             'maxAmountOfPlayers': maxAmountOfPlayers,
             'attemptedAt': attemptedAt,
             'locationId': locationId,
+            'hostWillPlay': hostWillPlay,
           }),
           serializationManager: _serializationManager,
         );
@@ -1089,6 +1095,47 @@ class _GetPlayerSubscribedMatches {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i20.SubscribedMatchesPagination>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetTablesInArea {
+  _GetTablesInArea(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<List<_i17.MatchSchedulePairingAttempt>> v1(
+    _i1.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getTablesInArea',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getTablesInArea',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<List<_i17.MatchSchedulePairingAttempt>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

@@ -52,6 +52,8 @@ import 'package:root_hub_server/src/generated/entities/match_making/chat/match_c
     as _i35;
 import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i36;
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
+    as _i37;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match/models/played_matches_pagination.dart';
@@ -828,12 +830,6 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'description',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'aditionalLocationInfo',
           columnType: _i2.ColumnType.text,
           isNullable: true,
           dartType: 'String?',
@@ -1945,6 +1941,12 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (t == List<_i36.Location>) {
       return (data as List).map((e) => deserialize<_i36.Location>(e)).toList()
+          as T;
+    }
+    if (t == List<_i37.MatchSchedulePairingAttempt>) {
+      return (data as List)
+              .map((e) => deserialize<_i37.MatchSchedulePairingAttempt>(e))
+              .toList()
           as T;
     }
     try {

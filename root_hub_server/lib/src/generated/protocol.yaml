@@ -32,6 +32,8 @@ getMatchLocation:
   - v1:
 getPlayerSubscribedMatches:
   - v1:
+getTablesInArea:
+  - v1:
 subscribeToMatch:
   - v1:
 emailIdp:

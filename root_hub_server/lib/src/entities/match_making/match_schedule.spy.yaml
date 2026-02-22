@@ -4,7 +4,6 @@ fields:
   createdAt: DateTime
   title: String
   description: String?
-  aditionalLocationInfo: String?
   minAmountOfPlayers: MatchPodium
   maxAmountOfPlayers: MatchPodium
   attemptedAt: DateTime

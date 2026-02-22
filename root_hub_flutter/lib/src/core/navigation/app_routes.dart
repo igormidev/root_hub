@@ -4,3 +4,5 @@ const onboardingProfilePath = '/auth/onboarding/profile';
 const loginPath = '/auth/login';
 const dashboardPath = '/dashboard';
 const dashboardFactionPath = '/dashboard/profile/faction';
+const dashboardMatchCreatePath = '/dashboard/match/create';
+const dashboardMatchCreateLocationPath = '/dashboard/match/create/location';

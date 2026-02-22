@@ -1,0 +1,48 @@
+{
+  "__className__": "serverpod.DatabaseMigration",
+  "actions": [
+    {
+      "__className__": "serverpod.DatabaseMigrationAction",
+      "type": "alterTable",
+      "alterTable": {
+        "__className__": "serverpod.TableMigration",
+        "name": "match_schedule_pairing_attempt",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [
+          "aditionalLocationInfo"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [],
+        "warnings": [
+          {
+            "__className__": "serverpod.DatabaseMigrationWarning",
+            "type": "columnDropped",
+            "message": "Column \"aditionalLocationInfo\" of table \"match_schedule_pairing_attempt\" will be dropped.",
+            "table": "match_schedule_pairing_attempt",
+            "columns": [
+              "aditionalLocationInfo"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "__className__": "serverpod.DatabaseMigrationWarning",
+      "type": "columnDropped",
+      "message": "Column \"aditionalLocationInfo\" of table \"match_schedule_pairing_attempt\" will be dropped.",
+      "table": "match_schedule_pairing_attempt",
+      "columns": [
+        "aditionalLocationInfo"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

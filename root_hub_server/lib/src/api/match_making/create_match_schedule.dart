@@ -10,14 +10,31 @@ class CreateMatchSchedule extends Endpoint {
     Session session, {
     required String title,
     String? description,
-    String? aditionalLocationInfo,
     required MatchPodium minAmountOfPlayers,
     required MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
+    required bool hostWillPlay,
   }) async {
     return guardRootHubEndpointErrors(
       () async {
+        final normalizedTitle = title.trim();
+        final normalizedDescription = description?.trim();
+        if (normalizedTitle.isEmpty) {
+          throw RootHubEndpointError.invalidRequest(
+            description: 'Title cannot be empty.',
+          );
+        }
+
+        final minPlayers = _podiumToPlayersCount(minAmountOfPlayers);
+        final maxPlayers = _podiumToPlayersCount(maxAmountOfPlayers);
+        if (minPlayers < 2 || maxPlayers > 6 || minPlayers > maxPlayers) {
+          throw RootHubEndpointError.invalidRequest(
+            description:
+                'Players range must stay between 2 and 6, with min not greater than max.',
+          );
+        }
+
         final userIdentifier = session.authenticated!.userIdentifier;
         final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -46,9 +63,10 @@ class CreateMatchSchedule extends Endpoint {
             session,
             MatchSchedulePairingAttempt(
               createdAt: DateTime.now(),
-              title: title,
-              description: description,
-              aditionalLocationInfo: aditionalLocationInfo,
+              title: normalizedTitle,
+              description: normalizedDescription?.isEmpty == true
+                  ? null
+                  : normalizedDescription,
               minAmountOfPlayers: minAmountOfPlayers,
               maxAmountOfPlayers: maxAmountOfPlayers,
               attemptedAt: attemptedAt,
@@ -87,11 +105,53 @@ class CreateMatchSchedule extends Endpoint {
             transaction: transaction,
           );
 
+          if (hostWillPlay) {
+            final hostSubscription = await MatchSubscription.db.insertRow(
+              session,
+              MatchSubscription(
+                subscribedAt: DateTime.now(),
+                matchSchedulePairingAttemptId: match.id!,
+                playerDataId: playerData.id!,
+              ),
+              transaction: transaction,
+            );
+
+            await MatchSubscription.db.attachRow.matchSchedulePairingAttempt(
+              session,
+              hostSubscription,
+              match,
+              transaction: transaction,
+            );
+            await MatchSubscription.db.attachRow.playerData(
+              session,
+              hostSubscription,
+              playerData,
+              transaction: transaction,
+            );
+          }
+
           return match;
         });
       },
       fallbackDescription:
           'Unable to create a match schedule right now. Please try again.',
     );
+  }
+
+  int _podiumToPlayersCount(MatchPodium podium) {
+    switch (podium) {
+      case MatchPodium.firstPlace:
+        return 1;
+      case MatchPodium.secondPlace:
+        return 2;
+      case MatchPodium.thirdPlace:
+        return 3;
+      case MatchPodium.fourthPlace:
+        return 4;
+      case MatchPodium.fifthPlace:
+        return 5;
+      case MatchPodium.sixthPlace:
+        return 6;
+    }
   }
 }

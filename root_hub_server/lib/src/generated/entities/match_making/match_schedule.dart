@@ -26,7 +26,6 @@ abstract class MatchSchedulePairingAttempt
     required this.createdAt,
     required this.title,
     this.description,
-    this.aditionalLocationInfo,
     required this.minAmountOfPlayers,
     required this.maxAmountOfPlayers,
     required this.attemptedAt,
@@ -43,7 +42,6 @@ abstract class MatchSchedulePairingAttempt
     required DateTime createdAt,
     required String title,
     String? description,
-    String? aditionalLocationInfo,
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
@@ -65,8 +63,6 @@ abstract class MatchSchedulePairingAttempt
       ),
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String?,
-      aditionalLocationInfo:
-          jsonSerialization['aditionalLocationInfo'] as String?,
       minAmountOfPlayers: _i2.MatchPodium.fromJson(
         (jsonSerialization['minAmountOfPlayers'] as String),
       ),
@@ -114,8 +110,6 @@ abstract class MatchSchedulePairingAttempt
 
   String? description;
 
-  String? aditionalLocationInfo;
-
   _i2.MatchPodium minAmountOfPlayers;
 
   _i2.MatchPodium maxAmountOfPlayers;
@@ -145,7 +139,6 @@ abstract class MatchSchedulePairingAttempt
     DateTime? createdAt,
     String? title,
     String? description,
-    String? aditionalLocationInfo,
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
@@ -164,8 +157,6 @@ abstract class MatchSchedulePairingAttempt
       'createdAt': createdAt.toJson(),
       'title': title,
       if (description != null) 'description': description,
-      if (aditionalLocationInfo != null)
-        'aditionalLocationInfo': aditionalLocationInfo,
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
@@ -187,8 +178,6 @@ abstract class MatchSchedulePairingAttempt
       'createdAt': createdAt.toJson(),
       'title': title,
       if (description != null) 'description': description,
-      if (aditionalLocationInfo != null)
-        'aditionalLocationInfo': aditionalLocationInfo,
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
@@ -252,7 +241,6 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     required DateTime createdAt,
     required String title,
     String? description,
-    String? aditionalLocationInfo,
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
@@ -267,7 +255,6 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          createdAt: createdAt,
          title: title,
          description: description,
-         aditionalLocationInfo: aditionalLocationInfo,
          minAmountOfPlayers: minAmountOfPlayers,
          maxAmountOfPlayers: maxAmountOfPlayers,
          attemptedAt: attemptedAt,
@@ -288,7 +275,6 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     DateTime? createdAt,
     String? title,
     Object? description = _Undefined,
-    Object? aditionalLocationInfo = _Undefined,
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
@@ -304,9 +290,6 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       createdAt: createdAt ?? this.createdAt,
       title: title ?? this.title,
       description: description is String? ? description : this.description,
-      aditionalLocationInfo: aditionalLocationInfo is String?
-          ? aditionalLocationInfo
-          : this.aditionalLocationInfo,
       minAmountOfPlayers: minAmountOfPlayers ?? this.minAmountOfPlayers,
       maxAmountOfPlayers: maxAmountOfPlayers ?? this.maxAmountOfPlayers,
       attemptedAt: attemptedAt ?? this.attemptedAt,
@@ -345,12 +328,6 @@ class MatchSchedulePairingAttemptUpdateTable
     table.description,
     value,
   );
-
-  _i1.ColumnValue<String, String> aditionalLocationInfo(String? value) =>
-      _i1.ColumnValue(
-        table.aditionalLocationInfo,
-        value,
-      );
 
   _i1.ColumnValue<_i2.MatchPodium, _i2.MatchPodium> minAmountOfPlayers(
     _i2.MatchPodium value,
@@ -399,10 +376,6 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
       'description',
       this,
     );
-    aditionalLocationInfo = _i1.ColumnString(
-      'aditionalLocationInfo',
-      this,
-    );
     minAmountOfPlayers = _i1.ColumnEnum(
       'minAmountOfPlayers',
       this,
@@ -434,8 +407,6 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
   late final _i1.ColumnString title;
 
   late final _i1.ColumnString description;
-
-  late final _i1.ColumnString aditionalLocationInfo;
 
   late final _i1.ColumnEnum<_i2.MatchPodium> minAmountOfPlayers;
 
@@ -534,7 +505,6 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     createdAt,
     title,
     description,
-    aditionalLocationInfo,
     minAmountOfPlayers,
     maxAmountOfPlayers,
     attemptedAt,

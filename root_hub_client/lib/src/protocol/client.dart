@@ -337,22 +337,22 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
   _i2.Future<_i16.MatchSchedulePairingAttempt> v1({
     required String title,
     String? description,
-    String? aditionalLocationInfo,
     required _i17.MatchPodium minAmountOfPlayers,
     required _i17.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
+    required bool hostWillPlay,
   }) => caller.callServerEndpoint<_i16.MatchSchedulePairingAttempt>(
     'createMatchSchedule',
     'v1',
     {
       'title': title,
       'description': description,
-      'aditionalLocationInfo': aditionalLocationInfo,
       'minAmountOfPlayers': minAmountOfPlayers,
       'maxAmountOfPlayers': maxAmountOfPlayers,
       'attemptedAt': attemptedAt,
       'locationId': locationId,
+      'hostWillPlay': hostWillPlay,
     },
   );
 }
@@ -389,6 +389,21 @@ class EndpointGetPlayerSubscribedMatches extends _i1.EndpointRef {
         'getPlayerSubscribedMatches',
         'v1',
         {'page': page},
+      );
+}
+
+/// {@category Endpoint}
+class EndpointGetTablesInArea extends _i1.EndpointRef {
+  EndpointGetTablesInArea(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getTablesInArea';
+
+  _i2.Future<List<_i16.MatchSchedulePairingAttempt>> v1() =>
+      caller.callServerEndpoint<List<_i16.MatchSchedulePairingAttempt>>(
+        'getTablesInArea',
+        'v1',
+        {},
       );
 }
 
@@ -717,6 +732,7 @@ class Client extends _i1.ServerpodClientShared {
     createMatchSchedule = EndpointCreateMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
+    getTablesInArea = EndpointGetTablesInArea(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
@@ -754,6 +770,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetPlayerSubscribedMatches getPlayerSubscribedMatches;
 
+  late final EndpointGetTablesInArea getTablesInArea;
+
   late final EndpointSubscribeToMatch subscribeToMatch;
 
   late final EndpointEmailIdp emailIdp;
@@ -781,6 +799,7 @@ class Client extends _i1.ServerpodClientShared {
     'createMatchSchedule': createMatchSchedule,
     'getMatchLocation': getMatchLocation,
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,
+    'getTablesInArea': getTablesInArea,
     'subscribeToMatch': subscribeToMatch,
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,

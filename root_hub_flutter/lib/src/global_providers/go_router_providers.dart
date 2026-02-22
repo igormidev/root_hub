@@ -10,6 +10,8 @@ import 'package:root_hub_flutter/src/features/auth/auth_onboarding_profile_scree
 import 'package:root_hub_flutter/src/features/auth/auth_onboarding_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_faction_editor_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_screen.dart';
+import 'package:root_hub_flutter/src/features/match/ui/screens/match_create_table_location_screen.dart';
+import 'package:root_hub_flutter/src/features/match/ui/screens/match_create_table_screen.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -55,6 +57,14 @@ class RouterNotifier extends Notifier<GoRouter> {
         GoRoute(
           path: dashboardFactionPath,
           builder: (context, state) => const DashboardFactionEditorScreen(),
+        ),
+        GoRoute(
+          path: dashboardMatchCreatePath,
+          builder: (context, state) => const MatchCreateTableScreen(),
+        ),
+        GoRoute(
+          path: dashboardMatchCreateLocationPath,
+          builder: (context, state) => const MatchCreateTableLocationScreen(),
         ),
       ],
     );
