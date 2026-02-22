@@ -87,6 +87,28 @@ class EndpointGetPlayerData extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointUpdatePlayerData extends _i1.EndpointRef {
+  EndpointUpdatePlayerData(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'updatePlayerData';
+
+  _i2.Future<_i3.PlayerData> v1({
+    String? displayName,
+    _i4.Faction? favoriteFaction,
+    _i5.GeoLocation? currentLocation,
+  }) => caller.callServerEndpoint<_i3.PlayerData>(
+    'updatePlayerData',
+    'v1',
+    {
+      'displayName': displayName,
+      'favoriteFaction': favoriteFaction,
+      'currentLocation': currentLocation,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointCreateComment extends _i1.EndpointRef {
   EndpointCreateComment(_i1.EndpointCaller caller) : super(caller);
 
@@ -626,6 +648,7 @@ class Client extends _i1.ServerpodClientShared {
        ) {
     createPlayerData = EndpointCreatePlayerData(this);
     getPlayerData = EndpointGetPlayerData(this);
+    updatePlayerData = EndpointUpdatePlayerData(this);
     createComment = EndpointCreateComment(this);
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
@@ -647,6 +670,8 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointCreatePlayerData createPlayerData;
 
   late final EndpointGetPlayerData getPlayerData;
+
+  late final EndpointUpdatePlayerData updatePlayerData;
 
   late final EndpointCreateComment createComment;
 
@@ -684,6 +709,7 @@ class Client extends _i1.ServerpodClientShared {
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
     'createPlayerData': createPlayerData,
     'getPlayerData': getPlayerData,
+    'updatePlayerData': updatePlayerData,
     'createComment': createComment,
     'createPost': createPost,
     'getComments': getComments,

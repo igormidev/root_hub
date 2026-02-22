@@ -13,6 +13,25 @@ enum FactionIconSize {
 }
 
 extension FactionUiExtension on Faction {
+  String get displayName {
+    final raw = toJson();
+    final withSpaces = raw.replaceAllMapped(
+      RegExp(r'([a-z])([A-Z])'),
+      (match) => '${match.group(1)} ${match.group(2)}',
+    );
+
+    return withSpaces
+        .split(' ')
+        .map((word) {
+          if (word.isEmpty) {
+            return word;
+          }
+
+          return '${word[0].toUpperCase()}${word.substring(1)}';
+        })
+        .join(' ');
+  }
+
   Color get factionColor => switch (this) {
     Faction.marquiseDeCat => const Color(0xFFFFA500), // orange
     Faction.eyrieDynasties => const Color(0xFF0000FF), // blue

@@ -2,6 +2,8 @@ createPlayerData:
   - v1:
 getPlayerData:
   - v1:
+updatePlayerData:
+  - v1:
 createComment:
   - v1:
 createPost:

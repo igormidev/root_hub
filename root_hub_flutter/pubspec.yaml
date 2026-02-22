@@ -53,7 +53,10 @@ flutter:
     - assets/app_logo.png
     - assets/faction_boards/
     - assets/faction_images/
-    - assets/faction_icons/
+    - assets/faction_icons/80/
+    - assets/faction_icons/256/
+    - assets/faction_icons/512/
+    - assets/faction_icons/1024/
 
 flutter_launcher_icons:
   android: true

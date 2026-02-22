@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/design_system/profile_editor/profile_display_name_editor_card.dart';
+import 'package:root_hub_flutter/src/design_system/profile_editor/profile_location_editor_card.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
 
@@ -217,313 +219,41 @@ class _AuthOnboardingProfileScreenState
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: colorScheme.outlineVariant),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            colorScheme.surfaceContainerHighest.withValues(
-                              alpha: 0.78,
-                            ),
-                            colorScheme.surfaceContainer.withValues(
-                              alpha: 0.72,
-                            ),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Display Name',
-                            style: GoogleFonts.nunitoSans(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15,
-                              color: colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          TextField(
-                            controller: _displayNameController,
-                            textInputAction: TextInputAction.done,
-                            decoration: InputDecoration(
-                              hintText: 'How should people call you?',
-                              hintStyle: GoogleFonts.nunitoSans(
-                                color: colorScheme.onSurfaceVariant,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 14,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    ProfileDisplayNameEditorCard(
+                      controller: _displayNameController,
                     ),
                     const SizedBox(height: 12),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: colorScheme.outlineVariant),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            colorScheme.surfaceContainerHighest.withValues(
-                              alpha: 0.78,
-                            ),
-                            colorScheme.surfaceContainer.withValues(
-                              alpha: 0.72,
-                            ),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_rounded,
-                                color: colorScheme.primary,
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Current Location',
-                                style: GoogleFonts.nunitoSans(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 15,
-                                  color: colorScheme.onSurface,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Required. We use your phone coordinates (x and y) to search nearby matches.',
-                            style: GoogleFonts.nunitoSans(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: _isResolvingLocation
-                                    ? null
-                                    : _resolveCurrentLocation,
-                                icon: _isResolvingLocation
-                                    ? SizedBox(
-                                        width: 18,
-                                        height: 18,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: colorScheme.onPrimary,
-                                        ),
-                                      )
-                                    : const Icon(Icons.my_location_rounded),
-                                label: Text(
-                                  _isResolvingLocation
-                                      ? 'Capturing...'
-                                      : 'Use Phone Location',
-                                  style: GoogleFonts.nunitoSans(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                              if (currentLocation != null)
-                                OutlinedButton.icon(
-                                  onPressed: () {
-                                    ref
-                                        .read(onboardingProvider.notifier)
-                                        .clearCurrentLocation();
-                                  },
-                                  icon: const Icon(Icons.clear_rounded),
-                                  label: Text(
-                                    'Clear',
-                                    style: GoogleFonts.nunitoSans(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          if (currentLocation != null) ...[
-                            const SizedBox(height: 10),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: colorScheme.surface.withValues(
-                                  alpha: 0.72,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: colorScheme.outlineVariant,
-                                ),
-                              ),
-                              child: Text(
-                                'x: ${currentLocation.x.toStringAsFixed(6)}\n'
-                                'y: ${currentLocation.y.toStringAsFixed(6)}\n'
-                                'ratio: ${currentLocation.ratio.toStringAsFixed(2)}',
-                                style: GoogleFonts.nunitoSans(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: colorScheme.onSurface,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.fromLTRB(
-                                12,
-                                10,
-                                12,
-                                10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: colorScheme.surface.withValues(
-                                  alpha: 0.72,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: colorScheme.outlineVariant,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Search Ratio',
-                                    style: GoogleFonts.nunitoSans(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800,
-                                      color: colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      IconButton.filledTonal(
-                                        onPressed: () {
-                                          final nextRatio =
-                                              currentLocation.ratio -
-                                              _ratioStepKm;
-                                          ref
-                                              .read(onboardingProvider.notifier)
-                                              .setCurrentLocationRatio(
-                                                nextRatio,
-                                              );
-                                        },
-                                        icon: const Icon(Icons.remove_rounded),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          '${currentLocation.ratio.toStringAsFixed(0)} km',
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.nunitoSans(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                            color: colorScheme.onSurface,
-                                          ),
-                                        ),
-                                      ),
-                                      IconButton.filledTonal(
-                                        onPressed: () {
-                                          final nextRatio =
-                                              currentLocation.ratio +
-                                              _ratioStepKm;
-                                          ref
-                                              .read(onboardingProvider.notifier)
-                                              .setCurrentLocationRatio(
-                                                nextRatio,
-                                              );
-                                        },
-                                        icon: const Icon(Icons.add_rounded),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '25 km is the recommended value.',
-                                    style: GoogleFonts.nunitoSans(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                          if (_locationStatusMessage != null) ...[
-                            const SizedBox(height: 10),
-                            Text(
-                              _locationStatusMessage!,
-                              style: GoogleFonts.nunitoSans(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: _locationStatusError
-                                    ? colorScheme.error
-                                    : colorScheme.primary,
-                              ),
-                            ),
-                          ],
-                          const SizedBox(height: 12),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: const Color(0xFFFFB300).withValues(
-                                  alpha: 0.75,
-                                ),
-                              ),
-                              color: const Color(0xFFFFF5D9).withValues(
-                                alpha: 0.6,
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.warning_amber_rounded,
-                                  color: Color(0xFFE07A00),
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    'Disable VPN or proxy before capturing location. '
-                                    'Wrong coordinates may hide nearby matches.',
-                                    style: GoogleFonts.nunitoSans(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w800,
-                                      color: const Color(0xFF8A4E00),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                    ProfileLocationEditorCard(
+                      currentLocation: currentLocation,
+                      isResolvingLocation: _isResolvingLocation,
+                      onResolveLocation: _resolveCurrentLocation,
+                      onClearLocation: currentLocation == null
+                          ? null
+                          : () {
+                              ref
+                                  .read(onboardingProvider.notifier)
+                                  .clearCurrentLocation();
+                            },
+                      onDecreaseRatio: currentLocation == null
+                          ? null
+                          : () {
+                              final nextRatio =
+                                  currentLocation.ratio - _ratioStepKm;
+                              ref
+                                  .read(onboardingProvider.notifier)
+                                  .setCurrentLocationRatio(nextRatio);
+                            },
+                      onIncreaseRatio: currentLocation == null
+                          ? null
+                          : () {
+                              final nextRatio =
+                                  currentLocation.ratio + _ratioStepKm;
+                              ref
+                                  .read(onboardingProvider.notifier)
+                                  .setCurrentLocationRatio(nextRatio);
+                            },
+                      statusMessage: _locationStatusMessage,
+                      statusIsError: _locationStatusError,
                     ),
                   ],
                 ),

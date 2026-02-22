@@ -60,6 +60,19 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     state = const AuthFlowState.requiresOnboardingProfile();
   }
 
+  void replaceAuthenticatedPlayerData(PlayerData playerData) {
+    final isAuthenticatedState = state.maybeWhen(
+      authenticated: (_) => true,
+      orElse: () => false,
+    );
+
+    if (!isAuthenticatedState) {
+      return;
+    }
+
+    state = AuthFlowState.authenticated(playerData: playerData);
+  }
+
   Future<void> completeLogin() async {
     await bootstrap();
   }

@@ -67,6 +67,7 @@ root_hub_server/
 ### `account`
 - `create_player_data.dart`: creates `PlayerData` for authenticated user (display name, favorite faction, mandatory current geolocation coordinates + search ratio; idempotent conflict handling).
 - `get_account.dart`: returns authenticated user profile.
+- `update_player_data.dart`: updates authenticated user profile fields (display name, favorite faction, and current geolocation coordinates + search ratio).
 
 ### `community`
 - `create_post_endpoint.dart` + `mixin/create_post_mixin.dart`: creates social posts.

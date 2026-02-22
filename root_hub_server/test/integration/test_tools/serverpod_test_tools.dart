@@ -159,6 +159,8 @@ class TestEndpoints {
 
   late final _GetPlayerData getPlayerData;
 
+  late final _UpdatePlayerData updatePlayerData;
+
   late final _CreateCommentEndpoint createComment;
 
   late final _CreatePostEndpoint createPost;
@@ -202,6 +204,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPlayerData = _GetPlayerData(
+      endpoints,
+      serializationManager,
+    );
+    updatePlayerData = _UpdatePlayerData(
       endpoints,
       serializationManager,
     );
@@ -347,6 +353,54 @@ class _GetPlayerData {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i4.PlayerData?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _UpdatePlayerData {
+  _UpdatePlayerData(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i4.PlayerData> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    String? displayName,
+    _i5.Faction? favoriteFaction,
+    _i6.GeoLocation? currentLocation,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'updatePlayerData',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'updatePlayerData',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'displayName': displayName,
+            'favoriteFaction': favoriteFaction,
+            'currentLocation': currentLocation,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i4.PlayerData>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
