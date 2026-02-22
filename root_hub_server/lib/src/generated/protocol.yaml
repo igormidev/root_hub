@@ -4,6 +4,12 @@ getPlayerData:
   - v1:
 updatePlayerData:
   - v1:
+userProfileEdit:
+  - removeUserImage:
+  - setUserImage:
+  - changeUserName:
+  - changeFullName:
+  - get:
 createComment:
   - v1:
 createPost:

@@ -17,37 +17,38 @@ import 'package:root_hub_client/src/protocol/entities/core/player_data.dart'
 import 'package:root_hub_client/src/protocol/entities/core/faction.dart' as _i4;
 import 'package:root_hub_client/src/protocol/entities/core/geo_location.dart'
     as _i5;
-import 'package:root_hub_client/src/protocol/entities/community/post_comment.dart'
-    as _i6;
-import 'package:root_hub_client/src/protocol/entities/core/language.dart'
-    as _i7;
-import 'package:root_hub_client/src/protocol/entities/community/post.dart'
-    as _i8;
-import 'package:root_hub_client/src/protocol/api/community/models/comments_pagination.dart'
-    as _i9;
-import 'package:root_hub_client/src/protocol/api/community/models/post_pagination.dart'
-    as _i10;
-import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
-    as _i11;
-import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
-    as _i12;
-import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
-    as _i13;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
-    as _i14;
-import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
-    as _i15;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
-    as _i16;
-import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
-    as _i17;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
-    as _i18;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
-    as _i19;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i6;
+import 'dart:typed_data' as _i7;
+import 'package:root_hub_client/src/protocol/entities/community/post_comment.dart'
+    as _i8;
+import 'package:root_hub_client/src/protocol/entities/core/language.dart'
+    as _i9;
+import 'package:root_hub_client/src/protocol/entities/community/post.dart'
+    as _i10;
+import 'package:root_hub_client/src/protocol/api/community/models/comments_pagination.dart'
+    as _i11;
+import 'package:root_hub_client/src/protocol/api/community/models/post_pagination.dart'
+    as _i12;
+import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
+    as _i13;
+import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
+    as _i14;
+import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
+    as _i15;
+import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
+    as _i16;
+import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
+    as _i17;
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
+    as _i18;
+import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
+    as _i19;
+import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i20;
-import 'protocol.dart' as _i21;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i21;
+import 'protocol.dart' as _i22;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -109,17 +110,72 @@ class EndpointUpdatePlayerData extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointUserProfileEdit extends _i6.EndpointUserProfileEditBase {
+  EndpointUserProfileEdit(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'userProfileEdit';
+
+  /// Removes the user's uploaded image, setting it to null.
+  ///
+  /// The client should handle displaying a placeholder for users without images.
+  @override
+  _i2.Future<_i6.UserProfileModel> removeUserImage() =>
+      caller.callServerEndpoint<_i6.UserProfileModel>(
+        'userProfileEdit',
+        'removeUserImage',
+        {},
+      );
+
+  /// Sets a new user image for the signed in user.
+  @override
+  _i2.Future<_i6.UserProfileModel> setUserImage(_i7.ByteData image) =>
+      caller.callServerEndpoint<_i6.UserProfileModel>(
+        'userProfileEdit',
+        'setUserImage',
+        {'image': image},
+      );
+
+  /// Changes the name of a user.
+  @override
+  _i2.Future<_i6.UserProfileModel> changeUserName(String? userName) =>
+      caller.callServerEndpoint<_i6.UserProfileModel>(
+        'userProfileEdit',
+        'changeUserName',
+        {'userName': userName},
+      );
+
+  /// Changes the full name of a user.
+  @override
+  _i2.Future<_i6.UserProfileModel> changeFullName(String? fullName) =>
+      caller.callServerEndpoint<_i6.UserProfileModel>(
+        'userProfileEdit',
+        'changeFullName',
+        {'fullName': fullName},
+      );
+
+  /// Returns the user profile of the current user.
+  @override
+  _i2.Future<_i6.UserProfileModel> get() =>
+      caller.callServerEndpoint<_i6.UserProfileModel>(
+        'userProfileEdit',
+        'get',
+        {},
+      );
+}
+
+/// {@category Endpoint}
 class EndpointCreateComment extends _i1.EndpointRef {
   EndpointCreateComment(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'createComment';
 
-  _i2.Future<_i6.PostComment> v1({
+  _i2.Future<_i8.PostComment> v1({
     required int postId,
     required String content,
-    required _i7.Language language,
-  }) => caller.callServerEndpoint<_i6.PostComment>(
+    required _i9.Language language,
+  }) => caller.callServerEndpoint<_i8.PostComment>(
     'createComment',
     'v1',
     {
@@ -137,12 +193,12 @@ class EndpointCreatePost extends _i1.EndpointRef {
   @override
   String get name => 'createPost';
 
-  _i2.Future<_i8.Post> v1({
+  _i2.Future<_i10.Post> v1({
     required String title,
     required String content,
-    required _i7.Language language,
+    required _i9.Language language,
     int? attachedMatchId,
-  }) => caller.callServerEndpoint<_i8.Post>(
+  }) => caller.callServerEndpoint<_i10.Post>(
     'createPost',
     'v1',
     {
@@ -161,10 +217,10 @@ class EndpointGetComments extends _i1.EndpointRef {
   @override
   String get name => 'getComments';
 
-  _i2.Future<_i9.CommentsPagination> v1({
+  _i2.Future<_i11.CommentsPagination> v1({
     required int postId,
     required int page,
-  }) => caller.callServerEndpoint<_i9.CommentsPagination>(
+  }) => caller.callServerEndpoint<_i11.CommentsPagination>(
     'getComments',
     'v1',
     {
@@ -181,10 +237,10 @@ class EndpointGetPosts extends _i1.EndpointRef {
   @override
   String get name => 'getPosts';
 
-  _i2.Future<_i10.PostPagination> v1({
+  _i2.Future<_i12.PostPagination> v1({
     required int page,
-    _i7.Language? language,
-  }) => caller.callServerEndpoint<_i10.PostPagination>(
+    _i9.Language? language,
+  }) => caller.callServerEndpoint<_i12.PostPagination>(
     'getPosts',
     'v1',
     {
@@ -201,8 +257,8 @@ class EndpointGetMyMatches extends _i1.EndpointRef {
   @override
   String get name => 'getMyMatches';
 
-  _i2.Future<List<_i11.PlayedMatch>> v1() =>
-      caller.callServerEndpoint<List<_i11.PlayedMatch>>(
+  _i2.Future<List<_i13.PlayedMatch>> v1() =>
+      caller.callServerEndpoint<List<_i13.PlayedMatch>>(
         'getMyMatches',
         'v1',
         {},
@@ -216,13 +272,13 @@ class EndpointRegisterMatchData extends _i1.EndpointRef {
   @override
   String get name => 'registerMatchData';
 
-  _i2.Future<_i11.PlayedMatch> v1({
+  _i2.Future<_i13.PlayedMatch> v1({
     required DateTime matchStartedAt,
     required Duration matchEstimatedDuration,
     required int locationId,
     required int scheduledPairingAttemptId,
-    required List<_i12.PlayerMatchResultInput> players,
-  }) => caller.callServerEndpoint<_i11.PlayedMatch>(
+    required List<_i14.PlayerMatchResultInput> players,
+  }) => caller.callServerEndpoint<_i13.PlayedMatch>(
     'registerMatchData',
     'v1',
     {
@@ -242,9 +298,9 @@ class EndpointMatchChatGetMessages extends _i1.EndpointRef {
   @override
   String get name => 'matchChatGetMessages';
 
-  _i2.Future<List<_i13.MatchChatMessage>> v1({
+  _i2.Future<List<_i15.MatchChatMessage>> v1({
     required int matchChatHistoryId,
-  }) => caller.callServerEndpoint<List<_i13.MatchChatMessage>>(
+  }) => caller.callServerEndpoint<List<_i15.MatchChatMessage>>(
     'matchChatGetMessages',
     'v1',
     {'matchChatHistoryId': matchChatHistoryId},
@@ -258,10 +314,10 @@ class EndpointMatchChatSendMessage extends _i1.EndpointRef {
   @override
   String get name => 'matchChatSendMessage';
 
-  _i2.Future<_i13.MatchChatMessage> v1({
+  _i2.Future<_i15.MatchChatMessage> v1({
     required int matchChatHistoryId,
     required String content,
-  }) => caller.callServerEndpoint<_i13.MatchChatMessage>(
+  }) => caller.callServerEndpoint<_i15.MatchChatMessage>(
     'matchChatSendMessage',
     'v1',
     {
@@ -278,15 +334,15 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
   @override
   String get name => 'createMatchSchedule';
 
-  _i2.Future<_i14.MatchSchedulePairingAttempt> v1({
+  _i2.Future<_i16.MatchSchedulePairingAttempt> v1({
     required String title,
     String? description,
     String? aditionalLocationInfo,
-    required _i15.MatchPodium minAmountOfPlayers,
-    required _i15.MatchPodium maxAmountOfPlayers,
+    required _i17.MatchPodium minAmountOfPlayers,
+    required _i17.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
-  }) => caller.callServerEndpoint<_i14.MatchSchedulePairingAttempt>(
+  }) => caller.callServerEndpoint<_i16.MatchSchedulePairingAttempt>(
     'createMatchSchedule',
     'v1',
     {
@@ -308,10 +364,10 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
   @override
   String get name => 'getMatchLocation';
 
-  _i2.Future<List<_i16.Location>> v1({
+  _i2.Future<List<_i18.Location>> v1({
     required String query,
     required int page,
-  }) => caller.callServerEndpoint<List<_i16.Location>>(
+  }) => caller.callServerEndpoint<List<_i18.Location>>(
     'getMatchLocation',
     'v1',
     {
@@ -328,8 +384,8 @@ class EndpointGetPlayerSubscribedMatches extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerSubscribedMatches';
 
-  _i2.Future<_i17.SubscribedMatchesPagination> v1({required int page}) =>
-      caller.callServerEndpoint<_i17.SubscribedMatchesPagination>(
+  _i2.Future<_i19.SubscribedMatchesPagination> v1({required int page}) =>
+      caller.callServerEndpoint<_i19.SubscribedMatchesPagination>(
         'getPlayerSubscribedMatches',
         'v1',
         {'page': page},
@@ -343,8 +399,8 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
   @override
   String get name => 'subscribeToMatch';
 
-  _i2.Future<_i18.MatchSubscription> v1({required int scheduledMatchId}) =>
-      caller.callServerEndpoint<_i18.MatchSubscription>(
+  _i2.Future<_i20.MatchSubscription> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i20.MatchSubscription>(
         'subscribeToMatch',
         'v1',
         {'scheduledMatchId': scheduledMatchId},
@@ -355,7 +411,7 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i19.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i21.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -371,10 +427,10 @@ class EndpointEmailIdp extends _i19.EndpointEmailIdpBase {
   ///
   /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _i2.Future<_i20.AuthSuccess> login({
+  _i2.Future<_i6.AuthSuccess> login({
     required String email,
     required String password,
-  }) => caller.callServerEndpoint<_i20.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i6.AuthSuccess>(
     'emailIdp',
     'login',
     {
@@ -439,10 +495,10 @@ class EndpointEmailIdp extends _i19.EndpointEmailIdpBase {
   ///
   /// Returns a session for the newly created user.
   @override
-  _i2.Future<_i20.AuthSuccess> finishRegistration({
+  _i2.Future<_i6.AuthSuccess> finishRegistration({
     required String registrationToken,
     required String password,
-  }) => caller.callServerEndpoint<_i20.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i6.AuthSuccess>(
     'emailIdp',
     'finishRegistration',
     {
@@ -537,7 +593,7 @@ class EndpointEmailIdp extends _i19.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i19.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i21.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -548,10 +604,10 @@ class EndpointGoogleIdp extends _i19.EndpointGoogleIdpBase {
   ///
   /// If a new user is created an associated [UserProfile] is also created.
   @override
-  _i2.Future<_i20.AuthSuccess> login({
+  _i2.Future<_i6.AuthSuccess> login({
     required String idToken,
     required String? accessToken,
-  }) => caller.callServerEndpoint<_i20.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i6.AuthSuccess>(
     'googleIdp',
     'login',
     {
@@ -571,7 +627,7 @@ class EndpointGoogleIdp extends _i19.EndpointGoogleIdpBase {
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
-class EndpointJwtRefresh extends _i20.EndpointRefreshJwtTokens {
+class EndpointJwtRefresh extends _i6.EndpointRefreshJwtTokens {
   EndpointJwtRefresh(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -596,9 +652,9 @@ class EndpointJwtRefresh extends _i20.EndpointRefreshJwtTokens {
   /// This endpoint is unauthenticated, meaning the client won't include any
   /// authentication information with the call.
   @override
-  _i2.Future<_i20.AuthSuccess> refreshAccessToken({
+  _i2.Future<_i6.AuthSuccess> refreshAccessToken({
     required String refreshToken,
-  }) => caller.callServerEndpoint<_i20.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i6.AuthSuccess>(
     'jwtRefresh',
     'refreshAccessToken',
     {'refreshToken': refreshToken},
@@ -608,13 +664,13 @@ class EndpointJwtRefresh extends _i20.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i19.Caller(client);
-    serverpod_auth_core = _i20.Caller(client);
+    serverpod_auth_idp = _i21.Caller(client);
+    serverpod_auth_core = _i6.Caller(client);
   }
 
-  late final _i19.Caller serverpod_auth_idp;
+  late final _i21.Caller serverpod_auth_idp;
 
-  late final _i20.Caller serverpod_auth_core;
+  late final _i6.Caller serverpod_auth_core;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -637,7 +693,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i21.Protocol(),
+         _i22.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -649,6 +705,7 @@ class Client extends _i1.ServerpodClientShared {
     createPlayerData = EndpointCreatePlayerData(this);
     getPlayerData = EndpointGetPlayerData(this);
     updatePlayerData = EndpointUpdatePlayerData(this);
+    userProfileEdit = EndpointUserProfileEdit(this);
     createComment = EndpointCreateComment(this);
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
@@ -672,6 +729,8 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointGetPlayerData getPlayerData;
 
   late final EndpointUpdatePlayerData updatePlayerData;
+
+  late final EndpointUserProfileEdit userProfileEdit;
 
   late final EndpointCreateComment createComment;
 
@@ -710,6 +769,7 @@ class Client extends _i1.ServerpodClientShared {
     'createPlayerData': createPlayerData,
     'getPlayerData': getPlayerData,
     'updatePlayerData': updatePlayerData,
+    'userProfileEdit': userProfileEdit,
     'createComment': createComment,
     'createPost': createPost,
     'getComments': getComments,

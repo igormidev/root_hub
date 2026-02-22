@@ -6,6 +6,10 @@ part 'dashboard_profile_state.freezed.dart';
 @freezed
 abstract class DashboardProfileState with _$DashboardProfileState {
   const factory DashboardProfileState({
+    String? profileImageUrl,
+    @Default(false) bool hasLoadedProfileImage,
+    @Default(false) bool isLoadingProfileImage,
+    @Default(false) bool isUpdatingProfileImage,
     @Default(false) bool isUpdatingDisplayName,
     @Default(false) bool isUpdatingLocation,
     @Default(false) bool isUpdatingFaction,

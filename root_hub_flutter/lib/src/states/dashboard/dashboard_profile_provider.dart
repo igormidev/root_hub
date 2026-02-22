@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
@@ -10,6 +12,77 @@ class DashboardProfileNotifier extends Notifier<DashboardProfileState> {
   @override
   DashboardProfileState build() {
     return const DashboardProfileState();
+  }
+
+  Future<void> ensureProfileImageLoaded() async {
+    if (state.hasLoadedProfileImage || state.isLoadingProfileImage) {
+      return;
+    }
+
+    state = state.copyWith(
+      isLoadingProfileImage: true,
+      lastError: null,
+    );
+
+    final result = await ref
+        .read(clientProvider)
+        .userProfileEdit
+        .get()
+        .toResult;
+    result.fold(
+      (profile) {
+        state = state.copyWith(
+          profileImageUrl: profile.imageUrl?.toString(),
+          hasLoadedProfileImage: true,
+          isLoadingProfileImage: false,
+        );
+      },
+      (error) {
+        state = state.copyWith(
+          hasLoadedProfileImage: true,
+          isLoadingProfileImage: false,
+          lastError: error,
+        );
+      },
+    );
+  }
+
+  Future<RootHubException?> updateProfileImage(Uint8List imageBytes) async {
+    if (imageBytes.isEmpty) {
+      return RootHubException(
+        title: 'Invalid request',
+        description: 'Selected image is empty.',
+      );
+    }
+
+    state = state.copyWith(
+      isUpdatingProfileImage: true,
+      lastError: null,
+    );
+
+    final result = await ref
+        .read(clientProvider)
+        .userProfileEdit
+        .setUserImage(ByteData.sublistView(imageBytes))
+        .toResult;
+
+    return result.fold(
+      (profile) {
+        state = state.copyWith(
+          profileImageUrl: profile.imageUrl?.toString(),
+          hasLoadedProfileImage: true,
+          isUpdatingProfileImage: false,
+        );
+        return null;
+      },
+      (error) {
+        state = state.copyWith(
+          isUpdatingProfileImage: false,
+          lastError: error,
+        );
+        return error;
+      },
+    );
   }
 
   Future<RootHubException?> updateDisplayName(String displayName) async {

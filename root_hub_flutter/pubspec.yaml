@@ -37,6 +37,7 @@ dependencies:
   result_dart: ^2.1.1
   flutter_animate: ^4.5.2
   geolocator: ^14.0.2
+  image_picker: ^1.2.1
 
 dev_dependencies:
   build_runner: ^2.11.1

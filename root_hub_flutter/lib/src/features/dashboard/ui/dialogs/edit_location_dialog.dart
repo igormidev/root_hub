@@ -175,91 +175,85 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 620),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Edit Location',
-                style: GoogleFonts.cinzel(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Edit Location',
+              style: GoogleFonts.cinzel(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Update your coordinates and target search ratio for match discovery.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.nunitoSans(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Update your coordinates and target search ratio for match discovery.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.nunitoSans(
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: 14),
-              Flexible(
-                child: SingleChildScrollView(
-                  child: ProfileLocationEditorCard(
-                    currentLocation: _draftLocation,
-                    isResolvingLocation: _isResolvingLocation,
-                    onResolveLocation: _resolveCurrentLocation,
-                    onClearLocation: () {
-                      setState(() {
-                        _draftLocation = null;
-                      });
-                    },
-                    onDecreaseRatio: () => _changeRatio(-_ratioStepKm),
-                    onIncreaseRatio: () => _changeRatio(_ratioStepKm),
-                    statusMessage: _locationStatusMessage,
-                    statusIsError: _locationStatusError,
-                    enabled: !isSaving,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: isSaving
-                          ? null
-                          : () {
-                              Navigator.of(context).pop(false);
-                            },
-                      child: Text(
-                        'Cancel',
-                        style: GoogleFonts.nunitoSans(
-                          fontWeight: FontWeight.w700,
-                        ),
+            ),
+            const SizedBox(height: 14),
+            ProfileLocationEditorCard(
+              currentLocation: _draftLocation,
+              isResolvingLocation: _isResolvingLocation,
+              onResolveLocation: _resolveCurrentLocation,
+              onClearLocation: () {
+                setState(() {
+                  _draftLocation = null;
+                });
+              },
+              onDecreaseRatio: () => _changeRatio(-_ratioStepKm),
+              onIncreaseRatio: () => _changeRatio(_ratioStepKm),
+              statusMessage: _locationStatusMessage,
+              statusIsError: _locationStatusError,
+              enabled: !isSaving,
+              showOuterCard: false,
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: isSaving
+                        ? null
+                        : () {
+                            Navigator.of(context).pop(false);
+                          },
+                    child: Text(
+                      'Cancel',
+                      style: GoogleFonts.nunitoSans(
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: isSaving ? null : _saveLocation,
-                      child: isSaving
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Text(
-                              'Save',
-                              style: GoogleFonts.nunitoSans(
-                                fontWeight: FontWeight.w800,
-                              ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: isSaving ? null : _saveLocation,
+                    child: isSaving
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
                             ),
-                    ),
+                          )
+                        : Text(
+                            'Save',
+                            style: GoogleFonts.nunitoSans(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

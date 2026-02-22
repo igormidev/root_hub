@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DashboardProfileState {
 
- bool get isUpdatingDisplayName; bool get isUpdatingLocation; bool get isUpdatingFaction; RootHubException? get lastError;
+ String? get profileImageUrl; bool get hasLoadedProfileImage; bool get isLoadingProfileImage; bool get isUpdatingProfileImage; bool get isUpdatingDisplayName; bool get isUpdatingLocation; bool get isUpdatingFaction; RootHubException? get lastError;
 /// Create a copy of DashboardProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DashboardProfileStateCopyWith<DashboardProfileState> get copyWith => _$Dashboar
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardProfileState&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.lastError, lastError) || other.lastError == lastError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardProfileState&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.hasLoadedProfileImage, hasLoadedProfileImage) || other.hasLoadedProfileImage == hasLoadedProfileImage)&&(identical(other.isLoadingProfileImage, isLoadingProfileImage) || other.isLoadingProfileImage == isLoadingProfileImage)&&(identical(other.isUpdatingProfileImage, isUpdatingProfileImage) || other.isUpdatingProfileImage == isUpdatingProfileImage)&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.lastError, lastError) || other.lastError == lastError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isUpdatingDisplayName,isUpdatingLocation,isUpdatingFaction,lastError);
+int get hashCode => Object.hash(runtimeType,profileImageUrl,hasLoadedProfileImage,isLoadingProfileImage,isUpdatingProfileImage,isUpdatingDisplayName,isUpdatingLocation,isUpdatingFaction,lastError);
 
 @override
 String toString() {
-  return 'DashboardProfileState(isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isUpdatingFaction: $isUpdatingFaction, lastError: $lastError)';
+  return 'DashboardProfileState(profileImageUrl: $profileImageUrl, hasLoadedProfileImage: $hasLoadedProfileImage, isLoadingProfileImage: $isLoadingProfileImage, isUpdatingProfileImage: $isUpdatingProfileImage, isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isUpdatingFaction: $isUpdatingFaction, lastError: $lastError)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DashboardProfileStateCopyWith<$Res>  {
   factory $DashboardProfileStateCopyWith(DashboardProfileState value, $Res Function(DashboardProfileState) _then) = _$DashboardProfileStateCopyWithImpl;
 @useResult
 $Res call({
- bool isUpdatingDisplayName, bool isUpdatingLocation, bool isUpdatingFaction, RootHubException? lastError
+ String? profileImageUrl, bool hasLoadedProfileImage, bool isLoadingProfileImage, bool isUpdatingProfileImage, bool isUpdatingDisplayName, bool isUpdatingLocation, bool isUpdatingFaction, RootHubException? lastError
 });
 
 
@@ -62,9 +62,13 @@ class _$DashboardProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isUpdatingFaction = null,Object? lastError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? profileImageUrl = freezed,Object? hasLoadedProfileImage = null,Object? isLoadingProfileImage = null,Object? isUpdatingProfileImage = null,Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isUpdatingFaction = null,Object? lastError = freezed,}) {
   return _then(_self.copyWith(
-isUpdatingDisplayName: null == isUpdatingDisplayName ? _self.isUpdatingDisplayName : isUpdatingDisplayName // ignore: cast_nullable_to_non_nullable
+profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,hasLoadedProfileImage: null == hasLoadedProfileImage ? _self.hasLoadedProfileImage : hasLoadedProfileImage // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingProfileImage: null == isLoadingProfileImage ? _self.isLoadingProfileImage : isLoadingProfileImage // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingProfileImage: null == isUpdatingProfileImage ? _self.isUpdatingProfileImage : isUpdatingProfileImage // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingDisplayName: null == isUpdatingDisplayName ? _self.isUpdatingDisplayName : isUpdatingDisplayName // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingLocation: null == isUpdatingLocation ? _self.isUpdatingLocation : isUpdatingLocation // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingFaction: null == isUpdatingFaction ? _self.isUpdatingFaction : isUpdatingFaction // ignore: cast_nullable_to_non_nullable
 as bool,lastError: freezed == lastError ? _self.lastError : lastError // ignore: cast_nullable_to_non_nullable
@@ -153,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardProfileState() when $default != null:
-return $default(_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
+return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
   return orElse();
 
 }
@@ -174,10 +178,10 @@ return $default(_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpd
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardProfileState():
-return $default(_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
+return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +198,10 @@ return $default(_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpd
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardProfileState() when $default != null:
-return $default(_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
+return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
   return null;
 
 }
@@ -209,9 +213,13 @@ return $default(_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpd
 
 
 class _DashboardProfileState implements DashboardProfileState {
-  const _DashboardProfileState({this.isUpdatingDisplayName = false, this.isUpdatingLocation = false, this.isUpdatingFaction = false, this.lastError});
+  const _DashboardProfileState({this.profileImageUrl, this.hasLoadedProfileImage = false, this.isLoadingProfileImage = false, this.isUpdatingProfileImage = false, this.isUpdatingDisplayName = false, this.isUpdatingLocation = false, this.isUpdatingFaction = false, this.lastError});
   
 
+@override final  String? profileImageUrl;
+@override@JsonKey() final  bool hasLoadedProfileImage;
+@override@JsonKey() final  bool isLoadingProfileImage;
+@override@JsonKey() final  bool isUpdatingProfileImage;
 @override@JsonKey() final  bool isUpdatingDisplayName;
 @override@JsonKey() final  bool isUpdatingLocation;
 @override@JsonKey() final  bool isUpdatingFaction;
@@ -227,16 +235,16 @@ _$DashboardProfileStateCopyWith<_DashboardProfileState> get copyWith => __$Dashb
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardProfileState&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.lastError, lastError) || other.lastError == lastError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardProfileState&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.hasLoadedProfileImage, hasLoadedProfileImage) || other.hasLoadedProfileImage == hasLoadedProfileImage)&&(identical(other.isLoadingProfileImage, isLoadingProfileImage) || other.isLoadingProfileImage == isLoadingProfileImage)&&(identical(other.isUpdatingProfileImage, isUpdatingProfileImage) || other.isUpdatingProfileImage == isUpdatingProfileImage)&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.lastError, lastError) || other.lastError == lastError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isUpdatingDisplayName,isUpdatingLocation,isUpdatingFaction,lastError);
+int get hashCode => Object.hash(runtimeType,profileImageUrl,hasLoadedProfileImage,isLoadingProfileImage,isUpdatingProfileImage,isUpdatingDisplayName,isUpdatingLocation,isUpdatingFaction,lastError);
 
 @override
 String toString() {
-  return 'DashboardProfileState(isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isUpdatingFaction: $isUpdatingFaction, lastError: $lastError)';
+  return 'DashboardProfileState(profileImageUrl: $profileImageUrl, hasLoadedProfileImage: $hasLoadedProfileImage, isLoadingProfileImage: $isLoadingProfileImage, isUpdatingProfileImage: $isUpdatingProfileImage, isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isUpdatingFaction: $isUpdatingFaction, lastError: $lastError)';
 }
 
 
@@ -247,7 +255,7 @@ abstract mixin class _$DashboardProfileStateCopyWith<$Res> implements $Dashboard
   factory _$DashboardProfileStateCopyWith(_DashboardProfileState value, $Res Function(_DashboardProfileState) _then) = __$DashboardProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isUpdatingDisplayName, bool isUpdatingLocation, bool isUpdatingFaction, RootHubException? lastError
+ String? profileImageUrl, bool hasLoadedProfileImage, bool isLoadingProfileImage, bool isUpdatingProfileImage, bool isUpdatingDisplayName, bool isUpdatingLocation, bool isUpdatingFaction, RootHubException? lastError
 });
 
 
@@ -264,9 +272,13 @@ class __$DashboardProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isUpdatingFaction = null,Object? lastError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? profileImageUrl = freezed,Object? hasLoadedProfileImage = null,Object? isLoadingProfileImage = null,Object? isUpdatingProfileImage = null,Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isUpdatingFaction = null,Object? lastError = freezed,}) {
   return _then(_DashboardProfileState(
-isUpdatingDisplayName: null == isUpdatingDisplayName ? _self.isUpdatingDisplayName : isUpdatingDisplayName // ignore: cast_nullable_to_non_nullable
+profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,hasLoadedProfileImage: null == hasLoadedProfileImage ? _self.hasLoadedProfileImage : hasLoadedProfileImage // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingProfileImage: null == isLoadingProfileImage ? _self.isLoadingProfileImage : isLoadingProfileImage // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingProfileImage: null == isUpdatingProfileImage ? _self.isUpdatingProfileImage : isUpdatingProfileImage // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingDisplayName: null == isUpdatingDisplayName ? _self.isUpdatingDisplayName : isUpdatingDisplayName // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingLocation: null == isUpdatingLocation ? _self.isUpdatingLocation : isUpdatingLocation // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingFaction: null == isUpdatingFaction ? _self.isUpdatingFaction : isUpdatingFaction // ignore: cast_nullable_to_non_nullable
 as bool,lastError: freezed == lastError ? _self.lastError : lastError // ignore: cast_nullable_to_non_nullable

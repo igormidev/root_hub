@@ -47,5 +47,7 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is used to find nearby ROOT match schedules.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your profile image is used to personalize your Root Hub account.</string>
 </dict>
 </plist>

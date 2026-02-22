@@ -6,10 +6,14 @@ import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 class DashboardProfileDrawerWidget extends StatelessWidget {
   const DashboardProfileDrawerWidget({
     required this.playerData,
+    required this.profileImageUrl,
+    required this.onProfileImageEditTap,
     required this.onDisplayNameEditTap,
     required this.onLocationEditTap,
     required this.onFactionEditTap,
     required this.onLogoutTap,
+    required this.isLoadingProfileImage,
+    required this.isUpdatingProfileImage,
     required this.isUpdatingDisplayName,
     required this.isUpdatingLocation,
     required this.isUpdatingFaction,
@@ -17,10 +21,14 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
   });
 
   final PlayerData playerData;
+  final String? profileImageUrl;
+  final VoidCallback onProfileImageEditTap;
   final VoidCallback onDisplayNameEditTap;
   final VoidCallback onLocationEditTap;
   final VoidCallback onFactionEditTap;
   final VoidCallback onLogoutTap;
+  final bool isLoadingProfileImage;
+  final bool isUpdatingProfileImage;
   final bool isUpdatingDisplayName;
   final bool isUpdatingLocation;
   final bool isUpdatingFaction;
@@ -57,31 +65,70 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      width: 92,
-                      height: 92,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 24,
-                            offset: const Offset(0, 12),
-                            color: playerData.favoriteFaction.factionColor
-                                .withValues(alpha: 0.3),
+                    SizedBox(
+                      width: 96,
+                      height: 96,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            width: 92,
+                            height: 92,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 24,
+                                  offset: const Offset(0, 12),
+                                  color: colorScheme.primary.withValues(
+                                    alpha: 0.26,
+                                  ),
+                                ),
+                              ],
+                              border: Border.all(
+                                color: colorScheme.primary,
+                                width: 2.5,
+                              ),
+                              color: colorScheme.surfaceContainerHighest,
+                            ),
+                            child: ClipOval(
+                              child: _buildProfileImage(colorScheme),
+                            ),
+                          ),
+                          Positioned(
+                            right: -2,
+                            bottom: -2,
+                            child: Material(
+                              color: colorScheme.primaryContainer,
+                              shape: const CircleBorder(),
+                              child: InkWell(
+                                customBorder: const CircleBorder(),
+                                onTap:
+                                    isLoadingProfileImage ||
+                                        isUpdatingProfileImage
+                                    ? null
+                                    : onProfileImageEditTap,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: isUpdatingProfileImage
+                                      ? SizedBox(
+                                          width: 14,
+                                          height: 14,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: colorScheme.primary,
+                                          ),
+                                        )
+                                      : Icon(
+                                          Icons.photo_camera_rounded,
+                                          size: 16,
+                                          color: colorScheme.primary,
+                                        ),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
-                        border: Border.all(
-                          color: playerData.favoriteFaction.factionColor,
-                          width: 3,
-                        ),
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          playerData.favoriteFaction.getFactionIconPath(
-                            size: FactionIconSize.size512,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -184,32 +231,43 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                     ),
                                   ),
                                   const Spacer(),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: FilledButton.tonalIcon(
-                                      onPressed: isUpdatingFaction
-                                          ? null
-                                          : onFactionEditTap,
-                                      icon: isUpdatingFaction
-                                          ? const SizedBox(
-                                              width: 16,
-                                              height: 16,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                              ),
-                                            )
-                                          : const Icon(Icons.shuffle_rounded),
-                                      label: Text(
-                                        isUpdatingFaction
-                                            ? 'Saving...'
-                                            : 'Change Faction',
-                                        style: GoogleFonts.nunitoSans(
-                                          fontWeight: FontWeight.w700,
-                                        ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(-1, 0.8),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: SizedBox(
+                                  height: 36,
+                                  child: FilledButton.tonalIcon(
+                                    onPressed: isUpdatingFaction
+                                        ? null
+                                        : onFactionEditTap,
+                                    icon: isUpdatingFaction
+                                        ? const SizedBox(
+                                            width: 16,
+                                            height: 16,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : const Icon(Icons.shuffle_rounded),
+                                    label: Text(
+                                      isUpdatingFaction
+                                          ? 'Saving...'
+                                          : 'Change Faction',
+                                      style: GoogleFonts.nunitoSans(
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
@@ -261,6 +319,42 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileImage(ColorScheme colorScheme) {
+    if (isLoadingProfileImage) {
+      return Center(
+        child: SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: colorScheme.primary,
+          ),
+        ),
+      );
+    }
+
+    final imageUrl = profileImageUrl;
+    if (imageUrl == null || imageUrl.isEmpty) {
+      return Icon(
+        Icons.person_rounded,
+        size: 44,
+        color: colorScheme.onSurfaceVariant,
+      );
+    }
+
+    return Image.network(
+      imageUrl,
+      fit: BoxFit.cover,
+      errorBuilder: (_, _, _) {
+        return Icon(
+          Icons.person_rounded,
+          size: 44,
+          color: colorScheme.onSurfaceVariant,
+        );
+      },
     );
   }
 
