@@ -100,6 +100,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final client = ref.read(clientProvider);
+    final viewPadding = MediaQuery.viewPaddingOf(context);
 
     ref.listen<AuthFlowState>(authFlowProvider, (_, state) {
       state.map(
@@ -137,46 +138,56 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
             ],
           ),
         ),
-        child: SafeArea(
-          child: Stack(
-            children: [
-              Positioned(
-                top: -90,
-                left: -80,
-                child: _buildGlow(
-                  color: colorScheme.primary.withValues(alpha: 0.2),
-                ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: -90,
+              left: -80,
+              child: _buildGlow(
+                color: colorScheme.primary.withValues(alpha: 0.2),
               ),
-              Positioned(
-                bottom: 120,
-                right: -70,
-                child: _buildGlow(
-                  color: colorScheme.secondary.withValues(alpha: 0.18),
-                ),
+            ),
+            Positioned(
+              bottom: 120,
+              right: -70,
+              child: _buildGlow(
+                color: colorScheme.secondary.withValues(alpha: 0.18),
               ),
-              Center(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 18),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 540),
-                    child: Column(
-                      children: [
-                        Text(
-                              'Find Your Next ROOT Match',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.cinzel(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 0.8,
-                                color: colorScheme.onSurface,
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 460.ms)
-                            .slideY(begin: -0.18, end: 0, duration: 460.ms),
-                        const SizedBox(height: 8),
-                        Text(
+            ),
+            Center(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, viewPadding.bottom + 18),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 540),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          16,
+                          viewPadding.top + 4,
+                          16,
+                          0,
+                        ),
+                        child:
+                            Text(
+                                  'Find Your Next\nROOT Match',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.cinzel(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.8,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                )
+                                .animate()
+                                .fadeIn(duration: 460.ms)
+                                .slideY(begin: -0.18, end: 0, duration: 460.ms),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
                           'Sign in to browse schedules and join tables.',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.nunitoSans(
@@ -185,175 +196,200 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                             color: colorScheme.onSurfaceVariant,
                           ),
                         ).animate().fadeIn(delay: 120.ms, duration: 480.ms),
-                        const SizedBox(height: 18),
-                        SizedBox(
-                              height: 295,
-                              child: PageView.builder(
-                                controller: _pageController,
-                                itemBuilder: (context, index) {
-                                  final faction =
-                                      _factions[index % _factions.length];
-                                  final distance = (_currentPage - index)
-                                      .abs()
-                                      .clamp(
-                                        0.0,
-                                        1.8,
-                                      );
-                                  final progress = (1 - (distance / 1.8)).clamp(
-                                    0.0,
-                                    1.0,
-                                  );
-                                  final scale = lerpDouble(
-                                    0.7,
-                                    1.0,
-                                    progress,
-                                  )!;
-                                  final opacity = lerpDouble(
-                                    0.25,
-                                    1.0,
-                                    progress,
-                                  )!;
-                                  final yShift = lerpDouble(
-                                    34,
-                                    0,
-                                    progress,
-                                  )!;
+                      ),
+                      const SizedBox(height: 18),
+                      SizedBox(
+                            height: 295,
+                            child: PageView.builder(
+                              controller: _pageController,
+                              itemBuilder: (context, index) {
+                                final faction =
+                                    _factions[index % _factions.length];
+                                final distance = (_currentPage - index)
+                                    .abs()
+                                    .clamp(
+                                      0.0,
+                                      1.8,
+                                    );
+                                final progress = (1 - (distance / 1.8)).clamp(
+                                  0.0,
+                                  1.0,
+                                );
+                                final scale = lerpDouble(
+                                  0.7,
+                                  1.0,
+                                  progress,
+                                )!;
+                                final opacity = lerpDouble(
+                                  0.65,
+                                  1.0,
+                                  progress,
+                                )!;
+                                final yShift = lerpDouble(
+                                  34,
+                                  0,
+                                  progress,
+                                )!;
 
-                                  return Transform.translate(
-                                    offset: Offset(0, yShift),
-                                    child: Transform.scale(
-                                      scale: scale,
-                                      child: Opacity(
-                                        opacity: opacity,
-                                        child: Container(
-                                          margin: const EdgeInsets.symmetric(
-                                            horizontal: 6,
+                                return Transform.translate(
+                                  offset: Offset(0, yShift),
+                                  child: Transform.scale(
+                                    scale: scale,
+                                    child: Opacity(
+                                      opacity: opacity,
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            22,
                                           ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              22,
-                                            ),
-                                            border: Border.all(
-                                              color: colorScheme.outlineVariant,
-                                              width: 1.2,
-                                            ),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                colorScheme
-                                                    .surfaceContainerHighest
-                                                    .withValues(alpha: 0.8),
-                                                colorScheme.surfaceContainer
-                                                    .withValues(alpha: 0.7),
-                                              ],
-                                            ),
+                                          border: Border.all(
+                                            color: colorScheme.outlineVariant,
+                                            width: 1.2,
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(14),
-                                            child: Column(
-                                              children: [
-                                                Expanded(
-                                                  child: Image.asset(
-                                                    faction.getFactionImage,
-                                                    fit: BoxFit.contain,
-                                                  ),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              colorScheme
+                                                  .surfaceContainerHighest
+                                                  .withValues(alpha: 0.8),
+                                              colorScheme.surfaceContainer
+                                                  .withValues(alpha: 0.7),
+                                            ],
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(14),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: Image.asset(
+                                                  faction.getFactionImage,
+                                                  fit: BoxFit.contain,
                                                 ),
-                                                const SizedBox(height: 10),
-                                                Text(
-                                                  _formatFactionName(faction),
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.nunitoSans(
-                                                    color: faction.factionColor,
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 13,
-                                                    letterSpacing: 0.2,
-                                                  ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                _formatFactionName(faction),
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.nunitoSans(
+                                                  color: faction.factionColor,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 13,
+                                                  letterSpacing: 0.2,
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(delay: 200.ms, duration: 500.ms)
-                            .slideY(begin: 0.18, end: 0, duration: 500.ms),
-                        const SizedBox(height: 18),
-                        Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.fromLTRB(
-                                16,
-                                18,
-                                16,
-                                16,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                border: Border.all(
-                                  color: colorScheme.outlineVariant,
-                                ),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    colorScheme.surface.withValues(alpha: 0.95),
-                                    colorScheme.surfaceContainerLow.withValues(
-                                      alpha: 0.94,
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                          .animate()
+                          .fadeIn(delay: 200.ms, duration: 500.ms)
+                          .slideY(begin: 0.18, end: 0, duration: 500.ms),
+                      const SizedBox(height: 18),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child:
+                            Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.fromLTRB(
+                                    16,
+                                    18,
+                                    16,
+                                    16,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24),
+                                    border: Border.all(
+                                      color: colorScheme.outlineVariant,
                                     ),
-                                  ],
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: const Offset(0, 16),
-                                    blurRadius: 34,
-                                    color: colorScheme.shadow.withValues(
-                                      alpha: 0.12,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        colorScheme.surface.withValues(
+                                          alpha: 0.95,
+                                        ),
+                                        colorScheme.surfaceContainerLow
+                                            .withValues(
+                                              alpha: 0.94,
+                                            ),
+                                      ],
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(0, 16),
+                                        blurRadius: 34,
+                                        color: colorScheme.shadow.withValues(
+                                          alpha: 0.12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      canvasColor: Colors.transparent,
+                                    ),
+                                    child: MediaQuery.removePadding(
+                                      context: context,
+                                      removeTop: true,
+                                      removeBottom: true,
+                                      removeLeft: true,
+                                      removeRight: true,
+                                      child: SignInWidget(
+                                        client: client,
+                                        disableAnonymousSignInWidget: true,
+                                        emailSignInWidget: EmailSignInWidget(
+                                          client: client,
+                                          startScreen: EmailFlowScreen.login,
+                                          onAuthenticated:
+                                              _requestLoginCompletion,
+                                          onError: (error) {
+                                            if (!mounted) {
+                                              return;
+                                            }
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(content: Text('$error')),
+                                            );
+                                          },
+                                        ),
+                                        onAuthenticated:
+                                            _requestLoginCompletion,
+                                        onError: (error) {
+                                          if (!mounted) {
+                                            return;
+                                          }
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(content: Text('$error')),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
-                              child: SignInWidget(
-                                client: client,
-                                disableAnonymousSignInWidget: true,
-                                emailSignInWidget: EmailSignInWidget(
-                                  client: client,
-                                  startScreen: EmailFlowScreen.login,
-                                  onAuthenticated: _requestLoginCompletion,
-                                  onError: (error) {
-                                    if (!mounted) {
-                                      return;
-                                    }
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('$error')),
-                                    );
-                                  },
-                                ),
-                                onAuthenticated: _requestLoginCompletion,
-                                onError: (error) {
-                                  if (!mounted) {
-                                    return;
-                                  }
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('$error')),
-                                  );
-                                },
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(delay: 260.ms, duration: 520.ms)
-                            .slideY(begin: 0.22, end: 0, duration: 520.ms),
-                      ],
-                    ),
+                                )
+                                .animate()
+                                .fadeIn(delay: 260.ms, duration: 520.ms)
+                                .slideY(begin: 0.22, end: 0, duration: 520.ms),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
