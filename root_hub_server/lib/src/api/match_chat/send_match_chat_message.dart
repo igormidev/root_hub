@@ -2,13 +2,14 @@ import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
-class MatchChatGetMessages extends Endpoint {
+class SendMatchChatMessage extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<List<MatchChatMessage>> v1(
+  Future<MatchChatMessage> v1(
     Session session, {
     required int matchChatHistoryId,
+    required String content,
   }) async {
     return guardRootHubEndpointErrors(
       () async {
@@ -35,19 +36,31 @@ class MatchChatGetMessages extends Endpoint {
           playerData,
         );
 
-        final messages = await MatchChatMessage.db.find(
+        final message = await MatchChatMessage.db.insertRow(
           session,
-          where: (t) => t.matchChatHistoryId.equals(matchChatHistoryId),
-          include: MatchChatMessage.include(
-            sender: PlayerData.include(),
+          MatchChatMessage(
+            sentAt: DateTime.now(),
+            content: content,
+            matchChatHistoryId: matchChatHistoryId,
+            playerDataId: playerData.id!,
           ),
-          orderBy: (t) => t.sentAt,
         );
 
-        return messages;
+        await MatchChatMessage.db.attachRow.matchChatHistory(
+          session,
+          message,
+          chatHistory,
+        );
+        await MatchChatMessage.db.attachRow.sender(
+          session,
+          message,
+          playerData,
+        );
+
+        return message;
       },
       fallbackDescription:
-          'Unable to load chat messages right now. Please try again.',
+          'Unable to send the message right now. Please try again.',
     );
   }
 

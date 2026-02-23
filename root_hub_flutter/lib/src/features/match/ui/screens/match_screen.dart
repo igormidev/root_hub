@@ -1432,232 +1432,227 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   locationSubtitle: locationSubtitle,
                   google: google,
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: ListView(
+                    shrinkWrap: true,
                     padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                  12,
-                                  10,
-                                  12,
-                                  10,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: colorScheme.primaryContainer
-                                      .withValues(
-                                        alpha: 0.62,
-                                      ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.sports_esports_rounded,
-                                      color: colorScheme.primary,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '$playedMatchesCount',
-                                          style: Theme.of(dialogContext)
-                                              .textTheme
-                                              .titleLarge
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w900,
-                                              ),
-                                        ),
-                                        Text(
-                                          playedMatchesCount == 1
-                                              ? 'match played here'
-                                              : 'matches played here',
-                                          style: Theme.of(dialogContext)
-                                              .textTheme
-                                              .labelLarge
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 10,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(
+                                12,
+                                10,
+                                12,
+                                10,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: google?.isPublicPlace == false
-                                    ? colorScheme.tertiaryContainer
-                                    : colorScheme.secondaryContainer,
+                                borderRadius: BorderRadius.circular(16),
+                                color: colorScheme.primaryContainer.withValues(
+                                  alpha: 0.62,
+                                ),
                               ),
-                              child: Column(
+                              child: Row(
                                 children: [
                                   Icon(
-                                    google?.isPublicPlace == false
-                                        ? Icons.lock_rounded
-                                        : Icons.public_rounded,
-                                    size: 18,
-                                    color: google?.isPublicPlace == false
-                                        ? colorScheme.onTertiaryContainer
-                                        : colorScheme.onSecondaryContainer,
+                                    Icons.sports_esports_rounded,
+                                    color: colorScheme.primary,
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    google?.isPublicPlace == false
-                                        ? 'Private'
-                                        : 'Public',
-                                    style: Theme.of(dialogContext)
-                                        .textTheme
-                                        .labelMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w900,
-                                          color: google?.isPublicPlace == false
-                                              ? colorScheme.onTertiaryContainer
-                                              : colorScheme
-                                                    .onSecondaryContainer,
-                                        ),
+                                  const SizedBox(width: 8),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '$playedMatchesCount',
+                                        style: Theme.of(dialogContext)
+                                            .textTheme
+                                            .titleLarge
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w900,
+                                            ),
+                                      ),
+                                      Text(
+                                        playedMatchesCount == 1
+                                            ? 'match played here'
+                                            : 'matches played here',
+                                        style: Theme.of(dialogContext)
+                                            .textTheme
+                                            .labelLarge
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              color:
+                                                  colorScheme.onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: [
-                            if (google?.rating != null)
-                              _buildLocationMetaChip(
-                                dialogContext,
-                                icon: Icons.star_rounded,
-                                label:
-                                    'Rating ${google!.rating!.toStringAsFixed(1)}',
-                              ),
-                            if (google?.userRatingCount != null)
-                              _buildLocationMetaChip(
-                                dialogContext,
-                                icon: Icons.groups_2_rounded,
-                                label: '${google!.userRatingCount} ratings',
-                              ),
-                            if (google?.timezone != null &&
-                                google!.timezone!.trim().isNotEmpty)
-                              _buildLocationMetaChip(
-                                dialogContext,
-                                icon: Icons.schedule_rounded,
-                                label: google.timezone!,
-                              ),
-                            for (final type in types)
-                              _buildLocationMetaChip(
-                                dialogContext,
-                                icon: Icons.sell_rounded,
-                                label: type,
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        if (google?.url != null &&
-                            google!.url!.trim().isNotEmpty)
-                          _buildActionableInfoRow(
-                            dialogContext,
-                            icon: Icons.map_rounded,
-                            label: 'Map link',
-                            value: google.url!.trim(),
-                            onActionTap: () =>
-                                _launchExternalUrl(google.url!.trim()),
                           ),
-                        if (google?.websiteUri != null &&
-                            google!.websiteUri!.trim().isNotEmpty)
-                          _buildActionableInfoRow(
-                            dialogContext,
-                            icon: Icons.language_rounded,
-                            label: 'Website',
-                            value: google.websiteUri!.trim(),
-                            onActionTap: () =>
-                                _launchExternalUrl(google.websiteUri!.trim()),
-                          ),
-                        if (google?.phoneNumber != null &&
-                            google!.phoneNumber!.trim().isNotEmpty)
-                          _buildActionableInfoRow(
-                            dialogContext,
-                            icon: Icons.phone_rounded,
-                            label: 'Phone',
-                            value: google.phoneNumber!.trim(),
-                            onActionTap: () =>
-                                _launchPhone(google.phoneNumber!.trim()),
-                          ),
-                        if (manual != null) ...[
-                          const SizedBox(height: 8),
+                          const SizedBox(width: 8),
                           Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: colorScheme.surfaceContainerHighest
-                                  .withValues(
-                                    alpha: 0.55,
-                                  ),
+                              color: google?.isPublicPlace == false
+                                  ? colorScheme.tertiaryContainer
+                                  : colorScheme.secondaryContainer,
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Icon(
+                                  google?.isPublicPlace == false
+                                      ? Icons.lock_rounded
+                                      : Icons.public_rounded,
+                                  size: 18,
+                                  color: google?.isPublicPlace == false
+                                      ? colorScheme.onTertiaryContainer
+                                      : colorScheme.onSecondaryContainer,
+                                ),
+                                const SizedBox(height: 4),
                                 Text(
-                                  'Manual location notes',
+                                  google?.isPublicPlace == false
+                                      ? 'Private'
+                                      : 'Public',
                                   style: Theme.of(dialogContext)
                                       .textTheme
-                                      .titleSmall
+                                      .labelMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.w900,
+                                        color: google?.isPublicPlace == false
+                                            ? colorScheme.onTertiaryContainer
+                                            : colorScheme.onSecondaryContainer,
                                       ),
                                 ),
-                                const SizedBox(height: 3),
-                                Text(
-                                  '${manual.title} • ${manual.cityName}, ${manual.country.toJson()}',
-                                  style: Theme.of(dialogContext)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: colorScheme.onSurfaceVariant,
-                                      ),
-                                ),
-                                if (manual.description?.trim().isNotEmpty ==
-                                    true)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Text(
-                                      manual.description!.trim(),
-                                      style: Theme.of(dialogContext)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                    ),
-                                  ),
                               ],
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          if (google?.rating != null)
+                            _buildLocationMetaChip(
+                              dialogContext,
+                              icon: Icons.star_rounded,
+                              label:
+                                  'Rating ${google!.rating!.toStringAsFixed(1)}',
+                            ),
+                          if (google?.userRatingCount != null)
+                            _buildLocationMetaChip(
+                              dialogContext,
+                              icon: Icons.groups_2_rounded,
+                              label: '${google!.userRatingCount} ratings',
+                            ),
+                          if (google?.timezone != null &&
+                              google!.timezone!.trim().isNotEmpty)
+                            _buildLocationMetaChip(
+                              dialogContext,
+                              icon: Icons.schedule_rounded,
+                              label: google.timezone!,
+                            ),
+                          for (final type in types)
+                            _buildLocationMetaChip(
+                              dialogContext,
+                              icon: Icons.sell_rounded,
+                              label: type,
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      if (google?.url != null && google!.url!.trim().isNotEmpty)
+                        _buildActionableInfoRow(
+                          dialogContext,
+                          icon: Icons.map_rounded,
+                          label: 'Map link',
+                          value: google.url!.trim(),
+                          onActionTap: () =>
+                              _launchExternalUrl(google.url!.trim()),
+                        ),
+                      if (google?.websiteUri != null &&
+                          google!.websiteUri!.trim().isNotEmpty)
+                        _buildActionableInfoRow(
+                          dialogContext,
+                          icon: Icons.language_rounded,
+                          label: 'Website',
+                          value: google.websiteUri!.trim(),
+                          onActionTap: () =>
+                              _launchExternalUrl(google.websiteUri!.trim()),
+                        ),
+                      if (google?.phoneNumber != null &&
+                          google!.phoneNumber!.trim().isNotEmpty)
+                        _buildActionableInfoRow(
+                          dialogContext,
+                          icon: Icons.phone_rounded,
+                          label: 'Phone',
+                          value: google.phoneNumber!.trim(),
+                          onActionTap: () =>
+                              _launchPhone(google.phoneNumber!.trim()),
+                        ),
+                      if (manual != null) ...[
+                        const SizedBox(height: 8),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: colorScheme.surfaceContainerHighest
+                                .withValues(
+                                  alpha: 0.55,
+                                ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Manual location notes',
+                                style: Theme.of(dialogContext)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                '${manual.title} • ${manual.cityName}, ${manual.country.toJson()}',
+                                style: Theme.of(dialogContext)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                              ),
+                              if (manual.description?.trim().isNotEmpty == true)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    manual.description!.trim(),
+                                    style: Theme.of(dialogContext)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
                 SafeArea(
