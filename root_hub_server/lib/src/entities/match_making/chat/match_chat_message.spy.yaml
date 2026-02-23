@@ -4,6 +4,10 @@ fields:
   sentAt: DateTime
   content: String
   imageUrl: String?
+  blurhash: String?
+  imageWidth: int?
+  imageHeight: int?
+  messageType: MatchChatMessageType
   matchChatHistoryId: int
   matchChatHistory: MatchChatHistory?, relation(name=chat_history_messages, field=matchChatHistoryId)
   playerDataId: int

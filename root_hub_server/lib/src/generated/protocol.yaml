@@ -38,6 +38,8 @@ getTablesInArea:
   - v1:
 subscribeToMatch:
   - v1:
+unsubscribeFromMatch:
+  - v1:
 emailIdp:
   - login:
   - startRegistration:

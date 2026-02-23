@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:blurhash_dart/blurhash_dart.dart';
+import 'package:image/image.dart' as img;
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
@@ -85,6 +87,10 @@ class SendMatchChatMessage extends Endpoint {
         }
 
         String? uploadedImageUrl;
+        String? computedBlurhash;
+        int? computedImageWidth;
+        int? computedImageHeight;
+
         if (hasImage) {
           final imageBytesList = imageBytes.buffer.asUint8List(
             imageBytes.offsetInBytes,
@@ -97,6 +103,45 @@ class SendMatchChatMessage extends Endpoint {
             'bytes=${imageBytesList.length}',
             level: LogLevel.info,
           );
+
+          try {
+            final decodedImage = img.decodeImage(imageBytesList);
+            if (decodedImage != null) {
+              computedImageWidth = decodedImage.width;
+              computedImageHeight = decodedImage.height;
+
+              final thumbnailWidth = decodedImage.width > 100
+                  ? 100
+                  : decodedImage.width;
+              final thumbnail = img.copyResize(
+                decodedImage,
+                width: thumbnailWidth,
+                interpolation: img.Interpolation.average,
+              );
+              computedBlurhash = BlurHash.encode(
+                thumbnail,
+                numCompX: 4,
+                numCompY: 3,
+              ).hash;
+
+              session.log(
+                '[MatchChat] Blurhash computed. '
+                'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id} '
+                'imageSize=${computedImageWidth}x$computedImageHeight '
+                'blurhash=$computedBlurhash',
+                level: LogLevel.info,
+              );
+            }
+          } catch (error, stackTrace) {
+            session.log(
+              '[MatchChat] Blurhash computation failed (non-blocking). '
+              'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id}: $error',
+              level: LogLevel.warning,
+              exception: error,
+              stackTrace: stackTrace,
+            );
+          }
+
           try {
             uploadedImageUrl = await _uploadThingStorageClient
                 .uploadPublicImage(
@@ -134,6 +179,10 @@ class SendMatchChatMessage extends Endpoint {
             sentAt: DateTime.now(),
             content: normalizedContent,
             imageUrl: uploadedImageUrl,
+            blurhash: computedBlurhash,
+            imageWidth: computedImageWidth,
+            imageHeight: computedImageHeight,
+            messageType: MatchChatMessageType.userMessage,
             matchChatHistoryId: chatHistoryId,
             playerDataId: playerData.id!,
           ),

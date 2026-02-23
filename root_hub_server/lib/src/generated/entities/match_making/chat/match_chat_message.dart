@@ -12,9 +12,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../../entities/match_making/chat/match_chat_history.dart' as _i2;
-import '../../../entities/core/player_data.dart' as _i3;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i4;
+import '../../../entities/match_making/chat/match_chat_message_type.dart'
+    as _i2;
+import '../../../entities/match_making/chat/match_chat_history.dart' as _i3;
+import '../../../entities/core/player_data.dart' as _i4;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
 
 abstract class MatchChatMessage
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -23,6 +25,10 @@ abstract class MatchChatMessage
     required this.sentAt,
     required this.content,
     this.imageUrl,
+    this.blurhash,
+    this.imageWidth,
+    this.imageHeight,
+    required this.messageType,
     required this.matchChatHistoryId,
     this.matchChatHistory,
     required this.playerDataId,
@@ -34,10 +40,14 @@ abstract class MatchChatMessage
     required DateTime sentAt,
     required String content,
     String? imageUrl,
+    String? blurhash,
+    int? imageWidth,
+    int? imageHeight,
+    required _i2.MatchChatMessageType messageType,
     required int matchChatHistoryId,
-    _i2.MatchChatHistory? matchChatHistory,
+    _i3.MatchChatHistory? matchChatHistory,
     required int playerDataId,
-    _i3.PlayerData? sender,
+    _i4.PlayerData? sender,
   }) = _MatchChatMessageImpl;
 
   factory MatchChatMessage.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -46,16 +56,22 @@ abstract class MatchChatMessage
       sentAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['sentAt']),
       content: jsonSerialization['content'] as String,
       imageUrl: jsonSerialization['imageUrl'] as String?,
+      blurhash: jsonSerialization['blurhash'] as String?,
+      imageWidth: jsonSerialization['imageWidth'] as int?,
+      imageHeight: jsonSerialization['imageHeight'] as int?,
+      messageType: _i2.MatchChatMessageType.fromJson(
+        (jsonSerialization['messageType'] as String),
+      ),
       matchChatHistoryId: jsonSerialization['matchChatHistoryId'] as int,
       matchChatHistory: jsonSerialization['matchChatHistory'] == null
           ? null
-          : _i4.Protocol().deserialize<_i2.MatchChatHistory>(
+          : _i5.Protocol().deserialize<_i3.MatchChatHistory>(
               jsonSerialization['matchChatHistory'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       sender: jsonSerialization['sender'] == null
           ? null
-          : _i4.Protocol().deserialize<_i3.PlayerData>(
+          : _i5.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['sender'],
             ),
     );
@@ -74,13 +90,21 @@ abstract class MatchChatMessage
 
   String? imageUrl;
 
+  String? blurhash;
+
+  int? imageWidth;
+
+  int? imageHeight;
+
+  _i2.MatchChatMessageType messageType;
+
   int matchChatHistoryId;
 
-  _i2.MatchChatHistory? matchChatHistory;
+  _i3.MatchChatHistory? matchChatHistory;
 
   int playerDataId;
 
-  _i3.PlayerData? sender;
+  _i4.PlayerData? sender;
 
   @override
   _i1.Table<int?> get table => t;
@@ -93,10 +117,14 @@ abstract class MatchChatMessage
     DateTime? sentAt,
     String? content,
     String? imageUrl,
+    String? blurhash,
+    int? imageWidth,
+    int? imageHeight,
+    _i2.MatchChatMessageType? messageType,
     int? matchChatHistoryId,
-    _i2.MatchChatHistory? matchChatHistory,
+    _i3.MatchChatHistory? matchChatHistory,
     int? playerDataId,
-    _i3.PlayerData? sender,
+    _i4.PlayerData? sender,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -106,6 +134,10 @@ abstract class MatchChatMessage
       'sentAt': sentAt.toJson(),
       'content': content,
       if (imageUrl != null) 'imageUrl': imageUrl,
+      if (blurhash != null) 'blurhash': blurhash,
+      if (imageWidth != null) 'imageWidth': imageWidth,
+      if (imageHeight != null) 'imageHeight': imageHeight,
+      'messageType': messageType.toJson(),
       'matchChatHistoryId': matchChatHistoryId,
       if (matchChatHistory != null)
         'matchChatHistory': matchChatHistory?.toJson(),
@@ -122,6 +154,10 @@ abstract class MatchChatMessage
       'sentAt': sentAt.toJson(),
       'content': content,
       if (imageUrl != null) 'imageUrl': imageUrl,
+      if (blurhash != null) 'blurhash': blurhash,
+      if (imageWidth != null) 'imageWidth': imageWidth,
+      if (imageHeight != null) 'imageHeight': imageHeight,
+      'messageType': messageType.toJson(),
       'matchChatHistoryId': matchChatHistoryId,
       if (matchChatHistory != null)
         'matchChatHistory': matchChatHistory?.toJsonForProtocol(),
@@ -131,8 +167,8 @@ abstract class MatchChatMessage
   }
 
   static MatchChatMessageInclude include({
-    _i2.MatchChatHistoryInclude? matchChatHistory,
-    _i3.PlayerDataInclude? sender,
+    _i3.MatchChatHistoryInclude? matchChatHistory,
+    _i4.PlayerDataInclude? sender,
   }) {
     return MatchChatMessageInclude._(
       matchChatHistory: matchChatHistory,
@@ -174,15 +210,23 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     required DateTime sentAt,
     required String content,
     String? imageUrl,
+    String? blurhash,
+    int? imageWidth,
+    int? imageHeight,
+    required _i2.MatchChatMessageType messageType,
     required int matchChatHistoryId,
-    _i2.MatchChatHistory? matchChatHistory,
+    _i3.MatchChatHistory? matchChatHistory,
     required int playerDataId,
-    _i3.PlayerData? sender,
+    _i4.PlayerData? sender,
   }) : super._(
          id: id,
          sentAt: sentAt,
          content: content,
          imageUrl: imageUrl,
+         blurhash: blurhash,
+         imageWidth: imageWidth,
+         imageHeight: imageHeight,
+         messageType: messageType,
          matchChatHistoryId: matchChatHistoryId,
          matchChatHistory: matchChatHistory,
          playerDataId: playerDataId,
@@ -198,6 +242,10 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     DateTime? sentAt,
     String? content,
     Object? imageUrl = _Undefined,
+    Object? blurhash = _Undefined,
+    Object? imageWidth = _Undefined,
+    Object? imageHeight = _Undefined,
+    _i2.MatchChatMessageType? messageType,
     int? matchChatHistoryId,
     Object? matchChatHistory = _Undefined,
     int? playerDataId,
@@ -208,12 +256,16 @@ class _MatchChatMessageImpl extends MatchChatMessage {
       sentAt: sentAt ?? this.sentAt,
       content: content ?? this.content,
       imageUrl: imageUrl is String? ? imageUrl : this.imageUrl,
+      blurhash: blurhash is String? ? blurhash : this.blurhash,
+      imageWidth: imageWidth is int? ? imageWidth : this.imageWidth,
+      imageHeight: imageHeight is int? ? imageHeight : this.imageHeight,
+      messageType: messageType ?? this.messageType,
       matchChatHistoryId: matchChatHistoryId ?? this.matchChatHistoryId,
-      matchChatHistory: matchChatHistory is _i2.MatchChatHistory?
+      matchChatHistory: matchChatHistory is _i3.MatchChatHistory?
           ? matchChatHistory
           : this.matchChatHistory?.copyWith(),
       playerDataId: playerDataId ?? this.playerDataId,
-      sender: sender is _i3.PlayerData? ? sender : this.sender?.copyWith(),
+      sender: sender is _i4.PlayerData? ? sender : this.sender?.copyWith(),
     );
   }
 }
@@ -234,6 +286,27 @@ class MatchChatMessageUpdateTable
 
   _i1.ColumnValue<String, String> imageUrl(String? value) => _i1.ColumnValue(
     table.imageUrl,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> blurhash(String? value) => _i1.ColumnValue(
+    table.blurhash,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> imageWidth(int? value) => _i1.ColumnValue(
+    table.imageWidth,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> imageHeight(int? value) => _i1.ColumnValue(
+    table.imageHeight,
+    value,
+  );
+
+  _i1.ColumnValue<_i2.MatchChatMessageType, _i2.MatchChatMessageType>
+  messageType(_i2.MatchChatMessageType value) => _i1.ColumnValue(
+    table.messageType,
     value,
   );
 
@@ -264,6 +337,23 @@ class MatchChatMessageTable extends _i1.Table<int?> {
       'imageUrl',
       this,
     );
+    blurhash = _i1.ColumnString(
+      'blurhash',
+      this,
+    );
+    imageWidth = _i1.ColumnInt(
+      'imageWidth',
+      this,
+    );
+    imageHeight = _i1.ColumnInt(
+      'imageHeight',
+      this,
+    );
+    messageType = _i1.ColumnEnum(
+      'messageType',
+      this,
+      _i1.EnumSerialization.byName,
+    );
     matchChatHistoryId = _i1.ColumnInt(
       'matchChatHistoryId',
       this,
@@ -282,36 +372,44 @@ class MatchChatMessageTable extends _i1.Table<int?> {
 
   late final _i1.ColumnString imageUrl;
 
+  late final _i1.ColumnString blurhash;
+
+  late final _i1.ColumnInt imageWidth;
+
+  late final _i1.ColumnInt imageHeight;
+
+  late final _i1.ColumnEnum<_i2.MatchChatMessageType> messageType;
+
   late final _i1.ColumnInt matchChatHistoryId;
 
-  _i2.MatchChatHistoryTable? _matchChatHistory;
+  _i3.MatchChatHistoryTable? _matchChatHistory;
 
   late final _i1.ColumnInt playerDataId;
 
-  _i3.PlayerDataTable? _sender;
+  _i4.PlayerDataTable? _sender;
 
-  _i2.MatchChatHistoryTable get matchChatHistory {
+  _i3.MatchChatHistoryTable get matchChatHistory {
     if (_matchChatHistory != null) return _matchChatHistory!;
     _matchChatHistory = _i1.createRelationTable(
       relationFieldName: 'matchChatHistory',
       field: MatchChatMessage.t.matchChatHistoryId,
-      foreignField: _i2.MatchChatHistory.t.id,
+      foreignField: _i3.MatchChatHistory.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.MatchChatHistoryTable(tableRelation: foreignTableRelation),
+          _i3.MatchChatHistoryTable(tableRelation: foreignTableRelation),
     );
     return _matchChatHistory!;
   }
 
-  _i3.PlayerDataTable get sender {
+  _i4.PlayerDataTable get sender {
     if (_sender != null) return _sender!;
     _sender = _i1.createRelationTable(
       relationFieldName: 'sender',
       field: MatchChatMessage.t.playerDataId,
-      foreignField: _i3.PlayerData.t.id,
+      foreignField: _i4.PlayerData.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerDataTable(tableRelation: foreignTableRelation),
+          _i4.PlayerDataTable(tableRelation: foreignTableRelation),
     );
     return _sender!;
   }
@@ -322,6 +420,10 @@ class MatchChatMessageTable extends _i1.Table<int?> {
     sentAt,
     content,
     imageUrl,
+    blurhash,
+    imageWidth,
+    imageHeight,
+    messageType,
     matchChatHistoryId,
     playerDataId,
   ];
@@ -340,16 +442,16 @@ class MatchChatMessageTable extends _i1.Table<int?> {
 
 class MatchChatMessageInclude extends _i1.IncludeObject {
   MatchChatMessageInclude._({
-    _i2.MatchChatHistoryInclude? matchChatHistory,
-    _i3.PlayerDataInclude? sender,
+    _i3.MatchChatHistoryInclude? matchChatHistory,
+    _i4.PlayerDataInclude? sender,
   }) {
     _matchChatHistory = matchChatHistory;
     _sender = sender;
   }
 
-  _i2.MatchChatHistoryInclude? _matchChatHistory;
+  _i3.MatchChatHistoryInclude? _matchChatHistory;
 
-  _i3.PlayerDataInclude? _sender;
+  _i4.PlayerDataInclude? _sender;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -652,7 +754,7 @@ class MatchChatMessageAttachRowRepository {
   Future<void> matchChatHistory(
     _i1.Session session,
     MatchChatMessage matchChatMessage,
-    _i2.MatchChatHistory matchChatHistory, {
+    _i3.MatchChatHistory matchChatHistory, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.id == null) {
@@ -677,7 +779,7 @@ class MatchChatMessageAttachRowRepository {
   Future<void> sender(
     _i1.Session session,
     MatchChatMessage matchChatMessage,
-    _i3.PlayerData sender, {
+    _i4.PlayerData sender, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.id == null) {

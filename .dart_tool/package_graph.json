@@ -26,8 +26,10 @@
       "name": "root_hub_server",
       "version": "0.0.0",
       "dependencies": [
+        "blurhash_dart",
         "google_maps_apis",
         "http",
+        "image",
         "serverpod",
         "serverpod_auth_core_server",
         "serverpod_auth_idp_server"
@@ -44,9 +46,12 @@
       "dependencies": [
         "adaptive_dialog",
         "babel_text",
+        "blurhash_dart",
+        "cached_network_image",
         "cupertino_icons",
         "flutter",
         "flutter_animate",
+        "flutter_cache_manager",
         "flutter_chat_core",
         "flutter_chat_ui",
         "flutter_riverpod",
@@ -294,6 +299,40 @@
         "watcher",
         "web_socket_channel",
         "yaml"
+      ]
+    },
+    {
+      "name": "flutter_cache_manager",
+      "version": "3.4.1",
+      "dependencies": [
+        "clock",
+        "collection",
+        "file",
+        "flutter",
+        "http",
+        "path",
+        "path_provider",
+        "rxdart",
+        "sqflite",
+        "uuid"
+      ]
+    },
+    {
+      "name": "cached_network_image",
+      "version": "3.4.1",
+      "dependencies": [
+        "cached_network_image_platform_interface",
+        "cached_network_image_web",
+        "flutter",
+        "flutter_cache_manager",
+        "octo_image"
+      ]
+    },
+    {
+      "name": "blurhash_dart",
+      "version": "1.2.1",
+      "dependencies": [
+        "image"
       ]
     },
     {
@@ -1211,6 +1250,60 @@
       ]
     },
     {
+      "name": "uuid",
+      "version": "4.5.2",
+      "dependencies": [
+        "crypto",
+        "fixnum",
+        "meta"
+      ]
+    },
+    {
+      "name": "sqflite",
+      "version": "2.4.2",
+      "dependencies": [
+        "flutter",
+        "path",
+        "sqflite_android",
+        "sqflite_common",
+        "sqflite_darwin",
+        "sqflite_platform_interface"
+      ]
+    },
+    {
+      "name": "file",
+      "version": "7.0.1",
+      "dependencies": [
+        "meta",
+        "path"
+      ]
+    },
+    {
+      "name": "octo_image",
+      "version": "2.1.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "cached_network_image_web",
+      "version": "1.3.1",
+      "dependencies": [
+        "cached_network_image_platform_interface",
+        "flutter",
+        "flutter_cache_manager",
+        "web"
+      ]
+    },
+    {
+      "name": "cached_network_image_platform_interface",
+      "version": "4.1.1",
+      "dependencies": [
+        "flutter",
+        "flutter_cache_manager"
+      ]
+    },
+    {
       "name": "thumbhash",
       "version": "0.1.0+1",
       "dependencies": []
@@ -1234,13 +1327,6 @@
         "flutter",
         "idb_shim",
         "path_provider"
-      ]
-    },
-    {
-      "name": "blurhash_dart",
-      "version": "1.2.1",
-      "dependencies": [
-        "image"
       ]
     },
     {
@@ -1832,15 +1918,6 @@
       ]
     },
     {
-      "name": "uuid",
-      "version": "4.5.2",
-      "dependencies": [
-        "crypto",
-        "fixnum",
-        "meta"
-      ]
-    },
-    {
       "name": "retrofit",
       "version": "4.9.2",
       "dependencies": [
@@ -2053,14 +2130,6 @@
       ]
     },
     {
-      "name": "file",
-      "version": "7.0.1",
-      "dependencies": [
-        "meta",
-        "path"
-      ]
-    },
-    {
       "name": "ci",
       "version": "0.1.0",
       "dependencies": []
@@ -2094,6 +2163,47 @@
       "name": "fixnum",
       "version": "1.1.1",
       "dependencies": []
+    },
+    {
+      "name": "sqflite_common",
+      "version": "2.5.6",
+      "dependencies": [
+        "meta",
+        "path",
+        "synchronized"
+      ]
+    },
+    {
+      "name": "sqflite_platform_interface",
+      "version": "2.4.0",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "platform",
+        "plugin_platform_interface",
+        "sqflite_common"
+      ]
+    },
+    {
+      "name": "sqflite_darwin",
+      "version": "2.4.2",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "path",
+        "sqflite_common",
+        "sqflite_platform_interface"
+      ]
+    },
+    {
+      "name": "sqflite_android",
+      "version": "2.4.2+2",
+      "dependencies": [
+        "flutter",
+        "path",
+        "sqflite_common",
+        "sqflite_platform_interface"
+      ]
     },
     {
       "name": "nested",

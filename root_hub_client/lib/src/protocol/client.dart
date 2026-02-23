@@ -451,6 +451,21 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointUnsubscribeFromMatch extends _i1.EndpointRef {
+  EndpointUnsubscribeFromMatch(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'unsubscribeFromMatch';
+
+  _i2.Future<void> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<void>(
+        'unsubscribeFromMatch',
+        'v1',
+        {'scheduledMatchId': scheduledMatchId},
+      );
+}
+
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
@@ -764,6 +779,7 @@ class Client extends _i1.ServerpodClientShared {
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
     getTablesInArea = EndpointGetTablesInArea(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
+    unsubscribeFromMatch = EndpointUnsubscribeFromMatch(this);
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
@@ -806,6 +822,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointSubscribeToMatch subscribeToMatch;
 
+  late final EndpointUnsubscribeFromMatch unsubscribeFromMatch;
+
   late final EndpointEmailIdp emailIdp;
 
   late final EndpointGoogleIdp googleIdp;
@@ -834,6 +852,7 @@ class Client extends _i1.ServerpodClientShared {
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,
     'getTablesInArea': getTablesInArea,
     'subscribeToMatch': subscribeToMatch,
+    'unsubscribeFromMatch': unsubscribeFromMatch,
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,

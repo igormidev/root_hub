@@ -196,6 +196,8 @@ class TestEndpoints {
 
   late final _SubscribeToMatch subscribeToMatch;
 
+  late final _UnsubscribeFromMatch unsubscribeFromMatch;
+
   late final _EmailIdpEndpoint emailIdp;
 
   late final _GoogleIdpEndpoint googleIdp;
@@ -279,6 +281,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     subscribeToMatch = _SubscribeToMatch(
+      endpoints,
+      serializationManager,
+    );
+    unsubscribeFromMatch = _UnsubscribeFromMatch(
       endpoints,
       serializationManager,
     );
@@ -1242,6 +1248,50 @@ class _SubscribeToMatch {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i23.MatchSubscription>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _UnsubscribeFromMatch {
+  _UnsubscribeFromMatch(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int scheduledMatchId,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'unsubscribeFromMatch',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'unsubscribeFromMatch',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'scheduledMatchId': scheduledMatchId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

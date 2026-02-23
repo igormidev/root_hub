@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/api/match_chat/send_system_chat_message.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -72,6 +73,14 @@ class SubscribeToMatch extends Endpoint {
           session,
           subscription,
           playerData,
+        );
+
+        await sendSystemChatMessage(
+          session,
+          scheduledMatchId: scheduledMatchId,
+          playerData: playerData,
+          messageType: MatchChatMessageType.systemJoin,
+          content: '${playerData.displayName} joined the table',
         );
 
         return subscription;

@@ -43,6 +43,9 @@ dependencies:
   flutter_chat_core: ^2.9.0
   flutter_chat_ui: ^2.11.1
   flyer_chat_image_message: ^2.3.0
+  blurhash_dart: ^1.2.1
+  cached_network_image: ^3.4.1
+  flutter_cache_manager: ^3.4.1
 
 dev_dependencies:
   build_runner: ^2.11.1

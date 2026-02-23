@@ -607,6 +607,48 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     await _chatController.insertMessage(message);
   }
 
+  Future<RootHubException?> unsubscribeFromTable() async {
+    final scheduledMatchId = state.scheduledMatchId;
+    if (scheduledMatchId == null) {
+      return RootHubException(
+        title: 'Invalid chat',
+        description: 'No active match chat to unsubscribe from.',
+      );
+    }
+
+    state = state.copyWith(actionError: null);
+
+    try {
+      await ref
+          .read(clientProvider)
+          .unsubscribeFromMatch
+          .v1(scheduledMatchId: scheduledMatchId);
+      return null;
+    } on RootHubException catch (error) {
+      talker.debug(
+        '[MatchChat] Unsubscribe failed. '
+        'scheduledMatchId=$scheduledMatchId '
+        'title=${error.title} description=${error.description}',
+      );
+      state = state.copyWith(actionError: error);
+      return error;
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchChat] Unexpected unsubscribe failure. '
+        'scheduledMatchId=$scheduledMatchId',
+      );
+      final exception = RootHubException(
+        title: 'Unable to unsubscribe',
+        description:
+            'An unexpected error occurred while unsubscribing from this table.',
+      );
+      state = state.copyWith(actionError: exception);
+      return exception;
+    }
+  }
+
   Message _toUiMessage(MatchChatMessage serverMessage) {
     final messageId =
         serverMessage.id?.toString() ??
@@ -616,6 +658,26 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     final sender = serverMessage.sender;
     if (sender != null) {
       _playersByAuthorId[authorId] = sender;
+    }
+
+    final isSystemMessage =
+        serverMessage.messageType == MatchChatMessageType.systemJoin ||
+        serverMessage.messageType == MatchChatMessageType.systemLeave;
+
+    if (isSystemMessage) {
+      return Message.custom(
+        id: messageId,
+        authorId: authorId,
+        createdAt: serverMessage.sentAt,
+        sentAt: serverMessage.sentAt,
+        status: MessageStatus.sent,
+        metadata: <String, dynamic>{
+          'type': serverMessage.messageType == MatchChatMessageType.systemJoin
+              ? 'systemJoin'
+              : 'systemLeave',
+          'content': serverMessage.content.trim(),
+        },
+      );
     }
 
     final normalizedText = serverMessage.content.trim();
@@ -632,6 +694,9 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         status: MessageStatus.sent,
         source: normalizedImageUrl,
         text: normalizedText.isEmpty ? null : normalizedText,
+        blurhash: serverMessage.blurhash,
+        width: serverMessage.imageWidth?.toDouble(),
+        height: serverMessage.imageHeight?.toDouble(),
       );
     }
 

@@ -11,9 +11,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import '../../../entities/match_making/chat/match_chat_history.dart' as _i2;
-import '../../../entities/core/player_data.dart' as _i3;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i4;
+import '../../../entities/match_making/chat/match_chat_message_type.dart'
+    as _i2;
+import '../../../entities/match_making/chat/match_chat_history.dart' as _i3;
+import '../../../entities/core/player_data.dart' as _i4;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
 
 abstract class MatchChatMessage implements _i1.SerializableModel {
   MatchChatMessage._({
@@ -21,6 +23,10 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
     required this.sentAt,
     required this.content,
     this.imageUrl,
+    this.blurhash,
+    this.imageWidth,
+    this.imageHeight,
+    required this.messageType,
     required this.matchChatHistoryId,
     this.matchChatHistory,
     required this.playerDataId,
@@ -32,10 +38,14 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
     required DateTime sentAt,
     required String content,
     String? imageUrl,
+    String? blurhash,
+    int? imageWidth,
+    int? imageHeight,
+    required _i2.MatchChatMessageType messageType,
     required int matchChatHistoryId,
-    _i2.MatchChatHistory? matchChatHistory,
+    _i3.MatchChatHistory? matchChatHistory,
     required int playerDataId,
-    _i3.PlayerData? sender,
+    _i4.PlayerData? sender,
   }) = _MatchChatMessageImpl;
 
   factory MatchChatMessage.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -44,16 +54,22 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
       sentAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['sentAt']),
       content: jsonSerialization['content'] as String,
       imageUrl: jsonSerialization['imageUrl'] as String?,
+      blurhash: jsonSerialization['blurhash'] as String?,
+      imageWidth: jsonSerialization['imageWidth'] as int?,
+      imageHeight: jsonSerialization['imageHeight'] as int?,
+      messageType: _i2.MatchChatMessageType.fromJson(
+        (jsonSerialization['messageType'] as String),
+      ),
       matchChatHistoryId: jsonSerialization['matchChatHistoryId'] as int,
       matchChatHistory: jsonSerialization['matchChatHistory'] == null
           ? null
-          : _i4.Protocol().deserialize<_i2.MatchChatHistory>(
+          : _i5.Protocol().deserialize<_i3.MatchChatHistory>(
               jsonSerialization['matchChatHistory'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       sender: jsonSerialization['sender'] == null
           ? null
-          : _i4.Protocol().deserialize<_i3.PlayerData>(
+          : _i5.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['sender'],
             ),
     );
@@ -70,13 +86,21 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
 
   String? imageUrl;
 
+  String? blurhash;
+
+  int? imageWidth;
+
+  int? imageHeight;
+
+  _i2.MatchChatMessageType messageType;
+
   int matchChatHistoryId;
 
-  _i2.MatchChatHistory? matchChatHistory;
+  _i3.MatchChatHistory? matchChatHistory;
 
   int playerDataId;
 
-  _i3.PlayerData? sender;
+  _i4.PlayerData? sender;
 
   /// Returns a shallow copy of this [MatchChatMessage]
   /// with some or all fields replaced by the given arguments.
@@ -86,10 +110,14 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
     DateTime? sentAt,
     String? content,
     String? imageUrl,
+    String? blurhash,
+    int? imageWidth,
+    int? imageHeight,
+    _i2.MatchChatMessageType? messageType,
     int? matchChatHistoryId,
-    _i2.MatchChatHistory? matchChatHistory,
+    _i3.MatchChatHistory? matchChatHistory,
     int? playerDataId,
-    _i3.PlayerData? sender,
+    _i4.PlayerData? sender,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -99,6 +127,10 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
       'sentAt': sentAt.toJson(),
       'content': content,
       if (imageUrl != null) 'imageUrl': imageUrl,
+      if (blurhash != null) 'blurhash': blurhash,
+      if (imageWidth != null) 'imageWidth': imageWidth,
+      if (imageHeight != null) 'imageHeight': imageHeight,
+      'messageType': messageType.toJson(),
       'matchChatHistoryId': matchChatHistoryId,
       if (matchChatHistory != null)
         'matchChatHistory': matchChatHistory?.toJson(),
@@ -121,15 +153,23 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     required DateTime sentAt,
     required String content,
     String? imageUrl,
+    String? blurhash,
+    int? imageWidth,
+    int? imageHeight,
+    required _i2.MatchChatMessageType messageType,
     required int matchChatHistoryId,
-    _i2.MatchChatHistory? matchChatHistory,
+    _i3.MatchChatHistory? matchChatHistory,
     required int playerDataId,
-    _i3.PlayerData? sender,
+    _i4.PlayerData? sender,
   }) : super._(
          id: id,
          sentAt: sentAt,
          content: content,
          imageUrl: imageUrl,
+         blurhash: blurhash,
+         imageWidth: imageWidth,
+         imageHeight: imageHeight,
+         messageType: messageType,
          matchChatHistoryId: matchChatHistoryId,
          matchChatHistory: matchChatHistory,
          playerDataId: playerDataId,
@@ -145,6 +185,10 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     DateTime? sentAt,
     String? content,
     Object? imageUrl = _Undefined,
+    Object? blurhash = _Undefined,
+    Object? imageWidth = _Undefined,
+    Object? imageHeight = _Undefined,
+    _i2.MatchChatMessageType? messageType,
     int? matchChatHistoryId,
     Object? matchChatHistory = _Undefined,
     int? playerDataId,
@@ -155,12 +199,16 @@ class _MatchChatMessageImpl extends MatchChatMessage {
       sentAt: sentAt ?? this.sentAt,
       content: content ?? this.content,
       imageUrl: imageUrl is String? ? imageUrl : this.imageUrl,
+      blurhash: blurhash is String? ? blurhash : this.blurhash,
+      imageWidth: imageWidth is int? ? imageWidth : this.imageWidth,
+      imageHeight: imageHeight is int? ? imageHeight : this.imageHeight,
+      messageType: messageType ?? this.messageType,
       matchChatHistoryId: matchChatHistoryId ?? this.matchChatHistoryId,
-      matchChatHistory: matchChatHistory is _i2.MatchChatHistory?
+      matchChatHistory: matchChatHistory is _i3.MatchChatHistory?
           ? matchChatHistory
           : this.matchChatHistory?.copyWith(),
       playerDataId: playerDataId ?? this.playerDataId,
-      sender: sender is _i3.PlayerData? ? sender : this.sender?.copyWith(),
+      sender: sender is _i4.PlayerData? ? sender : this.sender?.copyWith(),
     );
   }
 }

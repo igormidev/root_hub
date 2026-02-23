@@ -1,15 +1,18 @@
 import 'dart:async';
 
-import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
+import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
+import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 
 class MatchChatScreen extends ConsumerStatefulWidget {
   final int scheduledMatchId;
@@ -89,7 +92,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         actions: [
           if (chatState.isSendingMessage || chatState.isUploadingImage)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.only(right: 4),
               child: Center(
                 child: SizedBox(
                   width: 18,
@@ -101,6 +104,11 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 ),
               ),
             ),
+          IconButton(
+            tooltip: 'Table info',
+            icon: const Icon(Icons.info_outline_rounded),
+            onPressed: () => _openTableInfoSheet(context),
+          ),
         ],
       ),
       body: SafeArea(
@@ -269,6 +277,17 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                         child: child,
                       );
                     },
+                customMessageBuilder:
+                    (
+                      context,
+                      message,
+                      index, {
+                      required bool isSentByMe,
+                      MessageGroupStatus? groupStatus,
+                    }) => _buildSystemEventMessage(
+                      context,
+                      message,
+                    ),
                 imageMessageBuilder:
                     (
                       context,
@@ -276,7 +295,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                       index, {
                       required bool isSentByMe,
                       MessageGroupStatus? groupStatus,
-                    }) => FlyerChatImageMessage(
+                    }) => MatchChatImageWidget(
                       message: message,
                       index: index,
                     ),
@@ -298,6 +317,90 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildSystemEventMessage(
+    BuildContext context,
+    CustomMessage message,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final metadata = message.metadata ?? const <String, dynamic>{};
+    final type = metadata['type'] as String?;
+    final content = metadata['content'] as String? ?? '';
+    final isJoin = type == 'systemJoin';
+
+    final localizations = MaterialLocalizations.of(context);
+    final sentAt = message.sentAt;
+    final timeLabel = sentAt != null
+        ? localizations.formatTimeOfDay(
+            TimeOfDay.fromDateTime(sentAt.toLocal()),
+          )
+        : null;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isJoin ? Icons.person_add_rounded : Icons.person_remove_rounded,
+                size: 14,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  content,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              if (timeLabel != null) ...[
+                const SizedBox(width: 8),
+                Text(
+                  timeLabel,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openTableInfoSheet(BuildContext context) async {
+    final unsubscribed = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return MatchTableInfoSheet(
+          scheduledMatchId: widget.scheduledMatchId,
+        );
+      },
+    );
+
+    if (unsubscribed == true && mounted) {
+      await ref.read(matchTablesProvider.notifier).refresh();
+      if (mounted) {
+        context.pop();
+      }
+    }
   }
 
   Widget _buildSenderAvatar(
