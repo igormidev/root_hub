@@ -148,6 +148,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               onMessageSend: chatNotifier.sendTextMessage,
               onAttachmentTap: chatNotifier.pickAndSendImage,
               builders: Builders(
+                composerBuilder: (context) => const Composer(
+                  attachmentIcon: Icon(Icons.photo_library_rounded),
+                ),
                 chatAnimatedListBuilder: (context, itemBuilder) =>
                     ChatAnimatedList(
                       itemBuilder: itemBuilder,

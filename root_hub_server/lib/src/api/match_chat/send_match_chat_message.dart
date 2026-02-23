@@ -7,6 +7,7 @@ import 'package:serverpod/serverpod.dart';
 
 class SendMatchChatMessage extends Endpoint {
   static const _uploadThingStorageClient = UploadThingStorageClient();
+  static const _maxImageBytes = 6 * 1024 * 1024;
 
   @override
   bool get requireLogin => true;
@@ -39,6 +40,13 @@ class SendMatchChatMessage extends Endpoint {
         if (imageBytes != null && imageBytes.lengthInBytes == 0) {
           throw RootHubEndpointError.invalidRequest(
             description: 'Image bytes cannot be empty.',
+          );
+        }
+
+        if (imageBytes != null && imageBytes.lengthInBytes > _maxImageBytes) {
+          throw RootHubEndpointError.invalidRequest(
+            description:
+                'Image is too large. Please send an image smaller than 6 MB.',
           );
         }
 

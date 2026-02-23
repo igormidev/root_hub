@@ -12,6 +12,8 @@ import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_state.dart';
 
 class MatchChatNotifier extends Notifier<MatchChatState> {
+  static const int _maxImageBytes = 6 * 1024 * 1024;
+
   final InMemoryChatController _chatController = InMemoryChatController();
   final ImagePicker _imagePicker = ImagePicker();
 
@@ -255,6 +257,23 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           title: 'Invalid image',
           description:
               'The selected image is empty. Please choose another one.',
+        ),
+      );
+      return;
+    }
+
+    if (imageBytes.length > _maxImageBytes) {
+      talker.debug(
+        '[MatchChat] Picked image exceeds allowed size. '
+        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
+        'bytes=${imageBytes.length} maxBytes=$_maxImageBytes',
+      );
+      state = state.copyWith(
+        isUploadingImage: false,
+        actionError: RootHubException(
+          title: 'Image too large',
+          description:
+              'Choose an image smaller than 6 MB or crop/compress it first.',
         ),
       );
       return;
