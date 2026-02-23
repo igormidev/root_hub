@@ -42,13 +42,15 @@ import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
     as _i17;
 import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i18;
-import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/match_schedule_info.dart'
     as _i19;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
     as _i20;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i21;
-import 'protocol.dart' as _i22;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i22;
+import 'protocol.dart' as _i23;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -378,14 +380,29 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointGetMatchScheduleInfo extends _i1.EndpointRef {
+  EndpointGetMatchScheduleInfo(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getMatchScheduleInfo';
+
+  _i2.Future<_i19.MatchScheduleInfo> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i19.MatchScheduleInfo>(
+        'getMatchScheduleInfo',
+        'v1',
+        {'scheduledMatchId': scheduledMatchId},
+      );
+}
+
+/// {@category Endpoint}
 class EndpointGetPlayerSubscribedMatches extends _i1.EndpointRef {
   EndpointGetPlayerSubscribedMatches(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'getPlayerSubscribedMatches';
 
-  _i2.Future<_i19.SubscribedMatchesPagination> v1({required int page}) =>
-      caller.callServerEndpoint<_i19.SubscribedMatchesPagination>(
+  _i2.Future<_i20.SubscribedMatchesPagination> v1({required int page}) =>
+      caller.callServerEndpoint<_i20.SubscribedMatchesPagination>(
         'getPlayerSubscribedMatches',
         'v1',
         {'page': page},
@@ -414,8 +431,8 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
   @override
   String get name => 'subscribeToMatch';
 
-  _i2.Future<_i20.MatchSubscription> v1({required int scheduledMatchId}) =>
-      caller.callServerEndpoint<_i20.MatchSubscription>(
+  _i2.Future<_i21.MatchSubscription> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i21.MatchSubscription>(
         'subscribeToMatch',
         'v1',
         {'scheduledMatchId': scheduledMatchId},
@@ -426,7 +443,7 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i21.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i22.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -608,7 +625,7 @@ class EndpointEmailIdp extends _i21.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i21.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i22.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -679,11 +696,11 @@ class EndpointJwtRefresh extends _i6.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i21.Caller(client);
+    serverpod_auth_idp = _i22.Caller(client);
     serverpod_auth_core = _i6.Caller(client);
   }
 
-  late final _i21.Caller serverpod_auth_idp;
+  late final _i22.Caller serverpod_auth_idp;
 
   late final _i6.Caller serverpod_auth_core;
 }
@@ -708,7 +725,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i22.Protocol(),
+         _i23.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -731,6 +748,7 @@ class Client extends _i1.ServerpodClientShared {
     matchChatSendMessage = EndpointMatchChatSendMessage(this);
     createMatchSchedule = EndpointCreateMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
+    getMatchScheduleInfo = EndpointGetMatchScheduleInfo(this);
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
     getTablesInArea = EndpointGetTablesInArea(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
@@ -768,6 +786,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetMatchLocation getMatchLocation;
 
+  late final EndpointGetMatchScheduleInfo getMatchScheduleInfo;
+
   late final EndpointGetPlayerSubscribedMatches getPlayerSubscribedMatches;
 
   late final EndpointGetTablesInArea getTablesInArea;
@@ -798,6 +818,7 @@ class Client extends _i1.ServerpodClientShared {
     'matchChatSendMessage': matchChatSendMessage,
     'createMatchSchedule': createMatchSchedule,
     'getMatchLocation': getMatchLocation,
+    'getMatchScheduleInfo': getMatchScheduleInfo,
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,
     'getTablesInArea': getTablesInArea,
     'subscribeToMatch': subscribeToMatch,

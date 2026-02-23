@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
@@ -23,9 +25,24 @@ class MatchScreen extends ConsumerStatefulWidget {
 }
 
 class _MatchScreenState extends ConsumerState<MatchScreen> {
+  late DateTime _currentTime;
+  Timer? _countdownTimer;
+
   @override
   void initState() {
     super.initState();
+    _currentTime = DateTime.now();
+    _countdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {
+          _currentTime = DateTime.now();
+        });
+      },
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
@@ -34,6 +51,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
 
       ref.read(matchTablesProvider.notifier).ensureLoaded();
     });
+  }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -344,6 +367,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         currentPlayer != null &&
         subscriptions.any((entry) => entry.playerDataId == currentPlayer.id);
     final isFull = subscribedPlayersCount >= maxPlayers;
+    final remainingSeats = (maxPlayers - subscribedPlayersCount).clamp(
+      0,
+      maxPlayers,
+    );
 
     final distanceLabel = _distanceLabel(
       currentPlayer,
@@ -353,24 +380,37 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     final actionEnabled =
         tableId != null && !isSubscribing && !isSubscribed && !isFull;
 
-    final actionLabel = switch ((isSubscribing, isSubscribed, isFull)) {
-      (true, _, _) => 'Joining...',
-      (_, true, _) => 'Subscribed',
-      (_, _, true) => 'Table Full',
+    final actionLabel = switch ((isSubscribing, isFull)) {
+      (true, _) => 'Joining...',
+      (_, true) => 'Table Full',
       _ => 'Join Table',
     };
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+    final cardContent = Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colorScheme.outlineVariant),
-        color: colorScheme.surface.withValues(alpha: 0.95),
+        border: Border.all(
+          color: isSubscribed
+              ? colorScheme.primary
+              : colorScheme.outlineVariant,
+          width: isSubscribed ? 4 : 1.2,
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.surface.withValues(alpha: 0.95),
+            colorScheme.surfaceContainerHighest.withValues(alpha: 0.64),
+          ],
+        ),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.08),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: colorScheme.shadow.withValues(
+              alpha: isSubscribed ? 0.12 : 0.08,
+            ),
+            blurRadius: isSubscribed ? 22 : 18,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -405,20 +445,26 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(999),
-                  color: colorScheme.primaryContainer.withValues(alpha: 0.7),
-                ),
-                child: Text(
-                  '$subscribedPlayersCount/$maxPlayers',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: colorScheme.onPrimaryContainer,
+              Tooltip(
+                triggerMode: TooltipTriggerMode.tap,
+                message:
+                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : 's'} subscribed and '
+                    '$remainingSeats ${remainingSeats == 1 ? 'place' : 'places'} remaining to close the table.',
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                    color: colorScheme.primaryContainer.withValues(alpha: 0.76),
+                  ),
+                  child: Text(
+                    '$subscribedPlayersCount/$maxPlayers',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
               ),
@@ -433,11 +479,20 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                 color: colorScheme.primary,
               ),
               const SizedBox(width: 6),
-              Text(
-                '$dateLabel • $timeLabel',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
+              Flexible(
+                fit: FlexFit.loose,
+                child: Text(
+                  '$dateLabel • $timeLabel',
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
+              ),
+              const Spacer(),
+              _buildTimeStatusChip(
+                context,
+                dateTime,
               ),
             ],
           ),
@@ -471,6 +526,23 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   ],
                 ),
               ),
+              Tooltip(
+                message: 'Open full location details',
+                child: IconButton(
+                  visualDensity: VisualDensity.compact,
+                  onPressed: () {
+                    _showLocationInfoDialog(
+                      context,
+                      location,
+                    );
+                  },
+                  icon: Icon(
+                    Icons.info_outline_rounded,
+                    color: colorScheme.primary,
+                    size: 20,
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -482,6 +554,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                 context,
                 icon: Icons.groups_2_rounded,
                 text: '$minPlayers-$maxPlayers players',
+                tooltipMessage:
+                    'This table can start with a minimum of $minPlayers players and accepts up to $maxPlayers players.',
+                triggerMode: TooltipTriggerMode.tap,
               ),
               if (distanceLabel != null)
                 _buildInfoChip(
@@ -489,45 +564,83 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   icon: Icons.near_me_rounded,
                   text: distanceLabel,
                 ),
-              _buildInfoChip(
-                context,
-                icon: Icons.person_rounded,
-                text: table.host?.displayName ?? 'Unknown host',
-              ),
             ],
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: actionEnabled
-                  ? () async {
-                      final error = await ref
-                          .read(matchTablesProvider.notifier)
-                          .subscribeToTable(tableId);
-                      if (!mounted || error == null) {
-                        return;
+          if (!isSubscribed) ...[
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: actionEnabled
+                    ? () async {
+                        await _openJoinTableBottomSheet(
+                          context,
+                          tableId: tableId,
+                          fallbackTable: table,
+                          currentPlayer: currentPlayer,
+                        );
                       }
+                    : null,
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 56),
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: colorScheme.surfaceContainerHighest,
+                  disabledForegroundColor: colorScheme.onSurfaceVariant,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                child: Text(
+                  actionLabel,
+                  style: GoogleFonts.getFont(
+                    'MedievalSharp',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.7,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
 
-                      await showErrorDialog(
-                        this.context,
-                        title: error.title,
-                        description: error.description,
-                      );
-                    }
-                  : null,
-              style: FilledButton.styleFrom(
-                backgroundColor: isSubscribed
-                    ? colorScheme.tertiaryContainer
-                    : colorScheme.primary,
-                foregroundColor: isSubscribed
-                    ? colorScheme.onTertiaryContainer
-                    : colorScheme.onPrimary,
+    if (!isSubscribed) {
+      return cardContent;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 14),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          cardContent,
+          Positioned(
+            left: 14,
+            top: -13,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(999),
+                color: colorScheme.primary,
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.shadow.withValues(alpha: 0.2),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: Text(
-                actionLabel,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
+                'Subscribed',
+                style: GoogleFonts.getFont(
+                  'MedievalSharp',
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -541,10 +654,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     BuildContext context, {
     required IconData icon,
     required String text,
+    String? tooltipMessage,
+    TooltipTriggerMode triggerMode = TooltipTriggerMode.longPress,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    final chip = Container(
       padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
@@ -569,6 +684,975 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         ],
       ),
     );
+
+    if (tooltipMessage == null) {
+      return chip;
+    }
+
+    return Tooltip(
+      message: tooltipMessage,
+      triggerMode: triggerMode,
+      child: chip,
+    );
+  }
+
+  Widget _buildTimeStatusChip(
+    BuildContext context,
+    DateTime tableStartAt,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final remaining = tableStartAt.difference(_currentTime);
+    final alreadyStarted = remaining.inSeconds <= 0;
+    final chipLabel = alreadyStarted
+        ? 'Already started'
+        : _formatDurationToClock(remaining);
+
+    return Tooltip(
+      message: alreadyStarted
+          ? 'This match already started. Recently started tables stay visible for a short period.'
+          : 'Remaining time until the match starts.',
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(999),
+          color: alreadyStarted
+              ? colorScheme.tertiaryContainer.withValues(alpha: 0.85)
+              : colorScheme.primaryContainer.withValues(alpha: 0.82),
+        ),
+        child: Text(
+          chipLabel,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w900,
+            color: alreadyStarted
+                ? colorScheme.onTertiaryContainer
+                : colorScheme.onPrimaryContainer,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openJoinTableBottomSheet(
+    BuildContext context, {
+    required int? tableId,
+    required MatchSchedulePairingAttempt fallbackTable,
+    required PlayerData? currentPlayer,
+  }) async {
+    if (tableId == null) {
+      return;
+    }
+
+    Future<MatchScheduleInfo> detailsFuture = ref
+        .read(matchTablesProvider.notifier)
+        .getTableDetails(tableId);
+
+    final shouldSubscribe = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return FractionallySizedBox(
+          heightFactor: 0.8,
+          child: StatefulBuilder(
+            builder: (sheetContext, setModalState) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(sheetContext).colorScheme.surface,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(28),
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: FutureBuilder<MatchScheduleInfo>(
+                  future: detailsFuture,
+                  builder: (sheetContext, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return _buildJoinSheetLoading(
+                        sheetContext,
+                        fallbackTable,
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      final error = snapshot.error is RootHubException
+                          ? snapshot.error! as RootHubException
+                          : defaultException;
+
+                      return _buildJoinSheetError(
+                        sheetContext,
+                        error,
+                        onRetry: () {
+                          setModalState(() {
+                            detailsFuture = ref
+                                .read(matchTablesProvider.notifier)
+                                .getTableDetails(
+                                  tableId,
+                                  forceRefresh: true,
+                                );
+                          });
+                        },
+                      );
+                    }
+
+                    final detailedTable = snapshot.data;
+                    return _buildJoinSheetContent(
+                      sheetContext,
+                      detailedTable,
+                      currentPlayer,
+                      fallbackTable,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+
+    if (shouldSubscribe != true || !mounted) {
+      return;
+    }
+
+    final error = await ref
+        .read(matchTablesProvider.notifier)
+        .subscribeToTable(
+          tableId,
+        );
+    if (!mounted || error == null) {
+      return;
+    }
+
+    await showErrorDialog(
+      this.context,
+      title: error.title,
+      description: error.description,
+    );
+  }
+
+  Widget _buildJoinSheetLoading(
+    BuildContext context,
+    MatchSchedulePairingAttempt fallbackTable,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      children: [
+        Container(
+          width: 50,
+          height: 5,
+          margin: const EdgeInsets.only(top: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            color: colorScheme.outlineVariant,
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 36,
+                    height: 36,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    'Loading table details for "${fallbackTable.title}"...',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildJoinSheetError(
+    BuildContext context,
+    RootHubException error, {
+    required VoidCallback onRetry,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: 50,
+              height: 5,
+              margin: const EdgeInsets.only(bottom: 14),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(999),
+                color: colorScheme.outlineVariant,
+              ),
+            ),
+          ),
+          Text(
+            error.title,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            error.description,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Close'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: onRetry,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Retry'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJoinSheetContent(
+    BuildContext context,
+    MatchScheduleInfo? tableInfo,
+    PlayerData? currentPlayer,
+    MatchSchedulePairingAttempt fallbackTable,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final localizations = MaterialLocalizations.of(context);
+    final table = tableInfo?.matchSchedule ?? fallbackTable;
+    final startAt = table.attemptedAt.toLocal();
+    final startLabel =
+        '${localizations.formatMediumDate(startAt)} • '
+        '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(startAt))}';
+    final createdAt = table.createdAt.toLocal();
+    final createdLabel =
+        '${localizations.formatMediumDate(createdAt)} • '
+        '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(createdAt))}';
+
+    final location = table.location;
+    final googlePlace = location?.googlePlaceLocation;
+    final manualLocation = location?.manualInputLocation;
+    final locationTitle =
+        googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
+    final locationSubtitle =
+        googlePlace?.shortFormattedAddress ??
+        googlePlace?.formattedAddress ??
+        manualLocation?.cityName ??
+        'Address unavailable';
+
+    final minPlayers = table.minAmountOfPlayers.playerCount;
+    final maxPlayers = table.maxAmountOfPlayers.playerCount;
+    final subscriptions = table.subscriptions ?? const <MatchSubscription>[];
+    final subscribedPlayersCount = subscriptions.length;
+    final isSubscribed =
+        currentPlayer != null &&
+        subscriptions.any((entry) => entry.playerDataId == currentPlayer.id);
+
+    final participatingPlayers =
+        tableInfo?.players ?? const <MatchSchedulePlayerSnapshot>[];
+
+    return Column(
+      children: [
+        Container(
+          width: 50,
+          height: 5,
+          margin: const EdgeInsets.only(top: 12, bottom: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            color: colorScheme.outlineVariant,
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(18, 4, 18, 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Confirm table subscription',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  table.title,
+                  style: GoogleFonts.cinzel(
+                    fontSize: 29,
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                if (table.description?.trim().isNotEmpty == true) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    table.description!.trim(),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w700,
+                      height: 1.32,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _buildInfoChip(
+                      context,
+                      icon: Icons.calendar_month_rounded,
+                      text: startLabel,
+                    ),
+                    _buildInfoChip(
+                      context,
+                      icon: Icons.groups_2_rounded,
+                      text: '$subscribedPlayersCount/$maxPlayers seats',
+                    ),
+                    _buildInfoChip(
+                      context,
+                      icon: Icons.person_outline_rounded,
+                      text: table.host?.displayName ?? 'Unknown host',
+                    ),
+                    _buildInfoChip(
+                      context,
+                      icon: Icons.social_distance_rounded,
+                      text: '$minPlayers-$maxPlayers players',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: colorScheme.outlineVariant),
+                    color: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.55,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_rounded,
+                            color: colorScheme.secondary,
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              locationTitle,
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                            ),
+                          ),
+                          IconButton(
+                            visualDensity: VisualDensity.compact,
+                            onPressed: () {
+                              _showLocationInfoDialog(
+                                context,
+                                location,
+                              );
+                            },
+                            icon: const Icon(Icons.info_outline_rounded),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        locationSubtitle,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  'Players in this match',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  participatingPlayers.isEmpty
+                      ? 'No players subscribed yet.'
+                      : 'These are the current players that will participate.',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                if (participatingPlayers.isEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: colorScheme.surfaceContainerHighest.withValues(
+                        alpha: 0.52,
+                      ),
+                    ),
+                    child: Text(
+                      'You can be the first player to lock this table in.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                else
+                  for (final participant in participatingPlayers)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: _buildParticipantCard(
+                        context,
+                        participant,
+                      ),
+                    ),
+                const SizedBox(height: 2),
+                Text(
+                  'Match schedule metadata',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.42,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'ID: ${table.id ?? '-'}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        'Host ID: ${table.playerDataId}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        'Location ID: ${table.locationId}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        'Created at: $createdLabel',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        'Starts at: $startLabel',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 52),
+                    ),
+                    child: const Text('Cancel'),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: isSubscribed
+                        ? null
+                        : () => Navigator.of(context).pop(true),
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 52),
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text(
+                      isSubscribed ? 'Already subscribed' : 'Confirm Join',
+                      style: GoogleFonts.getFont(
+                        'MedievalSharp',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildParticipantCard(
+    BuildContext context,
+    MatchSchedulePlayerSnapshot playerSnapshot,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final playerData = playerSnapshot.playerData;
+    final factionColor = playerData.favoriteFaction.factionColor;
+    final imageUrl = playerSnapshot.profileImageUrl;
+
+    return SizedBox(
+      height: 156,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            top: 14,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(14, 14, 108, 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: factionColor.withValues(alpha: 0.64),
+                  width: 1.7,
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surfaceContainerHighest.withValues(alpha: 0.96),
+                    colorScheme.surfaceContainer.withValues(alpha: 0.86),
+                  ],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _buildUserAvatar(
+                        context,
+                        imageUrl,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          playerData.displayName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w900,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Favorite Faction',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    playerData.favoriteFaction.displayName.toUpperCase(),
+                    style: GoogleFonts.cinzel(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                      color: factionColor,
+                      height: 1.06,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: -4,
+            right: -6,
+            child: Transform.rotate(
+              angle: -0.08,
+              child: Image.asset(
+                playerData.favoriteFaction.getFactionImage,
+                width: 128,
+                height: 128,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserAvatar(
+    BuildContext context,
+    String? imageUrl,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      width: 38,
+      height: 38,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: colorScheme.primary.withValues(alpha: 0.5),
+          width: 1.4,
+        ),
+        color: colorScheme.surfaceContainerHighest,
+      ),
+      child: ClipOval(
+        child: imageUrl == null || imageUrl.isEmpty
+            ? Icon(
+                Icons.person_rounded,
+                color: colorScheme.onSurfaceVariant,
+              )
+            : Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) {
+                  return Icon(
+                    Icons.person_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                  );
+                },
+              ),
+      ),
+    );
+  }
+
+  Future<void> _showLocationInfoDialog(
+    BuildContext context,
+    Location? location,
+  ) async {
+    final colorScheme = Theme.of(context).colorScheme;
+    final google = location?.googlePlaceLocation;
+    final manual = location?.manualInputLocation;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Location details'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildLocationDetailLine(
+                    context,
+                    label: 'Location.id',
+                    value: '${location?.id ?? '-'}',
+                  ),
+                  _buildLocationDetailLine(
+                    context,
+                    label: 'googlePlaceLocationId',
+                    value: '${location?.googlePlaceLocationId ?? '-'}',
+                  ),
+                  _buildLocationDetailLine(
+                    context,
+                    label: 'manualInputLocationId',
+                    value: '${location?.manualInputLocationId ?? '-'}',
+                  ),
+                  _buildLocationDetailLine(
+                    context,
+                    label: 'pairingAttempts count',
+                    value: '${location?.pairingAttempts?.length ?? 0}',
+                  ),
+                  _buildLocationDetailLine(
+                    context,
+                    label: 'playedMatches count',
+                    value: '${location?.playedMatches?.length ?? 0}',
+                  ),
+                  if (google != null) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      'GooglePlaceLocation',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: colorScheme.primary,
+                      ),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'id',
+                      value: '${google.id ?? '-'}',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'providerPlaceId',
+                      value: google.providerPlaceId,
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'name',
+                      value: google.name,
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'formattedAddress',
+                      value: google.formattedAddress ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'shortFormattedAddress',
+                      value: google.shortFormattedAddress ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'lat',
+                      value: google.lat.toStringAsFixed(6),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'lng',
+                      value: google.lng.toStringAsFixed(6),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'url',
+                      value: google.url ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'websiteUri',
+                      value: google.websiteUri ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'phoneNumber',
+                      value: google.phoneNumber ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'types',
+                      value: google.types?.join(', ') ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'primaryType',
+                      value: google.primaryType ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'rating',
+                      value: google.rating?.toStringAsFixed(1) ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'userRatingCount',
+                      value: '${google.userRatingCount ?? '-'}',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'priceLevel',
+                      value: google.priceLevel ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'primaryPhotoName',
+                      value: google.primaryPhotoName ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'timezone',
+                      value: google.timezone ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'isPublicPlace',
+                      value: google.isPublicPlace ? 'true' : 'false',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'notes',
+                      value: google.notes ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'createdAt',
+                      value: google.createdAt.toLocal().toIso8601String(),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'updatedAt',
+                      value: google.updatedAt.toLocal().toIso8601String(),
+                    ),
+                  ],
+                  if (manual != null) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      'ManualInputLocation',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: colorScheme.secondary,
+                      ),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'id',
+                      value: '${manual.id ?? '-'}',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'title',
+                      value: manual.title,
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'description',
+                      value: manual.description ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'cityName',
+                      value: manual.cityName,
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'country',
+                      value: manual.country.toJson(),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'playerDataId',
+                      value: '${manual.playerDataId}',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'creator',
+                      value: manual.creator?.displayName ?? '-',
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'createdAt',
+                      value: manual.createdAt.toLocal().toIso8601String(),
+                    ),
+                    _buildLocationDetailLine(
+                      context,
+                      label: 'updatedAt',
+                      value: manual.updatedAt.toLocal().toIso8601String(),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLocationDetailLine(
+    BuildContext context, {
+    required String label,
+    required String value,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.35),
+          children: [
+            TextSpan(
+              text: '$label: ',
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            TextSpan(
+              text: value,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatDurationToClock(Duration duration) {
+    final clampedDuration = duration.inSeconds <= 0 ? Duration.zero : duration;
+    final totalSeconds = clampedDuration.inSeconds;
+    final hours = totalSeconds ~/ 3600;
+    final minutes = (totalSeconds % 3600) ~/ 60;
+    final seconds = totalSeconds % 60;
+
+    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   String? _distanceLabel(

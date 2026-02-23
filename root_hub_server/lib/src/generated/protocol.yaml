@@ -30,6 +30,8 @@ createMatchSchedule:
   - v1:
 getMatchLocation:
   - v1:
+getMatchScheduleInfo:
+  - v1:
 getPlayerSubscribedMatches:
   - v1:
 getTablesInArea:

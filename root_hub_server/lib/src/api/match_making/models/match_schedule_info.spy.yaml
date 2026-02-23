@@ -1,0 +1,4 @@
+class: MatchScheduleInfo
+fields:
+  matchSchedule: MatchSchedulePairingAttempt
+  players: List<MatchSchedulePlayerSnapshot>

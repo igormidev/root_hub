@@ -8,6 +8,7 @@ import 'package:root_hub_flutter/src/states/match/match_tables_state.dart';
 
 class MatchTablesNotifier extends Notifier<MatchTablesState> {
   bool _hasRequestedInitialLoad = false;
+  final _tableInfoCache = <int, MatchScheduleInfo>{};
 
   @override
   MatchTablesState build() {
@@ -47,6 +48,13 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
       (tables) {
         final sortedTables = [...tables]
           ..sort((a, b) => a.attemptedAt.compareTo(b.attemptedAt));
+        final visibleTableIds = sortedTables
+            .map((entry) => entry.id)
+            .whereType<int>()
+            .toSet();
+        _tableInfoCache.removeWhere(
+          (tableId, _) => !visibleTableIds.contains(tableId),
+        );
 
         state = state.copyWith(
           tables: sortedTables,
@@ -94,6 +102,7 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
     RootHubException? actionError;
     await result.fold(
       (_) async {
+        _tableInfoCache.remove(tableId);
         await loadTablesInArea(showLoadingIndicator: false);
       },
       (error) async {
@@ -114,6 +123,41 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
 
   void clearActionError() {
     state = state.copyWith(actionError: null);
+  }
+
+  Future<MatchScheduleInfo> getTableDetails(
+    int tableId, {
+    bool forceRefresh = false,
+  }) async {
+    if (tableId <= 0) {
+      throw RootHubException(
+        title: 'Invalid match',
+        description: 'The selected table is invalid.',
+      );
+    }
+
+    if (!forceRefresh) {
+      final cachedValue = _tableInfoCache[tableId];
+      if (cachedValue != null) {
+        return cachedValue;
+      }
+    }
+
+    final result = await ref
+        .read(clientProvider)
+        .getMatchScheduleInfo
+        .v1(scheduledMatchId: tableId)
+        .toResult;
+
+    return result.fold(
+      (matchScheduleInfo) {
+        _tableInfoCache[tableId] = matchScheduleInfo;
+        return matchScheduleInfo;
+      },
+      (error) {
+        throw error;
+      },
+    );
   }
 }
 

@@ -45,10 +45,12 @@ import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i18;
 import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i19;
-import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
     as _i20;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
     as _i21;
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+    as _i22;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -184,6 +186,8 @@ class TestEndpoints {
 
   late final _GetMatchLocation getMatchLocation;
 
+  late final _GetMatchScheduleInfo getMatchScheduleInfo;
+
   late final _GetPlayerSubscribedMatches getPlayerSubscribedMatches;
 
   late final _GetTablesInArea getTablesInArea;
@@ -257,6 +261,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getMatchLocation = _GetMatchLocation(
+      endpoints,
+      serializationManager,
+    );
+    getMatchScheduleInfo = _GetMatchScheduleInfo(
       endpoints,
       serializationManager,
     );
@@ -1061,6 +1069,50 @@ class _GetMatchLocation {
   }
 }
 
+class _GetMatchScheduleInfo {
+  _GetMatchScheduleInfo(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i20.MatchScheduleInfo> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int scheduledMatchId,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getMatchScheduleInfo',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getMatchScheduleInfo',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'scheduledMatchId': scheduledMatchId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i20.MatchScheduleInfo>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _GetPlayerSubscribedMatches {
   _GetPlayerSubscribedMatches(
     this._endpointDispatch,
@@ -1071,7 +1123,7 @@ class _GetPlayerSubscribedMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i20.SubscribedMatchesPagination> v1(
+  _i3.Future<_i21.SubscribedMatchesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required int page,
   }) async {
@@ -1094,7 +1146,7 @@ class _GetPlayerSubscribedMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i20.SubscribedMatchesPagination>);
+                as _i3.Future<_i21.SubscribedMatchesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1154,7 +1206,7 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i21.MatchSubscription> v1(
+  _i3.Future<_i22.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required int scheduledMatchId,
   }) async {
@@ -1179,7 +1231,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i21.MatchSubscription>);
+                as _i3.Future<_i22.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

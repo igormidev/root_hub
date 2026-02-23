@@ -1,0 +1,5 @@
+class: MatchSchedulePlayerSnapshot
+fields:
+  playerData: PlayerData
+  subscribedAt: DateTime
+  profileImageUrl: String?
