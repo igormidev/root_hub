@@ -482,17 +482,18 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                 color: colorScheme.primary,
               ),
               const SizedBox(width: 6),
-              Flexible(
-                fit: FlexFit.loose,
+              Expanded(
                 child: Text(
                   '$dateLabel • $timeLabel',
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  softWrap: false,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 8),
               _buildTimeStatusChip(
                 context,
                 dateTime,
