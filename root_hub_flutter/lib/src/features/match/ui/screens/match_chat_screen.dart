@@ -146,7 +146,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               resolveUser: chatNotifier.resolveUser,
               chatController: chatNotifier.chatController,
               onMessageSend: chatNotifier.sendTextMessage,
-              onAttachmentTap: chatNotifier.pickAndSendImage,
+              onAttachmentTap: () => chatNotifier.pickAndSendImage(
+                onConfirmImageCompression: _showImageCompressionDialog,
+              ),
               builders: Builders(
                 composerBuilder: (context) => const Composer(
                   attachmentIcon: Icon(Icons.photo_library_rounded),
@@ -335,6 +337,47 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               ),
       ),
     );
+  }
+
+  Future<bool> _showImageCompressionDialog({
+    required int imageBytes,
+    required int maxBytes,
+  }) async {
+    if (!mounted) {
+      return false;
+    }
+
+    final selectedImageMb = _formatMegabytes(imageBytes);
+    final maxAllowedMb = _formatMegabytes(maxBytes);
+
+    final shouldCompress = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Image is too large'),
+          content: Text(
+            'This image is ${selectedImageMb}MB, but the limit is '
+            '${maxAllowedMb}MB. Compress it automatically before sending?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: const Text('Compress'),
+            ),
+          ],
+        );
+      },
+    );
+
+    return shouldCompress ?? false;
+  }
+
+  String _formatMegabytes(int bytes) {
+    return (bytes / (1024 * 1024)).toStringAsFixed(1);
   }
 
   Future<void> _showActionErrorDialog(RootHubException error) async {

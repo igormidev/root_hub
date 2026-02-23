@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
@@ -10,6 +11,12 @@ import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_state.dart';
+
+typedef ConfirmImageCompressionCallback =
+    Future<bool> Function({
+      required int imageBytes,
+      required int maxBytes,
+    });
 
 class MatchChatNotifier extends Notifier<MatchChatState> {
   static const int _maxImageBytes = 6 * 1024 * 1024;
@@ -176,7 +183,9 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     }
   }
 
-  Future<void> pickAndSendImage() async {
+  Future<void> pickAndSendImage({
+    required ConfirmImageCompressionCallback onConfirmImageCompression,
+  }) async {
     final scheduledMatchId = state.scheduledMatchId;
     if (scheduledMatchId == null || state.isUploadingImage) {
       return;
@@ -262,29 +271,88 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       return;
     }
 
+    var imageBytesToUpload = imageBytes;
+    var imageFileName = pickedImage.name;
+    var imageContentType = pickedImage.mimeType;
+
     if (imageBytes.length > _maxImageBytes) {
       talker.debug(
         '[MatchChat] Picked image exceeds allowed size. '
         'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
         'bytes=${imageBytes.length} maxBytes=$_maxImageBytes',
       );
-      state = state.copyWith(
-        isUploadingImage: false,
-        actionError: RootHubException(
-          title: 'Image too large',
-          description:
-              'Choose an image smaller than 6 MB or crop/compress it first.',
-        ),
+
+      bool shouldCompressImage;
+      try {
+        shouldCompressImage = await onConfirmImageCompression(
+          imageBytes: imageBytes.length,
+          maxBytes: _maxImageBytes,
+        );
+      } catch (error, stackTrace) {
+        talker.handle(
+          error,
+          stackTrace,
+          '[MatchChat] Failed to confirm image compression with user. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+        );
+        state = state.copyWith(
+          isUploadingImage: false,
+          actionError: RootHubException(
+            title: 'Unable to send image',
+            description:
+                'An unexpected error occurred while confirming image compression.',
+          ),
+        );
+        return;
+      }
+
+      if (!shouldCompressImage) {
+        talker.debug(
+          '[MatchChat] User canceled image compression. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+        );
+        state = state.copyWith(
+          isUploadingImage: false,
+          actionError: null,
+        );
+        return;
+      }
+
+      final compressedImageBytes = _compressImageToAllowedSize(
+        imageBytes,
+        maxBytes: _maxImageBytes,
       );
-      return;
+
+      if (compressedImageBytes == null) {
+        state = state.copyWith(
+          isUploadingImage: false,
+          actionError: RootHubException(
+            title: 'Unable to compress image',
+            description:
+                'Try selecting a different image or crop it before sending.',
+          ),
+        );
+        return;
+      }
+
+      imageBytesToUpload = compressedImageBytes;
+      imageFileName = _resolveCompressedImageFileName(
+        originalFileName: pickedImage.name,
+      );
+      imageContentType = 'image/jpeg';
+      talker.debug(
+        '[MatchChat] Image compressed before upload. '
+        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
+        'sourceBytes=${imageBytes.length} compressedBytes=${compressedImageBytes.length}',
+      );
     }
 
     talker.debug(
       '[MatchChat] Uploading image message. scheduledMatchId=$scheduledMatchId '
-      'name=${pickedImage.name} bytes=${imageBytes.length}',
+      'name=$imageFileName bytes=${imageBytesToUpload.length}',
     );
 
-    final imageByteData = ByteData.sublistView(imageBytes);
+    final imageByteData = ByteData.sublistView(imageBytesToUpload);
     try {
       final sendResult = await ref
           .read(clientProvider)
@@ -293,8 +361,8 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             scheduledMatchId: scheduledMatchId,
             content: '',
             imageBytes: imageByteData,
-            imageFileName: pickedImage.name,
-            imageContentType: pickedImage.mimeType,
+            imageFileName: imageFileName,
+            imageContentType: imageContentType,
           )
           .toResult;
 
@@ -338,6 +406,60 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         ),
       );
     }
+  }
+
+  Uint8List? _compressImageToAllowedSize(
+    Uint8List sourceBytes, {
+    required int maxBytes,
+  }) {
+    final decodedImage = img.decodeImage(sourceBytes);
+    if (decodedImage == null) {
+      return null;
+    }
+
+    var workingImage = decodedImage;
+    const qualityCandidates = <int>[82, 74, 66, 58, 50, 42, 34, 26, 18];
+
+    for (var resizeIteration = 0; resizeIteration < 7; resizeIteration++) {
+      for (final quality in qualityCandidates) {
+        final compressed = Uint8List.fromList(
+          img.encodeJpg(workingImage, quality: quality),
+        );
+        if (compressed.length <= maxBytes) {
+          return compressed;
+        }
+      }
+
+      final nextWidth = (workingImage.width * 0.85).round();
+      final nextHeight = (workingImage.height * 0.85).round();
+      if (nextWidth < 320 || nextHeight < 320) {
+        break;
+      }
+
+      workingImage = img.copyResize(
+        workingImage,
+        width: nextWidth,
+        height: nextHeight,
+        interpolation: img.Interpolation.average,
+      );
+    }
+
+    return null;
+  }
+
+  String _resolveCompressedImageFileName({
+    required String originalFileName,
+  }) {
+    final normalizedOriginalFileName = originalFileName.trim();
+    if (normalizedOriginalFileName.isEmpty) {
+      return 'match-chat-image.jpg';
+    }
+
+    final fileNameWithoutExtension = normalizedOriginalFileName.replaceFirst(
+      RegExp(r'\.[^./\\]+$'),
+      '',
+    );
+    return '$fileNameWithoutExtension.jpg';
   }
 
   Future<User?> resolveUser(String authorId) async {
