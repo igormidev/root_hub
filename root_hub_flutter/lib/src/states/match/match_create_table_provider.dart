@@ -13,6 +13,9 @@ import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 
 class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
   static const _recentLocationsKey = 'match_create_table_recent_locations_v1';
+  static const _hostWillPlayKey = 'match_create_table_host_will_play_v1';
+  static const _scheduledHourKey = 'match_create_table_hour_v1';
+  static const _scheduledMinuteKey = 'match_create_table_minute_v1';
   static const _maxRecentLocations = 8;
 
   Timer? _searchDebounce;
@@ -25,7 +28,16 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       _activeSearchRunId += 1;
     });
 
-    final initialState = _buildDefaultState();
+    final prefs = ref.read(sharedPreferencesProvider);
+    final persistedHostWillPlay = prefs.getBool(_hostWillPlayKey);
+    final persistedScheduledHour = prefs.getInt(_scheduledHourKey);
+    final persistedScheduledMinute = prefs.getInt(_scheduledMinuteKey);
+
+    final initialState = _buildDefaultState(
+      persistedHostWillPlay: persistedHostWillPlay,
+      persistedScheduledHour: persistedScheduledHour,
+      persistedScheduledMinute: persistedScheduledMinute,
+    );
     unawaited(_loadRecentLocations());
     return initialState;
   }
@@ -37,6 +49,9 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     state = _buildDefaultState(
       recentLocations: state.recentLocations,
       hasLoadedRecentLocations: state.hasLoadedRecentLocations,
+      persistedHostWillPlay: state.hostWillPlay,
+      persistedScheduledHour: state.scheduledTime.hour,
+      persistedScheduledMinute: state.scheduledTime.minute,
     );
   }
 
@@ -106,10 +121,12 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
   }
 
   void setScheduledTime(TimeOfDay time) {
+    final normalizedTime = TimeOfDay(hour: time.hour, minute: time.minute);
     state = state.copyWith(
-      scheduledTime: TimeOfDay(hour: time.hour, minute: time.minute),
+      scheduledTime: normalizedTime,
       createTableError: null,
     );
+    unawaited(_persistScheduledTime(normalizedTime));
   }
 
   void setHostWillPlay(bool hostWillPlay) {
@@ -117,6 +134,7 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       hostWillPlay: hostWillPlay,
       createTableError: null,
     );
+    unawaited(_persistHostWillPlay(hostWillPlay));
   }
 
   void setLocationQuery(String query) {
@@ -176,6 +194,19 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       );
     }
 
+    if (state.minPlayers < 2 || state.maxPlayers > 6) {
+      return RootHubException(
+        title: 'Invalid players range',
+        description: 'Players range must stay between 2 and 6.',
+      );
+    }
+    if (state.minPlayers > state.maxPlayers) {
+      return RootHubException(
+        title: 'Invalid players range',
+        description: 'Minimum players cannot be greater than maximum players.',
+      );
+    }
+
     final selectedLocation = state.selectedLocation;
     final locationId = selectedLocation?.id;
     if (selectedLocation == null || locationId == null) {
@@ -225,6 +256,9 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
         state = _buildDefaultState(
           recentLocations: state.recentLocations,
           hasLoadedRecentLocations: state.hasLoadedRecentLocations,
+          persistedHostWillPlay: state.hostWillPlay,
+          persistedScheduledHour: state.scheduledTime.hour,
+          persistedScheduledMinute: state.scheduledTime.minute,
         );
       },
       (error) async {
@@ -314,6 +348,21 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
         .setStringList(_recentLocationsKey, serializedLocations);
   }
 
+  Future<void> _persistHostWillPlay(bool hostWillPlay) async {
+    await ref
+        .read(sharedPreferencesProvider)
+        .setBool(
+          _hostWillPlayKey,
+          hostWillPlay,
+        );
+  }
+
+  Future<void> _persistScheduledTime(TimeOfDay scheduledTime) async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.setInt(_scheduledHourKey, scheduledTime.hour);
+    await prefs.setInt(_scheduledMinuteKey, scheduledTime.minute);
+  }
+
   List<Location> _dedupeAndLimit(List<Location> locations) {
     final dedupedById = <int, Location>{};
     for (final location in locations) {
@@ -348,6 +397,9 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
   MatchCreateTableState _buildDefaultState({
     List<Location> recentLocations = const <Location>[],
     bool hasLoadedRecentLocations = false,
+    bool? persistedHostWillPlay,
+    int? persistedScheduledHour,
+    int? persistedScheduledMinute,
   }) {
     final now = DateTime.now();
     final roundedToNextHour = DateTime(
@@ -357,16 +409,32 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       now.hour,
     ).add(const Duration(hours: 1));
 
+    final hasValidPersistedTime =
+        persistedScheduledHour != null &&
+        persistedScheduledMinute != null &&
+        persistedScheduledHour >= 0 &&
+        persistedScheduledHour <= 23 &&
+        persistedScheduledMinute >= 0 &&
+        persistedScheduledMinute <= 59;
+
+    final scheduledTime = hasValidPersistedTime
+        ? TimeOfDay(
+            hour: persistedScheduledHour,
+            minute: persistedScheduledMinute,
+          )
+        : TimeOfDay(
+            hour: roundedToNextHour.hour,
+            minute: roundedToNextHour.minute,
+          );
+
     return MatchCreateTableState(
       scheduledDate: DateTime(
         roundedToNextHour.year,
         roundedToNextHour.month,
         roundedToNextHour.day,
       ),
-      scheduledTime: TimeOfDay(
-        hour: roundedToNextHour.hour,
-        minute: roundedToNextHour.minute,
-      ),
+      scheduledTime: scheduledTime,
+      hostWillPlay: persistedHostWillPlay ?? true,
       recentLocations: recentLocations,
       hasLoadedRecentLocations: hasLoadedRecentLocations,
     );

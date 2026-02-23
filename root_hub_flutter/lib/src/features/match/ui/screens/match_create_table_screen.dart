@@ -242,12 +242,16 @@ class _MatchCreateTableScreenState
                             context,
                             title: 'Minimum',
                             value: state.minPlayers,
-                            onDecrease: ref
-                                .read(matchCreateTableProvider.notifier)
-                                .decreaseMinPlayers,
-                            onIncrease: ref
-                                .read(matchCreateTableProvider.notifier)
-                                .increaseMinPlayers,
+                            onDecrease: state.minPlayers > 2
+                                ? ref
+                                      .read(matchCreateTableProvider.notifier)
+                                      .decreaseMinPlayers
+                                : null,
+                            onIncrease: state.minPlayers < state.maxPlayers
+                                ? ref
+                                      .read(matchCreateTableProvider.notifier)
+                                      .increaseMinPlayers
+                                : null,
                           ),
                         ),
                         Container(
@@ -260,12 +264,16 @@ class _MatchCreateTableScreenState
                             context,
                             title: 'Maximum',
                             value: state.maxPlayers,
-                            onDecrease: ref
-                                .read(matchCreateTableProvider.notifier)
-                                .decreaseMaxPlayers,
-                            onIncrease: ref
-                                .read(matchCreateTableProvider.notifier)
-                                .increaseMaxPlayers,
+                            onDecrease: state.maxPlayers > state.minPlayers
+                                ? ref
+                                      .read(matchCreateTableProvider.notifier)
+                                      .decreaseMaxPlayers
+                                : null,
+                            onIncrease: state.maxPlayers < 6
+                                ? ref
+                                      .read(matchCreateTableProvider.notifier)
+                                      .increaseMaxPlayers
+                                : null,
                           ),
                         ),
                       ],
@@ -276,7 +284,7 @@ class _MatchCreateTableScreenState
                     context,
                     title: 'Schedule',
                     description:
-                        'Pick the day and the start hour. Native pickers are used on iOS and Android.',
+                        'Pick the day and start hour. Choose a time you can reliably show up.',
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -286,9 +294,6 @@ class _MatchCreateTableScreenState
                           onPressed: _pickDate,
                           icon: const Icon(Icons.calendar_month_rounded),
                           label: Text(dateLabel),
-                          style: FilledButton.styleFrom(
-                            minimumSize: const Size.fromHeight(52),
-                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -297,9 +302,6 @@ class _MatchCreateTableScreenState
                           onPressed: _pickTime,
                           icon: const Icon(Icons.access_time_rounded),
                           label: Text(timeLabel),
-                          style: FilledButton.styleFrom(
-                            minimumSize: const Size.fromHeight(52),
-                          ),
                         ),
                       ),
                     ],
@@ -307,9 +309,9 @@ class _MatchCreateTableScreenState
                   const SizedBox(height: 12),
                   _buildSectionTitle(
                     context,
-                    title: 'Will the host play?',
+                    title: 'Will you, the host, play?',
                     description:
-                        'If enabled, the host is automatically subscribed as a player. Disable this for venues/cafés hosting games.',
+                        'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.',
                   ),
                   const SizedBox(height: 8),
                   Container(
@@ -327,8 +329,8 @@ class _MatchCreateTableScreenState
                       ),
                       title: Text(
                         state.hostWillPlay
-                            ? 'Yes, host is playing this match'
-                            : 'No, host is only organizing',
+                            ? 'Yes, I will play this match'
+                            : 'No, I am only hosting this table',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
@@ -420,8 +422,8 @@ class _MatchCreateTableScreenState
     BuildContext context, {
     required String title,
     required int value,
-    required VoidCallback onDecrease,
-    required VoidCallback onIncrease,
+    required VoidCallback? onDecrease,
+    required VoidCallback? onIncrease,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
 
