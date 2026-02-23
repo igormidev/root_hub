@@ -184,6 +184,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
   }
 
   Future<void> pickAndSendImage({
+    required ImageSource source,
     required ConfirmImageCompressionCallback onConfirmImageCompression,
   }) async {
     final scheduledMatchId = state.scheduledMatchId;
@@ -194,7 +195,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     XFile? pickedImage;
     try {
       pickedImage = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
+        source: source,
         maxWidth: 1800,
         maxHeight: 1800,
         imageQuality: 88,
@@ -204,13 +205,14 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       talker.handle(
         error,
         stackTrace,
-        '[MatchChat] Failed to open gallery. '
-        'scheduledMatchId=$scheduledMatchId',
+        '[MatchChat] Failed to open image source. '
+        'scheduledMatchId=$scheduledMatchId source=$source',
       );
       state = state.copyWith(
         actionError: RootHubException(
-          title: 'Unable to open gallery',
-          description: 'Allow gallery access in system settings and try again.',
+          title: 'Unable to access camera or gallery',
+          description:
+              'Allow camera and photo permissions in system settings and try again.',
         ),
       );
       return;

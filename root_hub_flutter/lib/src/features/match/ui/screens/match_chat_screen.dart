@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_image_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -154,12 +156,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               resolveUser: chatNotifier.resolveUser,
               chatController: chatNotifier.chatController,
               onMessageSend: chatNotifier.sendTextMessage,
-              onAttachmentTap: () => chatNotifier.pickAndSendImage(
-                onConfirmImageCompression: _showImageCompressionDialog,
-              ),
+              onAttachmentTap: () => _pickAndSendImage(chatNotifier),
               builders: Builders(
                 composerBuilder: (context) => const Composer(
-                  attachmentIcon: Icon(Icons.photo_library_rounded),
+                  attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
                 ),
                 chatAnimatedListBuilder: (context, itemBuilder) =>
                     ChatAnimatedList(
@@ -502,6 +502,90 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     } finally {
       _isShowingActionErrorDialog = false;
     }
+  }
+
+  Future<void> _pickAndSendImage(MatchChatNotifier chatNotifier) async {
+    final source = await _pickImageSource();
+    if (!mounted || source == null) {
+      return;
+    }
+
+    await chatNotifier.pickAndSendImage(
+      source: source,
+      onConfirmImageCompression: _showImageCompressionDialog,
+    );
+  }
+
+  Future<ImageSource?> _pickImageSource() async {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.iOS) {
+      return _showIosImageSourceDialog();
+    }
+
+    return _showAndroidImageSourceDialog();
+  }
+
+  Future<ImageSource?> _showIosImageSourceDialog() {
+    return showCupertinoModalPopup<ImageSource>(
+      context: context,
+      builder: (dialogContext) {
+        return CupertinoActionSheet(
+          title: const Text('Send a photo'),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(ImageSource.camera);
+              },
+              child: const Text('Take Photo'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(ImageSource.gallery);
+              },
+              child: const Text('Choose from Library'),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<ImageSource?> _showAndroidImageSourceDialog() {
+    return showModalBottomSheet<ImageSource>(
+      context: context,
+      showDragHandle: true,
+      builder: (dialogContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_camera_rounded),
+                title: const Text('Take Photo'),
+                onTap: () {
+                  Navigator.of(dialogContext).pop(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_rounded),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(dialogContext).pop(ImageSource.gallery);
+                },
+              ),
+              const SizedBox(height: 4),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildLoadingErrorState(
