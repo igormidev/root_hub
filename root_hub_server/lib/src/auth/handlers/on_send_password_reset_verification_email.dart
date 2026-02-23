@@ -9,6 +9,17 @@ Future<void> onSendPasswordResetVerificationCode(
   required String verificationCode,
   required Transaction? transaction,
 }) async {
+  final runMode = session.serverpod.runMode;
+  final isProduction = runMode == ServerpodRunMode.production;
+  if (!isProduction) {
+    session.log(
+      '[EmailIdp] Skipping Resend in $runMode. Password reset code ($email): '
+      '$verificationCode',
+      level: LogLevel.info,
+    );
+    return;
+  }
+
   final resendApiKey = session.passwords['resendApiKey'];
   if (resendApiKey == null || resendApiKey.trim().isEmpty) {
     session.log(
