@@ -1,0 +1,5 @@
+class: MatchChatMessagesPagination
+fields:
+  messages: List<MatchChatMessage>
+  subscribedPlayerIds: List<int>
+  paginationMetadata: PaginationMetadata

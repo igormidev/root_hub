@@ -10,6 +10,7 @@ import 'package:root_hub_flutter/src/features/auth/auth_onboarding_profile_scree
 import 'package:root_hub_flutter/src/features/auth/auth_onboarding_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_faction_editor_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_screen.dart';
+import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_screen.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_create_table_location_screen.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_create_table_screen.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
@@ -65,6 +66,23 @@ class RouterNotifier extends Notifier<GoRouter> {
         GoRoute(
           path: dashboardMatchCreateLocationPath,
           builder: (context, state) => const MatchCreateTableLocationScreen(),
+        ),
+        GoRoute(
+          path: dashboardMatchChatPath,
+          builder: (context, state) {
+            final matchIdParam = state.pathParameters['matchId'];
+            final matchId = int.tryParse(matchIdParam ?? '');
+            if (matchId == null || matchId <= 0) {
+              return const DashboardScreen();
+            }
+
+            final routeExtra = state.extra;
+            final matchTitle = routeExtra is String ? routeExtra : null;
+            return MatchChatScreen(
+              scheduledMatchId: matchId,
+              matchTitle: matchTitle,
+            );
+          },
         ),
       ],
     );

@@ -58,8 +58,8 @@ class MyApp extends StatelessWidget {
     return TalkerWrapper(
       talker: talker,
       options: const TalkerWrapperOptions(
-        enableErrorAlerts: kDebugMode,
-        enableExceptionAlerts: kDebugMode,
+        enableErrorAlerts: false,
+        enableExceptionAlerts: false,
       ),
       child: ProviderScope(
         observers: [

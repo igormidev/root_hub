@@ -82,8 +82,9 @@ root_hub_server/
 - `get_match_location.dart`: queries Google Places, upserts local location wrappers.
 
 ### `match_chat`
-- `match_chat_get_messages.dart`: list chat messages for authorized participants.
-- `match_chat_send_message.dart`: send message to match chat.
+- `get_match_chat_message.dart`: paginated match chat history + subscribed player IDs for sender badges.
+- `send_match_chat_message.dart`: send text or image messages to a match chat.
+  - Image uploads are handled server-side through UploadThing (`/v7/prepareUpload`).
 
 ### `match`
 - `register_match_data.dart`: validates and persists played match + participants + performances.
@@ -127,6 +128,8 @@ Do not manually edit generated files under `lib/src/generated/**`.
 - Google Places key used by `get_match_location.dart`:
   - `googleMapsApiKey` in `config/passwords.yaml`, or
   - `GOOGLE_MAPS_API_KEY` environment variable.
+- UploadThing keys used by match chat image uploads:
+  - `uploadThingApiKey` and / or `uploadThingToken` in `config/passwords.yaml`.
 
 ## Local Infrastructure
 Use Docker for local database services:

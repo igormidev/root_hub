@@ -22,6 +22,7 @@ abstract class MatchChatMessage
     this.id,
     required this.sentAt,
     required this.content,
+    this.imageUrl,
     required this.matchChatHistoryId,
     this.matchChatHistory,
     required this.playerDataId,
@@ -32,6 +33,7 @@ abstract class MatchChatMessage
     int? id,
     required DateTime sentAt,
     required String content,
+    String? imageUrl,
     required int matchChatHistoryId,
     _i2.MatchChatHistory? matchChatHistory,
     required int playerDataId,
@@ -43,6 +45,7 @@ abstract class MatchChatMessage
       id: jsonSerialization['id'] as int?,
       sentAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['sentAt']),
       content: jsonSerialization['content'] as String,
+      imageUrl: jsonSerialization['imageUrl'] as String?,
       matchChatHistoryId: jsonSerialization['matchChatHistoryId'] as int,
       matchChatHistory: jsonSerialization['matchChatHistory'] == null
           ? null
@@ -69,6 +72,8 @@ abstract class MatchChatMessage
 
   String content;
 
+  String? imageUrl;
+
   int matchChatHistoryId;
 
   _i2.MatchChatHistory? matchChatHistory;
@@ -87,6 +92,7 @@ abstract class MatchChatMessage
     int? id,
     DateTime? sentAt,
     String? content,
+    String? imageUrl,
     int? matchChatHistoryId,
     _i2.MatchChatHistory? matchChatHistory,
     int? playerDataId,
@@ -99,6 +105,7 @@ abstract class MatchChatMessage
       if (id != null) 'id': id,
       'sentAt': sentAt.toJson(),
       'content': content,
+      if (imageUrl != null) 'imageUrl': imageUrl,
       'matchChatHistoryId': matchChatHistoryId,
       if (matchChatHistory != null)
         'matchChatHistory': matchChatHistory?.toJson(),
@@ -114,6 +121,7 @@ abstract class MatchChatMessage
       if (id != null) 'id': id,
       'sentAt': sentAt.toJson(),
       'content': content,
+      if (imageUrl != null) 'imageUrl': imageUrl,
       'matchChatHistoryId': matchChatHistoryId,
       if (matchChatHistory != null)
         'matchChatHistory': matchChatHistory?.toJsonForProtocol(),
@@ -165,6 +173,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     int? id,
     required DateTime sentAt,
     required String content,
+    String? imageUrl,
     required int matchChatHistoryId,
     _i2.MatchChatHistory? matchChatHistory,
     required int playerDataId,
@@ -173,6 +182,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
          id: id,
          sentAt: sentAt,
          content: content,
+         imageUrl: imageUrl,
          matchChatHistoryId: matchChatHistoryId,
          matchChatHistory: matchChatHistory,
          playerDataId: playerDataId,
@@ -187,6 +197,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     Object? id = _Undefined,
     DateTime? sentAt,
     String? content,
+    Object? imageUrl = _Undefined,
     int? matchChatHistoryId,
     Object? matchChatHistory = _Undefined,
     int? playerDataId,
@@ -196,6 +207,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
       id: id is int? ? id : this.id,
       sentAt: sentAt ?? this.sentAt,
       content: content ?? this.content,
+      imageUrl: imageUrl is String? ? imageUrl : this.imageUrl,
       matchChatHistoryId: matchChatHistoryId ?? this.matchChatHistoryId,
       matchChatHistory: matchChatHistory is _i2.MatchChatHistory?
           ? matchChatHistory
@@ -217,6 +229,11 @@ class MatchChatMessageUpdateTable
 
   _i1.ColumnValue<String, String> content(String value) => _i1.ColumnValue(
     table.content,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> imageUrl(String? value) => _i1.ColumnValue(
+    table.imageUrl,
     value,
   );
 
@@ -243,6 +260,10 @@ class MatchChatMessageTable extends _i1.Table<int?> {
       'content',
       this,
     );
+    imageUrl = _i1.ColumnString(
+      'imageUrl',
+      this,
+    );
     matchChatHistoryId = _i1.ColumnInt(
       'matchChatHistoryId',
       this,
@@ -258,6 +279,8 @@ class MatchChatMessageTable extends _i1.Table<int?> {
   late final _i1.ColumnDateTime sentAt;
 
   late final _i1.ColumnString content;
+
+  late final _i1.ColumnString imageUrl;
 
   late final _i1.ColumnInt matchChatHistoryId;
 
@@ -298,6 +321,7 @@ class MatchChatMessageTable extends _i1.Table<int?> {
     id,
     sentAt,
     content,
+    imageUrl,
     matchChatHistoryId,
     playerDataId,
   ];

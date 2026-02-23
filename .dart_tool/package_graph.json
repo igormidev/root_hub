@@ -47,7 +47,10 @@
         "cupertino_icons",
         "flutter",
         "flutter_animate",
+        "flutter_chat_core",
+        "flutter_chat_ui",
         "flutter_riverpod",
+        "flyer_chat_image_message",
         "freezed_annotation",
         "geolocator",
         "go_router",
@@ -293,6 +296,43 @@
       ]
     },
     {
+      "name": "flyer_chat_image_message",
+      "version": "2.3.0",
+      "dependencies": [
+        "blurhash_dart",
+        "cross_cache",
+        "flutter",
+        "flutter_chat_core",
+        "image",
+        "provider",
+        "thumbhash"
+      ]
+    },
+    {
+      "name": "flutter_chat_ui",
+      "version": "2.11.1",
+      "dependencies": [
+        "cross_cache",
+        "diffutil_dart",
+        "flutter",
+        "flutter_chat_core",
+        "provider",
+        "scrollview_observer"
+      ]
+    },
+    {
+      "name": "flutter_chat_core",
+      "version": "2.9.0",
+      "dependencies": [
+        "dio",
+        "flutter",
+        "freezed_annotation",
+        "intl",
+        "json_annotation",
+        "path_provider"
+      ]
+    },
+    {
       "name": "url_launcher",
       "version": "6.3.2",
       "dependencies": [
@@ -505,7 +545,7 @@
     },
     {
       "name": "test",
-      "version": "1.26.3",
+      "version": "1.29.0",
       "dependencies": [
         "analyzer",
         "async",
@@ -514,7 +554,6 @@
         "coverage",
         "http_multi_server",
         "io",
-        "js",
         "matcher",
         "node_preamble",
         "package_config",
@@ -710,7 +749,7 @@
     },
     {
       "name": "material_color_utilities",
-      "version": "0.11.1",
+      "version": "0.13.0",
       "dependencies": [
         "collection"
       ]
@@ -722,7 +761,7 @@
     },
     {
       "name": "characters",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "dependencies": []
     },
     {
@@ -985,7 +1024,7 @@
     },
     {
       "name": "matcher",
-      "version": "0.12.17",
+      "version": "0.12.18",
       "dependencies": [
         "async",
         "meta",
@@ -996,7 +1035,7 @@
     },
     {
       "name": "test_api",
-      "version": "0.7.7",
+      "version": "0.7.9",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -1168,6 +1207,73 @@
       "dependencies": [
         "collection",
         "meta"
+      ]
+    },
+    {
+      "name": "thumbhash",
+      "version": "0.1.0+1",
+      "dependencies": []
+    },
+    {
+      "name": "provider",
+      "version": "6.1.5+1",
+      "dependencies": [
+        "collection",
+        "flutter",
+        "nested"
+      ]
+    },
+    {
+      "name": "cross_cache",
+      "version": "1.1.0",
+      "dependencies": [
+        "cross_file",
+        "crypto",
+        "dio",
+        "flutter",
+        "idb_shim",
+        "path_provider"
+      ]
+    },
+    {
+      "name": "blurhash_dart",
+      "version": "1.2.1",
+      "dependencies": [
+        "image"
+      ]
+    },
+    {
+      "name": "scrollview_observer",
+      "version": "1.26.3",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "diffutil_dart",
+      "version": "4.0.1",
+      "dependencies": []
+    },
+    {
+      "name": "intl",
+      "version": "0.20.2",
+      "dependencies": [
+        "clock",
+        "meta",
+        "path"
+      ]
+    },
+    {
+      "name": "dio",
+      "version": "5.9.1",
+      "dependencies": [
+        "async",
+        "collection",
+        "dio_web_adapter",
+        "http_parser",
+        "meta",
+        "mime",
+        "path"
       ]
     },
     {
@@ -1530,15 +1636,6 @@
       ]
     },
     {
-      "name": "provider",
-      "version": "6.1.5+1",
-      "dependencies": [
-        "collection",
-        "flutter",
-        "nested"
-      ]
-    },
-    {
       "name": "pinput",
       "version": "6.0.2",
       "dependencies": [
@@ -1623,7 +1720,7 @@
     },
     {
       "name": "test_core",
-      "version": "0.6.12",
+      "version": "0.6.15",
       "dependencies": [
         "analyzer",
         "args",
@@ -1671,11 +1768,6 @@
     {
       "name": "node_preamble",
       "version": "2.0.2",
-      "dependencies": []
-    },
-    {
-      "name": "js",
-      "version": "0.7.2",
       "dependencies": []
     },
     {
@@ -1728,19 +1820,6 @@
         "crypto",
         "fixnum",
         "meta"
-      ]
-    },
-    {
-      "name": "dio",
-      "version": "5.9.1",
-      "dependencies": [
-        "async",
-        "collection",
-        "dio_web_adapter",
-        "http_parser",
-        "meta",
-        "mime",
-        "path"
       ]
     },
     {
@@ -2016,6 +2095,43 @@
       "dependencies": []
     },
     {
+      "name": "nested",
+      "version": "1.0.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "idb_shim",
+      "version": "2.8.2+4",
+      "dependencies": [
+        "collection",
+        "meta",
+        "path",
+        "sembast",
+        "synchronized",
+        "web"
+      ]
+    },
+    {
+      "name": "cross_file",
+      "version": "0.3.5+2",
+      "dependencies": [
+        "meta",
+        "web"
+      ]
+    },
+    {
+      "name": "dio_web_adapter",
+      "version": "2.1.1",
+      "dependencies": [
+        "dio",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "file_selector_windows",
       "version": "0.9.3+5",
       "dependencies": [
@@ -2032,14 +2148,6 @@
         "flutter",
         "http",
         "plugin_platform_interface"
-      ]
-    },
-    {
-      "name": "cross_file",
-      "version": "0.3.5+2",
-      "dependencies": [
-        "meta",
-        "web"
       ]
     },
     {
@@ -2193,13 +2301,6 @@
       ]
     },
     {
-      "name": "nested",
-      "version": "1.0.0",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
       "name": "google_sign_in_platform_interface",
       "version": "3.1.0",
       "dependencies": [
@@ -2281,15 +2382,6 @@
       ]
     },
     {
-      "name": "intl",
-      "version": "0.20.2",
-      "dependencies": [
-        "clock",
-        "meta",
-        "path"
-      ]
-    },
-    {
       "name": "source_maps",
       "version": "0.10.13",
       "dependencies": [
@@ -2319,16 +2411,6 @@
       "dependencies": [
         "args",
         "yaml"
-      ]
-    },
-    {
-      "name": "dio_web_adapter",
-      "version": "2.1.1",
-      "dependencies": [
-        "dio",
-        "http_parser",
-        "meta",
-        "web"
       ]
     },
     {
@@ -2455,6 +2537,15 @@
         "ffi",
         "meta",
         "path"
+      ]
+    },
+    {
+      "name": "sembast",
+      "version": "3.8.6",
+      "dependencies": [
+        "meta",
+        "path",
+        "synchronized"
       ]
     },
     {

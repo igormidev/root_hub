@@ -9,8 +9,8 @@ extension FutureServerpodToResultExt<T extends Object> on Future<T> {
   AsyncResultDart<T, RootHubException> get toResult async {
     try {
       return Success(await this);
-    } on RootHubException catch (e, stackTrace) {
-      talker.handle(e, stackTrace);
+    } on RootHubException catch (e, _) {
+      _logExpectedRootHubException(e);
       return Failure(e);
     } catch (e, stackTrace) {
       talker.handle(e, stackTrace);
@@ -30,8 +30,8 @@ extension FutureServerpodToResultNullableExt<T extends Object> on Future<T?> {
   get toResult async {
     try {
       return Success(NullableServerpodValue(await this));
-    } on RootHubException catch (e, stackTrace) {
-      talker.handle(e, stackTrace);
+    } on RootHubException catch (e, _) {
+      _logExpectedRootHubException(e);
       return Failure(e);
     } catch (e, stackTrace) {
       talker.handle(e, stackTrace);
@@ -45,8 +45,8 @@ extension FutureServerpodToResultVoidExt on Future<void> {
     try {
       await this;
       return const Success(Unit);
-    } on RootHubException catch (e, stackTrace) {
-      talker.handle(e, stackTrace);
+    } on RootHubException catch (e, _) {
+      _logExpectedRootHubException(e);
       return Failure(e);
     } catch (e, stackTrace) {
       talker.handle(e, stackTrace);
@@ -64,8 +64,8 @@ extension StreamServerpodToResultExt<T> on Stream<T> {
       await for (final item in this) {
         await onItemEmitted(item);
       }
-    } on RootHubException catch (e, stackTrace) {
-      talker.handle(e, stackTrace);
+    } on RootHubException catch (e, _) {
+      _logExpectedRootHubException(e);
       await onError(e);
     } catch (e, stackTrace) {
       talker.handle(e, stackTrace);
@@ -79,8 +79,8 @@ extension StreamServerpodToResultExt<T> on Stream<T> {
   ) async {
     try {
       await onStream(this);
-    } on RootHubException catch (e, stackTrace) {
-      talker.handle(e, stackTrace);
+    } on RootHubException catch (e, _) {
+      _logExpectedRootHubException(e);
       await onError(e);
     } catch (e, stackTrace) {
       talker.handle(e, stackTrace);
@@ -94,12 +94,18 @@ extension StreamServerpodToResultVoidExt on Stream<void> {
     try {
       this;
       return const Success(Unit);
-    } on RootHubException catch (e, stackTrace) {
-      talker.handle(e, stackTrace);
+    } on RootHubException catch (e, _) {
+      _logExpectedRootHubException(e);
       return Failure(e);
     } catch (e, stackTrace) {
       talker.handle(e, stackTrace);
       return Failure(defaultException);
     }
   }
+}
+
+void _logExpectedRootHubException(RootHubException error) {
+  talker.debug(
+    '[ServerpodToResult] ${error.title}: ${error.description}',
+  );
 }

@@ -22,9 +22,9 @@ getMyMatches:
   - v1:
 registerMatchData:
   - v1:
-matchChatGetMessages:
+getMatchChatMessage:
   - v1:
-matchChatSendMessage:
+sendMatchChatMessage:
   - v1:
 createMatchSchedule:
   - v1:

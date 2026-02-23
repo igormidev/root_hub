@@ -3,6 +3,7 @@ table: match_chat_message
 fields:
   sentAt: DateTime
   content: String
+  imageUrl: String?
   matchChatHistoryId: int
   matchChatHistory: MatchChatHistory?, relation(name=chat_history_messages, field=matchChatHistoryId)
   playerDataId: int

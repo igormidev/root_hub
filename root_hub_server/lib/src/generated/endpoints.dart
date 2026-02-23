@@ -21,8 +21,8 @@ import '../api/community/get_comments_endpoint.dart' as _i8;
 import '../api/community/get_posts_endpoint.dart' as _i9;
 import '../api/match/get_my_played_matches.dart' as _i10;
 import '../api/match/register_match_data.dart' as _i11;
-import '../api/match_chat/match_chat_get_messages.dart' as _i12;
-import '../api/match_chat/match_chat_send_message.dart' as _i13;
+import '../api/match_chat/get_match_chat_message.dart' as _i12;
+import '../api/match_chat/send_match_chat_message.dart' as _i13;
 import '../api/match_making/create_match_schedule.dart' as _i14;
 import '../api/match_making/get_match_location.dart' as _i15;
 import '../api/match_making/get_match_schedule_info.dart' as _i16;
@@ -112,16 +112,16 @@ class Endpoints extends _i1.EndpointDispatch {
           'registerMatchData',
           null,
         ),
-      'matchChatGetMessages': _i12.MatchChatGetMessages()
+      'getMatchChatMessage': _i12.GetMatchChatMessage()
         ..initialize(
           server,
-          'matchChatGetMessages',
+          'getMatchChatMessage',
           null,
         ),
-      'matchChatSendMessage': _i13.MatchChatSendMessage()
+      'sendMatchChatMessage': _i13.SendMatchChatMessage()
         ..initialize(
           server,
-          'matchChatSendMessage',
+          'sendMatchChatMessage',
           null,
         ),
       'createMatchSchedule': _i14.CreateMatchSchedule()
@@ -558,15 +558,20 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['matchChatGetMessages'] = _i1.EndpointConnector(
-      name: 'matchChatGetMessages',
-      endpoint: endpoints['matchChatGetMessages']!,
+    connectors['getMatchChatMessage'] = _i1.EndpointConnector(
+      name: 'getMatchChatMessage',
+      endpoint: endpoints['getMatchChatMessage']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
           params: {
-            'matchChatHistoryId': _i1.ParameterDescription(
-              name: 'matchChatHistoryId',
+            'scheduledMatchId': _i1.ParameterDescription(
+              name: 'scheduledMatchId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'page': _i1.ParameterDescription(
+              name: 'page',
               type: _i1.getType<int>(),
               nullable: false,
             ),
@@ -576,24 +581,24 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['matchChatGetMessages']
-                          as _i12.MatchChatGetMessages)
+                  (endpoints['getMatchChatMessage'] as _i12.GetMatchChatMessage)
                       .v1(
                         session,
-                        matchChatHistoryId: params['matchChatHistoryId'],
+                        scheduledMatchId: params['scheduledMatchId'],
+                        page: params['page'],
                       ),
         ),
       },
     );
-    connectors['matchChatSendMessage'] = _i1.EndpointConnector(
-      name: 'matchChatSendMessage',
-      endpoint: endpoints['matchChatSendMessage']!,
+    connectors['sendMatchChatMessage'] = _i1.EndpointConnector(
+      name: 'sendMatchChatMessage',
+      endpoint: endpoints['sendMatchChatMessage']!,
       methodConnectors: {
         'v1': _i1.MethodConnector(
           name: 'v1',
           params: {
-            'matchChatHistoryId': _i1.ParameterDescription(
-              name: 'matchChatHistoryId',
+            'scheduledMatchId': _i1.ParameterDescription(
+              name: 'scheduledMatchId',
               type: _i1.getType<int>(),
               nullable: false,
             ),
@@ -602,18 +607,36 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<String>(),
               nullable: false,
             ),
+            'imageBytes': _i1.ParameterDescription(
+              name: 'imageBytes',
+              type: _i1.getType<_i25.ByteData?>(),
+              nullable: true,
+            ),
+            'imageFileName': _i1.ParameterDescription(
+              name: 'imageFileName',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+            'imageContentType': _i1.ParameterDescription(
+              name: 'imageContentType',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
           },
           call:
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['matchChatSendMessage']
-                          as _i13.MatchChatSendMessage)
+                  (endpoints['sendMatchChatMessage']
+                          as _i13.SendMatchChatMessage)
                       .v1(
                         session,
-                        matchChatHistoryId: params['matchChatHistoryId'],
+                        scheduledMatchId: params['scheduledMatchId'],
                         content: params['content'],
+                        imageBytes: params['imageBytes'],
+                        imageFileName: params['imageFileName'],
+                        imageContentType: params['imageContentType'],
                       ),
         ),
       },

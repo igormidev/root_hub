@@ -86,6 +86,12 @@
       "languageVersion": "3.7"
     },
     {
+      "name": "blurhash_dart",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/blurhash_dart-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/boolean_selector-2.1.2",
       "packageUri": "lib/",
@@ -141,7 +147,7 @@
     },
     {
       "name": "characters",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/characters-1.4.0",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/characters-1.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -230,6 +236,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "cross_cache",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/cross_cache-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
       "name": "cross_file",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/cross_file-0.3.5+2",
       "packageUri": "lib/",
@@ -294,6 +306,12 @@
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/desktop_webview_window-0.2.3",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "diffutil_dart",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/diffutil_dart-4.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "dio",
@@ -383,13 +401,25 @@
       "name": "flutter",
       "rootUri": "file:///Users/igor/Installations/flutter/packages/flutter",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.9"
     },
     {
       "name": "flutter_animate",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/flutter_animate-4.5.2",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_chat_core",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/flutter_chat_core-2.9.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "flutter_chat_ui",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/flutter_chat_ui-2.11.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
     },
     {
       "name": "flutter_launcher_icons",
@@ -407,7 +437,7 @@
       "name": "flutter_localizations",
       "rootUri": "file:///Users/igor/Installations/flutter/packages/flutter_localizations",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.9"
     },
     {
       "name": "flutter_plugin_android_lifecycle",
@@ -473,7 +503,7 @@
       "name": "flutter_test",
       "rootUri": "file:///Users/igor/Installations/flutter/packages/flutter_test",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.9"
     },
     {
       "name": "flutter_web_auth_2",
@@ -490,6 +520,12 @@
     {
       "name": "flutter_web_plugins",
       "rootUri": "file:///Users/igor/Installations/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "flyer_chat_image_message",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/flyer_chat_image_message-2.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -692,6 +728,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "idb_shim",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/idb_shim-2.8.2+4",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
       "name": "image",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/image-4.8.0",
       "packageUri": "lib/",
@@ -764,12 +806,6 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "js",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/js-0.7.2",
-      "packageUri": "lib/",
-      "languageVersion": "3.7"
-    },
-    {
       "name": "json_annotation",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/json_annotation-4.11.0",
       "packageUri": "lib/",
@@ -819,15 +855,15 @@
     },
     {
       "name": "matcher",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/matcher-0.12.17",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/matcher-0.12.18",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.7"
     },
     {
       "name": "material_color_utilities",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/material_color_utilities-0.11.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/material_color_utilities-0.13.0",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "3.5"
     },
     {
       "name": "meta",
@@ -1070,6 +1106,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "scrollview_observer",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/scrollview_observer-1.26.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "sembast",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/sembast-3.8.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
       "name": "serverpod",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod-3.3.1",
       "packageUri": "lib/",
@@ -1253,7 +1301,7 @@
       "name": "sky_engine",
       "rootUri": "file:///Users/igor/Installations/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.9"
     },
     {
       "name": "source_gen",
@@ -1359,21 +1407,27 @@
     },
     {
       "name": "test",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/test-1.26.3",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/test-1.29.0",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.7"
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/test_api-0.7.7",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/test_api-0.7.9",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.7"
     },
     {
       "name": "test_core",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/test_core-0.6.12",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/test_core-0.6.15",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "thumbhash",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/thumbhash-0.1.0+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "typed_data",
@@ -1557,8 +1611,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.10.4",
+  "generatorVersion": "3.11.0",
   "flutterRoot": "file:///Users/igor/Installations/flutter",
-  "flutterVersion": "3.38.5",
+  "flutterVersion": "3.41.2",
   "pubCache": "file:///Users/igor/.pub-cache"
 }

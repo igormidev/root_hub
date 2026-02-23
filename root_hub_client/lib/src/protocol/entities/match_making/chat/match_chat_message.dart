@@ -20,6 +20,7 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
     this.id,
     required this.sentAt,
     required this.content,
+    this.imageUrl,
     required this.matchChatHistoryId,
     this.matchChatHistory,
     required this.playerDataId,
@@ -30,6 +31,7 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
     int? id,
     required DateTime sentAt,
     required String content,
+    String? imageUrl,
     required int matchChatHistoryId,
     _i2.MatchChatHistory? matchChatHistory,
     required int playerDataId,
@@ -41,6 +43,7 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
       id: jsonSerialization['id'] as int?,
       sentAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['sentAt']),
       content: jsonSerialization['content'] as String,
+      imageUrl: jsonSerialization['imageUrl'] as String?,
       matchChatHistoryId: jsonSerialization['matchChatHistoryId'] as int,
       matchChatHistory: jsonSerialization['matchChatHistory'] == null
           ? null
@@ -65,6 +68,8 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
 
   String content;
 
+  String? imageUrl;
+
   int matchChatHistoryId;
 
   _i2.MatchChatHistory? matchChatHistory;
@@ -80,6 +85,7 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
     int? id,
     DateTime? sentAt,
     String? content,
+    String? imageUrl,
     int? matchChatHistoryId,
     _i2.MatchChatHistory? matchChatHistory,
     int? playerDataId,
@@ -92,6 +98,7 @@ abstract class MatchChatMessage implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'sentAt': sentAt.toJson(),
       'content': content,
+      if (imageUrl != null) 'imageUrl': imageUrl,
       'matchChatHistoryId': matchChatHistoryId,
       if (matchChatHistory != null)
         'matchChatHistory': matchChatHistory?.toJson(),
@@ -113,6 +120,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     int? id,
     required DateTime sentAt,
     required String content,
+    String? imageUrl,
     required int matchChatHistoryId,
     _i2.MatchChatHistory? matchChatHistory,
     required int playerDataId,
@@ -121,6 +129,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
          id: id,
          sentAt: sentAt,
          content: content,
+         imageUrl: imageUrl,
          matchChatHistoryId: matchChatHistoryId,
          matchChatHistory: matchChatHistory,
          playerDataId: playerDataId,
@@ -135,6 +144,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     Object? id = _Undefined,
     DateTime? sentAt,
     String? content,
+    Object? imageUrl = _Undefined,
     int? matchChatHistoryId,
     Object? matchChatHistory = _Undefined,
     int? playerDataId,
@@ -144,6 +154,7 @@ class _MatchChatMessageImpl extends MatchChatMessage {
       id: id is int? ? id : this.id,
       sentAt: sentAt ?? this.sentAt,
       content: content ?? this.content,
+      imageUrl: imageUrl is String? ? imageUrl : this.imageUrl,
       matchChatHistoryId: matchChatHistoryId ?? this.matchChatHistoryId,
       matchChatHistory: matchChatHistory is _i2.MatchChatHistory?
           ? matchChatHistory

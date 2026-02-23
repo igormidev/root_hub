@@ -381,6 +381,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
 
     final actionEnabled =
         tableId != null && !isSubscribing && !isSubscribed && !isFull;
+    final canOpenSubscribedChat = tableId != null && isSubscribed;
 
     final actionLabel = switch ((isSubscribing, isFull)) {
       (true, _) => 'Joining...',
@@ -566,6 +567,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   icon: Icons.near_me_rounded,
                   text: distanceLabel,
                 ),
+              if (isSubscribed)
+                _buildInfoChip(
+                  context,
+                  icon: Icons.chat_bubble_rounded,
+                  text: 'Tap card to open chat',
+                ),
             ],
           ),
           if (!isSubscribed) ...[
@@ -585,6 +592,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     : null,
                 style: FilledButton.styleFrom(
                   minimumSize: const Size(double.infinity, 56),
+                  maximumSize: const Size(double.infinity, 56),
                   backgroundColor: colorScheme.primary,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: colorScheme.surfaceContainerHighest,
@@ -614,12 +622,28 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       return cardContent;
     }
 
+    final subscribedCardContent = canOpenSubscribedChat
+        ? Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: () {
+                context.push(
+                  dashboardMatchChatPathForMatch(tableId),
+                  extra: table.title,
+                );
+              },
+              child: cardContent,
+            ),
+          )
+        : cardContent;
+
     return Padding(
       padding: const EdgeInsets.only(top: 14),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          cardContent,
+          subscribedCardContent,
           Positioned(
             left: 14,
             top: -13,
@@ -800,6 +824,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     final detailedTable = snapshot.data;
                     return _buildJoinSheetContent(
                       sheetContext,
+                      tableId,
                       detailedTable,
                       currentPlayer,
                       fallbackTable,
@@ -945,6 +970,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
 
   Widget _buildJoinSheetContent(
     BuildContext context,
+    int tableId,
     MatchScheduleInfo? tableInfo,
     PlayerData? currentPlayer,
     MatchSchedulePairingAttempt fallbackTable,
@@ -1027,6 +1053,30 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     ),
                   ),
                 ],
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                      if (!mounted) {
+                        return;
+                      }
+                      this.context.push(
+                        dashboardMatchChatPathForMatch(tableId),
+                        extra: table.title,
+                      );
+                    },
+                    icon: const Icon(Icons.chat_bubble_rounded),
+                    label: const Text('See table chat'),
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                      maximumSize: const Size(double.infinity, 50),
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 8,
@@ -1153,55 +1203,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     ),
                 const SizedBox(height: 2),
                 Text(
-                  'Match schedule metadata',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.42,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ID: ${table.id ?? '-'}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        'Host ID: ${table.playerDataId}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        'Location ID: ${table.locationId}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        'Created at: $createdLabel',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        'Starts at: $startLabel',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
+                  'Created at: $createdLabel',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
@@ -1231,6 +1236,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                         : () => Navigator.of(context).pop(true),
                     style: FilledButton.styleFrom(
                       minimumSize: const Size(double.infinity, 52),
+                      maximumSize: const Size(double.infinity, 52),
                       backgroundColor: colorScheme.primary,
                       foregroundColor: Colors.white,
                     ),
