@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchScreen extends ConsumerStatefulWidget {
   const MatchScreen({
@@ -1391,258 +1393,603 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     BuildContext context,
     Location? location,
   ) async {
-    final colorScheme = Theme.of(context).colorScheme;
     final google = location?.googlePlaceLocation;
     final manual = location?.manualInputLocation;
+    final locationTitle = google?.name ?? manual?.title ?? 'Unknown location';
+    final locationSubtitle =
+        google?.shortFormattedAddress ??
+        google?.formattedAddress ??
+        manual?.cityName ??
+        'Address unavailable';
+    final playedMatchesCount = location?.playedMatches?.length ?? 0;
+    final types = google?.types ?? const <String>[];
 
     await showDialog<void>(
       context: context,
       builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Location details'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildLocationDetailLine(
-                    context,
-                    label: 'Location.id',
-                    value: '${location?.id ?? '-'}',
+        final colorScheme = Theme.of(dialogContext).colorScheme;
+        final maxDialogHeight = MediaQuery.of(dialogContext).size.height * 0.86;
+
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 16,
+          ),
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: maxDialogHeight,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildLocationHeaderImage(
+                  context: dialogContext,
+                  locationTitle: locationTitle,
+                  locationSubtitle: locationSubtitle,
+                  google: google,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(
+                                  12,
+                                  10,
+                                  12,
+                                  10,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: colorScheme.primaryContainer
+                                      .withValues(
+                                        alpha: 0.62,
+                                      ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.sports_esports_rounded,
+                                      color: colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '$playedMatchesCount',
+                                          style: Theme.of(dialogContext)
+                                              .textTheme
+                                              .titleLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                        ),
+                                        Text(
+                                          playedMatchesCount == 1
+                                              ? 'match played here'
+                                              : 'matches played here',
+                                          style: Theme.of(dialogContext)
+                                              .textTheme
+                                              .labelLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                color: colorScheme
+                                                    .onSurfaceVariant,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: google?.isPublicPlace == false
+                                    ? colorScheme.tertiaryContainer
+                                    : colorScheme.secondaryContainer,
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    google?.isPublicPlace == false
+                                        ? Icons.lock_rounded
+                                        : Icons.public_rounded,
+                                    size: 18,
+                                    color: google?.isPublicPlace == false
+                                        ? colorScheme.onTertiaryContainer
+                                        : colorScheme.onSecondaryContainer,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    google?.isPublicPlace == false
+                                        ? 'Private'
+                                        : 'Public',
+                                    style: Theme.of(dialogContext)
+                                        .textTheme
+                                        .labelMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          color: google?.isPublicPlace == false
+                                              ? colorScheme.onTertiaryContainer
+                                              : colorScheme
+                                                    .onSecondaryContainer,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: [
+                            if (google?.rating != null)
+                              _buildLocationMetaChip(
+                                dialogContext,
+                                icon: Icons.star_rounded,
+                                label:
+                                    'Rating ${google!.rating!.toStringAsFixed(1)}',
+                              ),
+                            if (google?.userRatingCount != null)
+                              _buildLocationMetaChip(
+                                dialogContext,
+                                icon: Icons.groups_2_rounded,
+                                label: '${google!.userRatingCount} ratings',
+                              ),
+                            if (google?.timezone != null &&
+                                google!.timezone!.trim().isNotEmpty)
+                              _buildLocationMetaChip(
+                                dialogContext,
+                                icon: Icons.schedule_rounded,
+                                label: google.timezone!,
+                              ),
+                            for (final type in types)
+                              _buildLocationMetaChip(
+                                dialogContext,
+                                icon: Icons.sell_rounded,
+                                label: type,
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        if (google?.url != null &&
+                            google!.url!.trim().isNotEmpty)
+                          _buildActionableInfoRow(
+                            dialogContext,
+                            icon: Icons.map_rounded,
+                            label: 'Map link',
+                            value: google.url!.trim(),
+                            onActionTap: () =>
+                                _launchExternalUrl(google.url!.trim()),
+                          ),
+                        if (google?.websiteUri != null &&
+                            google!.websiteUri!.trim().isNotEmpty)
+                          _buildActionableInfoRow(
+                            dialogContext,
+                            icon: Icons.language_rounded,
+                            label: 'Website',
+                            value: google.websiteUri!.trim(),
+                            onActionTap: () =>
+                                _launchExternalUrl(google.websiteUri!.trim()),
+                          ),
+                        if (google?.phoneNumber != null &&
+                            google!.phoneNumber!.trim().isNotEmpty)
+                          _buildActionableInfoRow(
+                            dialogContext,
+                            icon: Icons.phone_rounded,
+                            label: 'Phone',
+                            value: google.phoneNumber!.trim(),
+                            onActionTap: () =>
+                                _launchPhone(google.phoneNumber!.trim()),
+                          ),
+                        if (manual != null) ...[
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: colorScheme.surfaceContainerHighest
+                                  .withValues(
+                                    alpha: 0.55,
+                                  ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Manual location notes',
+                                  style: Theme.of(dialogContext)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  '${manual.title} • ${manual.cityName}, ${manual.country.toJson()}',
+                                  style: Theme.of(dialogContext)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: colorScheme.onSurfaceVariant,
+                                      ),
+                                ),
+                                if (manual.description?.trim().isNotEmpty ==
+                                    true)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      manual.description!.trim(),
+                                      style: Theme.of(dialogContext)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
-                  _buildLocationDetailLine(
-                    context,
-                    label: 'googlePlaceLocationId',
-                    value: '${location?.googlePlaceLocationId ?? '-'}',
-                  ),
-                  _buildLocationDetailLine(
-                    context,
-                    label: 'manualInputLocationId',
-                    value: '${location?.manualInputLocationId ?? '-'}',
-                  ),
-                  _buildLocationDetailLine(
-                    context,
-                    label: 'pairingAttempts count',
-                    value: '${location?.pairingAttempts?.length ?? 0}',
-                  ),
-                  _buildLocationDetailLine(
-                    context,
-                    label: 'playedMatches count',
-                    value: '${location?.playedMatches?.length ?? 0}',
-                  ),
-                  if (google != null) ...[
-                    const SizedBox(height: 10),
-                    Text(
-                      'GooglePlaceLocation',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: colorScheme.primary,
+                ),
+                SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.tonal(
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        child: const Text('Close'),
                       ),
                     ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'id',
-                      value: '${google.id ?? '-'}',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'providerPlaceId',
-                      value: google.providerPlaceId,
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'name',
-                      value: google.name,
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'formattedAddress',
-                      value: google.formattedAddress ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'shortFormattedAddress',
-                      value: google.shortFormattedAddress ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'lat',
-                      value: google.lat.toStringAsFixed(6),
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'lng',
-                      value: google.lng.toStringAsFixed(6),
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'url',
-                      value: google.url ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'websiteUri',
-                      value: google.websiteUri ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'phoneNumber',
-                      value: google.phoneNumber ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'types',
-                      value: google.types?.join(', ') ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'primaryType',
-                      value: google.primaryType ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'rating',
-                      value: google.rating?.toStringAsFixed(1) ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'userRatingCount',
-                      value: '${google.userRatingCount ?? '-'}',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'priceLevel',
-                      value: google.priceLevel ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'primaryPhotoName',
-                      value: google.primaryPhotoName ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'timezone',
-                      value: google.timezone ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'isPublicPlace',
-                      value: google.isPublicPlace ? 'true' : 'false',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'notes',
-                      value: google.notes ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'createdAt',
-                      value: google.createdAt.toLocal().toIso8601String(),
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'updatedAt',
-                      value: google.updatedAt.toLocal().toIso8601String(),
-                    ),
-                  ],
-                  if (manual != null) ...[
-                    const SizedBox(height: 10),
-                    Text(
-                      'ManualInputLocation',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: colorScheme.secondary,
-                      ),
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'id',
-                      value: '${manual.id ?? '-'}',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'title',
-                      value: manual.title,
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'description',
-                      value: manual.description ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'cityName',
-                      value: manual.cityName,
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'country',
-                      value: manual.country.toJson(),
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'playerDataId',
-                      value: '${manual.playerDataId}',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'creator',
-                      value: manual.creator?.displayName ?? '-',
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'createdAt',
-                      value: manual.createdAt.toLocal().toIso8601String(),
-                    ),
-                    _buildLocationDetailLine(
-                      context,
-                      label: 'updatedAt',
-                      value: manual.updatedAt.toLocal().toIso8601String(),
-                    ),
-                  ],
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Close'),
-            ),
-          ],
         );
       },
     );
   }
 
-  Widget _buildLocationDetailLine(
-    BuildContext context, {
-    required String label,
-    required String value,
+  Widget _buildLocationHeaderImage({
+    required BuildContext context,
+    required String locationTitle,
+    required String locationSubtitle,
+    required GooglePlaceLocation? google,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.35),
-          children: [
-            TextSpan(
-              text: '$label: ',
-              style: const TextStyle(
-                fontWeight: FontWeight.w800,
+    final colorScheme = Theme.of(context).colorScheme;
+    final lat = google?.lat;
+    final lng = google?.lng;
+    final canBuildStaticMap = lat != null && lng != null;
+    final headerImageUrl = canBuildStaticMap
+        ? _buildStaticMapUrl(lat, lng)
+        : null;
+
+    return SizedBox(
+      height: 188,
+      width: double.infinity,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (headerImageUrl != null)
+            Image.network(
+              headerImageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (_, _, _) {
+                return Container(
+                  color: colorScheme.primaryContainer,
+                );
+              },
+            )
+          else
+            Container(
+              color: colorScheme.primaryContainer,
+            ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.08),
+                  Colors.black.withValues(alpha: 0.6),
+                ],
               ),
             ),
-            TextSpan(
-              text: value,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
+          ),
+          Positioned(
+            left: 14,
+            right: 14,
+            bottom: 12,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Location Details',
+                  style: GoogleFonts.cinzel(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  locationTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                Text(
+                  locationSubtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.92),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _buildStaticMapUrl(double latitude, double longitude) {
+    final normalizedLatitude = latitude.toStringAsFixed(6);
+    final normalizedLongitude = longitude.toStringAsFixed(6);
+
+    return Uri.https(
+      'staticmap.openstreetmap.de',
+      '/staticmap.php',
+      {
+        'center': '$normalizedLatitude,$normalizedLongitude',
+        'zoom': '14',
+        'size': '1200x420',
+        'markers': '$normalizedLatitude,$normalizedLongitude,lightblue1',
+      },
+    ).toString();
+  }
+
+  Widget _buildLocationMetaChip(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(999),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 14,
+            color: colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionableInfoRow(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+    required VoidCallback onActionTap,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: colorScheme.outlineVariant),
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: colorScheme.primary,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    value,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Tooltip(
+                  message: 'Copy $label',
+                  child: IconButton(
+                    visualDensity: VisualDensity.compact,
+                    onPressed: () => _copyValue(
+                      value: value,
+                      label: label,
+                    ),
+                    icon: const Icon(Icons.copy_rounded),
+                  ),
+                ),
+                Tooltip(
+                  message: 'Open $label',
+                  child: IconButton(
+                    visualDensity: VisualDensity.compact,
+                    onPressed: onActionTap,
+                    icon: const Icon(Icons.open_in_new_rounded),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _copyValue({
+    required String value,
+    required String label,
+  }) async {
+    await Clipboard.setData(ClipboardData(text: value));
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$label copied'),
+      ),
+    );
+  }
+
+  Future<void> _launchExternalUrl(String rawUrl) async {
+    final parsedUri = Uri.tryParse(rawUrl);
+    if (parsedUri == null) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid URL format.'),
+        ),
+      );
+      return;
+    }
+
+    final launched = await launchUrl(
+      parsedUri,
+      mode: LaunchMode.externalApplication,
+    );
+    if (launched || !mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to open the link right now.'),
+      ),
+    );
+  }
+
+  Future<void> _launchPhone(String rawPhone) async {
+    final normalizedPhone = _normalizePhoneNumber(rawPhone);
+    if (normalizedPhone.isEmpty) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid phone number format.'),
+        ),
+      );
+      return;
+    }
+
+    final telUri = Uri(
+      scheme: 'tel',
+      path: normalizedPhone,
+    );
+    final launched = await launchUrl(
+      telUri,
+      mode: LaunchMode.externalApplication,
+    );
+    if (launched || !mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Unable to open the dialer right now.'),
+      ),
+    );
+  }
+
+  String _normalizePhoneNumber(String rawPhone) {
+    final trimmed = rawPhone.trim();
+    if (trimmed.isEmpty) {
+      return '';
+    }
+
+    final hasLeadingPlus = trimmed.startsWith('+');
+    final digitsOnly = trimmed.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.isEmpty) {
+      return '';
+    }
+
+    return hasLeadingPlus ? '+$digitsOnly' : digitsOnly;
   }
 
   String _formatDurationToClock(Duration duration) {

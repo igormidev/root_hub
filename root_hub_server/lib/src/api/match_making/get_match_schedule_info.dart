@@ -30,6 +30,7 @@ class GetMatchScheduleInfo extends Endpoint {
                   authUser: AuthUser.include(),
                 ),
               ),
+              playedMatches: PlayedMatch.includeList(),
             ),
             host: PlayerData.include(
               authUser: AuthUser.include(),
