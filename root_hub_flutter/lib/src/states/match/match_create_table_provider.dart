@@ -32,13 +32,15 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     final persistedHostWillPlay = prefs.getBool(_hostWillPlayKey);
     final persistedScheduledHour = prefs.getInt(_scheduledHourKey);
     final persistedScheduledMinute = prefs.getInt(_scheduledMinuteKey);
+    final recentLocations = _readRecentLocations();
 
     final initialState = _buildDefaultState(
+      recentLocations: recentLocations,
+      hasLoadedRecentLocations: true,
       persistedHostWillPlay: persistedHostWillPlay,
       persistedScheduledHour: persistedScheduledHour,
       persistedScheduledMinute: persistedScheduledMinute,
     );
-    unawaited(_loadRecentLocations());
     return initialState;
   }
 
@@ -312,7 +314,7 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     );
   }
 
-  Future<void> _loadRecentLocations() async {
+  List<Location> _readRecentLocations() {
     final prefs = ref.read(sharedPreferencesProvider);
     final storedLocations =
         prefs.getStringList(_recentLocationsKey) ?? const <String>[];
@@ -325,10 +327,7 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       }
     }
 
-    state = state.copyWith(
-      hasLoadedRecentLocations: true,
-      recentLocations: _dedupeAndLimit(parsedLocations),
-    );
+    return _dedupeAndLimit(parsedLocations);
   }
 
   Future<void> _saveRecentLocation(Location location) async {
