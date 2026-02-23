@@ -171,40 +171,77 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
 
                       Widget? headerWidget;
                       if (shouldShowSenderHeader) {
-                        final isSubscribedSender = chatNotifier.isAuthorSubscribed(
-                          message.authorId,
-                        );
+                        final authorId = message.authorId;
+                        final isSubscribedSender = chatNotifier
+                            .isAuthorSubscribed(
+                              authorId,
+                            );
+                        final profileImageUrl = chatNotifier
+                            .profileImageUrlForAuthorId(authorId);
+                        final factionIconPath = chatNotifier
+                            .factionIconPathForAuthorId(authorId);
 
                         headerWidget = Padding(
                           padding: const EdgeInsets.fromLTRB(8, 2, 8, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              _buildSenderAvatar(
+                                context,
+                                profileImageUrl,
+                              ),
+                              const SizedBox(width: 6),
                               Flexible(
-                                child: Text(
-                                  chatNotifier.displayNameForAuthorId(
-                                    message.authorId,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.labelLarge
-                                      ?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.w800,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        chatNotifier.displayNameForAuthorId(
+                                          authorId,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge
+                                            ?.copyWith(
+                                              color:
+                                                  colorScheme.onSurfaceVariant,
+                                              fontWeight: FontWeight.w800,
+                                            ),
                                       ),
+                                    ),
+                                    if (factionIconPath != null) ...[
+                                      const SizedBox(width: 6),
+                                      Image.asset(
+                                        factionIconPath,
+                                        width: 18,
+                                        height: 18,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ],
+                                  ],
                                 ),
                               ),
                               if (isSubscribedSender) ...[
                                 const SizedBox(width: 6),
                                 Container(
-                                  padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
+                                  padding: const EdgeInsets.fromLTRB(
+                                    8,
+                                    2,
+                                    8,
+                                    2,
+                                  ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(999),
                                     color: colorScheme.primaryContainer,
                                   ),
                                   child: Text(
                                     'Subscribed',
-                                    style: Theme.of(context).textTheme.labelSmall
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
                                         ?.copyWith(
                                           color: colorScheme.onPrimaryContainer,
                                           fontWeight: FontWeight.w900,
@@ -254,6 +291,45 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildSenderAvatar(
+    BuildContext context,
+    String? imageUrl,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final normalizedImageUrl = imageUrl?.trim();
+
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: colorScheme.surfaceContainerHighest,
+        border: Border.all(
+          color: colorScheme.outlineVariant,
+        ),
+      ),
+      child: ClipOval(
+        child: normalizedImageUrl != null && normalizedImageUrl.isNotEmpty
+            ? Image.network(
+                normalizedImageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) {
+                  return Icon(
+                    Icons.person_rounded,
+                    size: 16,
+                    color: colorScheme.onSurfaceVariant,
+                  );
+                },
+              )
+            : Icon(
+                Icons.person_rounded,
+                size: 16,
+                color: colorScheme.onSurfaceVariant,
+              ),
       ),
     );
   }
@@ -328,5 +404,4 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       ),
     );
   }
-
 }

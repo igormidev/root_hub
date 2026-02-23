@@ -2,6 +2,7 @@ import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart';
 
 class GetMatchChatMessage extends Endpoint {
   @override
@@ -79,6 +80,10 @@ class GetMatchChatMessage extends Endpoint {
           where: (t) =>
               t.matchSchedulePairingAttemptId.equals(scheduledMatchId),
         );
+        final senderProfiles = await _resolveSenderProfiles(
+          session,
+          messages,
+        );
         final subscribedPlayerIds =
             subscriptions.map((entry) => entry.playerDataId).toSet().toList()
               ..sort();
@@ -87,6 +92,7 @@ class GetMatchChatMessage extends Endpoint {
 
         return MatchChatMessagesPagination(
           messages: messages,
+          senderProfiles: senderProfiles,
           subscribedPlayerIds: subscribedPlayerIds,
           paginationMetadata: PaginationMetadata(
             currentPage: page,
@@ -101,5 +107,38 @@ class GetMatchChatMessage extends Endpoint {
       fallbackDescription:
           'Unable to load chat messages right now. Please try again.',
     );
+  }
+
+  Future<List<MatchChatSenderProfile>> _resolveSenderProfiles(
+    Session session,
+    List<MatchChatMessage> messages,
+  ) async {
+    final sendersByPlayerId = <int, PlayerData>{};
+    for (final message in messages) {
+      final sender = message.sender;
+      final playerDataId = sender?.id;
+      if (sender == null || playerDataId == null) {
+        continue;
+      }
+      sendersByPlayerId[playerDataId] = sender;
+    }
+
+    final senderProfiles = await Future.wait(
+      sendersByPlayerId.entries.map((entry) async {
+        final profile = await AuthServices.instance.userProfiles
+            .maybeFindUserProfileByUserId(
+              session,
+              entry.value.authUserId,
+            );
+
+        return MatchChatSenderProfile(
+          playerDataId: entry.key,
+          profileImageUrl: profile?.imageUrl?.toString(),
+        );
+      }),
+    );
+
+    senderProfiles.sort((a, b) => a.playerDataId.compareTo(b.playerDataId));
+    return senderProfiles;
   }
 }

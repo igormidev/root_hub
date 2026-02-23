@@ -1,0 +1,4 @@
+class: MatchChatSenderProfile
+fields:
+  playerDataId: int
+  profileImageUrl: String?

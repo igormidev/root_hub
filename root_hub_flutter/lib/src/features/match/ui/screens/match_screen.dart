@@ -1224,6 +1224,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     onPressed: () => Navigator.of(context).pop(false),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                     child: const Text('Cancel'),
                   ),
@@ -1266,7 +1269,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final playerData = playerSnapshot.playerData;
     final factionColor = playerData.favoriteFaction.factionColor;
-    final imageUrl = playerSnapshot.profileImageUrl;
+    final imageUrl = playerSnapshot.profileImageUrl?.trim();
 
     return SizedBox(
       height: 156,

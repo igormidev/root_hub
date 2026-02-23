@@ -5,6 +5,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
@@ -16,6 +17,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
   final List<Message> _chatMessages = <Message>[];
   final Map<String, PlayerData> _playersByAuthorId = <String, PlayerData>{};
+  final Map<String, String> _profileImageUrlsByAuthorId = <String, String>{};
 
   bool _isOpeningChat = false;
 
@@ -59,6 +61,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
       _chatMessages.clear();
       _playersByAuthorId.clear();
+      _profileImageUrlsByAuthorId.clear();
       await _chatController.setMessages(const <Message>[], animated: false);
 
       await _loadPage(
@@ -340,6 +343,21 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     return sender.displayName;
   }
 
+  String? profileImageUrlForAuthorId(String authorId) {
+    return _profileImageUrlsByAuthorId[authorId];
+  }
+
+  String? factionIconPathForAuthorId(String authorId) {
+    final sender = _playersByAuthorId[authorId];
+    if (sender == null) {
+      return null;
+    }
+
+    return sender.favoriteFaction.getFactionIconPath(
+      size: FactionIconSize.size80,
+    );
+  }
+
   bool isAuthorSubscribed(String authorId) {
     final playerId = int.tryParse(authorId);
     if (playerId == null) {
@@ -375,6 +393,18 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         final orderedMessages = [...chatPage.messages]
           ..sort((a, b) => a.sentAt.compareTo(b.sentAt));
         final mappedMessages = orderedMessages.map(_toUiMessage).toList();
+
+        for (final senderProfile in chatPage.senderProfiles) {
+          final authorId = senderProfile.playerDataId.toString();
+          final normalizedProfileImageUrl = senderProfile.profileImageUrl
+              ?.trim();
+          if (normalizedProfileImageUrl == null ||
+              normalizedProfileImageUrl.isEmpty) {
+            continue;
+          }
+
+          _profileImageUrlsByAuthorId[authorId] = normalizedProfileImageUrl;
+        }
 
         if (replaceMessages) {
           _chatMessages
