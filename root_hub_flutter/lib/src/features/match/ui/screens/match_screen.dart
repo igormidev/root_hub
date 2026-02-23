@@ -142,22 +142,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
   ) {
     final colorScheme = Theme.of(context).colorScheme;
     final ratioKm = playerData?.currentLocation?.ratio;
+    final nearbySummary = ratioKm == null
+        ? 'Set profile location'
+        : '${ratioKm.toStringAsFixed(0)} km search area';
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 15, 16, 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: colorScheme.outlineVariant),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            colorScheme.secondaryContainer.withValues(alpha: 0.72),
-            colorScheme.primaryContainer.withValues(alpha: 0.54),
-            colorScheme.surface,
-          ],
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 6, 4, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -166,24 +156,61 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
               Icon(
                 Icons.explore_rounded,
                 color: colorScheme.secondary,
+                size: 22,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Nearby Match Tables',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  'Match Finder',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Flexible(
+                child: Text(
+                  'Nearby Match Tables',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
+                  width: 5,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  nearbySummary,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
           Text(
-            ratioKm == null
-                ? 'Set your profile location to discover nearby hosted tables.'
-                : 'Showing tables inside your ${ratioKm.toStringAsFixed(0)} km search area.\nOnly tables that did not start more than 2 hours ago are listed.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            'Only tables that did not start more than 2 hours ago are listed.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,
               height: 1.35,

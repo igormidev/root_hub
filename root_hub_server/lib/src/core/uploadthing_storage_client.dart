@@ -44,7 +44,6 @@ class UploadThingStorageClient {
         uploadUrl: preparedUpload.uploadUrl,
         uploadKey: preparedUpload.key,
         imageBytes: imageBytes,
-        contentType: normalizedContentType,
       );
 
       final appId =
@@ -295,15 +294,20 @@ class UploadThingStorageClient {
     required String uploadUrl,
     required String uploadKey,
     required Uint8List imageBytes,
-    required String contentType,
   }) async {
-    final response = await http.put(
+    final request = http.MultipartRequest(
+      'PUT',
       Uri.parse(uploadUrl),
-      headers: <String, String>{
-        'content-type': contentType,
-      },
-      body: imageBytes,
     );
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        'file',
+        imageBytes,
+        filename: uploadKey,
+      ),
+    );
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       session.log(
