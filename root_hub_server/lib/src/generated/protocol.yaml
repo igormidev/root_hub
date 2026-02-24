@@ -36,6 +36,8 @@ getPlayerSubscribedMatches:
   - v1:
 getTablesInArea:
   - v1:
+removePlayerFromMatch:
+  - v1:
 subscribeToMatch:
   - v1:
 unsubscribeFromMatch:

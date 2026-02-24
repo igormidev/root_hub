@@ -5,6 +5,8 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
+import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 
@@ -24,6 +26,7 @@ class MatchTableInfoSheet extends ConsumerStatefulWidget {
 class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
   late Future<MatchScheduleInfo> _detailsFuture;
   bool _isUnsubscribing = false;
+  bool _isRemovingPlayer = false;
 
   @override
   void initState() {
@@ -358,54 +361,10 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
             ),
           ),
         ),
-        SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text('Close'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: _isUnsubscribing
-                        ? null
-                        : () => _confirmUnsubscribe(context),
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      maximumSize: const Size(double.infinity, 52),
-                      backgroundColor: colorScheme.error,
-                      foregroundColor: colorScheme.onError,
-                    ),
-                    icon: _isUnsubscribing
-                        ? SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: colorScheme.onError,
-                            ),
-                          )
-                        : const Icon(Icons.person_remove_rounded),
-                    label: Text(
-                      _isUnsubscribing ? 'Leaving...' : 'Leave Table',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        _buildBottomActions(
+          context,
+          table: table,
+          participatingPlayers: participatingPlayers,
         ),
       ],
     );
@@ -464,6 +423,297 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
     }
 
     Navigator.of(context).pop(true);
+  }
+
+  Widget _buildBottomActions(
+    BuildContext context, {
+    required MatchSchedulePairingAttempt table,
+    required List<MatchSchedulePlayerSnapshot> participatingPlayers,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final authState = ref.watch(authFlowProvider);
+    final currentPlayer = authState.maybeWhen(
+      authenticated: (playerData) => playerData,
+      orElse: () => null,
+    );
+    final isHost =
+        currentPlayer?.id != null && table.playerDataId == currentPlayer!.id;
+
+    final removablePlayers = participatingPlayers
+        .where((p) => p.playerData.id != currentPlayer?.id)
+        .toList();
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text('Close'),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: _isUnsubscribing
+                        ? null
+                        : () => _confirmUnsubscribe(context),
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 52),
+                      maximumSize: const Size(double.infinity, 52),
+                      backgroundColor: colorScheme.error,
+                      foregroundColor: colorScheme.onError,
+                    ),
+                    icon: _isUnsubscribing
+                        ? SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: colorScheme.onError,
+                            ),
+                          )
+                        : const Icon(Icons.person_remove_rounded),
+                    label: Text(
+                      _isUnsubscribing ? 'Leaving...' : 'Leave Table',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (isHost && removablePlayers.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                onPressed: _isRemovingPlayer
+                    ? null
+                    : () => _showRemovePlayerDialog(
+                        context,
+                        removablePlayers: removablePlayers,
+                      ),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  side: BorderSide(
+                    color: colorScheme.error.withValues(alpha: 0.5),
+                  ),
+                  foregroundColor: colorScheme.error,
+                ),
+                icon: _isRemovingPlayer
+                    ? SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: colorScheme.error,
+                        ),
+                      )
+                    : const Icon(Icons.group_remove_rounded),
+                label: Text(
+                  _isRemovingPlayer ? 'Removing...' : 'Remove Player',
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showRemovePlayerDialog(
+    BuildContext context, {
+    required List<MatchSchedulePlayerSnapshot> removablePlayers,
+  }) async {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final selectedPlayer = await showDialog<MatchSchedulePlayerSnapshot>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Remove a Player'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Select a player to remove from the table.',
+                  style: Theme.of(dialogContext).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...removablePlayers.map(
+                  (player) => _buildRemovePlayerTile(
+                    dialogContext,
+                    player: player,
+                    onTap: () => Navigator.of(dialogContext).pop(player),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (selectedPlayer == null || !mounted) {
+      return;
+    }
+
+    await _confirmRemovePlayer(context, player: selectedPlayer);
+  }
+
+  Widget _buildRemovePlayerTile(
+    BuildContext context, {
+    required MatchSchedulePlayerSnapshot player,
+    required VoidCallback onTap,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final playerData = player.playerData;
+    final factionColor = playerData.favoriteFaction.factionColor;
+    final imageUrl = player.profileImageUrl?.trim();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: factionColor.withValues(alpha: 0.4),
+            ),
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+          ),
+          child: Row(
+            children: [
+              _buildUserAvatar(context, imageUrl),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      playerData.displayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      playerData.favoriteFaction.displayName,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: factionColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.close_rounded,
+                color: colorScheme.error,
+                size: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmRemovePlayer(
+    BuildContext context, {
+    required MatchSchedulePlayerSnapshot player,
+  }) async {
+    final playerName = player.playerData.displayName;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text('Remove $playerName?'),
+          content: Text(
+            '$playerName will be removed from the table and will need to '
+            'rejoin if seats are still available.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(dialogContext).colorScheme.error,
+                foregroundColor: Theme.of(dialogContext).colorScheme.onError,
+              ),
+              child: const Text('Remove'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true || !mounted) {
+      return;
+    }
+
+    final playerDataId = player.playerData.id;
+    if (playerDataId == null) {
+      return;
+    }
+
+    setState(() => _isRemovingPlayer = true);
+
+    final error = await ref
+        .read(matchChatProvider.notifier)
+        .removePlayerFromTable(playerDataId: playerDataId);
+
+    if (!mounted) {
+      return;
+    }
+
+    if (error != null) {
+      setState(() => _isRemovingPlayer = false);
+      await showErrorDialog(
+        context,
+        title: error.title,
+        description: error.description,
+      );
+      return;
+    }
+
+    setState(() {
+      _isRemovingPlayer = false;
+      _detailsFuture = ref
+          .read(matchTablesProvider.notifier)
+          .getTableDetails(widget.scheduledMatchId, forceRefresh: true);
+    });
   }
 
   Widget _buildDragHandle(BuildContext context) {

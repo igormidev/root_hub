@@ -194,6 +194,8 @@ class TestEndpoints {
 
   late final _GetTablesInArea getTablesInArea;
 
+  late final _RemovePlayerFromMatch removePlayerFromMatch;
+
   late final _SubscribeToMatch subscribeToMatch;
 
   late final _UnsubscribeFromMatch unsubscribeFromMatch;
@@ -277,6 +279,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getTablesInArea = _GetTablesInArea(
+      endpoints,
+      serializationManager,
+    );
+    removePlayerFromMatch = _RemovePlayerFromMatch(
       endpoints,
       serializationManager,
     );
@@ -1204,6 +1210,52 @@ class _GetTablesInArea {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<List<_i18.MatchSchedulePairingAttempt>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _RemovePlayerFromMatch {
+  _RemovePlayerFromMatch(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int scheduledMatchId,
+    required int playerDataId,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'removePlayerFromMatch',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'removePlayerFromMatch',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'scheduledMatchId': scheduledMatchId,
+            'playerDataId': playerDataId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

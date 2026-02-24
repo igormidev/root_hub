@@ -437,6 +437,26 @@ class EndpointGetTablesInArea extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointRemovePlayerFromMatch extends _i1.EndpointRef {
+  EndpointRemovePlayerFromMatch(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'removePlayerFromMatch';
+
+  _i2.Future<void> v1({
+    required int scheduledMatchId,
+    required int playerDataId,
+  }) => caller.callServerEndpoint<void>(
+    'removePlayerFromMatch',
+    'v1',
+    {
+      'scheduledMatchId': scheduledMatchId,
+      'playerDataId': playerDataId,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointSubscribeToMatch extends _i1.EndpointRef {
   EndpointSubscribeToMatch(_i1.EndpointCaller caller) : super(caller);
 
@@ -778,6 +798,7 @@ class Client extends _i1.ServerpodClientShared {
     getMatchScheduleInfo = EndpointGetMatchScheduleInfo(this);
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
     getTablesInArea = EndpointGetTablesInArea(this);
+    removePlayerFromMatch = EndpointRemovePlayerFromMatch(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
     unsubscribeFromMatch = EndpointUnsubscribeFromMatch(this);
     emailIdp = EndpointEmailIdp(this);
@@ -820,6 +841,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetTablesInArea getTablesInArea;
 
+  late final EndpointRemovePlayerFromMatch removePlayerFromMatch;
+
   late final EndpointSubscribeToMatch subscribeToMatch;
 
   late final EndpointUnsubscribeFromMatch unsubscribeFromMatch;
@@ -851,6 +874,7 @@ class Client extends _i1.ServerpodClientShared {
     'getMatchScheduleInfo': getMatchScheduleInfo,
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,
     'getTablesInArea': getTablesInArea,
+    'removePlayerFromMatch': removePlayerFromMatch,
     'subscribeToMatch': subscribeToMatch,
     'unsubscribeFromMatch': unsubscribeFromMatch,
     'emailIdp': emailIdp,

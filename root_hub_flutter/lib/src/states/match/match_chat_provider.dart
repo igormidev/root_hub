@@ -609,6 +609,53 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     await _chatController.insertMessage(message);
   }
 
+  Future<RootHubException?> removePlayerFromTable({
+    required int playerDataId,
+  }) async {
+    final scheduledMatchId = state.scheduledMatchId;
+    if (scheduledMatchId == null) {
+      return RootHubException(
+        title: 'Invalid chat',
+        description: 'No active match chat to remove a player from.',
+      );
+    }
+
+    state = state.copyWith(actionError: null);
+
+    try {
+      await ref
+          .read(clientProvider)
+          .removePlayerFromMatch
+          .v1(
+            scheduledMatchId: scheduledMatchId,
+            playerDataId: playerDataId,
+          );
+      return null;
+    } on RootHubException catch (error) {
+      talker.debug(
+        '[MatchChat] Remove player failed. '
+        'scheduledMatchId=$scheduledMatchId '
+        'playerDataId=$playerDataId '
+        'title=${error.title} description=${error.description}',
+      );
+      state = state.copyWith(actionError: error);
+      return error;
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchChat] Unexpected remove player failure. '
+        'scheduledMatchId=$scheduledMatchId playerDataId=$playerDataId',
+      );
+      final exception = RootHubException(
+        title: 'Unable to remove player',
+        description: 'An unexpected error occurred while removing this player.',
+      );
+      state = state.copyWith(actionError: exception);
+      return exception;
+    }
+  }
+
   Future<RootHubException?> unsubscribeFromTable() async {
     final scheduledMatchId = state.scheduledMatchId;
     if (scheduledMatchId == null) {
