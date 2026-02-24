@@ -31,6 +31,9 @@ class SubscribeToMatch extends Endpoint {
         final match = await MatchSchedulePairingAttempt.db.findById(
           session,
           scheduledMatchId,
+          include: MatchSchedulePairingAttempt.include(
+            subscriptions: MatchSubscription.includeList(),
+          ),
         );
 
         if (match == null) {
@@ -38,6 +41,26 @@ class SubscribeToMatch extends Endpoint {
             title: 'Scheduled match not found',
             description:
                 'Scheduled match with id $scheduledMatchId was not found.',
+          );
+        }
+
+        if (match.closedForSubscriptions == true) {
+          throw RootHubEndpointError.invalidRequest(
+            title: 'Subscriptions closed',
+            description:
+                'The host has closed subscriptions for this table. '
+                'No new players can join at this time.',
+          );
+        }
+
+        final currentSubscriptions =
+            match.subscriptions ?? const <MatchSubscription>[];
+        final maxPlayers = _podiumToPlayersCount(match.maxAmountOfPlayers);
+        if (currentSubscriptions.length >= maxPlayers) {
+          throw RootHubEndpointError.invalidRequest(
+            title: 'Table is full',
+            description:
+                'This table has reached its maximum of $maxPlayers players.',
           );
         }
 
@@ -88,5 +111,22 @@ class SubscribeToMatch extends Endpoint {
       fallbackDescription:
           'Unable to subscribe to this match right now. Please try again.',
     );
+  }
+
+  int _podiumToPlayersCount(MatchPodium podium) {
+    switch (podium) {
+      case MatchPodium.firstPlace:
+        return 1;
+      case MatchPodium.secondPlace:
+        return 2;
+      case MatchPodium.thirdPlace:
+        return 3;
+      case MatchPodium.fourthPlace:
+        return 4;
+      case MatchPodium.fifthPlace:
+        return 5;
+      case MatchPodium.sixthPlace:
+        return 6;
+    }
   }
 }

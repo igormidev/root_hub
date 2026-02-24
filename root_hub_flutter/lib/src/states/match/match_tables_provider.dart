@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_state.dart';
 
@@ -133,7 +134,15 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
     required int minPlayers,
     required int maxPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
   }) async {
+    talker.debug(
+      '[MatchTables] Editing match schedule. '
+      'scheduledMatchId=$scheduledMatchId '
+      'title=$title minPlayers=$minPlayers maxPlayers=$maxPlayers '
+      'attemptedAt=$attemptedAt',
+    );
+
     try {
       await ref
           .read(clientProvider)
@@ -145,15 +154,31 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
             minAmountOfPlayers: matchPodiumFromPlayerCount(minPlayers),
             maxAmountOfPlayers: matchPodiumFromPlayerCount(maxPlayers),
             attemptedAt: attemptedAt,
+            closedForSubscriptions: closedForSubscriptions,
           );
+      talker.debug(
+        '[MatchTables] Match schedule updated successfully. '
+        'scheduledMatchId=$scheduledMatchId',
+      );
       _tableInfoCache.remove(scheduledMatchId);
       return null;
     } on RootHubException catch (error) {
+      talker.debug(
+        '[MatchTables] Edit match schedule failed. '
+        'scheduledMatchId=$scheduledMatchId '
+        'title=${error.title} description=${error.description}',
+      );
       return error;
-    } catch (_) {
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchTables] Unexpected edit match schedule failure. '
+        'scheduledMatchId=$scheduledMatchId',
+      );
       return RootHubException(
         title: 'Unable to update table',
-        description: 'An unexpected error occurred while saving changes.',
+        description: error.toString(),
       );
     }
   }

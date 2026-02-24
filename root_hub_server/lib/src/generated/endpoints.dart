@@ -761,6 +761,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<DateTime>(),
               nullable: false,
             ),
+            'closedForSubscriptions': _i1.ParameterDescription(
+              name: 'closedForSubscriptions',
+              type: _i1.getType<bool?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -775,6 +780,7 @@ class Endpoints extends _i1.EndpointDispatch {
                     minAmountOfPlayers: params['minAmountOfPlayers'],
                     maxAmountOfPlayers: params['maxAmountOfPlayers'],
                     attemptedAt: params['attemptedAt'],
+                    closedForSubscriptions: params['closedForSubscriptions'],
                   ),
         ),
       },

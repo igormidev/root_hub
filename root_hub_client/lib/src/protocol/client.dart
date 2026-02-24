@@ -385,6 +385,7 @@ class EndpointEditMatchSchedule extends _i1.EndpointRef {
     required _i18.MatchPodium minAmountOfPlayers,
     required _i18.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
   }) => caller.callServerEndpoint<void>(
     'editMatchSchedule',
     'v1',
@@ -395,6 +396,7 @@ class EndpointEditMatchSchedule extends _i1.EndpointRef {
       'minAmountOfPlayers': minAmountOfPlayers,
       'maxAmountOfPlayers': maxAmountOfPlayers,
       'attemptedAt': attemptedAt,
+      'closedForSubscriptions': closedForSubscriptions,
     },
   );
 }

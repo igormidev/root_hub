@@ -17,6 +17,7 @@ class EditMatchSchedule extends Endpoint {
     required MatchPodium minAmountOfPlayers,
     required MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
   }) async {
     return guardRootHubEndpointErrors(
       () async {
@@ -120,7 +121,8 @@ class EditMatchSchedule extends Endpoint {
               : normalizedDescription
           ..minAmountOfPlayers = minAmountOfPlayers
           ..maxAmountOfPlayers = maxAmountOfPlayers
-          ..attemptedAt = attemptedAt;
+          ..attemptedAt = attemptedAt
+          ..closedForSubscriptions = closedForSubscriptions;
 
         await MatchSchedulePairingAttempt.db.updateRow(
           session,

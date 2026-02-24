@@ -27,6 +27,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     required this.minAmountOfPlayers,
     required this.maxAmountOfPlayers,
     required this.attemptedAt,
+    this.closedForSubscriptions,
     required this.locationId,
     this.location,
     required this.playerDataId,
@@ -43,6 +44,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
     required int locationId,
     _i3.Location? location,
     required int playerDataId,
@@ -70,6 +72,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
       attemptedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['attemptedAt'],
       ),
+      closedForSubscriptions:
+          jsonSerialization['closedForSubscriptions'] as bool?,
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
@@ -112,6 +116,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
 
   DateTime attemptedAt;
 
+  bool? closedForSubscriptions;
+
   int locationId;
 
   _i3.Location? location;
@@ -135,6 +141,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    bool? closedForSubscriptions,
     int? locationId,
     _i3.Location? location,
     int? playerDataId,
@@ -153,6 +160,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
+      if (closedForSubscriptions != null)
+        'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
       'playerDataId': playerDataId,
@@ -180,6 +189,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
     required int locationId,
     _i3.Location? location,
     required int playerDataId,
@@ -194,6 +204,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          minAmountOfPlayers: minAmountOfPlayers,
          maxAmountOfPlayers: maxAmountOfPlayers,
          attemptedAt: attemptedAt,
+         closedForSubscriptions: closedForSubscriptions,
          locationId: locationId,
          location: location,
          playerDataId: playerDataId,
@@ -214,6 +225,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    Object? closedForSubscriptions = _Undefined,
     int? locationId,
     Object? location = _Undefined,
     int? playerDataId,
@@ -229,6 +241,9 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       minAmountOfPlayers: minAmountOfPlayers ?? this.minAmountOfPlayers,
       maxAmountOfPlayers: maxAmountOfPlayers ?? this.maxAmountOfPlayers,
       attemptedAt: attemptedAt ?? this.attemptedAt,
+      closedForSubscriptions: closedForSubscriptions is bool?
+          ? closedForSubscriptions
+          : this.closedForSubscriptions,
       locationId: locationId ?? this.locationId,
       location: location is _i3.Location?
           ? location

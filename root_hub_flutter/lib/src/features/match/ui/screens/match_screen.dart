@@ -396,6 +396,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         currentPlayer != null &&
         subscriptions.any((entry) => entry.playerDataId == currentPlayer.id);
     final isFull = subscribedPlayersCount >= maxPlayers;
+    final isClosed = table.closedForSubscriptions == true;
     final remainingSeats = (maxPlayers - subscribedPlayersCount).clamp(
       0,
       maxPlayers,
@@ -407,12 +408,17 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     );
 
     final actionEnabled =
-        tableId != null && !isSubscribing && !isSubscribed && !isFull;
+        tableId != null &&
+        !isSubscribing &&
+        !isSubscribed &&
+        !isFull &&
+        !isClosed;
     final canOpenSubscribedChat = tableId != null && isSubscribed;
 
-    final actionLabel = switch ((isSubscribing, isFull)) {
-      (true, _) => 'Joining...',
-      (_, true) => 'Table Full',
+    final actionLabel = switch ((isSubscribing, isClosed, isFull)) {
+      (true, _, _) => 'Joining...',
+      (_, true, _) => 'Closed',
+      (_, _, true) => 'Table Full',
       _ => 'Join Table',
     };
 
@@ -589,6 +595,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     'This table can start with a minimum of $minPlayers players and accepts up to $maxPlayers players.',
                 triggerMode: TooltipTriggerMode.tap,
               ),
+              if (isClosed)
+                _buildInfoChip(
+                  context,
+                  icon: Icons.lock_rounded,
+                  text: 'Subscriptions closed',
+                ),
               if (distanceLabel != null)
                 _buildInfoChip(
                   context,
@@ -1036,6 +1048,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
 
     final participatingPlayers =
         tableInfo?.players ?? const <MatchSchedulePlayerSnapshot>[];
+    final isClosed = table.closedForSubscriptions == true;
 
     return Column(
       children: [
@@ -1078,6 +1091,41 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                       color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w700,
                       height: 1.32,
+                    ),
+                  ),
+                ],
+                if (isClosed) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: colorScheme.error.withValues(alpha: 0.5),
+                      ),
+                      color: colorScheme.errorContainer.withValues(alpha: 0.3),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.lock_rounded,
+                          color: colorScheme.onErrorContainer,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'The host has closed subscriptions for this table. '
+                            'New players cannot join at this time.',
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: colorScheme.onErrorContainer,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -1262,7 +1310,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: FilledButton(
-                    onPressed: isSubscribed
+                    onPressed: isSubscribed || isClosed
                         ? null
                         : () => Navigator.of(context).pop(true),
                     style: FilledButton.styleFrom(
@@ -1272,7 +1320,11 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                       foregroundColor: Colors.white,
                     ),
                     child: Text(
-                      isSubscribed ? 'Already subscribed' : 'Confirm Join',
+                      isSubscribed
+                          ? 'Already subscribed'
+                          : isClosed
+                          ? 'Subscriptions closed'
+                          : 'Confirm Join',
                       style: GoogleFonts.getFont(
                         'MedievalSharp',
                         fontSize: 22,

@@ -1069,6 +1069,7 @@ class _EditMatchSchedule {
     required _i19.MatchPodium minAmountOfPlayers,
     required _i19.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1088,6 +1089,7 @@ class _EditMatchSchedule {
             'minAmountOfPlayers': minAmountOfPlayers,
             'maxAmountOfPlayers': maxAmountOfPlayers,
             'attemptedAt': attemptedAt,
+            'closedForSubscriptions': closedForSubscriptions,
           }),
           serializationManager: _serializationManager,
         );

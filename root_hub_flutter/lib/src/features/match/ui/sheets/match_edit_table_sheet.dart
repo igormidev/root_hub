@@ -33,6 +33,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
   DateTime _scheduledDate = DateTime.now();
   TimeOfDay _scheduledTime = TimeOfDay.now();
   int _currentSubscriberCount = 0;
+  bool _closedForSubscriptions = false;
 
   bool _hasInitializedForm = false;
   bool _isSaving = false;
@@ -64,6 +65,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     _minPlayers = table.minAmountOfPlayers.playerCount;
     _maxPlayers = table.maxAmountOfPlayers.playerCount;
     _currentSubscriberCount = tableInfo.players.length;
+    _closedForSubscriptions = table.closedForSubscriptions == true;
 
     final startAt = table.attemptedAt.toLocal();
     _scheduledDate = DateTime(startAt.year, startAt.month, startAt.day);
@@ -216,6 +218,67 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
                     fontSize: 26,
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _closedForSubscriptions
+                          ? colorScheme.error.withValues(alpha: 0.5)
+                          : colorScheme.outlineVariant,
+                    ),
+                    color: _closedForSubscriptions
+                        ? colorScheme.errorContainer.withValues(alpha: 0.3)
+                        : colorScheme.surfaceContainerHighest.withValues(
+                            alpha: 0.5,
+                          ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _closedForSubscriptions
+                            ? Icons.lock_rounded
+                            : Icons.lock_open_rounded,
+                        color: _closedForSubscriptions
+                            ? colorScheme.error
+                            : colorScheme.onSurfaceVariant,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Close subscriptions',
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                            ),
+                            Text(
+                              _closedForSubscriptions
+                                  ? 'New players cannot join this table.'
+                                  : 'New players can still join this table.',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Switch(
+                        value: _closedForSubscriptions,
+                        onChanged: (value) {
+                          setState(() => _closedForSubscriptions = value);
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -535,6 +598,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
           minPlayers: _minPlayers,
           maxPlayers: _maxPlayers,
           attemptedAt: attemptedAt,
+          closedForSubscriptions: _closedForSubscriptions,
         );
 
     if (!mounted) {

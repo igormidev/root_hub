@@ -29,6 +29,7 @@ abstract class MatchSchedulePairingAttempt
     required this.minAmountOfPlayers,
     required this.maxAmountOfPlayers,
     required this.attemptedAt,
+    this.closedForSubscriptions,
     required this.locationId,
     this.location,
     required this.playerDataId,
@@ -45,6 +46,7 @@ abstract class MatchSchedulePairingAttempt
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
     required int locationId,
     _i3.Location? location,
     required int playerDataId,
@@ -72,6 +74,8 @@ abstract class MatchSchedulePairingAttempt
       attemptedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['attemptedAt'],
       ),
+      closedForSubscriptions:
+          jsonSerialization['closedForSubscriptions'] as bool?,
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
@@ -116,6 +120,8 @@ abstract class MatchSchedulePairingAttempt
 
   DateTime attemptedAt;
 
+  bool? closedForSubscriptions;
+
   int locationId;
 
   _i3.Location? location;
@@ -142,6 +148,7 @@ abstract class MatchSchedulePairingAttempt
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    bool? closedForSubscriptions,
     int? locationId,
     _i3.Location? location,
     int? playerDataId,
@@ -160,6 +167,8 @@ abstract class MatchSchedulePairingAttempt
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
+      if (closedForSubscriptions != null)
+        'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
       'playerDataId': playerDataId,
@@ -181,6 +190,8 @@ abstract class MatchSchedulePairingAttempt
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
+      if (closedForSubscriptions != null)
+        'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
       if (location != null) 'location': location?.toJsonForProtocol(),
       'playerDataId': playerDataId,
@@ -244,6 +255,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     required _i2.MatchPodium minAmountOfPlayers,
     required _i2.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    bool? closedForSubscriptions,
     required int locationId,
     _i3.Location? location,
     required int playerDataId,
@@ -258,6 +270,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          minAmountOfPlayers: minAmountOfPlayers,
          maxAmountOfPlayers: maxAmountOfPlayers,
          attemptedAt: attemptedAt,
+         closedForSubscriptions: closedForSubscriptions,
          locationId: locationId,
          location: location,
          playerDataId: playerDataId,
@@ -278,6 +291,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     _i2.MatchPodium? minAmountOfPlayers,
     _i2.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    Object? closedForSubscriptions = _Undefined,
     int? locationId,
     Object? location = _Undefined,
     int? playerDataId,
@@ -293,6 +307,9 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       minAmountOfPlayers: minAmountOfPlayers ?? this.minAmountOfPlayers,
       maxAmountOfPlayers: maxAmountOfPlayers ?? this.maxAmountOfPlayers,
       attemptedAt: attemptedAt ?? this.attemptedAt,
+      closedForSubscriptions: closedForSubscriptions is bool?
+          ? closedForSubscriptions
+          : this.closedForSubscriptions,
       locationId: locationId ?? this.locationId,
       location: location is _i3.Location?
           ? location
@@ -349,6 +366,12 @@ class MatchSchedulePairingAttemptUpdateTable
         value,
       );
 
+  _i1.ColumnValue<bool, bool> closedForSubscriptions(bool? value) =>
+      _i1.ColumnValue(
+        table.closedForSubscriptions,
+        value,
+      );
+
   _i1.ColumnValue<int, int> locationId(int value) => _i1.ColumnValue(
     table.locationId,
     value,
@@ -390,6 +413,10 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
       'attemptedAt',
       this,
     );
+    closedForSubscriptions = _i1.ColumnBool(
+      'closedForSubscriptions',
+      this,
+    );
     locationId = _i1.ColumnInt(
       'locationId',
       this,
@@ -413,6 +440,8 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
   late final _i1.ColumnEnum<_i2.MatchPodium> maxAmountOfPlayers;
 
   late final _i1.ColumnDateTime attemptedAt;
+
+  late final _i1.ColumnBool closedForSubscriptions;
 
   late final _i1.ColumnInt locationId;
 
@@ -508,6 +537,7 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     minAmountOfPlayers,
     maxAmountOfPlayers,
     attemptedAt,
+    closedForSubscriptions,
     locationId,
     playerDataId,
   ];
