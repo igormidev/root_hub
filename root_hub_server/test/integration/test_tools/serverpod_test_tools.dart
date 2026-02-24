@@ -55,6 +55,10 @@ import 'package:root_hub_server/src/generated/api/match_making/models/subscribed
     as _i23;
 import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i24;
+import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
+    as _i25;
+import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+    as _i26;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -212,6 +216,10 @@ class TestEndpoints {
 
   late final _UnsubscribeFromMatch unsubscribeFromMatch;
 
+  late final _GetPlatformStats getPlatformStats;
+
+  late final _GetPlayerStats getPlayerStats;
+
   late final _EmailIdpEndpoint emailIdp;
 
   late final _GoogleIdpEndpoint googleIdp;
@@ -323,6 +331,14 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     unsubscribeFromMatch = _UnsubscribeFromMatch(
+      endpoints,
+      serializationManager,
+    );
+    getPlatformStats = _GetPlatformStats(
+      endpoints,
+      serializationManager,
+    );
+    getPlayerStats = _GetPlayerStats(
       endpoints,
       serializationManager,
     );
@@ -1607,6 +1623,86 @@ class _UnsubscribeFromMatch {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetPlatformStats {
+  _GetPlatformStats(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i25.PlatformStats> v1(
+    _i1.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getPlatformStats',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getPlatformStats',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i25.PlatformStats>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetPlayerStats {
+  _GetPlayerStats(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i26.PlayerStats> v1(_i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getPlayerStats',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getPlayerStats',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i26.PlayerStats>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

@@ -52,9 +52,13 @@ import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_
     as _i22;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i23;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/platform_stats.dart'
     as _i24;
-import 'protocol.dart' as _i25;
+import 'package:root_hub_client/src/protocol/api/stats/models/player_stats.dart'
+    as _i25;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i26;
+import 'protocol.dart' as _i27;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -590,11 +594,41 @@ class EndpointUnsubscribeFromMatch extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointGetPlatformStats extends _i1.EndpointRef {
+  EndpointGetPlatformStats(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getPlatformStats';
+
+  _i2.Future<_i24.PlatformStats> v1() =>
+      caller.callServerEndpoint<_i24.PlatformStats>(
+        'getPlatformStats',
+        'v1',
+        {},
+      );
+}
+
+/// {@category Endpoint}
+class EndpointGetPlayerStats extends _i1.EndpointRef {
+  EndpointGetPlayerStats(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getPlayerStats';
+
+  _i2.Future<_i25.PlayerStats> v1() =>
+      caller.callServerEndpoint<_i25.PlayerStats>(
+        'getPlayerStats',
+        'v1',
+        {},
+      );
+}
+
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i24.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i26.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -776,7 +810,7 @@ class EndpointEmailIdp extends _i24.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i24.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i26.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -847,11 +881,11 @@ class EndpointJwtRefresh extends _i6.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i24.Caller(client);
+    serverpod_auth_idp = _i26.Caller(client);
     serverpod_auth_core = _i6.Caller(client);
   }
 
-  late final _i24.Caller serverpod_auth_idp;
+  late final _i26.Caller serverpod_auth_idp;
 
   late final _i6.Caller serverpod_auth_core;
 }
@@ -876,7 +910,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i25.Protocol(),
+         _i27.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -910,6 +944,8 @@ class Client extends _i1.ServerpodClientShared {
     removePlayerFromMatch = EndpointRemovePlayerFromMatch(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
     unsubscribeFromMatch = EndpointUnsubscribeFromMatch(this);
+    getPlatformStats = EndpointGetPlatformStats(this);
+    getPlayerStats = EndpointGetPlayerStats(this);
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
@@ -966,6 +1002,10 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointUnsubscribeFromMatch unsubscribeFromMatch;
 
+  late final EndpointGetPlatformStats getPlatformStats;
+
+  late final EndpointGetPlayerStats getPlayerStats;
+
   late final EndpointEmailIdp emailIdp;
 
   late final EndpointGoogleIdp googleIdp;
@@ -1001,6 +1041,8 @@ class Client extends _i1.ServerpodClientShared {
     'removePlayerFromMatch': removePlayerFromMatch,
     'subscribeToMatch': subscribeToMatch,
     'unsubscribeFromMatch': unsubscribeFromMatch,
+    'getPlatformStats': getPlatformStats,
+    'getPlayerStats': getPlayerStats,
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,

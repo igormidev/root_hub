@@ -52,6 +52,10 @@ subscribeToMatch:
   - v1:
 unsubscribeFromMatch:
   - v1:
+getPlatformStats:
+  - v1:
+getPlayerStats:
+  - v1:
 emailIdp:
   - login:
   - startRegistration:
