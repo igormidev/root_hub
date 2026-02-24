@@ -1,0 +1,46 @@
+class: PlayerStats
+fields:
+  totalMatchesPlayed: int
+  totalWins: int
+  winRate: double
+
+  # In all matches played, how many points the player could have scored (30 x total matches played)
+  totalPossiblePoints: int
+  totalPointsScored: int
+  avgPoints: double # Avg points scored per match played
+
+  # Played games total
+  playedGamesAsMarquiseDeCat: int
+  playedGamesAsEyrieDynasties: int
+  playedGamesAsWoodlandAlliance: int
+  playedGamesAsVagabond: int
+  playedGamesAsRiverfolkCompany: int
+  playedGamesAsTheLizardCult: int
+  playedGamesAsUndergroundDuchy: int
+  playedGamesAsCorvidConspiracy: int
+  playedGamesAsLordOfTheHundreds: int
+  playedGamesAsKeepersInIron: int
+
+  # Wins total
+  winsAsMarquiseDeCat: int
+  winsAsEyrieDynasties: int
+  winsAsWoodlandAlliance: int
+  winsAsVagabond: int
+  winsAsRiverfolkCompany: int
+  winsAsTheLizardCult: int
+  winsAsUndergroundDuchy: int
+  winsAsCorvidConspiracy: int
+  winsAsLordOfTheHundreds: int
+  winsAsKeepersInIron: int
+
+  # Avg points per faction
+  avgPointsScoredAsMarquiseDeCat: double
+  avgPointsScoredAsEyrieDynasties: double
+  avgPointsScoredAsWoodlandAlliance: double
+  avgPointsScoredAsVagabond: double
+  avgPointsScoredAsRiverfolkCompany: double
+  avgPointsScoredAsTheLizardCult: double
+  avgPointsScoredAsUndergroundDuchy: double
+  avgPointsScoredAsCorvidConspiracy: double
+  avgPointsScoredAsLordOfTheHundreds: double
+  avgPointsScoredAsKeepersInIron: double
