@@ -14,6 +14,7 @@ fields:
   host: PlayerData?, relation(name=hosted_pairing_attempts, field=playerDataId)
   subscriptions: List<MatchSubscription>?, relation(name=pairing_attempt_subscriptions)
   chatHistory: MatchChatHistory?, relation(name=pairing_attempt_chat_history)
+  playedMatch: PlayedMatch?, relation(name=scheduled_attempt_played_match)
 
 indexes:
   location_id_idx:

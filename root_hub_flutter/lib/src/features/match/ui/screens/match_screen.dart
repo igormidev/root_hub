@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +14,10 @@ import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
+import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_sheet.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MatchScreen extends ConsumerStatefulWidget {
@@ -52,6 +55,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       }
 
       ref.read(matchTablesProvider.notifier).ensureLoaded();
+      ref
+          .read(registerMatchProvider.notifier)
+          .ensurePendingMatchesCountLoaded();
     });
   }
 
@@ -65,6 +71,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final matchState = ref.watch(matchTablesProvider);
+    final registerMatchState = ref.watch(registerMatchProvider);
     final authFlowState = ref.watch(authFlowProvider);
     final currentPlayer = authFlowState.maybeWhen(
       authenticated: (playerData) => playerData,
@@ -114,26 +121,108 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         Positioned(
           right: 16,
           bottom: 18,
-          child: FloatingActionButton.extended(
-            onPressed: () {
-              ref.read(matchCreateTableProvider.notifier).startNewFlow();
-              context.push(dashboardMatchCreatePath);
-            },
-            icon: const Icon(Icons.campaign_rounded),
-            label: Text(
-              'Host Table',
-              style: GoogleFonts.nunitoSans(
-                fontWeight: FontWeight.w800,
-                letterSpacing: 0.2,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              FloatingActionButton.small(
+                heroTag: 'host-match-fab',
+                onPressed: () {
+                  ref.read(matchCreateTableProvider.notifier).startNewFlow();
+                  context.push(dashboardMatchCreatePath);
+                },
+                tooltip: 'Host Table',
+                backgroundColor: colorScheme.secondaryContainer,
+                foregroundColor: colorScheme.onSecondaryContainer,
+                child: const Icon(Icons.campaign_rounded),
               ),
-            ),
-            backgroundColor: colorScheme.primary,
-            foregroundColor: colorScheme.onPrimary,
-            elevation: 1,
+              const SizedBox(height: 10),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  FloatingActionButton.extended(
+                    heroTag: 'register-match-fab',
+                    onPressed: _openRegisterMatchFlow,
+                    icon: const Icon(Icons.emoji_events_rounded),
+                    label: Text(
+                      'Report Result',
+                      style: GoogleFonts.nunitoSans(
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                    elevation: 1,
+                  ),
+                  if (registerMatchState.pendingMatchesCount > 0)
+                    Positioned(
+                      right: -6,
+                      top: -6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.error,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        constraints: const BoxConstraints(minWidth: 22),
+                        child: Text(
+                          '${registerMatchState.pendingMatchesCount}',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: colorScheme.onError,
+                                fontWeight: FontWeight.w900,
+                              ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
           ),
         ),
       ],
     );
+  }
+
+  Future<void> _openRegisterMatchFlow() async {
+    final platform = Theme.of(context).platform;
+    bool? submitted;
+
+    if (platform == TargetPlatform.iOS) {
+      submitted = await showCupertinoModalPopup<bool>(
+        context: context,
+        builder: (sheetContext) {
+          return const RegisterMatchPickerSheet();
+        },
+      );
+    } else {
+      submitted = await showModalBottomSheet<bool>(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: Colors.transparent,
+        builder: (sheetContext) {
+          return const RegisterMatchPickerSheet();
+        },
+      );
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    await ref.read(registerMatchProvider.notifier).refreshPendingMatchesCount();
+
+    if (submitted == true) {
+      await ref
+          .read(matchTablesProvider.notifier)
+          .loadTablesInArea(showLoadingIndicator: false);
+    }
   }
 
   Widget _buildNearbyHeader(

@@ -17,7 +17,8 @@ import '../../entities/match_making/location.dart' as _i3;
 import '../../entities/core/player_data.dart' as _i4;
 import '../../entities/match_making/match_subscription.dart' as _i5;
 import '../../entities/match_making/chat/match_chat_history.dart' as _i6;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i7;
+import '../../entities/match/played_match.dart' as _i7;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i8;
 
 abstract class MatchSchedulePairingAttempt
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -36,6 +37,7 @@ abstract class MatchSchedulePairingAttempt
     this.host,
     this.subscriptions,
     this.chatHistory,
+    this.playedMatch,
   });
 
   factory MatchSchedulePairingAttempt({
@@ -53,6 +55,7 @@ abstract class MatchSchedulePairingAttempt
     _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
     _i6.MatchChatHistory? chatHistory,
+    _i7.PlayedMatch? playedMatch,
   }) = _MatchSchedulePairingAttemptImpl;
 
   factory MatchSchedulePairingAttempt.fromJson(
@@ -79,24 +82,29 @@ abstract class MatchSchedulePairingAttempt
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
-          : _i7.Protocol().deserialize<_i3.Location>(
+          : _i8.Protocol().deserialize<_i3.Location>(
               jsonSerialization['location'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       host: jsonSerialization['host'] == null
           ? null
-          : _i7.Protocol().deserialize<_i4.PlayerData>(
+          : _i8.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['host'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i7.Protocol().deserialize<List<_i5.MatchSubscription>>(
+          : _i8.Protocol().deserialize<List<_i5.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatHistory: jsonSerialization['chatHistory'] == null
           ? null
-          : _i7.Protocol().deserialize<_i6.MatchChatHistory>(
+          : _i8.Protocol().deserialize<_i6.MatchChatHistory>(
               jsonSerialization['chatHistory'],
+            ),
+      playedMatch: jsonSerialization['playedMatch'] == null
+          ? null
+          : _i8.Protocol().deserialize<_i7.PlayedMatch>(
+              jsonSerialization['playedMatch'],
             ),
     );
   }
@@ -134,6 +142,8 @@ abstract class MatchSchedulePairingAttempt
 
   _i6.MatchChatHistory? chatHistory;
 
+  _i7.PlayedMatch? playedMatch;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -155,6 +165,7 @@ abstract class MatchSchedulePairingAttempt
     _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
     _i6.MatchChatHistory? chatHistory,
+    _i7.PlayedMatch? playedMatch,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -176,6 +187,7 @@ abstract class MatchSchedulePairingAttempt
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
       if (chatHistory != null) 'chatHistory': chatHistory?.toJson(),
+      if (playedMatch != null) 'playedMatch': playedMatch?.toJson(),
     };
   }
 
@@ -201,6 +213,7 @@ abstract class MatchSchedulePairingAttempt
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
       if (chatHistory != null) 'chatHistory': chatHistory?.toJsonForProtocol(),
+      if (playedMatch != null) 'playedMatch': playedMatch?.toJsonForProtocol(),
     };
   }
 
@@ -209,12 +222,14 @@ abstract class MatchSchedulePairingAttempt
     _i4.PlayerDataInclude? host,
     _i5.MatchSubscriptionIncludeList? subscriptions,
     _i6.MatchChatHistoryInclude? chatHistory,
+    _i7.PlayedMatchInclude? playedMatch,
   }) {
     return MatchSchedulePairingAttemptInclude._(
       location: location,
       host: host,
       subscriptions: subscriptions,
       chatHistory: chatHistory,
+      playedMatch: playedMatch,
     );
   }
 
@@ -262,6 +277,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
     _i6.MatchChatHistory? chatHistory,
+    _i7.PlayedMatch? playedMatch,
   }) : super._(
          id: id,
          createdAt: createdAt,
@@ -277,6 +293,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          host: host,
          subscriptions: subscriptions,
          chatHistory: chatHistory,
+         playedMatch: playedMatch,
        );
 
   /// Returns a shallow copy of this [MatchSchedulePairingAttempt]
@@ -298,6 +315,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     Object? host = _Undefined,
     Object? subscriptions = _Undefined,
     Object? chatHistory = _Undefined,
+    Object? playedMatch = _Undefined,
   }) {
     return MatchSchedulePairingAttempt(
       id: id is int? ? id : this.id,
@@ -322,6 +340,9 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       chatHistory: chatHistory is _i6.MatchChatHistory?
           ? chatHistory
           : this.chatHistory?.copyWith(),
+      playedMatch: playedMatch is _i7.PlayedMatch?
+          ? playedMatch
+          : this.playedMatch?.copyWith(),
     );
   }
 }
@@ -457,6 +478,8 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 
   _i6.MatchChatHistoryTable? _chatHistory;
 
+  _i7.PlayedMatchTable? _playedMatch;
+
   _i3.LocationTable get location {
     if (_location != null) return _location!;
     _location = _i1.createRelationTable(
@@ -509,6 +532,19 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     return _chatHistory!;
   }
 
+  _i7.PlayedMatchTable get playedMatch {
+    if (_playedMatch != null) return _playedMatch!;
+    _playedMatch = _i1.createRelationTable(
+      relationFieldName: 'playedMatch',
+      field: MatchSchedulePairingAttempt.t.id,
+      foreignField: _i7.PlayedMatch.t.scheduledPairingAttemptId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i7.PlayedMatchTable(tableRelation: foreignTableRelation),
+    );
+    return _playedMatch!;
+  }
+
   _i1.ManyRelation<_i5.MatchSubscriptionTable> get subscriptions {
     if (_subscriptions != null) return _subscriptions!;
     var relationTable = _i1.createRelationTable(
@@ -556,6 +592,9 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     if (relationField == 'chatHistory') {
       return chatHistory;
     }
+    if (relationField == 'playedMatch') {
+      return playedMatch;
+    }
     return null;
   }
 }
@@ -566,11 +605,13 @@ class MatchSchedulePairingAttemptInclude extends _i1.IncludeObject {
     _i4.PlayerDataInclude? host,
     _i5.MatchSubscriptionIncludeList? subscriptions,
     _i6.MatchChatHistoryInclude? chatHistory,
+    _i7.PlayedMatchInclude? playedMatch,
   }) {
     _location = location;
     _host = host;
     _subscriptions = subscriptions;
     _chatHistory = chatHistory;
+    _playedMatch = playedMatch;
   }
 
   _i3.LocationInclude? _location;
@@ -581,12 +622,15 @@ class MatchSchedulePairingAttemptInclude extends _i1.IncludeObject {
 
   _i6.MatchChatHistoryInclude? _chatHistory;
 
+  _i7.PlayedMatchInclude? _playedMatch;
+
   @override
   Map<String, _i1.Include?> get includes => {
     'location': _location,
     'host': _host,
     'subscriptions': _subscriptions,
     'chatHistory': _chatHistory,
+    'playedMatch': _playedMatch,
   };
 
   @override
@@ -989,6 +1033,31 @@ class MatchSchedulePairingAttemptAttachRowRepository {
     await session.db.updateRow<_i6.MatchChatHistory>(
       $chatHistory,
       columns: [_i6.MatchChatHistory.t.matchSchedulePairingAttemptId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between the given [MatchSchedulePairingAttempt] and [PlayedMatch]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `id` to refer to the [PlayedMatch].
+  Future<void> playedMatch(
+    _i1.Session session,
+    MatchSchedulePairingAttempt matchSchedulePairingAttempt,
+    _i7.PlayedMatch playedMatch, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playedMatch.id == null) {
+      throw ArgumentError.notNull('playedMatch.id');
+    }
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+
+    var $playedMatch = playedMatch.copyWith(
+      scheduledPairingAttemptId: matchSchedulePairingAttempt.id,
+    );
+    await session.db.updateRow<_i7.PlayedMatch>(
+      $playedMatch,
+      columns: [_i7.PlayedMatch.t.scheduledPairingAttemptId],
       transaction: transaction,
     );
   }

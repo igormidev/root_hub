@@ -12,11 +12,12 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../entities/match_making/location.dart' as _i2;
-import '../../entities/match/player_perfomance_in_match.dart' as _i3;
-import '../../entities/match/match_in_person_proof.dart' as _i4;
-import '../../entities/community/post.dart' as _i5;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i6;
+import '../../entities/match_making/match_schedule.dart' as _i2;
+import '../../entities/match_making/location.dart' as _i3;
+import '../../entities/match/player_perfomance_in_match.dart' as _i4;
+import '../../entities/match/match_in_person_proof.dart' as _i5;
+import '../../entities/community/post.dart' as _i6;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i7;
 
 abstract class PlayedMatch
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -24,6 +25,8 @@ abstract class PlayedMatch
     this.id,
     required this.matchStartedAt,
     this.matchEstimatedDuration,
+    required this.scheduledPairingAttemptId,
+    this.scheduledPairingAttempt,
     required this.locationId,
     this.location,
     this.playerPerfomances,
@@ -35,11 +38,13 @@ abstract class PlayedMatch
     int? id,
     required DateTime matchStartedAt,
     Duration? matchEstimatedDuration,
+    required int scheduledPairingAttemptId,
+    _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt,
     required int locationId,
-    _i2.Location? location,
-    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
-    _i4.MatchInPersonProof? inPersonProof,
-    List<_i5.Post>? posts,
+    _i3.Location? location,
+    List<_i4.PlayerPerfomanceInMatch>? playerPerfomances,
+    _i5.MatchInPersonProof? inPersonProof,
+    List<_i6.Post>? posts,
   }) = _PlayedMatchImpl;
 
   factory PlayedMatch.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -54,25 +59,33 @@ abstract class PlayedMatch
           : _i1.DurationJsonExtension.fromJson(
               jsonSerialization['matchEstimatedDuration'],
             ),
+      scheduledPairingAttemptId:
+          jsonSerialization['scheduledPairingAttemptId'] as int,
+      scheduledPairingAttempt:
+          jsonSerialization['scheduledPairingAttempt'] == null
+          ? null
+          : _i7.Protocol().deserialize<_i2.MatchSchedulePairingAttempt>(
+              jsonSerialization['scheduledPairingAttempt'],
+            ),
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
-          : _i6.Protocol().deserialize<_i2.Location>(
+          : _i7.Protocol().deserialize<_i3.Location>(
               jsonSerialization['location'],
             ),
       playerPerfomances: jsonSerialization['playerPerfomances'] == null
           ? null
-          : _i6.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
+          : _i7.Protocol().deserialize<List<_i4.PlayerPerfomanceInMatch>>(
               jsonSerialization['playerPerfomances'],
             ),
       inPersonProof: jsonSerialization['inPersonProof'] == null
           ? null
-          : _i6.Protocol().deserialize<_i4.MatchInPersonProof>(
+          : _i7.Protocol().deserialize<_i5.MatchInPersonProof>(
               jsonSerialization['inPersonProof'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i6.Protocol().deserialize<List<_i5.Post>>(
+          : _i7.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
     );
@@ -89,15 +102,19 @@ abstract class PlayedMatch
 
   Duration? matchEstimatedDuration;
 
+  int scheduledPairingAttemptId;
+
+  _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt;
+
   int locationId;
 
-  _i2.Location? location;
+  _i3.Location? location;
 
-  List<_i3.PlayerPerfomanceInMatch>? playerPerfomances;
+  List<_i4.PlayerPerfomanceInMatch>? playerPerfomances;
 
-  _i4.MatchInPersonProof? inPersonProof;
+  _i5.MatchInPersonProof? inPersonProof;
 
-  List<_i5.Post>? posts;
+  List<_i6.Post>? posts;
 
   @override
   _i1.Table<int?> get table => t;
@@ -109,11 +126,13 @@ abstract class PlayedMatch
     int? id,
     DateTime? matchStartedAt,
     Duration? matchEstimatedDuration,
+    int? scheduledPairingAttemptId,
+    _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt,
     int? locationId,
-    _i2.Location? location,
-    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
-    _i4.MatchInPersonProof? inPersonProof,
-    List<_i5.Post>? posts,
+    _i3.Location? location,
+    List<_i4.PlayerPerfomanceInMatch>? playerPerfomances,
+    _i5.MatchInPersonProof? inPersonProof,
+    List<_i6.Post>? posts,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -123,6 +142,9 @@ abstract class PlayedMatch
       'matchStartedAt': matchStartedAt.toJson(),
       if (matchEstimatedDuration != null)
         'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
+      'scheduledPairingAttemptId': scheduledPairingAttemptId,
+      if (scheduledPairingAttempt != null)
+        'scheduledPairingAttempt': scheduledPairingAttempt?.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
       if (playerPerfomances != null)
@@ -142,6 +164,9 @@ abstract class PlayedMatch
       'matchStartedAt': matchStartedAt.toJson(),
       if (matchEstimatedDuration != null)
         'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
+      'scheduledPairingAttemptId': scheduledPairingAttemptId,
+      if (scheduledPairingAttempt != null)
+        'scheduledPairingAttempt': scheduledPairingAttempt?.toJsonForProtocol(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJsonForProtocol(),
       if (playerPerfomances != null)
@@ -156,12 +181,14 @@ abstract class PlayedMatch
   }
 
   static PlayedMatchInclude include({
-    _i2.LocationInclude? location,
-    _i3.PlayerPerfomanceInMatchIncludeList? playerPerfomances,
-    _i4.MatchInPersonProofInclude? inPersonProof,
-    _i5.PostIncludeList? posts,
+    _i2.MatchSchedulePairingAttemptInclude? scheduledPairingAttempt,
+    _i3.LocationInclude? location,
+    _i4.PlayerPerfomanceInMatchIncludeList? playerPerfomances,
+    _i5.MatchInPersonProofInclude? inPersonProof,
+    _i6.PostIncludeList? posts,
   }) {
     return PlayedMatchInclude._(
+      scheduledPairingAttempt: scheduledPairingAttempt,
       location: location,
       playerPerfomances: playerPerfomances,
       inPersonProof: inPersonProof,
@@ -202,15 +229,19 @@ class _PlayedMatchImpl extends PlayedMatch {
     int? id,
     required DateTime matchStartedAt,
     Duration? matchEstimatedDuration,
+    required int scheduledPairingAttemptId,
+    _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt,
     required int locationId,
-    _i2.Location? location,
-    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
-    _i4.MatchInPersonProof? inPersonProof,
-    List<_i5.Post>? posts,
+    _i3.Location? location,
+    List<_i4.PlayerPerfomanceInMatch>? playerPerfomances,
+    _i5.MatchInPersonProof? inPersonProof,
+    List<_i6.Post>? posts,
   }) : super._(
          id: id,
          matchStartedAt: matchStartedAt,
          matchEstimatedDuration: matchEstimatedDuration,
+         scheduledPairingAttemptId: scheduledPairingAttemptId,
+         scheduledPairingAttempt: scheduledPairingAttempt,
          locationId: locationId,
          location: location,
          playerPerfomances: playerPerfomances,
@@ -226,6 +257,8 @@ class _PlayedMatchImpl extends PlayedMatch {
     Object? id = _Undefined,
     DateTime? matchStartedAt,
     Object? matchEstimatedDuration = _Undefined,
+    int? scheduledPairingAttemptId,
+    Object? scheduledPairingAttempt = _Undefined,
     int? locationId,
     Object? location = _Undefined,
     Object? playerPerfomances = _Undefined,
@@ -238,17 +271,23 @@ class _PlayedMatchImpl extends PlayedMatch {
       matchEstimatedDuration: matchEstimatedDuration is Duration?
           ? matchEstimatedDuration
           : this.matchEstimatedDuration,
+      scheduledPairingAttemptId:
+          scheduledPairingAttemptId ?? this.scheduledPairingAttemptId,
+      scheduledPairingAttempt:
+          scheduledPairingAttempt is _i2.MatchSchedulePairingAttempt?
+          ? scheduledPairingAttempt
+          : this.scheduledPairingAttempt?.copyWith(),
       locationId: locationId ?? this.locationId,
-      location: location is _i2.Location?
+      location: location is _i3.Location?
           ? location
           : this.location?.copyWith(),
-      playerPerfomances: playerPerfomances is List<_i3.PlayerPerfomanceInMatch>?
+      playerPerfomances: playerPerfomances is List<_i4.PlayerPerfomanceInMatch>?
           ? playerPerfomances
           : this.playerPerfomances?.map((e0) => e0.copyWith()).toList(),
-      inPersonProof: inPersonProof is _i4.MatchInPersonProof?
+      inPersonProof: inPersonProof is _i5.MatchInPersonProof?
           ? inPersonProof
           : this.inPersonProof?.copyWith(),
-      posts: posts is List<_i5.Post>?
+      posts: posts is List<_i6.Post>?
           ? posts
           : this.posts?.map((e0) => e0.copyWith()).toList(),
     );
@@ -270,6 +309,12 @@ class PlayedMatchUpdateTable extends _i1.UpdateTable<PlayedMatchTable> {
         value,
       );
 
+  _i1.ColumnValue<int, int> scheduledPairingAttemptId(int value) =>
+      _i1.ColumnValue(
+        table.scheduledPairingAttemptId,
+        value,
+      );
+
   _i1.ColumnValue<int, int> locationId(int value) => _i1.ColumnValue(
     table.locationId,
     value,
@@ -287,6 +332,10 @@ class PlayedMatchTable extends _i1.Table<int?> {
       'matchEstimatedDuration',
       this,
     );
+    scheduledPairingAttemptId = _i1.ColumnInt(
+      'scheduledPairingAttemptId',
+      this,
+    );
     locationId = _i1.ColumnInt(
       'locationId',
       this,
@@ -299,104 +348,123 @@ class PlayedMatchTable extends _i1.Table<int?> {
 
   late final _i1.ColumnDuration matchEstimatedDuration;
 
+  late final _i1.ColumnInt scheduledPairingAttemptId;
+
+  _i2.MatchSchedulePairingAttemptTable? _scheduledPairingAttempt;
+
   late final _i1.ColumnInt locationId;
 
-  _i2.LocationTable? _location;
+  _i3.LocationTable? _location;
 
-  _i3.PlayerPerfomanceInMatchTable? ___playerPerfomances;
+  _i4.PlayerPerfomanceInMatchTable? ___playerPerfomances;
 
-  _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable>? _playerPerfomances;
+  _i1.ManyRelation<_i4.PlayerPerfomanceInMatchTable>? _playerPerfomances;
 
-  _i4.MatchInPersonProofTable? _inPersonProof;
+  _i5.MatchInPersonProofTable? _inPersonProof;
 
-  _i5.PostTable? ___posts;
+  _i6.PostTable? ___posts;
 
-  _i1.ManyRelation<_i5.PostTable>? _posts;
+  _i1.ManyRelation<_i6.PostTable>? _posts;
 
-  _i2.LocationTable get location {
+  _i2.MatchSchedulePairingAttemptTable get scheduledPairingAttempt {
+    if (_scheduledPairingAttempt != null) return _scheduledPairingAttempt!;
+    _scheduledPairingAttempt = _i1.createRelationTable(
+      relationFieldName: 'scheduledPairingAttempt',
+      field: PlayedMatch.t.scheduledPairingAttemptId,
+      foreignField: _i2.MatchSchedulePairingAttempt.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.MatchSchedulePairingAttemptTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    return _scheduledPairingAttempt!;
+  }
+
+  _i3.LocationTable get location {
     if (_location != null) return _location!;
     _location = _i1.createRelationTable(
       relationFieldName: 'location',
       field: PlayedMatch.t.locationId,
-      foreignField: _i2.Location.t.id,
+      foreignField: _i3.Location.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.LocationTable(tableRelation: foreignTableRelation),
+          _i3.LocationTable(tableRelation: foreignTableRelation),
     );
     return _location!;
   }
 
-  _i3.PlayerPerfomanceInMatchTable get __playerPerfomances {
+  _i4.PlayerPerfomanceInMatchTable get __playerPerfomances {
     if (___playerPerfomances != null) return ___playerPerfomances!;
     ___playerPerfomances = _i1.createRelationTable(
       relationFieldName: '__playerPerfomances',
       field: PlayedMatch.t.id,
-      foreignField: _i3.PlayerPerfomanceInMatch.t.playedMatchId,
+      foreignField: _i4.PlayerPerfomanceInMatch.t.playedMatchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
+          _i4.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
     );
     return ___playerPerfomances!;
   }
 
-  _i4.MatchInPersonProofTable get inPersonProof {
+  _i5.MatchInPersonProofTable get inPersonProof {
     if (_inPersonProof != null) return _inPersonProof!;
     _inPersonProof = _i1.createRelationTable(
       relationFieldName: 'inPersonProof',
       field: PlayedMatch.t.id,
-      foreignField: _i4.MatchInPersonProof.t.matchId,
+      foreignField: _i5.MatchInPersonProof.t.matchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i4.MatchInPersonProofTable(tableRelation: foreignTableRelation),
+          _i5.MatchInPersonProofTable(tableRelation: foreignTableRelation),
     );
     return _inPersonProof!;
   }
 
-  _i5.PostTable get __posts {
+  _i6.PostTable get __posts {
     if (___posts != null) return ___posts!;
     ___posts = _i1.createRelationTable(
       relationFieldName: '__posts',
       field: PlayedMatch.t.id,
-      foreignField: _i5.Post.t.attachedMatchId,
+      foreignField: _i6.Post.t.attachedMatchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i5.PostTable(tableRelation: foreignTableRelation),
+          _i6.PostTable(tableRelation: foreignTableRelation),
     );
     return ___posts!;
   }
 
-  _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable> get playerPerfomances {
+  _i1.ManyRelation<_i4.PlayerPerfomanceInMatchTable> get playerPerfomances {
     if (_playerPerfomances != null) return _playerPerfomances!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'playerPerfomances',
       field: PlayedMatch.t.id,
-      foreignField: _i3.PlayerPerfomanceInMatch.t.playedMatchId,
+      foreignField: _i4.PlayerPerfomanceInMatch.t.playedMatchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
+          _i4.PlayerPerfomanceInMatchTable(tableRelation: foreignTableRelation),
     );
-    _playerPerfomances = _i1.ManyRelation<_i3.PlayerPerfomanceInMatchTable>(
+    _playerPerfomances = _i1.ManyRelation<_i4.PlayerPerfomanceInMatchTable>(
       tableWithRelations: relationTable,
-      table: _i3.PlayerPerfomanceInMatchTable(
+      table: _i4.PlayerPerfomanceInMatchTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _playerPerfomances!;
   }
 
-  _i1.ManyRelation<_i5.PostTable> get posts {
+  _i1.ManyRelation<_i6.PostTable> get posts {
     if (_posts != null) return _posts!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'posts',
       field: PlayedMatch.t.id,
-      foreignField: _i5.Post.t.attachedMatchId,
+      foreignField: _i6.Post.t.attachedMatchId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i5.PostTable(tableRelation: foreignTableRelation),
+          _i6.PostTable(tableRelation: foreignTableRelation),
     );
-    _posts = _i1.ManyRelation<_i5.PostTable>(
+    _posts = _i1.ManyRelation<_i6.PostTable>(
       tableWithRelations: relationTable,
-      table: _i5.PostTable(
+      table: _i6.PostTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
@@ -408,11 +476,15 @@ class PlayedMatchTable extends _i1.Table<int?> {
     id,
     matchStartedAt,
     matchEstimatedDuration,
+    scheduledPairingAttemptId,
     locationId,
   ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
+    if (relationField == 'scheduledPairingAttempt') {
+      return scheduledPairingAttempt;
+    }
     if (relationField == 'location') {
       return location;
     }
@@ -431,27 +503,32 @@ class PlayedMatchTable extends _i1.Table<int?> {
 
 class PlayedMatchInclude extends _i1.IncludeObject {
   PlayedMatchInclude._({
-    _i2.LocationInclude? location,
-    _i3.PlayerPerfomanceInMatchIncludeList? playerPerfomances,
-    _i4.MatchInPersonProofInclude? inPersonProof,
-    _i5.PostIncludeList? posts,
+    _i2.MatchSchedulePairingAttemptInclude? scheduledPairingAttempt,
+    _i3.LocationInclude? location,
+    _i4.PlayerPerfomanceInMatchIncludeList? playerPerfomances,
+    _i5.MatchInPersonProofInclude? inPersonProof,
+    _i6.PostIncludeList? posts,
   }) {
+    _scheduledPairingAttempt = scheduledPairingAttempt;
     _location = location;
     _playerPerfomances = playerPerfomances;
     _inPersonProof = inPersonProof;
     _posts = posts;
   }
 
-  _i2.LocationInclude? _location;
+  _i2.MatchSchedulePairingAttemptInclude? _scheduledPairingAttempt;
 
-  _i3.PlayerPerfomanceInMatchIncludeList? _playerPerfomances;
+  _i3.LocationInclude? _location;
 
-  _i4.MatchInPersonProofInclude? _inPersonProof;
+  _i4.PlayerPerfomanceInMatchIncludeList? _playerPerfomances;
 
-  _i5.PostIncludeList? _posts;
+  _i5.MatchInPersonProofInclude? _inPersonProof;
+
+  _i6.PostIncludeList? _posts;
 
   @override
   Map<String, _i1.Include?> get includes => {
+    'scheduledPairingAttempt': _scheduledPairingAttempt,
     'location': _location,
     'playerPerfomances': _playerPerfomances,
     'inPersonProof': _inPersonProof,
@@ -757,7 +834,7 @@ class PlayedMatchAttachRepository {
   Future<void> playerPerfomances(
     _i1.Session session,
     PlayedMatch playedMatch,
-    List<_i3.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
+    List<_i4.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.any((e) => e.id == null)) {
@@ -770,9 +847,9 @@ class PlayedMatchAttachRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch
         .map((e) => e.copyWith(playedMatchId: playedMatch.id))
         .toList();
-    await session.db.update<_i3.PlayerPerfomanceInMatch>(
+    await session.db.update<_i4.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
+      columns: [_i4.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -782,7 +859,7 @@ class PlayedMatchAttachRepository {
   Future<void> posts(
     _i1.Session session,
     PlayedMatch playedMatch,
-    List<_i5.Post> post, {
+    List<_i6.Post> post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.any((e) => e.id == null)) {
@@ -795,9 +872,9 @@ class PlayedMatchAttachRepository {
     var $post = post
         .map((e) => e.copyWith(attachedMatchId: playedMatch.id))
         .toList();
-    await session.db.update<_i5.Post>(
+    await session.db.update<_i6.Post>(
       $post,
-      columns: [_i5.Post.t.attachedMatchId],
+      columns: [_i6.Post.t.attachedMatchId],
       transaction: transaction,
     );
   }
@@ -806,12 +883,37 @@ class PlayedMatchAttachRepository {
 class PlayedMatchAttachRowRepository {
   const PlayedMatchAttachRowRepository._();
 
+  /// Creates a relation between the given [PlayedMatch] and [MatchSchedulePairingAttempt]
+  /// by setting the [PlayedMatch]'s foreign key `scheduledPairingAttemptId` to refer to the [MatchSchedulePairingAttempt].
+  Future<void> scheduledPairingAttempt(
+    _i1.Session session,
+    PlayedMatch playedMatch,
+    _i2.MatchSchedulePairingAttempt scheduledPairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playedMatch.id == null) {
+      throw ArgumentError.notNull('playedMatch.id');
+    }
+    if (scheduledPairingAttempt.id == null) {
+      throw ArgumentError.notNull('scheduledPairingAttempt.id');
+    }
+
+    var $playedMatch = playedMatch.copyWith(
+      scheduledPairingAttemptId: scheduledPairingAttempt.id,
+    );
+    await session.db.updateRow<PlayedMatch>(
+      $playedMatch,
+      columns: [PlayedMatch.t.scheduledPairingAttemptId],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between the given [PlayedMatch] and [Location]
   /// by setting the [PlayedMatch]'s foreign key `locationId` to refer to the [Location].
   Future<void> location(
     _i1.Session session,
     PlayedMatch playedMatch,
-    _i2.Location location, {
+    _i3.Location location, {
     _i1.Transaction? transaction,
   }) async {
     if (playedMatch.id == null) {
@@ -834,7 +936,7 @@ class PlayedMatchAttachRowRepository {
   Future<void> inPersonProof(
     _i1.Session session,
     PlayedMatch playedMatch,
-    _i4.MatchInPersonProof inPersonProof, {
+    _i5.MatchInPersonProof inPersonProof, {
     _i1.Transaction? transaction,
   }) async {
     if (inPersonProof.id == null) {
@@ -845,9 +947,9 @@ class PlayedMatchAttachRowRepository {
     }
 
     var $inPersonProof = inPersonProof.copyWith(matchId: playedMatch.id);
-    await session.db.updateRow<_i4.MatchInPersonProof>(
+    await session.db.updateRow<_i5.MatchInPersonProof>(
       $inPersonProof,
-      columns: [_i4.MatchInPersonProof.t.matchId],
+      columns: [_i5.MatchInPersonProof.t.matchId],
       transaction: transaction,
     );
   }
@@ -857,7 +959,7 @@ class PlayedMatchAttachRowRepository {
   Future<void> playerPerfomances(
     _i1.Session session,
     PlayedMatch playedMatch,
-    _i3.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
+    _i4.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.id == null) {
@@ -870,9 +972,9 @@ class PlayedMatchAttachRowRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
       playedMatchId: playedMatch.id,
     );
-    await session.db.updateRow<_i3.PlayerPerfomanceInMatch>(
+    await session.db.updateRow<_i4.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
+      columns: [_i4.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -882,7 +984,7 @@ class PlayedMatchAttachRowRepository {
   Future<void> posts(
     _i1.Session session,
     PlayedMatch playedMatch,
-    _i5.Post post, {
+    _i6.Post post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.id == null) {
@@ -893,9 +995,9 @@ class PlayedMatchAttachRowRepository {
     }
 
     var $post = post.copyWith(attachedMatchId: playedMatch.id);
-    await session.db.updateRow<_i5.Post>(
+    await session.db.updateRow<_i6.Post>(
       $post,
-      columns: [_i5.Post.t.attachedMatchId],
+      columns: [_i6.Post.t.attachedMatchId],
       transaction: transaction,
     );
   }
@@ -911,7 +1013,7 @@ class PlayedMatchDetachRepository {
   /// the related record.
   Future<void> playerPerfomances(
     _i1.Session session,
-    List<_i3.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
+    List<_i4.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.any((e) => e.id == null)) {
@@ -921,9 +1023,9 @@ class PlayedMatchDetachRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch
         .map((e) => e.copyWith(playedMatchId: null))
         .toList();
-    await session.db.update<_i3.PlayerPerfomanceInMatch>(
+    await session.db.update<_i4.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
+      columns: [_i4.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -935,7 +1037,7 @@ class PlayedMatchDetachRepository {
   /// the related record.
   Future<void> posts(
     _i1.Session session,
-    List<_i5.Post> post, {
+    List<_i6.Post> post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.any((e) => e.id == null)) {
@@ -943,9 +1045,9 @@ class PlayedMatchDetachRepository {
     }
 
     var $post = post.map((e) => e.copyWith(attachedMatchId: null)).toList();
-    await session.db.update<_i5.Post>(
+    await session.db.update<_i6.Post>(
       $post,
-      columns: [_i5.Post.t.attachedMatchId],
+      columns: [_i6.Post.t.attachedMatchId],
       transaction: transaction,
     );
   }
@@ -961,7 +1063,7 @@ class PlayedMatchDetachRowRepository {
   /// the related record.
   Future<void> playerPerfomances(
     _i1.Session session,
-    _i3.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
+    _i4.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.id == null) {
@@ -971,9 +1073,9 @@ class PlayedMatchDetachRowRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
       playedMatchId: null,
     );
-    await session.db.updateRow<_i3.PlayerPerfomanceInMatch>(
+    await session.db.updateRow<_i4.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i3.PlayerPerfomanceInMatch.t.playedMatchId],
+      columns: [_i4.PlayerPerfomanceInMatch.t.playedMatchId],
       transaction: transaction,
     );
   }
@@ -985,7 +1087,7 @@ class PlayedMatchDetachRowRepository {
   /// the related record.
   Future<void> posts(
     _i1.Session session,
-    _i5.Post post, {
+    _i6.Post post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.id == null) {
@@ -993,9 +1095,9 @@ class PlayedMatchDetachRowRepository {
     }
 
     var $post = post.copyWith(attachedMatchId: null);
-    await session.db.updateRow<_i5.Post>(
+    await session.db.updateRow<_i6.Post>(
       $post,
-      columns: [_i5.Post.t.attachedMatchId],
+      columns: [_i6.Post.t.attachedMatchId],
       transaction: transaction,
     );
   }

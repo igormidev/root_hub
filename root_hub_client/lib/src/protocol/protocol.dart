@@ -44,18 +44,20 @@ import 'entities/match_making/match_schedule.dart' as _i31;
 import 'entities/match_making/match_subscription.dart' as _i32;
 import 'entities/others/pagination_metadata.dart' as _i33;
 import 'entities/others/root_hub_exception.dart' as _i34;
-import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
+import 'package:root_hub_client/src/protocol/entities/core/anonymous_player.dart'
     as _i35;
-import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
     as _i36;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
-    as _i37;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
+    as _i37;
+import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
     as _i38;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i39;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _i40;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i41;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match/models/played_matches_pagination.dart';
@@ -509,33 +511,39 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i35.PlayedMatch>) {
+    if (t == List<_i35.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i35.PlayedMatch>(e))
+              .map((e) => deserialize<_i35.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i36.PlayerMatchResultInput>) {
+    if (t == List<_i36.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i36.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i36.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i37.Location>) {
-      return (data as List).map((e) => deserialize<_i37.Location>(e)).toList()
-          as T;
-    }
-    if (t == List<_i38.MatchSchedulePairingAttempt>) {
+    if (t == List<_i37.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i38.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i37.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    try {
-      return _i39.Protocol().deserialize<T>(data, t);
-    } on _i1.DeserializationTypeNotFoundException catch (_) {}
+    if (t == List<_i38.PlayerMatchResultInput>) {
+      return (data as List)
+              .map((e) => deserialize<_i38.PlayerMatchResultInput>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i39.Location>) {
+      return (data as List).map((e) => deserialize<_i39.Location>(e)).toList()
+          as T;
+    }
     try {
       return _i40.Protocol().deserialize<T>(data, t);
+    } on _i1.DeserializationTypeNotFoundException catch (_) {}
+    try {
+      return _i41.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -656,11 +664,11 @@ class Protocol extends _i1.SerializationManager {
       case _i34.RootHubException():
         return 'RootHubException';
     }
-    className = _i39.Protocol().getClassNameForObject(data);
+    className = _i40.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_idp.$className';
     }
-    className = _i40.Protocol().getClassNameForObject(data);
+    className = _i41.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_core.$className';
     }
@@ -774,11 +782,11 @@ class Protocol extends _i1.SerializationManager {
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
-      return _i39.Protocol().deserializeByClassName(data);
+      return _i40.Protocol().deserializeByClassName(data);
     }
     if (dataClassName.startsWith('serverpod_auth_core.')) {
       data['className'] = dataClassName.substring(20);
-      return _i40.Protocol().deserializeByClassName(data);
+      return _i41.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }
@@ -793,10 +801,10 @@ class Protocol extends _i1.SerializationManager {
       return null;
     }
     try {
-      return _i39.Protocol().mapRecordToJson(record);
+      return _i40.Protocol().mapRecordToJson(record);
     } catch (_) {}
     try {
-      return _i40.Protocol().mapRecordToJson(record);
+      return _i41.Protocol().mapRecordToJson(record);
     } catch (_) {}
     throw Exception('Unsupported record type ${record.runtimeType}');
   }

@@ -30,29 +30,31 @@ import 'package:root_hub_client/src/protocol/api/community/models/comments_pagin
     as _i11;
 import 'package:root_hub_client/src/protocol/api/community/models/post_pagination.dart'
     as _i12;
-import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
+import 'package:root_hub_client/src/protocol/entities/core/anonymous_player.dart'
     as _i13;
-import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
     as _i14;
-import 'package:root_hub_client/src/protocol/api/match_chat/models/match_chat_messages_pagination.dart'
-    as _i15;
-import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
-    as _i16;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
+    as _i15;
+import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
+    as _i16;
+import 'package:root_hub_client/src/protocol/api/match_chat/models/match_chat_messages_pagination.dart'
     as _i17;
-import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
     as _i18;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
+import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
     as _i19;
-import 'package:root_hub_client/src/protocol/api/match_making/models/match_schedule_info.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i20;
-import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/match_schedule_info.dart'
     as _i21;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
     as _i22;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i23;
-import 'protocol.dart' as _i24;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i24;
+import 'protocol.dart' as _i25;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -255,18 +257,78 @@ class EndpointGetPosts extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointCreateAnonymousPlayer extends _i1.EndpointRef {
+  EndpointCreateAnonymousPlayer(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'createAnonymousPlayer';
+
+  _i2.Future<_i13.AnonymousPlayer> v1({required String name}) =>
+      caller.callServerEndpoint<_i13.AnonymousPlayer>(
+        'createAnonymousPlayer',
+        'v1',
+        {'name': name},
+      );
+}
+
+/// {@category Endpoint}
+class EndpointGetMyAnonymousPlayers extends _i1.EndpointRef {
+  EndpointGetMyAnonymousPlayers(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getMyAnonymousPlayers';
+
+  _i2.Future<List<_i13.AnonymousPlayer>> v1() =>
+      caller.callServerEndpoint<List<_i13.AnonymousPlayer>>(
+        'getMyAnonymousPlayers',
+        'v1',
+        {},
+      );
+}
+
+/// {@category Endpoint}
 class EndpointGetMyMatches extends _i1.EndpointRef {
   EndpointGetMyMatches(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'getMyMatches';
 
-  _i2.Future<List<_i13.PlayedMatch>> v1() =>
-      caller.callServerEndpoint<List<_i13.PlayedMatch>>(
+  _i2.Future<List<_i14.PlayedMatch>> v1() =>
+      caller.callServerEndpoint<List<_i14.PlayedMatch>>(
         'getMyMatches',
         'v1',
         {},
       );
+}
+
+/// {@category Endpoint}
+class EndpointGetPendingMatchResults extends _i1.EndpointRef {
+  EndpointGetPendingMatchResults(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getPendingMatchResults';
+
+  _i2.Future<List<_i15.MatchSchedulePairingAttempt>> v1() =>
+      caller.callServerEndpoint<List<_i15.MatchSchedulePairingAttempt>>(
+        'getPendingMatchResults',
+        'v1',
+        {},
+      );
+}
+
+/// {@category Endpoint}
+class EndpointGetPendingMatchResultsCount extends _i1.EndpointRef {
+  EndpointGetPendingMatchResultsCount(_i1.EndpointCaller caller)
+    : super(caller);
+
+  @override
+  String get name => 'getPendingMatchResultsCount';
+
+  _i2.Future<int> v1() => caller.callServerEndpoint<int>(
+    'getPendingMatchResultsCount',
+    'v1',
+    {},
+  );
 }
 
 /// {@category Endpoint}
@@ -276,13 +338,19 @@ class EndpointRegisterMatchData extends _i1.EndpointRef {
   @override
   String get name => 'registerMatchData';
 
-  _i2.Future<_i13.PlayedMatch> v1({
+  _i2.Future<_i14.PlayedMatch> v1({
     required DateTime matchStartedAt,
     required Duration matchEstimatedDuration,
     required int locationId,
     required int scheduledPairingAttemptId,
-    required List<_i14.PlayerMatchResultInput> players,
-  }) => caller.callServerEndpoint<_i13.PlayedMatch>(
+    required List<_i16.PlayerMatchResultInput> players,
+    required _i7.ByteData groupPhotoBytes,
+    String? groupPhotoFileName,
+    String? groupPhotoContentType,
+    required _i7.ByteData boardPhotoBytes,
+    String? boardPhotoFileName,
+    String? boardPhotoContentType,
+  }) => caller.callServerEndpoint<_i14.PlayedMatch>(
     'registerMatchData',
     'v1',
     {
@@ -291,6 +359,12 @@ class EndpointRegisterMatchData extends _i1.EndpointRef {
       'locationId': locationId,
       'scheduledPairingAttemptId': scheduledPairingAttemptId,
       'players': players,
+      'groupPhotoBytes': groupPhotoBytes,
+      'groupPhotoFileName': groupPhotoFileName,
+      'groupPhotoContentType': groupPhotoContentType,
+      'boardPhotoBytes': boardPhotoBytes,
+      'boardPhotoFileName': boardPhotoFileName,
+      'boardPhotoContentType': boardPhotoContentType,
     },
   );
 }
@@ -302,10 +376,10 @@ class EndpointGetMatchChatMessage extends _i1.EndpointRef {
   @override
   String get name => 'getMatchChatMessage';
 
-  _i2.Future<_i15.MatchChatMessagesPagination> v1({
+  _i2.Future<_i17.MatchChatMessagesPagination> v1({
     required int scheduledMatchId,
     required int page,
-  }) => caller.callServerEndpoint<_i15.MatchChatMessagesPagination>(
+  }) => caller.callServerEndpoint<_i17.MatchChatMessagesPagination>(
     'getMatchChatMessage',
     'v1',
     {
@@ -322,13 +396,13 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
   @override
   String get name => 'sendMatchChatMessage';
 
-  _i2.Future<_i16.MatchChatMessage> v1({
+  _i2.Future<_i18.MatchChatMessage> v1({
     required int scheduledMatchId,
     required String content,
     _i7.ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
-  }) => caller.callServerEndpoint<_i16.MatchChatMessage>(
+  }) => caller.callServerEndpoint<_i18.MatchChatMessage>(
     'sendMatchChatMessage',
     'v1',
     {
@@ -348,15 +422,15 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
   @override
   String get name => 'createMatchSchedule';
 
-  _i2.Future<_i17.MatchSchedulePairingAttempt> v1({
+  _i2.Future<_i15.MatchSchedulePairingAttempt> v1({
     required String title,
     String? description,
-    required _i18.MatchPodium minAmountOfPlayers,
-    required _i18.MatchPodium maxAmountOfPlayers,
+    required _i19.MatchPodium minAmountOfPlayers,
+    required _i19.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     required bool hostWillPlay,
-  }) => caller.callServerEndpoint<_i17.MatchSchedulePairingAttempt>(
+  }) => caller.callServerEndpoint<_i15.MatchSchedulePairingAttempt>(
     'createMatchSchedule',
     'v1',
     {
@@ -382,8 +456,8 @@ class EndpointEditMatchSchedule extends _i1.EndpointRef {
     required int scheduledMatchId,
     required String title,
     String? description,
-    required _i18.MatchPodium minAmountOfPlayers,
-    required _i18.MatchPodium maxAmountOfPlayers,
+    required _i19.MatchPodium minAmountOfPlayers,
+    required _i19.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     bool? closedForSubscriptions,
   }) => caller.callServerEndpoint<void>(
@@ -408,10 +482,10 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
   @override
   String get name => 'getMatchLocation';
 
-  _i2.Future<List<_i19.Location>> v1({
+  _i2.Future<List<_i20.Location>> v1({
     required String query,
     required int page,
-  }) => caller.callServerEndpoint<List<_i19.Location>>(
+  }) => caller.callServerEndpoint<List<_i20.Location>>(
     'getMatchLocation',
     'v1',
     {
@@ -428,8 +502,8 @@ class EndpointGetMatchScheduleInfo extends _i1.EndpointRef {
   @override
   String get name => 'getMatchScheduleInfo';
 
-  _i2.Future<_i20.MatchScheduleInfo> v1({required int scheduledMatchId}) =>
-      caller.callServerEndpoint<_i20.MatchScheduleInfo>(
+  _i2.Future<_i21.MatchScheduleInfo> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i21.MatchScheduleInfo>(
         'getMatchScheduleInfo',
         'v1',
         {'scheduledMatchId': scheduledMatchId},
@@ -443,8 +517,8 @@ class EndpointGetPlayerSubscribedMatches extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerSubscribedMatches';
 
-  _i2.Future<_i21.SubscribedMatchesPagination> v1({required int page}) =>
-      caller.callServerEndpoint<_i21.SubscribedMatchesPagination>(
+  _i2.Future<_i22.SubscribedMatchesPagination> v1({required int page}) =>
+      caller.callServerEndpoint<_i22.SubscribedMatchesPagination>(
         'getPlayerSubscribedMatches',
         'v1',
         {'page': page},
@@ -458,8 +532,8 @@ class EndpointGetTablesInArea extends _i1.EndpointRef {
   @override
   String get name => 'getTablesInArea';
 
-  _i2.Future<List<_i17.MatchSchedulePairingAttempt>> v1() =>
-      caller.callServerEndpoint<List<_i17.MatchSchedulePairingAttempt>>(
+  _i2.Future<List<_i15.MatchSchedulePairingAttempt>> v1() =>
+      caller.callServerEndpoint<List<_i15.MatchSchedulePairingAttempt>>(
         'getTablesInArea',
         'v1',
         {},
@@ -493,8 +567,8 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
   @override
   String get name => 'subscribeToMatch';
 
-  _i2.Future<_i22.MatchSubscription> v1({required int scheduledMatchId}) =>
-      caller.callServerEndpoint<_i22.MatchSubscription>(
+  _i2.Future<_i23.MatchSubscription> v1({required int scheduledMatchId}) =>
+      caller.callServerEndpoint<_i23.MatchSubscription>(
         'subscribeToMatch',
         'v1',
         {'scheduledMatchId': scheduledMatchId},
@@ -520,7 +594,7 @@ class EndpointUnsubscribeFromMatch extends _i1.EndpointRef {
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i23.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i24.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -702,7 +776,7 @@ class EndpointEmailIdp extends _i23.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i23.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i24.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -773,11 +847,11 @@ class EndpointJwtRefresh extends _i6.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i23.Caller(client);
+    serverpod_auth_idp = _i24.Caller(client);
     serverpod_auth_core = _i6.Caller(client);
   }
 
-  late final _i23.Caller serverpod_auth_idp;
+  late final _i24.Caller serverpod_auth_idp;
 
   late final _i6.Caller serverpod_auth_core;
 }
@@ -802,7 +876,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i24.Protocol(),
+         _i25.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -819,7 +893,11 @@ class Client extends _i1.ServerpodClientShared {
     createPost = EndpointCreatePost(this);
     getComments = EndpointGetComments(this);
     getPosts = EndpointGetPosts(this);
+    createAnonymousPlayer = EndpointCreateAnonymousPlayer(this);
+    getMyAnonymousPlayers = EndpointGetMyAnonymousPlayers(this);
     getMyMatches = EndpointGetMyMatches(this);
+    getPendingMatchResults = EndpointGetPendingMatchResults(this);
+    getPendingMatchResultsCount = EndpointGetPendingMatchResultsCount(this);
     registerMatchData = EndpointRegisterMatchData(this);
     getMatchChatMessage = EndpointGetMatchChatMessage(this);
     sendMatchChatMessage = EndpointSendMatchChatMessage(this);
@@ -854,7 +932,15 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetPosts getPosts;
 
+  late final EndpointCreateAnonymousPlayer createAnonymousPlayer;
+
+  late final EndpointGetMyAnonymousPlayers getMyAnonymousPlayers;
+
   late final EndpointGetMyMatches getMyMatches;
+
+  late final EndpointGetPendingMatchResults getPendingMatchResults;
+
+  late final EndpointGetPendingMatchResultsCount getPendingMatchResultsCount;
 
   late final EndpointRegisterMatchData registerMatchData;
 
@@ -898,7 +984,11 @@ class Client extends _i1.ServerpodClientShared {
     'createPost': createPost,
     'getComments': getComments,
     'getPosts': getPosts,
+    'createAnonymousPlayer': createAnonymousPlayer,
+    'getMyAnonymousPlayers': getMyAnonymousPlayers,
     'getMyMatches': getMyMatches,
+    'getPendingMatchResults': getPendingMatchResults,
+    'getPendingMatchResultsCount': getPendingMatchResultsCount,
     'registerMatchData': registerMatchData,
     'getMatchChatMessage': getMatchChatMessage,
     'sendMatchChatMessage': sendMatchChatMessage,

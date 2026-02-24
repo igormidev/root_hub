@@ -11,17 +11,20 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import '../../entities/match_making/location.dart' as _i2;
-import '../../entities/match/player_perfomance_in_match.dart' as _i3;
-import '../../entities/match/match_in_person_proof.dart' as _i4;
-import '../../entities/community/post.dart' as _i5;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i6;
+import '../../entities/match_making/match_schedule.dart' as _i2;
+import '../../entities/match_making/location.dart' as _i3;
+import '../../entities/match/player_perfomance_in_match.dart' as _i4;
+import '../../entities/match/match_in_person_proof.dart' as _i5;
+import '../../entities/community/post.dart' as _i6;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i7;
 
 abstract class PlayedMatch implements _i1.SerializableModel {
   PlayedMatch._({
     this.id,
     required this.matchStartedAt,
     this.matchEstimatedDuration,
+    required this.scheduledPairingAttemptId,
+    this.scheduledPairingAttempt,
     required this.locationId,
     this.location,
     this.playerPerfomances,
@@ -33,11 +36,13 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     int? id,
     required DateTime matchStartedAt,
     Duration? matchEstimatedDuration,
+    required int scheduledPairingAttemptId,
+    _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt,
     required int locationId,
-    _i2.Location? location,
-    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
-    _i4.MatchInPersonProof? inPersonProof,
-    List<_i5.Post>? posts,
+    _i3.Location? location,
+    List<_i4.PlayerPerfomanceInMatch>? playerPerfomances,
+    _i5.MatchInPersonProof? inPersonProof,
+    List<_i6.Post>? posts,
   }) = _PlayedMatchImpl;
 
   factory PlayedMatch.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -52,25 +57,33 @@ abstract class PlayedMatch implements _i1.SerializableModel {
           : _i1.DurationJsonExtension.fromJson(
               jsonSerialization['matchEstimatedDuration'],
             ),
+      scheduledPairingAttemptId:
+          jsonSerialization['scheduledPairingAttemptId'] as int,
+      scheduledPairingAttempt:
+          jsonSerialization['scheduledPairingAttempt'] == null
+          ? null
+          : _i7.Protocol().deserialize<_i2.MatchSchedulePairingAttempt>(
+              jsonSerialization['scheduledPairingAttempt'],
+            ),
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
-          : _i6.Protocol().deserialize<_i2.Location>(
+          : _i7.Protocol().deserialize<_i3.Location>(
               jsonSerialization['location'],
             ),
       playerPerfomances: jsonSerialization['playerPerfomances'] == null
           ? null
-          : _i6.Protocol().deserialize<List<_i3.PlayerPerfomanceInMatch>>(
+          : _i7.Protocol().deserialize<List<_i4.PlayerPerfomanceInMatch>>(
               jsonSerialization['playerPerfomances'],
             ),
       inPersonProof: jsonSerialization['inPersonProof'] == null
           ? null
-          : _i6.Protocol().deserialize<_i4.MatchInPersonProof>(
+          : _i7.Protocol().deserialize<_i5.MatchInPersonProof>(
               jsonSerialization['inPersonProof'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i6.Protocol().deserialize<List<_i5.Post>>(
+          : _i7.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
     );
@@ -85,15 +98,19 @@ abstract class PlayedMatch implements _i1.SerializableModel {
 
   Duration? matchEstimatedDuration;
 
+  int scheduledPairingAttemptId;
+
+  _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt;
+
   int locationId;
 
-  _i2.Location? location;
+  _i3.Location? location;
 
-  List<_i3.PlayerPerfomanceInMatch>? playerPerfomances;
+  List<_i4.PlayerPerfomanceInMatch>? playerPerfomances;
 
-  _i4.MatchInPersonProof? inPersonProof;
+  _i5.MatchInPersonProof? inPersonProof;
 
-  List<_i5.Post>? posts;
+  List<_i6.Post>? posts;
 
   /// Returns a shallow copy of this [PlayedMatch]
   /// with some or all fields replaced by the given arguments.
@@ -102,11 +119,13 @@ abstract class PlayedMatch implements _i1.SerializableModel {
     int? id,
     DateTime? matchStartedAt,
     Duration? matchEstimatedDuration,
+    int? scheduledPairingAttemptId,
+    _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt,
     int? locationId,
-    _i2.Location? location,
-    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
-    _i4.MatchInPersonProof? inPersonProof,
-    List<_i5.Post>? posts,
+    _i3.Location? location,
+    List<_i4.PlayerPerfomanceInMatch>? playerPerfomances,
+    _i5.MatchInPersonProof? inPersonProof,
+    List<_i6.Post>? posts,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -116,6 +135,9 @@ abstract class PlayedMatch implements _i1.SerializableModel {
       'matchStartedAt': matchStartedAt.toJson(),
       if (matchEstimatedDuration != null)
         'matchEstimatedDuration': matchEstimatedDuration?.toJson(),
+      'scheduledPairingAttemptId': scheduledPairingAttemptId,
+      if (scheduledPairingAttempt != null)
+        'scheduledPairingAttempt': scheduledPairingAttempt?.toJson(),
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
       if (playerPerfomances != null)
@@ -140,15 +162,19 @@ class _PlayedMatchImpl extends PlayedMatch {
     int? id,
     required DateTime matchStartedAt,
     Duration? matchEstimatedDuration,
+    required int scheduledPairingAttemptId,
+    _i2.MatchSchedulePairingAttempt? scheduledPairingAttempt,
     required int locationId,
-    _i2.Location? location,
-    List<_i3.PlayerPerfomanceInMatch>? playerPerfomances,
-    _i4.MatchInPersonProof? inPersonProof,
-    List<_i5.Post>? posts,
+    _i3.Location? location,
+    List<_i4.PlayerPerfomanceInMatch>? playerPerfomances,
+    _i5.MatchInPersonProof? inPersonProof,
+    List<_i6.Post>? posts,
   }) : super._(
          id: id,
          matchStartedAt: matchStartedAt,
          matchEstimatedDuration: matchEstimatedDuration,
+         scheduledPairingAttemptId: scheduledPairingAttemptId,
+         scheduledPairingAttempt: scheduledPairingAttempt,
          locationId: locationId,
          location: location,
          playerPerfomances: playerPerfomances,
@@ -164,6 +190,8 @@ class _PlayedMatchImpl extends PlayedMatch {
     Object? id = _Undefined,
     DateTime? matchStartedAt,
     Object? matchEstimatedDuration = _Undefined,
+    int? scheduledPairingAttemptId,
+    Object? scheduledPairingAttempt = _Undefined,
     int? locationId,
     Object? location = _Undefined,
     Object? playerPerfomances = _Undefined,
@@ -176,17 +204,23 @@ class _PlayedMatchImpl extends PlayedMatch {
       matchEstimatedDuration: matchEstimatedDuration is Duration?
           ? matchEstimatedDuration
           : this.matchEstimatedDuration,
+      scheduledPairingAttemptId:
+          scheduledPairingAttemptId ?? this.scheduledPairingAttemptId,
+      scheduledPairingAttempt:
+          scheduledPairingAttempt is _i2.MatchSchedulePairingAttempt?
+          ? scheduledPairingAttempt
+          : this.scheduledPairingAttempt?.copyWith(),
       locationId: locationId ?? this.locationId,
-      location: location is _i2.Location?
+      location: location is _i3.Location?
           ? location
           : this.location?.copyWith(),
-      playerPerfomances: playerPerfomances is List<_i3.PlayerPerfomanceInMatch>?
+      playerPerfomances: playerPerfomances is List<_i4.PlayerPerfomanceInMatch>?
           ? playerPerfomances
           : this.playerPerfomances?.map((e0) => e0.copyWith()).toList(),
-      inPersonProof: inPersonProof is _i4.MatchInPersonProof?
+      inPersonProof: inPersonProof is _i5.MatchInPersonProof?
           ? inPersonProof
           : this.inPersonProof?.copyWith(),
-      posts: posts is List<_i5.Post>?
+      posts: posts is List<_i6.Post>?
           ? posts
           : this.posts?.map((e0) => e0.copyWith()).toList(),
     );

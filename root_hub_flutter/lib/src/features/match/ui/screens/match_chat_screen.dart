@@ -124,7 +124,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
           IconButton(
             tooltip: 'Table info',
             icon: const Icon(Icons.info_outline_rounded),
-            onPressed: () => _openTableInfoSheet(context),
+            onPressed: _openTableInfoSheet,
           ),
         ],
       ),
@@ -415,7 +415,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     }
   }
 
-  Future<void> _openTableInfoSheet(BuildContext context) async {
+  Future<void> _openTableInfoSheet() async {
     final unsubscribed = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
@@ -430,9 +430,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
 
     if (unsubscribed == true && mounted) {
       await ref.read(matchTablesProvider.notifier).refresh();
-      if (mounted) {
-        context.pop();
+      if (!mounted) {
+        return;
       }
+      context.pop();
     }
   }
 

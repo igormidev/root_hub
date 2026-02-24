@@ -49,14 +49,16 @@ import 'entities/match_making/match_schedule.dart' as _i34;
 import 'entities/match_making/match_subscription.dart' as _i35;
 import 'entities/others/pagination_metadata.dart' as _i36;
 import 'entities/others/root_hub_exception.dart' as _i37;
-import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
+import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
     as _i38;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i39;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
-    as _i40;
 import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
+    as _i40;
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i41;
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+    as _i42;
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
 export 'api/match/models/played_matches_pagination.dart';
@@ -1097,6 +1099,12 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'Duration?',
         ),
         _i2.ColumnDefinition(
+          name: 'scheduledPairingAttemptId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
           name: 'locationId',
           columnType: _i2.ColumnType.bigint,
           isNullable: false,
@@ -1106,6 +1114,16 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'played_match_fk_0',
+          columns: ['scheduledPairingAttemptId'],
+          referenceTable: 'match_schedule_pairing_attempt',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'played_match_fk_1',
           columns: ['locationId'],
           referenceTable: 'locations',
           referenceTableSchema: 'public',
@@ -1128,6 +1146,19 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'played_match_scheduled_pairing_attempt_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'scheduledPairingAttemptId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
         ),
         _i2.IndexDefinition(
           indexName: 'played_match_location_id_idx',
@@ -2019,26 +2050,32 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i38.PlayedMatch>) {
+    if (t == List<_i38.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i38.PlayedMatch>(e))
+              .map((e) => deserialize<_i38.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i39.PlayerMatchResultInput>) {
+    if (t == List<_i39.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i39.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i39.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i40.Location>) {
-      return (data as List).map((e) => deserialize<_i40.Location>(e)).toList()
+    if (t == List<_i40.MatchSchedulePairingAttempt>) {
+      return (data as List)
+              .map((e) => deserialize<_i40.MatchSchedulePairingAttempt>(e))
+              .toList()
           as T;
     }
-    if (t == List<_i41.MatchSchedulePairingAttempt>) {
+    if (t == List<_i41.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i41.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i41.PlayerMatchResultInput>(e))
               .toList()
+          as T;
+    }
+    if (t == List<_i42.Location>) {
+      return (data as List).map((e) => deserialize<_i42.Location>(e)).toList()
           as T;
     }
     try {

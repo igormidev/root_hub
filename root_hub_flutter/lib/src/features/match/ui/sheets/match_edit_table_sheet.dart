@@ -436,7 +436,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: _isSaving ? null : () => _saveChanges(context),
+                    onPressed: _isSaving ? null : _saveChanges,
                     style: FilledButton.styleFrom(
                       minimumSize: const Size(double.infinity, 52),
                       maximumSize: const Size(double.infinity, 52),
@@ -507,7 +507,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     });
   }
 
-  Future<void> _saveChanges(BuildContext context) async {
+  Future<void> _saveChanges() async {
     final normalizedTitle = _titleController.text.trim();
     if (normalizedTitle.isEmpty) {
       await showErrorDialog(

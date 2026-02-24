@@ -18,7 +18,15 @@ getComments:
   - v1:
 getPosts:
   - v1:
+createAnonymousPlayer:
+  - v1:
+getMyAnonymousPlayers:
+  - v1:
 getMyMatches:
+  - v1:
+getPendingMatchResults:
+  - v1:
+getPendingMatchResultsCount:
   - v1:
 registerMatchData:
   - v1:
