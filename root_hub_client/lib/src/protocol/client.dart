@@ -372,6 +372,34 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointEditMatchSchedule extends _i1.EndpointRef {
+  EndpointEditMatchSchedule(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'editMatchSchedule';
+
+  _i2.Future<void> v1({
+    required int scheduledMatchId,
+    required String title,
+    String? description,
+    required _i18.MatchPodium minAmountOfPlayers,
+    required _i18.MatchPodium maxAmountOfPlayers,
+    required DateTime attemptedAt,
+  }) => caller.callServerEndpoint<void>(
+    'editMatchSchedule',
+    'v1',
+    {
+      'scheduledMatchId': scheduledMatchId,
+      'title': title,
+      'description': description,
+      'minAmountOfPlayers': minAmountOfPlayers,
+      'maxAmountOfPlayers': maxAmountOfPlayers,
+      'attemptedAt': attemptedAt,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointGetMatchLocation extends _i1.EndpointRef {
   EndpointGetMatchLocation(_i1.EndpointCaller caller) : super(caller);
 
@@ -794,6 +822,7 @@ class Client extends _i1.ServerpodClientShared {
     getMatchChatMessage = EndpointGetMatchChatMessage(this);
     sendMatchChatMessage = EndpointSendMatchChatMessage(this);
     createMatchSchedule = EndpointCreateMatchSchedule(this);
+    editMatchSchedule = EndpointEditMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
     getMatchScheduleInfo = EndpointGetMatchScheduleInfo(this);
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
@@ -833,6 +862,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointCreateMatchSchedule createMatchSchedule;
 
+  late final EndpointEditMatchSchedule editMatchSchedule;
+
   late final EndpointGetMatchLocation getMatchLocation;
 
   late final EndpointGetMatchScheduleInfo getMatchScheduleInfo;
@@ -870,6 +901,7 @@ class Client extends _i1.ServerpodClientShared {
     'getMatchChatMessage': getMatchChatMessage,
     'sendMatchChatMessage': sendMatchChatMessage,
     'createMatchSchedule': createMatchSchedule,
+    'editMatchSchedule': editMatchSchedule,
     'getMatchLocation': getMatchLocation,
     'getMatchScheduleInfo': getMatchScheduleInfo,
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,

@@ -227,6 +227,25 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       state.scheduledTime.minute,
     );
 
+    final now = DateTime.now();
+    final minAllowedTime = now.add(const Duration(minutes: 10));
+    if (attemptedAt.isBefore(minAllowedTime)) {
+      return RootHubException(
+        title: 'Time is too soon',
+        description:
+            'The scheduled time must be at least 10 minutes in the future.',
+      );
+    }
+
+    final maxAllowedTime = now.add(const Duration(days: 50));
+    if (attemptedAt.isAfter(maxAllowedTime)) {
+      return RootHubException(
+        title: 'Date is too far',
+        description:
+            'The scheduled time cannot be more than 50 days in the future.',
+      );
+    }
+
     state = state.copyWith(
       isCreatingTable: true,
       createTableError: null,

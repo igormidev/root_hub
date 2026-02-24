@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_state.dart';
@@ -123,6 +124,38 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
 
   void clearActionError() {
     state = state.copyWith(actionError: null);
+  }
+
+  Future<RootHubException?> editMatchSchedule({
+    required int scheduledMatchId,
+    required String title,
+    String? description,
+    required int minPlayers,
+    required int maxPlayers,
+    required DateTime attemptedAt,
+  }) async {
+    try {
+      await ref
+          .read(clientProvider)
+          .editMatchSchedule
+          .v1(
+            scheduledMatchId: scheduledMatchId,
+            title: title,
+            description: description,
+            minAmountOfPlayers: matchPodiumFromPlayerCount(minPlayers),
+            maxAmountOfPlayers: matchPodiumFromPlayerCount(maxPlayers),
+            attemptedAt: attemptedAt,
+          );
+      _tableInfoCache.remove(scheduledMatchId);
+      return null;
+    } on RootHubException catch (error) {
+      return error;
+    } catch (_) {
+      return RootHubException(
+        title: 'Unable to update table',
+        description: 'An unexpected error occurred while saving changes.',
+      );
+    }
   }
 
   Future<MatchScheduleInfo> getTableDetails(

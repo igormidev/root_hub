@@ -28,6 +28,8 @@ sendMatchChatMessage:
   - v1:
 createMatchSchedule:
   - v1:
+editMatchSchedule:
+  - v1:
 getMatchLocation:
   - v1:
 getMatchScheduleInfo:

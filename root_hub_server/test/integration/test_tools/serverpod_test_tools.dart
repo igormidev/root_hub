@@ -186,6 +186,8 @@ class TestEndpoints {
 
   late final _CreateMatchSchedule createMatchSchedule;
 
+  late final _EditMatchSchedule editMatchSchedule;
+
   late final _GetMatchLocation getMatchLocation;
 
   late final _GetMatchScheduleInfo getMatchScheduleInfo;
@@ -263,6 +265,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     createMatchSchedule = _CreateMatchSchedule(
+      endpoints,
+      serializationManager,
+    );
+    editMatchSchedule = _EditMatchSchedule(
       endpoints,
       serializationManager,
     );
@@ -1037,6 +1043,60 @@ class _CreateMatchSchedule {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i18.MatchSchedulePairingAttempt>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _EditMatchSchedule {
+  _EditMatchSchedule(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int scheduledMatchId,
+    required String title,
+    String? description,
+    required _i19.MatchPodium minAmountOfPlayers,
+    required _i19.MatchPodium maxAmountOfPlayers,
+    required DateTime attemptedAt,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'editMatchSchedule',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'editMatchSchedule',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'scheduledMatchId': scheduledMatchId,
+            'title': title,
+            'description': description,
+            'minAmountOfPlayers': minAmountOfPlayers,
+            'maxAmountOfPlayers': maxAmountOfPlayers,
+            'attemptedAt': attemptedAt,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

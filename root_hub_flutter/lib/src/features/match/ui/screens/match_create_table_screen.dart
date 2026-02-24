@@ -56,15 +56,21 @@ class _MatchCreateTableScreenState
         .setDescription(_descriptionController.text);
   }
 
+  static const _maxScheduleDays = 50;
+
   Future<void> _pickDate() async {
     final state = ref.read(matchCreateTableProvider);
     final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final maxDate = today.add(const Duration(days: _maxScheduleDays));
 
     final selectedDate = await showDatePicker(
       context: context,
-      initialDate: state.scheduledDate,
-      firstDate: DateTime(now.year, now.month, now.day),
-      lastDate: DateTime(now.year + 2),
+      initialDate: state.scheduledDate.isAfter(maxDate)
+          ? today
+          : state.scheduledDate,
+      firstDate: today,
+      lastDate: maxDate,
       helpText: 'Select game day',
     );
 

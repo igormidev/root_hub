@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -78,6 +79,14 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         ? widget.matchTitle!.trim()
         : 'Match #${widget.scheduledMatchId} Chat';
 
+    final tablesState = ref.watch(matchTablesProvider);
+    final currentTable = tablesState.tables
+        .where((t) => t.id == widget.scheduledMatchId)
+        .firstOrNull;
+    final isHost =
+        authenticatedPlayer?.id != null &&
+        currentTable?.playerDataId == authenticatedPlayer?.id;
+
     if (chatState.actionError != null && !_isShowingActionErrorDialog) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         unawaited(_showActionErrorDialog(chatState.actionError!));
@@ -105,6 +114,12 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                   ),
                 ),
               ),
+            ),
+          if (isHost)
+            IconButton(
+              tooltip: 'Edit table',
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => _openEditSheet(context),
             ),
           IconButton(
             tooltip: 'Table info',
@@ -380,6 +395,24 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _openEditSheet(BuildContext context) async {
+    final edited = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return MatchEditTableSheet(
+          scheduledMatchId: widget.scheduledMatchId,
+        );
+      },
+    );
+
+    if (edited == true && mounted) {
+      await ref.read(matchTablesProvider.notifier).refresh();
+    }
   }
 
   Future<void> _openTableInfoSheet(BuildContext context) async {

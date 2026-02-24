@@ -6,6 +6,9 @@ class CreateMatchSchedule extends Endpoint {
   @override
   bool get requireLogin => true;
 
+  static const _maxScheduleDays = 50;
+  static const _minScheduleMinutes = 10;
+
   Future<MatchSchedulePairingAttempt> v1(
     Session session, {
     required String title,
@@ -32,6 +35,29 @@ class CreateMatchSchedule extends Endpoint {
           throw RootHubEndpointError.invalidRequest(
             description:
                 'Players range must stay between 2 and 6, with min not greater than max.',
+          );
+        }
+
+        final now = DateTime.now();
+        final minAllowedTime = now.add(
+          const Duration(minutes: _minScheduleMinutes),
+        );
+        if (attemptedAt.isBefore(minAllowedTime)) {
+          throw RootHubEndpointError.invalidRequest(
+            description:
+                'The scheduled time must be at least '
+                '$_minScheduleMinutes minutes in the future.',
+          );
+        }
+
+        final maxAllowedTime = now.add(
+          const Duration(days: _maxScheduleDays),
+        );
+        if (attemptedAt.isAfter(maxAllowedTime)) {
+          throw RootHubEndpointError.invalidRequest(
+            description:
+                'The scheduled time cannot be more than '
+                '$_maxScheduleDays days in the future.',
           );
         }
 
