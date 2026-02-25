@@ -110,8 +110,12 @@ result.fold(
 ```
 
 ## Widget and Component Rules (Mandatory)
-- Every UI component must live in its own file.
+- EVERY UI component must live in its own file.
 - Every file in feature UI must contain at most **one widget class**.
+- NEVER create top-level functions or class helper methods that return a widget subtree (`Widget`, widget subclasses, or equivalent).
+- The only allowed widget-returning method is Flutter framework-required `build` overrides.
+- If a UI block has only 5 lines, still create a dedicated widget class in a dedicated file.
+- Do not bypass component-splitting rules with private `_buildX` helper methods.
 - Prefer `StatelessWidget` for feature UI files.
 - Keep mutable/business state in Riverpod providers instead of widget-local state whenever possible.
 
@@ -142,6 +146,10 @@ Rules:
     - `_item.dart` => class ends with `Item`
     - `_page.dart` => class ends with `Page`
     - `_view.dart` => class ends with `View`
+- `no_widget_returning_function`
+  - Scope: all `lib/**` Flutter source files (except generated files).
+  - Enforces: helper functions/methods cannot return widgets. Extract each UI block into a dedicated widget class in its own file.
+  - Allowed exception: Flutter framework-required `build` overrides.
 
 These rules are intentionally strict to force component separation and predictable naming.
 
