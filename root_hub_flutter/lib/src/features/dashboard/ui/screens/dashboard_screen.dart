@@ -8,10 +8,9 @@ import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_display_name_dialog.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_location_dialog.dart';
+import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_bottom_tab_item_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_widget.dart';
-import 'package:root_hub_flutter/src/features/home/ui/screens/home_screen.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_screen.dart';
-import 'package:root_hub_flutter/src/features/shop/ui/screens/shop_screen.dart';
+import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_tab_content_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -400,7 +399,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         switchOutCurve: Curves.easeInCubic,
                         child: KeyedSubtree(
                           key: ValueKey(selectedTab),
-                          child: _screenFromTab(selectedTab),
+                          child: DashboardTabContentWidget(tab: selectedTab),
                         ),
                       ),
                     ),
@@ -433,8 +432,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: _buildBottomTabItem(
-                        context,
+                      child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
                         label: 'Home',
                         icon: Icons.cottage_outlined,
@@ -448,8 +446,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       ),
                     ),
                     Expanded(
-                      child: _buildBottomTabItem(
-                        context,
+                      child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
                         label: 'Match',
                         icon: Icons.groups_outlined,
@@ -463,8 +460,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       ),
                     ),
                     Expanded(
-                      child: _buildBottomTabItem(
-                        context,
+                      child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
                         label: 'Shop',
                         icon: Icons.storefront_outlined,
@@ -483,68 +479,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _screenFromTab(DashboardTab tab) {
-    switch (tab) {
-      case DashboardTab.home:
-        return const HomeScreen();
-      case DashboardTab.match:
-        return const MatchScreen();
-      case DashboardTab.shop:
-        return const ShopScreen();
-    }
-  }
-
-  Widget _buildBottomTabItem(
-    BuildContext context, {
-    required ColorScheme colorScheme,
-    required String label,
-    required IconData icon,
-    required IconData selectedIcon,
-    required bool selected,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(999),
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOutCubic,
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(999),
-            color: selected
-                ? colorScheme.primaryContainer.withValues(alpha: 0.75)
-                : Colors.transparent,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                selected ? selectedIcon : icon,
-                size: 23,
-                color: selected
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
-                  color: selected
-                      ? colorScheme.onSurface
-                      : colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
