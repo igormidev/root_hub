@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/features/auth/auth_login_glow_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -146,14 +147,14 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
             Positioned(
               top: -90,
               left: -80,
-              child: _buildGlow(
+              child: AuthLoginGlowWidget(
                 color: colorScheme.primary.withValues(alpha: 0.2),
               ),
             ),
             Positioned(
               bottom: 120,
               right: -70,
-              child: _buildGlow(
+              child: AuthLoginGlowWidget(
                 color: colorScheme.secondary.withValues(alpha: 0.18),
               ),
             ),
@@ -386,27 +387,6 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGlow({
-    required Color color,
-  }) {
-    return IgnorePointer(
-      child: Container(
-        width: 220,
-        height: 220,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: color,
-              blurRadius: 72,
-              spreadRadius: 18,
             ),
           ],
         ),
