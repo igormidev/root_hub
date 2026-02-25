@@ -7,6 +7,13 @@ import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 
+import 'match_create_table_location_list_tile_widget.dart';
+import 'match_create_table_location_loading_recent_widget.dart';
+import 'match_create_table_location_loading_search_widget.dart';
+import 'match_create_table_location_no_recent_locations_widget.dart';
+import 'match_create_table_location_no_search_results_widget.dart';
+import 'match_create_table_location_search_error_widget.dart';
+
 class MatchCreateTableLocationScreen extends ConsumerStatefulWidget {
   const MatchCreateTableLocationScreen({
     super.key,
@@ -201,20 +208,19 @@ class _MatchCreateTableLocationScreenState
                       ),
                       const SizedBox(height: 8),
                       if (state.isSearchingLocations)
-                        _buildLoadingSearchState(context)
+                        const MatchCreateTableLocationLoadingSearchWidget()
                       else if (state.locationSearchError != null)
-                        _buildLocationSearchErrorState(
-                          context,
-                          state.locationSearchError!,
+                        MatchCreateTableLocationSearchErrorWidget(
+                          error: state.locationSearchError!,
                         )
                       else if (state.hasPerformedLocationSearch &&
                           state.searchResults.isEmpty)
-                        _buildNoSearchResultsState(context)
+                        const MatchCreateTableLocationNoSearchResultsWidget()
                       else
                         for (final location in state.searchResults)
-                          _buildLocationTile(
-                            context,
-                            location,
+                          MatchCreateTableLocationListTileWidget(
+                            title: _locationTitle(location),
+                            subtitle: _locationSubtitle(location),
                             isSelected:
                                 location.id != null &&
                                 location.id == selectedLocation?.id,
@@ -234,14 +240,14 @@ class _MatchCreateTableLocationScreenState
                     ),
                     const SizedBox(height: 8),
                     if (!state.hasLoadedRecentLocations)
-                      _buildLoadingRecentState(context)
+                      const MatchCreateTableLocationLoadingRecentWidget()
                     else if (state.recentLocations.isEmpty)
-                      _buildNoRecentLocationsState(context)
+                      const MatchCreateTableLocationNoRecentLocationsWidget()
                     else
                       for (final location in state.recentLocations)
-                        _buildLocationTile(
-                          context,
-                          location,
+                        MatchCreateTableLocationListTileWidget(
+                          title: _locationTitle(location),
+                          subtitle: _locationSubtitle(location),
                           isSelected:
                               location.id != null &&
                               location.id == selectedLocation?.id,
@@ -292,198 +298,6 @@ class _MatchCreateTableLocationScreenState
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLocationTile(
-    BuildContext context,
-    Location location, {
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(14),
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: isSelected
-                    ? colorScheme.primary
-                    : colorScheme.outlineVariant,
-              ),
-              color: isSelected
-                  ? colorScheme.primaryContainer.withValues(alpha: 0.45)
-                  : colorScheme.surface.withValues(alpha: 0.9),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.location_on_rounded,
-                  color: isSelected
-                      ? colorScheme.primary
-                      : colorScheme.onSurfaceVariant,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _locationTitle(location),
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        _locationSubtitle(location),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (isSelected)
-                  Icon(
-                    Icons.check_circle_rounded,
-                    color: colorScheme.primary,
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingSearchState(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 20,
-            height: 20,
-            child: CircularProgressIndicator(strokeWidth: 2.5),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            'Searching locations...',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLocationSearchErrorState(
-    BuildContext context,
-    RootHubException error,
-  ) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colorScheme.error.withValues(alpha: 0.5)),
-        color: colorScheme.errorContainer.withValues(alpha: 0.42),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            error.title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w900,
-              color: colorScheme.onErrorContainer,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            error.description,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colorScheme.onErrorContainer,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNoSearchResultsState(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colorScheme.outlineVariant),
-        color: colorScheme.surface.withValues(alpha: 0.9),
-      ),
-      child: Text(
-        'No locations found for this query. Try another place name or area.',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingRecentState(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 20,
-            height: 20,
-            child: CircularProgressIndicator(strokeWidth: 2.5),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            'Loading previous locations...',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNoRecentLocationsState(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colorScheme.outlineVariant),
-        color: colorScheme.surface.withValues(alpha: 0.9),
-      ),
-      child: Text(
-        'No previous locations yet. Search and select one above.',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          fontWeight: FontWeight.w700,
         ),
       ),
     );

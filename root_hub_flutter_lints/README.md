@@ -5,7 +5,9 @@ Custom lint plugin used by `root_hub_flutter` to enforce UI file conventions.
 ## Purpose
 This package enforces strict component-splitting and naming conventions in feature UI code.
 
-Scope: **only** files under `lib/src/features/**` in the Flutter app.
+Scope:
+- `feature_*` rules: only files under `lib/src/features/**` in the Flutter app.
+- `no_widget_returning_function`: all files under `lib/**` in the Flutter app (excluding generated files).
 
 ## Enforced Rules
 
@@ -27,6 +29,12 @@ Scope: **only** files under `lib/src/features/**` in the Flutter app.
   - `_item.dart` => `Item`
   - `_page.dart` => `Page`
   - `_view.dart` => `View`
+
+### `no_widget_returning_function`
+- Scope: `lib/**` (excluding generated files)
+- Enforces: top-level functions and helper methods must not return widgets.
+- Required architecture: extract each UI block into a dedicated widget class in a dedicated file.
+- Allowed exception: Flutter framework-required `build` overrides.
 
 ## Where Rules Are Wired
 - Rule definitions (custom_lint-compatible): `lib/root_hub_flutter_lints.dart`

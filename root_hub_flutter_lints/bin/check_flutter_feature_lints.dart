@@ -8,10 +8,13 @@ const _widgetTypeNames = <String>{
   'Widget',
   'StatelessWidget',
   'StatefulWidget',
+  'ConsumerStatefulWidget',
+  'HookConsumerWidget',
   'ConsumerWidget',
   'HookWidget',
-  'HookConsumerWidget',
 };
+
+const _stateTypeNames = <String>{'State', 'ConsumerState', 'HookConsumerState'};
 
 const _widgetFileSuffixToClassSuffix = <String, String>{
   '_screen.dart': 'Screen',
@@ -28,19 +31,18 @@ const _widgetFileSuffixToClassSuffix = <String, String>{
 
 void main(List<String> args) {
   final flutterRoot = _resolveFlutterRoot(args);
-  final featuresDir = Directory(
-    p.join(flutterRoot.path, 'lib', 'src', 'features'),
-  );
+  final libDir = Directory(p.join(flutterRoot.path, 'lib'));
+  final featuresDirPath = p.join(flutterRoot.path, 'lib', 'src', 'features');
 
-  if (!featuresDir.existsSync()) {
-    stdout.writeln('No feature directory found at ${featuresDir.path}.');
+  if (!libDir.existsSync()) {
+    stdout.writeln('No Flutter lib directory found at ${libDir.path}.');
     exitCode = 0;
     return;
   }
 
   final issues = <_LintIssue>[];
 
-  for (final file in _featureDartFiles(featuresDir)) {
+  for (final file in _flutterLibDartFiles(libDir)) {
     final source = file.readAsStringSync();
     final parsed = parseString(
       path: file.path,
@@ -48,9 +50,60 @@ void main(List<String> args) {
       throwIfDiagnostics: false,
     );
 
+    final functionDeclarations = parsed.unit.declarations
+        .whereType<FunctionDeclaration>()
+        .toList(growable: false);
     final classes = parsed.unit.declarations
         .whereType<ClassDeclaration>()
         .toList(growable: false);
+
+    for (final functionDeclaration in functionDeclarations) {
+      if (!_returnsWidgetType(functionDeclaration.returnType)) {
+        continue;
+      }
+
+      final location = parsed.lineInfo.getLocation(
+        functionDeclaration.name.offset,
+      );
+      issues.add(
+        _LintIssue(
+          code: 'no_widget_returning_function',
+          filePath: file.path,
+          line: location.lineNumber,
+          column: location.columnNumber,
+          message:
+              'Functions and helper methods must not return widgets. Extract this UI block into a dedicated widget class in its own file.',
+        ),
+      );
+    }
+
+    for (final classDeclaration in classes) {
+      for (final member
+          in classDeclaration.members.whereType<MethodDeclaration>()) {
+        if (_isAllowedFrameworkBuildMethod(member, classDeclaration)) {
+          continue;
+        }
+        if (!_returnsWidgetType(member.returnType)) {
+          continue;
+        }
+
+        final location = parsed.lineInfo.getLocation(member.name.offset);
+        issues.add(
+          _LintIssue(
+            code: 'no_widget_returning_function',
+            filePath: file.path,
+            line: location.lineNumber,
+            column: location.columnNumber,
+            message:
+                'Functions and helper methods must not return widgets. Extract this UI block into a dedicated widget class in its own file.',
+          ),
+        );
+      }
+    }
+
+    if (!_isFeatureFile(file.path, featuresDirPath)) {
+      continue;
+    }
 
     final widgetClasses = classes.where(_isWidgetClass).toList(growable: false);
 
@@ -110,7 +163,7 @@ void main(List<String> args) {
     );
   }
 
-  stderr.writeln('\nFound ${issues.length} feature lint violation(s).');
+  stderr.writeln('\nFound ${issues.length} lint violation(s).');
   exitCode = 1;
 }
 
@@ -130,8 +183,8 @@ Directory _resolveFlutterRoot(List<String> args) {
   return Directory(resolvedPath);
 }
 
-Iterable<File> _featureDartFiles(Directory featuresDir) sync* {
-  for (final entity in featuresDir.listSync(recursive: true)) {
+Iterable<File> _flutterLibDartFiles(Directory libDir) sync* {
+  for (final entity in libDir.listSync(recursive: true)) {
     if (entity is! File) {
       continue;
     }
@@ -145,6 +198,12 @@ Iterable<File> _featureDartFiles(Directory featuresDir) sync* {
 
     yield entity;
   }
+}
+
+bool _isFeatureFile(String filePath, String featuresDirPath) {
+  final normalizedFilePath = p.normalize(filePath);
+  final normalizedFeaturesDirPath = p.normalize(featuresDirPath);
+  return p.isWithin(normalizedFeaturesDirPath, normalizedFilePath);
 }
 
 bool _isWidgetClass(ClassDeclaration declaration) {
@@ -166,6 +225,71 @@ bool _isWidgetClass(ClassDeclaration declaration) {
 
 String _normalizeTypeName(String typeName) {
   return typeName.split('<').first.split('.').last;
+}
+
+bool _returnsWidgetType(TypeAnnotation? returnType) {
+  if (returnType == null) {
+    return false;
+  }
+
+  final typeName = _normalizeTypeName(returnType.toSource());
+  return _widgetTypeNames.contains(typeName) || typeName.endsWith('Widget');
+}
+
+bool _isAllowedFrameworkBuildMethod(
+  MethodDeclaration declaration,
+  ClassDeclaration classDeclaration,
+) {
+  if (declaration.name.lexeme != 'build') {
+    return false;
+  }
+
+  final parameters = declaration.parameters?.parameters;
+  if (parameters == null || parameters.isEmpty) {
+    return false;
+  }
+
+  final firstParameterType = _normalizeTypeName(
+    _formalParameterTypeSource(parameters.first),
+  );
+  if (firstParameterType != 'BuildContext') {
+    return false;
+  }
+
+  final containerTypeNames = <String>{
+    if (classDeclaration.extendsClause != null)
+      _normalizeTypeName(classDeclaration.extendsClause!.superclass.toSource()),
+    ...classDeclaration.implementsClause?.interfaces.map(
+          (type) => _normalizeTypeName(type.toSource()),
+        ) ??
+        const <String>[],
+    ...classDeclaration.withClause?.mixinTypes.map(
+          (type) => _normalizeTypeName(type.toSource()),
+        ) ??
+        const <String>[],
+  };
+
+  return containerTypeNames.any(
+    (typeName) =>
+        _widgetTypeNames.contains(typeName) ||
+        _stateTypeNames.contains(typeName),
+  );
+}
+
+String _formalParameterTypeSource(FormalParameter parameter) {
+  if (parameter is DefaultFormalParameter) {
+    return _formalParameterTypeSource(parameter.parameter);
+  }
+
+  if (parameter is SimpleFormalParameter) {
+    return parameter.type?.toSource() ?? '';
+  }
+
+  if (parameter is FieldFormalParameter) {
+    return parameter.type?.toSource() ?? '';
+  }
+
+  return '';
 }
 
 String? _expectedWidgetClassSuffix(String filePath) {

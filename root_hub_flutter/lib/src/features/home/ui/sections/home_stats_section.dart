@@ -3,8 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
-import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
-import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_pie_chart_widget.dart';
+import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_legend_chip_widget.dart';
+import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_metric_chart_widget.dart';
+import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_status_message_widget.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_snapshot.dart';
 
 class HomeStatsSection extends StatefulWidget {
@@ -211,8 +212,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           )
         else if (widget.stats == null && widget.error != null)
-          _buildStatusMessage(
-            context,
+          HomeStatsStatusMessageWidget(
             icon: Icons.error_outline_rounded,
             title: widget.error!.title,
             description: widget.error!.description,
@@ -220,8 +220,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             onActionTap: widget.onRetry,
           )
         else if (widget.stats == null)
-          _buildStatusMessage(
-            context,
+          HomeStatsStatusMessageWidget(
             icon: Icons.insights_rounded,
             title: widget.emptyTitle,
             description: widget.emptyDescription,
@@ -255,6 +254,20 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                       itemBuilder: (context, index) {
                         final stats = widget.stats!;
                         final metricConfig = _metricConfigs[index];
+                        final valuesByFaction = <Faction, double>{
+                          for (final faction in HomeStatsSnapshot.allFactions)
+                            faction: _readMetricValue(
+                              stats,
+                              faction,
+                              metricConfig.type,
+                            ),
+                        };
+                        final allFactionsMetricValue =
+                            _buildAllFactionsMetricValue(
+                              stats: stats,
+                              metricType: metricConfig.type,
+                              valuesByFaction: valuesByFaction,
+                            );
                         final scale = _buildPageScale(index);
                         final opacity = _buildPageOpacity(index);
 
@@ -270,9 +283,19 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: _buildMetricChart(
-                                      stats,
-                                      metricConfig.type,
+                                    child: HomeStatsMetricChartWidget(
+                                      factions: HomeStatsSnapshot.allFactions,
+                                      valuesByFaction: valuesByFaction,
+                                      allFactionsValue:
+                                          allFactionsMetricValue.value,
+                                      allFactionsLabel:
+                                          allFactionsMetricValue.label,
+                                      selectedFactionValueBuilder: (value) {
+                                        return _formatSelectedFactionMetricValue(
+                                          metricConfig.type,
+                                          value,
+                                        );
+                                      },
                                     ),
                                   ),
                                   const SizedBox(height: 12),
@@ -342,9 +365,8 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                       spacing: 8,
                       runSpacing: 8,
                       children: HomeStatsSnapshot.allFactions.map((faction) {
-                        return _buildLegendChip(
-                          context,
-                          faction,
+                        return HomeStatsLegendChipWidget(
+                          faction: faction,
                         );
                       }).toList(),
                     ),
@@ -366,35 +388,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
   double _buildPageOpacity(int index) {
     final distance = (index - _currentPage).abs().clamp(0.0, 1.0).toDouble();
     return lerpDouble(0.42, 1, 1 - distance) ?? 1;
-  }
-
-  Widget _buildMetricChart(
-    HomeStatsSnapshot stats,
-    _StatsMetricType metricType,
-  ) {
-    final valuesByFaction = <Faction, double>{
-      for (final faction in HomeStatsSnapshot.allFactions)
-        faction: _readMetricValue(
-          stats,
-          faction,
-          metricType,
-        ),
-    };
-    final allFactionsMetricValue = _buildAllFactionsMetricValue(
-      stats: stats,
-      metricType: metricType,
-      valuesByFaction: valuesByFaction,
-    );
-
-    return HomeStatsPieChartWidget(
-      factions: HomeStatsSnapshot.allFactions,
-      valuesByFaction: valuesByFaction,
-      allFactionsValue: allFactionsMetricValue.value,
-      allFactionsLabel: allFactionsMetricValue.label,
-      selectedFactionValueBuilder: (value) {
-        return _formatSelectedFactionMetricValue(metricType, value);
-      },
-    );
   }
 
   _MetricCenterValue _buildAllFactionsMetricValue({
@@ -427,108 +420,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         label: 'All factions total',
       ),
     };
-  }
-
-  Widget _buildLegendChip(
-    BuildContext context,
-    Faction faction,
-  ) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 7,
-      ),
-      decoration: BoxDecoration(
-        color: colorScheme.surface.withValues(alpha: 0.78),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.6),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: faction.factionColor,
-              borderRadius: BorderRadius.circular(3),
-            ),
-          ),
-          const SizedBox(width: 6),
-          Image.asset(
-            faction.getFactionIconPath(size: FactionIconSize.size80),
-            width: 16,
-            height: 16,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(width: 6),
-          Text(
-            faction.displayName,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusMessage(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String description,
-    required String? actionLabel,
-    required VoidCallback? onActionTap,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        color: colorScheme.surface.withValues(alpha: 0.85),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.75),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            size: 25,
-            color: colorScheme.primary,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            description,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          if (actionLabel != null && onActionTap != null) ...[
-            const SizedBox(height: 12),
-            FilledButton.tonal(
-              onPressed: onActionTap,
-              child: Text(actionLabel),
-            ),
-          ],
-        ],
-      ),
-    );
   }
 
   double _readMetricValue(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_error_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_form_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_loading_widget.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 
 class MatchEditTableSheet extends ConsumerStatefulWidget {
@@ -88,377 +90,77 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
           future: _detailsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return _buildLoading(context);
+              return const MatchEditTableLoadingWidget();
             }
 
             if (snapshot.hasError) {
               final error = snapshot.error is RootHubException
                   ? snapshot.error! as RootHubException
                   : defaultException;
-              return _buildError(context, error);
+              return MatchEditTableErrorWidget(
+                error: error,
+                onClose: () => Navigator.of(context).pop(false),
+              );
             }
 
             final tableInfo = snapshot.data;
             if (tableInfo == null) {
-              return _buildError(
-                context,
-                RootHubException(
+              return MatchEditTableErrorWidget(
+                error: RootHubException(
                   title: 'Table not found',
                   description: 'Unable to load table details.',
                 ),
+                onClose: () => Navigator.of(context).pop(false),
               );
             }
 
             _initializeFormFromTable(tableInfo);
-            return _buildForm(context);
+            final localizations = MaterialLocalizations.of(context);
+            final dateLabel = localizations.formatMediumDate(_scheduledDate);
+            final timeLabel = localizations.formatTimeOfDay(_scheduledTime);
+
+            return MatchEditTableFormWidget(
+              closedForSubscriptions: _closedForSubscriptions,
+              onClosedForSubscriptionsChanged: (value) {
+                setState(() => _closedForSubscriptions = value);
+              },
+              titleController: _titleController,
+              descriptionController: _descriptionController,
+              currentSubscriberCount: _currentSubscriberCount,
+              minPlayers: _minPlayers,
+              maxPlayers: _maxPlayers,
+              onMinDecrease: _minPlayers > 2
+                  ? () => setState(() => _minPlayers--)
+                  : null,
+              onMinIncrease: _minPlayers < _maxPlayers
+                  ? () => setState(() => _minPlayers++)
+                  : null,
+              onMaxDecrease:
+                  _maxPlayers > _minPlayers &&
+                      _maxPlayers > _currentSubscriberCount
+                  ? () => setState(() => _maxPlayers--)
+                  : null,
+              onMaxIncrease: _maxPlayers < 6
+                  ? () => setState(() => _maxPlayers++)
+                  : null,
+              maxScheduleDays: _maxScheduleDays,
+              dateLabel: dateLabel,
+              timeLabel: timeLabel,
+              onPickDate: () {
+                _pickDate();
+              },
+              onPickTime: () {
+                _pickTime();
+              },
+              isSaving: _isSaving,
+              onCancel: () => Navigator.of(context).pop(false),
+              onSaveChanges: () {
+                _saveChanges();
+              },
+            );
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildLoading(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Column(
-      children: [
-        _buildDragHandle(context),
-        Expanded(
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    color: colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  'Loading table details...',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildError(BuildContext context, RootHubException error) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(child: _buildDragHandle(context)),
-          Text(
-            error.title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            error.description,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const Spacer(),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Close'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildForm(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final localizations = MaterialLocalizations.of(context);
-
-    final dateLabel = localizations.formatMediumDate(_scheduledDate);
-    final timeLabel = localizations.formatTimeOfDay(_scheduledTime);
-
-    return Column(
-      children: [
-        _buildDragHandle(context),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 4, 18, 18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Edit Table',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Edit Details',
-                  style: GoogleFonts.cinzel(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: _closedForSubscriptions
-                          ? colorScheme.error.withValues(alpha: 0.5)
-                          : colorScheme.outlineVariant,
-                    ),
-                    color: _closedForSubscriptions
-                        ? colorScheme.errorContainer.withValues(alpha: 0.3)
-                        : colorScheme.surfaceContainerHighest.withValues(
-                            alpha: 0.5,
-                          ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        _closedForSubscriptions
-                            ? Icons.lock_rounded
-                            : Icons.lock_open_rounded,
-                        color: _closedForSubscriptions
-                            ? colorScheme.error
-                            : colorScheme.onSurfaceVariant,
-                        size: 22,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Close subscriptions',
-                              style: Theme.of(context).textTheme.titleSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                            ),
-                            Text(
-                              _closedForSubscriptions
-                                  ? 'New players cannot join this table.'
-                                  : 'New players can still join this table.',
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Switch(
-                        value: _closedForSubscriptions,
-                        onChanged: (value) {
-                          setState(() => _closedForSubscriptions = value);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _buildSectionTitle(
-                  context,
-                  title: 'Table title',
-                  description: 'A short name so players can find your table.',
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _titleController,
-                  textInputAction: TextInputAction.next,
-                  maxLength: 80,
-                  decoration: InputDecoration(
-                    hintText: 'Example: Saturday ROOT at Lantern Café',
-                    filled: true,
-                    fillColor: colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.5,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _buildSectionTitle(
-                  context,
-                  title: 'Description (optional)',
-                  description:
-                      'Extra details like expansions, parking tips, etc.',
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _descriptionController,
-                  minLines: 2,
-                  maxLines: 5,
-                  maxLength: 400,
-                  decoration: InputDecoration(
-                    hintText: 'Example: We have Marauder expansion.',
-                    filled: true,
-                    fillColor: colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.5,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _buildSectionTitle(
-                  context,
-                  title: 'Players range',
-                  description: _currentSubscriberCount > 0
-                      ? '$_currentSubscriberCount player(s) already subscribed.'
-                      : 'Set between 2 and 6 players.',
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: colorScheme.outlineVariant),
-                    color: colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCounterColumn(
-                          context,
-                          title: 'Minimum',
-                          value: _minPlayers,
-                          onDecrease: _minPlayers > 2
-                              ? () => setState(() => _minPlayers--)
-                              : null,
-                          onIncrease: _minPlayers < _maxPlayers
-                              ? () => setState(() => _minPlayers++)
-                              : null,
-                        ),
-                      ),
-                      Container(
-                        width: 1,
-                        height: 62,
-                        color: colorScheme.outlineVariant,
-                      ),
-                      Expanded(
-                        child: _buildCounterColumn(
-                          context,
-                          title: 'Maximum',
-                          value: _maxPlayers,
-                          onDecrease:
-                              _maxPlayers > _minPlayers &&
-                                  _maxPlayers > _currentSubscriberCount
-                              ? () => setState(() => _maxPlayers--)
-                              : null,
-                          onIncrease: _maxPlayers < 6
-                              ? () => setState(() => _maxPlayers++)
-                              : null,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _buildSectionTitle(
-                  context,
-                  title: 'Schedule',
-                  description:
-                      'Must be at least 10 minutes from now, '
-                      'up to $_maxScheduleDays days ahead.',
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: FilledButton.tonalIcon(
-                        onPressed: _pickDate,
-                        icon: const Icon(Icons.calendar_month_rounded),
-                        label: Text(dateLabel),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: FilledButton.tonalIcon(
-                        onPressed: _pickTime,
-                        icon: const Icon(Icons.access_time_rounded),
-                        label: Text(timeLabel),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: _isSaving ? null : _saveChanges,
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      maximumSize: const Size(double.infinity, 52),
-                    ),
-                    icon: _isSaving
-                        ? SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: colorScheme.onPrimary,
-                            ),
-                          )
-                        : const Icon(Icons.check_rounded),
-                    label: Text(_isSaving ? 'Saving...' : 'Save Changes'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -616,95 +318,5 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     }
 
     Navigator.of(context).pop(true);
-  }
-
-  Widget _buildDragHandle(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      width: 50,
-      height: 5,
-      margin: const EdgeInsets.only(top: 12, bottom: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(999),
-        color: colorScheme.outlineVariant,
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(
-    BuildContext context, {
-    required String title,
-    required String description,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 3),
-        Text(
-          description,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCounterColumn(
-    BuildContext context, {
-    required String title,
-    required int value,
-    required VoidCallback? onDecrease,
-    required VoidCallback? onIncrease,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Row(
-            children: [
-              IconButton.filledTonal(
-                onPressed: onDecrease,
-                icon: const Icon(Icons.remove_rounded),
-              ),
-              Expanded(
-                child: Text(
-                  '$value',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ),
-              IconButton.filledTonal(
-                onPressed: onIncrease,
-                icon: const Icon(Icons.add_rounded),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 }

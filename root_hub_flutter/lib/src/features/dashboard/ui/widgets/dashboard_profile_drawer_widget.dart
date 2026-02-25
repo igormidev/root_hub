@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
+import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
 
 class DashboardProfileDrawerWidget extends StatelessWidget {
   const DashboardProfileDrawerWidget({
@@ -92,7 +94,10 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                               color: colorScheme.surfaceContainerHighest,
                             ),
                             child: ClipOval(
-                              child: _buildProfileImage(colorScheme),
+                              child: DashboardProfileDrawerProfileImageWidget(
+                                isLoadingProfileImage: isLoadingProfileImage,
+                                profileImageUrl: profileImageUrl,
+                              ),
                             ),
                           ),
                           Positioned(
@@ -150,8 +155,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
                 child: Column(
                   children: [
-                    _buildProfileInfoCard(
-                      context,
+                    DashboardProfileDrawerInfoCardWidget(
                       icon: Icons.badge_rounded,
                       title: 'Display Name',
                       value: playerData.displayName,
@@ -160,8 +164,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                       isLoading: isUpdatingDisplayName,
                     ),
                     const SizedBox(height: 12),
-                    _buildProfileInfoCard(
-                      context,
+                    DashboardProfileDrawerInfoCardWidget(
                       icon: Icons.location_on_rounded,
                       title: 'Location',
                       value: currentLocation == null
@@ -318,111 +321,6 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildProfileImage(ColorScheme colorScheme) {
-    if (isLoadingProfileImage) {
-      return Center(
-        child: SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: colorScheme.primary,
-          ),
-        ),
-      );
-    }
-
-    final imageUrl = profileImageUrl;
-    if (imageUrl == null || imageUrl.isEmpty) {
-      return Icon(
-        Icons.person_rounded,
-        size: 44,
-        color: colorScheme.onSurfaceVariant,
-      );
-    }
-
-    return Image.network(
-      imageUrl,
-      fit: BoxFit.cover,
-      errorBuilder: (_, _, _) {
-        return Icon(
-          Icons.person_rounded,
-          size: 44,
-          color: colorScheme.onSurfaceVariant,
-        );
-      },
-    );
-  }
-
-  Widget _buildProfileInfoCard(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String value,
-    required String buttonLabel,
-    required VoidCallback onPressed,
-    required bool isLoading,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: colorScheme.outlineVariant),
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.62),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: colorScheme.primary),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w800,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  value,
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurfaceVariant,
-                    height: 1.35,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          OutlinedButton.icon(
-            onPressed: isLoading ? null : onPressed,
-            icon: isLoading
-                ? const SizedBox(
-                    width: 14,
-                    height: 14,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.edit_rounded, size: 18),
-            label: Text(
-              buttonLabel,
-              style: GoogleFonts.nunitoSans(
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

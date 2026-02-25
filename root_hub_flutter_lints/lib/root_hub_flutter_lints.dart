@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
@@ -10,6 +11,7 @@ class _RootHubFlutterLintsPlugin extends PluginBase {
     return [
       _FeatureSingleWidgetPerFileRule(),
       _FeatureWidgetNameMatchesFileSuffixRule(),
+      _NoWidgetReturningFunctionRule(),
     ];
   }
 }
@@ -97,14 +99,62 @@ class _FeatureWidgetNameMatchesFileSuffixRule extends DartLintRule {
   }
 }
 
+class _NoWidgetReturningFunctionRule extends DartLintRule {
+  _NoWidgetReturningFunctionRule()
+    : super(
+        code: const LintCode(
+          name: 'no_widget_returning_function',
+          problemMessage:
+              'Functions and helper methods must not return widgets.',
+          correctionMessage:
+              'Extract this UI block into a dedicated widget class in its own file.',
+        ),
+      );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    DiagnosticReporter reporter,
+    CustomLintContext context,
+  ) {
+    final filePath = resolver.source.fullName;
+    if (!_isLintableFlutterLibFile(filePath)) {
+      return;
+    }
+
+    context.registry.addFunctionDeclaration((declaration) {
+      if (!_returnsWidgetType(declaration.returnType)) {
+        return;
+      }
+
+      reporter.atNode(declaration, code);
+    });
+
+    context.registry.addMethodDeclaration((declaration) {
+      if (_isAllowedFrameworkBuildMethod(declaration)) {
+        return;
+      }
+
+      if (!_returnsWidgetType(declaration.returnType)) {
+        return;
+      }
+
+      reporter.atNode(declaration, code);
+    });
+  }
+}
+
 const _widgetTypeNames = <String>{
   'Widget',
   'StatelessWidget',
   'StatefulWidget',
+  'ConsumerStatefulWidget',
+  'HookConsumerWidget',
   'ConsumerWidget',
   'HookWidget',
-  'HookConsumerWidget',
 };
+
+const _stateTypeNames = <String>{'State', 'ConsumerState', 'HookConsumerState'};
 
 const _widgetFileSuffixToClassSuffix = <String, String>{
   '_screen.dart': 'Screen',
@@ -123,6 +173,15 @@ bool _isLintableFeatureFile(String path) {
   final normalizedPath = path.replaceAll('\\', '/');
 
   return normalizedPath.contains('/lib/src/features/') &&
+      normalizedPath.endsWith('.dart') &&
+      !normalizedPath.endsWith('.g.dart') &&
+      !normalizedPath.endsWith('.freezed.dart');
+}
+
+bool _isLintableFlutterLibFile(String path) {
+  final normalizedPath = path.replaceAll('\\', '/');
+
+  return normalizedPath.contains('/lib/') &&
       normalizedPath.endsWith('.dart') &&
       !normalizedPath.endsWith('.g.dart') &&
       !normalizedPath.endsWith('.freezed.dart');
@@ -147,6 +206,98 @@ bool _isWidgetClass(ClassDeclaration declaration) {
 
 String _normalizeTypeName(String typeName) {
   return typeName.split('<').first.split('.').last;
+}
+
+bool _returnsWidgetType(TypeAnnotation? returnType) {
+  if (returnType == null) {
+    return false;
+  }
+
+  final staticType = returnType.type;
+  if (_isWidgetDartType(staticType)) {
+    return true;
+  }
+
+  final typeName = _normalizeTypeName(returnType.toSource());
+  return _widgetTypeNames.contains(typeName) || typeName.endsWith('Widget');
+}
+
+bool _isWidgetDartType(DartType? type) {
+  if (type is! InterfaceType) {
+    return false;
+  }
+
+  final selfTypeName = _normalizeTypeName(type.element.name ?? '');
+  if (selfTypeName == 'Widget') {
+    return true;
+  }
+
+  for (final supertype in type.allSupertypes) {
+    final superTypeName = _normalizeTypeName(supertype.element.name ?? '');
+    if (superTypeName == 'Widget') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool _isAllowedFrameworkBuildMethod(MethodDeclaration declaration) {
+  if (declaration.name.lexeme != 'build') {
+    return false;
+  }
+
+  final parameters = declaration.parameters?.parameters;
+  if (parameters == null || parameters.isEmpty) {
+    return false;
+  }
+
+  final firstParameterType = _normalizeTypeName(
+    _formalParameterTypeSource(parameters.first),
+  );
+  if (firstParameterType != 'BuildContext') {
+    return false;
+  }
+
+  final parent = declaration.parent;
+  if (parent is! ClassDeclaration) {
+    return false;
+  }
+
+  final containerTypeNames = <String>{
+    if (parent.extendsClause != null)
+      _normalizeTypeName(parent.extendsClause!.superclass.toSource()),
+    ...parent.implementsClause?.interfaces.map(
+          (type) => _normalizeTypeName(type.toSource()),
+        ) ??
+        const <String>[],
+    ...parent.withClause?.mixinTypes.map(
+          (type) => _normalizeTypeName(type.toSource()),
+        ) ??
+        const <String>[],
+  };
+
+  return containerTypeNames.any(
+    (typeName) =>
+        _widgetTypeNames.contains(typeName) ||
+        _stateTypeNames.contains(typeName),
+  );
+}
+
+String _formalParameterTypeSource(FormalParameter parameter) {
+  if (parameter is DefaultFormalParameter) {
+    return _formalParameterTypeSource(parameter.parameter);
+  }
+
+  if (parameter is SimpleFormalParameter) {
+    return parameter.type?.toSource() ?? '';
+  }
+
+  if (parameter is FieldFormalParameter) {
+    return parameter.type?.toSource() ?? '';
+  }
+
+  return '';
 }
 
 String? _expectedWidgetClassSuffix(String path) {
