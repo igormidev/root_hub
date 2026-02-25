@@ -6,6 +6,9 @@ import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 
+import 'match_create_table_counter_column_widget.dart';
+import 'match_create_table_section_title_widget.dart';
+
 class MatchCreateTableScreen extends ConsumerStatefulWidget {
   const MatchCreateTableScreen({
     super.key,
@@ -232,8 +235,7 @@ class _MatchCreateTableScreenState
                     ),
                   ),
                   const SizedBox(height: 18),
-                  _buildSectionTitle(
-                    context,
+                  const MatchCreateTableSectionTitleWidget(
                     title: 'Table title',
                     description:
                         'This can be anything that helps identify the table, like a place name or event style.',
@@ -253,8 +255,7 @@ class _MatchCreateTableScreenState
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildSectionTitle(
-                    context,
+                  const MatchCreateTableSectionTitleWidget(
                     title: 'Description (optional)',
                     description:
                         'Add extra details like expansions available, parking tips, or reference points.',
@@ -276,8 +277,7 @@ class _MatchCreateTableScreenState
                     ),
                   ),
                   const SizedBox(height: 10),
-                  _buildSectionTitle(
-                    context,
+                  const MatchCreateTableSectionTitleWidget(
                     title: 'Players range',
                     description:
                         'Default is 3-4. You can set between 2 and 6 players.',
@@ -293,8 +293,7 @@ class _MatchCreateTableScreenState
                     child: Row(
                       children: [
                         Expanded(
-                          child: _buildCounterColumn(
-                            context,
+                          child: MatchCreateTableCounterColumnWidget(
                             title: 'Minimum',
                             value: state.minPlayers,
                             onDecrease: state.minPlayers > 2
@@ -315,8 +314,7 @@ class _MatchCreateTableScreenState
                           color: colorScheme.outlineVariant,
                         ),
                         Expanded(
-                          child: _buildCounterColumn(
-                            context,
+                          child: MatchCreateTableCounterColumnWidget(
                             title: 'Maximum',
                             value: state.maxPlayers,
                             onDecrease: state.maxPlayers > state.minPlayers
@@ -335,8 +333,7 @@ class _MatchCreateTableScreenState
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildSectionTitle(
-                    context,
+                  const MatchCreateTableSectionTitleWidget(
                     title: 'Schedule',
                     description:
                         'Pick the day and start hour. Choose a time you can reliably show up.',
@@ -362,8 +359,7 @@ class _MatchCreateTableScreenState
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildSectionTitle(
-                    context,
+                  const MatchCreateTableSectionTitleWidget(
                     title: 'Will you, the host, play?',
                     description:
                         'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.',
@@ -438,82 +434,6 @@ class _MatchCreateTableScreenState
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(
-    BuildContext context, {
-    required String title,
-    required String description,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 3),
-        Text(
-          description,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCounterColumn(
-    BuildContext context, {
-    required String title,
-    required int value,
-    required VoidCallback? onDecrease,
-    required VoidCallback? onIncrease,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Row(
-            children: [
-              IconButton.filledTonal(
-                onPressed: onDecrease,
-                icon: const Icon(Icons.remove_rounded),
-              ),
-              Expanded(
-                child: Text(
-                  '$value',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ),
-              IconButton.filledTonal(
-                onPressed: onIncrease,
-                icon: const Icon(Icons.add_rounded),
-              ),
-            ],
           ),
         ],
       ),
