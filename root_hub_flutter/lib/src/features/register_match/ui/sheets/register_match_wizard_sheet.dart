@@ -16,8 +16,12 @@ enum _RegisterMatchStep {
   participants,
   factions,
   winner,
+  winnerType,
   points,
-  socialProof,
+  matchStartedAt,
+  matchDuration,
+  groupPhoto,
+  boardPhoto,
   review,
 }
 
@@ -51,7 +55,10 @@ class _RegisterMatchWizardSheetState
   bool _didInitializeParticipants = false;
   _RegisterMatchStep _currentStep = _RegisterMatchStep.participants;
   String? _winnerParticipantKey;
-  _WinnerType _winnerType = _WinnerType.points;
+  _WinnerType? _winnerType;
+  DateTime? _matchStartedAt;
+  Duration _matchEstimatedDuration = const Duration(hours: 1);
+  bool _hasEditedMatchDuration = false;
   _ProofImageSelection? _groupPhoto;
   _ProofImageSelection? _boardPhoto;
 
@@ -393,8 +400,12 @@ class _RegisterMatchWizardSheetState
       _RegisterMatchStep.participants => _buildParticipantsStep(context),
       _RegisterMatchStep.factions => _buildFactionsStep(context),
       _RegisterMatchStep.winner => _buildWinnerStep(context),
+      _RegisterMatchStep.winnerType => _buildWinnerTypeStep(context),
       _RegisterMatchStep.points => _buildPointsStep(context),
-      _RegisterMatchStep.socialProof => _buildSocialProofStep(context),
+      _RegisterMatchStep.matchStartedAt ||
+      _RegisterMatchStep.matchDuration => _buildTimingStep(context, tableInfo),
+      _RegisterMatchStep.groupPhoto => _buildGroupPhotoStep(context),
+      _RegisterMatchStep.boardPhoto => _buildBoardPhotoStep(context),
       _RegisterMatchStep.review => _buildReviewStep(
         context,
         tableInfo,
@@ -467,6 +478,8 @@ class _RegisterMatchWizardSheetState
                   if (!participant.isPresent &&
                       _winnerParticipantKey == participant.key) {
                     _winnerParticipantKey = null;
+                    _winnerType = null;
+                    _controllerFor(participant.key).clear();
                   }
                 });
               },
@@ -599,7 +612,7 @@ class _RegisterMatchWizardSheetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '3) Select the winner',
+          '${_stepNumber(_RegisterMatchStep.winner)}) Select the winner',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -617,57 +630,37 @@ class _RegisterMatchWizardSheetState
         for (final participant in _selectedParticipants)
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
+            leading: Icon(
+              _winnerParticipantKey == participant.key
+                  ? Icons.radio_button_checked_rounded
+                  : Icons.radio_button_unchecked_rounded,
+            ),
+            title: Row(
               children: [
-                Icon(
-                  _winnerParticipantKey == participant.key
-                      ? Icons.radio_button_checked_rounded
-                      : Icons.radio_button_unchecked_rounded,
+                _buildFactionAvatar(
+                  context,
+                  faction: participant.faction,
                 ),
                 const SizedBox(width: 8),
-                CircleAvatar(
-                  radius: 13,
-                  backgroundColor:
-                      (participant.faction?.factionColor ??
-                              colorScheme.surfaceContainerHighest)
-                          .withValues(alpha: 0.18),
-                  child: participant.faction == null
-                      ? Icon(
-                          Icons.question_mark_rounded,
-                          size: 14,
-                          color: colorScheme.onSurfaceVariant,
-                        )
-                      : Image.asset(
-                          participant.faction!.getFactionIconPath(
-                            size: FactionIconSize.size80,
-                          ),
-                          width: 15,
-                          height: 15,
-                        ),
+                Expanded(
+                  child: Text(
+                    participant.displayName,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ],
             ),
-            title: Text(
-              participant.displayName,
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
-            ),
             onTap: () {
-              setState(() {
-                _winnerParticipantKey = participant.key;
-                if (_winnerType == _WinnerType.points) {
-                  _controllerFor(participant.key).text = '30';
-                }
-              });
+              _onWinnerSelected(participant.key);
             },
           ),
       ],
     );
   }
 
-  Widget _buildPointsStep(BuildContext context) {
+  Widget _buildWinnerTypeStep(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -675,16 +668,15 @@ class _RegisterMatchWizardSheetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '4) How did the winner won?',
+          '${_stepNumber(_RegisterMatchStep.winnerType)}) How did the winner won?',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 6),
         Text(
-          _winnerType == _WinnerType.dominance
-              ? 'Dominance means the winner completed a Dominance card objective, so winner score stays empty. Other players must have points between 0 and 29.'
-              : 'Total points means the winner reached 30 victory points on the score track. Winner stays at 30 and other players must stay between 0 and 29.',
+          'Total points means the winner reached 30 victory points on the score track. '
+          'Dominance means the winner completed a Dominance card objective instead of winning by points.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -693,6 +685,7 @@ class _RegisterMatchWizardSheetState
         ),
         const SizedBox(height: 10),
         SegmentedButton<_WinnerType>(
+          emptySelectionAllowed: true,
           segments: const [
             ButtonSegment<_WinnerType>(
               value: _WinnerType.points,
@@ -705,59 +698,21 @@ class _RegisterMatchWizardSheetState
               label: Text('Dominance'),
             ),
           ],
-          selected: {_winnerType},
+          selected: _winnerType == null
+              ? const <_WinnerType>{}
+              : <_WinnerType>{_winnerType!},
           onSelectionChanged: (selection) {
-            final nextWinnerType = selection.first;
-            setState(() {
-              _winnerType = nextWinnerType;
-              if (_winnerParticipantKey case final winnerKey?) {
-                if (nextWinnerType == _WinnerType.points) {
-                  _controllerFor(winnerKey).text = '30';
-                } else {
-                  _controllerFor(winnerKey).text = '';
-                }
-              }
-            });
+            if (selection.isEmpty) {
+              return;
+            }
+            _onWinnerTypeChanged(selection.first);
           },
         ),
-        const SizedBox(height: 14),
-        for (final participant in _selectedParticipants)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: TextField(
-              controller: _controllerFor(participant.key),
-              enabled:
-                  !_isDominanceWinner(participant) &&
-                  !_isPointsWinner(participant),
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(2),
-              ],
-              decoration: InputDecoration(
-                labelText: participant.displayName,
-                hintText: _isDominanceWinner(participant)
-                    ? 'Dominance victory'
-                    : _isPointsWinner(participant)
-                    ? '30'
-                    : '0 to 29',
-                border: const OutlineInputBorder(),
-                helperText: _isDominanceWinner(participant)
-                    ? 'Winner by dominance'
-                    : _isPointsWinner(participant)
-                    ? 'Winner by points (30)'
-                    : null,
-              ),
-              onChanged: (_) {
-                setState(() {});
-              },
-            ),
-          ),
       ],
     );
   }
 
-  Widget _buildSocialProofStep(BuildContext context) {
+  Widget _buildPointsStep(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -765,14 +720,308 @@ class _RegisterMatchWizardSheetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '5) Social proof',
+          '${_stepNumber(_RegisterMatchStep.points)}) Points by player',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 6),
         Text(
-          'Upload 2 photos: one group selfie and one board photo with score track visible.',
+          'For each non-winner, set points or mark failed dominance attempt. '
+          'Failed dominance always counts as no points.',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 14),
+        for (final participant in _selectedParticipants)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: colorScheme.outlineVariant),
+                color: colorScheme.surfaceContainerLow,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _buildFactionAvatar(
+                        context,
+                        faction: participant.faction,
+                        radius: 15,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          participant.displayName,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      if (_isWinner(participant))
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            color: colorScheme.primaryContainer,
+                          ),
+                          child: Text(
+                            'Winner',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              fontWeight: FontWeight.w900,
+                              color: colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  if (!_isWinner(participant)) ...[
+                    const SizedBox(height: 10),
+                    SegmentedButton<_ParticipantScoreMode>(
+                      segments: const [
+                        ButtonSegment<_ParticipantScoreMode>(
+                          value: _ParticipantScoreMode.points,
+                          icon: Icon(Icons.pin_rounded),
+                          label: Text('Points'),
+                        ),
+                        ButtonSegment<_ParticipantScoreMode>(
+                          value: _ParticipantScoreMode.failedDominance,
+                          icon: Icon(Icons.flag_rounded),
+                          label: Text('Failed dominance'),
+                        ),
+                      ],
+                      selected: <_ParticipantScoreMode>{participant.scoreMode},
+                      onSelectionChanged: (selection) {
+                        final nextMode = selection.first;
+                        setState(() {
+                          participant.scoreMode = nextMode;
+                          if (nextMode ==
+                              _ParticipantScoreMode.failedDominance) {
+                            _controllerFor(participant.key).clear();
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 10),
+                  if (_isWinner(participant) &&
+                      _winnerType == _WinnerType.points)
+                    _buildScoreSummary(
+                      context,
+                      label: 'Winner by points',
+                      value: '30',
+                    )
+                  else if (_isWinner(participant) &&
+                      _winnerType == _WinnerType.dominance)
+                    _buildScoreSummary(
+                      context,
+                      label: 'Winner by dominance',
+                      value: 'No points',
+                    )
+                  else if (participant.scoreMode ==
+                      _ParticipantScoreMode.failedDominance)
+                    _buildScoreSummary(
+                      context,
+                      label: 'Dominance attempt',
+                      value: 'Failed (no points)',
+                    )
+                  else
+                    TextField(
+                      controller: _controllerFor(participant.key),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(2),
+                      ],
+                      decoration: const InputDecoration(
+                        labelText: 'Points',
+                        hintText: '0 to 29',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (_) {
+                        setState(() {});
+                      },
+                    ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildTimingStep(
+    BuildContext context,
+    MatchScheduleInfo tableInfo,
+  ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final localizations = MaterialLocalizations.of(context);
+    final matchStartedAt =
+        _matchStartedAt ?? tableInfo.matchSchedule.attemptedAt.toLocal();
+    final startedLabel =
+        '${localizations.formatMediumDate(matchStartedAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(matchStartedAt))}';
+    final durationLabel = _durationLabel(_matchEstimatedDuration);
+    final highlightStart = _currentStep == _RegisterMatchStep.matchStartedAt;
+    final highlightDuration = _currentStep == _RegisterMatchStep.matchDuration;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${_stepNumber(_currentStep)}) Match timing',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          _currentStep == _RegisterMatchStep.matchStartedAt
+              ? 'Select when the match actually started. You can set a time before the scheduled start.'
+              : 'Set the estimated duration. Use minus or plus to adjust by 15 minutes.',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: highlightStart
+                  ? colorScheme.primary
+                  : colorScheme.outlineVariant,
+              width: highlightStart ? 1.5 : 1,
+            ),
+            color: colorScheme.surfaceContainerLow,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Match started at',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                startedLabel,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                onPressed: () {
+                  _pickMatchStartedAt(
+                    tableInfo.matchSchedule.attemptedAt.toLocal(),
+                  );
+                },
+                icon: const Icon(Icons.schedule_rounded),
+                label: const Text('Change start time'),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: highlightDuration
+                  ? colorScheme.primary
+                  : colorScheme.outlineVariant,
+              width: highlightDuration ? 1.5 : 1,
+            ),
+            color: colorScheme.surfaceContainerLow,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Estimated duration',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  IconButton.filledTonal(
+                    onPressed:
+                        _matchEstimatedDuration > const Duration(minutes: 15)
+                        ? () {
+                            setState(() {
+                              _hasEditedMatchDuration = true;
+                              _matchEstimatedDuration -= const Duration(
+                                minutes: 15,
+                              );
+                            });
+                          }
+                        : null,
+                    icon: const Icon(Icons.remove_rounded),
+                  ),
+                  Expanded(
+                    child: Text(
+                      durationLabel,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  IconButton.filledTonal(
+                    onPressed: () {
+                      setState(() {
+                        _hasEditedMatchDuration = true;
+                        _matchEstimatedDuration += const Duration(minutes: 15);
+                      });
+                    },
+                    icon: const Icon(Icons.add_rounded),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGroupPhotoStep(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${_stepNumber(_RegisterMatchStep.groupPhoto)}) Group photo proof',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Upload a selfie with all players. Include the board if possible.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -787,7 +1036,33 @@ class _RegisterMatchWizardSheetState
           image: _groupPhoto,
           onTap: () => _pickProofImage(isGroupPhoto: true),
         ),
-        const SizedBox(height: 12),
+      ],
+    );
+  }
+
+  Widget _buildBoardPhotoStep(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${_stepNumber(_RegisterMatchStep.boardPhoto)}) Board photo proof',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Upload a photo of the board with the score track clearly visible.',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 14),
         _buildProofCard(
           context,
           title: 'Board photo',
@@ -799,18 +1074,133 @@ class _RegisterMatchWizardSheetState
     );
   }
 
+  Widget _buildScoreSummary(
+    BuildContext context, {
+    required String label,
+    required String value,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        border: Border.all(color: colorScheme.outlineVariant),
+      ),
+      child: Text(
+        '$label: $value',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFactionAvatar(
+    BuildContext context, {
+    required Faction? faction,
+    double radius = 13,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor:
+          (faction?.factionColor ?? colorScheme.surfaceContainerHighest)
+              .withValues(alpha: 0.18),
+      child: faction == null
+          ? Icon(
+              Icons.question_mark_rounded,
+              size: 14,
+              color: colorScheme.onSurfaceVariant,
+            )
+          : Image.asset(
+              faction.getFactionIconPath(
+                size: FactionIconSize.size80,
+              ),
+              width: 15,
+              height: 15,
+            ),
+    );
+  }
+
+  int _stepNumber(_RegisterMatchStep step) {
+    return _RegisterMatchStep.values.indexOf(step) + 1;
+  }
+
+  String _durationLabel(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final hourLabel = hours == 1 ? '1 hour' : '$hours hours';
+    final minuteLabel = minutes == 0 ? '' : ' ${minutes}m';
+    return '$hourLabel$minuteLabel';
+  }
+
+  Future<void> _pickMatchStartedAt(DateTime scheduledStart) async {
+    final now = DateTime.now();
+    final current = _matchStartedAt ?? scheduledStart;
+    final today = DateTime(now.year, now.month, now.day);
+    final firstDate = DateTime(
+      scheduledStart.year,
+      scheduledStart.month,
+      scheduledStart.day,
+    ).subtract(const Duration(days: 7));
+
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: current.isAfter(today) ? today : current,
+      firstDate: firstDate,
+      lastDate: today,
+      helpText: 'When did the match start?',
+    );
+
+    if (!mounted || selectedDate == null) {
+      return;
+    }
+
+    final selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(current),
+      helpText: 'Select start time',
+    );
+
+    if (!mounted || selectedTime == null) {
+      return;
+    }
+
+    final selectedDateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    setState(() {
+      _matchStartedAt = selectedDateTime;
+    });
+  }
+
   Widget _buildReviewStep(
     BuildContext context,
     MatchScheduleInfo tableInfo,
   ) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final localizations = MaterialLocalizations.of(context);
+    final matchStartedAt =
+        _matchStartedAt ?? tableInfo.matchSchedule.attemptedAt.toLocal();
+    final matchStartedLabel =
+        '${localizations.formatMediumDate(matchStartedAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(matchStartedAt))}';
+    final rankedParticipants = _rankedParticipantsForReview();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '6) Review and submit',
+          '${_stepNumber(_RegisterMatchStep.review)}) Review and submit',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -823,57 +1213,130 @@ class _RegisterMatchWizardSheetState
             fontWeight: FontWeight.w700,
           ),
         ),
+        const SizedBox(height: 10),
+        Text(
+          tableInfo.matchSchedule.title,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 10),
         const SizedBox(height: 14),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: colorScheme.outlineVariant),
             color: colorScheme.surfaceContainerLow,
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                tableInfo.matchSchedule.title,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
+                'Match started: $matchStartedLabel',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 6),
-              for (final participant in _selectedParticipants)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Text(
-                    _reviewLineForParticipant(participant),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Text(
-                'Winner method: ${_winnerType == _WinnerType.points ? 'Points (30)' : 'Dominance'}',
+                'Estimated duration: ${_durationLabel(_matchEstimatedDuration)}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Winner method: ${_winnerType == _WinnerType.points ? 'Total points (30)' : 'Dominance'}',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              Text(
-                'Group photo: ${_groupPhoto != null ? 'Attached' : 'Missing'}',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                'Board photo: ${_boardPhoto != null ? 'Attached' : 'Missing'}',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
             ],
           ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          'Ranking',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 8),
+        for (var index = 0; index < rankedParticipants.length; index++)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: colorScheme.surfaceContainerLow,
+                border: Border.all(color: colorScheme.outlineVariant),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(999),
+                      color: colorScheme.primaryContainer,
+                    ),
+                    child: Text(
+                      '${index + 1}',
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: colorScheme.onPrimaryContainer,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  _buildFactionAvatar(
+                    context,
+                    faction: rankedParticipants[index].faction,
+                    radius: 14,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      rankedParticipants[index].displayName,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    _scoreLabelForParticipant(rankedParticipants[index]),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        const SizedBox(height: 10),
+        Text(
+          'Social proof',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildReviewPhotoTile(
+          context,
+          title: 'Group photo',
+          image: _groupPhoto,
+        ),
+        const SizedBox(height: 10),
+        _buildReviewPhotoTile(
+          context,
+          title: 'Board photo',
+          image: _boardPhoto,
         ),
       ],
     );
@@ -983,43 +1446,59 @@ class _RegisterMatchWizardSheetState
       child: Row(
         children: [
           Expanded(
-            child: OutlinedButton(
-              onPressed: isSubmitting
-                  ? null
-                  : () {
-                      if (isFirstStep) {
-                        Navigator.of(context).pop(false);
-                        return;
-                      }
+            child: SizedBox(
+              height: 52,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                onPressed: isSubmitting
+                    ? null
+                    : () {
+                        if (isFirstStep) {
+                          Navigator.of(context).pop(false);
+                          return;
+                        }
 
-                      setState(() {
-                        _currentStep =
-                            _RegisterMatchStep.values[_currentStep.index - 1];
-                      });
-                    },
-              child: Text(isFirstStep ? 'Cancel' : 'Back'),
+                        setState(() {
+                          _currentStep =
+                              _RegisterMatchStep.values[_currentStep.index - 1];
+                        });
+                      },
+                child: Text(isFirstStep ? 'Cancel' : 'Back'),
+              ),
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: FilledButton(
-              onPressed: isSubmitting
-                  ? null
-                  : () {
-                      if (isLastStep) {
-                        _submitReport(tableInfo);
-                        return;
-                      }
+            child: SizedBox(
+              height: 52,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                onPressed: isSubmitting
+                    ? null
+                    : () {
+                        if (isLastStep) {
+                          _submitReport(tableInfo);
+                          return;
+                        }
 
-                      _goToNextStep();
-                    },
-              child: isSubmitting
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(isLastStep ? 'Submit report' : 'Continue'),
+                        _goToNextStep();
+                      },
+                child: isSubmitting
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(isLastStep ? 'Submit report' : 'Continue'),
+              ),
             ),
           ),
         ],
@@ -1033,6 +1512,9 @@ class _RegisterMatchWizardSheetState
     }
 
     _didInitializeParticipants = true;
+    _matchStartedAt = tableInfo.matchSchedule.attemptedAt.toLocal();
+    _matchEstimatedDuration = const Duration(hours: 1);
+    _hasEditedMatchDuration = false;
 
     for (final playerSnapshot in tableInfo.players) {
       final playerId = playerSnapshot.playerData.id;
@@ -1063,6 +1545,35 @@ class _RegisterMatchWizardSheetState
         description: validationError.description,
       );
       return;
+    }
+
+    if (_currentStep == _RegisterMatchStep.matchDuration &&
+        !_hasEditedMatchDuration) {
+      final confirmDefaultDuration = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            title: const Text('Keep default duration?'),
+            content: const Text(
+              'You kept the default duration of 1 hour. Do you want to continue with it?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('Edit'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: const Text('Continue'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmDefaultDuration != true) {
+        return;
+      }
     }
 
     setState(() {
@@ -1138,74 +1649,105 @@ class _RegisterMatchWizardSheetState
                 'The selected winner is no longer in the participant list.',
           );
         }
-
-        if (_winnerParticipantKey case final winnerKey?) {
-          if (_winnerType == _WinnerType.points) {
-            _controllerFor(winnerKey).text = '30';
-          } else {
-            _controllerFor(winnerKey).text = '';
-          }
+        return null;
+      case _RegisterMatchStep.winnerType:
+        if (_winnerType == null) {
+          return RootHubException(
+            title: 'Winner method missing',
+            description:
+                'Select whether the winner won by total points or by dominance.',
+          );
         }
-
         return null;
       case _RegisterMatchStep.points:
         final winnerKey = _winnerParticipantKey;
+        final winnerType = _winnerType;
         if (winnerKey == null) {
           return RootHubException(
             title: 'Winner missing',
             description: 'Select the winner before setting points.',
           );
         }
+        if (winnerType == null) {
+          return RootHubException(
+            title: 'Winner method missing',
+            description:
+                'Select how the winner won before filling player points.',
+          );
+        }
 
         for (final participant in _selectedParticipants) {
           final isWinner = participant.key == winnerKey;
-          if (_winnerType == _WinnerType.dominance && isWinner) {
+          if (isWinner) {
+            if (winnerType == _WinnerType.points) {
+              continue;
+            }
+            if (winnerType == _WinnerType.dominance) {
+              continue;
+            }
+          } else if (participant.scoreMode ==
+              _ParticipantScoreMode.failedDominance) {
             continue;
-          }
+          } else {
+            final rawPoints = _controllerFor(participant.key).text.trim();
+            final parsedPoints = int.tryParse(rawPoints);
+            if (parsedPoints == null) {
+              return RootHubException(
+                title: 'Points missing',
+                description:
+                    'Enter valid points for ${participant.displayName}, or mark failed dominance.',
+              );
+            }
 
-          final rawPoints = _controllerFor(participant.key).text.trim();
-          final parsedPoints = int.tryParse(rawPoints);
-          if (parsedPoints == null) {
-            return RootHubException(
-              title: 'Points missing',
-              description: 'Enter valid points for ${participant.displayName}.',
-            );
-          }
-
-          if (parsedPoints < 0 || parsedPoints > 30) {
-            return RootHubException(
-              title: 'Invalid points',
-              description:
-                  '${participant.displayName} must have points between 0 and 30.',
-            );
-          }
-
-          if (isWinner &&
-              _winnerType == _WinnerType.points &&
-              parsedPoints != 30) {
-            return RootHubException(
-              title: 'Invalid winner score',
-              description: 'Winner by points must have exactly 30 points.',
-            );
-          }
-
-          if (!isWinner && parsedPoints == 30) {
-            return RootHubException(
-              title: 'Invalid non-winner score',
-              description: 'Only the winner can have 30 points.',
-            );
+            if (parsedPoints < 0 || parsedPoints > 29) {
+              return RootHubException(
+                title: 'Invalid points',
+                description:
+                    '${participant.displayName} must have points between 0 and 29.',
+              );
+            }
           }
         }
 
         return null;
-      case _RegisterMatchStep.socialProof:
-        if (_groupPhoto == null || _boardPhoto == null) {
+      case _RegisterMatchStep.matchStartedAt:
+        final matchStartedAt = _matchStartedAt;
+        if (matchStartedAt == null) {
           return RootHubException(
-            title: 'Proof photos required',
-            description: 'Add both group and board photos before continuing.',
+            title: 'Match start missing',
+            description: 'Select when this match started.',
           );
         }
-
+        if (matchStartedAt.isAfter(DateTime.now())) {
+          return RootHubException(
+            title: 'Invalid match registration',
+            description: 'matchStartedAt cannot be in the future.',
+          );
+        }
+        return null;
+      case _RegisterMatchStep.matchDuration:
+        if (_matchEstimatedDuration <= Duration.zero) {
+          return RootHubException(
+            title: 'Invalid duration',
+            description: 'Match duration must be greater than zero.',
+          );
+        }
+        return null;
+      case _RegisterMatchStep.groupPhoto:
+        if (_groupPhoto == null) {
+          return RootHubException(
+            title: 'Group photo required',
+            description: 'Add the group selfie before continuing.',
+          );
+        }
+        return null;
+      case _RegisterMatchStep.boardPhoto:
+        if (_boardPhoto == null) {
+          return RootHubException(
+            title: 'Board photo required',
+            description: 'Add the board photo before continuing.',
+          );
+        }
         return null;
       case _RegisterMatchStep.review:
         return null;
@@ -1224,10 +1766,16 @@ class _RegisterMatchWizardSheetState
     }
 
     final winnerKey = _winnerParticipantKey;
+    final winnerType = _winnerType;
+    final matchStartedAt = _matchStartedAt;
     final groupPhoto = _groupPhoto;
     final boardPhoto = _boardPhoto;
 
-    if (winnerKey == null || groupPhoto == null || boardPhoto == null) {
+    if (winnerKey == null ||
+        winnerType == null ||
+        matchStartedAt == null ||
+        groupPhoto == null ||
+        boardPhoto == null) {
       await showErrorDialog(
         context,
         title: 'Incomplete report',
@@ -1239,9 +1787,7 @@ class _RegisterMatchWizardSheetState
     final players = _selectedParticipants.map(
       (participant) {
         final isWinner = participant.key == winnerKey;
-        final points = _winnerType == _WinnerType.dominance && isWinner
-            ? null
-            : int.tryParse(_controllerFor(participant.key).text.trim());
+        final points = _scoreValueForParticipant(participant);
 
         return RegisterMatchPlayerReportInput(
           playerDataId: participant.playerDataId,
@@ -1258,6 +1804,8 @@ class _RegisterMatchWizardSheetState
         .submitMatchReport(
           scheduledMatch: tableInfo.matchSchedule,
           players: players,
+          matchStartedAt: matchStartedAt,
+          matchEstimatedDuration: _matchEstimatedDuration,
           groupPhotoBytes: groupPhoto.bytes,
           groupPhotoFileName: groupPhoto.fileName,
           groupPhotoContentType: groupPhoto.contentType,
@@ -1282,26 +1830,171 @@ class _RegisterMatchWizardSheetState
     Navigator.of(context).pop(true);
   }
 
-  String _reviewLineForParticipant(_ParticipantDraft participant) {
-    final isWinner = participant.key == _winnerParticipantKey;
-    final score = _winnerType == _WinnerType.dominance && isWinner
-        ? 'Dominance victory'
-        : _controllerFor(participant.key).text.trim();
-    final winnerSuffix = isWinner ? ' • Winner' : '';
-    final factionName = participant.faction?.displayName ?? 'No faction';
-    final points = score.isEmpty ? '-' : score;
+  void _onWinnerSelected(String winnerKey) {
+    final previousWinnerKey = _winnerParticipantKey;
+    final hasWinnerChanged = previousWinnerKey != winnerKey;
 
-    return '${participant.displayName} • $factionName • $points$winnerSuffix';
+    setState(() {
+      _winnerParticipantKey = winnerKey;
+      if (!hasWinnerChanged) {
+        return;
+      }
+
+      _winnerType = null;
+      if (previousWinnerKey != null) {
+        _controllerFor(previousWinnerKey).clear();
+      }
+      _controllerFor(winnerKey).clear();
+    });
   }
 
-  bool _isDominanceWinner(_ParticipantDraft participant) {
-    return _winnerType == _WinnerType.dominance &&
-        participant.key == _winnerParticipantKey;
+  void _onWinnerTypeChanged(_WinnerType winnerType) {
+    setState(() {
+      _winnerType = winnerType;
+      if (_winnerParticipantKey case final winnerKey?) {
+        if (winnerType == _WinnerType.dominance) {
+          _controllerFor(winnerKey).clear();
+        } else {
+          _controllerFor(winnerKey).text = '30';
+        }
+      }
+    });
   }
 
-  bool _isPointsWinner(_ParticipantDraft participant) {
-    return _winnerType == _WinnerType.points &&
-        participant.key == _winnerParticipantKey;
+  bool _isWinner(_ParticipantDraft participant) {
+    return participant.key == _winnerParticipantKey;
+  }
+
+  int? _scoreValueForParticipant(_ParticipantDraft participant) {
+    final isWinner = _isWinner(participant);
+    if (isWinner) {
+      if (_winnerType == _WinnerType.points) {
+        return 30;
+      }
+      return null;
+    }
+
+    if (participant.scoreMode == _ParticipantScoreMode.failedDominance) {
+      return null;
+    }
+
+    return int.tryParse(_controllerFor(participant.key).text.trim());
+  }
+
+  String _scoreLabelForParticipant(_ParticipantDraft participant) {
+    final isWinner = _isWinner(participant);
+    if (isWinner && _winnerType == _WinnerType.dominance) {
+      return 'Dominance winner';
+    }
+    if (isWinner && _winnerType == _WinnerType.points) {
+      return '30 • Winner';
+    }
+
+    if (participant.scoreMode == _ParticipantScoreMode.failedDominance) {
+      return 'Failed dominance';
+    }
+
+    final scoreValue = _scoreValueForParticipant(participant);
+    return scoreValue == null ? '-' : '$scoreValue';
+  }
+
+  List<_ParticipantDraft> _rankedParticipantsForReview() {
+    final rankedParticipants = [..._selectedParticipants];
+    rankedParticipants.sort((a, b) {
+      final aIsWinner = _isWinner(a);
+      final bIsWinner = _isWinner(b);
+      if (aIsWinner != bIsWinner) {
+        return aIsWinner ? -1 : 1;
+      }
+
+      final aScore = _scoreValueForParticipant(a);
+      final bScore = _scoreValueForParticipant(b);
+
+      final aDominanceLoser = !aIsWinner && aScore == null;
+      final bDominanceLoser = !bIsWinner && bScore == null;
+      if (aDominanceLoser != bDominanceLoser) {
+        return aDominanceLoser ? 1 : -1;
+      }
+
+      if (aScore != null && bScore != null && aScore != bScore) {
+        return bScore.compareTo(aScore);
+      }
+
+      return a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase());
+    });
+    return rankedParticipants;
+  }
+
+  Widget _buildReviewPhotoTile(
+    BuildContext context, {
+    required String title,
+    required _ProofImageSelection? image,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          colors: [
+            colorScheme.primary.withValues(alpha: 0.35),
+            colorScheme.secondary.withValues(alpha: 0.28),
+          ],
+        ),
+      ),
+      padding: const EdgeInsets.all(1.5),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          color: colorScheme.surface,
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
+                  width: 96,
+                  height: 96,
+                  child: image == null
+                      ? DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: colorScheme.surfaceContainerHighest,
+                          ),
+                          child: Icon(
+                            Icons.image_outlined,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        )
+                      : Image.memory(
+                          image.bytes,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              Text(
+                image == null ? 'Missing' : 'Ready',
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: image == null
+                      ? colorScheme.error
+                      : colorScheme.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _pickProofImage({
@@ -1610,6 +2303,12 @@ class _ParticipantDraft {
 
   bool isPresent = true;
   Faction? faction;
+  _ParticipantScoreMode scoreMode = _ParticipantScoreMode.points;
+}
+
+enum _ParticipantScoreMode {
+  points,
+  failedDominance,
 }
 
 class _ProofImageSelection {

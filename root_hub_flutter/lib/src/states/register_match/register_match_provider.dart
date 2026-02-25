@@ -280,6 +280,8 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
   Future<RootHubException?> submitMatchReport({
     required MatchSchedulePairingAttempt scheduledMatch,
     required List<RegisterMatchPlayerReportInput> players,
+    required DateTime matchStartedAt,
+    required Duration matchEstimatedDuration,
     required Uint8List groupPhotoBytes,
     required String groupPhotoFileName,
     String? groupPhotoContentType,
@@ -312,19 +314,24 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       );
     }
 
+    if (matchEstimatedDuration <= Duration.zero) {
+      return RootHubException(
+        title: 'Invalid duration',
+        description: 'Match estimated duration must be greater than zero.',
+      );
+    }
+
+    if (matchStartedAt.isAfter(DateTime.now())) {
+      return RootHubException(
+        title: 'Invalid match registration',
+        description: 'matchStartedAt cannot be in the future.',
+      );
+    }
+
     state = state.copyWith(
       isSubmitting: true,
       submitError: null,
     );
-
-    final matchStartedAt = scheduledMatch.attemptedAt;
-    final now = DateTime.now();
-    final durationSinceStart = now.difference(matchStartedAt);
-    final normalizedDuration = durationSinceStart.isNegative
-        ? const Duration(hours: 2)
-        : durationSinceStart < const Duration(minutes: 30)
-        ? const Duration(minutes: 30)
-        : durationSinceStart;
 
     final reportPlayers = players
         .map(
@@ -343,7 +350,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         .registerMatchData
         .v1(
           matchStartedAt: matchStartedAt,
-          matchEstimatedDuration: normalizedDuration,
+          matchEstimatedDuration: matchEstimatedDuration,
           locationId: locationId,
           scheduledPairingAttemptId: scheduledMatchId,
           players: reportPlayers,
