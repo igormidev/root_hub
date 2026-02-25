@@ -6,7 +6,7 @@ class CreateMatchSchedule extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  static const _maxScheduleDays = 50;
+  static const _maxScheduleDays = 15;
   static const _minScheduleMinutes = 10;
 
   Future<MatchSchedulePairingAttempt> v1(

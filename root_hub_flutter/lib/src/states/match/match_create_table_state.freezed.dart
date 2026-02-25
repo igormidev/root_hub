@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchCreateTableState {
 
- String get title; String get description; int get minPlayers; int get maxPlayers; DateTime get scheduledDate; TimeOfDay get scheduledTime; bool get hostWillPlay; bool get hasLoadedRecentLocations; List<Location> get recentLocations; String get locationQuery; bool get isSearchingLocations; bool get hasPerformedLocationSearch; List<Location> get searchResults; RootHubException? get locationSearchError; Location? get selectedLocation; bool get isCreatingTable; RootHubException? get createTableError;
+ String get title; String get description; int get minPlayers; int get maxPlayers; DateTime? get scheduledDate; TimeOfDay? get scheduledTime; bool get hostWillPlay; bool get hasLoadedRecentLocations; List<Location> get recentLocations; String get locationQuery; bool get isSearchingLocations; bool get hasPerformedLocationSearch; List<Location> get searchResults; RootHubException? get locationSearchError; Location? get selectedLocation; bool get isCreatingTable; RootHubException? get createTableError;
 /// Create a copy of MatchCreateTableState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $MatchCreateTableStateCopyWith<$Res>  {
   factory $MatchCreateTableStateCopyWith(MatchCreateTableState value, $Res Function(MatchCreateTableState) _then) = _$MatchCreateTableStateCopyWithImpl;
 @useResult
 $Res call({
- String title, String description, int minPlayers, int maxPlayers, DateTime scheduledDate, TimeOfDay scheduledTime, bool hostWillPlay, bool hasLoadedRecentLocations, List<Location> recentLocations, String locationQuery, bool isSearchingLocations, bool hasPerformedLocationSearch, List<Location> searchResults, RootHubException? locationSearchError, Location? selectedLocation, bool isCreatingTable, RootHubException? createTableError
+ String title, String description, int minPlayers, int maxPlayers, DateTime? scheduledDate, TimeOfDay? scheduledTime, bool hostWillPlay, bool hasLoadedRecentLocations, List<Location> recentLocations, String locationQuery, bool isSearchingLocations, bool hasPerformedLocationSearch, List<Location> searchResults, RootHubException? locationSearchError, Location? selectedLocation, bool isCreatingTable, RootHubException? createTableError
 });
 
 
@@ -62,15 +62,15 @@ class _$MatchCreateTableStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchCreateTableState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? minPlayers = null,Object? maxPlayers = null,Object? scheduledDate = null,Object? scheduledTime = null,Object? hostWillPlay = null,Object? hasLoadedRecentLocations = null,Object? recentLocations = null,Object? locationQuery = null,Object? isSearchingLocations = null,Object? hasPerformedLocationSearch = null,Object? searchResults = null,Object? locationSearchError = freezed,Object? selectedLocation = freezed,Object? isCreatingTable = null,Object? createTableError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? minPlayers = null,Object? maxPlayers = null,Object? scheduledDate = freezed,Object? scheduledTime = freezed,Object? hostWillPlay = null,Object? hasLoadedRecentLocations = null,Object? recentLocations = null,Object? locationQuery = null,Object? isSearchingLocations = null,Object? hasPerformedLocationSearch = null,Object? searchResults = null,Object? locationSearchError = freezed,Object? selectedLocation = freezed,Object? isCreatingTable = null,Object? createTableError = freezed,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,minPlayers: null == minPlayers ? _self.minPlayers : minPlayers // ignore: cast_nullable_to_non_nullable
 as int,maxPlayers: null == maxPlayers ? _self.maxPlayers : maxPlayers // ignore: cast_nullable_to_non_nullable
-as int,scheduledDate: null == scheduledDate ? _self.scheduledDate : scheduledDate // ignore: cast_nullable_to_non_nullable
-as DateTime,scheduledTime: null == scheduledTime ? _self.scheduledTime : scheduledTime // ignore: cast_nullable_to_non_nullable
-as TimeOfDay,hostWillPlay: null == hostWillPlay ? _self.hostWillPlay : hostWillPlay // ignore: cast_nullable_to_non_nullable
+as int,scheduledDate: freezed == scheduledDate ? _self.scheduledDate : scheduledDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,scheduledTime: freezed == scheduledTime ? _self.scheduledTime : scheduledTime // ignore: cast_nullable_to_non_nullable
+as TimeOfDay?,hostWillPlay: null == hostWillPlay ? _self.hostWillPlay : hostWillPlay // ignore: cast_nullable_to_non_nullable
 as bool,hasLoadedRecentLocations: null == hasLoadedRecentLocations ? _self.hasLoadedRecentLocations : hasLoadedRecentLocations // ignore: cast_nullable_to_non_nullable
 as bool,recentLocations: null == recentLocations ? _self.recentLocations : recentLocations // ignore: cast_nullable_to_non_nullable
 as List<Location>,locationQuery: null == locationQuery ? _self.locationQuery : locationQuery // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description,  int minPlayers,  int maxPlayers,  DateTime scheduledDate,  TimeOfDay scheduledTime,  bool hostWillPlay,  bool hasLoadedRecentLocations,  List<Location> recentLocations,  String locationQuery,  bool isSearchingLocations,  bool hasPerformedLocationSearch,  List<Location> searchResults,  RootHubException? locationSearchError,  Location? selectedLocation,  bool isCreatingTable,  RootHubException? createTableError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description,  int minPlayers,  int maxPlayers,  DateTime? scheduledDate,  TimeOfDay? scheduledTime,  bool hostWillPlay,  bool hasLoadedRecentLocations,  List<Location> recentLocations,  String locationQuery,  bool isSearchingLocations,  bool hasPerformedLocationSearch,  List<Location> searchResults,  RootHubException? locationSearchError,  Location? selectedLocation,  bool isCreatingTable,  RootHubException? createTableError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchCreateTableState() when $default != null:
 return $default(_that.title,_that.description,_that.minPlayers,_that.maxPlayers,_that.scheduledDate,_that.scheduledTime,_that.hostWillPlay,_that.hasLoadedRecentLocations,_that.recentLocations,_that.locationQuery,_that.isSearchingLocations,_that.hasPerformedLocationSearch,_that.searchResults,_that.locationSearchError,_that.selectedLocation,_that.isCreatingTable,_that.createTableError);case _:
@@ -187,7 +187,7 @@ return $default(_that.title,_that.description,_that.minPlayers,_that.maxPlayers,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description,  int minPlayers,  int maxPlayers,  DateTime scheduledDate,  TimeOfDay scheduledTime,  bool hostWillPlay,  bool hasLoadedRecentLocations,  List<Location> recentLocations,  String locationQuery,  bool isSearchingLocations,  bool hasPerformedLocationSearch,  List<Location> searchResults,  RootHubException? locationSearchError,  Location? selectedLocation,  bool isCreatingTable,  RootHubException? createTableError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description,  int minPlayers,  int maxPlayers,  DateTime? scheduledDate,  TimeOfDay? scheduledTime,  bool hostWillPlay,  bool hasLoadedRecentLocations,  List<Location> recentLocations,  String locationQuery,  bool isSearchingLocations,  bool hasPerformedLocationSearch,  List<Location> searchResults,  RootHubException? locationSearchError,  Location? selectedLocation,  bool isCreatingTable,  RootHubException? createTableError)  $default,) {final _that = this;
 switch (_that) {
 case _MatchCreateTableState():
 return $default(_that.title,_that.description,_that.minPlayers,_that.maxPlayers,_that.scheduledDate,_that.scheduledTime,_that.hostWillPlay,_that.hasLoadedRecentLocations,_that.recentLocations,_that.locationQuery,_that.isSearchingLocations,_that.hasPerformedLocationSearch,_that.searchResults,_that.locationSearchError,_that.selectedLocation,_that.isCreatingTable,_that.createTableError);case _:
@@ -207,7 +207,7 @@ return $default(_that.title,_that.description,_that.minPlayers,_that.maxPlayers,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description,  int minPlayers,  int maxPlayers,  DateTime scheduledDate,  TimeOfDay scheduledTime,  bool hostWillPlay,  bool hasLoadedRecentLocations,  List<Location> recentLocations,  String locationQuery,  bool isSearchingLocations,  bool hasPerformedLocationSearch,  List<Location> searchResults,  RootHubException? locationSearchError,  Location? selectedLocation,  bool isCreatingTable,  RootHubException? createTableError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description,  int minPlayers,  int maxPlayers,  DateTime? scheduledDate,  TimeOfDay? scheduledTime,  bool hostWillPlay,  bool hasLoadedRecentLocations,  List<Location> recentLocations,  String locationQuery,  bool isSearchingLocations,  bool hasPerformedLocationSearch,  List<Location> searchResults,  RootHubException? locationSearchError,  Location? selectedLocation,  bool isCreatingTable,  RootHubException? createTableError)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchCreateTableState() when $default != null:
 return $default(_that.title,_that.description,_that.minPlayers,_that.maxPlayers,_that.scheduledDate,_that.scheduledTime,_that.hostWillPlay,_that.hasLoadedRecentLocations,_that.recentLocations,_that.locationQuery,_that.isSearchingLocations,_that.hasPerformedLocationSearch,_that.searchResults,_that.locationSearchError,_that.selectedLocation,_that.isCreatingTable,_that.createTableError);case _:
@@ -222,15 +222,15 @@ return $default(_that.title,_that.description,_that.minPlayers,_that.maxPlayers,
 
 
 class _MatchCreateTableState implements MatchCreateTableState {
-  const _MatchCreateTableState({this.title = '', this.description = '', this.minPlayers = 3, this.maxPlayers = 4, required this.scheduledDate, required this.scheduledTime, this.hostWillPlay = true, this.hasLoadedRecentLocations = false, final  List<Location> recentLocations = const <Location>[], this.locationQuery = '', this.isSearchingLocations = false, this.hasPerformedLocationSearch = false, final  List<Location> searchResults = const <Location>[], this.locationSearchError, this.selectedLocation, this.isCreatingTable = false, this.createTableError}): _recentLocations = recentLocations,_searchResults = searchResults;
+  const _MatchCreateTableState({this.title = '', this.description = '', this.minPlayers = 3, this.maxPlayers = 4, this.scheduledDate, this.scheduledTime, this.hostWillPlay = true, this.hasLoadedRecentLocations = false, final  List<Location> recentLocations = const <Location>[], this.locationQuery = '', this.isSearchingLocations = false, this.hasPerformedLocationSearch = false, final  List<Location> searchResults = const <Location>[], this.locationSearchError, this.selectedLocation, this.isCreatingTable = false, this.createTableError}): _recentLocations = recentLocations,_searchResults = searchResults;
   
 
 @override@JsonKey() final  String title;
 @override@JsonKey() final  String description;
 @override@JsonKey() final  int minPlayers;
 @override@JsonKey() final  int maxPlayers;
-@override final  DateTime scheduledDate;
-@override final  TimeOfDay scheduledTime;
+@override final  DateTime? scheduledDate;
+@override final  TimeOfDay? scheduledTime;
 @override@JsonKey() final  bool hostWillPlay;
 @override@JsonKey() final  bool hasLoadedRecentLocations;
  final  List<Location> _recentLocations;
@@ -285,7 +285,7 @@ abstract mixin class _$MatchCreateTableStateCopyWith<$Res> implements $MatchCrea
   factory _$MatchCreateTableStateCopyWith(_MatchCreateTableState value, $Res Function(_MatchCreateTableState) _then) = __$MatchCreateTableStateCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String description, int minPlayers, int maxPlayers, DateTime scheduledDate, TimeOfDay scheduledTime, bool hostWillPlay, bool hasLoadedRecentLocations, List<Location> recentLocations, String locationQuery, bool isSearchingLocations, bool hasPerformedLocationSearch, List<Location> searchResults, RootHubException? locationSearchError, Location? selectedLocation, bool isCreatingTable, RootHubException? createTableError
+ String title, String description, int minPlayers, int maxPlayers, DateTime? scheduledDate, TimeOfDay? scheduledTime, bool hostWillPlay, bool hasLoadedRecentLocations, List<Location> recentLocations, String locationQuery, bool isSearchingLocations, bool hasPerformedLocationSearch, List<Location> searchResults, RootHubException? locationSearchError, Location? selectedLocation, bool isCreatingTable, RootHubException? createTableError
 });
 
 
@@ -302,15 +302,15 @@ class __$MatchCreateTableStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchCreateTableState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? minPlayers = null,Object? maxPlayers = null,Object? scheduledDate = null,Object? scheduledTime = null,Object? hostWillPlay = null,Object? hasLoadedRecentLocations = null,Object? recentLocations = null,Object? locationQuery = null,Object? isSearchingLocations = null,Object? hasPerformedLocationSearch = null,Object? searchResults = null,Object? locationSearchError = freezed,Object? selectedLocation = freezed,Object? isCreatingTable = null,Object? createTableError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? minPlayers = null,Object? maxPlayers = null,Object? scheduledDate = freezed,Object? scheduledTime = freezed,Object? hostWillPlay = null,Object? hasLoadedRecentLocations = null,Object? recentLocations = null,Object? locationQuery = null,Object? isSearchingLocations = null,Object? hasPerformedLocationSearch = null,Object? searchResults = null,Object? locationSearchError = freezed,Object? selectedLocation = freezed,Object? isCreatingTable = null,Object? createTableError = freezed,}) {
   return _then(_MatchCreateTableState(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,minPlayers: null == minPlayers ? _self.minPlayers : minPlayers // ignore: cast_nullable_to_non_nullable
 as int,maxPlayers: null == maxPlayers ? _self.maxPlayers : maxPlayers // ignore: cast_nullable_to_non_nullable
-as int,scheduledDate: null == scheduledDate ? _self.scheduledDate : scheduledDate // ignore: cast_nullable_to_non_nullable
-as DateTime,scheduledTime: null == scheduledTime ? _self.scheduledTime : scheduledTime // ignore: cast_nullable_to_non_nullable
-as TimeOfDay,hostWillPlay: null == hostWillPlay ? _self.hostWillPlay : hostWillPlay // ignore: cast_nullable_to_non_nullable
+as int,scheduledDate: freezed == scheduledDate ? _self.scheduledDate : scheduledDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,scheduledTime: freezed == scheduledTime ? _self.scheduledTime : scheduledTime // ignore: cast_nullable_to_non_nullable
+as TimeOfDay?,hostWillPlay: null == hostWillPlay ? _self.hostWillPlay : hostWillPlay // ignore: cast_nullable_to_non_nullable
 as bool,hasLoadedRecentLocations: null == hasLoadedRecentLocations ? _self.hasLoadedRecentLocations : hasLoadedRecentLocations // ignore: cast_nullable_to_non_nullable
 as bool,recentLocations: null == recentLocations ? _self._recentLocations : recentLocations // ignore: cast_nullable_to_non_nullable
 as List<Location>,locationQuery: null == locationQuery ? _self.locationQuery : locationQuery // ignore: cast_nullable_to_non_nullable

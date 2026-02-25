@@ -3,43 +3,34 @@ import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class CreateAnonymousPlayer extends Endpoint {
+  static const _minNameLength = 3;
+  static const _maxNameLength = 50;
+
   @override
   bool get requireLogin => true;
 
   Future<AnonymousPlayer> v1(
     Session session, {
-    required String name,
+    required String firstName,
+    required String lastName,
   }) async {
     return guardRootHubEndpointErrors(
       () async {
-        final normalizedName = _normalizeName(name);
-        if (normalizedName.isEmpty) {
-          throw RootHubEndpointError.invalidRequest(
-            title: 'Invalid anonymous player',
-            description: 'Anonymous player name cannot be empty.',
-          );
-        }
-
-        if (normalizedName.length > 50) {
-          throw RootHubEndpointError.invalidRequest(
-            title: 'Invalid anonymous player',
-            description: 'Anonymous player name cannot exceed 50 characters.',
-          );
-        }
+        final normalizedFirstName = _normalizeNamePart(firstName);
+        final normalizedLastName = _normalizeNamePart(lastName);
+        _validateNamePart(namePart: normalizedFirstName, label: 'First name');
+        _validateNamePart(namePart: normalizedLastName, label: 'Last name');
 
         final authenticatedPlayerData = await _getAuthenticatedPlayerData(
           session,
         );
 
-        final firstName = _extractFirstName(normalizedName);
-        final lastName = _extractLastName(normalizedName);
-
         final existingAnonymousPlayer = await AnonymousPlayer.db.findFirstRow(
           session,
           where: (t) =>
               t.createdByPlayerId.equals(authenticatedPlayerData.id!) &
-              t.firstName.equals(firstName) &
-              t.lastName.equals(lastName),
+              t.firstName.equals(normalizedFirstName) &
+              t.lastName.equals(normalizedLastName),
           orderBy: (t) => t.id,
           orderDescending: true,
         );
@@ -51,8 +42,8 @@ class CreateAnonymousPlayer extends Endpoint {
         final anonymousPlayer = await AnonymousPlayer.db.insertRow(
           session,
           AnonymousPlayer(
-            firstName: firstName,
-            lastName: lastName,
+            firstName: normalizedFirstName,
+            lastName: normalizedLastName,
             createdByPlayerId: authenticatedPlayerData.id!,
           ),
         );
@@ -89,22 +80,33 @@ class CreateAnonymousPlayer extends Endpoint {
     return playerData;
   }
 
-  String _normalizeName(String rawName) {
-    final collapsedSpaces = rawName.trim().replaceAll(RegExp(r'\s+'), ' ');
-    return collapsedSpaces;
-  }
-
-  String _extractFirstName(String normalizedName) {
-    final parts = normalizedName.split(' ');
-    return parts.first;
-  }
-
-  String _extractLastName(String normalizedName) {
-    final parts = normalizedName.split(' ');
-    if (parts.length <= 1) {
-      return '';
+  void _validateNamePart({
+    required String namePart,
+    required String label,
+  }) {
+    if (namePart.isEmpty) {
+      throw RootHubEndpointError.invalidRequest(
+        title: 'Invalid anonymous player',
+        description: '$label cannot be empty.',
+      );
     }
 
-    return parts.skip(1).join(' ');
+    if (namePart.length < _minNameLength) {
+      throw RootHubEndpointError.invalidRequest(
+        title: 'Invalid anonymous player',
+        description: '$label must have at least $_minNameLength characters.',
+      );
+    }
+
+    if (namePart.length > _maxNameLength) {
+      throw RootHubEndpointError.invalidRequest(
+        title: 'Invalid anonymous player',
+        description: '$label cannot exceed $_maxNameLength characters.',
+      );
+    }
+  }
+
+  String _normalizeNamePart(String value) {
+    return value.trim().replaceAll(RegExp(r'\s+'), ' ');
   }
 }

@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_add_anonymous_player_sheet.dart';
+import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_search_registered_player_sheet.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_state.dart';
@@ -133,12 +135,34 @@ class _RegisterMatchWizardSheetState
                   context,
                   tableInfo,
                 ),
+                _buildStepDots(context),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    child: _buildCurrentStep(
-                      context,
-                      tableInfo,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 280),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      transitionBuilder: (child, animation) {
+                        final offsetAnimation = Tween<Offset>(
+                          begin: const Offset(0.05, 0),
+                          end: Offset.zero,
+                        ).animate(animation);
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: offsetAnimation,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: KeyedSubtree(
+                        key: ValueKey<String>(_currentStep.name),
+                        child: _buildCurrentStep(
+                          context,
+                          tableInfo,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -313,6 +337,54 @@ class _RegisterMatchWizardSheetState
     );
   }
 
+  Widget _buildStepDots(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final currentIndex = _currentStep.index;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: colorScheme.outlineVariant),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var index = 0; index < _RegisterMatchStep.values.length; index++)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(999),
+                onTap: index <= currentIndex
+                    ? () {
+                        setState(() {
+                          _currentStep = _RegisterMatchStep.values[index];
+                        });
+                      }
+                    : null,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  width: index == currentIndex ? 22 : 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                    color: index == currentIndex
+                        ? colorScheme.primary
+                        : index < currentIndex
+                        ? colorScheme.primary.withValues(alpha: 0.55)
+                        : colorScheme.outlineVariant,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCurrentStep(
     BuildContext context,
     MatchScheduleInfo tableInfo,
@@ -345,7 +417,7 @@ class _RegisterMatchWizardSheetState
         ),
         const SizedBox(height: 6),
         Text(
-          'Select registered players who were present. Then add anonymous players when needed.',
+          'Select registered players who were present. You can add anonymous players or search for other registered players.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -406,7 +478,16 @@ class _RegisterMatchWizardSheetState
           child: OutlinedButton.icon(
             onPressed: _openAnonymousPlayerSheet,
             icon: const Icon(Icons.person_add_alt_rounded),
-            label: const Text('AddAnonymousPlayer'),
+            label: const Text('Add anonymous player'),
+          ),
+        ),
+        const SizedBox(height: 2),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: _openRegisteredPlayerSheet,
+            icon: const Icon(Icons.search_rounded),
+            label: const Text('Add registered player from platform'),
           ),
         ),
       ],
@@ -525,7 +606,7 @@ class _RegisterMatchWizardSheetState
         ),
         const SizedBox(height: 6),
         Text(
-          'Set who won and the victory type. ROOT supports points and dominance victory.',
+          'Pick the player who won this match.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -536,10 +617,36 @@ class _RegisterMatchWizardSheetState
         for (final participant in _selectedParticipants)
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-            leading: Icon(
-              _winnerParticipantKey == participant.key
-                  ? Icons.radio_button_checked_rounded
-                  : Icons.radio_button_unchecked_rounded,
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _winnerParticipantKey == participant.key
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.radio_button_unchecked_rounded,
+                ),
+                const SizedBox(width: 8),
+                CircleAvatar(
+                  radius: 13,
+                  backgroundColor:
+                      (participant.faction?.factionColor ??
+                              colorScheme.surfaceContainerHighest)
+                          .withValues(alpha: 0.18),
+                  child: participant.faction == null
+                      ? Icon(
+                          Icons.question_mark_rounded,
+                          size: 14,
+                          color: colorScheme.onSurfaceVariant,
+                        )
+                      : Image.asset(
+                          participant.faction!.getFactionIconPath(
+                            size: FactionIconSize.size80,
+                          ),
+                          width: 15,
+                          height: 15,
+                        ),
+                ),
+              ],
             ),
             title: Text(
               participant.displayName,
@@ -556,13 +663,41 @@ class _RegisterMatchWizardSheetState
               });
             },
           ),
-        const SizedBox(height: 8),
+      ],
+    );
+  }
+
+  Widget _buildPointsStep(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '4) How did the winner won?',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          _winnerType == _WinnerType.dominance
+              ? 'Dominance means the winner completed a Dominance card objective, so winner score stays empty. Other players must have points between 0 and 29.'
+              : 'Total points means the winner reached 30 victory points on the score track. Winner stays at 30 and other players must stay between 0 and 29.',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 10),
         SegmentedButton<_WinnerType>(
           segments: const [
             ButtonSegment<_WinnerType>(
               value: _WinnerType.points,
               icon: Icon(Icons.stars_rounded),
-              label: Text('Points (30)'),
+              label: Text('Total points (30)'),
             ),
             ButtonSegment<_WinnerType>(
               value: _WinnerType.dominance,
@@ -584,34 +719,6 @@ class _RegisterMatchWizardSheetState
               }
             });
           },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPointsStep(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '4) Points by player',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          _winnerType == _WinnerType.dominance
-              ? 'Winner score stays empty for dominance. Other players must have points between 0 and 29.'
-              : 'Winner score is fixed at 30 points. Other players must stay between 0 and 29.',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w700,
-            height: 1.35,
-          ),
         ),
         const SizedBox(height: 14),
         for (final participant in _selectedParticipants)
@@ -970,7 +1077,8 @@ class _RegisterMatchWizardSheetState
         if (selectedCount < 2) {
           return RootHubException(
             title: 'Not enough players',
-            description: 'Select at least 2 participants to continue.',
+            description:
+                'Select at least 2 participants (registered and/or anonymous) to continue.',
           );
         }
         return null;
@@ -1347,200 +1455,43 @@ class _RegisterMatchWizardSheetState
   }
 
   Future<void> _openAnonymousPlayerSheet() async {
-    await ref
-        .read(registerMatchProvider.notifier)
-        .ensureAnonymousPlayersLoaded();
-
-    if (!mounted) {
-      return;
-    }
-
-    var anonymousPlayers = [
-      ...ref.read(registerMatchProvider).anonymousPlayers,
-    ];
-    final nameController = TextEditingController();
-
-    final selectedAnonymousPlayer = await showModalBottomSheet<AnonymousPlayer>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (sheetContext) {
-        var isCreatingPlayer = false;
-
-        return StatefulBuilder(
-          builder: (sheetContext, setModalState) {
-            Future<void> createAnonymousPlayer() async {
-              final normalizedName = nameController.text.trim();
-              if (normalizedName.isEmpty || isCreatingPlayer) {
-                return;
-              }
-
-              setModalState(() {
-                isCreatingPlayer = true;
-              });
-
-              final createdPlayer = await ref
-                  .read(registerMatchProvider.notifier)
-                  .createAnonymousPlayer(normalizedName);
-
-              if (!mounted) {
-                return;
-              }
-
-              setModalState(() {
-                isCreatingPlayer = false;
-              });
-
-              if (createdPlayer == null) {
-                final error = ref
-                    .read(registerMatchProvider)
-                    .anonymousPlayersError;
-                await showErrorDialog(
-                  context,
-                  title: (error ?? defaultException).title,
-                  description: (error ?? defaultException).description,
-                );
-                return;
-              }
-
-              anonymousPlayers = [
-                createdPlayer,
-                ...anonymousPlayers.where(
-                  (entry) => entry.id != createdPlayer.id,
-                ),
-              ];
-              if (!sheetContext.mounted) {
-                return;
-              }
-              Navigator.of(sheetContext).pop(createdPlayer);
-            }
-
-            return Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
-              ),
-              child: SafeArea(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Anonymous players',
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: nameController,
-                              textInputAction: TextInputAction.done,
-                              decoration: const InputDecoration(
-                                labelText: 'Player name',
-                                border: OutlineInputBorder(),
-                              ),
-                              onSubmitted: (_) {
-                                createAnonymousPlayer();
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          FilledButton(
-                            onPressed: isCreatingPlayer
-                                ? null
-                                : () {
-                                    createAnonymousPlayer();
-                                  },
-                            child: isCreatingPlayer
-                                ? const SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : const Text('Create'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (anonymousPlayers.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 2, 16, 20),
-                        child: Text(
-                          'No anonymous players yet. Create one using the field above.',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                      )
-                    else
-                      Flexible(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: anonymousPlayers.length,
-                          itemBuilder: (context, index) {
-                            final anonymousPlayer = anonymousPlayers[index];
-                            final alreadyAdded = _participants.any(
-                              (participant) =>
-                                  participant.anonymousPlayerId ==
-                                      anonymousPlayer.id &&
-                                  participant.isPresent,
-                            );
-
-                            return ListTile(
-                              leading: const Icon(Icons.person_outline_rounded),
-                              title: Text(
-                                _anonymousPlayerName(anonymousPlayer),
-                              ),
-                              subtitle: Text(
-                                alreadyAdded
-                                    ? 'Already added to this report'
-                                    : 'Tap to add',
-                              ),
-                              enabled: !alreadyAdded,
-                              onTap: alreadyAdded
-                                  ? null
-                                  : () {
-                                      Navigator.of(
-                                        sheetContext,
-                                      ).pop(anonymousPlayer);
-                                    },
-                            );
-                          },
-                        ),
-                      ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ),
-            );
-          },
+    final selectedAnonymousPlayer =
+        await RegisterMatchAddAnonymousPlayerSheet.show(
+          context,
+          activeAnonymousPlayerIds: _participants
+              .where((participant) => participant.isPresent)
+              .map((participant) => participant.anonymousPlayerId)
+              .whereType<int>()
+              .toSet(),
         );
-      },
-    );
-
-    nameController.dispose();
 
     if (selectedAnonymousPlayer == null || !mounted) {
       return;
     }
 
-    final anonymousPlayerId = selectedAnonymousPlayer.id;
+    _addAnonymousPlayerToParticipants(selectedAnonymousPlayer);
+  }
+
+  Future<void> _openRegisteredPlayerSheet() async {
+    final selectedRegisteredPlayer =
+        await RegisterMatchSearchRegisteredPlayerSheet.show(
+          context,
+          activeRegisteredPlayerIds: _participants
+              .where((participant) => participant.isPresent)
+              .map((participant) => participant.playerDataId)
+              .whereType<int>()
+              .toSet(),
+        );
+
+    if (selectedRegisteredPlayer == null || !mounted) {
+      return;
+    }
+
+    _addRegisteredPlayerToParticipants(selectedRegisteredPlayer);
+  }
+
+  void _addAnonymousPlayerToParticipants(AnonymousPlayer anonymousPlayer) {
+    final anonymousPlayerId = anonymousPlayer.id;
     if (anonymousPlayerId == null) {
       return;
     }
@@ -1553,15 +1504,40 @@ class _RegisterMatchWizardSheetState
     setState(() {
       if (existingParticipantIndex >= 0) {
         _participants[existingParticipantIndex].isPresent = true;
-      } else {
-        final participant = _ParticipantDraft.anonymous(
-          key: participantKey,
-          anonymousPlayerId: anonymousPlayerId,
-          displayName: _anonymousPlayerName(selectedAnonymousPlayer),
-        );
-        _participants.add(participant);
-        _controllerFor(participant.key);
+        return;
       }
+
+      final participant = _ParticipantDraft.anonymous(
+        key: participantKey,
+        anonymousPlayerId: anonymousPlayerId,
+        displayName: _anonymousPlayerName(anonymousPlayer),
+      );
+      _participants.add(participant);
+      _controllerFor(participant.key);
+    });
+  }
+
+  void _addRegisteredPlayerToParticipants(
+    RegisteredPlayerSearchResult registeredPlayer,
+  ) {
+    final participantKey = 'p-${registeredPlayer.playerDataId}';
+    final existingParticipantIndex = _participants.indexWhere(
+      (participant) => participant.key == participantKey,
+    );
+
+    setState(() {
+      if (existingParticipantIndex >= 0) {
+        _participants[existingParticipantIndex].isPresent = true;
+        return;
+      }
+
+      final participant = _ParticipantDraft.registered(
+        key: participantKey,
+        playerDataId: registeredPlayer.playerDataId,
+        displayName: registeredPlayer.displayName,
+      );
+      _participants.add(participant);
+      _controllerFor(participant.key);
     });
   }
 

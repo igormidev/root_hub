@@ -114,11 +114,6 @@ class RegisterMatchData extends Endpoint {
           authenticatedPlayerData: authenticatedPlayerData,
           scheduledPairingAttempt: scheduledPairingAttempt,
         );
-        await _validateRegisteredPlayerDataAreParticipants(
-          session,
-          scheduledPairingAttempt: scheduledPairingAttempt,
-          players: players,
-        );
 
         final groupPhotoUrl = await _uploadProofImage(
           session,
@@ -212,12 +207,13 @@ class RegisterMatchData extends Endpoint {
             }
           }
 
-          final playerDataIds = players
-              .map((player) => player.playerDataId)
-              .whereType<int>()
-              .toSet()
-              .toList()
-            ..sort();
+          final playerDataIds =
+              players
+                  .map((player) => player.playerDataId)
+                  .whereType<int>()
+                  .toSet()
+                  .toList()
+                ..sort();
 
           for (final playerDataId in playerDataIds) {
             final playerData = playerDataById[playerDataId];
@@ -437,7 +433,9 @@ class RegisterMatchData extends Endpoint {
         playerData.id!: playerData,
     };
 
-    final missingPlayerDataIds = playerDataIds.difference(playerDataById.keys.toSet());
+    final missingPlayerDataIds = playerDataIds.difference(
+      playerDataById.keys.toSet(),
+    );
     if (missingPlayerDataIds.isNotEmpty) {
       final missingIds = missingPlayerDataIds.toList()..sort();
       _throwInvalidRequest(
@@ -494,15 +492,17 @@ class RegisterMatchData extends Endpoint {
       return;
     }
 
-    final invalidAnonymousPlayers = anonymousPlayersById.values
-        .where(
-          (anonymousPlayer) =>
-              anonymousPlayer.createdByPlayerId != authenticatedPlayerData.id,
-        )
-        .map((anonymousPlayer) => anonymousPlayer.id)
-        .whereType<int>()
-        .toList()
-      ..sort();
+    final invalidAnonymousPlayers =
+        anonymousPlayersById.values
+            .where(
+              (anonymousPlayer) =>
+                  anonymousPlayer.createdByPlayerId !=
+                  authenticatedPlayerData.id,
+            )
+            .map((anonymousPlayer) => anonymousPlayer.id)
+            .whereType<int>()
+            .toList()
+          ..sort();
 
     if (invalidAnonymousPlayers.isNotEmpty) {
       _throwAccessDenied(
@@ -557,45 +557,6 @@ class RegisterMatchData extends Endpoint {
     if (isSubscribed == null) {
       _throwAccessDenied(
         'Only host or subscribed players can register this match result.',
-      );
-    }
-  }
-
-  Future<void> _validateRegisteredPlayerDataAreParticipants(
-    Session session, {
-    required MatchSchedulePairingAttempt scheduledPairingAttempt,
-    required List<PlayerMatchResultInput> players,
-  }) async {
-    final registeredPlayerDataIds = players
-        .map((player) => player.playerDataId)
-        .whereType<int>()
-        .toSet();
-    if (registeredPlayerDataIds.isEmpty) {
-      return;
-    }
-
-    final subscriptions = await MatchSubscription.db.find(
-      session,
-      where: (t) =>
-          t.matchSchedulePairingAttemptId.equals(scheduledPairingAttempt.id!),
-    );
-
-    final participantPlayerDataIds = <int>{
-      scheduledPairingAttempt.playerDataId,
-      ...subscriptions.map((subscription) => subscription.playerDataId),
-    };
-
-    final nonParticipants =
-        registeredPlayerDataIds
-            .where(
-              (playerDataId) =>
-                  !participantPlayerDataIds.contains(playerDataId),
-            )
-            .toList()
-          ..sort();
-    if (nonParticipants.isNotEmpty) {
-      _throwInvalidRequest(
-        'These playerDataIds are not participants of the scheduled pairing attempt: ${nonParticipants.join(', ')}.',
       );
     }
   }

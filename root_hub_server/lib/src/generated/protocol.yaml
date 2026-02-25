@@ -30,6 +30,8 @@ getPendingMatchResultsCount:
   - v1:
 registerMatchData:
   - v1:
+searchRegisteredPlayers:
+  - v1:
 getMatchChatMessage:
   - v1:
 sendMatchChatMessage:

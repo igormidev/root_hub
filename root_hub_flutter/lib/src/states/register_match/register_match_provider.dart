@@ -25,7 +25,10 @@ class RegisterMatchPlayerReportInput {
 }
 
 class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
+  static const _minAnonymousNameLength = 3;
+
   bool _hasRequestedInitialCount = false;
+  int _registeredPlayerSearchRunId = 0;
 
   @override
   RegisterMatchState build() {
@@ -168,13 +171,19 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     return loadError;
   }
 
-  Future<AnonymousPlayer?> createAnonymousPlayer(String name) async {
-    final normalizedName = name.trim();
-    if (normalizedName.isEmpty) {
+  Future<AnonymousPlayer?> createAnonymousPlayer({
+    required String firstName,
+    required String lastName,
+  }) async {
+    final normalizedFirstName = firstName.trim();
+    final normalizedLastName = lastName.trim();
+    if (normalizedFirstName.length < _minAnonymousNameLength ||
+        normalizedLastName.length < _minAnonymousNameLength) {
       state = state.copyWith(
         anonymousPlayersError: RootHubException(
           title: 'Invalid player',
-          description: 'Anonymous player name cannot be empty.',
+          description:
+              'First name and last name must have at least $_minAnonymousNameLength characters.',
         ),
       );
       return null;
@@ -183,7 +192,10 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .createAnonymousPlayer
-        .v1(name: normalizedName)
+        .v1(
+          firstName: normalizedFirstName,
+          lastName: normalizedLastName,
+        )
         .toResult;
 
     AnonymousPlayer? createdAnonymousPlayer;
@@ -212,6 +224,59 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     return createdAnonymousPlayer;
   }
 
+  Future<RootHubException?> searchRegisteredPlayers(String query) async {
+    _registeredPlayerSearchRunId += 1;
+    final runId = _registeredPlayerSearchRunId;
+
+    state = state.copyWith(
+      isSearchingRegisteredPlayers: true,
+      registeredPlayersSearchError: null,
+    );
+
+    final result = await ref
+        .read(clientProvider)
+        .searchRegisteredPlayers
+        .v1(query: query.trim())
+        .toResult;
+
+    RootHubException? searchError;
+    result.fold(
+      (players) {
+        if (runId != _registeredPlayerSearchRunId) {
+          return;
+        }
+        state = state.copyWith(
+          registeredPlayersSearchResults: players,
+          isSearchingRegisteredPlayers: false,
+          registeredPlayersSearchError: null,
+        );
+      },
+      (error) {
+        if (runId != _registeredPlayerSearchRunId) {
+          return;
+        }
+        searchError = error;
+        state = state.copyWith(
+          registeredPlayersSearchResults:
+              const <RegisteredPlayerSearchResult>[],
+          isSearchingRegisteredPlayers: false,
+          registeredPlayersSearchError: error,
+        );
+      },
+    );
+
+    return searchError;
+  }
+
+  void clearRegisteredPlayersSearch() {
+    _registeredPlayerSearchRunId += 1;
+    state = state.copyWith(
+      registeredPlayersSearchResults: const <RegisteredPlayerSearchResult>[],
+      isSearchingRegisteredPlayers: false,
+      registeredPlayersSearchError: null,
+    );
+  }
+
   Future<RootHubException?> submitMatchReport({
     required MatchSchedulePairingAttempt scheduledMatch,
     required List<RegisterMatchPlayerReportInput> players,
@@ -231,11 +296,11 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       );
     }
 
-    if (players.isEmpty) {
+    if (players.length < 2) {
       return RootHubException(
-        title: 'Missing players',
+        title: 'Not enough players',
         description:
-            'Select at least one participant before submitting the report.',
+            'Select at least two participants before submitting the report.',
       );
     }
 
@@ -328,6 +393,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       pendingMatchesError: null,
       pendingMatchesCountError: null,
       anonymousPlayersError: null,
+      registeredPlayersSearchError: null,
       submitError: null,
     );
   }

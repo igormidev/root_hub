@@ -19,6 +19,10 @@ abstract class RegisterMatchState with _$RegisterMatchState {
     @Default(false) bool isLoadingAnonymousPlayers,
     @Default(false) bool hasLoadedAnonymousPlayers,
     RootHubException? anonymousPlayersError,
+    @Default(<RegisteredPlayerSearchResult>[])
+    List<RegisteredPlayerSearchResult> registeredPlayersSearchResults,
+    @Default(false) bool isSearchingRegisteredPlayers,
+    RootHubException? registeredPlayersSearchError,
     @Default(false) bool isSubmitting,
     RootHubException? submitError,
   }) = _RegisterMatchState;

@@ -20,7 +20,7 @@ class MatchEditTableSheet extends ConsumerStatefulWidget {
 }
 
 class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
-  static const _maxScheduleDays = 50;
+  static const _maxScheduleDays = 15;
   static const _minScheduleMinutes = 10;
 
   late Future<MatchScheduleInfo> _detailsFuture;
@@ -389,7 +389,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
                   title: 'Schedule',
                   description:
                       'Must be at least 10 minutes from now, '
-                      'up to 50 days ahead.',
+                      'up to $_maxScheduleDays days ahead.',
                 ),
                 const SizedBox(height: 8),
                 Row(

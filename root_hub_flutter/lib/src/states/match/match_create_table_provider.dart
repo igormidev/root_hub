@@ -14,8 +14,7 @@ import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
   static const _recentLocationsKey = 'match_create_table_recent_locations_v1';
   static const _hostWillPlayKey = 'match_create_table_host_will_play_v1';
-  static const _scheduledHourKey = 'match_create_table_hour_v1';
-  static const _scheduledMinuteKey = 'match_create_table_minute_v1';
+  static const _maxScheduleDays = 15;
   static const _maxRecentLocations = 8;
 
   Timer? _searchDebounce;
@@ -30,16 +29,12 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
 
     final prefs = ref.read(sharedPreferencesProvider);
     final persistedHostWillPlay = prefs.getBool(_hostWillPlayKey);
-    final persistedScheduledHour = prefs.getInt(_scheduledHourKey);
-    final persistedScheduledMinute = prefs.getInt(_scheduledMinuteKey);
     final recentLocations = _readRecentLocations();
 
     final initialState = _buildDefaultState(
       recentLocations: recentLocations,
       hasLoadedRecentLocations: true,
       persistedHostWillPlay: persistedHostWillPlay,
-      persistedScheduledHour: persistedScheduledHour,
-      persistedScheduledMinute: persistedScheduledMinute,
     );
     return initialState;
   }
@@ -52,8 +47,6 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       recentLocations: state.recentLocations,
       hasLoadedRecentLocations: state.hasLoadedRecentLocations,
       persistedHostWillPlay: state.hostWillPlay,
-      persistedScheduledHour: state.scheduledTime.hour,
-      persistedScheduledMinute: state.scheduledTime.minute,
     );
   }
 
@@ -128,7 +121,6 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       scheduledTime: normalizedTime,
       createTableError: null,
     );
-    unawaited(_persistScheduledTime(normalizedTime));
   }
 
   void setHostWillPlay(bool hostWillPlay) {
@@ -219,12 +211,21 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     }
 
     final normalizedDescription = state.description.trim();
+    final scheduledDate = state.scheduledDate;
+    final scheduledTime = state.scheduledTime;
+    if (scheduledDate == null || scheduledTime == null) {
+      return RootHubException(
+        title: 'Schedule required',
+        description: 'Please select both day and start hour.',
+      );
+    }
+
     final attemptedAt = DateTime(
-      state.scheduledDate.year,
-      state.scheduledDate.month,
-      state.scheduledDate.day,
-      state.scheduledTime.hour,
-      state.scheduledTime.minute,
+      scheduledDate.year,
+      scheduledDate.month,
+      scheduledDate.day,
+      scheduledTime.hour,
+      scheduledTime.minute,
     );
 
     final now = DateTime.now();
@@ -237,12 +238,13 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
       );
     }
 
-    final maxAllowedTime = now.add(const Duration(days: 50));
+    final maxAllowedTime = now.add(const Duration(days: _maxScheduleDays));
     if (attemptedAt.isAfter(maxAllowedTime)) {
       return RootHubException(
         title: 'Date is too far',
         description:
-            'The scheduled time cannot be more than 50 days in the future.',
+            'The scheduled time cannot be more than '
+            '$_maxScheduleDays days in the future.',
       );
     }
 
@@ -278,8 +280,6 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
           recentLocations: state.recentLocations,
           hasLoadedRecentLocations: state.hasLoadedRecentLocations,
           persistedHostWillPlay: state.hostWillPlay,
-          persistedScheduledHour: state.scheduledTime.hour,
-          persistedScheduledMinute: state.scheduledTime.minute,
         );
       },
       (error) async {
@@ -375,12 +375,6 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
         );
   }
 
-  Future<void> _persistScheduledTime(TimeOfDay scheduledTime) async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.setInt(_scheduledHourKey, scheduledTime.hour);
-    await prefs.setInt(_scheduledMinuteKey, scheduledTime.minute);
-  }
-
   List<Location> _dedupeAndLimit(List<Location> locations) {
     final dedupedById = <int, Location>{};
     for (final location in locations) {
@@ -416,42 +410,8 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     List<Location> recentLocations = const <Location>[],
     bool hasLoadedRecentLocations = false,
     bool? persistedHostWillPlay,
-    int? persistedScheduledHour,
-    int? persistedScheduledMinute,
   }) {
-    final now = DateTime.now();
-    final roundedToNextHour = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-    ).add(const Duration(hours: 1));
-
-    final hasValidPersistedTime =
-        persistedScheduledHour != null &&
-        persistedScheduledMinute != null &&
-        persistedScheduledHour >= 0 &&
-        persistedScheduledHour <= 23 &&
-        persistedScheduledMinute >= 0 &&
-        persistedScheduledMinute <= 59;
-
-    final scheduledTime = hasValidPersistedTime
-        ? TimeOfDay(
-            hour: persistedScheduledHour,
-            minute: persistedScheduledMinute,
-          )
-        : TimeOfDay(
-            hour: roundedToNextHour.hour,
-            minute: roundedToNextHour.minute,
-          );
-
     return MatchCreateTableState(
-      scheduledDate: DateTime(
-        roundedToNextHour.year,
-        roundedToNextHour.month,
-        roundedToNextHour.day,
-      ),
-      scheduledTime: scheduledTime,
       hostWillPlay: persistedHostWillPlay ?? true,
       recentLocations: recentLocations,
       hasLoadedRecentLocations: hasLoadedRecentLocations,

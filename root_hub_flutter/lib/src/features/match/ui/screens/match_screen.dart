@@ -119,70 +119,73 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
           ),
         ),
         Positioned(
+          left: 16,
+          bottom: 18,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              FloatingActionButton.extended(
+                heroTag: 'register-match-fab',
+                onPressed: _openRegisterMatchFlow,
+                icon: const Icon(Icons.emoji_events_rounded),
+                label: Text(
+                  'Report Result',
+                  style: GoogleFonts.nunitoSans(
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
+                elevation: 1,
+              ),
+              if (registerMatchState.pendingMatchesCount > 0)
+                Positioned(
+                  right: -6,
+                  top: -6,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: colorScheme.error,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    constraints: const BoxConstraints(minWidth: 22),
+                    child: Text(
+                      '${registerMatchState.pendingMatchesCount}',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onError,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        Positioned(
           right: 16,
           bottom: 18,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              FloatingActionButton.small(
-                heroTag: 'host-match-fab',
-                onPressed: () {
-                  ref.read(matchCreateTableProvider.notifier).startNewFlow();
-                  context.push(dashboardMatchCreatePath);
-                },
-                tooltip: 'Host Table',
-                backgroundColor: colorScheme.secondaryContainer,
-                foregroundColor: colorScheme.onSecondaryContainer,
-                child: const Icon(Icons.campaign_rounded),
+          child: FloatingActionButton.extended(
+            heroTag: 'host-match-fab',
+            onPressed: () {
+              ref.read(matchCreateTableProvider.notifier).startNewFlow();
+              context.push(dashboardMatchCreatePath);
+            },
+            icon: const Icon(Icons.campaign_rounded),
+            label: Text(
+              'Host Table',
+              style: GoogleFonts.nunitoSans(
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.2,
               ),
-              const SizedBox(height: 10),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  FloatingActionButton.extended(
-                    heroTag: 'register-match-fab',
-                    onPressed: _openRegisterMatchFlow,
-                    icon: const Icon(Icons.emoji_events_rounded),
-                    label: Text(
-                      'Report Result',
-                      style: GoogleFonts.nunitoSans(
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                    backgroundColor: colorScheme.primary,
-                    foregroundColor: colorScheme.onPrimary,
-                    elevation: 1,
-                  ),
-                  if (registerMatchState.pendingMatchesCount > 0)
-                    Positioned(
-                      right: -6,
-                      top: -6,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: colorScheme.error,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                        constraints: const BoxConstraints(minWidth: 22),
-                        child: Text(
-                          '${registerMatchState.pendingMatchesCount}',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(
-                                color: colorScheme.onError,
-                                fontWeight: FontWeight.w900,
-                              ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ],
+            ),
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
+            elevation: 1,
           ),
         ),
       ],
