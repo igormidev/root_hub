@@ -10,7 +10,7 @@ import 'package:image/image.dart' as img;
 final _chatImageCacheManager = CacheManager(
   Config(
     'matchChatImageCache',
-    stalePeriod: const Duration(days: 5),
+    stalePeriod: Duration(days: 5),
     maxNrOfCacheObjects: 200,
   ),
 );
@@ -73,7 +73,7 @@ class _MatchChatImageWidgetState extends State<MatchChatImageWidget> {
         : 1.0;
 
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 300, maxHeight: 400),
+      constraints: BoxConstraints(maxWidth: 300, maxHeight: 400),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: AspectRatio(
@@ -82,8 +82,8 @@ class _MatchChatImageWidgetState extends State<MatchChatImageWidget> {
             imageUrl: widget.message.source,
             cacheManager: _chatImageCacheManager,
             fit: BoxFit.cover,
-            fadeInDuration: const Duration(milliseconds: 250),
-            fadeOutDuration: const Duration(milliseconds: 250),
+            fadeInDuration: Duration(milliseconds: 250),
+            fadeOutDuration: Duration(milliseconds: 250),
             placeholder: (context, url) {
               if (_blurhashImage != null) {
                 return Image(

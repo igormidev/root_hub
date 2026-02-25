@@ -10,6 +10,7 @@ import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableInfoSheet extends ConsumerStatefulWidget {
   final int scheduledMatchId;
@@ -50,7 +51,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(
+          borderRadius: BorderRadius.vertical(
             top: Radius.circular(28),
           ),
         ),
@@ -59,7 +60,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
           future: _detailsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const MatchTableInfoLoadingWidget();
+              return MatchTableInfoLoadingWidget();
             }
 
             if (snapshot.hasError) {
@@ -88,8 +89,8 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
             if (table == null) {
               return MatchTableInfoErrorWidget(
                 error: RootHubException(
-                  title: 'Table not found',
-                  description: 'Unable to load table details.',
+                  title: t.match.ui_sheets_match_table_info_sheet.l91c26,
+                  description: t.match.ui_sheets_match_table_info_sheet.l92c32,
                 ),
                 onClose: () => Navigator.of(context).pop(false),
                 onRetry: () {
@@ -106,7 +107,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
             }
 
             final participatingPlayers =
-                tableInfo?.players ?? const <MatchSchedulePlayerSnapshot>[];
+                tableInfo?.players ?? <MatchSchedulePlayerSnapshot>[];
 
             return MatchTableInfoContentWidget(
               table: table,
@@ -129,15 +130,19 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Leave this table?'),
-          content: const Text(
-            'You will be unsubscribed from this match and removed from the '
-            'players list. You can rejoin later if seats are still available.',
+          title: Text(
+            t.match.ui_sheets_match_table_info_sheet.l132c29,
+          ),
+          content: Text(
+            t.match.ui_sheets_match_table_info_sheet.l134c13 +
+                t.match.ui_sheets_match_table_info_sheet.l135c13,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: Text(
+                t.match.ui_sheets_match_table_info_sheet.l140c33,
+              ),
             ),
             FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
@@ -145,7 +150,9 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                 backgroundColor: Theme.of(dialogContext).colorScheme.error,
                 foregroundColor: Theme.of(dialogContext).colorScheme.onError,
               ),
-              child: const Text('Leave'),
+              child: Text(
+                t.match.ui_sheets_match_table_info_sheet.l148c33,
+              ),
             ),
           ],
         );
@@ -188,7 +195,9 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Remove a Player'),
+          title: Text(
+            t.match.ui_sheets_match_table_info_sheet.l191c29,
+          ),
           content: SizedBox(
             width: double.maxFinite,
             child: Column(
@@ -196,12 +205,12 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Select a player to remove from the table.',
+                  t.match.ui_sheets_match_table_info_sheet.l199c19,
                   style: Theme.of(dialogContext).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...removablePlayers.map(
                   (player) => MatchTableInfoRemovePlayerTileWidget(
                     player: player,
@@ -214,7 +223,9 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
+              child: Text(
+                t.match.ui_sheets_match_table_info_sheet.l217c33,
+              ),
             ),
           ],
         );
@@ -239,13 +250,14 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
         return AlertDialog(
           title: Text('Remove $playerName?'),
           content: Text(
-            '$playerName will be removed from the table and will need to '
-            'rejoin if seats are still available.',
+            '$playerName will be removed from the table and will need to ${t.match.ui_sheets_match_table_info_sheet.l243c13}',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: Text(
+                t.match.ui_sheets_match_table_info_sheet.l248c33,
+              ),
             ),
             FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
@@ -253,7 +265,9 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                 backgroundColor: Theme.of(dialogContext).colorScheme.error,
                 foregroundColor: Theme.of(dialogContext).colorScheme.onError,
               ),
-              child: const Text('Remove'),
+              child: Text(
+                t.match.ui_sheets_match_table_info_sheet.l256c33,
+              ),
             ),
           ],
         );

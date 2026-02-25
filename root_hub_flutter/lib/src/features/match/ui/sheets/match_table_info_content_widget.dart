@@ -6,6 +6,7 @@ import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_b
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_drag_handle_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_participant_card_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableInfoContentWidget extends StatelessWidget {
   final MatchSchedulePairingAttempt table;
@@ -57,26 +58,26 @@ class MatchTableInfoContentWidget extends StatelessWidget {
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
-    final subscriptions = table.subscriptions ?? const <MatchSubscription>[];
+    final subscriptions = table.subscriptions ?? <MatchSubscription>[];
     final subscribedPlayersCount = subscriptions.length;
 
     return Column(
       children: [
-        const MatchTableInfoDragHandleWidget(),
+        MatchTableInfoDragHandleWidget(),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 4, 18, 18),
+            padding: EdgeInsets.fromLTRB(18, 4, 18, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Table Details',
+                  t.match.ui_sheets_match_table_info_content_widget.l73c19,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   table.title,
                   style: GoogleFonts.cinzel(
@@ -86,7 +87,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                   ),
                 ),
                 if (table.description?.trim().isNotEmpty == true) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     table.description!.trim(),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -96,7 +97,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -111,7 +112,12 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.person_outline_rounded,
-                      text: table.host?.displayName ?? 'Unknown host',
+                      text:
+                          table.host?.displayName ??
+                          t
+                              .match
+                              .ui_sheets_match_table_info_content_widget
+                              .l114c56,
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.social_distance_rounded,
@@ -119,10 +125,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: colorScheme.outlineVariant),
@@ -139,7 +145,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                             Icons.location_on_rounded,
                             color: colorScheme.secondary,
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: 6),
                           Expanded(
                             child: Text(
                               locationTitle,
@@ -149,7 +155,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2),
                       Text(
                         locationSubtitle,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -160,28 +166,34 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 Text(
-                  'Players in this match',
+                  t.match.ui_sheets_match_table_info_content_widget.l165c19,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   participatingPlayers.isEmpty
-                      ? 'No players subscribed yet.'
-                      : 'These are the current players that will participate.',
+                      ? t
+                            .match
+                            .ui_sheets_match_table_info_content_widget
+                            .l173c25
+                      : t
+                            .match
+                            .ui_sheets_match_table_info_content_widget
+                            .l174c25,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 if (participatingPlayers.isEmpty)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+                    padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: colorScheme.surfaceContainerHighest.withValues(
@@ -189,7 +201,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'No players have joined this table yet.',
+                      t.match.ui_sheets_match_table_info_content_widget.l192c23,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -198,12 +210,12 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                 else
                   for (final participant in participatingPlayers)
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
+                      padding: EdgeInsets.only(bottom: 14),
                       child: MatchTableInfoParticipantCardWidget(
                         playerSnapshot: participant,
                       ),
                     ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   'Created at: $createdLabel',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(

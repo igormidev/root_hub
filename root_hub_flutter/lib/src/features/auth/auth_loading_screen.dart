@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthLoadingScreen extends StatelessWidget {
   const AuthLoadingScreen({
@@ -29,7 +30,7 @@ class AuthLoadingScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                    'ROOT HUB',
+                    t.auth.auth_loading_screen.l32c21,
                     style: GoogleFonts.cinzel(
                       fontSize: 38,
                       fontWeight: FontWeight.w700,
@@ -40,7 +41,7 @@ class AuthLoadingScreen extends StatelessWidget {
                   .animate()
                   .fadeIn(duration: 500.ms)
                   .slideY(begin: 0.2, end: 0, duration: 500.ms),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               SizedBox(
                     width: 28,
                     height: 28,

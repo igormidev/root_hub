@@ -12,7 +12,7 @@ class MatchChatSystemEventMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final metadata = message.metadata ?? const <String, dynamic>{};
+    final metadata = message.metadata ?? <String, dynamic>{};
     final type = metadata['type'] as String?;
     final content = metadata['content'] as String? ?? '';
     final isJoin = type == 'systemJoin';
@@ -26,10 +26,10 @@ class MatchChatSystemEventMessageWidget extends StatelessWidget {
         : null;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 24),
       child: Center(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+          padding: EdgeInsets.fromLTRB(12, 6, 12, 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(999),
             color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
@@ -42,7 +42,7 @@ class MatchChatSystemEventMessageWidget extends StatelessWidget {
                 size: 14,
                 color: colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6),
               Flexible(
                 child: Text(
                   content,
@@ -54,7 +54,7 @@ class MatchChatSystemEventMessageWidget extends StatelessWidget {
                 ),
               ),
               if (timeLabel != null) ...[
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Text(
                   timeLabel,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(

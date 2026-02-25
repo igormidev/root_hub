@@ -12,6 +12,7 @@ class _RootHubFlutterLintsPlugin extends PluginBase {
       _FeatureSingleWidgetPerFileRule(),
       _FeatureWidgetNameMatchesFileSuffixRule(),
       _NoWidgetReturningFunctionRule(),
+      _FeatureHardcodedUiStringRule(),
     ];
   }
 }
@@ -144,6 +145,38 @@ class _NoWidgetReturningFunctionRule extends DartLintRule {
   }
 }
 
+class _FeatureHardcodedUiStringRule extends DartLintRule {
+  _FeatureHardcodedUiStringRule()
+    : super(
+        code: const LintCode(
+          name: 'feature_hardcoded_ui_string',
+          problemMessage: 'Hard-coded string literal found in feature UI code.',
+          correctionMessage:
+              'Move user-facing text to localization keys. Use // ignore: feature_hardcoded_ui_string above non-translatable strings.',
+        ),
+      );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    DiagnosticReporter reporter,
+    CustomLintContext context,
+  ) {
+    final filePath = resolver.source.fullName;
+    if (!_isLintableFeatureFile(filePath)) {
+      return;
+    }
+
+    context.registry.addSimpleStringLiteral((literal) {
+      if (!_shouldReportFeatureStringLiteral(literal)) {
+        return;
+      }
+
+      reporter.atNode(literal, code);
+    });
+  }
+}
+
 const _widgetTypeNames = <String>{
   'Widget',
   'StatelessWidget',
@@ -167,6 +200,36 @@ const _widgetFileSuffixToClassSuffix = <String, String>{
   '_item.dart': 'Item',
   '_page.dart': 'Page',
   '_view.dart': 'View',
+};
+
+const _uiTextNamedArgumentNames = <String>{
+  'buttonText',
+  'cancelButtonText',
+  'confirmButtonText',
+  'content',
+  'counterText',
+  'description',
+  'errorText',
+  'helperText',
+  'hint',
+  'hintText',
+  'label',
+  'labelText',
+  'message',
+  'placeholder',
+  'prefixText',
+  'semanticLabel',
+  'subtitle',
+  'suffixText',
+  'text',
+  'title',
+  'tooltip',
+};
+
+const _uiTextPositionalInvocationNames = <String>{
+  'BabelText',
+  'SelectableText',
+  'Text',
 };
 
 bool _isLintableFeatureFile(String path) {
@@ -306,6 +369,90 @@ String? _expectedWidgetClassSuffix(String path) {
   for (final entry in _widgetFileSuffixToClassSuffix.entries) {
     if (normalizedPath.endsWith(entry.key)) {
       return entry.value;
+    }
+  }
+
+  return null;
+}
+
+bool _shouldReportFeatureStringLiteral(SimpleStringLiteral literal) {
+  final value = literal.value;
+  if (value.trim().isEmpty) {
+    return false;
+  }
+
+  if (_isStringLiteralInSkippableNode(literal)) {
+    return false;
+  }
+
+  return _isLikelyUiTextLiteral(literal);
+}
+
+bool _isStringLiteralInSkippableNode(AstNode node) {
+  final parent = node.parent;
+  return parent is Directive || parent is Annotation;
+}
+
+bool _isLikelyUiTextLiteral(AstNode node) {
+  final argumentExpression = _argumentExpressionForNode(node);
+  if (argumentExpression == null) {
+    return false;
+  }
+
+  if (argumentExpression is NamedExpression) {
+    final argumentName = argumentExpression.name.label.name;
+    return _uiTextNamedArgumentNames.contains(argumentName);
+  }
+
+  final argumentList = argumentExpression.parent;
+  if (argumentList is! ArgumentList) {
+    return false;
+  }
+
+  final index = argumentList.arguments.indexOf(argumentExpression);
+  if (index != 0) {
+    return false;
+  }
+
+  final invocationName = _invocationName(argumentList.parent);
+  if (invocationName == null) {
+    return false;
+  }
+
+  return _uiTextPositionalInvocationNames.contains(invocationName);
+}
+
+Expression? _argumentExpressionForNode(AstNode node) {
+  AstNode? current = node;
+  while (current != null) {
+    final parent = current.parent;
+    if (parent is NamedExpression && parent.expression == current) {
+      return parent;
+    }
+
+    if (parent is ArgumentList && current is Expression) {
+      return current;
+    }
+
+    current = parent;
+  }
+
+  return null;
+}
+
+String? _invocationName(AstNode? node) {
+  if (node is InstanceCreationExpression) {
+    return _normalizeTypeName(node.constructorName.type.toSource());
+  }
+
+  if (node is MethodInvocation) {
+    return node.methodName.name;
+  }
+
+  if (node is FunctionExpressionInvocation) {
+    final function = node.function;
+    if (function is Identifier) {
+      return function.name;
     }
   }
 

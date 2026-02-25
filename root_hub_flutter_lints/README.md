@@ -36,6 +36,11 @@ Scope:
 - Required architecture: extract each UI block into a dedicated widget class in a dedicated file.
 - Allowed exception: Flutter framework-required `build` overrides.
 
+### `feature_hardcoded_ui_string`
+- Scope: `lib/src/features/**` (excluding generated files)
+- Enforces: hard-coded strings in feature UI code must be moved to localization.
+- Allowed escape hatch: add `// ignore: feature_hardcoded_ui_string` above non-translatable values (for example keys, IDs, routes, or asset paths).
+
 ## Where Rules Are Wired
 - Rule definitions (custom_lint-compatible): `lib/root_hub_flutter_lints.dart`
 - Enforced workspace checker executable: `bin/check_flutter_feature_lints.dart`

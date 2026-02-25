@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_drag_handle_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableInfoErrorWidget extends StatelessWidget {
   final RootHubException error;
@@ -19,18 +20,18 @@ class MatchTableInfoErrorWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+      padding: EdgeInsets.fromLTRB(18, 16, 18, 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(child: MatchTableInfoDragHandleWidget()),
+          Center(child: MatchTableInfoDragHandleWidget()),
           Text(
             error.title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w900,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(
             error.description,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -38,21 +39,25 @@ class MatchTableInfoErrorWidget extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const Spacer(),
+          Spacer(),
           Row(
             children: [
               Expanded(
                 child: OutlinedButton(
                   onPressed: onClose,
-                  child: const Text('Close'),
+                  child: Text(
+                    t.match.ui_sheets_match_table_info_error_widget.l47c37,
+                  ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Expanded(
                 child: FilledButton.icon(
                   onPressed: onRetry,
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retry'),
+                  icon: Icon(Icons.refresh_rounded),
+                  label: Text(
+                    t.match.ui_sheets_match_table_info_error_widget.l55c37,
+                  ),
                 ),
               ),
             ],

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_flutter/src/design_system/faction_selector/faction_selection_grid_widget.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_onboarding_continue_button_widget.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthOnboardingScreen extends ConsumerWidget {
   const AuthOnboardingScreen({
@@ -23,7 +24,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            center: const Alignment(0, -0.8),
+            center: Alignment(0, -0.8),
             radius: 1.25,
             colors: [
               colorScheme.primaryContainer.withValues(alpha: 0.55),
@@ -36,10 +37,10 @@ class AuthOnboardingScreen extends ConsumerWidget {
           children: [
             SizedBox(height: topPadding + 22),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child:
                   Text(
-                        'Choose Your Faction',
+                        t.auth.auth_onboarding_screen.l42c25,
                         style: GoogleFonts.cinzel(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -51,11 +52,11 @@ class AuthOnboardingScreen extends ConsumerWidget {
                       .fadeIn(duration: 400.ms)
                       .slideY(begin: -0.2, end: 0, duration: 400.ms),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Pick your favorite ROOT faction before entering the hub.',
+                t.auth.auth_onboarding_screen.l58c17,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,
@@ -64,7 +65,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
                 ),
               ).animate().fadeIn(delay: 120.ms, duration: 420.ms),
             ),
-            const SizedBox(height: 18),
+            SizedBox(height: 18),
             Expanded(
               child: Stack(
                 children: [
@@ -85,11 +86,11 @@ class AuthOnboardingScreen extends ConsumerWidget {
                     right: 16,
                     bottom: viewPadding.bottom,
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
+                      duration: Duration(milliseconds: 300),
                       switchInCurve: Curves.easeOutCubic,
                       switchOutCurve: Curves.easeInCubic,
                       child: switch (selectedFaction) {
-                        null => const SizedBox.shrink(),
+                        null => SizedBox.shrink(),
                         final faction => AuthOnboardingContinueButtonWidget(
                           faction: faction,
                         ),

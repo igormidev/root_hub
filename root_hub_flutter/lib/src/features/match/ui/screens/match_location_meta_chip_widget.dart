@@ -15,7 +15,7 @@ class MatchLocationMetaChipWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
@@ -28,7 +28,7 @@ class MatchLocationMetaChipWidget extends StatelessWidget {
             size: 14,
             color: colorScheme.onSurfaceVariant,
           ),
-          const SizedBox(width: 5),
+          SizedBox(width: 5),
           Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(

@@ -43,24 +43,30 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Set the time the match actually started.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_timing_step_section
+              .l48c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         Text(
-          'Match started at',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_timing_step_section
+              .l57c11,
           style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w900,
             color: colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         GestureDetector(
           onTap: onPickMatchStartedDate,
           child: Text(
@@ -71,7 +77,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: 2),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -86,39 +92,50 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
             ),
             FilledButton.tonalIcon(
               onPressed: onPickMatchStartedTime,
-              icon: const Icon(Icons.schedule_rounded),
-              label: const Text('Change time'),
+              icon: Icon(Icons.schedule_rounded),
+              label: Text(
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_timing_step_section
+                    .l90c33,
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         Text(
           '$durationStepNumber) Estimated match duration',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_timing_step_section
+              .l103c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         Text(
-          'Estimated duration',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_timing_step_section
+              .l112c11,
           style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w900,
             color: colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+          padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
@@ -131,17 +148,20 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Estimated duration',
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_timing_step_section
+                    .l134c17,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Row(
                 children: [
                   IconButton.filledTonal(
                     onPressed: onDecreaseDuration,
-                    icon: const Icon(Icons.remove_rounded),
+                    icon: Icon(Icons.remove_rounded),
                   ),
                   Expanded(
                     child: Text(
@@ -154,7 +174,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
                   ),
                   IconButton.filledTonal(
                     onPressed: onIncreaseDuration,
-                    icon: const Icon(Icons.add_rounded),
+                    icon: Icon(Icons.add_rounded),
                   ),
                 ],
               ),

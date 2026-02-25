@@ -19,7 +19,7 @@ class MatchCreateTableCounterColumnWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           Text(
@@ -29,12 +29,12 @@ class MatchCreateTableCounterColumnWidget extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Row(
             children: [
               IconButton.filledTonal(
                 onPressed: onDecrease,
-                icon: const Icon(Icons.remove_rounded),
+                icon: Icon(Icons.remove_rounded),
               ),
               Expanded(
                 child: Text(
@@ -47,7 +47,7 @@ class MatchCreateTableCounterColumnWidget extends StatelessWidget {
               ),
               IconButton.filledTonal(
                 onPressed: onIncrease,
-                icon: const Icon(Icons.add_rounded),
+                icon: Icon(Icons.add_rounded),
               ),
             ],
           ),

@@ -6,6 +6,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthOnboardingContinueButtonWidget extends ConsumerWidget {
   const AuthOnboardingContinueButtonWidget({
@@ -41,7 +42,7 @@ class AuthOnboardingContinueButtonWidget extends ConsumerWidget {
               ),
             ),
             child: Text(
-              'Continue',
+              t.auth.auth_onboarding_continue_button_widget.l44c15,
               style: GoogleFonts.getFont(
                 'MedievalSharp',
                 fontSize: 22,

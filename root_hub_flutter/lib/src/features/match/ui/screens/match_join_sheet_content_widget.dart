@@ -4,6 +4,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_participant_card_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchJoinSheetContentWidget extends StatelessWidget {
   const MatchJoinSheetContentWidget({
@@ -50,14 +51,14 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
-    final subscriptions = table.subscriptions ?? const <MatchSubscription>[];
+    final subscriptions = table.subscriptions ?? <MatchSubscription>[];
     final subscribedPlayersCount = subscriptions.length;
     final isSubscribed =
         currentPlayer != null &&
         subscriptions.any((entry) => entry.playerDataId == currentPlayer?.id);
 
     final participatingPlayers =
-        tableInfo?.players ?? const <MatchSchedulePlayerSnapshot>[];
+        tableInfo?.players ?? <MatchSchedulePlayerSnapshot>[];
     final isClosed = table.closedForSubscriptions == true;
 
     return Column(
@@ -65,7 +66,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
         Container(
           width: 50,
           height: 5,
-          margin: const EdgeInsets.only(top: 12, bottom: 8),
+          margin: EdgeInsets.only(top: 12, bottom: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(999),
             color: colorScheme.outlineVariant,
@@ -73,18 +74,18 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
         ),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 4, 18, 18),
+            padding: EdgeInsets.fromLTRB(18, 4, 18, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Confirm table subscription',
+                  t.match.ui_screens_match_join_sheet_content_widget.l81c19,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   table.title,
                   style: GoogleFonts.cinzel(
@@ -94,7 +95,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                   ),
                 ),
                 if (table.description?.trim().isNotEmpty == true) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     table.description!.trim(),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -105,10 +106,10 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                   ),
                 ],
                 if (isClosed) ...[
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
@@ -123,11 +124,17 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                           color: colorScheme.onErrorContainer,
                           size: 20,
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'The host has closed subscriptions for this table. '
-                            'New players cannot join at this time.',
+                            t
+                                    .match
+                                    .ui_screens_match_join_sheet_content_widget
+                                    .l129c29 +
+                                t
+                                    .match
+                                    .ui_screens_match_join_sheet_content_widget
+                                    .l130c29,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
                                   color: colorScheme.onErrorContainer,
@@ -139,7 +146,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
@@ -147,17 +154,22 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                       Navigator.of(context).pop(false);
                       onOpenChat();
                     },
-                    icon: const Icon(Icons.chat_bubble_rounded),
-                    label: const Text('See table chat'),
+                    icon: Icon(Icons.chat_bubble_rounded),
+                    label: Text(
+                      t
+                          .match
+                          .ui_screens_match_join_sheet_content_widget
+                          .l151c39,
+                    ),
                     style: FilledButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      maximumSize: const Size(double.infinity, 50),
+                      minimumSize: Size(double.infinity, 50),
+                      maximumSize: Size(double.infinity, 50),
                       backgroundColor: colorScheme.primary,
                       foregroundColor: Colors.white,
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -172,7 +184,12 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ),
                     MatchInfoChipWidget(
                       icon: Icons.person_outline_rounded,
-                      text: table.host?.displayName ?? 'Unknown host',
+                      text:
+                          table.host?.displayName ??
+                          t
+                              .match
+                              .ui_screens_match_join_sheet_content_widget
+                              .l175c56,
                     ),
                     MatchInfoChipWidget(
                       icon: Icons.social_distance_rounded,
@@ -180,10 +197,10 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: colorScheme.outlineVariant),
@@ -200,7 +217,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                             Icons.location_on_rounded,
                             color: colorScheme.secondary,
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: 6),
                           Expanded(
                             child: Text(
                               locationTitle,
@@ -215,11 +232,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                             onPressed: () {
                               onOpenLocationInfo(location);
                             },
-                            icon: const Icon(Icons.info_outline_rounded),
+                            icon: Icon(Icons.info_outline_rounded),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2),
                       Text(
                         locationSubtitle,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -230,28 +247,34 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 Text(
-                  'Players in this match',
+                  t.match.ui_screens_match_join_sheet_content_widget.l235c19,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   participatingPlayers.isEmpty
-                      ? 'No players subscribed yet.'
-                      : 'These are the current players that will participate.',
+                      ? t
+                            .match
+                            .ui_screens_match_join_sheet_content_widget
+                            .l243c25
+                      : t
+                            .match
+                            .ui_screens_match_join_sheet_content_widget
+                            .l244c25,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 if (participatingPlayers.isEmpty)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+                    padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: colorScheme.surfaceContainerHighest.withValues(
@@ -259,7 +282,10 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'You can be the first player to lock this table in.',
+                      t
+                          .match
+                          .ui_screens_match_join_sheet_content_widget
+                          .l262c23,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -268,12 +294,12 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                 else
                   for (final participant in participatingPlayers)
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
+                      padding: EdgeInsets.only(bottom: 14),
                       child: MatchParticipantCardWidget(
                         playerSnapshot: participant,
                       ),
                     ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   'Created at: $createdLabel',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -288,39 +314,53 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
         SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
+            padding: EdgeInsets.fromLTRB(18, 10, 18, 14),
             child: Row(
               children: [
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
+                      minimumSize: Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Cancel'),
+                    child: Text(
+                      t
+                          .match
+                          .ui_screens_match_join_sheet_content_widget
+                          .l303c39,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: FilledButton(
                     onPressed: isSubscribed || isClosed
                         ? null
                         : () => Navigator.of(context).pop(true),
                     style: FilledButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      maximumSize: const Size(double.infinity, 52),
+                      minimumSize: Size(double.infinity, 52),
+                      maximumSize: Size(double.infinity, 52),
                       backgroundColor: colorScheme.primary,
                       foregroundColor: Colors.white,
                     ),
                     child: Text(
                       isSubscribed
-                          ? 'Already subscribed'
+                          ? t
+                                .match
+                                .ui_screens_match_join_sheet_content_widget
+                                .l320c29
                           : isClosed
-                          ? 'Subscriptions closed'
-                          : 'Confirm Join',
+                          ? t
+                                .match
+                                .ui_screens_match_join_sheet_content_widget
+                                .l322c29
+                          : t
+                                .match
+                                .ui_screens_match_join_sheet_content_widget
+                                .l323c29,
                       style: GoogleFonts.getFont(
                         'MedievalSharp',
                         fontSize: 22,

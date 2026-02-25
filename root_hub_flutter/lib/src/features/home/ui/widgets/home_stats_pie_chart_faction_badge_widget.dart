@@ -16,7 +16,7 @@ class HomeStatsPieChartFactionBadgeWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.94),
         shape: BoxShape.circle,
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             color: Color(0x1F000000),
             blurRadius: 8,
@@ -25,7 +25,7 @@ class HomeStatsPieChartFactionBadgeWidget extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: EdgeInsets.all(5),
         child: Image.asset(
           faction.getFactionIconPath(size: FactionIconSize.size80),
           width: 20,

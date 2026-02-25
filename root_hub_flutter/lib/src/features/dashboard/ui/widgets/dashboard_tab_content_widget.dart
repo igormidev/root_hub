@@ -16,11 +16,11 @@ class DashboardTabContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (tab) {
       case DashboardTab.home:
-        return const HomeScreen();
+        return HomeScreen();
       case DashboardTab.match:
-        return const MatchScreen();
+        return MatchScreen();
       case DashboardTab.shop:
-        return const ShopScreen();
+        return ShopScreen();
     }
   }
 }

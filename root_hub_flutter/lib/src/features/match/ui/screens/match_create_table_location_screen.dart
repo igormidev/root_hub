@@ -13,6 +13,7 @@ import 'match_create_table_location_loading_search_widget.dart';
 import 'match_create_table_location_no_recent_locations_widget.dart';
 import 'match_create_table_location_no_search_results_widget.dart';
 import 'match_create_table_location_search_error_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchCreateTableLocationScreen extends ConsumerStatefulWidget {
   const MatchCreateTableLocationScreen({
@@ -56,9 +57,9 @@ class _MatchCreateTableLocationScreenState
     if (state.selectedLocation == null) {
       await showErrorDialog(
         context,
-        title: 'Location required',
+        title: t.match.ui_screens_match_create_table_location_screen.l59c16,
         description:
-            'Choose one location from the list before creating the table.',
+            t.match.ui_screens_match_create_table_location_screen.l61c13,
       );
       return;
     }
@@ -94,7 +95,7 @@ class _MatchCreateTableLocationScreenState
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            center: const Alignment(0, -1.1),
+            center: Alignment(0, -1.1),
             radius: 1.45,
             colors: [
               colorScheme.primaryContainer.withValues(alpha: 0.62),
@@ -107,19 +108,22 @@ class _MatchCreateTableLocationScreenState
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 10),
                 child: Row(
                   children: [
                     IconButton.filledTonal(
                       onPressed: () {
                         context.pop();
                       },
-                      icon: const Icon(Icons.arrow_back_rounded),
+                      icon: Icon(Icons.arrow_back_rounded),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Choose Table Location',
+                        t
+                            .match
+                            .ui_screens_match_create_table_location_screen
+                            .l122c25,
                         style: GoogleFonts.cinzel(
                           fontSize: 23,
                           fontWeight: FontWeight.w800,
@@ -131,21 +135,24 @@ class _MatchCreateTableLocationScreenState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: TextField(
                   controller: _searchController,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search_rounded),
+                    prefixIcon: Icon(Icons.search_rounded),
                     suffixIcon: _searchController.text.trim().isEmpty
                         ? null
                         : IconButton(
                             onPressed: () {
                               _searchController.clear();
                             },
-                            icon: const Icon(Icons.clear_rounded),
+                            icon: Icon(Icons.clear_rounded),
                           ),
-                    hintText: 'Search location (Google Places)',
+                    hintText: t
+                        .match
+                        .ui_screens_match_create_table_location_screen
+                        .l148c31,
                     filled: true,
                     fillColor: colorScheme.surface.withValues(alpha: 0.94),
                     border: OutlineInputBorder(
@@ -155,9 +162,9 @@ class _MatchCreateTableLocationScreenState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                 child: Text(
-                  'Tap a location to select it. Previously selected locations are saved here for faster hosting.',
+                  t.match.ui_screens_match_create_table_location_screen.l160c19,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
@@ -167,13 +174,13 @@ class _MatchCreateTableLocationScreenState
               ),
               Expanded(
                 child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 18),
                   children: [
                     if (selectedLocation != null)
                       Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                        margin: EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(color: colorScheme.primary),
@@ -187,7 +194,7 @@ class _MatchCreateTableLocationScreenState
                               Icons.check_circle_rounded,
                               color: colorScheme.primary,
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 _locationTitle(selectedLocation),
@@ -200,22 +207,25 @@ class _MatchCreateTableLocationScreenState
                       ),
                     if (!queryIsEmpty) ...[
                       Text(
-                        'Search results',
+                        t
+                            .match
+                            .ui_screens_match_create_table_location_screen
+                            .l203c25,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.w900,
                             ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       if (state.isSearchingLocations)
-                        const MatchCreateTableLocationLoadingSearchWidget()
+                        MatchCreateTableLocationLoadingSearchWidget()
                       else if (state.locationSearchError != null)
                         MatchCreateTableLocationSearchErrorWidget(
                           error: state.locationSearchError!,
                         )
                       else if (state.hasPerformedLocationSearch &&
                           state.searchResults.isEmpty)
-                        const MatchCreateTableLocationNoSearchResultsWidget()
+                        MatchCreateTableLocationNoSearchResultsWidget()
                       else
                         for (final location in state.searchResults)
                           MatchCreateTableLocationListTileWidget(
@@ -230,19 +240,22 @@ class _MatchCreateTableLocationScreenState
                                   .selectLocation(location);
                             },
                           ),
-                      const SizedBox(height: 14),
+                      SizedBox(height: 14),
                     ],
                     Text(
-                      'Previously selected locations',
+                      t
+                          .match
+                          .ui_screens_match_create_table_location_screen
+                          .l236c23,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     if (!state.hasLoadedRecentLocations)
-                      const MatchCreateTableLocationLoadingRecentWidget()
+                      MatchCreateTableLocationLoadingRecentWidget()
                     else if (state.recentLocations.isEmpty)
-                      const MatchCreateTableLocationNoRecentLocationsWidget()
+                      MatchCreateTableLocationNoRecentLocationsWidget()
                     else
                       for (final location in state.recentLocations)
                         MatchCreateTableLocationListTileWidget(
@@ -261,7 +274,7 @@ class _MatchCreateTableLocationScreenState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 14),
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 14),
                 child: SizedBox(
                   width: double.infinity,
                   height: 58,
@@ -284,7 +297,10 @@ class _MatchCreateTableLocationScreenState
                             ),
                           )
                         : Text(
-                            'Continue',
+                            t
+                                .match
+                                .ui_screens_match_create_table_location_screen
+                                .l287c29,
                             style: GoogleFonts.getFont(
                               'MedievalSharp',
                               fontSize: 22,

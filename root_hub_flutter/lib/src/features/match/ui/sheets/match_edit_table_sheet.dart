@@ -7,6 +7,7 @@ import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_e
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_form_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_loading_widget.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchEditTableSheet extends ConsumerStatefulWidget {
   final int scheduledMatchId;
@@ -81,7 +82,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(
+          borderRadius: BorderRadius.vertical(
             top: Radius.circular(28),
           ),
         ),
@@ -90,7 +91,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
           future: _detailsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const MatchEditTableLoadingWidget();
+              return MatchEditTableLoadingWidget();
             }
 
             if (snapshot.hasError) {
@@ -107,8 +108,8 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
             if (tableInfo == null) {
               return MatchEditTableErrorWidget(
                 error: RootHubException(
-                  title: 'Table not found',
-                  description: 'Unable to load table details.',
+                  title: t.match.ui_sheets_match_edit_table_sheet.l110c26,
+                  description: t.match.ui_sheets_match_edit_table_sheet.l111c32,
                 ),
                 onClose: () => Navigator.of(context).pop(false),
               );
@@ -167,7 +168,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
   Future<void> _pickDate() async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final maxDate = today.add(const Duration(days: _maxScheduleDays));
+    final maxDate = today.add(Duration(days: _maxScheduleDays));
 
     final selectedDate = await showDatePicker(
       context: context,
@@ -214,8 +215,8 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     if (normalizedTitle.isEmpty) {
       await showErrorDialog(
         context,
-        title: 'Title required',
-        description: 'Please add a title for your table.',
+        title: t.match.ui_sheets_match_edit_table_sheet.l217c16,
+        description: t.match.ui_sheets_match_edit_table_sheet.l218c22,
       );
       return;
     }
@@ -223,10 +224,10 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     if (_minPlayers < 2 || _maxPlayers > 6 || _minPlayers > _maxPlayers) {
       await showErrorDialog(
         context,
-        title: 'Invalid players range',
+        title: t.match.ui_sheets_match_edit_table_sheet.l226c16,
         description:
-            'Players range must be between 2 and 6, '
-            'with minimum not greater than maximum.',
+            t.match.ui_sheets_match_edit_table_sheet.l228c13 +
+            t.match.ui_sheets_match_edit_table_sheet.l229c13,
       );
       return;
     }
@@ -234,10 +235,9 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     if (_maxPlayers < _currentSubscriberCount) {
       await showErrorDialog(
         context,
-        title: 'Too many players subscribed',
+        title: t.match.ui_sheets_match_edit_table_sheet.l237c16,
         description:
-            'There are already $_currentSubscriberCount players subscribed. '
-            'You cannot set the maximum below that number.',
+            'There are already $_currentSubscriberCount players subscribed. ${t.match.ui_sheets_match_edit_table_sheet.l240c13}',
       );
       return;
     }
@@ -252,7 +252,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
 
     final now = DateTime.now();
     final minAllowedTime = now.add(
-      const Duration(minutes: _minScheduleMinutes),
+      Duration(minutes: _minScheduleMinutes),
     );
     if (attemptedAt.isBefore(minAllowedTime)) {
       if (!mounted) {
@@ -260,16 +260,15 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       }
       await showErrorDialog(
         context,
-        title: 'Time is too soon',
+        title: t.match.ui_sheets_match_edit_table_sheet.l263c16,
         description:
-            'The scheduled time must be at least '
-            '$_minScheduleMinutes minutes in the future.',
+            '${t.match.ui_sheets_match_edit_table_sheet.l265c13}$_minScheduleMinutes minutes in the future.',
       );
       return;
     }
 
     final maxAllowedTime = now.add(
-      const Duration(days: _maxScheduleDays),
+      Duration(days: _maxScheduleDays),
     );
     if (attemptedAt.isAfter(maxAllowedTime)) {
       if (!mounted) {
@@ -277,10 +276,9 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       }
       await showErrorDialog(
         context,
-        title: 'Date is too far',
+        title: t.match.ui_sheets_match_edit_table_sheet.l280c16,
         description:
-            'The scheduled time cannot be more than '
-            '$_maxScheduleDays days in the future.',
+            '${t.match.ui_sheets_match_edit_table_sheet.l282c13}$_maxScheduleDays days in the future.',
       );
       return;
     }

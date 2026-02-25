@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/app_config.dart';
 import 'package:root_hub_flutter/src/core/theme/app_theme.dart';
 import 'package:root_hub_flutter/src/core/utils/custom_talker_riverpod_observer.dart';
@@ -35,11 +37,14 @@ void main() async {
 
   await client.auth.initialize();
   final pref = await SharedPreferences.getInstance();
+  LocaleSettings.useDeviceLocale();
 
   runApp(
-    MyApp(
-      client: client,
-      sharedPreferences: pref,
+    TranslationProvider(
+      child: MyApp(
+        client: client,
+        sharedPreferences: pref,
+      ),
     ),
   );
 }
@@ -86,7 +91,7 @@ class _RouterApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Root Hub',
+      title: context.t.app.title,
       theme: buildAppTheme(
         seedColor: const Color(0xFF6A3D1F),
         brightness: Brightness.light,
@@ -96,8 +101,9 @@ class _RouterApp extends ConsumerWidget {
         brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
-      // localizationsDelegates: S.localizationsDelegates,
-      // supportedLocales: S.supportedLocales,
+      locale: TranslationProvider.of(context).flutterLocale,
+      supportedLocales: AppLocaleUtils.supportedLocales,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       routerConfig: router,
     );
   }

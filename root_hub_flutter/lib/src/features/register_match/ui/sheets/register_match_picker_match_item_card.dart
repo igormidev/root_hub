@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchPickerMatchItemCard extends StatelessWidget {
   const RegisterMatchPickerMatchItemCard({
@@ -39,7 +40,7 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         onTap: onTap,
         child: Ink(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+          padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
@@ -57,7 +58,7 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                 ),
               ),
               if (match.description?.trim().isNotEmpty == true) ...[
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   match.description!.trim(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -66,7 +67,7 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                   ),
                 ),
               ],
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Row(
                 children: [
                   Icon(
@@ -74,7 +75,7 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                     size: 18,
                     color: colorScheme.primary,
                   ),
-                  const SizedBox(width: 6),
+                  SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       startAtLabel,
@@ -85,7 +86,7 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               Row(
                 children: [
                   Icon(
@@ -93,7 +94,7 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                     size: 18,
                     color: colorScheme.secondary,
                   ),
-                  const SizedBox(width: 6),
+                  SizedBox(width: 6),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,11 +123,11 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 6,
                   ),
@@ -137,7 +138,15 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                         : colorScheme.tertiaryContainer,
                   ),
                   child: Text(
-                    canRegisterNow ? 'Tap to report' : 'Not available yet',
+                    canRegisterNow
+                        ? t
+                              .register_match
+                              .ui_sheets_register_match_picker_match_item_card
+                              .l140c38
+                        : t
+                              .register_match
+                              .ui_sheets_register_match_picker_match_item_card
+                              .l140c56,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w900,
                       color: canRegisterNow

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchCreateTableLocationLoadingSearchWidget extends StatelessWidget {
   const MatchCreateTableLocationLoadingSearchWidget({
@@ -8,17 +9,20 @@ class MatchCreateTableLocationLoadingSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
+      padding: EdgeInsets.symmetric(vertical: 14),
       child: Row(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 20,
             height: 20,
             child: CircularProgressIndicator(strokeWidth: 2.5),
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Text(
-            'Searching locations...',
+            t
+                .match
+                .ui_screens_match_create_table_location_loading_search_widget
+                .l21c13,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

@@ -25,7 +25,7 @@ class DashboardProfileDrawerInfoCardWidget extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      padding: EdgeInsets.fromLTRB(14, 12, 14, 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: colorScheme.outlineVariant),
@@ -35,7 +35,7 @@ class DashboardProfileDrawerInfoCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: colorScheme.primary),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,7 @@ class DashboardProfileDrawerInfoCardWidget extends StatelessWidget {
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Text(
                   value,
                   style: GoogleFonts.nunitoSans(
@@ -59,16 +59,16 @@ class DashboardProfileDrawerInfoCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           OutlinedButton.icon(
             onPressed: isLoading ? null : onPressed,
             icon: isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     width: 14,
                     height: 14,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.edit_rounded, size: 18),
+                : Icon(Icons.edit_rounded, size: 18),
             label: Text(
               buttonLabel,
               style: GoogleFonts.nunitoSans(

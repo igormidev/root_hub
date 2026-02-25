@@ -6,6 +6,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/design_system/profile_editor/profile_location_editor_card.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class EditLocationDialog extends ConsumerStatefulWidget {
   const EditLocationDialog({
@@ -76,7 +77,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
       }
 
       final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
+        locationSettings: LocationSettings(
           accuracy: LocationAccuracy.high,
         ),
       );
@@ -174,29 +175,29 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
     );
 
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 14),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Edit Location',
+              t.dashboard.ui_dialogs_edit_location_dialog.l184c15,
               style: GoogleFonts.cinzel(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
-              'Update your coordinates and target search ratio for match discovery.',
+              t.dashboard.ui_dialogs_edit_location_dialog.l192c15,
               textAlign: TextAlign.center,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w700,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             ProfileLocationEditorCard(
               currentLocation: _draftLocation,
               isResolvingLocation: _isResolvingLocation,
@@ -213,7 +214,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
               enabled: !isSaving,
               showOuterCard: false,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             Row(
               children: [
                 Expanded(
@@ -224,19 +225,19 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
                             Navigator.of(context).pop(false);
                           },
                     child: Text(
-                      'Cancel',
+                      t.dashboard.ui_dialogs_edit_location_dialog.l227c23,
                       style: GoogleFonts.nunitoSans(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: FilledButton(
                     onPressed: isSaving ? null : _saveLocation,
                     child: isSaving
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 18,
                             height: 18,
                             child: CircularProgressIndicator(
@@ -244,7 +245,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
                             ),
                           )
                         : Text(
-                            'Save',
+                            t.dashboard.ui_dialogs_edit_location_dialog.l247c29,
                             style: GoogleFonts.nunitoSans(
                               fontWeight: FontWeight.w800,
                             ),

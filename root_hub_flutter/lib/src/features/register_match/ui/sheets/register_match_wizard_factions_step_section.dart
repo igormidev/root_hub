@@ -25,25 +25,31 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '2) Select factions',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_factions_step_section
+              .l28c11,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Choose the faction used by each player in this match.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_factions_step_section
+              .l35c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         for (final participant in selectedParticipants)
           Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.only(bottom: 12),
             child: Container(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: colorScheme.outlineVariant),
@@ -57,18 +63,26 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   DropdownButtonFormField<Faction>(
                     key: ValueKey(
                       '${participant.key}-${participant.faction?.name ?? 'none'}',
                     ),
                     initialValue: participant.faction,
                     isExpanded: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Faction',
+                    decoration: InputDecoration(
+                      labelText: t
+                          .register_match
+                          .ui_sheets_register_match_wizard_factions_step_section
+                          .l68c34,
                       border: OutlineInputBorder(),
                     ),
-                    hint: const Text('Select faction'),
+                    hint: Text(
+                      t
+                          .register_match
+                          .ui_sheets_register_match_wizard_factions_step_section
+                          .l71c38,
+                    ),
                     items:
                         availableFactionsForParticipant(
                           participant,
@@ -82,7 +96,7 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
                                   faction: faction,
                                   radius: 12,
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     faction.displayName,

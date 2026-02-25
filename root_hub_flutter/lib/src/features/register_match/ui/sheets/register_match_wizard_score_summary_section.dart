@@ -15,7 +15,7 @@ class _RegisterMatchWizardScoreSummarySection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),

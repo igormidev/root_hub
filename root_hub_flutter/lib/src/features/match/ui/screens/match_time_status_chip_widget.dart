@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTimeStatusChipWidget extends StatelessWidget {
   const MatchTimeStatusChipWidget({
@@ -23,10 +24,10 @@ class MatchTimeStatusChipWidget extends StatelessWidget {
 
     return Tooltip(
       message: alreadyStarted
-          ? 'This match already started. Recently started tables stay visible for a short period.'
-          : 'Remaining time until the match starts.',
+          ? t.match.ui_screens_match_time_status_chip_widget.l26c13
+          : t.match.ui_screens_match_time_status_chip_widget.l27c13,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+        padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(999),
           color: alreadyStarted

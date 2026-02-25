@@ -19,6 +19,7 @@ import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchChatScreen extends ConsumerStatefulWidget {
   final int scheduledMatchId;
@@ -106,7 +107,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         actions: [
           if (chatState.isSendingMessage || chatState.isUploadingImage)
             Padding(
-              padding: const EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 4),
               child: Center(
                 child: SizedBox(
                   width: 18,
@@ -120,13 +121,13 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             ),
           if (isHost)
             IconButton(
-              tooltip: 'Edit table',
-              icon: const Icon(Icons.edit_outlined),
+              tooltip: t.match.ui_screens_match_chat_screen.l123c24,
+              icon: Icon(Icons.edit_outlined),
               onPressed: () => _openEditSheet(context),
             ),
           IconButton(
-            tooltip: 'Table info',
-            icon: const Icon(Icons.info_outline_rounded),
+            tooltip: t.match.ui_screens_match_chat_screen.l128c22,
+            icon: Icon(Icons.info_outline_rounded),
             onPressed: _openTableInfoSheet,
           ),
         ],
@@ -137,9 +138,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             if (currentUserId == null) {
               return Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
-                    'Unable to resolve your account information.',
+                    t.match.ui_screens_match_chat_screen.l142c21,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
@@ -178,7 +179,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               onMessageSend: chatNotifier.sendTextMessage,
               onAttachmentTap: () => _pickAndSendImage(chatNotifier),
               builders: Builders(
-                composerBuilder: (context) => const Composer(
+                composerBuilder: (context) => Composer(
                   attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
                 ),
                 chatAnimatedListBuilder: (context, itemBuilder) =>
@@ -215,14 +216,14 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                             .factionIconPathForAuthorId(authorId);
 
                         headerWidget = Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 2, 8, 4),
+                          padding: EdgeInsets.fromLTRB(8, 2, 8, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               MatchChatSenderAvatarWidget(
                                 profileImageUrl,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width: 6),
                               Flexible(
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -245,7 +246,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                       ),
                                     ),
                                     if (factionIconPath != null) ...[
-                                      const SizedBox(width: 6),
+                                      SizedBox(width: 6),
                                       Image.asset(
                                         factionIconPath,
                                         width: 18,
@@ -257,9 +258,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                 ),
                               ),
                               if (isSubscribedSender) ...[
-                                const SizedBox(width: 6),
+                                SizedBox(width: 6),
                                 Container(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                     8,
                                     2,
                                     8,
@@ -270,7 +271,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                     color: colorScheme.primaryContainer,
                                   ),
                                   child: Text(
-                                    'Subscribed',
+                                    t
+                                        .match
+                                        .ui_screens_match_chat_screen
+                                        .l273c37,
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelSmall
@@ -318,7 +322,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                       index: index,
                     ),
                 loadMoreBuilder: (context) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Center(
                       child: SizedBox(
@@ -392,7 +396,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Image is too large'),
+          title: Text(
+            t.match.ui_screens_match_chat_screen.l395c29,
+          ),
           content: Text(
             'This image is ${selectedImageMb}MB, but the limit is '
             '${maxAllowedMb}MB. Compress it automatically before sending?',
@@ -400,11 +406,15 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.l403c33,
+              ),
             ),
             FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Compress'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.l407c33,
+              ),
             ),
           ],
         );
@@ -465,19 +475,25 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       context: context,
       builder: (dialogContext) {
         return CupertinoActionSheet(
-          title: const Text('Send a photo'),
+          title: Text(
+            t.match.ui_screens_match_chat_screen.l468c29,
+          ),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.camera);
               },
-              child: const Text('Take Photo'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.l474c33,
+              ),
             ),
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.gallery);
               },
-              child: const Text('Choose from Library'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.l480c33,
+              ),
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
@@ -485,7 +501,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             onPressed: () {
               Navigator.of(dialogContext).pop();
             },
-            child: const Text('Cancel'),
+            child: Text(
+              t.match.ui_screens_match_chat_screen.l488c31,
+            ),
           ),
         );
       },
@@ -502,20 +520,24 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_camera_rounded),
-                title: const Text('Take Photo'),
+                leading: Icon(Icons.photo_camera_rounded),
+                title: Text(
+                  t.match.ui_screens_match_chat_screen.l506c35,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_rounded),
-                title: const Text('Choose from Gallery'),
+                leading: Icon(Icons.photo_library_rounded),
+                title: Text(
+                  t.match.ui_screens_match_chat_screen.l513c35,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
                 },
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
             ],
           ),
         );

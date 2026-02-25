@@ -26,9 +26,9 @@ class DashboardBottomTabItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         onTap: onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
+          duration: Duration(milliseconds: 220),
           curve: Curves.easeOutCubic,
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(999),
             color: selected
@@ -45,7 +45,7 @@ class DashboardBottomTabItemWidget extends StatelessWidget {
                     ? colorScheme.primary
                     : colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: 2),
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(

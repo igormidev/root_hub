@@ -34,22 +34,28 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'For each non-winner, set points or mark failed dominance attempt. '
-          'Failed dominance always counts as no points.',
+          t
+                  .register_match
+                  .ui_sheets_register_match_wizard_points_step_section
+                  .l39c11 +
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_points_step_section
+                  .l40c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         for (final participant in selectedParticipants)
           Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.only(bottom: 12),
             child: Container(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: colorScheme.outlineVariant),
@@ -64,7 +70,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                         faction: participant.faction,
                         radius: 15,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           participant.displayName,
@@ -75,7 +81,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                       ),
                       if (participant.key == winnerParticipantKey)
                         Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
@@ -84,7 +90,10 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                             color: colorScheme.primaryContainer,
                           ),
                           child: Text(
-                            'Winner',
+                            t
+                                .register_match
+                                .ui_sheets_register_match_wizard_points_step_section
+                                .l87c29,
                             style: theme.textTheme.labelSmall?.copyWith(
                               fontWeight: FontWeight.w900,
                               color: colorScheme.onPrimaryContainer,
@@ -94,18 +103,28 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                     ],
                   ),
                   if (participant.key != winnerParticipantKey) ...[
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     SegmentedButton<_ParticipantScoreMode>(
-                      segments: const [
+                      segments: [
                         ButtonSegment<_ParticipantScoreMode>(
                           value: _ParticipantScoreMode.points,
                           icon: Icon(Icons.pin_rounded),
-                          label: Text('Points'),
+                          label: Text(
+                            t
+                                .register_match
+                                .ui_sheets_register_match_wizard_points_step_section
+                                .l103c39,
+                          ),
                         ),
                         ButtonSegment<_ParticipantScoreMode>(
                           value: _ParticipantScoreMode.failedDominance,
                           icon: Icon(Icons.flag_rounded),
-                          label: Text('Failed dominance'),
+                          label: Text(
+                            t
+                                .register_match
+                                .ui_sheets_register_match_wizard_points_step_section
+                                .l108c39,
+                          ),
                         ),
                       ],
                       selected: <_ParticipantScoreMode>{participant.scoreMode},
@@ -120,23 +139,32 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                       },
                     ),
                   ],
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   if (participant.key == winnerParticipantKey &&
                       winnerType == _WinnerType.points)
-                    const _RegisterMatchWizardScoreSummarySection(
-                      label: 'Winner by points',
+                    _RegisterMatchWizardScoreSummarySection(
+                      label: t
+                          .register_match
+                          .ui_sheets_register_match_wizard_points_step_section
+                          .l127c30,
                       value: '30',
                     )
                   else if (participant.key == winnerParticipantKey &&
                       winnerType == _WinnerType.dominance)
-                    const _RegisterMatchWizardScoreSummarySection(
-                      label: 'Winner by dominance',
+                    _RegisterMatchWizardScoreSummarySection(
+                      label: t
+                          .register_match
+                          .ui_sheets_register_match_wizard_points_step_section
+                          .l133c30,
                       value: 'No points',
                     )
                   else if (participant.scoreMode ==
                       _ParticipantScoreMode.failedDominance)
-                    const _RegisterMatchWizardScoreSummarySection(
-                      label: 'Dominance attempt',
+                    _RegisterMatchWizardScoreSummarySection(
+                      label: t
+                          .register_match
+                          .ui_sheets_register_match_wizard_points_step_section
+                          .l139c30,
                       value: 'Failed (no points)',
                     )
                   else
@@ -147,9 +175,15 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(2),
                       ],
-                      decoration: const InputDecoration(
-                        labelText: 'Points',
-                        hintText: '0 to 29',
+                      decoration: InputDecoration(
+                        labelText: t
+                            .register_match
+                            .ui_sheets_register_match_wizard_points_step_section
+                            .l151c36,
+                        hintText: t
+                            .register_match
+                            .ui_sheets_register_match_wizard_points_step_section
+                            .l152c35,
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (_) {

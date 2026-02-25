@@ -18,6 +18,7 @@ import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_state.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({
@@ -54,7 +55,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     }
 
     scaffoldState.closeDrawer();
-    await Future<void>.delayed(const Duration(milliseconds: 220));
+    await Future<void>.delayed(Duration(milliseconds: 220));
   }
 
   Future<void> _openDisplayNameDialog(PlayerData playerData) async {
@@ -125,9 +126,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
       await showErrorDialog(
         context,
-        title: 'Unable to access camera or gallery',
-        description:
-            'Allow camera and photo permissions in system settings and try again.',
+        title: t.dashboard.ui_screens_dashboard_screen.l128c16,
+        description: t.dashboard.ui_screens_dashboard_screen.l130c13,
       );
       return;
     }
@@ -165,19 +165,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       context: context,
       builder: (dialogContext) {
         return CupertinoActionSheet(
-          title: const Text('Change profile photo'),
+          title: Text(
+            t.dashboard.ui_screens_dashboard_screen.l168c29,
+          ),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.camera);
               },
-              child: const Text('Take Photo'),
+              child: Text(
+                t.dashboard.ui_screens_dashboard_screen.l174c33,
+              ),
             ),
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.gallery);
               },
-              child: const Text('Choose from Library'),
+              child: Text(
+                t.dashboard.ui_screens_dashboard_screen.l180c33,
+              ),
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
@@ -185,7 +191,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             onPressed: () {
               Navigator.of(dialogContext).pop();
             },
-            child: const Text('Cancel'),
+            child: Text(
+              t.dashboard.ui_screens_dashboard_screen.l188c31,
+            ),
           ),
         );
       },
@@ -202,20 +210,24 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_camera_rounded),
-                title: const Text('Take Photo'),
+                leading: Icon(Icons.photo_camera_rounded),
+                title: Text(
+                  t.dashboard.ui_screens_dashboard_screen.l206c35,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_rounded),
-                title: const Text('Choose from Gallery'),
+                leading: Icon(Icons.photo_library_rounded),
+                title: Text(
+                  t.dashboard.ui_screens_dashboard_screen.l213c35,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
                 },
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
             ],
           ),
         );
@@ -298,7 +310,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+                      padding: EdgeInsets.fromLTRB(16, 6, 16, 8),
                       child: Row(
                         children: [
                           Image.asset(
@@ -307,14 +319,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             height: 42,
                             fit: BoxFit.contain,
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  'ROOT HUB',
+                                  t
+                                      .dashboard
+                                      .ui_screens_dashboard_screen
+                                      .l317c35,
                                   style: Theme.of(context).textTheme.titleLarge
                                       ?.copyWith(
                                         fontWeight: FontWeight.w700,
@@ -333,24 +348,24 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 14),
+                          SizedBox(width: 14),
                           IconButton.filledTonal(
                             onPressed: playerData == null
                                 ? null
                                 : () {
                                     _scaffoldKey.currentState?.openDrawer();
                                   },
-                            icon: const Icon(Icons.menu_rounded),
+                            icon: Icon(Icons.menu_rounded),
                           ),
                         ],
                       ),
                     ),
                     if (selectedTab == DashboardTab.shop)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+                        padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                         child: Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                          padding: EdgeInsets.fromLTRB(14, 12, 14, 12),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
@@ -377,7 +392,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                       fontWeight: FontWeight.w700,
                                     ),
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: 4),
                               Text(
                                 _subtitleFromTab(selectedTab),
                                 style: Theme.of(context).textTheme.bodyMedium
@@ -391,10 +406,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         ),
                       )
                     else
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                     Expanded(
                       child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
+                        duration: Duration(milliseconds: 300),
                         switchInCurve: Curves.easeOutCubic,
                         switchOutCurve: Curves.easeInCubic,
                         child: KeyedSubtree(
@@ -419,7 +434,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 18,
-                    offset: const Offset(0, 8),
+                    offset: Offset(0, 8),
                     color: colorScheme.shadow.withValues(alpha: 0.12),
                   ),
                 ],
@@ -434,7 +449,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: 'Home',
+                        label: t.dashboard.ui_screens_dashboard_screen.l437c32,
                         icon: Icons.cottage_outlined,
                         selectedIcon: Icons.cottage_rounded,
                         selected: selectedTab == DashboardTab.home,
@@ -448,7 +463,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: 'Match',
+                        label: t.dashboard.ui_screens_dashboard_screen.l451c32,
                         icon: Icons.groups_outlined,
                         selectedIcon: Icons.groups_rounded,
                         selected: selectedTab == DashboardTab.match,
@@ -462,7 +477,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: 'Shop',
+                        label: t.dashboard.ui_screens_dashboard_screen.l465c32,
                         icon: Icons.storefront_outlined,
                         selectedIcon: Icons.storefront_rounded,
                         selected: selectedTab == DashboardTab.shop,

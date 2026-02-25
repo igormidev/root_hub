@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchChatLoadingErrorStateWidget extends StatelessWidget {
   final RootHubException error;
@@ -16,10 +17,10 @@ class MatchChatLoadingErrorStateWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: colorScheme.error.withValues(alpha: 0.55)),
@@ -36,7 +37,7 @@ class MatchChatLoadingErrorStateWidget extends StatelessWidget {
                 fontWeight: FontWeight.w900,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               error.description,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -45,11 +46,13 @@ class MatchChatLoadingErrorStateWidget extends StatelessWidget {
                 height: 1.3,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             FilledButton.icon(
               onPressed: onRetry,
-              icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Try again'),
+              icon: Icon(Icons.refresh_rounded),
+              label: Text(
+                t.match.ui_screens_match_chat_loading_error_state_widget.l52c33,
+              ),
             ),
           ],
         ),

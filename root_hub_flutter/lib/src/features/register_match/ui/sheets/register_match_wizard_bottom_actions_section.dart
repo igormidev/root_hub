@@ -18,7 +18,7 @@ class _RegisterMatchWizardBottomActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+      padding: EdgeInsets.fromLTRB(12, 10, 12, 12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border(
@@ -37,11 +37,21 @@ class _RegisterMatchWizardBottomActionsSection extends StatelessWidget {
                   ),
                 ),
                 onPressed: isSubmitting ? null : onBackOrCancel,
-                child: Text(isFirstStep ? 'Cancel' : 'Back'),
+                child: Text(
+                  isFirstStep
+                      ? t
+                            .register_match
+                            .ui_sheets_register_match_wizard_bottom_actions_section
+                            .l40c43
+                      : t
+                            .register_match
+                            .ui_sheets_register_match_wizard_bottom_actions_section
+                            .l40c54,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Expanded(
             child: SizedBox(
               height: 52,
@@ -53,12 +63,22 @@ class _RegisterMatchWizardBottomActionsSection extends StatelessWidget {
                 ),
                 onPressed: isSubmitting ? null : onContinueOrSubmit,
                 child: isSubmitting
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : Text(isLastStep ? 'Submit report' : 'Continue'),
+                    : Text(
+                        isLastStep
+                            ? t
+                                  .register_match
+                                  .ui_sheets_register_match_wizard_bottom_actions_section
+                                  .l61c41
+                            : t
+                                  .register_match
+                                  .ui_sheets_register_match_wizard_bottom_actions_section
+                                  .l61c59,
+                      ),
               ),
             ),
           ),

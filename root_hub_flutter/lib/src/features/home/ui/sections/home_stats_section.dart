@@ -7,6 +7,7 @@ import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_legend_
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_metric_chart_widget.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_status_message_widget.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_snapshot.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class HomeStatsSection extends StatefulWidget {
   const HomeStatsSection({
@@ -37,26 +38,26 @@ class HomeStatsSection extends StatefulWidget {
 class _HomeStatsSectionState extends State<HomeStatsSection> {
   static const _carouselInterval = Duration(minutes: 2);
   static const _carouselAnimationDuration = Duration(milliseconds: 420);
-  static const _metricConfigs = <_StatsMetricConfig>[
+  static final _metricConfigs = <_StatsMetricConfig>[
     _StatsMetricConfig(
       type: _StatsMetricType.winRate,
-      title: 'Faction Win Rate',
-      description: 'Who is winning the most often right now.',
+      title: t.home.ui_sections_home_stats_section.l43c14,
+      description: t.home.ui_sections_home_stats_section.l44c20,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.playedGames,
-      title: 'Played Games',
-      description: 'How often each faction appears in completed games.',
+      title: t.home.ui_sections_home_stats_section.l48c14,
+      description: t.home.ui_sections_home_stats_section.l49c20,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.avgPoints,
-      title: 'Average Points',
-      description: 'Average score per faction when points were tracked.',
+      title: t.home.ui_sections_home_stats_section.l53c14,
+      description: t.home.ui_sections_home_stats_section.l54c20,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.totalWins,
-      title: 'Total Wins',
-      description: 'Absolute number of wins for each faction.',
+      title: t.home.ui_sections_home_stats_section.l58c14,
+      description: t.home.ui_sections_home_stats_section.l59c20,
     ),
   ];
 
@@ -182,7 +183,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             widget.title,
             style: textTheme.titleLarge?.copyWith(
@@ -190,9 +191,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             widget.description,
             style: textTheme.bodyMedium?.copyWith(
@@ -201,7 +202,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         if (widget.isLoading && widget.stats == null)
           SizedBox(
             height: 360,
@@ -245,7 +246,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: _metricConfigs.length,
-                      physics: const BouncingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       onPageChanged: (index) {
                         setState(() {
                           _activePage = index;
@@ -276,7 +277,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                           child: Opacity(
                             opacity: opacity,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 vertical: 6,
                               ),
                               child: Column(
@@ -298,14 +299,14 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                                       },
                                     ),
                                   ),
-                                  const SizedBox(height: 12),
+                                  SizedBox(height: 12),
                                   Text(
                                     metricConfig.title,
                                     style: textTheme.titleMedium?.copyWith(
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: 4),
                                   Text(
                                     metricConfig.description,
                                     style: textTheme.bodyMedium?.copyWith(
@@ -321,9 +322,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
@@ -334,13 +335,13 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                             onTap: () {
                               _pageController.animateToPage(
                                 index,
-                                duration: const Duration(milliseconds: 260),
+                                duration: Duration(milliseconds: 260),
                                 curve: Curves.easeOutCubic,
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 220),
-                              margin: const EdgeInsets.symmetric(
+                              duration: Duration(milliseconds: 220),
+                              margin: EdgeInsets.symmetric(
                                 horizontal: 4,
                                 vertical: 8,
                               ),
@@ -358,9 +359,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -400,7 +401,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         value: _formatPercentValue(
           _averageNonZeroValue(valuesByFaction.values),
         ),
-        label: 'All factions avg',
+        label: t.home.ui_sections_home_stats_section.l403c16,
       ),
       _StatsMetricType.playedGames => _MetricCenterValue(
         value: _formatGroupedInt(
@@ -409,15 +410,15 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             (sum, value) => sum + value.round(),
           ),
         ),
-        label: 'All factions total',
+        label: t.home.ui_sections_home_stats_section.l412c16,
       ),
       _StatsMetricType.avgPoints => _MetricCenterValue(
         value: _formatDecimalValue(stats.avgPoints),
-        label: 'All factions avg',
+        label: t.home.ui_sections_home_stats_section.l416c16,
       ),
       _StatsMetricType.totalWins => _MetricCenterValue(
         value: _formatGroupedInt(stats.totalWins),
-        label: 'All factions total',
+        label: t.home.ui_sections_home_stats_section.l420c16,
       ),
     };
   }
@@ -495,7 +496,7 @@ enum _StatsMetricType {
 }
 
 class _StatsMetricConfig {
-  const _StatsMetricConfig({
+  _StatsMetricConfig({
     required this.type,
     required this.title,
     required this.description,
@@ -507,7 +508,7 @@ class _StatsMetricConfig {
 }
 
 class _MetricCenterValue {
-  const _MetricCenterValue({
+  _MetricCenterValue({
     required this.value,
     required this.label,
   });

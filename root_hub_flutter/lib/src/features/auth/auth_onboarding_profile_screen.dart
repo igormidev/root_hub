@@ -9,6 +9,7 @@ import 'package:root_hub_flutter/src/design_system/profile_editor/profile_displa
 import 'package:root_hub_flutter/src/design_system/profile_editor/profile_location_editor_card.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthOnboardingProfileScreen extends ConsumerStatefulWidget {
   const AuthOnboardingProfileScreen({
@@ -98,7 +99,7 @@ class _AuthOnboardingProfileScreenState
       }
 
       final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
+        locationSettings: LocationSettings(
           accuracy: LocationAccuracy.high,
         ),
       );
@@ -169,7 +170,7 @@ class _AuthOnboardingProfileScreenState
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            center: const Alignment(0, -0.8),
+            center: Alignment(0, -0.8),
             radius: 1.25,
             colors: [
               colorScheme.primaryContainer.withValues(alpha: 0.55),
@@ -182,10 +183,10 @@ class _AuthOnboardingProfileScreenState
           children: [
             SizedBox(height: viewPadding.top + 22),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child:
                   Text(
-                        'Set Your Hub Identity',
+                        t.auth.auth_onboarding_profile_screen.l188c25,
                         style: GoogleFonts.cinzel(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -198,12 +199,12 @@ class _AuthOnboardingProfileScreenState
                       .fadeIn(duration: 400.ms)
                       .slideY(begin: -0.2, end: 0, duration: 400.ms),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Your display name is how other players will see you in Root Hub. '
-                'Current location uses your phone coordinates (x and y) and is required to show nearby matches.',
+                t.auth.auth_onboarding_profile_screen.l205c17 +
+                    t.auth.auth_onboarding_profile_screen.l206c17,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,
@@ -212,17 +213,17 @@ class _AuthOnboardingProfileScreenState
                 ),
               ).animate().fadeIn(delay: 120.ms, duration: 420.ms),
             ),
-            const SizedBox(height: 18),
+            SizedBox(height: 18),
             Expanded(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Column(
                   children: [
                     ProfileDisplayNameEditorCard(
                       controller: _displayNameController,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     ProfileLocationEditorCard(
                       currentLocation: currentLocation,
                       isResolvingLocation: _isResolvingLocation,
@@ -262,10 +263,10 @@ class _AuthOnboardingProfileScreenState
             Padding(
               padding: EdgeInsets.fromLTRB(16, 8, 16, viewPadding.bottom + 16),
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 280),
+                duration: Duration(milliseconds: 280),
                 child: hasDisplayName && hasCurrentLocation
                     ? SizedBox(
-                            key: const ValueKey('profile-continue'),
+                            key: ValueKey('profile-continue'),
                             height: 58,
                             width: double.infinity,
                             child: ElevatedButton(
@@ -286,7 +287,7 @@ class _AuthOnboardingProfileScreenState
                                 ),
                               ),
                               child: Text(
-                                'Continue',
+                                t.auth.auth_onboarding_profile_screen.l289c33,
                                 style: GoogleFonts.getFont(
                                   'MedievalSharp',
                                   fontSize: 22,
@@ -300,7 +301,7 @@ class _AuthOnboardingProfileScreenState
                           .animate()
                           .fadeIn(duration: 240.ms)
                           .slideY(begin: 0.25, end: 0, duration: 240.ms)
-                    : const SizedBox(
+                    : SizedBox(
                         key: ValueKey('profile-continue-placeholder'),
                         height: 58,
                       ),

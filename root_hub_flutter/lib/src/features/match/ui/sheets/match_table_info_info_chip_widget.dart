@@ -15,7 +15,7 @@ class MatchTableInfoInfoChipWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+      padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.65),
@@ -24,7 +24,7 @@ class MatchTableInfoInfoChipWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 15, color: colorScheme.onSurfaceVariant),
-          const SizedBox(width: 5),
+          SizedBox(width: 5),
           Text(
             text,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(

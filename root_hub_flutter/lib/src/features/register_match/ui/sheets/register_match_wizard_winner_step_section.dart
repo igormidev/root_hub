@@ -31,19 +31,22 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Pick the player who won this match.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_winner_step_section
+              .l36c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         for (final participant in selectedParticipants)
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+            contentPadding: EdgeInsets.symmetric(horizontal: 2),
             leading: Icon(
               winnerParticipantKey == participant.key
                   ? Icons.radio_button_checked_rounded
@@ -54,7 +57,7 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
                 _RegisterMatchWizardFactionAvatarSection(
                   faction: participant.faction,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     participant.displayName,
@@ -69,40 +72,59 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
               onWinnerSelected(participant.key);
             },
           ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         Text(
-          'How did the winner won?',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_winner_step_section
+              .l74c11,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Total points means the winner reached 30 victory points on the score track. '
-          'Dominance means the winner completed a Dominance card objective instead of winning by points.',
+          t
+                  .register_match
+                  .ui_sheets_register_match_wizard_winner_step_section
+                  .l81c11 +
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_winner_step_section
+                  .l82c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         SegmentedButton<_WinnerType>(
           emptySelectionAllowed: true,
-          segments: const [
+          segments: [
             ButtonSegment<_WinnerType>(
               value: _WinnerType.points,
               icon: Icon(Icons.stars_rounded),
-              label: Text('Total points (30)'),
+              label: Text(
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_winner_step_section
+                    .l96c27,
+              ),
             ),
             ButtonSegment<_WinnerType>(
               value: _WinnerType.dominance,
               icon: Icon(Icons.flag_rounded),
-              label: Text('Dominance'),
+              label: Text(
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_winner_step_section
+                    .l101c27,
+              ),
             ),
           ],
           selected: winnerType == null
-              ? const <_WinnerType>{}
+              ? <_WinnerType>{}
               : <_WinnerType>{winnerType!},
           onSelectionChanged: (selection) {
             if (selection.isEmpty) {

@@ -150,6 +150,10 @@ Rules:
   - Scope: all `lib/**` Flutter source files (except generated files).
   - Enforces: helper functions/methods cannot return widgets. Extract each UI block into a dedicated widget class in its own file.
   - Allowed exception: Flutter framework-required `build` overrides.
+- `feature_hardcoded_ui_string`
+  - Scope: `lib/src/features/**`.
+  - Enforces: feature UI code must not keep user-facing strings hard-coded.
+  - Allowed escape hatch for non-translatable values: add `// ignore: feature_hardcoded_ui_string` above that line.
 
 These rules are intentionally strict to force component separation and predictable naming.
 
@@ -161,11 +165,24 @@ These rules are intentionally strict to force component separation and predictab
 - `go_router`: app routing.
 - `google_fonts`: project typography (configured in app theme).
 - `flutter_animate`: onboarding and authentication motion design.
+- `slang` + `slang_flutter`: JSON localization + generated typed translation accessors.
 
 ## Typography
 The app theme uses Google Fonts to avoid generic defaults:
 - Headings: `Cinzel`
 - Body/UI text: `Nunito Sans`
+
+## Localization (Mandatory)
+- Locale files live in `lib/i18n/*.json`.
+- Generated localization file: `lib/i18n/strings.g.dart`.
+- Supported locales:
+  - `en` (English)
+  - `pt-BR` (Portuguese - Brazil)
+  - `es` (Spanish)
+  - `fr` (French)
+  - `de` (German)
+- Localization key convention in feature UI:
+  - Start keys with the feature name (dot notation), e.g. `auth.login.title`, `match.join.confirmButton`.
 
 ## Faction Assets
 - Board images are stored in `assets/faction_boards/` and exposed via `getFactionBoardImage` in `lib/src/core/extension/faction_ui_extension.dart`.

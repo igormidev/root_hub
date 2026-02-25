@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchPickerErrorSection extends StatelessWidget {
   const RegisterMatchPickerErrorSection({
@@ -16,11 +17,11 @@ class RegisterMatchPickerErrorSection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 16),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.fromLTRB(14, 12, 14, 16),
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: colorScheme.error.withValues(alpha: 0.5)),
@@ -36,7 +37,7 @@ class RegisterMatchPickerErrorSection extends StatelessWidget {
                   color: colorScheme.onErrorContainer,
                 ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               Text(
                 error.description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -44,11 +45,16 @@ class RegisterMatchPickerErrorSection extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               FilledButton.icon(
                 onPressed: onRetry,
-                icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Retry'),
+                icon: Icon(Icons.refresh_rounded),
+                label: Text(
+                  t
+                      .register_match
+                      .ui_sheets_register_match_picker_error_section
+                      .l51c35,
+                ),
               ),
             ],
           ),

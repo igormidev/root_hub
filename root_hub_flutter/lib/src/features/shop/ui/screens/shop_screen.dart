@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({
@@ -10,10 +11,10 @@ class ShopScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 22),
+      padding: EdgeInsets.fromLTRB(16, 4, 16, 22),
       children: [
         Container(
-          padding: const EdgeInsets.all(18),
+          padding: EdgeInsets.all(18),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: colorScheme.outlineVariant),
@@ -35,17 +36,17 @@ class ShopScreen extends StatelessWidget {
                 color: colorScheme.tertiary,
                 size: 30,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Text(
-                'Shop feature placeholder',
+                t.shop.ui_screens_shop_screen.l40c17,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
-                'This area will host future digital goods, cosmetics, and '
-                'community-driven bundles for ROOT players.',
+                t.shop.ui_screens_shop_screen.l47c17 +
+                    t.shop.ui_screens_shop_screen.l48c17,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
@@ -54,9 +55,9 @@ class ShopScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: colorScheme.outlineVariant),
@@ -66,15 +67,15 @@ class ShopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Roadmap placeholder',
+                t.shop.ui_screens_shop_screen.l69c17,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
-                'Planned: themed profile packs, faction cosmetics, and event '
-                'supporter packs linked to community tournaments.',
+                t.shop.ui_screens_shop_screen.l76c17 +
+                    t.shop.ui_screens_shop_screen.l77c17,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   height: 1.4,

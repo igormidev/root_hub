@@ -4,6 +4,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_pie_chart_center_value_label_widget.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_pie_chart_faction_badge_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class HomeStatsPieChartWidget extends StatefulWidget {
   const HomeStatsPieChartWidget({
@@ -66,9 +67,9 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(28),
+            padding: EdgeInsets.all(28),
             child: Text(
-              'No values for this metric yet.',
+              t.home.ui_widgets_home_stats_pie_chart_widget.l71c15,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
@@ -103,7 +104,7 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
               ],
             ),
           ),
-          child: const SizedBox.expand(),
+          child: SizedBox.expand(),
         ),
         PieChart(
           PieChartData(
@@ -211,7 +212,7 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
 }
 
 class _PieCenterValue {
-  const _PieCenterValue({
+  _PieCenterValue({
     required this.value,
     required this.label,
   });

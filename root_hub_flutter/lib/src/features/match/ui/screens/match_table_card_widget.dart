@@ -5,6 +5,7 @@ import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart'
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_report_available_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_time_status_chip_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableCardWidget extends StatelessWidget {
   const MatchTableCardWidget({
@@ -62,7 +63,7 @@ class MatchTableCardWidget extends StatelessWidget {
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
-    final subscriptions = table.subscriptions ?? const <MatchSubscription>[];
+    final subscriptions = table.subscriptions ?? <MatchSubscription>[];
     final subscribedPlayersCount = subscriptions.length;
     final isSubscribed =
         currentPlayer != null &&
@@ -90,7 +91,7 @@ class MatchTableCardWidget extends StatelessWidget {
     };
 
     final cardContent = Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
@@ -113,7 +114,7 @@ class MatchTableCardWidget extends StatelessWidget {
               alpha: isSubscribed ? 0.12 : 0.08,
             ),
             blurRadius: isSubscribed ? 22 : 18,
-            offset: const Offset(0, 10),
+            offset: Offset(0, 10),
           ),
         ],
       ),
@@ -134,7 +135,7 @@ class MatchTableCardWidget extends StatelessWidget {
                       ),
                     ),
                     if (table.description?.trim().isNotEmpty == true) ...[
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         table.description!.trim(),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -147,14 +148,14 @@ class MatchTableCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Tooltip(
                 triggerMode: TooltipTriggerMode.tap,
                 message:
-                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : 's'} subscribed and '
-                    '$remainingSeats ${remainingSeats == 1 ? 'place' : 'places'} remaining to close the table.',
+                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : t.match.ui_screens_match_table_card_widget.l154c89} subscribed and '
+                    '$remainingSeats ${remainingSeats == 1 ? t.match.ui_screens_match_table_card_widget.l155c62 : t.match.ui_screens_match_table_card_widget.l155c72} remaining to close the table.',
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 6,
                   ),
@@ -173,7 +174,7 @@ class MatchTableCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Row(
             children: [
               Icon(
@@ -181,7 +182,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 size: 18,
                 color: colorScheme.primary,
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6),
               Expanded(
                 child: Text(
                   '$dateLabel • $timeLabel',
@@ -193,7 +194,7 @@ class MatchTableCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               MatchTimeStatusChipWidget(
                 currentTime: currentTime,
                 tableStartAt: dateTime,
@@ -201,7 +202,7 @@ class MatchTableCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -210,7 +211,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 size: 18,
                 color: colorScheme.secondary,
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +233,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 ),
               ),
               Tooltip(
-                message: 'Open full location details',
+                message: t.match.ui_screens_match_table_card_widget.l235c26,
                 child: IconButton(
                   visualDensity: VisualDensity.compact,
                   onPressed: () {
@@ -247,7 +248,7 @@ class MatchTableCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -260,9 +261,9 @@ class MatchTableCardWidget extends StatelessWidget {
                 triggerMode: TooltipTriggerMode.tap,
               ),
               if (isClosed)
-                const MatchInfoChipWidget(
+                MatchInfoChipWidget(
                   icon: Icons.lock_rounded,
-                  text: 'Subscriptions closed',
+                  text: t.match.ui_screens_match_table_card_widget.l265c25,
                 ),
               if (distanceLabel != null)
                 MatchInfoChipWidget(
@@ -270,15 +271,15 @@ class MatchTableCardWidget extends StatelessWidget {
                   text: distanceLabel!,
                 ),
               if (isSubscribed)
-                const MatchInfoChipWidget(
+                MatchInfoChipWidget(
                   icon: Icons.chat_bubble_rounded,
-                  text: 'Tap card to open chat',
+                  text: t.match.ui_screens_match_table_card_widget.l275c25,
                 ),
-              if (canReportResultNow) const MatchReportAvailableChipWidget(),
+              if (canReportResultNow) MatchReportAvailableChipWidget(),
             ],
           ),
           if (!isSubscribed) ...[
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
@@ -292,8 +293,8 @@ class MatchTableCardWidget extends StatelessWidget {
                       }
                     : null,
                 style: FilledButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 56),
-                  maximumSize: const Size(double.infinity, 56),
+                  minimumSize: Size(double.infinity, 56),
+                  maximumSize: Size(double.infinity, 56),
                   backgroundColor: colorScheme.primary,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: colorScheme.surfaceContainerHighest,
@@ -337,7 +338,7 @@ class MatchTableCardWidget extends StatelessWidget {
         : cardContent;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 14),
+      padding: EdgeInsets.only(top: 14),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -346,7 +347,7 @@ class MatchTableCardWidget extends StatelessWidget {
             left: 14,
             top: -13,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(999),
                 color: colorScheme.primary,
@@ -354,12 +355,12 @@ class MatchTableCardWidget extends StatelessWidget {
                   BoxShadow(
                     color: colorScheme.shadow.withValues(alpha: 0.2),
                     blurRadius: 12,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
               child: Text(
-                'Subscribed',
+                t.match.ui_screens_match_table_card_widget.l362c17,
                 style: GoogleFonts.getFont(
                   'MedievalSharp',
                   color: Colors.white,

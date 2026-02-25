@@ -4,6 +4,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class DashboardProfileDrawerWidget extends StatelessWidget {
   const DashboardProfileDrawerWidget({
@@ -45,10 +46,10 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 18, 16, 10),
+              padding: EdgeInsets.fromLTRB(16, 18, 16, 10),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(14, 16, 14, 16),
+                padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                   gradient: LinearGradient(
@@ -81,7 +82,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                               boxShadow: [
                                 BoxShadow(
                                   blurRadius: 24,
-                                  offset: const Offset(0, 12),
+                                  offset: Offset(0, 12),
                                   color: colorScheme.primary.withValues(
                                     alpha: 0.26,
                                   ),
@@ -105,16 +106,16 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                             bottom: -2,
                             child: Material(
                               color: colorScheme.primaryContainer,
-                              shape: const CircleBorder(),
+                              shape: CircleBorder(),
                               child: InkWell(
-                                customBorder: const CircleBorder(),
+                                customBorder: CircleBorder(),
                                 onTap:
                                     isLoadingProfileImage ||
                                         isUpdatingProfileImage
                                     ? null
                                     : onProfileImageEditTap,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(8),
                                   child: isUpdatingProfileImage
                                       ? SizedBox(
                                           width: 14,
@@ -136,7 +137,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text(
                       playerData.displayName,
                       textAlign: TextAlign.center,
@@ -152,21 +153,27 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                padding: EdgeInsets.fromLTRB(16, 4, 16, 16),
                 child: Column(
                   children: [
                     DashboardProfileDrawerInfoCardWidget(
                       icon: Icons.badge_rounded,
-                      title: 'Display Name',
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .l160c30,
                       value: playerData.displayName,
                       buttonLabel: 'Edit',
                       onPressed: onDisplayNameEditTap,
                       isLoading: isUpdatingDisplayName,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     DashboardProfileDrawerInfoCardWidget(
                       icon: Icons.location_on_rounded,
-                      title: 'Location',
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .l169c30,
                       value: currentLocation == null
                           ? 'No location configured'
                           : 'x: ${currentLocation.x.toStringAsFixed(6)}\n'
@@ -176,7 +183,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                       onPressed: onLocationEditTap,
                       isLoading: isUpdatingLocation,
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     SizedBox(
                       width: double.infinity,
                       height: 190,
@@ -189,7 +196,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                             top: 22,
                             bottom: 0,
                             child: Container(
-                              padding: const EdgeInsets.fromLTRB(
+                              padding: EdgeInsets.fromLTRB(
                                 14,
                                 14,
                                 110,
@@ -215,14 +222,17 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Favorite Faction',
+                                    t
+                                        .dashboard
+                                        .ui_widgets_dashboard_profile_drawer_widget
+                                        .l218c37,
                                     style: GoogleFonts.nunitoSans(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w800,
                                       color: colorScheme.onSurfaceVariant,
                                     ),
                                   ),
-                                  const SizedBox(height: 3),
+                                  SizedBox(height: 3),
                                   Text(
                                     playerData.favoriteFaction.displayName,
                                     style: GoogleFonts.cinzel(
@@ -233,7 +243,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                           .factionColor,
                                     ),
                                   ),
-                                  const Spacer(),
+                                  Spacer(),
                                 ],
                               ),
                             ),
@@ -243,7 +253,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                             child: SizedBox(
                               width: double.infinity,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: 16,
                                 ),
                                 child: SizedBox(
@@ -253,18 +263,24 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                         ? null
                                         : onFactionEditTap,
                                     icon: isUpdatingFaction
-                                        ? const SizedBox(
+                                        ? SizedBox(
                                             width: 16,
                                             height: 16,
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2,
                                             ),
                                           )
-                                        : const Icon(Icons.shuffle_rounded),
+                                        : Icon(Icons.shuffle_rounded),
                                     label: Text(
                                       isUpdatingFaction
-                                          ? 'Saving...'
-                                          : 'Change Faction',
+                                          ? t
+                                                .dashboard
+                                                .ui_widgets_dashboard_profile_drawer_widget
+                                                .l266c45
+                                          : t
+                                                .dashboard
+                                                .ui_widgets_dashboard_profile_drawer_widget
+                                                .l267c45,
                                       style: GoogleFonts.nunitoSans(
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -299,7 +315,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 18),
               child: SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -309,9 +325,12 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                     backgroundColor: colorScheme.errorContainer,
                     foregroundColor: colorScheme.onErrorContainer,
                   ),
-                  icon: const Icon(Icons.logout_rounded),
+                  icon: Icon(Icons.logout_rounded),
                   label: Text(
-                    'Log out',
+                    t
+                        .dashboard
+                        .ui_widgets_dashboard_profile_drawer_widget
+                        .l314c21,
                     style: GoogleFonts.nunitoSans(
                       fontWeight: FontWeight.w800,
                     ),

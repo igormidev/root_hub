@@ -23,27 +23,33 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '1) Who actually played?',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_participants_step_section
+              .l26c11,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Select registered players who were present. You can add anonymous players or search for other registered players.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_participants_step_section
+              .l33c11,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         for (final participant in participants)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.only(bottom: 8),
             child: CheckboxListTile(
               value: participant.isPresent,
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding: EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 2,
               ),
@@ -59,8 +65,14 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
               ),
               subtitle: Text(
                 participant.isAnonymous
-                    ? 'Anonymous player'
-                    : 'Registered player',
+                    ? t
+                          .register_match
+                          .ui_sheets_register_match_wizard_participants_step_section
+                          .l62c23
+                    : t
+                          .register_match
+                          .ui_sheets_register_match_wizard_participants_step_section
+                          .l63c23,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w700,
@@ -79,22 +91,32 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
               },
             ),
           ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: onAddAnonymousPlayer,
-            icon: const Icon(Icons.person_add_alt_rounded),
-            label: const Text('Add anonymous player'),
+            icon: Icon(Icons.person_add_alt_rounded),
+            label: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_participants_step_section
+                  .l88c31,
+            ),
           ),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: 2),
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
             onPressed: onAddRegisteredPlayer,
-            icon: const Icon(Icons.search_rounded),
-            label: const Text('Add registered player from platform'),
+            icon: Icon(Icons.search_rounded),
+            label: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_participants_step_section
+                  .l97c31,
+            ),
           ),
         ),
       ],

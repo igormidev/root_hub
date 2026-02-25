@@ -23,7 +23,7 @@ class _RegisterMatchWizardProofCardSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Ink(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+          padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: colorScheme.outlineVariant),
@@ -54,7 +54,7 @@ class _RegisterMatchWizardProofCardSection extends StatelessWidget {
                         ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +65,7 @@ class _RegisterMatchWizardProofCardSection extends StatelessWidget {
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -74,9 +74,17 @@ class _RegisterMatchWizardProofCardSection extends StatelessWidget {
                         height: 1.35,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Text(
-                      image == null ? 'Tap to add photo' : 'Tap to replace',
+                      image == null
+                          ? t
+                                .register_match
+                                .ui_sheets_register_match_wizard_proof_card_section
+                                .l79c39
+                          : t
+                                .register_match
+                                .ui_sheets_register_match_wizard_proof_card_section
+                                .l79c60,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: colorScheme.primary,

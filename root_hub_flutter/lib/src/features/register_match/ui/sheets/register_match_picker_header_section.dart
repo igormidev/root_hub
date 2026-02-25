@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchPickerHeaderSection extends StatelessWidget {
   const RegisterMatchPickerHeaderSection({
@@ -13,7 +14,7 @@ class RegisterMatchPickerHeaderSection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+      padding: EdgeInsets.fromLTRB(14, 10, 14, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,19 +28,22 @@ class RegisterMatchPickerHeaderSection extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Row(
             children: [
               Expanded(
                 child: Text(
-                  'Register Match Result',
+                  t
+                      .register_match
+                      .ui_sheets_register_match_picker_header_section
+                      .l35c19,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 6,
                 ),
@@ -57,9 +61,12 @@ class RegisterMatchPickerHeaderSection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
-            'Select a match you participated in. You can register a result from 2 hours before scheduled start.',
+            t
+                .register_match
+                .ui_sheets_register_match_picker_header_section
+                .l62c13,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,

@@ -7,6 +7,7 @@ import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_header_section.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_wizard_sheet.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchPickerSheet extends ConsumerStatefulWidget {
   const RegisterMatchPickerSheet({
@@ -44,7 +45,7 @@ class _RegisterMatchPickerSheetState
       child: Container(
         decoration: BoxDecoration(
           color: colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(
+          borderRadius: BorderRadius.vertical(
             top: Radius.circular(28),
           ),
         ),
@@ -85,7 +86,7 @@ class _RegisterMatchPickerSheetState
 
   bool _isTooEarlyToRegister(MatchSchedulePairingAttempt match) {
     final earliestAllowedRegistrationTime = match.attemptedAt.subtract(
-      const Duration(hours: 2),
+      Duration(hours: 2),
     );
     return DateTime.now().isBefore(earliestAllowedRegistrationTime);
   }
@@ -94,7 +95,7 @@ class _RegisterMatchPickerSheetState
     if (_isTooEarlyToRegister(match)) {
       final localizations = MaterialLocalizations.of(context);
       final earliestAllowedRegistrationTime = match.attemptedAt
-          .subtract(const Duration(hours: 2))
+          .subtract(Duration(hours: 2))
           .toLocal();
       final earliestAllowedRegistrationTimeLabel =
           '${localizations.formatMediumDate(earliestAllowedRegistrationTime)} • '
@@ -102,10 +103,9 @@ class _RegisterMatchPickerSheetState
 
       await showErrorDialog(
         context,
-        title: 'Result registration not available yet',
+        title: t.register_match.ui_sheets_register_match_picker_sheet.l105c16,
         description:
-            'You can register this match from 2 hours before its scheduled start. '
-            'Try again after $earliestAllowedRegistrationTimeLabel.',
+            '${t.register_match.ui_sheets_register_match_picker_sheet.l107c13}Try again after $earliestAllowedRegistrationTimeLabel.',
       );
       return;
     }

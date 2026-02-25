@@ -21,12 +21,12 @@ class MatchTableInfoRemovePlayerTileWidget extends StatelessWidget {
     final imageUrl = player.profileImageUrl?.trim();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: 8),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(14),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
@@ -37,7 +37,7 @@ class MatchTableInfoRemovePlayerTileWidget extends StatelessWidget {
           child: Row(
             children: [
               MatchTableInfoUserAvatarWidget(imageUrl: imageUrl),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

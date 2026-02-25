@@ -17,7 +17,7 @@ class _RegisterMatchWizardStepDotsSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: colorScheme.outlineVariant),
@@ -28,14 +28,14 @@ class _RegisterMatchWizardStepDotsSection extends StatelessWidget {
         children: [
           for (var index = 0; index < totalSteps; index++)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: EdgeInsets.symmetric(horizontal: 4),
               child: InkWell(
                 borderRadius: BorderRadius.circular(999),
                 onTap: index <= currentStepIndex
                     ? () => onStepTap(index)
                     : null,
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 220),
+                  duration: Duration(milliseconds: 220),
                   curve: Curves.easeOutCubic,
                   width: index == currentStepIndex ? 22 : 8,
                   height: 8,
