@@ -20,7 +20,7 @@ class MatchEditTableSheet extends ConsumerStatefulWidget {
 }
 
 class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
-  static const _maxScheduleDays = 50;
+  static const _maxScheduleDays = 15;
   static const _minScheduleMinutes = 10;
 
   late Future<MatchScheduleInfo> _detailsFuture;
@@ -389,7 +389,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
                   title: 'Schedule',
                   description:
                       'Must be at least 10 minutes from now, '
-                      'up to 50 days ahead.',
+                      'up to $_maxScheduleDays days ahead.',
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -436,7 +436,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: _isSaving ? null : () => _saveChanges(context),
+                    onPressed: _isSaving ? null : _saveChanges,
                     style: FilledButton.styleFrom(
                       minimumSize: const Size(double.infinity, 52),
                       maximumSize: const Size(double.infinity, 52),
@@ -507,7 +507,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     });
   }
 
-  Future<void> _saveChanges(BuildContext context) async {
+  Future<void> _saveChanges() async {
     final normalizedTitle = _titleController.text.trim();
     if (normalizedTitle.isEmpty) {
       await showErrorDialog(

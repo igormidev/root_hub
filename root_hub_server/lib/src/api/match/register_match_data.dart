@@ -1,8 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
-import 'package:serverpod/serverpod.dart';
+import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
+import 'package:serverpod/serverpod.dart';
 
 class RegisterMatchData extends Endpoint {
+  static const _uploadThingStorageClient = UploadThingStorageClient();
+  static const _registerBeforeScheduledStartAllowance = Duration(hours: 2);
+  static const _maxProofImageBytes = 6 * 1024 * 1024;
+
   @override
   bool get requireLogin => true;
 
@@ -13,6 +20,12 @@ class RegisterMatchData extends Endpoint {
     required int locationId,
     required int scheduledPairingAttemptId,
     required List<PlayerMatchResultInput> players,
+    required ByteData groupPhotoBytes,
+    String? groupPhotoFileName,
+    String? groupPhotoContentType,
+    required ByteData boardPhotoBytes,
+    String? boardPhotoFileName,
+    String? boardPhotoContentType,
   }) async {
     return guardRootHubEndpointErrors(
       () async {
@@ -22,18 +35,44 @@ class RegisterMatchData extends Endpoint {
           );
         }
 
+        _validateProofImage(
+          imageBytes: groupPhotoBytes,
+          imageDescription: 'Group photo',
+        );
+        _validateProofImage(
+          imageBytes: boardPhotoBytes,
+          imageDescription: 'Board photo',
+        );
+
         final authenticatedPlayerData = await _getAuthenticatedPlayerData(
           session,
         );
 
         final scheduledPairingAttempt = await MatchSchedulePairingAttempt.db
-            .findById(session, scheduledPairingAttemptId);
+            .findById(
+              session,
+              scheduledPairingAttemptId,
+              include: MatchSchedulePairingAttempt.include(
+                playedMatch: PlayedMatch.include(),
+              ),
+            );
         if (scheduledPairingAttempt == null) {
           _throwNotFound(
             title: 'Scheduled match not found',
             description: 'Scheduled pairing attempt not found.',
           );
         }
+
+        if (scheduledPairingAttempt.playedMatch != null) {
+          _throwInvalidRequest(
+            'This scheduled match already has a registered result.',
+          );
+        }
+
+        _validateRegistrationWindow(
+          scheduledPairingAttempt: scheduledPairingAttempt,
+          matchStartedAt: matchStartedAt,
+        );
 
         final location = await Location.db.findById(session, locationId);
         if (location == null) {
@@ -55,16 +94,38 @@ class RegisterMatchData extends Endpoint {
           maxAmountOfPlayers: scheduledPairingAttempt.maxAmountOfPlayers,
         );
         _validatePlayerResults(players);
-        await _validatePlayerReferencesExist(session, players);
+
+        final playerDataById = await _loadPlayerDataById(
+          session,
+          players: players,
+        );
+        final anonymousPlayersById = await _loadAnonymousPlayersById(
+          session,
+          players: players,
+        );
+
+        _validateAnonymousPlayersOwnership(
+          authenticatedPlayerData: authenticatedPlayerData,
+          anonymousPlayersById: anonymousPlayersById,
+        );
+
         await _validateAuthenticatedPlayerCanRegister(
           session,
           authenticatedPlayerData: authenticatedPlayerData,
           scheduledPairingAttempt: scheduledPairingAttempt,
         );
-        await _validateRegisteredPlayerDataAreParticipants(
+
+        final groupPhotoUrl = await _uploadProofImage(
           session,
-          scheduledPairingAttempt: scheduledPairingAttempt,
-          players: players,
+          imageBytes: groupPhotoBytes,
+          fileName: groupPhotoFileName ?? 'match-group-photo.jpg',
+          contentType: groupPhotoContentType,
+        );
+        final boardPhotoUrl = await _uploadProofImage(
+          session,
+          imageBytes: boardPhotoBytes,
+          fileName: boardPhotoFileName ?? 'match-board-photo.jpg',
+          contentType: boardPhotoContentType,
         );
 
         return await session.db.transaction((transaction) async {
@@ -74,51 +135,133 @@ class RegisterMatchData extends Endpoint {
               matchStartedAt: matchStartedAt,
               matchEstimatedDuration: matchEstimatedDuration,
               locationId: location.id!,
+              scheduledPairingAttemptId: scheduledPairingAttempt.id!,
             ),
             transaction: transaction,
           );
 
-          final playerPerformances = players
-              .map(
-                (player) => PlayerPerfomanceInMatch(
-                  anonymousPlayerId: player.anonymousPlayerId,
-                  playerDataId: player.playerDataId,
-                  playedMatchId: playedMatch.id!,
-                  factionUsedInMatch: player.factionUsedInMatch,
-                  didWin: player.didWin,
-                  scoreInMatch: player.scoreInMatch,
-                ),
-              )
-              .toList();
+          await PlayedMatch.db.attachRow.location(
+            session,
+            playedMatch,
+            location,
+            transaction: transaction,
+          );
+          await PlayedMatch.db.attachRow.scheduledPairingAttempt(
+            session,
+            playedMatch,
+            scheduledPairingAttempt,
+            transaction: transaction,
+          );
 
-          if (playerPerformances.isNotEmpty) {
-            await PlayerPerfomanceInMatch.db.insert(
+          for (final player in players) {
+            final performance = await PlayerPerfomanceInMatch.db.insertRow(
               session,
-              playerPerformances,
+              PlayerPerfomanceInMatch(
+                anonymousPlayerId: player.anonymousPlayerId,
+                playerDataId: player.playerDataId,
+                playedMatchId: playedMatch.id!,
+                factionUsedInMatch: player.factionUsedInMatch,
+                didWin: player.didWin,
+                scoreInMatch: player.scoreInMatch,
+              ),
+              transaction: transaction,
+            );
+
+            await PlayerPerfomanceInMatch.db.attachRow.playedMatch(
+              session,
+              performance,
+              playedMatch,
+              transaction: transaction,
+            );
+
+            if (player.playerDataId case final playerDataId?) {
+              final playerData = playerDataById[playerDataId];
+              if (playerData == null) {
+                _throwInvalidRequest(
+                  'playerDataId not found for id: $playerDataId.',
+                );
+              }
+
+              await PlayerPerfomanceInMatch.db.attachRow.playerData(
+                session,
+                performance,
+                playerData,
+                transaction: transaction,
+              );
+            }
+
+            if (player.anonymousPlayerId case final anonymousPlayerId?) {
+              final anonymousPlayer = anonymousPlayersById[anonymousPlayerId];
+              if (anonymousPlayer == null) {
+                _throwInvalidRequest(
+                  'anonymousPlayerId not found for id: $anonymousPlayerId.',
+                );
+              }
+
+              await PlayerPerfomanceInMatch.db.attachRow.anonymousPlayer(
+                session,
+                performance,
+                anonymousPlayer,
+                transaction: transaction,
+              );
+            }
+          }
+
+          final playerDataIds =
+              players
+                  .map((player) => player.playerDataId)
+                  .whereType<int>()
+                  .toSet()
+                  .toList()
+                ..sort();
+
+          for (final playerDataId in playerDataIds) {
+            final playerData = playerDataById[playerDataId];
+            if (playerData == null) {
+              _throwInvalidRequest(
+                'playerDataId not found for id: $playerDataId.',
+              );
+            }
+
+            final playerInMatch = await PlayerInMatch.db.insertRow(
+              session,
+              PlayerInMatch(
+                playerId: playerDataId,
+                matchId: playedMatch.id!,
+              ),
+              transaction: transaction,
+            );
+
+            await PlayerInMatch.db.attachRow.player(
+              session,
+              playerInMatch,
+              playerData,
+              transaction: transaction,
+            );
+            await PlayerInMatch.db.attachRow.match(
+              session,
+              playerInMatch,
+              playedMatch,
               transaction: transaction,
             );
           }
 
-          final playerDataIds = players
-              .map((player) => player.playerDataId)
-              .whereType<int>()
-              .toSet();
-          final playerInMatchRows = playerDataIds
-              .map(
-                (playerDataId) => PlayerInMatch(
-                  playerId: playerDataId,
-                  matchId: playedMatch.id!,
-                ),
-              )
-              .toList();
+          final inPersonProof = await MatchInPersonProof.db.insertRow(
+            session,
+            MatchInPersonProof(
+              matchId: playedMatch.id!,
+              groupPhotoUrl: groupPhotoUrl,
+              boardPhotoUrl: boardPhotoUrl,
+            ),
+            transaction: transaction,
+          );
 
-          if (playerInMatchRows.isNotEmpty) {
-            await PlayerInMatch.db.insert(
-              session,
-              playerInMatchRows,
-              transaction: transaction,
-            );
-          }
+          await MatchInPersonProof.db.attachRow.match(
+            session,
+            inPersonProof,
+            playedMatch,
+            transaction: transaction,
+          );
 
           return playedMatch;
         });
@@ -198,8 +341,7 @@ class RegisterMatchData extends Endpoint {
 
     final seenPlayerDataIds = <int>{};
     final seenAnonymousPlayerIds = <int>{};
-    final nonVagabondFactions = <Faction>{};
-    var vagabondCount = 0;
+    final uniqueFactions = <Faction>{};
 
     for (final player in players) {
       final hasAnonymousPlayer = player.anonymousPlayerId != null;
@@ -234,23 +376,18 @@ class RegisterMatchData extends Endpoint {
         }
       }
 
-      if (player.factionUsedInMatch == Faction.vagabond) {
-        vagabondCount++;
-        if (vagabondCount > 2) {
-          _throwInvalidRequest('At most 2 players can use Vagabond.');
-        }
-      } else if (!nonVagabondFactions.add(player.factionUsedInMatch)) {
+      if (!uniqueFactions.add(player.factionUsedInMatch)) {
         _throwInvalidRequest(
-          'Faction ${player.factionUsedInMatch.name} is duplicated. Only Vagabond can repeat.',
+          'Faction ${player.factionUsedInMatch.name} is duplicated. Each faction can be used by only one player.',
         );
       }
     }
 
     final winner = players.firstWhere((player) => player.didWin);
     final winnerByPoints = winner.scoreInMatch == 30;
-    final winnerByDomination = winner.scoreInMatch == null;
+    final winnerByDominance = winner.scoreInMatch == null;
 
-    if (!winnerByPoints && !winnerByDomination) {
+    if (!winnerByPoints && !winnerByDominance) {
       _throwInvalidRequest(
         'Winner must have (didWin=true and scoreInMatch=30) or (didWin=true and scoreInMatch=null).',
       );
@@ -266,59 +403,132 @@ class RegisterMatchData extends Endpoint {
     }
   }
 
-  Future<void> _validatePlayerReferencesExist(
-    Session session,
-    List<PlayerMatchResultInput> players,
-  ) async {
+  Future<Map<int, PlayerData>> _loadPlayerDataById(
+    Session session, {
+    required List<PlayerMatchResultInput> players,
+  }) async {
     final playerDataIds = players
         .map((player) => player.playerDataId)
         .whereType<int>()
         .toSet();
+    if (playerDataIds.isEmpty) {
+      return const <int, PlayerData>{};
+    }
+
+    final existingPlayerData = await PlayerData.db.find(
+      session,
+      where: (t) => t.id.inSet(playerDataIds),
+    );
+
+    final playerDataById = <int, PlayerData>{
+      for (final playerData in existingPlayerData.where(
+        (playerData) => playerData.id != null,
+      ))
+        playerData.id!: playerData,
+    };
+
+    final missingPlayerDataIds = playerDataIds.difference(
+      playerDataById.keys.toSet(),
+    );
+    if (missingPlayerDataIds.isNotEmpty) {
+      final missingIds = missingPlayerDataIds.toList()..sort();
+      _throwInvalidRequest(
+        'playerDataId not found for ids: ${missingIds.join(', ')}.',
+      );
+    }
+
+    return playerDataById;
+  }
+
+  Future<Map<int, AnonymousPlayer>> _loadAnonymousPlayersById(
+    Session session, {
+    required List<PlayerMatchResultInput> players,
+  }) async {
     final anonymousPlayerIds = players
         .map((player) => player.anonymousPlayerId)
         .whereType<int>()
         .toSet();
-
-    if (playerDataIds.isNotEmpty) {
-      final existingPlayerData = await PlayerData.db.find(
-        session,
-        where: (t) => t.id.inSet(playerDataIds),
-      );
-      final existingPlayerDataIds = existingPlayerData
-          .map((playerData) => playerData.id)
-          .whereType<int>()
-          .toSet();
-      final missingPlayerDataIds = playerDataIds.difference(
-        existingPlayerDataIds,
-      );
-
-      if (missingPlayerDataIds.isNotEmpty) {
-        final missingIds = missingPlayerDataIds.toList()..sort();
-        _throwInvalidRequest(
-          'playerDataId not found for ids: ${missingIds.join(', ')}.',
-        );
-      }
+    if (anonymousPlayerIds.isEmpty) {
+      return const <int, AnonymousPlayer>{};
     }
 
-    if (anonymousPlayerIds.isNotEmpty) {
-      final existingAnonymousPlayers = await AnonymousPlayer.db.find(
-        session,
-        where: (t) => t.id.inSet(anonymousPlayerIds),
-      );
-      final existingAnonymousPlayerIds = existingAnonymousPlayers
-          .map((anonymousPlayer) => anonymousPlayer.id)
-          .whereType<int>()
-          .toSet();
-      final missingAnonymousPlayerIds = anonymousPlayerIds.difference(
-        existingAnonymousPlayerIds,
-      );
+    final existingAnonymousPlayers = await AnonymousPlayer.db.find(
+      session,
+      where: (t) => t.id.inSet(anonymousPlayerIds),
+    );
 
-      if (missingAnonymousPlayerIds.isNotEmpty) {
-        final missingIds = missingAnonymousPlayerIds.toList()..sort();
-        _throwInvalidRequest(
-          'anonymousPlayerId not found for ids: ${missingIds.join(', ')}.',
-        );
-      }
+    final anonymousPlayersById = <int, AnonymousPlayer>{
+      for (final anonymousPlayer in existingAnonymousPlayers.where(
+        (anonymousPlayer) => anonymousPlayer.id != null,
+      ))
+        anonymousPlayer.id!: anonymousPlayer,
+    };
+
+    final missingAnonymousPlayerIds = anonymousPlayerIds.difference(
+      anonymousPlayersById.keys.toSet(),
+    );
+
+    if (missingAnonymousPlayerIds.isNotEmpty) {
+      final missingIds = missingAnonymousPlayerIds.toList()..sort();
+      _throwInvalidRequest(
+        'anonymousPlayerId not found for ids: ${missingIds.join(', ')}.',
+      );
+    }
+
+    return anonymousPlayersById;
+  }
+
+  void _validateAnonymousPlayersOwnership({
+    required PlayerData authenticatedPlayerData,
+    required Map<int, AnonymousPlayer> anonymousPlayersById,
+  }) {
+    if (anonymousPlayersById.isEmpty) {
+      return;
+    }
+
+    final invalidAnonymousPlayers =
+        anonymousPlayersById.values
+            .where(
+              (anonymousPlayer) =>
+                  anonymousPlayer.createdByPlayerId !=
+                  authenticatedPlayerData.id,
+            )
+            .map((anonymousPlayer) => anonymousPlayer.id)
+            .whereType<int>()
+            .toList()
+          ..sort();
+
+    if (invalidAnonymousPlayers.isNotEmpty) {
+      _throwAccessDenied(
+        'Anonymous players can only be used by the player that created them. Invalid ids: ${invalidAnonymousPlayers.join(', ')}.',
+      );
+    }
+  }
+
+  void _validateRegistrationWindow({
+    required MatchSchedulePairingAttempt scheduledPairingAttempt,
+    required DateTime matchStartedAt,
+  }) {
+    final now = DateTime.now();
+    final earliestAllowedRegistrationTime = scheduledPairingAttempt.attemptedAt
+        .subtract(_registerBeforeScheduledStartAllowance);
+
+    if (now.isBefore(earliestAllowedRegistrationTime)) {
+      _throwInvalidRequest(
+        'You can only register this result from 2 hours before the scheduled start time.',
+      );
+    }
+
+    if (matchStartedAt.isBefore(earliestAllowedRegistrationTime)) {
+      _throwInvalidRequest(
+        'Match start time cannot be earlier than 2 hours before the scheduled start time.',
+      );
+    }
+
+    if (matchStartedAt.isAfter(now.add(const Duration(minutes: 5)))) {
+      _throwInvalidRequest(
+        'Match start time cannot be in the future.',
+      );
     }
   }
 
@@ -345,43 +555,38 @@ class RegisterMatchData extends Endpoint {
     }
   }
 
-  Future<void> _validateRegisteredPlayerDataAreParticipants(
-    Session session, {
-    required MatchSchedulePairingAttempt scheduledPairingAttempt,
-    required List<PlayerMatchResultInput> players,
-  }) async {
-    final registeredPlayerDataIds = players
-        .map((player) => player.playerDataId)
-        .whereType<int>()
-        .toSet();
-    if (registeredPlayerDataIds.isEmpty) {
-      return;
+  void _validateProofImage({
+    required ByteData imageBytes,
+    required String imageDescription,
+  }) {
+    if (imageBytes.lengthInBytes <= 0) {
+      _throwInvalidRequest('$imageDescription is required.');
     }
 
-    final subscriptions = await MatchSubscription.db.find(
-      session,
-      where: (t) =>
-          t.matchSchedulePairingAttemptId.equals(scheduledPairingAttempt.id!),
-    );
-
-    final participantPlayerDataIds = <int>{
-      scheduledPairingAttempt.playerDataId,
-      ...subscriptions.map((subscription) => subscription.playerDataId),
-    };
-
-    final nonParticipants =
-        registeredPlayerDataIds
-            .where(
-              (playerDataId) =>
-                  !participantPlayerDataIds.contains(playerDataId),
-            )
-            .toList()
-          ..sort();
-    if (nonParticipants.isNotEmpty) {
+    if (imageBytes.lengthInBytes > _maxProofImageBytes) {
       _throwInvalidRequest(
-        'These playerDataIds are not participants of the scheduled pairing attempt: ${nonParticipants.join(', ')}.',
+        '$imageDescription is too large. Please upload an image smaller than 6 MB.',
       );
     }
+  }
+
+  Future<String> _uploadProofImage(
+    Session session, {
+    required ByteData imageBytes,
+    required String fileName,
+    required String? contentType,
+  }) async {
+    final imageBytesList = imageBytes.buffer.asUint8List(
+      imageBytes.offsetInBytes,
+      imageBytes.lengthInBytes,
+    );
+
+    return _uploadThingStorageClient.uploadPublicImage(
+      session,
+      imageBytes: imageBytesList,
+      fileName: fileName,
+      contentType: contentType,
+    );
   }
 
   Never _throwInvalidRequest(String description) {

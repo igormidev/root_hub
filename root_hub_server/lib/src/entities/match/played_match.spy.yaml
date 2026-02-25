@@ -3,6 +3,8 @@ table: played_match
 fields:
   matchStartedAt: DateTime
   matchEstimatedDuration: Duration?
+  scheduledPairingAttemptId: int
+  scheduledPairingAttempt: MatchSchedulePairingAttempt?, relation(name=scheduled_attempt_played_match, field=scheduledPairingAttemptId)
   locationId: int
   location: Location?, relation(name=location_played_matches, field=locationId)
   playerPerfomances: List<PlayerPerfomanceInMatch>?, relation(name=match_player_perfomances)
@@ -10,5 +12,8 @@ fields:
   posts: List<Post>?, relation(name=post_attached_match)
 
 indexes:
+  played_match_scheduled_pairing_attempt_unique_idx:
+    fields: scheduledPairingAttemptId
+    unique: true
   played_match_location_id_idx:
     fields: locationId

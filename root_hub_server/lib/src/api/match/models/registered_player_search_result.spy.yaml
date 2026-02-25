@@ -1,0 +1,4 @@
+class: RegisteredPlayerSearchResult
+fields:
+  playerDataId: int
+  displayName: String

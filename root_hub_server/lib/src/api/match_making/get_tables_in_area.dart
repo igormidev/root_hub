@@ -83,7 +83,7 @@ class GetTablesInArea extends Endpoint {
           const Duration(hours: 2),
         );
 
-        return MatchSchedulePairingAttempt.db.find(
+        final candidateSchedules = await MatchSchedulePairingAttempt.db.find(
           session,
           where: (t) =>
               t.locationId.inSet(locationIds) &
@@ -98,6 +98,28 @@ class GetTablesInArea extends Endpoint {
             subscriptions: MatchSubscription.includeList(),
           ),
         );
+
+        if (candidateSchedules.isEmpty) {
+          return const <MatchSchedulePairingAttempt>[];
+        }
+
+        final candidateScheduleIds = candidateSchedules
+            .map((schedule) => schedule.id)
+            .whereType<int>()
+            .toSet();
+        final playedMatches = await PlayedMatch.db.find(
+          session,
+          where: (t) => t.scheduledPairingAttemptId.inSet(candidateScheduleIds),
+        );
+        final promotedScheduleIds = playedMatches
+            .map((playedMatch) => playedMatch.scheduledPairingAttemptId)
+            .toSet();
+
+        return candidateSchedules
+            .where(
+              (schedule) => !promotedScheduleIds.contains(schedule.id),
+            )
+            .toList();
       },
       fallbackDescription:
           'Unable to load nearby match schedules right now. Please try again.',

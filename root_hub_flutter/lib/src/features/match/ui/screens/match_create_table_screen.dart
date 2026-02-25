@@ -56,19 +56,23 @@ class _MatchCreateTableScreenState
         .setDescription(_descriptionController.text);
   }
 
-  static const _maxScheduleDays = 50;
+  static const _maxScheduleDays = 15;
 
   Future<void> _pickDate() async {
     final state = ref.read(matchCreateTableProvider);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final maxDate = today.add(const Duration(days: _maxScheduleDays));
+    final currentScheduledDate = state.scheduledDate;
 
     final selectedDate = await showDatePicker(
       context: context,
-      initialDate: state.scheduledDate.isAfter(maxDate)
-          ? today
-          : state.scheduledDate,
+      initialDate:
+          currentScheduledDate != null &&
+              !currentScheduledDate.isBefore(today) &&
+              !currentScheduledDate.isAfter(maxDate)
+          ? currentScheduledDate
+          : today,
       firstDate: today,
       lastDate: maxDate,
       helpText: 'Select game day',
@@ -78,15 +82,26 @@ class _MatchCreateTableScreenState
       return;
     }
 
+    if (selectedDate.isBefore(today)) {
+      await showErrorDialog(
+        context,
+        title: 'Invalid date',
+        description: 'You cannot select a day in the past.',
+      );
+      return;
+    }
+
     ref.read(matchCreateTableProvider.notifier).setScheduledDate(selectedDate);
   }
 
   Future<void> _pickTime() async {
     final state = ref.read(matchCreateTableProvider);
+    final now = TimeOfDay.now();
+    final currentScheduledTime = state.scheduledTime;
 
     final selectedTime = await showTimePicker(
       context: context,
-      initialTime: state.scheduledTime,
+      initialTime: currentScheduledTime ?? now,
       helpText: 'Select start hour',
     );
 
@@ -99,12 +114,42 @@ class _MatchCreateTableScreenState
 
   Future<void> _continueToLocationScreen() async {
     final state = ref.read(matchCreateTableProvider);
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
     if (state.title.trim().isEmpty) {
       await showErrorDialog(
         context,
         title: 'Title required',
         description:
             'Add a title so players can quickly identify your table. Example: "Downtown Café Night".',
+      );
+      return;
+    }
+
+    final scheduledDate = state.scheduledDate;
+    if (scheduledDate == null) {
+      await showErrorDialog(
+        context,
+        title: 'Day required',
+        description: 'Select the day for this table before continuing.',
+      );
+      return;
+    }
+
+    if (scheduledDate.isBefore(today)) {
+      await showErrorDialog(
+        context,
+        title: 'Invalid date',
+        description: 'You cannot select a day in the past.',
+      );
+      return;
+    }
+
+    if (state.scheduledTime == null) {
+      await showErrorDialog(
+        context,
+        title: 'Start hour required',
+        description: 'Select the start hour for this table before continuing.',
       );
       return;
     }
@@ -123,8 +168,12 @@ class _MatchCreateTableScreenState
     final localizations = MaterialLocalizations.of(context);
     final viewPadding = MediaQuery.viewPaddingOf(context);
 
-    final dateLabel = localizations.formatMediumDate(state.scheduledDate);
-    final timeLabel = localizations.formatTimeOfDay(state.scheduledTime);
+    final dateLabel = state.scheduledDate == null
+        ? 'Select day'
+        : localizations.formatMediumDate(state.scheduledDate!);
+    final timeLabel = state.scheduledTime == null
+        ? 'Select hour'
+        : localizations.formatTimeOfDay(state.scheduledTime!);
 
     return Scaffold(
       body: Stack(

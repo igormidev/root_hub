@@ -16,7 +16,8 @@ import '../../entities/match_making/location.dart' as _i3;
 import '../../entities/core/player_data.dart' as _i4;
 import '../../entities/match_making/match_subscription.dart' as _i5;
 import '../../entities/match_making/chat/match_chat_history.dart' as _i6;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i7;
+import '../../entities/match/played_match.dart' as _i7;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i8;
 
 abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
   MatchSchedulePairingAttempt._({
@@ -34,6 +35,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     this.host,
     this.subscriptions,
     this.chatHistory,
+    this.playedMatch,
   });
 
   factory MatchSchedulePairingAttempt({
@@ -51,6 +53,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
     _i6.MatchChatHistory? chatHistory,
+    _i7.PlayedMatch? playedMatch,
   }) = _MatchSchedulePairingAttemptImpl;
 
   factory MatchSchedulePairingAttempt.fromJson(
@@ -77,24 +80,29 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
-          : _i7.Protocol().deserialize<_i3.Location>(
+          : _i8.Protocol().deserialize<_i3.Location>(
               jsonSerialization['location'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       host: jsonSerialization['host'] == null
           ? null
-          : _i7.Protocol().deserialize<_i4.PlayerData>(
+          : _i8.Protocol().deserialize<_i4.PlayerData>(
               jsonSerialization['host'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i7.Protocol().deserialize<List<_i5.MatchSubscription>>(
+          : _i8.Protocol().deserialize<List<_i5.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatHistory: jsonSerialization['chatHistory'] == null
           ? null
-          : _i7.Protocol().deserialize<_i6.MatchChatHistory>(
+          : _i8.Protocol().deserialize<_i6.MatchChatHistory>(
               jsonSerialization['chatHistory'],
+            ),
+      playedMatch: jsonSerialization['playedMatch'] == null
+          ? null
+          : _i8.Protocol().deserialize<_i7.PlayedMatch>(
+              jsonSerialization['playedMatch'],
             ),
     );
   }
@@ -130,6 +138,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
 
   _i6.MatchChatHistory? chatHistory;
 
+  _i7.PlayedMatch? playedMatch;
+
   /// Returns a shallow copy of this [MatchSchedulePairingAttempt]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -148,6 +158,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
     _i6.MatchChatHistory? chatHistory,
+    _i7.PlayedMatch? playedMatch,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -169,6 +180,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
       if (chatHistory != null) 'chatHistory': chatHistory?.toJson(),
+      if (playedMatch != null) 'playedMatch': playedMatch?.toJson(),
     };
   }
 
@@ -196,6 +208,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     _i4.PlayerData? host,
     List<_i5.MatchSubscription>? subscriptions,
     _i6.MatchChatHistory? chatHistory,
+    _i7.PlayedMatch? playedMatch,
   }) : super._(
          id: id,
          createdAt: createdAt,
@@ -211,6 +224,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          host: host,
          subscriptions: subscriptions,
          chatHistory: chatHistory,
+         playedMatch: playedMatch,
        );
 
   /// Returns a shallow copy of this [MatchSchedulePairingAttempt]
@@ -232,6 +246,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     Object? host = _Undefined,
     Object? subscriptions = _Undefined,
     Object? chatHistory = _Undefined,
+    Object? playedMatch = _Undefined,
   }) {
     return MatchSchedulePairingAttempt(
       id: id is int? ? id : this.id,
@@ -256,6 +271,9 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       chatHistory: chatHistory is _i6.MatchChatHistory?
           ? chatHistory
           : this.chatHistory?.copyWith(),
+      playedMatch: playedMatch is _i7.PlayedMatch?
+          ? playedMatch
+          : this.playedMatch?.copyWith(),
     );
   }
 }

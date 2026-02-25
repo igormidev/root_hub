@@ -18,9 +18,19 @@ getComments:
   - v1:
 getPosts:
   - v1:
+createAnonymousPlayer:
+  - v1:
+getMyAnonymousPlayers:
+  - v1:
 getMyMatches:
   - v1:
+getPendingMatchResults:
+  - v1:
+getPendingMatchResultsCount:
+  - v1:
 registerMatchData:
+  - v1:
+searchRegisteredPlayers:
   - v1:
 getMatchChatMessage:
   - v1:
@@ -43,6 +53,10 @@ removePlayerFromMatch:
 subscribeToMatch:
   - v1:
 unsubscribeFromMatch:
+  - v1:
+getPlatformStats:
+  - v1:
+getPlayerStats:
   - v1:
 emailIdp:
   - login:

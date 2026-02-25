@@ -370,7 +370,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
     );
   }
 
-  Future<void> _confirmUnsubscribe(BuildContext context) async {
+  Future<void> _confirmUnsubscribe() async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
@@ -467,9 +467,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: _isUnsubscribing
-                        ? null
-                        : () => _confirmUnsubscribe(context),
+                    onPressed: _isUnsubscribing ? null : _confirmUnsubscribe,
                     style: FilledButton.styleFrom(
                       minimumSize: const Size(double.infinity, 52),
                       maximumSize: const Size(double.infinity, 52),
@@ -499,7 +497,6 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                 onPressed: _isRemovingPlayer
                     ? null
                     : () => _showRemovePlayerDialog(
-                        context,
                         removablePlayers: removablePlayers,
                       ),
                 style: OutlinedButton.styleFrom(
@@ -533,8 +530,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
     );
   }
 
-  Future<void> _showRemovePlayerDialog(
-    BuildContext context, {
+  Future<void> _showRemovePlayerDialog({
     required List<MatchSchedulePlayerSnapshot> removablePlayers,
   }) async {
     final colorScheme = Theme.of(context).colorScheme;
@@ -581,7 +577,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       return;
     }
 
-    await _confirmRemovePlayer(context, player: selectedPlayer);
+    await _confirmRemovePlayer(player: selectedPlayer);
   }
 
   Widget _buildRemovePlayerTile(
@@ -646,8 +642,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
     );
   }
 
-  Future<void> _confirmRemovePlayer(
-    BuildContext context, {
+  Future<void> _confirmRemovePlayer({
     required MatchSchedulePlayerSnapshot player,
   }) async {
     final playerName = player.playerData.displayName;
@@ -814,7 +809,8 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 4),
+
                   Text(
                     'Favorite Faction',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
