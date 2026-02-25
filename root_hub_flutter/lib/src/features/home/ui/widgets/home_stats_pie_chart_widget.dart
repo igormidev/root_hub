@@ -25,7 +25,7 @@ class HomeStatsPieChartWidget extends StatefulWidget {
 }
 
 class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
-  static const _dimmedSectionOpacity = 0.85;
+  static const _dimmedSectionOpacity = 0.75;
 
   Faction? _selectedFaction;
 
@@ -193,7 +193,7 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
     }
 
     // Keep non-selected slices visible while visually prioritizing the selected
-    // faction by lerping their opacity down to 85%.
+    // faction by lerping their opacity down to 75%.
     return Color.lerp(
           baseColor,
           baseColor.withValues(alpha: _dimmedSectionOpacity),
