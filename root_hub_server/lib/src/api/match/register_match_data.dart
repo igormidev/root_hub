@@ -341,8 +341,7 @@ class RegisterMatchData extends Endpoint {
 
     final seenPlayerDataIds = <int>{};
     final seenAnonymousPlayerIds = <int>{};
-    final nonVagabondFactions = <Faction>{};
-    var vagabondCount = 0;
+    final uniqueFactions = <Faction>{};
 
     for (final player in players) {
       final hasAnonymousPlayer = player.anonymousPlayerId != null;
@@ -377,14 +376,9 @@ class RegisterMatchData extends Endpoint {
         }
       }
 
-      if (player.factionUsedInMatch == Faction.vagabond) {
-        vagabondCount++;
-        if (vagabondCount > 2) {
-          _throwInvalidRequest('At most 2 players can use Vagabond.');
-        }
-      } else if (!nonVagabondFactions.add(player.factionUsedInMatch)) {
+      if (!uniqueFactions.add(player.factionUsedInMatch)) {
         _throwInvalidRequest(
-          'Faction ${player.factionUsedInMatch.name} is duplicated. Only Vagabond can repeat.',
+          'Faction ${player.factionUsedInMatch.name} is duplicated. Each faction can be used by only one player.',
         );
       }
     }

@@ -63,7 +63,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.8);
+    _pageController = PageController(viewportFraction: 0.7);
     _pageController.addListener(_handlePageScroll);
   }
 
@@ -102,18 +102,24 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            widget.title,
+            style: textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         const SizedBox(height: 6),
-        Text(
-          widget.description,
-          style: textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w600,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            widget.description,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         const SizedBox(height: 14),
@@ -168,7 +174,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                     opacity: opacity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
                         vertical: 6,
                       ),
                       child: Column(
@@ -205,49 +210,55 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           ),
           const SizedBox(height: 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              _metricConfigs.length,
-              (index) {
-                final selected = index == _activePage;
-                return GestureDetector(
-                  onTap: () {
-                    _pageController.animateToPage(
-                      index,
-                      duration: const Duration(milliseconds: 260),
-                      curve: Curves.easeOutCubic,
-                    );
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 220),
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 8,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                _metricConfigs.length,
+                (index) {
+                  final selected = index == _activePage;
+                  return GestureDetector(
+                    onTap: () {
+                      _pageController.animateToPage(
+                        index,
+                        duration: const Duration(milliseconds: 260),
+                        curve: Curves.easeOutCubic,
+                      );
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 220),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 8,
+                      ),
+                      height: 8,
+                      width: selected ? 22 : 8,
+                      decoration: BoxDecoration(
+                        color: selected
+                            ? colorScheme.primary
+                            : colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                     ),
-                    height: 8,
-                    width: selected ? 22 : 8,
-                    decoration: BoxDecoration(
-                      color: selected
-                          ? colorScheme.primary
-                          : colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: HomeStatsSnapshot.allFactions.map((faction) {
-              return _buildLegendChip(
-                context,
-                faction,
-              );
-            }).toList(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: HomeStatsSnapshot.allFactions.map((faction) {
+                return _buildLegendChip(
+                  context,
+                  faction,
+                );
+              }).toList(),
+            ),
           ),
         ],
       ],
@@ -256,12 +267,12 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
 
   double _buildPageScale(int index) {
     final distance = (index - _currentPage).abs().clamp(0.0, 1.0).toDouble();
-    return lerpDouble(0.8, 1, 1 - distance) ?? 1;
+    return lerpDouble(0.86, 1, 1 - distance) ?? 1;
   }
 
   double _buildPageOpacity(int index) {
     final distance = (index - _currentPage).abs().clamp(0.0, 1.0).toDouble();
-    return lerpDouble(0.55, 1, 1 - distance) ?? 1;
+    return lerpDouble(0.42, 1, 1 - distance) ?? 1;
   }
 
   Widget _buildMetricChart(
@@ -328,7 +339,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         ),
         PieChart(
           PieChartData(
-            centerSpaceRadius: 48,
+            centerSpaceRadius: 72,
             sectionsSpace: 2,
             pieTouchData: PieTouchData(
               enabled: false,
@@ -346,33 +357,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                   ),
                 )
                 .toList(),
-          ),
-        ),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: colorScheme.surface.withValues(alpha: 0.92),
-            border: Border.all(
-              color: colorScheme.outlineVariant.withValues(alpha: 0.55),
-            ),
-          ),
-          child: SizedBox(
-            width: 96,
-            height: 96,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                _buildCenterValueLabel(
-                  metricType,
-                  valuesByFaction,
-                ),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  height: 1.18,
-                ),
-              ),
-            ),
           ),
         ),
       ],
@@ -402,31 +386,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         ),
       ),
     );
-  }
-
-  String _buildCenterValueLabel(
-    _StatsMetricType metricType,
-    Map<Faction, double> valuesByFaction,
-  ) {
-    final sortedEntries = valuesByFaction.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    final topEntry = sortedEntries.first;
-    final topFaction = topEntry.key;
-    final topValue = topEntry.value;
-
-    if (topValue <= 0) {
-      return 'No data';
-    }
-
-    final valueLabel = switch (metricType) {
-      _StatsMetricType.winRate =>
-        '${(topValue * 100).toStringAsFixed(topValue >= 0.1 ? 0 : 1)}%',
-      _StatsMetricType.playedGames => topValue.toStringAsFixed(0),
-      _StatsMetricType.avgPoints => topValue.toStringAsFixed(1),
-      _StatsMetricType.totalWins => topValue.toStringAsFixed(0),
-    };
-
-    return '${topFaction.displayName}\n$valueLabel';
   }
 
   Widget _buildLegendChip(

@@ -18,8 +18,7 @@ enum _RegisterMatchStep {
   winner,
   points,
   matchStartedAt,
-  groupPhoto,
-  boardPhoto,
+  socialProof,
   review,
 }
 
@@ -400,8 +399,7 @@ class _RegisterMatchWizardSheetState
       _RegisterMatchStep.winner => _buildWinnerStep(context),
       _RegisterMatchStep.points => _buildPointsStep(context),
       _RegisterMatchStep.matchStartedAt => _buildTimingStep(context, tableInfo),
-      _RegisterMatchStep.groupPhoto => _buildGroupPhotoStep(context),
-      _RegisterMatchStep.boardPhoto => _buildBoardPhotoStep(context),
+      _RegisterMatchStep.socialProof => _buildSocialProofStep(context),
       _RegisterMatchStep.review => _buildReviewStep(
         context,
         tableInfo,
@@ -555,37 +553,42 @@ class _RegisterMatchWizardSheetState
                       labelText: 'Faction',
                       border: OutlineInputBorder(),
                     ),
-                    items: Faction.values
-                        .map(
-                          (faction) => DropdownMenuItem<Faction>(
-                            value: faction,
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 12,
-                                  backgroundColor: faction.factionColor
-                                      .withValues(alpha: 0.18),
-                                  child: Image.asset(
-                                    faction.getFactionIconPath(
-                                      size: FactionIconSize.size80,
+                    hint: const Text('Select faction'),
+                    items:
+                        _availableFactionsForParticipant(
+                              participant,
+                              selectedParticipants,
+                            )
+                            .map(
+                              (faction) => DropdownMenuItem<Faction>(
+                                value: faction,
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: faction.factionColor
+                                          .withValues(alpha: 0.18),
+                                      child: Image.asset(
+                                        faction.getFactionIconPath(
+                                          size: FactionIconSize.size80,
+                                        ),
+                                        width: 14,
+                                        height: 14,
+                                      ),
                                     ),
-                                    width: 14,
-                                    height: 14,
-                                  ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        faction.displayName,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    faction.displayName,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                        .toList(),
+                              ),
+                            )
+                            .toList(),
                     onChanged: (value) {
                       setState(() {
                         participant.faction = value;
@@ -1023,7 +1026,7 @@ class _RegisterMatchWizardSheetState
     );
   }
 
-  Widget _buildGroupPhotoStep(BuildContext context) {
+  Widget _buildSocialProofStep(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -1031,14 +1034,14 @@ class _RegisterMatchWizardSheetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${_stepNumber(_RegisterMatchStep.groupPhoto)}) Group photo proof',
+          '${_stepNumber(_RegisterMatchStep.socialProof)}) Social proof',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 6),
         Text(
-          'Upload a selfie with all players. Include the board if possible.',
+          'Upload both photos to confirm this match happened in person.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -1053,19 +1056,9 @@ class _RegisterMatchWizardSheetState
           image: _groupPhoto,
           onTap: () => _pickProofImage(isGroupPhoto: true),
         ),
-      ],
-    );
-  }
-
-  Widget _buildBoardPhotoStep(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+        const SizedBox(height: 18),
         Text(
-          '${_stepNumber(_RegisterMatchStep.boardPhoto)}) Board photo proof',
+          'Board photo proof',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -1150,14 +1143,13 @@ class _RegisterMatchWizardSheetState
       _RegisterMatchStep.winner => 3,
       _RegisterMatchStep.points => 4,
       _RegisterMatchStep.matchStartedAt => 5,
-      _RegisterMatchStep.groupPhoto => 7,
-      _RegisterMatchStep.boardPhoto => 8,
-      _RegisterMatchStep.review => 9,
+      _RegisterMatchStep.socialProof => 7,
+      _RegisterMatchStep.review => 8,
     };
   }
 
   String _stepBadgeLabel() {
-    const totalSteps = 9;
+    const totalSteps = 8;
     if (_currentStep == _RegisterMatchStep.matchStartedAt) {
       final startedStepNumber = _stepNumber(_RegisterMatchStep.matchStartedAt);
       return '$startedStepNumber-${startedStepNumber + 1}/$totalSteps';
@@ -1624,6 +1616,25 @@ class _RegisterMatchWizardSheetState
     return _participants.where((participant) => participant.isPresent).toList();
   }
 
+  List<Faction> _availableFactionsForParticipant(
+    _ParticipantDraft participant,
+    List<_ParticipantDraft> selectedParticipants,
+  ) {
+    final usedByOtherParticipants = selectedParticipants
+        .where((otherParticipant) => otherParticipant.key != participant.key)
+        .map((otherParticipant) => otherParticipant.faction)
+        .whereType<Faction>()
+        .toSet();
+
+    return Faction.values.where((faction) {
+      if (faction == participant.faction) {
+        return true;
+      }
+
+      return !usedByOtherParticipants.contains(faction);
+    }).toList();
+  }
+
   Future<void> _goToNextStep() async {
     final validationError = _validationErrorForCurrentStep();
     if (validationError != null) {
@@ -1693,29 +1704,16 @@ class _RegisterMatchWizardSheetState
           }
         }
 
-        final uniqueNonVagabondFactions = <Faction>{};
-        var vagabondCount = 0;
+        final uniqueFactions = <Faction>{};
         for (final participant in selectedParticipants) {
           final faction = participant.faction!;
-          if (faction == Faction.vagabond) {
-            vagabondCount++;
-            continue;
-          }
-
-          if (!uniqueNonVagabondFactions.add(faction)) {
+          if (!uniqueFactions.add(faction)) {
             return RootHubException(
               title: 'Invalid faction setup',
               description:
-                  '${faction.displayName} was selected more than once. Only Vagabond can repeat.',
+                  '${faction.displayName} was selected more than once. Each faction can only be selected once.',
             );
           }
-        }
-
-        if (vagabondCount > 2) {
-          return RootHubException(
-            title: 'Invalid faction setup',
-            description: 'At most 2 players can use Vagabond.',
-          );
         }
 
         return null;
@@ -1815,15 +1813,13 @@ class _RegisterMatchWizardSheetState
           );
         }
         return null;
-      case _RegisterMatchStep.groupPhoto:
+      case _RegisterMatchStep.socialProof:
         if (_groupPhoto == null) {
           return RootHubException(
             title: 'Group photo required',
             description: 'Add the group selfie before continuing.',
           );
         }
-        return null;
-      case _RegisterMatchStep.boardPhoto:
         if (_boardPhoto == null) {
           return RootHubException(
             title: 'Board photo required',
