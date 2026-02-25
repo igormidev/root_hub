@@ -2,6 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_pie_chart_center_value_label_widget.dart';
+import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_pie_chart_faction_badge_widget.dart';
 
 class HomeStatsPieChartWidget extends StatefulWidget {
   const HomeStatsPieChartWidget({
@@ -129,12 +131,17 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
                 radius: isSelected ? 68 : 64,
                 showTitle: false,
                 badgePositionPercentageOffset: 1.22,
-                badgeWidget: _buildFactionBadge(faction),
+                badgeWidget: HomeStatsPieChartFactionBadgeWidget(
+                  faction: faction,
+                ),
               );
             }).toList(),
           ),
         ),
-        _buildCenterValueLabel(context, centerValue),
+        HomeStatsPieChartCenterValueLabelWidget(
+          value: centerValue.value,
+          label: centerValue.label,
+        ),
       ],
     );
   }
@@ -200,72 +207,6 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
           1,
         ) ??
         baseColor.withValues(alpha: _dimmedSectionOpacity);
-  }
-
-  Widget _buildCenterValueLabel(
-    BuildContext context,
-    _PieCenterValue centerValue,
-  ) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-    return IgnorePointer(
-      child: SizedBox(
-        width: 116,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                centerValue.value,
-                textAlign: TextAlign.center,
-                style: textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.2,
-                ),
-              ),
-            ),
-            const SizedBox(height: 2),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                centerValue.label,
-                textAlign: TextAlign.center,
-                style: textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFactionBadge(Faction faction) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.94),
-        shape: BoxShape.circle,
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1F000000),
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Image.asset(
-          faction.getFactionIconPath(size: FactionIconSize.size80),
-          width: 20,
-          height: 20,
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
   }
 }
 
