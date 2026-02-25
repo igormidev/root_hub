@@ -1,0 +1,566 @@
+import 'dart:ui';
+
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/states/home/home_stats_snapshot.dart';
+
+class HomeStatsSection extends StatefulWidget {
+  const HomeStatsSection({
+    required this.title,
+    required this.description,
+    required this.emptyTitle,
+    required this.emptyDescription,
+    required this.onRetry,
+    required this.isLoading,
+    required this.stats,
+    this.error,
+    super.key,
+  });
+
+  final String title;
+  final String description;
+  final String emptyTitle;
+  final String emptyDescription;
+  final VoidCallback onRetry;
+  final bool isLoading;
+  final HomeStatsSnapshot? stats;
+  final RootHubException? error;
+
+  @override
+  State<HomeStatsSection> createState() => _HomeStatsSectionState();
+}
+
+class _HomeStatsSectionState extends State<HomeStatsSection> {
+  static const _metricConfigs = <_StatsMetricConfig>[
+    _StatsMetricConfig(
+      type: _StatsMetricType.winRate,
+      title: 'Faction Win Rate',
+      description: 'Who is winning the most often right now.',
+    ),
+    _StatsMetricConfig(
+      type: _StatsMetricType.playedGames,
+      title: 'Played Games',
+      description: 'How often each faction appears in completed games.',
+    ),
+    _StatsMetricConfig(
+      type: _StatsMetricType.avgPoints,
+      title: 'Average Points',
+      description: 'Average score per faction when points were tracked.',
+    ),
+    _StatsMetricConfig(
+      type: _StatsMetricType.totalWins,
+      title: 'Total Wins',
+      description: 'Absolute number of wins for each faction.',
+    ),
+  ];
+
+  late final PageController _pageController;
+  double _currentPage = 0;
+  int _activePage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.8);
+    _pageController.addListener(_handlePageScroll);
+  }
+
+  @override
+  void dispose() {
+    _pageController
+      ..removeListener(_handlePageScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _handlePageScroll() {
+    if (!_pageController.hasClients) {
+      return;
+    }
+
+    final page = _pageController.page ?? _activePage.toDouble();
+    if ((page - _currentPage).abs() < 0.001) {
+      return;
+    }
+
+    setState(() {
+      _currentPage = page;
+      _activePage = page.round().clamp(
+        0,
+        _metricConfigs.length - 1,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.title,
+          style: textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          widget.description,
+          style: textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 14),
+        if (widget.isLoading && widget.stats == null)
+          SizedBox(
+            height: 360,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: colorScheme.primary,
+              ),
+            ),
+          )
+        else if (widget.stats == null && widget.error != null)
+          _buildStatusMessage(
+            context,
+            icon: Icons.error_outline_rounded,
+            title: widget.error!.title,
+            description: widget.error!.description,
+            actionLabel: 'Retry',
+            onActionTap: widget.onRetry,
+          )
+        else if (widget.stats == null)
+          _buildStatusMessage(
+            context,
+            icon: Icons.insights_rounded,
+            title: widget.emptyTitle,
+            description: widget.emptyDescription,
+            actionLabel: null,
+            onActionTap: null,
+          )
+        else ...[
+          SizedBox(
+            height: 360,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: _metricConfigs.length,
+              physics: const BouncingScrollPhysics(),
+              onPageChanged: (index) {
+                setState(() {
+                  _activePage = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                final stats = widget.stats!;
+                final metricConfig = _metricConfigs[index];
+                final scale = _buildPageScale(index);
+                final opacity = _buildPageOpacity(index);
+
+                return Transform.scale(
+                  scale: scale,
+                  child: Opacity(
+                    opacity: opacity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 6,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _buildMetricChart(
+                              context,
+                              stats,
+                              metricConfig.type,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            metricConfig.title,
+                            style: textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            metricConfig.description,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              _metricConfigs.length,
+              (index) {
+                final selected = index == _activePage;
+                return GestureDetector(
+                  onTap: () {
+                    _pageController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 260),
+                      curve: Curves.easeOutCubic,
+                    );
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 220),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 8,
+                    ),
+                    height: 8,
+                    width: selected ? 22 : 8,
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? colorScheme.primary
+                          : colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: HomeStatsSnapshot.allFactions.map((faction) {
+              return _buildLegendChip(
+                context,
+                faction,
+              );
+            }).toList(),
+          ),
+        ],
+      ],
+    );
+  }
+
+  double _buildPageScale(int index) {
+    final distance = (index - _currentPage).abs().clamp(0.0, 1.0).toDouble();
+    return lerpDouble(0.8, 1, 1 - distance) ?? 1;
+  }
+
+  double _buildPageOpacity(int index) {
+    final distance = (index - _currentPage).abs().clamp(0.0, 1.0).toDouble();
+    return lerpDouble(0.55, 1, 1 - distance) ?? 1;
+  }
+
+  Widget _buildMetricChart(
+    BuildContext context,
+    HomeStatsSnapshot stats,
+    _StatsMetricType metricType,
+  ) {
+    final valuesByFaction = <Faction, double>{
+      for (final faction in HomeStatsSnapshot.allFactions)
+        faction: _readMetricValue(
+          stats,
+          faction,
+          metricType,
+        ),
+    };
+    final totalValue = valuesByFaction.values.fold<double>(
+      0,
+      (sum, currentValue) => sum + currentValue,
+    );
+    final colorScheme = Theme.of(context).colorScheme;
+
+    if (totalValue <= 0) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            colors: [
+              colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
+              colorScheme.surface.withValues(alpha: 0.2),
+            ],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Text(
+              'No values for this metric yet.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              colors: [
+                colorScheme.primary.withValues(alpha: 0.09),
+                colorScheme.tertiary.withValues(alpha: 0.05),
+                colorScheme.surface.withValues(alpha: 0.01),
+              ],
+            ),
+          ),
+          child: const SizedBox.expand(),
+        ),
+        PieChart(
+          PieChartData(
+            centerSpaceRadius: 48,
+            sectionsSpace: 2,
+            pieTouchData: PieTouchData(
+              enabled: false,
+            ),
+            sections: HomeStatsSnapshot.allFactions
+                .where((faction) => (valuesByFaction[faction] ?? 0) > 0)
+                .map(
+                  (faction) => PieChartSectionData(
+                    value: valuesByFaction[faction],
+                    color: faction.factionColor,
+                    radius: 64,
+                    showTitle: false,
+                    badgePositionPercentageOffset: 1.22,
+                    badgeWidget: _buildFactionBadge(faction),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: colorScheme.surface.withValues(alpha: 0.92),
+            border: Border.all(
+              color: colorScheme.outlineVariant.withValues(alpha: 0.55),
+            ),
+          ),
+          child: SizedBox(
+            width: 96,
+            height: 96,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                _buildCenterValueLabel(
+                  metricType,
+                  valuesByFaction,
+                ),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  height: 1.18,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFactionBadge(Faction faction) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.94),
+        shape: BoxShape.circle,
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1F000000),
+            blurRadius: 8,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: Image.asset(
+          faction.getFactionIconPath(size: FactionIconSize.size80),
+          width: 20,
+          height: 20,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  String _buildCenterValueLabel(
+    _StatsMetricType metricType,
+    Map<Faction, double> valuesByFaction,
+  ) {
+    final sortedEntries = valuesByFaction.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    final topEntry = sortedEntries.first;
+    final topFaction = topEntry.key;
+    final topValue = topEntry.value;
+
+    if (topValue <= 0) {
+      return 'No data';
+    }
+
+    final valueLabel = switch (metricType) {
+      _StatsMetricType.winRate =>
+        '${(topValue * 100).toStringAsFixed(topValue >= 0.1 ? 0 : 1)}%',
+      _StatsMetricType.playedGames => topValue.toStringAsFixed(0),
+      _StatsMetricType.avgPoints => topValue.toStringAsFixed(1),
+      _StatsMetricType.totalWins => topValue.toStringAsFixed(0),
+    };
+
+    return '${topFaction.displayName}\n$valueLabel';
+  }
+
+  Widget _buildLegendChip(
+    BuildContext context,
+    Faction faction,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 7,
+      ),
+      decoration: BoxDecoration(
+        color: colorScheme.surface.withValues(alpha: 0.78),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.6),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: faction.factionColor,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Image.asset(
+            faction.getFactionIconPath(size: FactionIconSize.size80),
+            width: 16,
+            height: 16,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            faction.displayName,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusMessage(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String description,
+    required String? actionLabel,
+    required VoidCallback? onActionTap,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        color: colorScheme.surface.withValues(alpha: 0.85),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.75),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 25,
+            color: colorScheme.primary,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            description,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (actionLabel != null && onActionTap != null) ...[
+            const SizedBox(height: 12),
+            FilledButton.tonal(
+              onPressed: onActionTap,
+              child: Text(actionLabel),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  double _readMetricValue(
+    HomeStatsSnapshot stats,
+    Faction faction,
+    _StatsMetricType metricType,
+  ) {
+    return switch (metricType) {
+      _StatsMetricType.winRate => stats.winRateForFaction(faction),
+      _StatsMetricType.playedGames =>
+        stats.playedGamesForFaction(faction).toDouble(),
+      _StatsMetricType.avgPoints => stats.avgPointsForFaction(faction),
+      _StatsMetricType.totalWins => stats.winsForFaction(faction).toDouble(),
+    };
+  }
+}
+
+enum _StatsMetricType {
+  winRate,
+  playedGames,
+  avgPoints,
+  totalWins,
+}
+
+class _StatsMetricConfig {
+  const _StatsMetricConfig({
+    required this.type,
+    required this.title,
+    required this.description,
+  });
+
+  final _StatsMetricType type;
+  final String title;
+  final String description;
+}

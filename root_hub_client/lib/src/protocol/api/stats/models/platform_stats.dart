@@ -40,6 +40,16 @@ abstract class PlatformStats implements _i1.SerializableModel {
     required this.winsAsCorvidConspiracy,
     required this.winsAsLordOfTheHundreds,
     required this.winsAsKeepersInIron,
+    required this.winsRateAsMarquiseDeCat,
+    required this.winsRateAsEyrieDynasties,
+    required this.winsRateAsWoodlandAlliance,
+    required this.winsRateAsVagabond,
+    required this.winsRateAsRiverfolkCompany,
+    required this.winsRateAsTheLizardCult,
+    required this.winsRateAsUndergroundDuchy,
+    required this.winsRateAsCorvidConspiracy,
+    required this.winsRateAsLordOfTheHundreds,
+    required this.winsRateAsKeepersInIron,
     required this.avgPointsScoredAsMarquiseDeCat,
     required this.avgPointsScoredAsEyrieDynasties,
     required this.avgPointsScoredAsWoodlandAlliance,
@@ -79,6 +89,16 @@ abstract class PlatformStats implements _i1.SerializableModel {
     required int winsAsCorvidConspiracy,
     required int winsAsLordOfTheHundreds,
     required int winsAsKeepersInIron,
+    required double winsRateAsMarquiseDeCat,
+    required double winsRateAsEyrieDynasties,
+    required double winsRateAsWoodlandAlliance,
+    required double winsRateAsVagabond,
+    required double winsRateAsRiverfolkCompany,
+    required double winsRateAsTheLizardCult,
+    required double winsRateAsUndergroundDuchy,
+    required double winsRateAsCorvidConspiracy,
+    required double winsRateAsLordOfTheHundreds,
+    required double winsRateAsKeepersInIron,
     required double avgPointsScoredAsMarquiseDeCat,
     required double avgPointsScoredAsEyrieDynasties,
     required double avgPointsScoredAsWoodlandAlliance,
@@ -133,6 +153,26 @@ abstract class PlatformStats implements _i1.SerializableModel {
       winsAsLordOfTheHundreds:
           jsonSerialization['winsAsLordOfTheHundreds'] as int,
       winsAsKeepersInIron: jsonSerialization['winsAsKeepersInIron'] as int,
+      winsRateAsMarquiseDeCat:
+          (jsonSerialization['winsRateAsMarquiseDeCat'] as num).toDouble(),
+      winsRateAsEyrieDynasties:
+          (jsonSerialization['winsRateAsEyrieDynasties'] as num).toDouble(),
+      winsRateAsWoodlandAlliance:
+          (jsonSerialization['winsRateAsWoodlandAlliance'] as num).toDouble(),
+      winsRateAsVagabond: (jsonSerialization['winsRateAsVagabond'] as num)
+          .toDouble(),
+      winsRateAsRiverfolkCompany:
+          (jsonSerialization['winsRateAsRiverfolkCompany'] as num).toDouble(),
+      winsRateAsTheLizardCult:
+          (jsonSerialization['winsRateAsTheLizardCult'] as num).toDouble(),
+      winsRateAsUndergroundDuchy:
+          (jsonSerialization['winsRateAsUndergroundDuchy'] as num).toDouble(),
+      winsRateAsCorvidConspiracy:
+          (jsonSerialization['winsRateAsCorvidConspiracy'] as num).toDouble(),
+      winsRateAsLordOfTheHundreds:
+          (jsonSerialization['winsRateAsLordOfTheHundreds'] as num).toDouble(),
+      winsRateAsKeepersInIron:
+          (jsonSerialization['winsRateAsKeepersInIron'] as num).toDouble(),
       avgPointsScoredAsMarquiseDeCat:
           (jsonSerialization['avgPointsScoredAsMarquiseDeCat'] as num)
               .toDouble(),
@@ -217,6 +257,26 @@ abstract class PlatformStats implements _i1.SerializableModel {
 
   int winsAsKeepersInIron;
 
+  double winsRateAsMarquiseDeCat;
+
+  double winsRateAsEyrieDynasties;
+
+  double winsRateAsWoodlandAlliance;
+
+  double winsRateAsVagabond;
+
+  double winsRateAsRiverfolkCompany;
+
+  double winsRateAsTheLizardCult;
+
+  double winsRateAsUndergroundDuchy;
+
+  double winsRateAsCorvidConspiracy;
+
+  double winsRateAsLordOfTheHundreds;
+
+  double winsRateAsKeepersInIron;
+
   double avgPointsScoredAsMarquiseDeCat;
 
   double avgPointsScoredAsEyrieDynasties;
@@ -267,6 +327,16 @@ abstract class PlatformStats implements _i1.SerializableModel {
     int? winsAsCorvidConspiracy,
     int? winsAsLordOfTheHundreds,
     int? winsAsKeepersInIron,
+    double? winsRateAsMarquiseDeCat,
+    double? winsRateAsEyrieDynasties,
+    double? winsRateAsWoodlandAlliance,
+    double? winsRateAsVagabond,
+    double? winsRateAsRiverfolkCompany,
+    double? winsRateAsTheLizardCult,
+    double? winsRateAsUndergroundDuchy,
+    double? winsRateAsCorvidConspiracy,
+    double? winsRateAsLordOfTheHundreds,
+    double? winsRateAsKeepersInIron,
     double? avgPointsScoredAsMarquiseDeCat,
     double? avgPointsScoredAsEyrieDynasties,
     double? avgPointsScoredAsWoodlandAlliance,
@@ -308,6 +378,16 @@ abstract class PlatformStats implements _i1.SerializableModel {
       'winsAsCorvidConspiracy': winsAsCorvidConspiracy,
       'winsAsLordOfTheHundreds': winsAsLordOfTheHundreds,
       'winsAsKeepersInIron': winsAsKeepersInIron,
+      'winsRateAsMarquiseDeCat': winsRateAsMarquiseDeCat,
+      'winsRateAsEyrieDynasties': winsRateAsEyrieDynasties,
+      'winsRateAsWoodlandAlliance': winsRateAsWoodlandAlliance,
+      'winsRateAsVagabond': winsRateAsVagabond,
+      'winsRateAsRiverfolkCompany': winsRateAsRiverfolkCompany,
+      'winsRateAsTheLizardCult': winsRateAsTheLizardCult,
+      'winsRateAsUndergroundDuchy': winsRateAsUndergroundDuchy,
+      'winsRateAsCorvidConspiracy': winsRateAsCorvidConspiracy,
+      'winsRateAsLordOfTheHundreds': winsRateAsLordOfTheHundreds,
+      'winsRateAsKeepersInIron': winsRateAsKeepersInIron,
       'avgPointsScoredAsMarquiseDeCat': avgPointsScoredAsMarquiseDeCat,
       'avgPointsScoredAsEyrieDynasties': avgPointsScoredAsEyrieDynasties,
       'avgPointsScoredAsWoodlandAlliance': avgPointsScoredAsWoodlandAlliance,
@@ -355,6 +435,16 @@ class _PlatformStatsImpl extends PlatformStats {
     required int winsAsCorvidConspiracy,
     required int winsAsLordOfTheHundreds,
     required int winsAsKeepersInIron,
+    required double winsRateAsMarquiseDeCat,
+    required double winsRateAsEyrieDynasties,
+    required double winsRateAsWoodlandAlliance,
+    required double winsRateAsVagabond,
+    required double winsRateAsRiverfolkCompany,
+    required double winsRateAsTheLizardCult,
+    required double winsRateAsUndergroundDuchy,
+    required double winsRateAsCorvidConspiracy,
+    required double winsRateAsLordOfTheHundreds,
+    required double winsRateAsKeepersInIron,
     required double avgPointsScoredAsMarquiseDeCat,
     required double avgPointsScoredAsEyrieDynasties,
     required double avgPointsScoredAsWoodlandAlliance,
@@ -392,6 +482,16 @@ class _PlatformStatsImpl extends PlatformStats {
          winsAsCorvidConspiracy: winsAsCorvidConspiracy,
          winsAsLordOfTheHundreds: winsAsLordOfTheHundreds,
          winsAsKeepersInIron: winsAsKeepersInIron,
+         winsRateAsMarquiseDeCat: winsRateAsMarquiseDeCat,
+         winsRateAsEyrieDynasties: winsRateAsEyrieDynasties,
+         winsRateAsWoodlandAlliance: winsRateAsWoodlandAlliance,
+         winsRateAsVagabond: winsRateAsVagabond,
+         winsRateAsRiverfolkCompany: winsRateAsRiverfolkCompany,
+         winsRateAsTheLizardCult: winsRateAsTheLizardCult,
+         winsRateAsUndergroundDuchy: winsRateAsUndergroundDuchy,
+         winsRateAsCorvidConspiracy: winsRateAsCorvidConspiracy,
+         winsRateAsLordOfTheHundreds: winsRateAsLordOfTheHundreds,
+         winsRateAsKeepersInIron: winsRateAsKeepersInIron,
          avgPointsScoredAsMarquiseDeCat: avgPointsScoredAsMarquiseDeCat,
          avgPointsScoredAsEyrieDynasties: avgPointsScoredAsEyrieDynasties,
          avgPointsScoredAsWoodlandAlliance: avgPointsScoredAsWoodlandAlliance,
@@ -435,6 +535,16 @@ class _PlatformStatsImpl extends PlatformStats {
     int? winsAsCorvidConspiracy,
     int? winsAsLordOfTheHundreds,
     int? winsAsKeepersInIron,
+    double? winsRateAsMarquiseDeCat,
+    double? winsRateAsEyrieDynasties,
+    double? winsRateAsWoodlandAlliance,
+    double? winsRateAsVagabond,
+    double? winsRateAsRiverfolkCompany,
+    double? winsRateAsTheLizardCult,
+    double? winsRateAsUndergroundDuchy,
+    double? winsRateAsCorvidConspiracy,
+    double? winsRateAsLordOfTheHundreds,
+    double? winsRateAsKeepersInIron,
     double? avgPointsScoredAsMarquiseDeCat,
     double? avgPointsScoredAsEyrieDynasties,
     double? avgPointsScoredAsWoodlandAlliance,
@@ -488,6 +598,25 @@ class _PlatformStatsImpl extends PlatformStats {
       winsAsLordOfTheHundreds:
           winsAsLordOfTheHundreds ?? this.winsAsLordOfTheHundreds,
       winsAsKeepersInIron: winsAsKeepersInIron ?? this.winsAsKeepersInIron,
+      winsRateAsMarquiseDeCat:
+          winsRateAsMarquiseDeCat ?? this.winsRateAsMarquiseDeCat,
+      winsRateAsEyrieDynasties:
+          winsRateAsEyrieDynasties ?? this.winsRateAsEyrieDynasties,
+      winsRateAsWoodlandAlliance:
+          winsRateAsWoodlandAlliance ?? this.winsRateAsWoodlandAlliance,
+      winsRateAsVagabond: winsRateAsVagabond ?? this.winsRateAsVagabond,
+      winsRateAsRiverfolkCompany:
+          winsRateAsRiverfolkCompany ?? this.winsRateAsRiverfolkCompany,
+      winsRateAsTheLizardCult:
+          winsRateAsTheLizardCult ?? this.winsRateAsTheLizardCult,
+      winsRateAsUndergroundDuchy:
+          winsRateAsUndergroundDuchy ?? this.winsRateAsUndergroundDuchy,
+      winsRateAsCorvidConspiracy:
+          winsRateAsCorvidConspiracy ?? this.winsRateAsCorvidConspiracy,
+      winsRateAsLordOfTheHundreds:
+          winsRateAsLordOfTheHundreds ?? this.winsRateAsLordOfTheHundreds,
+      winsRateAsKeepersInIron:
+          winsRateAsKeepersInIron ?? this.winsRateAsKeepersInIron,
       avgPointsScoredAsMarquiseDeCat:
           avgPointsScoredAsMarquiseDeCat ?? this.avgPointsScoredAsMarquiseDeCat,
       avgPointsScoredAsEyrieDynasties:

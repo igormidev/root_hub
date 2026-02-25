@@ -16,10 +16,8 @@ enum _RegisterMatchStep {
   participants,
   factions,
   winner,
-  winnerType,
   points,
   matchStartedAt,
-  matchDuration,
   groupPhoto,
   boardPhoto,
   review,
@@ -332,7 +330,7 @@ class _RegisterMatchWizardSheetState
               color: colorScheme.primaryContainer,
             ),
             child: Text(
-              '${_currentStep.index + 1}/${_RegisterMatchStep.values.length}',
+              _stepBadgeLabel(),
               style: theme.textTheme.labelLarge?.copyWith(
                 fontWeight: FontWeight.w900,
                 color: colorScheme.onPrimaryContainer,
@@ -400,10 +398,8 @@ class _RegisterMatchWizardSheetState
       _RegisterMatchStep.participants => _buildParticipantsStep(context),
       _RegisterMatchStep.factions => _buildFactionsStep(context),
       _RegisterMatchStep.winner => _buildWinnerStep(context),
-      _RegisterMatchStep.winnerType => _buildWinnerTypeStep(context),
       _RegisterMatchStep.points => _buildPointsStep(context),
-      _RegisterMatchStep.matchStartedAt ||
-      _RegisterMatchStep.matchDuration => _buildTimingStep(context, tableInfo),
+      _RegisterMatchStep.matchStartedAt => _buildTimingStep(context, tableInfo),
       _RegisterMatchStep.groupPhoto => _buildGroupPhotoStep(context),
       _RegisterMatchStep.boardPhoto => _buildBoardPhotoStep(context),
       _RegisterMatchStep.review => _buildReviewStep(
@@ -656,20 +652,10 @@ class _RegisterMatchWizardSheetState
               _onWinnerSelected(participant.key);
             },
           ),
-      ],
-    );
-  }
-
-  Widget _buildWinnerTypeStep(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+        const SizedBox(height: 10),
         Text(
-          '${_stepNumber(_RegisterMatchStep.winnerType)}) How did the winner won?',
-          style: theme.textTheme.titleLarge?.copyWith(
+          'How did the winner won?',
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
@@ -869,26 +855,27 @@ class _RegisterMatchWizardSheetState
     final localizations = MaterialLocalizations.of(context);
     final matchStartedAt =
         _matchStartedAt ?? tableInfo.matchSchedule.attemptedAt.toLocal();
-    final startedLabel =
-        '${localizations.formatMediumDate(matchStartedAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(matchStartedAt))}';
+    final startedDateLabel = localizations.formatMediumDate(matchStartedAt);
+    final startedTimeLabel = localizations.formatTimeOfDay(
+      TimeOfDay.fromDateTime(matchStartedAt),
+      alwaysUse24HourFormat: true,
+    );
     final durationLabel = _durationLabel(_matchEstimatedDuration);
-    final highlightStart = _currentStep == _RegisterMatchStep.matchStartedAt;
-    final highlightDuration = _currentStep == _RegisterMatchStep.matchDuration;
+    final startedStepNumber = _stepNumber(_RegisterMatchStep.matchStartedAt);
+    final durationStepNumber = startedStepNumber + 1;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${_stepNumber(_currentStep)}) Match timing',
+          '$startedStepNumber) Match started at',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 6),
         Text(
-          _currentStep == _RegisterMatchStep.matchStartedAt
-              ? 'Select when the match actually started. You can set a time before the scheduled start.'
-              : 'Set the estimated duration. Use minus or plus to adjust by 15 minutes.',
+          'Set the time the match actually started.',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -896,60 +883,85 @@ class _RegisterMatchWizardSheetState
           ),
         ),
         const SizedBox(height: 14),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: highlightStart
-                  ? colorScheme.primary
-                  : colorScheme.outlineVariant,
-              width: highlightStart ? 1.5 : 1,
-            ),
-            color: colorScheme.surfaceContainerLow,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Match started at',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                startedLabel,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 8),
-              OutlinedButton.icon(
-                onPressed: () {
-                  _pickMatchStartedAt(
-                    tableInfo.matchSchedule.attemptedAt.toLocal(),
-                  );
-                },
-                icon: const Icon(Icons.schedule_rounded),
-                label: const Text('Change start time'),
-              ),
-            ],
+        Text(
+          'Match started at',
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+            color: colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
+        GestureDetector(
+          onTap: () {
+            _pickMatchStartedDate(
+              tableInfo.matchSchedule.attemptedAt.toLocal(),
+            );
+          },
+          child: Text(
+            startedDateLabel,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        const SizedBox(height: 2),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                startedTimeLabel,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: colorScheme.primary,
+                ),
+              ),
+            ),
+            FilledButton.tonalIcon(
+              onPressed: () {
+                _pickMatchStartedTime(
+                  tableInfo.matchSchedule.attemptedAt.toLocal(),
+                );
+              },
+              icon: const Icon(Icons.schedule_rounded),
+              label: const Text('Change time'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        Text(
+          '$durationStepNumber) Estimated match duration',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Estimated duration',
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+            color: colorScheme.primary,
+          ),
+        ),
+        const SizedBox(height: 6),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: highlightDuration
-                  ? colorScheme.primary
-                  : colorScheme.outlineVariant,
-              width: highlightDuration ? 1.5 : 1,
+              color: colorScheme.outlineVariant,
+              width: 1,
             ),
             color: colorScheme.surfaceContainerLow,
           ),
@@ -989,12 +1001,17 @@ class _RegisterMatchWizardSheetState
                     ),
                   ),
                   IconButton.filledTonal(
-                    onPressed: () {
-                      setState(() {
-                        _hasEditedMatchDuration = true;
-                        _matchEstimatedDuration += const Duration(minutes: 15);
-                      });
-                    },
+                    onPressed:
+                        _matchEstimatedDuration < const Duration(hours: 8)
+                        ? () {
+                            setState(() {
+                              _hasEditedMatchDuration = true;
+                              _matchEstimatedDuration += const Duration(
+                                minutes: 15,
+                              );
+                            });
+                          }
+                        : null,
                     icon: const Icon(Icons.add_rounded),
                   ),
                 ],
@@ -1127,7 +1144,25 @@ class _RegisterMatchWizardSheetState
   }
 
   int _stepNumber(_RegisterMatchStep step) {
-    return _RegisterMatchStep.values.indexOf(step) + 1;
+    return switch (step) {
+      _RegisterMatchStep.participants => 1,
+      _RegisterMatchStep.factions => 2,
+      _RegisterMatchStep.winner => 3,
+      _RegisterMatchStep.points => 4,
+      _RegisterMatchStep.matchStartedAt => 5,
+      _RegisterMatchStep.groupPhoto => 7,
+      _RegisterMatchStep.boardPhoto => 8,
+      _RegisterMatchStep.review => 9,
+    };
+  }
+
+  String _stepBadgeLabel() {
+    const totalSteps = 9;
+    if (_currentStep == _RegisterMatchStep.matchStartedAt) {
+      final startedStepNumber = _stepNumber(_RegisterMatchStep.matchStartedAt);
+      return '$startedStepNumber-${startedStepNumber + 1}/$totalSteps';
+    }
+    return '${_stepNumber(_currentStep)}/$totalSteps';
   }
 
   String _durationLabel(Duration duration) {
@@ -1138,21 +1173,40 @@ class _RegisterMatchWizardSheetState
     return '$hourLabel$minuteLabel';
   }
 
-  Future<void> _pickMatchStartedAt(DateTime scheduledStart) async {
+  Future<void> _pickMatchStartedDate(DateTime scheduledStart) async {
     final now = DateTime.now();
-    final current = _matchStartedAt ?? scheduledStart;
+    final current = _matchStartedAt ?? scheduledStart.toLocal();
     final today = DateTime(now.year, now.month, now.day);
-    final firstDate = DateTime(
+    DateTime firstDate = DateTime(
       scheduledStart.year,
       scheduledStart.month,
       scheduledStart.day,
-    ).subtract(const Duration(days: 7));
+    ).subtract(const Duration(days: 1));
+    final oneDayAheadFromSchedule = DateTime(
+      scheduledStart.year,
+      scheduledStart.month,
+      scheduledStart.day,
+    ).add(const Duration(days: 1));
+    DateTime lastDate = oneDayAheadFromSchedule.isAfter(today)
+        ? today
+        : oneDayAheadFromSchedule;
+
+    if (firstDate.isAfter(lastDate)) {
+      firstDate = lastDate;
+    }
+
+    DateTime initialDate = DateTime(current.year, current.month, current.day);
+    if (initialDate.isBefore(firstDate)) {
+      initialDate = firstDate;
+    } else if (initialDate.isAfter(lastDate)) {
+      initialDate = lastDate;
+    }
 
     final selectedDate = await showDatePicker(
       context: context,
-      initialDate: current.isAfter(today) ? today : current,
+      initialDate: initialDate,
       firstDate: firstDate,
-      lastDate: today,
+      lastDate: lastDate,
       helpText: 'When did the match start?',
     );
 
@@ -1160,6 +1214,30 @@ class _RegisterMatchWizardSheetState
       return;
     }
 
+    final selectedDateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      current.hour,
+      current.minute,
+    );
+
+    if (selectedDateTime.isAfter(DateTime.now())) {
+      await showErrorDialog(
+        context,
+        title: 'Invalid match registration',
+        description: 'Match start time cannot be in the future.',
+      );
+      return;
+    }
+
+    setState(() {
+      _matchStartedAt = selectedDateTime;
+    });
+  }
+
+  Future<void> _pickMatchStartedTime(DateTime scheduledStart) async {
+    final current = _matchStartedAt ?? scheduledStart.toLocal();
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(current),
@@ -1170,13 +1248,23 @@ class _RegisterMatchWizardSheetState
       return;
     }
 
+    final currentDate = DateTime(current.year, current.month, current.day);
     final selectedDateTime = DateTime(
-      selectedDate.year,
-      selectedDate.month,
-      selectedDate.day,
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
       selectedTime.hour,
       selectedTime.minute,
     );
+
+    if (selectedDateTime.isAfter(DateTime.now())) {
+      await showErrorDialog(
+        context,
+        title: 'Invalid match registration',
+        description: 'Match start time cannot be in the future.',
+      );
+      return;
+    }
 
     setState(() {
       _matchStartedAt = selectedDateTime;
@@ -1547,7 +1635,7 @@ class _RegisterMatchWizardSheetState
       return;
     }
 
-    if (_currentStep == _RegisterMatchStep.matchDuration &&
+    if (_currentStep == _RegisterMatchStep.matchStartedAt &&
         !_hasEditedMatchDuration) {
       final confirmDefaultDuration = await showDialog<bool>(
         context: context,
@@ -1650,29 +1738,19 @@ class _RegisterMatchWizardSheetState
           );
         }
         return null;
-      case _RegisterMatchStep.winnerType:
-        if (_winnerType == null) {
-          return RootHubException(
-            title: 'Winner method missing',
-            description:
-                'Select whether the winner won by total points or by dominance.',
-          );
-        }
-        return null;
       case _RegisterMatchStep.points:
         final winnerKey = _winnerParticipantKey;
         final winnerType = _winnerType;
         if (winnerKey == null) {
           return RootHubException(
             title: 'Winner missing',
-            description: 'Select the winner before setting points.',
+            description: 'Select the winner before continuing.',
           );
         }
         if (winnerType == null) {
           return RootHubException(
             title: 'Winner method missing',
-            description:
-                'Select how the winner won before filling player points.',
+            description: 'Select how the winner won before continuing.',
           );
         }
 
@@ -1721,15 +1799,19 @@ class _RegisterMatchWizardSheetState
         if (matchStartedAt.isAfter(DateTime.now())) {
           return RootHubException(
             title: 'Invalid match registration',
-            description: 'matchStartedAt cannot be in the future.',
+            description: 'Match start time cannot be in the future.',
           );
         }
-        return null;
-      case _RegisterMatchStep.matchDuration:
         if (_matchEstimatedDuration <= Duration.zero) {
           return RootHubException(
             title: 'Invalid duration',
             description: 'Match duration must be greater than zero.',
+          );
+        }
+        if (_matchEstimatedDuration > const Duration(hours: 8)) {
+          return RootHubException(
+            title: 'Invalid duration',
+            description: 'Match duration must be at most 8 hours.',
           );
         }
         return null;

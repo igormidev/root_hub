@@ -527,13 +527,13 @@ class RegisterMatchData extends Endpoint {
 
     if (matchStartedAt.isBefore(earliestAllowedRegistrationTime)) {
       _throwInvalidRequest(
-        'matchStartedAt cannot be earlier than 2 hours before the scheduled start time.',
+        'Match start time cannot be earlier than 2 hours before the scheduled start time.',
       );
     }
 
     if (matchStartedAt.isAfter(now.add(const Duration(minutes: 5)))) {
       _throwInvalidRequest(
-        'matchStartedAt cannot be in the future.',
+        'Match start time cannot be in the future.',
       );
     }
   }

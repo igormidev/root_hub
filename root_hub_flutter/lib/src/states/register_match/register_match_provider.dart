@@ -28,6 +28,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
   static const _minAnonymousNameLength = 3;
 
   bool _hasRequestedInitialCount = false;
+  bool _hasRequestedInitialPendingMatches = false;
   int _registeredPlayerSearchRunId = 0;
 
   @override
@@ -42,6 +43,22 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
 
     _hasRequestedInitialCount = true;
     unawaited(refreshPendingMatchesCount());
+  }
+
+  void ensurePendingMatchesLoaded() {
+    if (_hasRequestedInitialPendingMatches) {
+      return;
+    }
+
+    _hasRequestedInitialPendingMatches = true;
+    unawaited(loadPendingMatches());
+  }
+
+  Future<void> refreshPendingMatchesOverview() async {
+    await Future.wait<dynamic>([
+      loadPendingMatches(),
+      refreshPendingMatchesCount(),
+    ]);
   }
 
   Future<void> refreshPendingMatchesCount() async {
@@ -320,11 +337,17 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         description: 'Match estimated duration must be greater than zero.',
       );
     }
+    if (matchEstimatedDuration > const Duration(hours: 8)) {
+      return RootHubException(
+        title: 'Invalid duration',
+        description: 'Match estimated duration must be at most 8 hours.',
+      );
+    }
 
     if (matchStartedAt.isAfter(DateTime.now())) {
       return RootHubException(
         title: 'Invalid match registration',
-        description: 'matchStartedAt cannot be in the future.',
+        description: 'Match start time cannot be in the future.',
       );
     }
 

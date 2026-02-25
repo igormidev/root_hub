@@ -624,8 +624,8 @@ class EndpointGetPlatformStats extends _i1.EndpointRef {
   @override
   String get name => 'getPlatformStats';
 
-  _i2.Future<_i25.PlatformStats> v1() =>
-      caller.callServerEndpoint<_i25.PlatformStats>(
+  _i2.Future<_i25.PlatformStats?> v1() =>
+      caller.callServerEndpoint<_i25.PlatformStats?>(
         'getPlatformStats',
         'v1',
         {},
@@ -639,8 +639,8 @@ class EndpointGetPlayerStats extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerStats';
 
-  _i2.Future<_i26.PlayerStats> v1() =>
-      caller.callServerEndpoint<_i26.PlayerStats>(
+  _i2.Future<_i26.PlayerStats?> v1() =>
+      caller.callServerEndpoint<_i26.PlayerStats?>(
         'getPlayerStats',
         'v1',
         {},

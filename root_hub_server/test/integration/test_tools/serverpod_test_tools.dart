@@ -1695,7 +1695,7 @@ class _GetPlatformStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i26.PlatformStats> v1(
+  _i3.Future<_i26.PlatformStats?> v1(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1717,7 +1717,7 @@ class _GetPlatformStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i26.PlatformStats>);
+                as _i3.Future<_i26.PlatformStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1736,7 +1736,9 @@ class _GetPlayerStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i27.PlayerStats> v1(_i1.TestSessionBuilder sessionBuilder) async {
+  _i3.Future<_i27.PlayerStats?> v1(
+    _i1.TestSessionBuilder sessionBuilder,
+  ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -1756,7 +1758,7 @@ class _GetPlayerStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i27.PlayerStats>);
+                as _i3.Future<_i27.PlayerStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

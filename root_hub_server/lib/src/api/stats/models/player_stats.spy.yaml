@@ -33,6 +33,18 @@ fields:
   winsAsLordOfTheHundreds: int
   winsAsKeepersInIron: int
 
+  # Wins rate
+  winsRateAsMarquiseDeCat: double
+  winsRateAsEyrieDynasties: double
+  winsRateAsWoodlandAlliance: double
+  winsRateAsVagabond: double
+  winsRateAsRiverfolkCompany: double
+  winsRateAsTheLizardCult: double
+  winsRateAsUndergroundDuchy: double
+  winsRateAsCorvidConspiracy: double
+  winsRateAsLordOfTheHundreds: double
+  winsRateAsKeepersInIron: double
+
   # Avg points per faction
   avgPointsScoredAsMarquiseDeCat: double
   avgPointsScoredAsEyrieDynasties: double

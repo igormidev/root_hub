@@ -10,6 +10,7 @@ import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
 
 class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
   static const _recentLocationsKey = 'match_create_table_recent_locations_v1';
@@ -275,6 +276,9 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
         await ref
             .read(matchTablesProvider.notifier)
             .loadTablesInArea(showLoadingIndicator: false);
+        await ref
+            .read(registerMatchProvider.notifier)
+            .refreshPendingMatchesOverview();
 
         state = _buildDefaultState(
           recentLocations: state.recentLocations,

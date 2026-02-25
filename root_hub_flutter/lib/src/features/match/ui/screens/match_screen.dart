@@ -58,6 +58,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       ref
           .read(registerMatchProvider.notifier)
           .ensurePendingMatchesCountLoaded();
+      ref.read(registerMatchProvider.notifier).ensurePendingMatchesLoaded();
     });
   }
 
@@ -77,11 +78,21 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       authenticated: (playerData) => playerData,
       orElse: () => null,
     );
+    final pendingSubscribedMatchIds = _buildPendingSubscribedMatchIds(
+      registerMatchState.pendingMatches,
+      currentPlayerId: currentPlayer?.id,
+    );
+    final reportablePendingMatchIds = _buildReportablePendingMatchIds(
+      registerMatchState.pendingMatches,
+      currentPlayerId: currentPlayer?.id,
+    );
+    final reportablePendingMatchesCount = reportablePendingMatchIds.length;
+    final hasPendingMatches = pendingSubscribedMatchIds.isNotEmpty;
 
     return Stack(
       children: [
         RefreshIndicator(
-          onRefresh: () => ref.read(matchTablesProvider.notifier).refresh(),
+          onRefresh: _refreshMatchScreenData,
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
@@ -112,60 +123,64 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                       table,
                       currentPlayer,
                       matchState.subscribingTableIds.contains(table.id),
+                      canReportResultNow:
+                          table.id != null &&
+                          reportablePendingMatchIds.contains(table.id),
                     ),
                   ),
               ],
             ],
           ),
         ),
-        Positioned(
-          left: 16,
-          bottom: 18,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              FloatingActionButton.extended(
-                heroTag: 'register-match-fab',
-                onPressed: _openRegisterMatchFlow,
-                icon: const Icon(Icons.emoji_events_rounded),
-                label: Text(
-                  'Report Result',
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.2,
+        if (hasPendingMatches)
+          Positioned(
+            left: 16,
+            bottom: 18,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'register-match-fab',
+                  onPressed: _openRegisterMatchFlow,
+                  icon: const Icon(Icons.emoji_events_rounded),
+                  label: Text(
+                    'Report Result',
+                    style: GoogleFonts.nunitoSans(
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.2,
+                    ),
                   ),
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
+                  elevation: 1,
                 ),
-                backgroundColor: colorScheme.primary,
-                foregroundColor: colorScheme.onPrimary,
-                elevation: 1,
-              ),
-              if (registerMatchState.pendingMatchesCount > 0)
-                Positioned(
-                  right: -6,
-                  top: -6,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: colorScheme.error,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    constraints: const BoxConstraints(minWidth: 22),
-                    child: Text(
-                      '${registerMatchState.pendingMatchesCount}',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onError,
-                        fontWeight: FontWeight.w900,
+                if (reportablePendingMatchesCount > 0)
+                  Positioned(
+                    right: -6,
+                    top: -6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: colorScheme.error,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      constraints: const BoxConstraints(minWidth: 22),
+                      child: Text(
+                        '$reportablePendingMatchesCount',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onError,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
         Positioned(
           right: 16,
           bottom: 18,
@@ -219,13 +234,86 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       return;
     }
 
-    await ref.read(registerMatchProvider.notifier).refreshPendingMatchesCount();
+    await ref
+        .read(registerMatchProvider.notifier)
+        .refreshPendingMatchesOverview();
 
     if (submitted == true) {
       await ref
           .read(matchTablesProvider.notifier)
           .loadTablesInArea(showLoadingIndicator: false);
     }
+  }
+
+  Future<void> _refreshMatchScreenData() async {
+    await Future.wait<dynamic>([
+      ref.read(matchTablesProvider.notifier).refresh(),
+      ref.read(registerMatchProvider.notifier).refreshPendingMatchesOverview(),
+    ]);
+  }
+
+  Set<int> _buildReportablePendingMatchIds(
+    List<MatchSchedulePairingAttempt> pendingMatches, {
+    required int? currentPlayerId,
+  }) {
+    if (currentPlayerId == null) {
+      return const <int>{};
+    }
+
+    final now = DateTime.now();
+
+    return pendingMatches
+        .where(
+          (match) =>
+              _isCurrentPlayerSubscribed(
+                match,
+                currentPlayerId: currentPlayerId,
+              ) &&
+              _canReportMatchResultNow(match, now: now),
+        )
+        .map((match) => match.id)
+        .whereType<int>()
+        .toSet();
+  }
+
+  Set<int> _buildPendingSubscribedMatchIds(
+    List<MatchSchedulePairingAttempt> pendingMatches, {
+    required int? currentPlayerId,
+  }) {
+    if (currentPlayerId == null) {
+      return const <int>{};
+    }
+
+    return pendingMatches
+        .where(
+          (match) => _isCurrentPlayerSubscribed(
+            match,
+            currentPlayerId: currentPlayerId,
+          ),
+        )
+        .map((match) => match.id)
+        .whereType<int>()
+        .toSet();
+  }
+
+  bool _canReportMatchResultNow(
+    MatchSchedulePairingAttempt match, {
+    required DateTime now,
+  }) {
+    final earliestAllowedRegistrationTime = match.attemptedAt.subtract(
+      const Duration(hours: 2),
+    );
+
+    return !now.isBefore(earliestAllowedRegistrationTime);
+  }
+
+  bool _isCurrentPlayerSubscribed(
+    MatchSchedulePairingAttempt match, {
+    required int currentPlayerId,
+  }) {
+    final subscriptions = match.subscriptions ?? const <MatchSubscription>[];
+
+    return subscriptions.any((entry) => entry.playerDataId == currentPlayerId);
   }
 
   Widget _buildNearbyHeader(
@@ -457,8 +545,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     BuildContext context,
     MatchSchedulePairingAttempt table,
     PlayerData? currentPlayer,
-    bool isSubscribing,
-  ) {
+    bool isSubscribing, {
+    required bool canReportResultNow,
+  }) {
     final colorScheme = Theme.of(context).colorScheme;
     final localizations = MaterialLocalizations.of(context);
 
@@ -705,6 +794,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   icon: Icons.chat_bubble_rounded,
                   text: 'Tap card to open chat',
                 ),
+              if (canReportResultNow) _buildReportAvailableChip(context),
             ],
           ),
           if (!isSubscribed) ...[
@@ -851,6 +941,40 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       message: tooltipMessage,
       triggerMode: triggerMode,
       child: chip,
+    );
+  }
+
+  Widget _buildReportAvailableChip(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Tooltip(
+      message: 'You can report this match result now.',
+      triggerMode: TooltipTriggerMode.tap,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(999),
+          color: colorScheme.errorContainer.withValues(alpha: 0.72),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.info_outline_rounded,
+              size: 15,
+              color: colorScheme.onErrorContainer,
+            ),
+            const SizedBox(width: 5),
+            Text(
+              'Report available',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colorScheme.onErrorContainer,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

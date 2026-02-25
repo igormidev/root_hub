@@ -49,6 +49,7 @@
         "blurhash_dart",
         "cached_network_image",
         "cupertino_icons",
+        "fl_chart",
         "flutter",
         "flutter_animate",
         "flutter_cache_manager",
@@ -299,6 +300,15 @@
         "watcher",
         "web_socket_channel",
         "yaml"
+      ]
+    },
+    {
+      "name": "fl_chart",
+      "version": "1.1.1",
+      "dependencies": [
+        "equatable",
+        "flutter",
+        "vector_math"
       ]
     },
     {
@@ -1244,6 +1254,14 @@
     {
       "name": "async",
       "version": "2.13.0",
+      "dependencies": [
+        "collection",
+        "meta"
+      ]
+    },
+    {
+      "name": "equatable",
+      "version": "2.0.8",
       "dependencies": [
         "collection",
         "meta"
@@ -2362,14 +2380,6 @@
       "name": "ansicolor",
       "version": "2.0.3",
       "dependencies": []
-    },
-    {
-      "name": "equatable",
-      "version": "2.0.8",
-      "dependencies": [
-        "collection",
-        "meta"
-      ]
     },
     {
       "name": "appkit_ui_element_colors",
