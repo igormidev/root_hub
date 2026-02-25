@@ -176,7 +176,10 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                         ),
                         child:
                             Text(
-                                  t.auth.auth_login_screen.l178c35,
+                                  t
+                                      .auth
+                                      .auth_login_screen
+                                      .findYourNextRootMatch,
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cinzel(
                                     fontSize: 32,
@@ -193,7 +196,10 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          t.auth.auth_login_screen.l195c27,
+                          t
+                              .auth
+                              .auth_login_screen
+                              .signInToBrowseSchedulesAndJoinTables,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.nunitoSans(
                             fontSize: 15,

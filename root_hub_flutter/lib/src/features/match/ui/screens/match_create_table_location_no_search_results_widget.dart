@@ -21,7 +21,7 @@ class MatchCreateTableLocationNoSearchResultsWidget extends StatelessWidget {
         t
             .match
             .ui_screens_match_create_table_location_no_search_results_widget
-            .l20c9,
+            .noLocationsFoundForThisQueryTryAnotherPlaceNameOrArea,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w700,

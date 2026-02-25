@@ -28,7 +28,7 @@ class RegisterMatchPickerEmptySection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_picker_empty_section
-                    .l27c17,
+                    .noPendingMatches,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
@@ -38,7 +38,7 @@ class RegisterMatchPickerEmptySection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_picker_empty_section
-                    .l34c17,
+                    .youDoNotHaveAnyHostedSubscribedMatchPendingResultRegistration,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w700,

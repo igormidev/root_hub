@@ -42,7 +42,7 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_review_step_section
-              .l42c11,
+              .confirmAllDetailsBeforeLoggingThisMatch,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -95,7 +95,7 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_review_step_section
-              .l92c11,
+              .ranking,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -160,7 +160,7 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_review_step_section
-              .l154c11,
+              .socialProof,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -170,7 +170,7 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
           title: t
               .register_match
               .ui_sheets_register_match_wizard_review_step_section
-              .l161c18,
+              .groupPhoto,
           image: groupPhoto,
         ),
         SizedBox(height: 10),
@@ -178,7 +178,7 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
           title: t
               .register_match
               .ui_sheets_register_match_wizard_review_step_section
-              .l166c18,
+              .boardPhoto,
           image: boardPhoto,
         ),
       ],

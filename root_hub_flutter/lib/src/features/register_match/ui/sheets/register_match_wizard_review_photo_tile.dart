@@ -67,11 +67,11 @@ class _RegisterMatchWizardReviewPhotoTile extends StatelessWidget {
                     ? t
                           .register_match
                           .ui_sheets_register_match_wizard_review_photo_tile
-                          .l66c33
+                          .missing
                     : t
                           .register_match
                           .ui_sheets_register_match_wizard_review_photo_tile
-                          .l66c45,
+                          .ready,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w900,
                   color: image == null

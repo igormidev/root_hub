@@ -121,12 +121,12 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             ),
           if (isHost)
             IconButton(
-              tooltip: t.match.ui_screens_match_chat_screen.l123c24,
+              tooltip: t.match.ui_screens_match_chat_screen.editTable,
               icon: Icon(Icons.edit_outlined),
               onPressed: () => _openEditSheet(context),
             ),
           IconButton(
-            tooltip: t.match.ui_screens_match_chat_screen.l128c22,
+            tooltip: t.match.ui_screens_match_chat_screen.tableInfo,
             icon: Icon(Icons.info_outline_rounded),
             onPressed: _openTableInfoSheet,
           ),
@@ -140,7 +140,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
-                    t.match.ui_screens_match_chat_screen.l142c21,
+                    t
+                        .match
+                        .ui_screens_match_chat_screen
+                        .unableToResolveYourAccountInformation,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
@@ -274,7 +277,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                     t
                                         .match
                                         .ui_screens_match_chat_screen
-                                        .l273c37,
+                                        .subscribed,
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelSmall
@@ -397,7 +400,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       builder: (dialogContext) {
         return AlertDialog(
           title: Text(
-            t.match.ui_screens_match_chat_screen.l395c29,
+            t.match.ui_screens_match_chat_screen.imageIsTooLarge,
           ),
           content: Text(
             'This image is ${selectedImageMb}MB, but the limit is '
@@ -407,13 +410,13 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
               child: Text(
-                t.match.ui_screens_match_chat_screen.l403c33,
+                t.match.ui_screens_match_chat_screen.cancel2,
               ),
             ),
             FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
               child: Text(
-                t.match.ui_screens_match_chat_screen.l407c33,
+                t.match.ui_screens_match_chat_screen.compress,
               ),
             ),
           ],
@@ -476,7 +479,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       builder: (dialogContext) {
         return CupertinoActionSheet(
           title: Text(
-            t.match.ui_screens_match_chat_screen.l468c29,
+            t.match.ui_screens_match_chat_screen.sendAPhoto,
           ),
           actions: [
             CupertinoActionSheetAction(
@@ -484,7 +487,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 Navigator.of(dialogContext).pop(ImageSource.camera);
               },
               child: Text(
-                t.match.ui_screens_match_chat_screen.l474c33,
+                t.match.ui_screens_match_chat_screen.takePhoto2,
               ),
             ),
             CupertinoActionSheetAction(
@@ -492,7 +495,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 Navigator.of(dialogContext).pop(ImageSource.gallery);
               },
               child: Text(
-                t.match.ui_screens_match_chat_screen.l480c33,
+                t.match.ui_screens_match_chat_screen.chooseFromLibrary,
               ),
             ),
           ],
@@ -502,7 +505,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               Navigator.of(dialogContext).pop();
             },
             child: Text(
-              t.match.ui_screens_match_chat_screen.l488c31,
+              t.match.ui_screens_match_chat_screen.cancel,
             ),
           ),
         );
@@ -522,7 +525,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               ListTile(
                 leading: Icon(Icons.photo_camera_rounded),
                 title: Text(
-                  t.match.ui_screens_match_chat_screen.l506c35,
+                  t.match.ui_screens_match_chat_screen.takePhoto,
                 ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
@@ -531,7 +534,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               ListTile(
                 leading: Icon(Icons.photo_library_rounded),
                 title: Text(
-                  t.match.ui_screens_match_chat_screen.l513c35,
+                  t.match.ui_screens_match_chat_screen.chooseFromGallery,
                 ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);

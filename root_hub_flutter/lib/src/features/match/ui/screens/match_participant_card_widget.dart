@@ -71,7 +71,10 @@ class MatchParticipantCardWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    t.match.ui_screens_match_participant_card_widget.l73c21,
+                    t
+                        .match
+                        .ui_screens_match_participant_card_widget
+                        .favoriteFaction,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w800,

@@ -22,7 +22,7 @@ class MatchCreateTableLocationLoadingRecentWidget extends StatelessWidget {
             t
                 .match
                 .ui_screens_match_create_table_location_loading_recent_widget
-                .l21c13,
+                .loadingPreviousLocations,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

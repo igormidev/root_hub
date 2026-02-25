@@ -27,7 +27,7 @@ class _RegisterMatchWizardErrorSection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_wizard_error_section
-                    .l27c17,
+                    .registerMatch,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
@@ -58,7 +58,7 @@ class _RegisterMatchWizardErrorSection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_wizard_error_section
-                    .l54c33,
+                    .close,
               ),
             ),
           ),

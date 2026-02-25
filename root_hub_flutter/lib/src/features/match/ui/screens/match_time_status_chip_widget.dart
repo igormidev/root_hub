@@ -24,8 +24,14 @@ class MatchTimeStatusChipWidget extends StatelessWidget {
 
     return Tooltip(
       message: alreadyStarted
-          ? t.match.ui_screens_match_time_status_chip_widget.l26c13
-          : t.match.ui_screens_match_time_status_chip_widget.l27c13,
+          ? t
+                .match
+                .ui_screens_match_time_status_chip_widget
+                .thisMatchAlreadyStartedRecentlyStartedTablesStayVisibleForAShortPeriod
+          : t
+                .match
+                .ui_screens_match_time_status_chip_widget
+                .remainingTimeUntilTheMatchStarts,
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
         decoration: BoxDecoration(

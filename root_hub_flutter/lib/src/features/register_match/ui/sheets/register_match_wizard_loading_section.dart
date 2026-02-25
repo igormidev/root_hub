@@ -24,7 +24,7 @@ class _RegisterMatchWizardLoadingSection extends StatelessWidget {
             t
                 .register_match
                 .ui_sheets_register_match_wizard_loading_section
-                .l24c13,
+                .loadingMatchDetails,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

@@ -48,7 +48,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_timing_step_section
-              .l48c11,
+              .setTheTimeTheMatchActuallyStarted,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -60,7 +60,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_timing_step_section
-              .l57c11,
+              .matchStartedAt,
           style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w900,
             color: colorScheme.primary,
@@ -97,7 +97,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_wizard_timing_step_section
-                    .l90c33,
+                    .changeTime,
               ),
             ),
           ],
@@ -114,7 +114,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_timing_step_section
-              .l103c11,
+              .setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -126,7 +126,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_timing_step_section
-              .l112c11,
+              .estimatedDuration2,
           style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w900,
             color: colorScheme.primary,
@@ -151,7 +151,7 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_wizard_timing_step_section
-                    .l134c17,
+                    .estimatedDuration,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),

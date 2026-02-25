@@ -36,7 +36,7 @@ class RegisterMatchPickerHeaderSection extends StatelessWidget {
                   t
                       .register_match
                       .ui_sheets_register_match_picker_header_section
-                      .l35c19,
+                      .registerMatchResult,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
@@ -66,7 +66,7 @@ class RegisterMatchPickerHeaderSection extends StatelessWidget {
             t
                 .register_match
                 .ui_sheets_register_match_picker_header_section
-                .l62c13,
+                .selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,

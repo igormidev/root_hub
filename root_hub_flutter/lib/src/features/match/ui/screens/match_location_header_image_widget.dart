@@ -65,7 +65,10 @@ class MatchLocationHeaderImageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.match.ui_screens_match_location_header_image_widget.l67c19,
+                  t
+                      .match
+                      .ui_screens_match_location_header_image_widget
+                      .locationDetails,
                   style: GoogleFonts.cinzel(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,

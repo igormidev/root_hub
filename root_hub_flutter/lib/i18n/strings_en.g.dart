@@ -53,7 +53,7 @@ class TranslationsAppEn {
 	// Translations
 
 	/// en: 'Root Hub'
-	String get title => 'Root Hub';
+	String get rootHub => 'Root Hub';
 }
 
 // Path: auth
@@ -184,10 +184,10 @@ class TranslationsAuthAuthOnboardingScreenEn {
 	// Translations
 
 	/// en: 'Pick your favorite ROOT faction before entering the hub.'
-	String get l58c17 => 'Pick your favorite ROOT faction before entering the hub.';
+	String get pickYourFavoriteRootFactionBeforeEnteringTheHub => 'Pick your favorite ROOT faction before entering the hub.';
 
 	/// en: 'Choose Your Faction'
-	String get l42c25 => 'Choose Your Faction';
+	String get chooseYourFaction => 'Choose Your Faction';
 }
 
 // Path: auth.auth_onboarding_profile_screen
@@ -198,17 +198,17 @@ class TranslationsAuthAuthOnboardingProfileScreenEn {
 
 	// Translations
 
-	/// en: 'Continue'
-	String get l289c33 => 'Continue';
-
 	/// en: 'Current location uses your phone coordinates (x and y) and is required to show nearby matches.'
-	String get l206c17 => 'Current location uses your phone coordinates (x and y) and is required to show nearby matches.';
+	String get currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat => 'Current location uses your phone coordinates (x and y) and is required to show nearby matches.';
 
 	/// en: 'Your display name is how other players will see you in Root Hub. '
-	String get l205c17 => 'Your display name is how other players will see you in Root Hub. ';
+	String get yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub => 'Your display name is how other players will see you in Root Hub. ';
 
 	/// en: 'Set Your Hub Identity'
-	String get l188c25 => 'Set Your Hub Identity';
+	String get setYourHubIdentity => 'Set Your Hub Identity';
+
+	/// en: 'Continue'
+	String get continueButton => 'Continue';
 }
 
 // Path: auth.auth_loading_screen
@@ -220,7 +220,7 @@ class TranslationsAuthAuthLoadingScreenEn {
 	// Translations
 
 	/// en: 'ROOT HUB'
-	String get l32c21 => 'ROOT HUB';
+	String get rootHub => 'ROOT HUB';
 }
 
 // Path: auth.auth_login_screen
@@ -232,10 +232,10 @@ class TranslationsAuthAuthLoginScreenEn {
 	// Translations
 
 	/// en: 'Sign in to browse schedules and join tables.'
-	String get l195c27 => 'Sign in to browse schedules and join tables.';
+	String get signInToBrowseSchedulesAndJoinTables => 'Sign in to browse schedules and join tables.';
 
 	/// en: 'Find Your Next ROOT Match'
-	String get l178c35 => 'Find Your Next\nROOT Match';
+	String get findYourNextRootMatch => 'Find Your Next\nROOT Match';
 }
 
 // Path: auth.auth_onboarding_continue_button_widget
@@ -247,7 +247,7 @@ class TranslationsAuthAuthOnboardingContinueButtonWidgetEn {
 	// Translations
 
 	/// en: 'Continue'
-	String get l44c15 => 'Continue';
+	String get continueButton => 'Continue';
 }
 
 // Path: dashboard.ui_screens_dashboard_screen
@@ -259,40 +259,40 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 	// Translations
 
 	/// en: 'Shop'
-	String get l465c32 => 'Shop';
+	String get shop => 'Shop';
 
 	/// en: 'Match'
-	String get l451c32 => 'Match';
+	String get match => 'Match';
 
 	/// en: 'Home'
-	String get l437c32 => 'Home';
+	String get home => 'Home';
 
 	/// en: 'ROOT HUB'
-	String get l317c35 => 'ROOT HUB';
+	String get rootHub => 'ROOT HUB';
 
 	/// en: 'Choose from Gallery'
-	String get l213c35 => 'Choose from Gallery';
+	String get chooseFromGallery => 'Choose from Gallery';
 
 	/// en: 'Take Photo'
-	String get l206c35 => 'Take Photo';
+	String get takePhoto => 'Take Photo';
 
 	/// en: 'Cancel'
-	String get l188c31 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'Choose from Library'
-	String get l180c33 => 'Choose from Library';
+	String get chooseFromLibrary => 'Choose from Library';
 
 	/// en: 'Take Photo'
-	String get l174c33 => 'Take Photo';
+	String get takePhoto2 => 'Take Photo';
 
 	/// en: 'Change profile photo'
-	String get l168c29 => 'Change profile photo';
+	String get changeProfilePhoto => 'Change profile photo';
 
 	/// en: 'Allow camera and photo permissions in system settings and try again.'
-	String get l130c13 => 'Allow camera and photo permissions in system settings and try again.';
+	String get allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain => 'Allow camera and photo permissions in system settings and try again.';
 
 	/// en: 'Unable to access camera or gallery'
-	String get l128c16 => 'Unable to access camera or gallery';
+	String get unableToAccessCameraOrGallery => 'Unable to access camera or gallery';
 }
 
 // Path: dashboard.ui_screens_dashboard_faction_editor_screen
@@ -304,10 +304,10 @@ class TranslationsDashboardUiScreensDashboardFactionEditorScreenEn {
 	// Translations
 
 	/// en: 'Choose the faction shown in your profile and used as your default preference.'
-	String get l125c17 => 'Choose the faction shown in your profile and used as your default preference.';
+	String get chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference => 'Choose the faction shown in your profile and used as your default preference.';
 
 	/// en: 'Change Favorite Faction'
-	String get l104c31 => 'Change Favorite Faction';
+	String get changeFavoriteFaction => 'Change Favorite Faction';
 }
 
 // Path: dashboard.ui_dialogs_edit_location_dialog
@@ -319,16 +319,16 @@ class TranslationsDashboardUiDialogsEditLocationDialogEn {
 	// Translations
 
 	/// en: 'Save'
-	String get l247c29 => 'Save';
+	String get save => 'Save';
 
 	/// en: 'Cancel'
-	String get l227c23 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'Update your coordinates and target search ratio for match discovery.'
-	String get l192c15 => 'Update your coordinates and target search ratio for match discovery.';
+	String get updateYourCoordinatesAndTargetSearchRatioForMatchDiscovery => 'Update your coordinates and target search ratio for match discovery.';
 
 	/// en: 'Edit Location'
-	String get l184c15 => 'Edit Location';
+	String get editLocation => 'Edit Location';
 }
 
 // Path: dashboard.ui_dialogs_edit_display_name_dialog
@@ -340,16 +340,16 @@ class TranslationsDashboardUiDialogsEditDisplayNameDialogEn {
 	// Translations
 
 	/// en: 'Save'
-	String get l122c29 => 'Save';
+	String get save => 'Save';
 
 	/// en: 'Cancel'
-	String get l104c23 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'This is how players will see you across Root Hub.'
-	String get l81c15 => 'This is how players will see you across Root Hub.';
+	String get thisIsHowPlayersWillSeeYouAcrossRootHub => 'This is how players will see you across Root Hub.';
 
 	/// en: 'Edit Display Name'
-	String get l73c15 => 'Edit Display Name';
+	String get editDisplayName => 'Edit Display Name';
 }
 
 // Path: dashboard.ui_widgets_dashboard_profile_drawer_widget
@@ -361,22 +361,61 @@ class TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEn {
 	// Translations
 
 	/// en: 'Log out'
-	String get l314c21 => 'Log out';
+	String get logOut => 'Log out';
 
 	/// en: 'Change Faction'
-	String get l267c45 => 'Change Faction';
+	String get changeFaction => 'Change Faction';
 
 	/// en: 'Saving...'
-	String get l266c45 => 'Saving...';
+	String get saving => 'Saving...';
 
 	/// en: 'Favorite Faction'
-	String get l218c37 => 'Favorite Faction';
+	String get favoriteFaction => 'Favorite Faction';
 
 	/// en: 'Location'
-	String get l169c30 => 'Location';
+	String get location => 'Location';
 
 	/// en: 'Display Name'
-	String get l160c30 => 'Display Name';
+	String get displayName => 'Display Name';
+
+	/// en: 'Edit'
+	String get edit => 'Edit';
+
+	/// en: 'Change'
+	String get change => 'Change';
+
+	/// en: 'No location configured'
+	String get noLocationConfigured => 'No location configured';
+
+	/// en: 'x'
+	String get xLabel => 'x';
+
+	/// en: 'y'
+	String get yLabel => 'y';
+
+	/// en: 'ratio'
+	String get ratioLabel => 'ratio';
+
+	/// en: 'Language'
+	String get language => 'Language';
+
+	/// en: 'Use device language'
+	String get useDeviceLanguage => 'Use device language';
+
+	/// en: 'English'
+	String get english => 'English';
+
+	/// en: 'Portuguese (Brazil)'
+	String get portugueseBrazil => 'Portuguese (Brazil)';
+
+	/// en: 'Spanish'
+	String get spanish => 'Spanish';
+
+	/// en: 'French'
+	String get french => 'French';
+
+	/// en: 'German'
+	String get german => 'German';
 }
 
 // Path: home.ui_sections_home_stats_section
@@ -388,40 +427,40 @@ class TranslationsHomeUiSectionsHomeStatsSectionEn {
 	// Translations
 
 	/// en: 'All factions total'
-	String get l420c16 => 'All factions total';
+	String get allFactionsTotal => 'All factions total';
 
 	/// en: 'All factions avg'
-	String get l416c16 => 'All factions avg';
+	String get allFactionsAvg => 'All factions avg';
 
 	/// en: 'All factions total'
-	String get l412c16 => 'All factions total';
+	String get allFactionsTotal2 => 'All factions total';
 
 	/// en: 'All factions avg'
-	String get l403c16 => 'All factions avg';
+	String get allFactionsAvg2 => 'All factions avg';
 
 	/// en: 'Absolute number of wins for each faction.'
-	String get l59c20 => 'Absolute number of wins for each faction.';
+	String get absoluteNumberOfWinsForEachFaction => 'Absolute number of wins for each faction.';
 
 	/// en: 'Total Wins'
-	String get l58c14 => 'Total Wins';
+	String get totalWins => 'Total Wins';
 
 	/// en: 'Average score per faction when points were tracked.'
-	String get l54c20 => 'Average score per faction when points were tracked.';
+	String get averageScorePerFactionWhenPointsWereTracked => 'Average score per faction when points were tracked.';
 
 	/// en: 'Average Points'
-	String get l53c14 => 'Average Points';
+	String get averagePoints => 'Average Points';
 
 	/// en: 'How often each faction appears in completed games.'
-	String get l49c20 => 'How often each faction appears in completed games.';
+	String get howOftenEachFactionAppearsInCompletedGames => 'How often each faction appears in completed games.';
 
 	/// en: 'Played Games'
-	String get l48c14 => 'Played Games';
+	String get playedGames => 'Played Games';
 
 	/// en: 'Who is winning the most often right now.'
-	String get l44c20 => 'Who is winning the most often right now.';
+	String get whoIsWinningTheMostOftenRightNow => 'Who is winning the most often right now.';
 
 	/// en: 'Faction Win Rate'
-	String get l43c14 => 'Faction Win Rate';
+	String get factionWinRate => 'Faction Win Rate';
 }
 
 // Path: home.ui_screens_home_screen
@@ -433,22 +472,22 @@ class TranslationsHomeUiScreensHomeScreenEn {
 	// Translations
 
 	/// en: 'Your personal faction performance and match profile.'
-	String get l92c26 => 'Your personal faction performance and match profile.';
+	String get yourPersonalFactionPerformanceAndMatchProfile => 'Your personal faction performance and match profile.';
 
 	/// en: 'My Stats'
-	String get l91c20 => 'My Stats';
+	String get myStats => 'My Stats';
 
 	/// en: 'Faction performance from all played matches in Root Hub.'
-	String get l78c17 => 'Faction performance from all played matches in Root Hub.';
+	String get factionPerformanceFromAllPlayedMatchesInRootHub => 'Faction performance from all played matches in Root Hub.';
 
 	/// en: 'Community Stats'
-	String get l76c20 => 'Community Stats';
+	String get communityStats => 'Community Stats';
 
 	/// en: 'See how the ROOT platform is evolving and compare it with your own progress.'
-	String get l57c15 => 'See how the ROOT platform is evolving and compare it with your own progress.';
+	String get seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress => 'See how the ROOT platform is evolving and compare it with your own progress.';
 
 	/// en: 'Community Dashboard'
-	String get l47c15 => 'Community Dashboard';
+	String get communityDashboard => 'Community Dashboard';
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget
@@ -460,7 +499,7 @@ class TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 	// Translations
 
 	/// en: 'No values for this metric yet.'
-	String get l71c15 => 'No values for this metric yet.';
+	String get noValuesForThisMetricYet => 'No values for this metric yet.';
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -472,7 +511,7 @@ class TranslationsMatchUiSheetsMatchEditTableErrorWidgetEn {
 	// Translations
 
 	/// en: 'Close'
-	String get l44c33 => 'Close';
+	String get close => 'Close';
 }
 
 // Path: match.ui_sheets_match_edit_table_loading_widget
@@ -484,7 +523,7 @@ class TranslationsMatchUiSheetsMatchEditTableLoadingWidgetEn {
 	// Translations
 
 	/// en: 'Loading table details...'
-	String get l29c19 => 'Loading table details...';
+	String get loadingTableDetails => 'Loading table details...';
 }
 
 // Path: match.ui_sheets_match_table_info_sheet
@@ -496,43 +535,43 @@ class TranslationsMatchUiSheetsMatchTableInfoSheetEn {
 	// Translations
 
 	/// en: 'Remove'
-	String get l256c33 => 'Remove';
+	String get remove => 'Remove';
 
 	/// en: 'Cancel'
-	String get l248c33 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'rejoin if seats are still available.'
-	String get l243c13 => 'rejoin if seats are still available.';
+	String get rejoinIfSeatsAreStillAvailable => 'rejoin if seats are still available.';
 
 	/// en: 'Cancel'
-	String get l217c33 => 'Cancel';
+	String get cancel2 => 'Cancel';
 
 	/// en: 'Select a player to remove from the table.'
-	String get l199c19 => 'Select a player to remove from the table.';
+	String get selectAPlayerToRemoveFromTheTable => 'Select a player to remove from the table.';
 
 	/// en: 'Remove a Player'
-	String get l191c29 => 'Remove a Player';
+	String get removeAPlayer => 'Remove a Player';
 
 	/// en: 'Leave'
-	String get l148c33 => 'Leave';
+	String get leave => 'Leave';
 
 	/// en: 'Cancel'
-	String get l140c33 => 'Cancel';
+	String get cancel3 => 'Cancel';
 
 	/// en: 'players list. You can rejoin later if seats are still available.'
-	String get l135c13 => 'players list. You can rejoin later if seats are still available.';
+	String get playersListYouCanRejoinLaterIfSeatsAreStillAvailable => 'players list. You can rejoin later if seats are still available.';
 
 	/// en: 'You will be unsubscribed from this match and removed from the '
-	String get l134c13 => 'You will be unsubscribed from this match and removed from the ';
+	String get youWillBeUnsubscribedFromThisMatchAndRemovedFromThe => 'You will be unsubscribed from this match and removed from the ';
 
 	/// en: 'Leave this table?'
-	String get l132c29 => 'Leave this table?';
+	String get leaveThisTable => 'Leave this table?';
 
 	/// en: 'Unable to load table details.'
-	String get l92c32 => 'Unable to load table details.';
+	String get unableToLoadTableDetails => 'Unable to load table details.';
 
 	/// en: 'Table not found'
-	String get l91c26 => 'Table not found';
+	String get tableNotFound => 'Table not found';
 }
 
 // Path: match.ui_sheets_match_table_info_content_widget
@@ -544,22 +583,22 @@ class TranslationsMatchUiSheetsMatchTableInfoContentWidgetEn {
 	// Translations
 
 	/// en: 'No players have joined this table yet.'
-	String get l192c23 => 'No players have joined this table yet.';
+	String get noPlayersHaveJoinedThisTableYet => 'No players have joined this table yet.';
 
 	/// en: 'These are the current players that will participate.'
-	String get l174c25 => 'These are the current players that will participate.';
+	String get theseAreTheCurrentPlayersThatWillParticipate => 'These are the current players that will participate.';
 
 	/// en: 'No players subscribed yet.'
-	String get l173c25 => 'No players subscribed yet.';
+	String get noPlayersSubscribedYet => 'No players subscribed yet.';
 
 	/// en: 'Players in this match'
-	String get l165c19 => 'Players in this match';
+	String get playersInThisMatch => 'Players in this match';
 
 	/// en: 'Unknown host'
-	String get l114c56 => 'Unknown host';
+	String get unknownHost => 'Unknown host';
 
 	/// en: 'Table Details'
-	String get l73c19 => 'Table Details';
+	String get tableDetails => 'Table Details';
 }
 
 // Path: match.ui_sheets_match_table_info_error_widget
@@ -571,10 +610,10 @@ class TranslationsMatchUiSheetsMatchTableInfoErrorWidgetEn {
 	// Translations
 
 	/// en: 'Retry'
-	String get l55c37 => 'Retry';
+	String get retry => 'Retry';
 
 	/// en: 'Close'
-	String get l47c37 => 'Close';
+	String get close => 'Close';
 }
 
 // Path: match.ui_sheets_match_table_info_participant_card_widget
@@ -586,7 +625,7 @@ class TranslationsMatchUiSheetsMatchTableInfoParticipantCardWidgetEn {
 	// Translations
 
 	/// en: 'Favorite Faction'
-	String get l69c21 => 'Favorite Faction';
+	String get favoriteFaction => 'Favorite Faction';
 }
 
 // Path: match.ui_sheets_match_edit_table_sheet
@@ -598,43 +637,43 @@ class TranslationsMatchUiSheetsMatchEditTableSheetEn {
 	// Translations
 
 	/// en: 'The scheduled time cannot be more than '
-	String get l282c13 => 'The scheduled time cannot be more than ';
+	String get theScheduledTimeCannotBeMoreThan => 'The scheduled time cannot be more than ';
 
 	/// en: 'Date is too far'
-	String get l280c16 => 'Date is too far';
+	String get dateIsTooFar => 'Date is too far';
 
 	/// en: 'The scheduled time must be at least '
-	String get l265c13 => 'The scheduled time must be at least ';
+	String get theScheduledTimeMustBeAtLeast => 'The scheduled time must be at least ';
 
 	/// en: 'Time is too soon'
-	String get l263c16 => 'Time is too soon';
+	String get timeIsTooSoon => 'Time is too soon';
 
 	/// en: 'You cannot set the maximum below that number.'
-	String get l240c13 => 'You cannot set the maximum below that number.';
+	String get youCannotSetTheMaximumBelowThatNumber => 'You cannot set the maximum below that number.';
 
 	/// en: 'Too many players subscribed'
-	String get l237c16 => 'Too many players subscribed';
+	String get tooManyPlayersSubscribed => 'Too many players subscribed';
 
 	/// en: 'with minimum not greater than maximum.'
-	String get l229c13 => 'with minimum not greater than maximum.';
+	String get withMinimumNotGreaterThanMaximum => 'with minimum not greater than maximum.';
 
 	/// en: 'Players range must be between 2 and 6, '
-	String get l228c13 => 'Players range must be between 2 and 6, ';
+	String get playersRangeMustBeBetween2And6 => 'Players range must be between 2 and 6, ';
 
 	/// en: 'Invalid players range'
-	String get l226c16 => 'Invalid players range';
+	String get invalidPlayersRange => 'Invalid players range';
 
 	/// en: 'Please add a title for your table.'
-	String get l218c22 => 'Please add a title for your table.';
+	String get pleaseAddATitleForYourTable => 'Please add a title for your table.';
 
 	/// en: 'Title required'
-	String get l217c16 => 'Title required';
+	String get titleRequired => 'Title required';
 
 	/// en: 'Unable to load table details.'
-	String get l111c32 => 'Unable to load table details.';
+	String get unableToLoadTableDetails => 'Unable to load table details.';
 
 	/// en: 'Table not found'
-	String get l110c26 => 'Table not found';
+	String get tableNotFound => 'Table not found';
 }
 
 // Path: match.ui_sheets_match_table_info_loading_widget
@@ -646,7 +685,7 @@ class TranslationsMatchUiSheetsMatchTableInfoLoadingWidgetEn {
 	// Translations
 
 	/// en: 'Loading table details...'
-	String get l29c19 => 'Loading table details...';
+	String get loadingTableDetails => 'Loading table details...';
 }
 
 // Path: match.ui_sheets_match_edit_table_form_widget
@@ -658,64 +697,64 @@ class TranslationsMatchUiSheetsMatchEditTableFormWidgetEn {
 	// Translations
 
 	/// en: 'Save Changes'
-	String get l293c58 => 'Save Changes';
+	String get saveChanges => 'Save Changes';
 
 	/// en: 'Saving...'
-	String get l293c44 => 'Saving...';
+	String get saving => 'Saving...';
 
 	/// en: 'Cancel'
-	String get l272c39 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'Must be at least 10 minutes from now, up to '
-	String get l230c23 => 'Must be at least 10 minutes from now, up to ';
+	String get mustBeAtLeast10MinutesFromNowUpTo => 'Must be at least 10 minutes from now, up to ';
 
 	/// en: 'Schedule'
-	String get l228c26 => 'Schedule';
+	String get schedule => 'Schedule';
 
 	/// en: 'Maximum'
-	String get l217c34 => 'Maximum';
+	String get maximum => 'Maximum';
 
 	/// en: 'Minimum'
-	String get l204c34 => 'Minimum';
+	String get minimum => 'Minimum';
 
 	/// en: 'Set between 2 and 6 players.'
-	String get l188c25 => 'Set between 2 and 6 players.';
+	String get setBetween2And6Players => 'Set between 2 and 6 players.';
 
 	/// en: 'Players range'
-	String get l185c26 => 'Players range';
+	String get playersRange => 'Players range';
 
 	/// en: 'Example: We have Marauder expansion.'
-	String get l173c31 => 'Example: We have Marauder expansion.';
+	String get exampleWeHaveMarauderExpansion => 'Example: We have Marauder expansion.';
 
 	/// en: 'Extra details like expansions, parking tips, etc.'
-	String get l164c23 => 'Extra details like expansions, parking tips, etc.';
+	String get extraDetailsLikeExpansionsParkingTipsEtc => 'Extra details like expansions, parking tips, etc.';
 
 	/// en: 'Description (optional)'
-	String get l162c26 => 'Description (optional)';
+	String get descriptionOptional => 'Description (optional)';
 
 	/// en: 'Example: Saturday ROOT at Lantern Café'
-	String get l150c31 => 'Example: Saturday ROOT at Lantern Café';
+	String get exampleSaturdayRootAtLanternCaf => 'Example: Saturday ROOT at Lantern Café';
 
 	/// en: 'A short name so players can find your table.'
-	String get l142c32 => 'A short name so players can find your table.';
+	String get aShortNameSoPlayersCanFindYourTable => 'A short name so players can find your table.';
 
 	/// en: 'Table title'
-	String get l141c26 => 'Table title';
+	String get tableTitle => 'Table title';
 
 	/// en: 'New players can still join this table.'
-	String get l122c37 => 'New players can still join this table.';
+	String get newPlayersCanStillJoinThisTable => 'New players can still join this table.';
 
 	/// en: 'New players cannot join this table.'
-	String get l121c37 => 'New players cannot join this table.';
+	String get newPlayersCannotJoinThisTable => 'New players cannot join this table.';
 
 	/// en: 'Close subscriptions'
-	String get l113c31 => 'Close subscriptions';
+	String get closeSubscriptions => 'Close subscriptions';
 
 	/// en: 'Edit Details'
-	String get l73c19 => 'Edit Details';
+	String get editDetails => 'Edit Details';
 
 	/// en: 'Edit Table'
-	String get l65c19 => 'Edit Table';
+	String get editTable => 'Edit Table';
 }
 
 // Path: match.ui_sheets_match_table_info_bottom_actions_widget
@@ -727,19 +766,19 @@ class TranslationsMatchUiSheetsMatchTableInfoBottomActionsWidgetEn {
 	// Translations
 
 	/// en: 'Remove Player'
-	String get l112c54 => 'Remove Player';
+	String get removePlayer => 'Remove Player';
 
 	/// en: 'Removing...'
-	String get l112c38 => 'Removing...';
+	String get removing => 'Removing...';
 
 	/// en: 'Leave Table'
-	String get l79c56 => 'Leave Table';
+	String get leaveTable => 'Leave Table';
 
 	/// en: 'Leaving...'
-	String get l79c41 => 'Leaving...';
+	String get leaving => 'Leaving...';
 
 	/// en: 'Close'
-	String get l55c39 => 'Close';
+	String get close => 'Close';
 }
 
 // Path: match.ui_screens_match_create_table_location_loading_search_widget
@@ -751,7 +790,7 @@ class TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetEn {
 	// Translations
 
 	/// en: 'Searching locations...'
-	String get l21c13 => 'Searching locations...';
+	String get searchingLocations => 'Searching locations...';
 }
 
 // Path: match.ui_screens_match_create_table_location_screen
@@ -762,29 +801,29 @@ class TranslationsMatchUiScreensMatchCreateTableLocationScreenEn {
 
 	// Translations
 
-	/// en: 'Continue'
-	String get l287c29 => 'Continue';
-
 	/// en: 'Previously selected locations'
-	String get l236c23 => 'Previously selected locations';
+	String get previouslySelectedLocations => 'Previously selected locations';
 
 	/// en: 'Search results'
-	String get l203c25 => 'Search results';
+	String get searchResults => 'Search results';
 
 	/// en: 'Tap a location to select it. Previously selected locations are saved here for faster hosting.'
-	String get l160c19 => 'Tap a location to select it. Previously selected locations are saved here for faster hosting.';
+	String get tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo => 'Tap a location to select it. Previously selected locations are saved here for faster hosting.';
 
 	/// en: 'Search location (Google Places)'
-	String get l148c31 => 'Search location (Google Places)';
+	String get searchLocationGooglePlaces => 'Search location (Google Places)';
 
 	/// en: 'Choose Table Location'
-	String get l122c25 => 'Choose Table Location';
+	String get chooseTableLocation => 'Choose Table Location';
 
 	/// en: 'Choose one location from the list before creating the table.'
-	String get l61c13 => 'Choose one location from the list before creating the table.';
+	String get chooseOneLocationFromTheListBeforeCreatingTheTable => 'Choose one location from the list before creating the table.';
 
 	/// en: 'Location required'
-	String get l59c16 => 'Location required';
+	String get locationRequired => 'Location required';
+
+	/// en: 'Continue'
+	String get continueButton => 'Continue';
 }
 
 // Path: match.ui_screens_match_join_sheet_error_widget
@@ -796,10 +835,10 @@ class TranslationsMatchUiScreensMatchJoinSheetErrorWidgetEn {
 	// Translations
 
 	/// en: 'Retry'
-	String get l62c37 => 'Retry';
+	String get retry => 'Retry';
 
 	/// en: 'Close'
-	String get l54c37 => 'Close';
+	String get close => 'Close';
 }
 
 // Path: match.ui_screens_match_screen
@@ -811,58 +850,58 @@ class TranslationsMatchUiScreensMatchScreenEn {
 	// Translations
 
 	/// en: 'Unable to open the dialer right now.'
-	String get l849c23 => 'Unable to open the dialer right now.';
+	String get unableToOpenTheDialerRightNow => 'Unable to open the dialer right now.';
 
 	/// en: 'Invalid phone number format.'
-	String get l829c25 => 'Invalid phone number format.';
+	String get invalidPhoneNumberFormat => 'Invalid phone number format.';
 
 	/// en: 'Unable to open the link right now.'
-	String get l816c23 => 'Unable to open the link right now.';
+	String get unableToOpenTheLinkRightNow => 'Unable to open the link right now.';
 
 	/// en: 'Invalid URL format.'
-	String get l800c25 => 'Invalid URL format.';
+	String get invalidUrlFormat => 'Invalid URL format.';
 
 	/// en: 'Close'
-	String get l763c43 => 'Close';
+	String get close => 'Close';
 
 	/// en: 'Manual location notes'
-	String get l716c33 => 'Manual location notes';
+	String get manualLocationNotes => 'Manual location notes';
 
 	/// en: 'Phone'
-	String get l693c38 => 'Phone';
+	String get phone => 'Phone';
 
 	/// en: 'Phone'
-	String get l688c34 => 'Phone';
+	String get phone2 => 'Phone';
 
 	/// en: 'Website'
-	String get l677c38 => 'Website';
+	String get website => 'Website';
 
 	/// en: 'Website'
-	String get l672c34 => 'Website';
+	String get website2 => 'Website';
 
 	/// en: 'Map link'
-	String get l661c38 => 'Map link';
+	String get mapLink => 'Map link';
 
 	/// en: 'Map link'
-	String get l656c34 => 'Map link';
+	String get mapLink2 => 'Map link';
 
 	/// en: 'Public'
-	String get l607c41 => 'Public';
+	String get public => 'Public';
 
 	/// en: 'Private'
-	String get l606c41 => 'Private';
+	String get private => 'Private';
 
 	/// en: 'matches played here'
-	String get l564c47 => 'matches played here';
+	String get matchesPlayedHere => 'matches played here';
 
 	/// en: 'match played here'
-	String get l563c47 => 'match played here';
+	String get matchPlayedHere => 'match played here';
 
 	/// en: 'Host Table'
-	String get l239c15 => 'Host Table';
+	String get hostTable => 'Host Table';
 
 	/// en: 'Report Result'
-	String get l191c21 => 'Report Result';
+	String get reportResult => 'Report Result';
 }
 
 // Path: match.ui_screens_match_loading_error_state_widget
@@ -874,7 +913,7 @@ class TranslationsMatchUiScreensMatchLoadingErrorStateWidgetEn {
 	// Translations
 
 	/// en: 'Try again'
-	String get l48c31 => 'Try again';
+	String get tryAgain => 'Try again';
 }
 
 // Path: match.ui_screens_match_nearby_header_widget
@@ -886,13 +925,13 @@ class TranslationsMatchUiScreensMatchNearbyHeaderWidgetEn {
 	// Translations
 
 	/// en: 'Only tables that did not start more than 2 hours ago are listed.'
-	String get l83c13 => 'Only tables that did not start more than 2 hours ago are listed.';
+	String get onlyTablesThatDidNotStartMoreThan2HoursAgoAreListed => 'Only tables that did not start more than 2 hours ago are listed.';
 
 	/// en: 'Nearby Match Tables'
-	String get l48c19 => 'Nearby Match Tables';
+	String get nearbyMatchTables => 'Nearby Match Tables';
 
 	/// en: 'Match Finder'
-	String get l35c19 => 'Match Finder';
+	String get matchFinder => 'Match Finder';
 }
 
 // Path: match.ui_screens_match_no_matches_state_widget
@@ -904,13 +943,13 @@ class TranslationsMatchUiScreensMatchNoMatchesStateWidgetEn {
 	// Translations
 
 	/// en: 'Host the first table'
-	String get l65c31 => 'Host the first table';
+	String get hostTheFirstTable => 'Host the first table';
 
 	/// en: 'Be the first to start one. Host a new table so nearby players can subscribe.'
-	String get l54c13 => 'Be the first to start one. Host a new table so nearby players can subscribe.';
+	String get beTheFirstToStartOneHostANewTableSoNearbyPlayersCanSubscribe => 'Be the first to start one. Host a new table so nearby players can subscribe.';
 
 	/// en: 'No tables in your area yet'
-	String get l47c13 => 'No tables in your area yet';
+	String get noTablesInYourAreaYet => 'No tables in your area yet';
 }
 
 // Path: match.ui_screens_match_time_status_chip_widget
@@ -922,10 +961,10 @@ class TranslationsMatchUiScreensMatchTimeStatusChipWidgetEn {
 	// Translations
 
 	/// en: 'Remaining time until the match starts.'
-	String get l27c13 => 'Remaining time until the match starts.';
+	String get remainingTimeUntilTheMatchStarts => 'Remaining time until the match starts.';
 
 	/// en: 'This match already started. Recently started tables stay visible for a short period.'
-	String get l26c13 => 'This match already started. Recently started tables stay visible for a short period.';
+	String get thisMatchAlreadyStartedRecentlyStartedTablesStayVisibleForAShortPeriod => 'This match already started. Recently started tables stay visible for a short period.';
 }
 
 // Path: match.ui_screens_match_create_table_location_no_search_results_widget
@@ -937,7 +976,7 @@ class TranslationsMatchUiScreensMatchCreateTableLocationNoSearchResultsWidgetEn 
 	// Translations
 
 	/// en: 'No locations found for this query. Try another place name or area.'
-	String get l20c9 => 'No locations found for this query. Try another place name or area.';
+	String get noLocationsFoundForThisQueryTryAnotherPlaceNameOrArea => 'No locations found for this query. Try another place name or area.';
 }
 
 // Path: match.ui_screens_match_create_table_screen
@@ -948,92 +987,92 @@ class TranslationsMatchUiScreensMatchCreateTableScreenEn {
 
 	// Translations
 
-	/// en: 'Continue'
-	String get l424c23 => 'Continue';
-
 	/// en: 'No, I am only hosting this table'
-	String get l384c31 => 'No, I am only hosting this table';
+	String get noIAmOnlyHostingThisTable => 'No, I am only hosting this table';
 
 	/// en: 'Yes, I will play this match'
-	String get l383c31 => 'Yes, I will play this match';
+	String get yesIWillPlayThisMatch => 'Yes, I will play this match';
 
 	/// en: 'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.'
-	String get l365c25 => 'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.';
+	String get ifYouAreAVenueBoardGameClubOrOrganizerBringingPlayersTogetherButNotJoini => 'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.';
 
 	/// en: 'Will you, the host, play?'
-	String get l363c28 => 'Will you, the host, play?';
+	String get willYouTheHostPlay => 'Will you, the host, play?';
 
 	/// en: 'Pick the day and start hour. Choose a time you can reliably show up.'
-	String get l339c25 => 'Pick the day and start hour. Choose a time you can reliably show up.';
+	String get pickTheDayAndStartHourChooseATimeYouCanReliablyShowUp => 'Pick the day and start hour. Choose a time you can reliably show up.';
 
 	/// en: 'Schedule'
-	String get l337c28 => 'Schedule';
+	String get schedule => 'Schedule';
 
 	/// en: 'Maximum'
-	String get l318c36 => 'Maximum';
+	String get maximum => 'Maximum';
 
 	/// en: 'Minimum'
-	String get l297c36 => 'Minimum';
+	String get minimum => 'Minimum';
 
 	/// en: 'Default is 3-4. You can set between 2 and 6 players.'
-	String get l283c25 => 'Default is 3-4. You can set between 2 and 6 players.';
+	String get defaultIs34YouCanSetBetween2And6Players => 'Default is 3-4. You can set between 2 and 6 players.';
 
 	/// en: 'Players range'
-	String get l281c28 => 'Players range';
+	String get playersRange => 'Players range';
 
 	/// en: 'Example: We have Marauder expansion and spare sleeves.'
-	String get l271c27 => 'Example: We have Marauder expansion and spare sleeves.';
+	String get exampleWeHaveMarauderExpansionAndSpareSleeves => 'Example: We have Marauder expansion and spare sleeves.';
 
 	/// en: 'Add extra details like expansions available, parking tips, or reference points.'
-	String get l261c25 => 'Add extra details like expansions available, parking tips, or reference points.';
+	String get addExtraDetailsLikeExpansionsAvailableParkingTipsOrReferencePoints => 'Add extra details like expansions available, parking tips, or reference points.';
 
 	/// en: 'Description (optional)'
-	String get l259c28 => 'Description (optional)';
+	String get descriptionOptional => 'Description (optional)';
 
 	/// en: 'Example: Saturday ROOT at Lantern Café'
-	String get l249c33 => 'Example: Saturday ROOT at Lantern Café';
+	String get exampleSaturdayRootAtLanternCaf => 'Example: Saturday ROOT at Lantern Café';
 
 	/// en: 'This can be anything that helps identify the table, like a place name or event style.'
-	String get l241c25 => 'This can be anything that helps identify the table, like a place name or event style.';
+	String get thisCanBeAnythingThatHelpsIdentifyTheTableLikeAPlaceNameOrEventStyle => 'This can be anything that helps identify the table, like a place name or event style.';
 
 	/// en: 'Table title'
-	String get l239c28 => 'Table title';
+	String get tableTitle => 'Table title';
 
 	/// en: 'Set table details first. On the next screen you will choose the location.'
-	String get l229c21 => 'Set table details first. On the next screen you will choose the location.';
+	String get setTableDetailsFirstOnTheNextScreenYouWillChooseTheLocation => 'Set table details first. On the next screen you will choose the location.';
 
 	/// en: 'Host a New Table'
-	String get l217c27 => 'Host a New Table';
+	String get hostANewTable => 'Host a New Table';
 
 	/// en: 'Select the start hour for this table before continuing.'
-	String get l155c22 => 'Select the start hour for this table before continuing.';
+	String get selectTheStartHourForThisTableBeforeContinuing => 'Select the start hour for this table before continuing.';
 
 	/// en: 'Start hour required'
-	String get l154c16 => 'Start hour required';
+	String get startHourRequired => 'Start hour required';
 
 	/// en: 'You cannot select a day in the past.'
-	String get l146c22 => 'You cannot select a day in the past.';
+	String get youCannotSelectADayInThePast => 'You cannot select a day in the past.';
 
 	/// en: 'Invalid date'
-	String get l145c16 => 'Invalid date';
+	String get invalidDate => 'Invalid date';
 
 	/// en: 'Select the day for this table before continuing.'
-	String get l137c22 => 'Select the day for this table before continuing.';
+	String get selectTheDayForThisTableBeforeContinuing => 'Select the day for this table before continuing.';
 
 	/// en: 'Day required'
-	String get l136c16 => 'Day required';
+	String get dayRequired => 'Day required';
 
 	/// en: 'Add a title so players can quickly identify your table. Example: "Downtown Café Night".'
-	String get l127c13 => 'Add a title so players can quickly identify your table. Example: "Downtown Café Night".';
+	String get addATitleSoPlayersCanQuicklyIdentifyYourTableExampleDowntownCafNight => 'Add a title so players can quickly identify your table. Example: "Downtown Café Night".';
 
 	/// en: 'Title required'
-	String get l125c16 => 'Title required';
+	String get titleRequired => 'Title required';
 
 	/// en: 'You cannot select a day in the past.'
-	String get l92c22 => 'You cannot select a day in the past.';
+	String get youCannotSelectADayInThePast2 => 'You cannot select a day in the past.';
 
 	/// en: 'Invalid date'
-	String get l91c16 => 'Invalid date';
+	String get invalidDate2 => 'Invalid date';
+
+	/// en: 'Continue'
+	String get continueButton => 'Continue';
 }
 
 // Path: match.ui_screens_match_chat_loading_error_state_widget
@@ -1045,7 +1084,7 @@ class TranslationsMatchUiScreensMatchChatLoadingErrorStateWidgetEn {
 	// Translations
 
 	/// en: 'Try again'
-	String get l52c33 => 'Try again';
+	String get tryAgain => 'Try again';
 }
 
 // Path: match.ui_screens_match_report_available_chip_widget
@@ -1057,10 +1096,10 @@ class TranslationsMatchUiScreensMatchReportAvailableChipWidgetEn {
 	// Translations
 
 	/// en: 'Report available'
-	String get l31c15 => 'Report available';
+	String get reportAvailable => 'Report available';
 
 	/// en: 'You can report this match result now.'
-	String get l13c16 => 'You can report this match result now.';
+	String get youCanReportThisMatchResultNow => 'You can report this match result now.';
 }
 
 // Path: match.ui_screens_match_initial_loading_state_widget
@@ -1072,7 +1111,7 @@ class TranslationsMatchUiScreensMatchInitialLoadingStateWidgetEn {
 	// Translations
 
 	/// en: 'Loading nearby tables...'
-	String get l31c13 => 'Loading nearby tables...';
+	String get loadingNearbyTables => 'Loading nearby tables...';
 }
 
 // Path: match.ui_screens_match_participant_card_widget
@@ -1084,7 +1123,7 @@ class TranslationsMatchUiScreensMatchParticipantCardWidgetEn {
 	// Translations
 
 	/// en: 'Favorite Faction'
-	String get l73c21 => 'Favorite Faction';
+	String get favoriteFaction => 'Favorite Faction';
 }
 
 // Path: match.ui_screens_match_join_sheet_content_widget
@@ -1096,43 +1135,43 @@ class TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn {
 	// Translations
 
 	/// en: 'Confirm Join'
-	String get l323c29 => 'Confirm Join';
+	String get confirmJoin => 'Confirm Join';
 
 	/// en: 'Subscriptions closed'
-	String get l322c29 => 'Subscriptions closed';
+	String get subscriptionsClosed => 'Subscriptions closed';
 
 	/// en: 'Already subscribed'
-	String get l320c29 => 'Already subscribed';
+	String get alreadySubscribed => 'Already subscribed';
 
 	/// en: 'Cancel'
-	String get l303c39 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'You can be the first player to lock this table in.'
-	String get l262c23 => 'You can be the first player to lock this table in.';
+	String get youCanBeTheFirstPlayerToLockThisTableIn => 'You can be the first player to lock this table in.';
 
 	/// en: 'These are the current players that will participate.'
-	String get l244c25 => 'These are the current players that will participate.';
+	String get theseAreTheCurrentPlayersThatWillParticipate => 'These are the current players that will participate.';
 
 	/// en: 'No players subscribed yet.'
-	String get l243c25 => 'No players subscribed yet.';
+	String get noPlayersSubscribedYet => 'No players subscribed yet.';
 
 	/// en: 'Players in this match'
-	String get l235c19 => 'Players in this match';
+	String get playersInThisMatch => 'Players in this match';
 
 	/// en: 'Unknown host'
-	String get l175c56 => 'Unknown host';
+	String get unknownHost => 'Unknown host';
 
 	/// en: 'See table chat'
-	String get l151c39 => 'See table chat';
+	String get seeTableChat => 'See table chat';
 
 	/// en: 'New players cannot join at this time.'
-	String get l130c29 => 'New players cannot join at this time.';
+	String get newPlayersCannotJoinAtThisTime => 'New players cannot join at this time.';
 
 	/// en: 'The host has closed subscriptions for this table. '
-	String get l129c29 => 'The host has closed subscriptions for this table. ';
+	String get theHostHasClosedSubscriptionsForThisTable => 'The host has closed subscriptions for this table. ';
 
 	/// en: 'Confirm table subscription'
-	String get l81c19 => 'Confirm table subscription';
+	String get confirmTableSubscription => 'Confirm table subscription';
 }
 
 // Path: match.ui_screens_match_table_card_widget
@@ -1144,25 +1183,25 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 	// Translations
 
 	/// en: 'Subscribed'
-	String get l362c17 => 'Subscribed';
+	String get subscribed => 'Subscribed';
 
 	/// en: 'Tap card to open chat'
-	String get l275c25 => 'Tap card to open chat';
+	String get tapCardToOpenChat => 'Tap card to open chat';
 
 	/// en: 'Subscriptions closed'
-	String get l265c25 => 'Subscriptions closed';
+	String get subscriptionsClosed => 'Subscriptions closed';
 
 	/// en: 'Open full location details'
-	String get l235c26 => 'Open full location details';
+	String get openFullLocationDetails => 'Open full location details';
 
 	/// en: 'places'
-	String get l155c72 => 'places';
+	String get places => 'places';
 
 	/// en: 'place'
-	String get l155c62 => 'place';
+	String get place => 'place';
 
 	/// en: 's'
-	String get l154c89 => 's';
+	String get s => 's';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget
@@ -1174,7 +1213,7 @@ class TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn {
 	// Translations
 
 	/// en: 'Location Details'
-	String get l67c19 => 'Location Details';
+	String get locationDetails => 'Location Details';
 }
 
 // Path: match.ui_screens_match_create_table_location_no_recent_locations_widget
@@ -1186,7 +1225,7 @@ class TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetE
 	// Translations
 
 	/// en: 'No previous locations yet. Search and select one above.'
-	String get l20c9 => 'No previous locations yet. Search and select one above.';
+	String get noPreviousLocationsYetSearchAndSelectOneAbove => 'No previous locations yet. Search and select one above.';
 }
 
 // Path: match.ui_screens_match_chat_screen
@@ -1198,43 +1237,43 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 	// Translations
 
 	/// en: 'Choose from Gallery'
-	String get l513c35 => 'Choose from Gallery';
+	String get chooseFromGallery => 'Choose from Gallery';
 
 	/// en: 'Take Photo'
-	String get l506c35 => 'Take Photo';
+	String get takePhoto => 'Take Photo';
 
 	/// en: 'Cancel'
-	String get l488c31 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'Choose from Library'
-	String get l480c33 => 'Choose from Library';
+	String get chooseFromLibrary => 'Choose from Library';
 
 	/// en: 'Take Photo'
-	String get l474c33 => 'Take Photo';
+	String get takePhoto2 => 'Take Photo';
 
 	/// en: 'Send a photo'
-	String get l468c29 => 'Send a photo';
+	String get sendAPhoto => 'Send a photo';
 
 	/// en: 'Compress'
-	String get l407c33 => 'Compress';
+	String get compress => 'Compress';
 
 	/// en: 'Cancel'
-	String get l403c33 => 'Cancel';
+	String get cancel2 => 'Cancel';
 
 	/// en: 'Image is too large'
-	String get l395c29 => 'Image is too large';
+	String get imageIsTooLarge => 'Image is too large';
 
 	/// en: 'Subscribed'
-	String get l273c37 => 'Subscribed';
+	String get subscribed => 'Subscribed';
 
 	/// en: 'Unable to resolve your account information.'
-	String get l142c21 => 'Unable to resolve your account information.';
+	String get unableToResolveYourAccountInformation => 'Unable to resolve your account information.';
 
 	/// en: 'Table info'
-	String get l128c22 => 'Table info';
+	String get tableInfo => 'Table info';
 
 	/// en: 'Edit table'
-	String get l123c24 => 'Edit table';
+	String get editTable => 'Edit table';
 }
 
 // Path: match.ui_screens_match_create_table_location_loading_recent_widget
@@ -1246,7 +1285,7 @@ class TranslationsMatchUiScreensMatchCreateTableLocationLoadingRecentWidgetEn {
 	// Translations
 
 	/// en: 'Loading previous locations...'
-	String get l21c13 => 'Loading previous locations...';
+	String get loadingPreviousLocations => 'Loading previous locations...';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_winner_step_section
@@ -1258,22 +1297,22 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionEn {
 	// Translations
 
 	/// en: 'Dominance'
-	String get l101c27 => 'Dominance';
+	String get dominance => 'Dominance';
 
 	/// en: 'Total points (30)'
-	String get l96c27 => 'Total points (30)';
+	String get totalPoints30 => 'Total points (30)';
 
 	/// en: 'Dominance means the winner completed a Dominance card objective instead of winning by points.'
-	String get l82c11 => 'Dominance means the winner completed a Dominance card objective instead of winning by points.';
+	String get dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB => 'Dominance means the winner completed a Dominance card objective instead of winning by points.';
 
 	/// en: 'Total points means the winner reached 30 victory points on the score track. '
-	String get l81c11 => 'Total points means the winner reached 30 victory points on the score track. ';
+	String get totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack => 'Total points means the winner reached 30 victory points on the score track. ';
 
 	/// en: 'How did the winner won?'
-	String get l74c11 => 'How did the winner won?';
+	String get howDidTheWinnerWon => 'How did the winner won?';
 
 	/// en: 'Pick the player who won this match.'
-	String get l36c11 => 'Pick the player who won this match.';
+	String get pickThePlayerWhoWonThisMatch => 'Pick the player who won this match.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_timing_step_section
@@ -1285,22 +1324,22 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardTimingStepSectionEn {
 	// Translations
 
 	/// en: 'Estimated duration'
-	String get l134c17 => 'Estimated duration';
+	String get estimatedDuration => 'Estimated duration';
 
 	/// en: 'Estimated duration'
-	String get l112c11 => 'Estimated duration';
+	String get estimatedDuration2 => 'Estimated duration';
 
 	/// en: 'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).'
-	String get l103c11 => 'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).';
+	String get setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours => 'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).';
 
 	/// en: 'Change time'
-	String get l90c33 => 'Change time';
+	String get changeTime => 'Change time';
 
 	/// en: 'Match started at'
-	String get l57c11 => 'Match started at';
+	String get matchStartedAt => 'Match started at';
 
 	/// en: 'Set the time the match actually started.'
-	String get l48c11 => 'Set the time the match actually started.';
+	String get setTheTimeTheMatchActuallyStarted => 'Set the time the match actually started.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_participants_step_section
@@ -1312,22 +1351,22 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardParticipantsStepSectio
 	// Translations
 
 	/// en: 'Add registered player from platform'
-	String get l97c31 => 'Add registered player from platform';
+	String get addRegisteredPlayerFromPlatform => 'Add registered player from platform';
 
 	/// en: 'Add anonymous player'
-	String get l88c31 => 'Add anonymous player';
+	String get addAnonymousPlayer => 'Add anonymous player';
 
 	/// en: 'Registered player'
-	String get l63c23 => 'Registered player';
+	String get registeredPlayer => 'Registered player';
 
 	/// en: 'Anonymous player'
-	String get l62c23 => 'Anonymous player';
+	String get anonymousPlayer => 'Anonymous player';
 
 	/// en: 'Select registered players who were present. You can add anonymous players or search for other registered players.'
-	String get l33c11 => 'Select registered players who were present. You can add anonymous players or search for other registered players.';
+	String get selectRegisteredPlayersWhoWerePresentYouCanAddAnonymousPlayersOrSearchFo => 'Select registered players who were present. You can add anonymous players or search for other registered players.';
 
 	/// en: '1) Who actually played?'
-	String get l26c11 => '1) Who actually played?';
+	String get value1WhoActuallyPlayed => '1) Who actually played?';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_error_section
@@ -1339,7 +1378,7 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerErrorSectionEn {
 	// Translations
 
 	/// en: 'Retry'
-	String get l51c35 => 'Retry';
+	String get retry => 'Retry';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_match_item_card
@@ -1351,10 +1390,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerMatchItemCardEn {
 	// Translations
 
 	/// en: 'Not available yet'
-	String get l140c56 => 'Not available yet';
+	String get notAvailableYet => 'Not available yet';
 
 	/// en: 'Tap to report'
-	String get l140c38 => 'Tap to report';
+	String get tapToReport => 'Tap to report';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_factions_step_section
@@ -1366,16 +1405,16 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionEn 
 	// Translations
 
 	/// en: 'Select faction'
-	String get l71c38 => 'Select faction';
+	String get selectFaction => 'Select faction';
 
 	/// en: 'Faction'
-	String get l68c34 => 'Faction';
+	String get faction => 'Faction';
 
 	/// en: 'Choose the faction used by each player in this match.'
-	String get l35c11 => 'Choose the faction used by each player in this match.';
+	String get chooseTheFactionUsedByEachPlayerInThisMatch => 'Choose the faction used by each player in this match.';
 
 	/// en: '2) Select factions'
-	String get l28c11 => '2) Select factions';
+	String get value2SelectFactions => '2) Select factions';
 }
 
 // Path: register_match.ui_sheets_register_match_search_registered_player_sheet
@@ -1387,19 +1426,19 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchSearchRegisteredPlayerSheetE
 	// Translations
 
 	/// en: 'Tap to add'
-	String get l181c37 => 'Tap to add';
+	String get tapToAdd => 'Tap to add';
 
 	/// en: 'Already added to this report'
-	String get l180c37 => 'Already added to this report';
+	String get alreadyAddedToThisReport => 'Already added to this report';
 
 	/// en: 'No registered players were found.'
-	String get l157c35 => 'No registered players were found.';
+	String get noRegisteredPlayersWereFound => 'No registered players were found.';
 
 	/// en: 'Search by display name'
-	String get l113c32 => 'Search by display name';
+	String get searchByDisplayName => 'Search by display name';
 
 	/// en: 'Add registered player'
-	String get l98c19 => 'Add registered player';
+	String get addRegisteredPlayer => 'Add registered player';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_points_step_section
@@ -1411,34 +1450,34 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionEn {
 	// Translations
 
 	/// en: '0 to 29'
-	String get l152c35 => '0 to 29';
+	String get value0To29 => '0 to 29';
 
 	/// en: 'Points'
-	String get l151c36 => 'Points';
+	String get points => 'Points';
 
 	/// en: 'Dominance attempt'
-	String get l139c30 => 'Dominance attempt';
+	String get dominanceAttempt => 'Dominance attempt';
 
 	/// en: 'Winner by dominance'
-	String get l133c30 => 'Winner by dominance';
+	String get winnerByDominance => 'Winner by dominance';
 
 	/// en: 'Winner by points'
-	String get l127c30 => 'Winner by points';
+	String get winnerByPoints => 'Winner by points';
 
 	/// en: 'Failed dominance'
-	String get l108c39 => 'Failed dominance';
+	String get failedDominance => 'Failed dominance';
 
 	/// en: 'Points'
-	String get l103c39 => 'Points';
+	String get points2 => 'Points';
 
 	/// en: 'Winner'
-	String get l87c29 => 'Winner';
+	String get winner => 'Winner';
 
 	/// en: 'Failed dominance always counts as no points.'
-	String get l40c11 => 'Failed dominance always counts as no points.';
+	String get failedDominanceAlwaysCountsAsNoPoints => 'Failed dominance always counts as no points.';
 
 	/// en: 'For each non-winner, set points or mark failed dominance attempt. '
-	String get l39c11 => 'For each non-winner, set points or mark failed dominance attempt. ';
+	String get forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt => 'For each non-winner, set points or mark failed dominance attempt. ';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_bottom_actions_section
@@ -1449,17 +1488,17 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardBottomActionsSectionEn
 
 	// Translations
 
-	/// en: 'Continue'
-	String get l61c59 => 'Continue';
-
 	/// en: 'Submit report'
-	String get l61c41 => 'Submit report';
+	String get submitReport => 'Submit report';
 
 	/// en: 'Back'
-	String get l40c54 => 'Back';
+	String get back => 'Back';
 
 	/// en: 'Cancel'
-	String get l40c43 => 'Cancel';
+	String get cancel => 'Cancel';
+
+	/// en: 'Continue'
+	String get continueButton => 'Continue';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_empty_section
@@ -1471,10 +1510,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerEmptySectionEn {
 	// Translations
 
 	/// en: 'You do not have any hosted/subscribed match pending result registration.'
-	String get l34c17 => 'You do not have any hosted/subscribed match pending result registration.';
+	String get youDoNotHaveAnyHostedSubscribedMatchPendingResultRegistration => 'You do not have any hosted/subscribed match pending result registration.';
 
 	/// en: 'No pending matches'
-	String get l27c17 => 'No pending matches';
+	String get noPendingMatches => 'No pending matches';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_loading_section
@@ -1486,7 +1525,7 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardLoadingSectionEn {
 	// Translations
 
 	/// en: 'Loading match details...'
-	String get l24c13 => 'Loading match details...';
+	String get loadingMatchDetails => 'Loading match details...';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_sheet
@@ -1498,10 +1537,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerSheetEn {
 	// Translations
 
 	/// en: 'You can register this match from 2 hours before its scheduled start. '
-	String get l107c13 => 'You can register this match from 2 hours before its scheduled start. ';
+	String get youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart => 'You can register this match from 2 hours before its scheduled start. ';
 
 	/// en: 'Result registration not available yet'
-	String get l105c16 => 'Result registration not available yet';
+	String get resultRegistrationNotAvailableYet => 'Result registration not available yet';
 }
 
 // Path: register_match.ui_sheets_register_match_add_anonymous_player_sheet
@@ -1513,25 +1552,25 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchAddAnonymousPlayerSheetEn {
 	// Translations
 
 	/// en: 'Tap to add'
-	String get l232c37 => 'Tap to add';
+	String get tapToAdd => 'Tap to add';
 
 	/// en: 'Already added to this report'
-	String get l231c37 => 'Already added to this report';
+	String get alreadyAddedToThisReport => 'Already added to this report';
 
 	/// en: 'No anonymous players yet. Create one using first and last name.'
-	String get l205c29 => 'No anonymous players yet. Create one using first and last name.';
+	String get noAnonymousPlayersYetCreateOneUsingFirstAndLastName => 'No anonymous players yet. Create one using first and last name.';
 
 	/// en: 'Create and add player'
-	String get l178c42 => 'Create and add player';
+	String get createAndAddPlayer => 'Create and add player';
 
 	/// en: 'Last name'
-	String get l158c36 => 'Last name';
+	String get lastName => 'Last name';
 
 	/// en: 'First name'
-	String get l149c36 => 'First name';
+	String get firstName => 'First name';
 
 	/// en: 'Add anonymous player'
-	String get l132c19 => 'Add anonymous player';
+	String get addAnonymousPlayer => 'Add anonymous player';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_top_bar_section
@@ -1543,7 +1582,7 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardTopBarSectionEn {
 	// Translations
 
 	/// en: 'Register Match Result'
-	String get l42c19 => 'Register Match Result';
+	String get registerMatchResult => 'Register Match Result';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_error_section
@@ -1555,10 +1594,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardErrorSectionEn {
 	// Translations
 
 	/// en: 'Close'
-	String get l54c33 => 'Close';
+	String get close => 'Close';
 
 	/// en: 'Register Match'
-	String get l27c17 => 'Register Match';
+	String get registerMatch => 'Register Match';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_sheet
@@ -1570,163 +1609,163 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEn {
 	// Translations
 
 	/// en: 'Gallery'
-	String get l1069c35 => 'Gallery';
+	String get gallery => 'Gallery';
 
 	/// en: 'Camera'
-	String get l1062c35 => 'Camera';
+	String get camera => 'Camera';
 
 	/// en: 'Cancel'
-	String get l1045c33 => 'Cancel';
+	String get cancel => 'Cancel';
 
 	/// en: 'Gallery'
-	String get l1037c35 => 'Gallery';
+	String get gallery2 => 'Gallery';
 
 	/// en: 'Camera'
-	String get l1031c35 => 'Camera';
+	String get camera2 => 'Camera';
 
 	/// en: 'Select source'
-	String get l1025c31 => 'Select source';
+	String get selectSource => 'Select source';
 
 	/// en: 'Selected image is empty. Choose another image.'
-	String get l996c22 => 'Selected image is empty. Choose another image.';
+	String get selectedImageIsEmptyChooseAnotherImage => 'Selected image is empty. Choose another image.';
 
 	/// en: 'Invalid image'
-	String get l995c16 => 'Invalid image';
+	String get invalidImage => 'Invalid image';
 
 	/// en: 'Allow camera and photo permissions in system settings and try again.'
-	String get l978c13 => 'Allow camera and photo permissions in system settings and try again.';
+	String get allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain => 'Allow camera and photo permissions in system settings and try again.';
 
 	/// en: 'Unable to access camera or gallery'
-	String get l976c16 => 'Unable to access camera or gallery';
+	String get unableToAccessCameraOrGallery => 'Unable to access camera or gallery';
 
 	/// en: 'Ok'
-	String get l947c35 => 'Ok';
+	String get ok => 'Ok';
 
 	/// en: 'Take a selfie with everyone at the table. If possible, include the board in the same photo.'
-	String get l942c15 => 'Take a selfie with everyone at the table. If possible, include the board in the same photo.';
+	String get takeASelfieWithEveryoneAtTheTableIfPossibleIncludeTheBoardInTheSamePhoto => 'Take a selfie with everyone at the table. If possible, include the board in the same photo.';
 
 	/// en: 'Group selfie proof'
-	String get l940c31 => 'Group selfie proof';
+	String get groupSelfieProof => 'Group selfie proof';
 
 	/// en: 'Complete all report steps before submitting.'
-	String get l786c22 => 'Complete all report steps before submitting.';
+	String get completeAllReportStepsBeforeSubmitting => 'Complete all report steps before submitting.';
 
 	/// en: 'Incomplete report'
-	String get l785c16 => 'Incomplete report';
+	String get incompleteReport => 'Incomplete report';
 
 	/// en: 'Add the board photo before continuing.'
-	String get l752c26 => 'Add the board photo before continuing.';
+	String get addTheBoardPhotoBeforeContinuing => 'Add the board photo before continuing.';
 
 	/// en: 'Board photo required'
-	String get l751c20 => 'Board photo required';
+	String get boardPhotoRequired => 'Board photo required';
 
 	/// en: 'Add the group selfie before continuing.'
-	String get l746c26 => 'Add the group selfie before continuing.';
+	String get addTheGroupSelfieBeforeContinuing => 'Add the group selfie before continuing.';
 
 	/// en: 'Group photo required'
-	String get l745c20 => 'Group photo required';
+	String get groupPhotoRequired => 'Group photo required';
 
 	/// en: 'Match duration must be at most 8 hours.'
-	String get l738c26 => 'Match duration must be at most 8 hours.';
+	String get matchDurationMustBeAtMost8Hours => 'Match duration must be at most 8 hours.';
 
 	/// en: 'Invalid duration'
-	String get l737c20 => 'Invalid duration';
+	String get invalidDuration => 'Invalid duration';
 
 	/// en: 'Match duration must be greater than zero.'
-	String get l732c26 => 'Match duration must be greater than zero.';
+	String get matchDurationMustBeGreaterThanZero => 'Match duration must be greater than zero.';
 
 	/// en: 'Invalid duration'
-	String get l731c20 => 'Invalid duration';
+	String get invalidDuration2 => 'Invalid duration';
 
 	/// en: 'Match start time cannot be in the future.'
-	String get l726c26 => 'Match start time cannot be in the future.';
+	String get matchStartTimeCannotBeInTheFuture => 'Match start time cannot be in the future.';
 
 	/// en: 'Invalid match registration'
-	String get l725c20 => 'Invalid match registration';
+	String get invalidMatchRegistration => 'Invalid match registration';
 
 	/// en: 'Select when this match started.'
-	String get l720c26 => 'Select when this match started.';
+	String get selectWhenThisMatchStarted => 'Select when this match started.';
 
 	/// en: 'Match start missing'
-	String get l719c20 => 'Match start missing';
+	String get matchStartMissing => 'Match start missing';
 
 	/// en: 'Invalid points'
-	String get l706c24 => 'Invalid points';
+	String get invalidPoints => 'Invalid points';
 
 	/// en: 'Points missing'
-	String get l698c24 => 'Points missing';
+	String get pointsMissing => 'Points missing';
 
 	/// en: 'Select how the winner won before continuing.'
-	String get l677c26 => 'Select how the winner won before continuing.';
+	String get selectHowTheWinnerWonBeforeContinuing => 'Select how the winner won before continuing.';
 
 	/// en: 'Winner method missing'
-	String get l676c20 => 'Winner method missing';
+	String get winnerMethodMissing => 'Winner method missing';
 
 	/// en: 'Select the winner before continuing.'
-	String get l671c26 => 'Select the winner before continuing.';
+	String get selectTheWinnerBeforeContinuing => 'Select the winner before continuing.';
 
 	/// en: 'Winner missing'
-	String get l670c20 => 'Winner missing';
+	String get winnerMissing => 'Winner missing';
 
 	/// en: 'The selected winner is no longer in the participant list.'
-	String get l661c17 => 'The selected winner is no longer in the participant list.';
+	String get theSelectedWinnerIsNoLongerInTheParticipantList => 'The selected winner is no longer in the participant list.';
 
 	/// en: 'Winner missing'
-	String get l659c20 => 'Winner missing';
+	String get winnerMissing2 => 'Winner missing';
 
 	/// en: 'Select the winner before continuing.'
-	String get l650c26 => 'Select the winner before continuing.';
+	String get selectTheWinnerBeforeContinuing2 => 'Select the winner before continuing.';
 
 	/// en: 'Winner missing'
-	String get l649c20 => 'Winner missing';
+	String get winnerMissing3 => 'Winner missing';
 
 	/// en: 'Invalid faction setup'
-	String get l638c22 => 'Invalid faction setup';
+	String get invalidFactionSetup => 'Invalid faction setup';
 
 	/// en: 'Faction missing'
-	String get l626c22 => 'Faction missing';
+	String get factionMissing => 'Faction missing';
 
 	/// en: 'Select at least 2 participants (registered and/or anonymous) to continue.'
-	String get l617c17 => 'Select at least 2 participants (registered and/or anonymous) to continue.';
+	String get selectAtLeast2ParticipantsRegisteredAndOrAnonymousToContinue => 'Select at least 2 participants (registered and/or anonymous) to continue.';
 
 	/// en: 'Not enough players'
-	String get l615c20 => 'Not enough players';
-
-	/// en: 'Continue'
-	String get l592c35 => 'Continue';
+	String get notEnoughPlayers => 'Not enough players';
 
 	/// en: 'Edit'
-	String get l588c35 => 'Edit';
+	String get edit => 'Edit';
 
 	/// en: 'You kept the default duration of 1 hour. Do you want to continue with it?'
-	String get l583c15 => 'You kept the default duration of 1 hour. Do you want to continue with it?';
+	String get youKeptTheDefaultDurationOf1HourDoYouWantToContinueWithIt => 'You kept the default duration of 1 hour. Do you want to continue with it?';
 
 	/// en: 'Keep default duration?'
-	String get l581c31 => 'Keep default duration?';
+	String get keepDefaultDuration => 'Keep default duration?';
 
 	/// en: 'Match start time cannot be in the future.'
-	String get l505c22 => 'Match start time cannot be in the future.';
+	String get matchStartTimeCannotBeInTheFuture2 => 'Match start time cannot be in the future.';
 
 	/// en: 'Invalid match registration'
-	String get l504c16 => 'Invalid match registration';
+	String get invalidMatchRegistration2 => 'Invalid match registration';
 
 	/// en: 'Match start time cannot be in the future.'
-	String get l470c22 => 'Match start time cannot be in the future.';
+	String get matchStartTimeCannotBeInTheFuture3 => 'Match start time cannot be in the future.';
 
 	/// en: 'Invalid match registration'
-	String get l469c16 => 'Invalid match registration';
+	String get invalidMatchRegistration3 => 'Invalid match registration';
 
 	/// en: 'Unable to load this match report flow.'
-	String get l141c32 => 'Unable to load this match report flow.';
+	String get unableToLoadThisMatchReportFlow => 'Unable to load this match report flow.';
 
 	/// en: 'Match not found'
-	String get l140c26 => 'Match not found';
+	String get matchNotFound => 'Match not found';
 
 	/// en: 'Unable to load this match report flow.'
-	String get l87c24 => 'Unable to load this match report flow.';
+	String get unableToLoadThisMatchReportFlow2 => 'Unable to load this match report flow.';
 
 	/// en: 'Invalid match'
-	String get l86c18 => 'Invalid match';
+	String get invalidMatch => 'Invalid match';
+
+	/// en: 'Continue'
+	String get continueButton => 'Continue';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section
@@ -1738,19 +1777,19 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardReviewStepSectionEn {
 	// Translations
 
 	/// en: 'Board photo'
-	String get l166c18 => 'Board photo';
+	String get boardPhoto => 'Board photo';
 
 	/// en: 'Group photo'
-	String get l161c18 => 'Group photo';
+	String get groupPhoto => 'Group photo';
 
 	/// en: 'Social proof'
-	String get l154c11 => 'Social proof';
+	String get socialProof => 'Social proof';
 
 	/// en: 'Ranking'
-	String get l92c11 => 'Ranking';
+	String get ranking => 'Ranking';
 
 	/// en: 'Confirm all details before logging this match.'
-	String get l42c11 => 'Confirm all details before logging this match.';
+	String get confirmAllDetailsBeforeLoggingThisMatch => 'Confirm all details before logging this match.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_photo_tile
@@ -1762,10 +1801,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardReviewPhotoTileEn {
 	// Translations
 
 	/// en: 'Ready'
-	String get l66c45 => 'Ready';
+	String get ready => 'Ready';
 
 	/// en: 'Missing'
-	String get l66c33 => 'Missing';
+	String get missing => 'Missing';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_proof_card_section
@@ -1777,10 +1816,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionEn {
 	// Translations
 
 	/// en: 'Tap to replace'
-	String get l79c60 => 'Tap to replace';
+	String get tapToReplace => 'Tap to replace';
 
 	/// en: 'Tap to add photo'
-	String get l79c39 => 'Tap to add photo';
+	String get tapToAddPhoto => 'Tap to add photo';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_header_section
@@ -1792,10 +1831,10 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionEn {
 	// Translations
 
 	/// en: 'Select a match you participated in. You can register a result from 2 hours before scheduled start.'
-	String get l62c13 => 'Select a match you participated in. You can register a result from 2 hours before scheduled start.';
+	String get selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu => 'Select a match you participated in. You can register a result from 2 hours before scheduled start.';
 
 	/// en: 'Register Match Result'
-	String get l35c19 => 'Register Match Result';
+	String get registerMatchResult => 'Register Match Result';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_social_proof_step_section
@@ -1807,25 +1846,25 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSection
 	// Translations
 
 	/// en: 'Capture the board and score track clearly.'
-	String get l67c21 => 'Capture the board and score track clearly.';
+	String get captureTheBoardAndScoreTrackClearly => 'Capture the board and score track clearly.';
 
 	/// en: 'Board photo'
-	String get l66c18 => 'Board photo';
+	String get boardPhoto => 'Board photo';
 
 	/// en: 'Upload a photo of the board with the score track clearly visible.'
-	String get l57c11 => 'Upload a photo of the board with the score track clearly visible.';
+	String get uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible => 'Upload a photo of the board with the score track clearly visible.';
 
 	/// en: 'Board photo proof'
-	String get l50c11 => 'Board photo proof';
+	String get boardPhotoProof => 'Board photo proof';
 
 	/// en: 'Selfie with all players. Include the board if possible.'
-	String get l44c21 => 'Selfie with all players. Include the board if possible.';
+	String get selfieWithAllPlayersIncludeTheBoardIfPossible => 'Selfie with all players. Include the board if possible.';
 
 	/// en: 'Group photo'
-	String get l43c18 => 'Group photo';
+	String get groupPhoto => 'Group photo';
 
 	/// en: 'Upload both photos to confirm this match happened in person.'
-	String get l34c11 => 'Upload both photos to confirm this match happened in person.';
+	String get uploadBothPhotosToConfirmThisMatchHappenedInPerson => 'Upload both photos to confirm this match happened in person.';
 }
 
 // Path: shop.ui_screens_shop_screen
@@ -1837,20 +1876,20 @@ class TranslationsShopUiScreensShopScreenEn {
 	// Translations
 
 	/// en: 'supporter packs linked to community tournaments.'
-	String get l77c17 => 'supporter packs linked to community tournaments.';
+	String get supporterPacksLinkedToCommunityTournaments => 'supporter packs linked to community tournaments.';
 
 	/// en: 'Planned: themed profile packs, faction cosmetics, and event '
-	String get l76c17 => 'Planned: themed profile packs, faction cosmetics, and event ';
+	String get plannedThemedProfilePacksFactionCosmeticsAndEvent => 'Planned: themed profile packs, faction cosmetics, and event ';
 
 	/// en: 'Roadmap placeholder'
-	String get l69c17 => 'Roadmap placeholder';
+	String get roadmapPlaceholder => 'Roadmap placeholder';
 
 	/// en: 'community-driven bundles for ROOT players.'
-	String get l48c17 => 'community-driven bundles for ROOT players.';
+	String get communityDrivenBundlesForRootPlayers => 'community-driven bundles for ROOT players.';
 
 	/// en: 'This area will host future digital goods, cosmetics, and '
-	String get l47c17 => 'This area will host future digital goods, cosmetics, and ';
+	String get thisAreaWillHostFutureDigitalGoodsCosmeticsAnd => 'This area will host future digital goods, cosmetics, and ';
 
 	/// en: 'Shop feature placeholder'
-	String get l40c17 => 'Shop feature placeholder';
+	String get shopFeaturePlaceholder => 'Shop feature placeholder';
 }

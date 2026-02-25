@@ -63,7 +63,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.match.ui_sheets_match_edit_table_form_widget.l65c19,
+                  t.match.ui_sheets_match_edit_table_form_widget.editTable,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
@@ -71,7 +71,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  t.match.ui_sheets_match_edit_table_form_widget.l73c19,
+                  t.match.ui_sheets_match_edit_table_form_widget.editDetails,
                   style: GoogleFonts.cinzel(
                     fontSize: 26,
                     fontWeight: FontWeight.w700,
@@ -114,7 +114,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
                               t
                                   .match
                                   .ui_sheets_match_edit_table_form_widget
-                                  .l113c31,
+                                  .closeSubscriptions,
                               style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(
                                     fontWeight: FontWeight.w900,
@@ -125,11 +125,11 @@ class MatchEditTableFormWidget extends StatelessWidget {
                                   ? t
                                         .match
                                         .ui_sheets_match_edit_table_form_widget
-                                        .l121c37
+                                        .newPlayersCannotJoinThisTable
                                   : t
                                         .match
                                         .ui_sheets_match_edit_table_form_widget
-                                        .l122c37,
+                                        .newPlayersCanStillJoinThisTable,
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
@@ -148,9 +148,12 @@ class MatchEditTableFormWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 MatchEditTableSectionTitleWidget(
-                  title: t.match.ui_sheets_match_edit_table_form_widget.l141c26,
-                  description:
-                      t.match.ui_sheets_match_edit_table_form_widget.l142c32,
+                  title:
+                      t.match.ui_sheets_match_edit_table_form_widget.tableTitle,
+                  description: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .aShortNameSoPlayersCanFindYourTable,
                 ),
                 SizedBox(height: 8),
                 TextField(
@@ -158,8 +161,10 @@ class MatchEditTableFormWidget extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   maxLength: 80,
                   decoration: InputDecoration(
-                    hintText:
-                        t.match.ui_sheets_match_edit_table_form_widget.l150c31,
+                    hintText: t
+                        .match
+                        .ui_sheets_match_edit_table_form_widget
+                        .exampleSaturdayRootAtLanternCaf,
                     filled: true,
                     fillColor: colorScheme.surfaceContainerHighest.withValues(
                       alpha: 0.5,
@@ -171,9 +176,14 @@ class MatchEditTableFormWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 MatchEditTableSectionTitleWidget(
-                  title: t.match.ui_sheets_match_edit_table_form_widget.l162c26,
-                  description:
-                      t.match.ui_sheets_match_edit_table_form_widget.l164c23,
+                  title: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .descriptionOptional,
+                  description: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .extraDetailsLikeExpansionsParkingTipsEtc,
                 ),
                 SizedBox(height: 8),
                 TextField(
@@ -182,8 +192,10 @@ class MatchEditTableFormWidget extends StatelessWidget {
                   maxLines: 5,
                   maxLength: 400,
                   decoration: InputDecoration(
-                    hintText:
-                        t.match.ui_sheets_match_edit_table_form_widget.l173c31,
+                    hintText: t
+                        .match
+                        .ui_sheets_match_edit_table_form_widget
+                        .exampleWeHaveMarauderExpansion,
                     filled: true,
                     fillColor: colorScheme.surfaceContainerHighest.withValues(
                       alpha: 0.5,
@@ -195,10 +207,16 @@ class MatchEditTableFormWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 MatchEditTableSectionTitleWidget(
-                  title: t.match.ui_sheets_match_edit_table_form_widget.l185c26,
+                  title: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .playersRange,
                   description: currentSubscriberCount > 0
                       ? '$currentSubscriberCount player(s) already subscribed.'
-                      : t.match.ui_sheets_match_edit_table_form_widget.l188c25,
+                      : t
+                            .match
+                            .ui_sheets_match_edit_table_form_widget
+                            .setBetween2And6Players,
                 ),
                 SizedBox(height: 8),
                 Container(
@@ -217,7 +235,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
                           title: t
                               .match
                               .ui_sheets_match_edit_table_form_widget
-                              .l204c34,
+                              .minimum,
                           value: minPlayers,
                           onDecrease: onMinDecrease,
                           onIncrease: onMinIncrease,
@@ -233,7 +251,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
                           title: t
                               .match
                               .ui_sheets_match_edit_table_form_widget
-                              .l217c34,
+                              .maximum,
                           value: maxPlayers,
                           onDecrease: onMaxDecrease,
                           onIncrease: onMaxIncrease,
@@ -244,9 +262,10 @@ class MatchEditTableFormWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 MatchEditTableSectionTitleWidget(
-                  title: t.match.ui_sheets_match_edit_table_form_widget.l228c26,
+                  title:
+                      t.match.ui_sheets_match_edit_table_form_widget.schedule,
                   description:
-                      '${t.match.ui_sheets_match_edit_table_form_widget.l230c23}$maxScheduleDays days ahead.',
+                      '${t.match.ui_sheets_match_edit_table_form_widget.mustBeAtLeast10MinutesFromNowUpTo}$maxScheduleDays days ahead.',
                 ),
                 SizedBox(height: 8),
                 Row(
@@ -288,7 +307,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      t.match.ui_sheets_match_edit_table_form_widget.l272c39,
+                      t.match.ui_sheets_match_edit_table_form_widget.cancel,
                     ),
                   ),
                 ),
@@ -315,11 +334,11 @@ class MatchEditTableFormWidget extends StatelessWidget {
                           ? t
                                 .match
                                 .ui_sheets_match_edit_table_form_widget
-                                .l293c44
+                                .saving
                           : t
                                 .match
                                 .ui_sheets_match_edit_table_form_widget
-                                .l293c58,
+                                .saveChanges,
                     ),
                   ),
                 ),

@@ -34,7 +34,7 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l34c11,
+              .uploadBothPhotosToConfirmThisMatchHappenedInPerson,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -46,11 +46,11 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
           title: t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l43c18,
+              .groupPhoto,
           subtitle: t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l44c21,
+              .selfieWithAllPlayersIncludeTheBoardIfPossible,
           image: groupPhoto,
           onTap: onPickGroupPhoto,
         ),
@@ -59,7 +59,7 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l50c11,
+              .boardPhotoProof,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -69,7 +69,7 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l57c11,
+              .uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -81,11 +81,11 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
           title: t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l66c18,
+              .boardPhoto,
           subtitle: t
               .register_match
               .ui_sheets_register_match_wizard_social_proof_step_section
-              .l67c21,
+              .captureTheBoardAndScoreTrackClearly,
           image: boardPhoto,
           onTap: onPickBoardPhoto,
         ),

@@ -17,6 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 late String serverUrl;
+const _preferredLocaleKey = 'preferred_locale';
+const _deviceLocalePreferenceValue = 'device';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +39,13 @@ void main() async {
 
   await client.auth.initialize();
   final pref = await SharedPreferences.getInstance();
-  LocaleSettings.useDeviceLocale();
+  final preferredLocaleRaw = pref.getString(_preferredLocaleKey);
+  if (preferredLocaleRaw == null ||
+      preferredLocaleRaw == _deviceLocalePreferenceValue) {
+    await LocaleSettings.useDeviceLocale();
+  } else {
+    await LocaleSettings.setLocaleRaw(preferredLocaleRaw);
+  }
 
   runApp(
     TranslationProvider(
@@ -91,7 +99,7 @@ class _RouterApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: context.t.app.title,
+      title: context.t.app.rootHub,
       theme: buildAppTheme(
         seedColor: const Color(0xFF6A3D1F),
         brightness: Brightness.light,

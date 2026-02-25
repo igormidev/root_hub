@@ -30,7 +30,7 @@ class AuthLoadingScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                    t.auth.auth_loading_screen.l32c21,
+                    t.auth.auth_loading_screen.rootHub,
                     style: GoogleFonts.cinzel(
                       fontSize: 38,
                       fontWeight: FontWeight.w700,

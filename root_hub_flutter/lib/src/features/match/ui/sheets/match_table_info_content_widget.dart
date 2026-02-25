@@ -71,7 +71,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.match.ui_sheets_match_table_info_content_widget.l73c19,
+                  t
+                      .match
+                      .ui_sheets_match_table_info_content_widget
+                      .tableDetails,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
@@ -117,7 +120,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                           t
                               .match
                               .ui_sheets_match_table_info_content_widget
-                              .l114c56,
+                              .unknownHost,
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.social_distance_rounded,
@@ -168,7 +171,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 14),
                 Text(
-                  t.match.ui_sheets_match_table_info_content_widget.l165c19,
+                  t
+                      .match
+                      .ui_sheets_match_table_info_content_widget
+                      .playersInThisMatch,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
@@ -179,11 +185,11 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                       ? t
                             .match
                             .ui_sheets_match_table_info_content_widget
-                            .l173c25
+                            .noPlayersSubscribedYet
                       : t
                             .match
                             .ui_sheets_match_table_info_content_widget
-                            .l174c25,
+                            .theseAreTheCurrentPlayersThatWillParticipate,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
@@ -201,7 +207,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      t.match.ui_sheets_match_table_info_content_widget.l192c23,
+                      t
+                          .match
+                          .ui_sheets_match_table_info_content_widget
+                          .noPlayersHaveJoinedThisTableYet,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),

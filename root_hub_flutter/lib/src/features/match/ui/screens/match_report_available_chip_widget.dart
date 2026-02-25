@@ -11,7 +11,10 @@ class MatchReportAvailableChipWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Tooltip(
-      message: t.match.ui_screens_match_report_available_chip_widget.l13c16,
+      message: t
+          .match
+          .ui_screens_match_report_available_chip_widget
+          .youCanReportThisMatchResultNow,
       triggerMode: TooltipTriggerMode.tap,
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
@@ -29,7 +32,10 @@ class MatchReportAvailableChipWidget extends StatelessWidget {
             ),
             SizedBox(width: 5),
             Text(
-              t.match.ui_screens_match_report_available_chip_widget.l31c15,
+              t
+                  .match
+                  .ui_screens_match_report_available_chip_widget
+                  .reportAvailable,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: colorScheme.onErrorContainer,
                 fontWeight: FontWeight.w800,

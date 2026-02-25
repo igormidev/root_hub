@@ -51,7 +51,10 @@ class MatchChatLoadingErrorStateWidget extends StatelessWidget {
               onPressed: onRetry,
               icon: Icon(Icons.refresh_rounded),
               label: Text(
-                t.match.ui_screens_match_chat_loading_error_state_widget.l52c33,
+                t
+                    .match
+                    .ui_screens_match_chat_loading_error_state_widget
+                    .tryAgain,
               ),
             ),
           ],

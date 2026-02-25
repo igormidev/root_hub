@@ -40,7 +40,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child:
                   Text(
-                        t.auth.auth_onboarding_screen.l42c25,
+                        t.auth.auth_onboarding_screen.chooseYourFaction,
                         style: GoogleFonts.cinzel(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -56,7 +56,10 @@ class AuthOnboardingScreen extends ConsumerWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                t.auth.auth_onboarding_screen.l58c17,
+                t
+                    .auth
+                    .auth_onboarding_screen
+                    .pickYourFavoriteRootFactionBeforeEnteringTheHub,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,

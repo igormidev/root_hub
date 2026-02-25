@@ -108,8 +108,11 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
             if (tableInfo == null) {
               return MatchEditTableErrorWidget(
                 error: RootHubException(
-                  title: t.match.ui_sheets_match_edit_table_sheet.l110c26,
-                  description: t.match.ui_sheets_match_edit_table_sheet.l111c32,
+                  title: t.match.ui_sheets_match_edit_table_sheet.tableNotFound,
+                  description: t
+                      .match
+                      .ui_sheets_match_edit_table_sheet
+                      .unableToLoadTableDetails,
                 ),
                 onClose: () => Navigator.of(context).pop(false),
               );
@@ -215,8 +218,11 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     if (normalizedTitle.isEmpty) {
       await showErrorDialog(
         context,
-        title: t.match.ui_sheets_match_edit_table_sheet.l217c16,
-        description: t.match.ui_sheets_match_edit_table_sheet.l218c22,
+        title: t.match.ui_sheets_match_edit_table_sheet.titleRequired,
+        description: t
+            .match
+            .ui_sheets_match_edit_table_sheet
+            .pleaseAddATitleForYourTable,
       );
       return;
     }
@@ -224,10 +230,16 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     if (_minPlayers < 2 || _maxPlayers > 6 || _minPlayers > _maxPlayers) {
       await showErrorDialog(
         context,
-        title: t.match.ui_sheets_match_edit_table_sheet.l226c16,
+        title: t.match.ui_sheets_match_edit_table_sheet.invalidPlayersRange,
         description:
-            t.match.ui_sheets_match_edit_table_sheet.l228c13 +
-            t.match.ui_sheets_match_edit_table_sheet.l229c13,
+            t
+                .match
+                .ui_sheets_match_edit_table_sheet
+                .playersRangeMustBeBetween2And6 +
+            t
+                .match
+                .ui_sheets_match_edit_table_sheet
+                .withMinimumNotGreaterThanMaximum,
       );
       return;
     }
@@ -235,9 +247,10 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     if (_maxPlayers < _currentSubscriberCount) {
       await showErrorDialog(
         context,
-        title: t.match.ui_sheets_match_edit_table_sheet.l237c16,
+        title:
+            t.match.ui_sheets_match_edit_table_sheet.tooManyPlayersSubscribed,
         description:
-            'There are already $_currentSubscriberCount players subscribed. ${t.match.ui_sheets_match_edit_table_sheet.l240c13}',
+            'There are already $_currentSubscriberCount players subscribed. ${t.match.ui_sheets_match_edit_table_sheet.youCannotSetTheMaximumBelowThatNumber}',
       );
       return;
     }
@@ -260,9 +273,9 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       }
       await showErrorDialog(
         context,
-        title: t.match.ui_sheets_match_edit_table_sheet.l263c16,
+        title: t.match.ui_sheets_match_edit_table_sheet.timeIsTooSoon,
         description:
-            '${t.match.ui_sheets_match_edit_table_sheet.l265c13}$_minScheduleMinutes minutes in the future.',
+            '${t.match.ui_sheets_match_edit_table_sheet.theScheduledTimeMustBeAtLeast}$_minScheduleMinutes minutes in the future.',
       );
       return;
     }
@@ -276,9 +289,9 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       }
       await showErrorDialog(
         context,
-        title: t.match.ui_sheets_match_edit_table_sheet.l280c16,
+        title: t.match.ui_sheets_match_edit_table_sheet.dateIsTooFar,
         description:
-            '${t.match.ui_sheets_match_edit_table_sheet.l282c13}$_maxScheduleDays days in the future.',
+            '${t.match.ui_sheets_match_edit_table_sheet.theScheduledTimeCannotBeMoreThan}$_maxScheduleDays days in the future.',
       );
       return;
     }

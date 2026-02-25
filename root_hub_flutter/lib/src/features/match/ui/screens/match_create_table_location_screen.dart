@@ -57,9 +57,14 @@ class _MatchCreateTableLocationScreenState
     if (state.selectedLocation == null) {
       await showErrorDialog(
         context,
-        title: t.match.ui_screens_match_create_table_location_screen.l59c16,
-        description:
-            t.match.ui_screens_match_create_table_location_screen.l61c13,
+        title: t
+            .match
+            .ui_screens_match_create_table_location_screen
+            .locationRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_location_screen
+            .chooseOneLocationFromTheListBeforeCreatingTheTable,
       );
       return;
     }
@@ -123,7 +128,7 @@ class _MatchCreateTableLocationScreenState
                         t
                             .match
                             .ui_screens_match_create_table_location_screen
-                            .l122c25,
+                            .chooseTableLocation,
                         style: GoogleFonts.cinzel(
                           fontSize: 23,
                           fontWeight: FontWeight.w800,
@@ -152,7 +157,7 @@ class _MatchCreateTableLocationScreenState
                     hintText: t
                         .match
                         .ui_screens_match_create_table_location_screen
-                        .l148c31,
+                        .searchLocationGooglePlaces,
                     filled: true,
                     fillColor: colorScheme.surface.withValues(alpha: 0.94),
                     border: OutlineInputBorder(
@@ -164,7 +169,10 @@ class _MatchCreateTableLocationScreenState
               Padding(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                 child: Text(
-                  t.match.ui_screens_match_create_table_location_screen.l160c19,
+                  t
+                      .match
+                      .ui_screens_match_create_table_location_screen
+                      .tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
@@ -210,7 +218,7 @@ class _MatchCreateTableLocationScreenState
                         t
                             .match
                             .ui_screens_match_create_table_location_screen
-                            .l203c25,
+                            .searchResults,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.w900,
@@ -246,7 +254,7 @@ class _MatchCreateTableLocationScreenState
                       t
                           .match
                           .ui_screens_match_create_table_location_screen
-                          .l236c23,
+                          .previouslySelectedLocations,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
@@ -300,7 +308,7 @@ class _MatchCreateTableLocationScreenState
                             t
                                 .match
                                 .ui_screens_match_create_table_location_screen
-                                .l287c29,
+                                .continueButton,
                             style: GoogleFonts.getFont(
                               'MedievalSharp',
                               fontSize: 22,

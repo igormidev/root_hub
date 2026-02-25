@@ -152,8 +152,8 @@ class MatchTableCardWidget extends StatelessWidget {
               Tooltip(
                 triggerMode: TooltipTriggerMode.tap,
                 message:
-                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : t.match.ui_screens_match_table_card_widget.l154c89} subscribed and '
-                    '$remainingSeats ${remainingSeats == 1 ? t.match.ui_screens_match_table_card_widget.l155c62 : t.match.ui_screens_match_table_card_widget.l155c72} remaining to close the table.',
+                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : t.match.ui_screens_match_table_card_widget.s} subscribed and '
+                    '$remainingSeats ${remainingSeats == 1 ? t.match.ui_screens_match_table_card_widget.place : t.match.ui_screens_match_table_card_widget.places} remaining to close the table.',
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 10,
@@ -233,7 +233,10 @@ class MatchTableCardWidget extends StatelessWidget {
                 ),
               ),
               Tooltip(
-                message: t.match.ui_screens_match_table_card_widget.l235c26,
+                message: t
+                    .match
+                    .ui_screens_match_table_card_widget
+                    .openFullLocationDetails,
                 child: IconButton(
                   visualDensity: VisualDensity.compact,
                   onPressed: () {
@@ -263,7 +266,10 @@ class MatchTableCardWidget extends StatelessWidget {
               if (isClosed)
                 MatchInfoChipWidget(
                   icon: Icons.lock_rounded,
-                  text: t.match.ui_screens_match_table_card_widget.l265c25,
+                  text: t
+                      .match
+                      .ui_screens_match_table_card_widget
+                      .subscriptionsClosed,
                 ),
               if (distanceLabel != null)
                 MatchInfoChipWidget(
@@ -273,7 +279,10 @@ class MatchTableCardWidget extends StatelessWidget {
               if (isSubscribed)
                 MatchInfoChipWidget(
                   icon: Icons.chat_bubble_rounded,
-                  text: t.match.ui_screens_match_table_card_widget.l275c25,
+                  text: t
+                      .match
+                      .ui_screens_match_table_card_widget
+                      .tapCardToOpenChat,
                 ),
               if (canReportResultNow) MatchReportAvailableChipWidget(),
             ],
@@ -360,7 +369,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 ],
               ),
               child: Text(
-                t.match.ui_screens_match_table_card_widget.l362c17,
+                t.match.ui_screens_match_table_card_widget.subscribed,
                 style: GoogleFonts.getFont(
                   'MedievalSharp',
                   color: Colors.white,

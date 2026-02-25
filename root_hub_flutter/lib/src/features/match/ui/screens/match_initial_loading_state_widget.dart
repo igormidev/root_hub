@@ -29,7 +29,10 @@ class MatchInitialLoadingStateWidget extends StatelessWidget {
           ),
           SizedBox(height: 12),
           Text(
-            t.match.ui_screens_match_initial_loading_state_widget.l31c13,
+            t
+                .match
+                .ui_screens_match_initial_loading_state_widget
+                .loadingNearbyTables,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

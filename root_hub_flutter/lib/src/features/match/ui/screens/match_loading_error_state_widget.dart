@@ -47,7 +47,7 @@ class MatchLoadingErrorStateWidget extends StatelessWidget {
             onPressed: onRetry,
             icon: Icon(Icons.refresh_rounded),
             label: Text(
-              t.match.ui_screens_match_loading_error_state_widget.l48c31,
+              t.match.ui_screens_match_loading_error_state_widget.tryAgain,
             ),
           ),
         ],

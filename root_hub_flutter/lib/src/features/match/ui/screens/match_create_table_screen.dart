@@ -89,8 +89,11 @@ class _MatchCreateTableScreenState
     if (selectedDate.isBefore(today)) {
       await showErrorDialog(
         context,
-        title: t.match.ui_screens_match_create_table_screen.l91c16,
-        description: t.match.ui_screens_match_create_table_screen.l92c22,
+        title: t.match.ui_screens_match_create_table_screen.invalidDate2,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .youCannotSelectADayInThePast2,
       );
       return;
     }
@@ -123,8 +126,11 @@ class _MatchCreateTableScreenState
     if (state.title.trim().isEmpty) {
       await showErrorDialog(
         context,
-        title: t.match.ui_screens_match_create_table_screen.l125c16,
-        description: t.match.ui_screens_match_create_table_screen.l127c13,
+        title: t.match.ui_screens_match_create_table_screen.titleRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .addATitleSoPlayersCanQuicklyIdentifyYourTableExampleDowntownCafNight,
       );
       return;
     }
@@ -133,8 +139,11 @@ class _MatchCreateTableScreenState
     if (scheduledDate == null) {
       await showErrorDialog(
         context,
-        title: t.match.ui_screens_match_create_table_screen.l136c16,
-        description: t.match.ui_screens_match_create_table_screen.l137c22,
+        title: t.match.ui_screens_match_create_table_screen.dayRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .selectTheDayForThisTableBeforeContinuing,
       );
       return;
     }
@@ -142,8 +151,11 @@ class _MatchCreateTableScreenState
     if (scheduledDate.isBefore(today)) {
       await showErrorDialog(
         context,
-        title: t.match.ui_screens_match_create_table_screen.l145c16,
-        description: t.match.ui_screens_match_create_table_screen.l146c22,
+        title: t.match.ui_screens_match_create_table_screen.invalidDate,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .youCannotSelectADayInThePast,
       );
       return;
     }
@@ -151,8 +163,11 @@ class _MatchCreateTableScreenState
     if (state.scheduledTime == null) {
       await showErrorDialog(
         context,
-        title: t.match.ui_screens_match_create_table_screen.l154c16,
-        description: t.match.ui_screens_match_create_table_screen.l155c22,
+        title: t.match.ui_screens_match_create_table_screen.startHourRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .selectTheStartHourForThisTableBeforeContinuing,
       );
       return;
     }
@@ -214,7 +229,10 @@ class _MatchCreateTableScreenState
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          t.match.ui_screens_match_create_table_screen.l217c27,
+                          t
+                              .match
+                              .ui_screens_match_create_table_screen
+                              .hostANewTable,
                           style: GoogleFonts.cinzel(
                             fontSize: 26,
                             fontWeight: FontWeight.w800,
@@ -226,7 +244,10 @@ class _MatchCreateTableScreenState
                   ),
                   SizedBox(height: 10),
                   Text(
-                    t.match.ui_screens_match_create_table_screen.l229c21,
+                    t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .setTableDetailsFirstOnTheNextScreenYouWillChooseTheLocation,
                     style: GoogleFonts.nunitoSans(
                       fontSize: 15,
                       color: colorScheme.onSurfaceVariant,
@@ -236,9 +257,12 @@ class _MatchCreateTableScreenState
                   ),
                   SizedBox(height: 18),
                   MatchCreateTableSectionTitleWidget(
-                    title: t.match.ui_screens_match_create_table_screen.l239c28,
-                    description:
-                        t.match.ui_screens_match_create_table_screen.l241c25,
+                    title:
+                        t.match.ui_screens_match_create_table_screen.tableTitle,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .thisCanBeAnythingThatHelpsIdentifyTheTableLikeAPlaceNameOrEventStyle,
                   ),
                   SizedBox(height: 8),
                   TextField(
@@ -246,8 +270,10 @@ class _MatchCreateTableScreenState
                     textInputAction: TextInputAction.next,
                     maxLength: 80,
                     decoration: InputDecoration(
-                      hintText:
-                          t.match.ui_screens_match_create_table_screen.l249c33,
+                      hintText: t
+                          .match
+                          .ui_screens_match_create_table_screen
+                          .exampleSaturdayRootAtLanternCaf,
                       filled: true,
                       fillColor: colorScheme.surface.withValues(alpha: 0.9),
                       border: OutlineInputBorder(
@@ -257,9 +283,14 @@ class _MatchCreateTableScreenState
                   ),
                   SizedBox(height: 12),
                   MatchCreateTableSectionTitleWidget(
-                    title: t.match.ui_screens_match_create_table_screen.l259c28,
-                    description:
-                        t.match.ui_screens_match_create_table_screen.l261c25,
+                    title: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .descriptionOptional,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .addExtraDetailsLikeExpansionsAvailableParkingTipsOrReferencePoints,
                   ),
                   SizedBox(height: 8),
                   TextField(
@@ -268,8 +299,10 @@ class _MatchCreateTableScreenState
                     maxLines: 6,
                     maxLength: 400,
                     decoration: InputDecoration(
-                      hintText:
-                          t.match.ui_screens_match_create_table_screen.l271c27,
+                      hintText: t
+                          .match
+                          .ui_screens_match_create_table_screen
+                          .exampleWeHaveMarauderExpansionAndSpareSleeves,
                       filled: true,
                       fillColor: colorScheme.surface.withValues(alpha: 0.9),
                       border: OutlineInputBorder(
@@ -279,9 +312,14 @@ class _MatchCreateTableScreenState
                   ),
                   SizedBox(height: 10),
                   MatchCreateTableSectionTitleWidget(
-                    title: t.match.ui_screens_match_create_table_screen.l281c28,
-                    description:
-                        t.match.ui_screens_match_create_table_screen.l283c25,
+                    title: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .playersRange,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .defaultIs34YouCanSetBetween2And6Players,
                   ),
                   SizedBox(height: 8),
                   Container(
@@ -298,7 +336,7 @@ class _MatchCreateTableScreenState
                             title: t
                                 .match
                                 .ui_screens_match_create_table_screen
-                                .l297c36,
+                                .minimum,
                             value: state.minPlayers,
                             onDecrease: state.minPlayers > 2
                                 ? ref
@@ -322,7 +360,7 @@ class _MatchCreateTableScreenState
                             title: t
                                 .match
                                 .ui_screens_match_create_table_screen
-                                .l318c36,
+                                .maximum,
                             value: state.maxPlayers,
                             onDecrease: state.maxPlayers > state.minPlayers
                                 ? ref
@@ -341,9 +379,12 @@ class _MatchCreateTableScreenState
                   ),
                   SizedBox(height: 12),
                   MatchCreateTableSectionTitleWidget(
-                    title: t.match.ui_screens_match_create_table_screen.l337c28,
-                    description:
-                        t.match.ui_screens_match_create_table_screen.l339c25,
+                    title:
+                        t.match.ui_screens_match_create_table_screen.schedule,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .pickTheDayAndStartHourChooseATimeYouCanReliablyShowUp,
                   ),
                   SizedBox(height: 8),
                   Row(
@@ -367,9 +408,14 @@ class _MatchCreateTableScreenState
                   ),
                   SizedBox(height: 12),
                   MatchCreateTableSectionTitleWidget(
-                    title: t.match.ui_screens_match_create_table_screen.l363c28,
-                    description:
-                        t.match.ui_screens_match_create_table_screen.l365c25,
+                    title: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .willYouTheHostPlay,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .ifYouAreAVenueBoardGameClubOrOrganizerBringingPlayersTogetherButNotJoini,
                   ),
                   SizedBox(height: 8),
                   Container(
@@ -390,11 +436,11 @@ class _MatchCreateTableScreenState
                             ? t
                                   .match
                                   .ui_screens_match_create_table_screen
-                                  .l383c31
+                                  .yesIWillPlayThisMatch
                             : t
                                   .match
                                   .ui_screens_match_create_table_screen
-                                  .l384c31,
+                                  .noIAmOnlyHostingThisTable,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
@@ -434,7 +480,10 @@ class _MatchCreateTableScreenState
                       ),
                     ),
                     child: Text(
-                      t.match.ui_screens_match_create_table_screen.l424c23,
+                      t
+                          .match
+                          .ui_screens_match_create_table_screen
+                          .continueButton,
                       style: GoogleFonts.getFont(
                         'MedievalSharp',
                         fontSize: 22,

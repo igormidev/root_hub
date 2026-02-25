@@ -46,7 +46,7 @@ class MatchTableInfoErrorWidget extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: onClose,
                   child: Text(
-                    t.match.ui_sheets_match_table_info_error_widget.l47c37,
+                    t.match.ui_sheets_match_table_info_error_widget.close,
                   ),
                 ),
               ),
@@ -56,7 +56,7 @@ class MatchTableInfoErrorWidget extends StatelessWidget {
                   onPressed: onRetry,
                   icon: Icon(Icons.refresh_rounded),
                   label: Text(
-                    t.match.ui_sheets_match_table_info_error_widget.l55c37,
+                    t.match.ui_sheets_match_table_info_error_widget.retry,
                   ),
                 ),
               ),

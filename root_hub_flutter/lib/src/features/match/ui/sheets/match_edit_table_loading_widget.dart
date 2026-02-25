@@ -27,7 +27,10 @@ class MatchEditTableLoadingWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 14),
                 Text(
-                  t.match.ui_sheets_match_edit_table_loading_widget.l29c19,
+                  t
+                      .match
+                      .ui_sheets_match_edit_table_loading_widget
+                      .loadingTableDetails,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,

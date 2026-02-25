@@ -105,7 +105,7 @@ class _DashboardFactionEditorScreenState
                               t
                                   .dashboard
                                   .ui_screens_dashboard_faction_editor_screen
-                                  .l104c31,
+                                  .changeFavoriteFaction,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.cinzel(
                                 fontSize: 28,
@@ -126,7 +126,10 @@ class _DashboardFactionEditorScreenState
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                t.dashboard.ui_screens_dashboard_faction_editor_screen.l125c17,
+                t
+                    .dashboard
+                    .ui_screens_dashboard_faction_editor_screen
+                    .chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,

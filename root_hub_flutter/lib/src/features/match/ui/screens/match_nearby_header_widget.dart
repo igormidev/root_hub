@@ -33,7 +33,7 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  t.match.ui_screens_match_nearby_header_widget.l35c19,
+                  t.match.ui_screens_match_nearby_header_widget.matchFinder,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
@@ -46,7 +46,10 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  t.match.ui_screens_match_nearby_header_widget.l48c19,
+                  t
+                      .match
+                      .ui_screens_match_nearby_header_widget
+                      .nearbyMatchTables,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -81,7 +84,10 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            t.match.ui_screens_match_nearby_header_widget.l83c13,
+            t
+                .match
+                .ui_screens_match_nearby_header_widget
+                .onlyTablesThatDidNotStartMoreThan2HoursAgoAreListed,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,

@@ -99,7 +99,7 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                   t
                       .register_match
                       .ui_sheets_register_match_search_registered_player_sheet
-                      .l98c19,
+                      .addRegisteredPlayer,
                   style:
                       Theme.of(
                         context,
@@ -117,7 +117,7 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                     labelText: t
                         .register_match
                         .ui_sheets_register_match_search_registered_player_sheet
-                        .l113c32,
+                        .searchByDisplayName,
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.search_rounded),
                     suffixIcon: query.isEmpty
@@ -164,7 +164,7 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                                 ? t
                                       .register_match
                                       .ui_sheets_register_match_search_registered_player_sheet
-                                      .l157c35
+                                      .noRegisteredPlayersWereFound
                                 : 'No players found for "$query".',
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyMedium
@@ -190,11 +190,11 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                                   ? t
                                         .register_match
                                         .ui_sheets_register_match_search_registered_player_sheet
-                                        .l180c37
+                                        .alreadyAddedToThisReport
                                   : t
                                         .register_match
                                         .ui_sheets_register_match_search_registered_player_sheet
-                                        .l181c37,
+                                        .tapToAdd,
                             ),
                             enabled: !alreadyAdded,
                             onTap: alreadyAdded

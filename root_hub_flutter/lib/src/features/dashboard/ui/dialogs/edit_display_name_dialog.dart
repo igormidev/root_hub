@@ -71,7 +71,7 @@ class _EditDisplayNameDialogState extends ConsumerState<EditDisplayNameDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              t.dashboard.ui_dialogs_edit_display_name_dialog.l73c15,
+              t.dashboard.ui_dialogs_edit_display_name_dialog.editDisplayName,
               style: GoogleFonts.cinzel(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
@@ -79,7 +79,10 @@ class _EditDisplayNameDialogState extends ConsumerState<EditDisplayNameDialog> {
             ),
             SizedBox(height: 8),
             Text(
-              t.dashboard.ui_dialogs_edit_display_name_dialog.l81c15,
+              t
+                  .dashboard
+                  .ui_dialogs_edit_display_name_dialog
+                  .thisIsHowPlayersWillSeeYouAcrossRootHub,
               textAlign: TextAlign.center,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w700,
@@ -102,7 +105,7 @@ class _EditDisplayNameDialogState extends ConsumerState<EditDisplayNameDialog> {
                             Navigator.of(context).pop(false);
                           },
                     child: Text(
-                      t.dashboard.ui_dialogs_edit_display_name_dialog.l104c23,
+                      t.dashboard.ui_dialogs_edit_display_name_dialog.cancel,
                       style: GoogleFonts.nunitoSans(
                         fontWeight: FontWeight.w700,
                       ),
@@ -123,7 +126,7 @@ class _EditDisplayNameDialogState extends ConsumerState<EditDisplayNameDialog> {
                             t
                                 .dashboard
                                 .ui_dialogs_edit_display_name_dialog
-                                .l122c29,
+                                .save,
                             style: GoogleFonts.nunitoSans(
                               fontWeight: FontWeight.w800,
                             ),

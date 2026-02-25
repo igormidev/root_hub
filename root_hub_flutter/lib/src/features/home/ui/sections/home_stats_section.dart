@@ -41,23 +41,35 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
   static final _metricConfigs = <_StatsMetricConfig>[
     _StatsMetricConfig(
       type: _StatsMetricType.winRate,
-      title: t.home.ui_sections_home_stats_section.l43c14,
-      description: t.home.ui_sections_home_stats_section.l44c20,
+      title: t.home.ui_sections_home_stats_section.factionWinRate,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .whoIsWinningTheMostOftenRightNow,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.playedGames,
-      title: t.home.ui_sections_home_stats_section.l48c14,
-      description: t.home.ui_sections_home_stats_section.l49c20,
+      title: t.home.ui_sections_home_stats_section.playedGames,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .howOftenEachFactionAppearsInCompletedGames,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.avgPoints,
-      title: t.home.ui_sections_home_stats_section.l53c14,
-      description: t.home.ui_sections_home_stats_section.l54c20,
+      title: t.home.ui_sections_home_stats_section.averagePoints,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .averageScorePerFactionWhenPointsWereTracked,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.totalWins,
-      title: t.home.ui_sections_home_stats_section.l58c14,
-      description: t.home.ui_sections_home_stats_section.l59c20,
+      title: t.home.ui_sections_home_stats_section.totalWins,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .absoluteNumberOfWinsForEachFaction,
     ),
   ];
 
@@ -401,7 +413,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         value: _formatPercentValue(
           _averageNonZeroValue(valuesByFaction.values),
         ),
-        label: t.home.ui_sections_home_stats_section.l403c16,
+        label: t.home.ui_sections_home_stats_section.allFactionsAvg2,
       ),
       _StatsMetricType.playedGames => _MetricCenterValue(
         value: _formatGroupedInt(
@@ -410,15 +422,15 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             (sum, value) => sum + value.round(),
           ),
         ),
-        label: t.home.ui_sections_home_stats_section.l412c16,
+        label: t.home.ui_sections_home_stats_section.allFactionsTotal2,
       ),
       _StatsMetricType.avgPoints => _MetricCenterValue(
         value: _formatDecimalValue(stats.avgPoints),
-        label: t.home.ui_sections_home_stats_section.l416c16,
+        label: t.home.ui_sections_home_stats_section.allFactionsAvg,
       ),
       _StatsMetricType.totalWins => _MetricCenterValue(
         value: _formatGroupedInt(stats.totalWins),
-        label: t.home.ui_sections_home_stats_section.l420c16,
+        label: t.home.ui_sections_home_stats_section.allFactionsTotal,
       ),
     };
   }

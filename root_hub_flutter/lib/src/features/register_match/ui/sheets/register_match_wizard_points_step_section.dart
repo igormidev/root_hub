@@ -39,11 +39,11 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
           t
                   .register_match
                   .ui_sheets_register_match_wizard_points_step_section
-                  .l39c11 +
+                  .forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt +
               t
                   .register_match
                   .ui_sheets_register_match_wizard_points_step_section
-                  .l40c11,
+                  .failedDominanceAlwaysCountsAsNoPoints,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -93,7 +93,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                             t
                                 .register_match
                                 .ui_sheets_register_match_wizard_points_step_section
-                                .l87c29,
+                                .winner,
                             style: theme.textTheme.labelSmall?.copyWith(
                               fontWeight: FontWeight.w900,
                               color: colorScheme.onPrimaryContainer,
@@ -113,7 +113,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                             t
                                 .register_match
                                 .ui_sheets_register_match_wizard_points_step_section
-                                .l103c39,
+                                .points2,
                           ),
                         ),
                         ButtonSegment<_ParticipantScoreMode>(
@@ -123,7 +123,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                             t
                                 .register_match
                                 .ui_sheets_register_match_wizard_points_step_section
-                                .l108c39,
+                                .failedDominance,
                           ),
                         ),
                       ],
@@ -146,7 +146,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                       label: t
                           .register_match
                           .ui_sheets_register_match_wizard_points_step_section
-                          .l127c30,
+                          .winnerByPoints,
                       value: '30',
                     )
                   else if (participant.key == winnerParticipantKey &&
@@ -155,7 +155,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                       label: t
                           .register_match
                           .ui_sheets_register_match_wizard_points_step_section
-                          .l133c30,
+                          .winnerByDominance,
                       value: 'No points',
                     )
                   else if (participant.scoreMode ==
@@ -164,7 +164,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                       label: t
                           .register_match
                           .ui_sheets_register_match_wizard_points_step_section
-                          .l139c30,
+                          .dominanceAttempt,
                       value: 'Failed (no points)',
                     )
                   else
@@ -179,11 +179,11 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                         labelText: t
                             .register_match
                             .ui_sheets_register_match_wizard_points_step_section
-                            .l151c36,
+                            .points,
                         hintText: t
                             .register_match
                             .ui_sheets_register_match_wizard_points_step_section
-                            .l152c35,
+                            .value0To29,
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (_) {

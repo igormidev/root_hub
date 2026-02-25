@@ -42,11 +42,11 @@ class _RegisterMatchWizardBottomActionsSection extends StatelessWidget {
                       ? t
                             .register_match
                             .ui_sheets_register_match_wizard_bottom_actions_section
-                            .l40c43
+                            .cancel
                       : t
                             .register_match
                             .ui_sheets_register_match_wizard_bottom_actions_section
-                            .l40c54,
+                            .back,
                 ),
               ),
             ),
@@ -73,11 +73,11 @@ class _RegisterMatchWizardBottomActionsSection extends StatelessWidget {
                             ? t
                                   .register_match
                                   .ui_sheets_register_match_wizard_bottom_actions_section
-                                  .l61c41
+                                  .submitReport
                             : t
                                   .register_match
                                   .ui_sheets_register_match_wizard_bottom_actions_section
-                                  .l61c59,
+                                  .continueButton,
                       ),
               ),
             ),

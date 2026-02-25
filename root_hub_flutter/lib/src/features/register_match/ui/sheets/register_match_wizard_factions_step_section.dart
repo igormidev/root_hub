@@ -28,7 +28,7 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_factions_step_section
-              .l28c11,
+              .value2SelectFactions,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -38,7 +38,7 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_factions_step_section
-              .l35c11,
+              .chooseTheFactionUsedByEachPlayerInThisMatch,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -74,14 +74,14 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
                       labelText: t
                           .register_match
                           .ui_sheets_register_match_wizard_factions_step_section
-                          .l68c34,
+                          .faction,
                       border: OutlineInputBorder(),
                     ),
                     hint: Text(
                       t
                           .register_match
                           .ui_sheets_register_match_wizard_factions_step_section
-                          .l71c38,
+                          .selectFaction,
                     ),
                     items:
                         availableFactionsForParticipant(

@@ -186,7 +186,10 @@ class _AuthOnboardingProfileScreenState
               padding: EdgeInsets.symmetric(horizontal: 16),
               child:
                   Text(
-                        t.auth.auth_onboarding_profile_screen.l188c25,
+                        t
+                            .auth
+                            .auth_onboarding_profile_screen
+                            .setYourHubIdentity,
                         style: GoogleFonts.cinzel(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -203,8 +206,14 @@ class _AuthOnboardingProfileScreenState
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                t.auth.auth_onboarding_profile_screen.l205c17 +
-                    t.auth.auth_onboarding_profile_screen.l206c17,
+                t
+                        .auth
+                        .auth_onboarding_profile_screen
+                        .yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub +
+                    t
+                        .auth
+                        .auth_onboarding_profile_screen
+                        .currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,
@@ -287,7 +296,10 @@ class _AuthOnboardingProfileScreenState
                                 ),
                               ),
                               child: Text(
-                                t.auth.auth_onboarding_profile_screen.l289c33,
+                                t
+                                    .auth
+                                    .auth_onboarding_profile_screen
+                                    .continueButton,
                                 style: GoogleFonts.getFont(
                                   'MedievalSharp',
                                   fontSize: 22,

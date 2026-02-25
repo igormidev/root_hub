@@ -103,9 +103,12 @@ class _RegisterMatchPickerSheetState
 
       await showErrorDialog(
         context,
-        title: t.register_match.ui_sheets_register_match_picker_sheet.l105c16,
+        title: t
+            .register_match
+            .ui_sheets_register_match_picker_sheet
+            .resultRegistrationNotAvailableYet,
         description:
-            '${t.register_match.ui_sheets_register_match_picker_sheet.l107c13}Try again after $earliestAllowedRegistrationTimeLabel.',
+            '${t.register_match.ui_sheets_register_match_picker_sheet.youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart}Try again after $earliestAllowedRegistrationTimeLabel.',
       );
       return;
     }

@@ -126,8 +126,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
       await showErrorDialog(
         context,
-        title: t.dashboard.ui_screens_dashboard_screen.l128c16,
-        description: t.dashboard.ui_screens_dashboard_screen.l130c13,
+        title: t
+            .dashboard
+            .ui_screens_dashboard_screen
+            .unableToAccessCameraOrGallery,
+        description: t
+            .dashboard
+            .ui_screens_dashboard_screen
+            .allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain,
       );
       return;
     }
@@ -166,7 +172,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       builder: (dialogContext) {
         return CupertinoActionSheet(
           title: Text(
-            t.dashboard.ui_screens_dashboard_screen.l168c29,
+            t.dashboard.ui_screens_dashboard_screen.changeProfilePhoto,
           ),
           actions: [
             CupertinoActionSheetAction(
@@ -174,7 +180,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 Navigator.of(dialogContext).pop(ImageSource.camera);
               },
               child: Text(
-                t.dashboard.ui_screens_dashboard_screen.l174c33,
+                t.dashboard.ui_screens_dashboard_screen.takePhoto2,
               ),
             ),
             CupertinoActionSheetAction(
@@ -182,7 +188,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 Navigator.of(dialogContext).pop(ImageSource.gallery);
               },
               child: Text(
-                t.dashboard.ui_screens_dashboard_screen.l180c33,
+                t.dashboard.ui_screens_dashboard_screen.chooseFromLibrary,
               ),
             ),
           ],
@@ -192,7 +198,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               Navigator.of(dialogContext).pop();
             },
             child: Text(
-              t.dashboard.ui_screens_dashboard_screen.l188c31,
+              t.dashboard.ui_screens_dashboard_screen.cancel,
             ),
           ),
         );
@@ -212,7 +218,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ListTile(
                 leading: Icon(Icons.photo_camera_rounded),
                 title: Text(
-                  t.dashboard.ui_screens_dashboard_screen.l206c35,
+                  t.dashboard.ui_screens_dashboard_screen.takePhoto,
                 ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
@@ -221,7 +227,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ListTile(
                 leading: Icon(Icons.photo_library_rounded),
                 title: Text(
-                  t.dashboard.ui_screens_dashboard_screen.l213c35,
+                  t.dashboard.ui_screens_dashboard_screen.chooseFromGallery,
                 ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
@@ -329,7 +335,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                   t
                                       .dashboard
                                       .ui_screens_dashboard_screen
-                                      .l317c35,
+                                      .rootHub,
                                   style: Theme.of(context).textTheme.titleLarge
                                       ?.copyWith(
                                         fontWeight: FontWeight.w700,
@@ -449,7 +455,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: t.dashboard.ui_screens_dashboard_screen.l437c32,
+                        label: t.dashboard.ui_screens_dashboard_screen.home,
                         icon: Icons.cottage_outlined,
                         selectedIcon: Icons.cottage_rounded,
                         selected: selectedTab == DashboardTab.home,
@@ -463,7 +469,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: t.dashboard.ui_screens_dashboard_screen.l451c32,
+                        label: t.dashboard.ui_screens_dashboard_screen.match,
                         icon: Icons.groups_outlined,
                         selectedIcon: Icons.groups_rounded,
                         selected: selectedTab == DashboardTab.match,
@@ -477,7 +483,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: t.dashboard.ui_screens_dashboard_screen.l465c32,
+                        label: t.dashboard.ui_screens_dashboard_screen.shop,
                         icon: Icons.storefront_outlined,
                         selectedIcon: Icons.storefront_rounded,
                         selected: selectedTab == DashboardTab.shop,

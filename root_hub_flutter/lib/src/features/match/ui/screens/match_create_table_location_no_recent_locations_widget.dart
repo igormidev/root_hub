@@ -21,7 +21,7 @@ class MatchCreateTableLocationNoRecentLocationsWidget extends StatelessWidget {
         t
             .match
             .ui_screens_match_create_table_location_no_recent_locations_widget
-            .l20c9,
+            .noPreviousLocationsYetSearchAndSelectOneAbove,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w700,

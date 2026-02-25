@@ -142,11 +142,11 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
                         ? t
                               .register_match
                               .ui_sheets_register_match_picker_match_item_card
-                              .l140c38
+                              .tapToReport
                         : t
                               .register_match
                               .ui_sheets_register_match_picker_match_item_card
-                              .l140c56,
+                              .notAvailableYet,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w900,
                       color: canRegisterNow

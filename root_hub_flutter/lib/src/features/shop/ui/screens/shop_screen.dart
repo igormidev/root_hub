@@ -38,15 +38,21 @@ class ShopScreen extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                t.shop.ui_screens_shop_screen.l40c17,
+                t.shop.ui_screens_shop_screen.shopFeaturePlaceholder,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               SizedBox(height: 8),
               Text(
-                t.shop.ui_screens_shop_screen.l47c17 +
-                    t.shop.ui_screens_shop_screen.l48c17,
+                t
+                        .shop
+                        .ui_screens_shop_screen
+                        .thisAreaWillHostFutureDigitalGoodsCosmeticsAnd +
+                    t
+                        .shop
+                        .ui_screens_shop_screen
+                        .communityDrivenBundlesForRootPlayers,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
@@ -67,15 +73,21 @@ class ShopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                t.shop.ui_screens_shop_screen.l69c17,
+                t.shop.ui_screens_shop_screen.roadmapPlaceholder,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               SizedBox(height: 8),
               Text(
-                t.shop.ui_screens_shop_screen.l76c17 +
-                    t.shop.ui_screens_shop_screen.l77c17,
+                t
+                        .shop
+                        .ui_screens_shop_screen
+                        .plannedThemedProfilePacksFactionCosmeticsAndEvent +
+                    t
+                        .shop
+                        .ui_screens_shop_screen
+                        .supporterPacksLinkedToCommunityTournaments,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   height: 1.4,

@@ -42,7 +42,7 @@ class AuthOnboardingContinueButtonWidget extends ConsumerWidget {
               ),
             ),
             child: Text(
-              t.auth.auth_onboarding_continue_button_widget.l44c15,
+              t.auth.auth_onboarding_continue_button_widget.continueButton,
               style: GoogleFonts.getFont(
                 'MedievalSharp',
                 fontSize: 22,

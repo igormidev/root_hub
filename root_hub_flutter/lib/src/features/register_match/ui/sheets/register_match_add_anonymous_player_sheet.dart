@@ -133,7 +133,7 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                   t
                       .register_match
                       .ui_sheets_register_match_add_anonymous_player_sheet
-                      .l132c19,
+                      .addAnonymousPlayer,
                   style:
                       Theme.of(
                         context,
@@ -153,7 +153,7 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                         labelText: t
                             .register_match
                             .ui_sheets_register_match_add_anonymous_player_sheet
-                            .l149c36,
+                            .firstName,
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -165,7 +165,7 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                         labelText: t
                             .register_match
                             .ui_sheets_register_match_add_anonymous_player_sheet
-                            .l158c36,
+                            .lastName,
                         border: OutlineInputBorder(),
                       ),
                       onSubmitted: (_) => _createAnonymousPlayer(),
@@ -189,7 +189,7 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                                 t
                                     .register_match
                                     .ui_sheets_register_match_add_anonymous_player_sheet
-                                    .l178c42,
+                                    .createAndAddPlayer,
                               ),
                       ),
                     ),
@@ -220,7 +220,7 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                             t
                                 .register_match
                                 .ui_sheets_register_match_add_anonymous_player_sheet
-                                .l205c29,
+                                .noAnonymousPlayersYetCreateOneUsingFirstAndLastName,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
@@ -249,11 +249,11 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                                   ? t
                                         .register_match
                                         .ui_sheets_register_match_add_anonymous_player_sheet
-                                        .l231c37
+                                        .alreadyAddedToThisReport
                                   : t
                                         .register_match
                                         .ui_sheets_register_match_add_anonymous_player_sheet
-                                        .l232c37,
+                                        .tapToAdd,
                             ),
                             enabled: !alreadyAdded,
                             onTap: alreadyAdded || playerId == null

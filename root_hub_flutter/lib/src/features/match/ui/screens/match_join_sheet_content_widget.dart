@@ -79,7 +79,10 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.match.ui_screens_match_join_sheet_content_widget.l81c19,
+                  t
+                      .match
+                      .ui_screens_match_join_sheet_content_widget
+                      .confirmTableSubscription,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
@@ -130,11 +133,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                             t
                                     .match
                                     .ui_screens_match_join_sheet_content_widget
-                                    .l129c29 +
+                                    .theHostHasClosedSubscriptionsForThisTable +
                                 t
                                     .match
                                     .ui_screens_match_join_sheet_content_widget
-                                    .l130c29,
+                                    .newPlayersCannotJoinAtThisTime,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
                                   color: colorScheme.onErrorContainer,
@@ -159,7 +162,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                       t
                           .match
                           .ui_screens_match_join_sheet_content_widget
-                          .l151c39,
+                          .seeTableChat,
                     ),
                     style: FilledButton.styleFrom(
                       minimumSize: Size(double.infinity, 50),
@@ -189,7 +192,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                           t
                               .match
                               .ui_screens_match_join_sheet_content_widget
-                              .l175c56,
+                              .unknownHost,
                     ),
                     MatchInfoChipWidget(
                       icon: Icons.social_distance_rounded,
@@ -249,7 +252,10 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 14),
                 Text(
-                  t.match.ui_screens_match_join_sheet_content_widget.l235c19,
+                  t
+                      .match
+                      .ui_screens_match_join_sheet_content_widget
+                      .playersInThisMatch,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
@@ -260,11 +266,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                       ? t
                             .match
                             .ui_screens_match_join_sheet_content_widget
-                            .l243c25
+                            .noPlayersSubscribedYet
                       : t
                             .match
                             .ui_screens_match_join_sheet_content_widget
-                            .l244c25,
+                            .theseAreTheCurrentPlayersThatWillParticipate,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
@@ -285,7 +291,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                       t
                           .match
                           .ui_screens_match_join_sheet_content_widget
-                          .l262c23,
+                          .youCanBeTheFirstPlayerToLockThisTableIn,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -327,10 +333,7 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      t
-                          .match
-                          .ui_screens_match_join_sheet_content_widget
-                          .l303c39,
+                      t.match.ui_screens_match_join_sheet_content_widget.cancel,
                     ),
                   ),
                 ),
@@ -351,16 +354,16 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                           ? t
                                 .match
                                 .ui_screens_match_join_sheet_content_widget
-                                .l320c29
+                                .alreadySubscribed
                           : isClosed
                           ? t
                                 .match
                                 .ui_screens_match_join_sheet_content_widget
-                                .l322c29
+                                .subscriptionsClosed
                           : t
                                 .match
                                 .ui_screens_match_join_sheet_content_widget
-                                .l323c29,
+                                .confirmJoin,
                       style: GoogleFonts.getFont(
                         'MedievalSharp',
                         fontSize: 22,

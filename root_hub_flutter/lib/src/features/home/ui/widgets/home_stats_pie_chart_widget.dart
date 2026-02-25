@@ -69,7 +69,10 @@ class _HomeStatsPieChartWidgetState extends State<HomeStatsPieChartWidget> {
           child: Padding(
             padding: EdgeInsets.all(28),
             child: Text(
-              t.home.ui_widgets_home_stats_pie_chart_widget.l71c15,
+              t
+                  .home
+                  .ui_widgets_home_stats_pie_chart_widget
+                  .noValuesForThisMetricYet,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,

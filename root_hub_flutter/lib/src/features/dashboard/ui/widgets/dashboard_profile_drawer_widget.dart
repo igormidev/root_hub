@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
-class DashboardProfileDrawerWidget extends StatelessWidget {
+const _preferredLocaleKey = 'preferred_locale';
+const _deviceLocalePreferenceValue = 'device';
+
+class DashboardProfileDrawerWidget extends ConsumerWidget {
   const DashboardProfileDrawerWidget({
     required this.playerData,
     required this.profileImageUrl,
@@ -36,10 +41,36 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
   final bool isUpdatingLocation;
   final bool isUpdatingFaction;
 
+  String _localeLabel(AppLocale locale) {
+    return switch (locale) {
+      AppLocale.en =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.english,
+      AppLocale.ptBr =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.portugueseBrazil,
+      AppLocale.es =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.spanish,
+      AppLocale.fr =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.french,
+      AppLocale.de =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.german,
+    };
+  }
+
+  String _localeRaw(AppLocale locale) {
+    final localeValue = locale.flutterLocale;
+    final countryCode = localeValue.countryCode;
+    if (countryCode == null || countryCode.isEmpty) {
+      return localeValue.languageCode;
+    }
+    return '${localeValue.languageCode}-$countryCode';
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final currentLocation = playerData.currentLocation;
+    final sharedPreferences = ref.read(sharedPreferencesProvider);
+    final currentLocaleLabel = _localeLabel(LocaleSettings.currentLocale);
 
     return Drawer(
       child: SafeArea(
@@ -161,9 +192,12 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                       title: t
                           .dashboard
                           .ui_widgets_dashboard_profile_drawer_widget
-                          .l160c30,
+                          .displayName,
                       value: playerData.displayName,
-                      buttonLabel: 'Edit',
+                      buttonLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .edit,
                       onPressed: onDisplayNameEditTap,
                       isLoading: isUpdatingDisplayName,
                     ),
@@ -173,15 +207,177 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                       title: t
                           .dashboard
                           .ui_widgets_dashboard_profile_drawer_widget
-                          .l169c30,
+                          .location,
                       value: currentLocation == null
-                          ? 'No location configured'
-                          : 'x: ${currentLocation.x.toStringAsFixed(6)}\n'
-                                'y: ${currentLocation.y.toStringAsFixed(6)}\n'
-                                'ratio: ${currentLocation.ratio.toStringAsFixed(0)} km',
-                      buttonLabel: 'Edit',
+                          ? t
+                                .dashboard
+                                .ui_widgets_dashboard_profile_drawer_widget
+                                .noLocationConfigured
+                          : '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.xLabel}: '
+                                '${currentLocation.x.toStringAsFixed(6)}\n'
+                                '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.yLabel}: '
+                                '${currentLocation.y.toStringAsFixed(6)}\n'
+                                '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.ratioLabel}: '
+                                '${currentLocation.ratio.toStringAsFixed(0)} km',
+                      buttonLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .edit,
                       onPressed: onLocationEditTap,
                       isLoading: isUpdatingLocation,
+                    ),
+                    SizedBox(height: 12),
+                    DashboardProfileDrawerInfoCardWidget(
+                      icon: Icons.language_rounded,
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .language,
+                      value: currentLocaleLabel,
+                      buttonLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .change,
+                      onPressed: () async {
+                        await showModalBottomSheet<void>(
+                          context: context,
+                          builder: (sheetContext) {
+                            return SafeArea(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: Icon(Icons.phone_iphone_rounded),
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .useDeviceLanguage,
+                                    ),
+                                    onTap: () async {
+                                      await sharedPreferences.setString(
+                                        _preferredLocaleKey,
+                                        _deviceLocalePreferenceValue,
+                                      );
+                                      await LocaleSettings.useDeviceLocale();
+                                      if (!sheetContext.mounted) {
+                                        return;
+                                      }
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .english,
+                                    ),
+                                    onTap: () async {
+                                      await sharedPreferences.setString(
+                                        _preferredLocaleKey,
+                                        _localeRaw(AppLocale.en),
+                                      );
+                                      await LocaleSettings.setLocale(
+                                        AppLocale.en,
+                                      );
+                                      if (!sheetContext.mounted) {
+                                        return;
+                                      }
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .portugueseBrazil,
+                                    ),
+                                    onTap: () async {
+                                      await sharedPreferences.setString(
+                                        _preferredLocaleKey,
+                                        _localeRaw(AppLocale.ptBr),
+                                      );
+                                      await LocaleSettings.setLocale(
+                                        AppLocale.ptBr,
+                                      );
+                                      if (!sheetContext.mounted) {
+                                        return;
+                                      }
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .spanish,
+                                    ),
+                                    onTap: () async {
+                                      await sharedPreferences.setString(
+                                        _preferredLocaleKey,
+                                        _localeRaw(AppLocale.es),
+                                      );
+                                      await LocaleSettings.setLocale(
+                                        AppLocale.es,
+                                      );
+                                      if (!sheetContext.mounted) {
+                                        return;
+                                      }
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .french,
+                                    ),
+                                    onTap: () async {
+                                      await sharedPreferences.setString(
+                                        _preferredLocaleKey,
+                                        _localeRaw(AppLocale.fr),
+                                      );
+                                      await LocaleSettings.setLocale(
+                                        AppLocale.fr,
+                                      );
+                                      if (!sheetContext.mounted) {
+                                        return;
+                                      }
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .german,
+                                    ),
+                                    onTap: () async {
+                                      await sharedPreferences.setString(
+                                        _preferredLocaleKey,
+                                        _localeRaw(AppLocale.de),
+                                      );
+                                      await LocaleSettings.setLocale(
+                                        AppLocale.de,
+                                      );
+                                      if (!sheetContext.mounted) {
+                                        return;
+                                      }
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      isLoading: false,
                     ),
                     SizedBox(height: 18),
                     SizedBox(
@@ -225,7 +421,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                     t
                                         .dashboard
                                         .ui_widgets_dashboard_profile_drawer_widget
-                                        .l218c37,
+                                        .favoriteFaction,
                                     style: GoogleFonts.nunitoSans(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w800,
@@ -276,11 +472,11 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                           ? t
                                                 .dashboard
                                                 .ui_widgets_dashboard_profile_drawer_widget
-                                                .l266c45
+                                                .saving
                                           : t
                                                 .dashboard
                                                 .ui_widgets_dashboard_profile_drawer_widget
-                                                .l267c45,
+                                                .changeFaction,
                                       style: GoogleFonts.nunitoSans(
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -330,7 +526,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                     t
                         .dashboard
                         .ui_widgets_dashboard_profile_drawer_widget
-                        .l314c21,
+                        .logOut,
                     style: GoogleFonts.nunitoSans(
                       fontWeight: FontWeight.w800,
                     ),

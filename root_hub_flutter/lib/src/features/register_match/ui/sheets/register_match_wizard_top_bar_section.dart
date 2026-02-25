@@ -42,7 +42,7 @@ class _RegisterMatchWizardTopBarSection extends StatelessWidget {
                   t
                       .register_match
                       .ui_sheets_register_match_wizard_top_bar_section
-                      .l42c19,
+                      .registerMatchResult,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),

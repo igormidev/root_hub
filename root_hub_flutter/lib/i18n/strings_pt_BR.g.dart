@@ -49,7 +49,7 @@ class _TranslationsAppPtBr extends TranslationsAppEn {
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Root Hub';
+	@override String get rootHub => '__TERMO_0__';
 }
 
 // Path: auth
@@ -178,8 +178,8 @@ class _TranslationsAuthAuthOnboardingScreenPtBr extends TranslationsAuthAuthOnbo
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l58c17 => 'Pick your favorite ROOT faction before entering the hub.';
-	@override String get l42c25 => 'Choose Your Faction';
+	@override String get pickYourFavoriteRootFactionBeforeEnteringTheHub => 'Escolha sua facção ROOT favorita antes de entrar no hub.';
+	@override String get chooseYourFaction => 'Escolha sua facção';
 }
 
 // Path: auth.auth_onboarding_profile_screen
@@ -189,10 +189,10 @@ class _TranslationsAuthAuthOnboardingProfileScreenPtBr extends TranslationsAuthA
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l289c33 => 'Continue';
-	@override String get l206c17 => 'Current location uses your phone coordinates (x and y) and is required to show nearby matches.';
-	@override String get l205c17 => 'Your display name is how other players will see you in Root Hub. ';
-	@override String get l188c25 => 'Set Your Hub Identity';
+	@override String get currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat => 'A localização atual usa as coordenadas do seu telefone (x e y) e é necessária para mostrar correspondências próximas.';
+	@override String get yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub => 'Seu nome de exibição é como os outros jogadores verão você em Root Hub. ';
+	@override String get setYourHubIdentity => 'Defina a identidade do seu hub';
+	@override String get continueButton => 'Continuar';
 }
 
 // Path: auth.auth_loading_screen
@@ -202,7 +202,7 @@ class _TranslationsAuthAuthLoadingScreenPtBr extends TranslationsAuthAuthLoading
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l32c21 => 'ROOT HUB';
+	@override String get rootHub => '__TERMO_1__';
 }
 
 // Path: auth.auth_login_screen
@@ -212,8 +212,8 @@ class _TranslationsAuthAuthLoginScreenPtBr extends TranslationsAuthAuthLoginScre
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l195c27 => 'Sign in to browse schedules and join tables.';
-	@override String get l178c35 => 'Find Your Next\nROOT Match';
+	@override String get signInToBrowseSchedulesAndJoinTables => 'Faça login para navegar pelas programações e ingressar nas mesas.';
+	@override String get findYourNextRootMatch => 'Encontre sua próxima correspondência\nROOT';
 }
 
 // Path: auth.auth_onboarding_continue_button_widget
@@ -223,7 +223,7 @@ class _TranslationsAuthAuthOnboardingContinueButtonWidgetPtBr extends Translatio
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l44c15 => 'Continue';
+	@override String get continueButton => 'Continuar';
 }
 
 // Path: dashboard.ui_screens_dashboard_screen
@@ -233,18 +233,18 @@ class _TranslationsDashboardUiScreensDashboardScreenPtBr extends TranslationsDas
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l465c32 => 'Shop';
-	@override String get l451c32 => 'Match';
-	@override String get l437c32 => 'Home';
-	@override String get l317c35 => 'ROOT HUB';
-	@override String get l213c35 => 'Choose from Gallery';
-	@override String get l206c35 => 'Take Photo';
-	@override String get l188c31 => 'Cancel';
-	@override String get l180c33 => 'Choose from Library';
-	@override String get l174c33 => 'Take Photo';
-	@override String get l168c29 => 'Change profile photo';
-	@override String get l130c13 => 'Allow camera and photo permissions in system settings and try again.';
-	@override String get l128c16 => 'Unable to access camera or gallery';
+	@override String get shop => 'Comprar';
+	@override String get match => 'Corresponder';
+	@override String get home => 'Lar';
+	@override String get rootHub => '__TERMO_1__';
+	@override String get chooseFromGallery => 'Escolha na Galeria';
+	@override String get takePhoto => 'Tirar foto';
+	@override String get cancel => 'Cancelar';
+	@override String get chooseFromLibrary => 'Escolha na biblioteca';
+	@override String get takePhoto2 => 'Tirar foto';
+	@override String get changeProfilePhoto => 'Alterar foto do perfil';
+	@override String get allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain => 'Permita permissões de câmera e foto nas configurações do sistema e tente novamente.';
+	@override String get unableToAccessCameraOrGallery => 'Não foi possível acessar a câmera ou a galeria';
 }
 
 // Path: dashboard.ui_screens_dashboard_faction_editor_screen
@@ -254,8 +254,8 @@ class _TranslationsDashboardUiScreensDashboardFactionEditorScreenPtBr extends Tr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l125c17 => 'Choose the faction shown in your profile and used as your default preference.';
-	@override String get l104c31 => 'Change Favorite Faction';
+	@override String get chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference => 'Escolha a facção mostrada em seu perfil e usada como preferência padrão.';
+	@override String get changeFavoriteFaction => 'Alterar facção favorita';
 }
 
 // Path: dashboard.ui_dialogs_edit_location_dialog
@@ -265,10 +265,10 @@ class _TranslationsDashboardUiDialogsEditLocationDialogPtBr extends Translations
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l247c29 => 'Save';
-	@override String get l227c23 => 'Cancel';
-	@override String get l192c15 => 'Update your coordinates and target search ratio for match discovery.';
-	@override String get l184c15 => 'Edit Location';
+	@override String get save => 'Salvar';
+	@override String get cancel => 'Cancelar';
+	@override String get updateYourCoordinatesAndTargetSearchRatioForMatchDiscovery => 'Atualize suas coordenadas e proporção de pesquisa de alvo para descoberta de correspondência.';
+	@override String get editLocation => 'Editar local';
 }
 
 // Path: dashboard.ui_dialogs_edit_display_name_dialog
@@ -278,10 +278,10 @@ class _TranslationsDashboardUiDialogsEditDisplayNameDialogPtBr extends Translati
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l122c29 => 'Save';
-	@override String get l104c23 => 'Cancel';
-	@override String get l81c15 => 'This is how players will see you across Root Hub.';
-	@override String get l73c15 => 'Edit Display Name';
+	@override String get save => 'Salvar';
+	@override String get cancel => 'Cancelar';
+	@override String get thisIsHowPlayersWillSeeYouAcrossRootHub => 'É assim que os jogadores verão você em Root Hub.';
+	@override String get editDisplayName => 'Editar nome de exibição';
 }
 
 // Path: dashboard.ui_widgets_dashboard_profile_drawer_widget
@@ -291,12 +291,25 @@ class _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetPtBr extends Tr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l314c21 => 'Log out';
-	@override String get l267c45 => 'Change Faction';
-	@override String get l266c45 => 'Saving...';
-	@override String get l218c37 => 'Favorite Faction';
-	@override String get l169c30 => 'Location';
-	@override String get l160c30 => 'Display Name';
+	@override String get logOut => 'Sair';
+	@override String get changeFaction => 'Mudar facção';
+	@override String get saving => 'Salvando...';
+	@override String get favoriteFaction => 'Facção Favorita';
+	@override String get location => 'Localização';
+	@override String get displayName => 'Nome de exibição';
+	@override String get edit => 'Editar';
+	@override String get change => 'Mudar';
+	@override String get noLocationConfigured => 'Nenhum local configurado';
+	@override String get xLabel => 'x';
+	@override String get yLabel => 'sim';
+	@override String get ratioLabel => 'razão';
+	@override String get language => 'Linguagem';
+	@override String get useDeviceLanguage => 'Usar o idioma do dispositivo';
+	@override String get english => 'Inglês';
+	@override String get portugueseBrazil => 'Português (Brasil)';
+	@override String get spanish => 'Espanhol';
+	@override String get french => 'Francês';
+	@override String get german => 'Alemão';
 }
 
 // Path: home.ui_sections_home_stats_section
@@ -306,18 +319,18 @@ class _TranslationsHomeUiSectionsHomeStatsSectionPtBr extends TranslationsHomeUi
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l420c16 => 'All factions total';
-	@override String get l416c16 => 'All factions avg';
-	@override String get l412c16 => 'All factions total';
-	@override String get l403c16 => 'All factions avg';
-	@override String get l59c20 => 'Absolute number of wins for each faction.';
-	@override String get l58c14 => 'Total Wins';
-	@override String get l54c20 => 'Average score per faction when points were tracked.';
-	@override String get l53c14 => 'Average Points';
-	@override String get l49c20 => 'How often each faction appears in completed games.';
-	@override String get l48c14 => 'Played Games';
-	@override String get l44c20 => 'Who is winning the most often right now.';
-	@override String get l43c14 => 'Faction Win Rate';
+	@override String get allFactionsTotal => 'Todas as facções totalizam';
+	@override String get allFactionsAvg => 'Média de todas as facções';
+	@override String get allFactionsTotal2 => 'Todas as facções totalizam';
+	@override String get allFactionsAvg2 => 'Média de todas as facções';
+	@override String get absoluteNumberOfWinsForEachFaction => 'Número absoluto de vitórias para cada facção.';
+	@override String get totalWins => 'Total de vitórias';
+	@override String get averageScorePerFactionWhenPointsWereTracked => 'Pontuação média por facção quando os pontos foram rastreados.';
+	@override String get averagePoints => 'Média de Pontos';
+	@override String get howOftenEachFactionAppearsInCompletedGames => 'Com que frequência cada facção aparece em jogos concluídos.';
+	@override String get playedGames => 'Jogos jogados';
+	@override String get whoIsWinningTheMostOftenRightNow => 'Quem está ganhando com mais frequência agora.';
+	@override String get factionWinRate => 'Taxa de vitórias da facção';
 }
 
 // Path: home.ui_screens_home_screen
@@ -327,12 +340,12 @@ class _TranslationsHomeUiScreensHomeScreenPtBr extends TranslationsHomeUiScreens
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l92c26 => 'Your personal faction performance and match profile.';
-	@override String get l91c20 => 'My Stats';
-	@override String get l78c17 => 'Faction performance from all played matches in Root Hub.';
-	@override String get l76c20 => 'Community Stats';
-	@override String get l57c15 => 'See how the ROOT platform is evolving and compare it with your own progress.';
-	@override String get l47c15 => 'Community Dashboard';
+	@override String get yourPersonalFactionPerformanceAndMatchProfile => 'Seu desempenho pessoal na facção e perfil de partida.';
+	@override String get myStats => 'Minhas estatísticas';
+	@override String get factionPerformanceFromAllPlayedMatchesInRootHub => 'Desempenho da facção em todas as partidas disputadas em Root Hub.';
+	@override String get communityStats => 'Estatísticas da comunidade';
+	@override String get seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress => 'Veja como a plataforma ROOT está evoluindo e compare com o seu próprio progresso.';
+	@override String get communityDashboard => 'Painel da comunidade';
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget
@@ -342,7 +355,7 @@ class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetPtBr extends Translations
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l71c15 => 'No values for this metric yet.';
+	@override String get noValuesForThisMetricYet => 'Ainda não há valores para esta métrica.';
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -352,7 +365,7 @@ class _TranslationsMatchUiSheetsMatchEditTableErrorWidgetPtBr extends Translatio
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l44c33 => 'Close';
+	@override String get close => 'Fechar';
 }
 
 // Path: match.ui_sheets_match_edit_table_loading_widget
@@ -362,7 +375,7 @@ class _TranslationsMatchUiSheetsMatchEditTableLoadingWidgetPtBr extends Translat
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l29c19 => 'Loading table details...';
+	@override String get loadingTableDetails => 'Carregando detalhes da tabela...';
 }
 
 // Path: match.ui_sheets_match_table_info_sheet
@@ -372,19 +385,19 @@ class _TranslationsMatchUiSheetsMatchTableInfoSheetPtBr extends TranslationsMatc
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l256c33 => 'Remove';
-	@override String get l248c33 => 'Cancel';
-	@override String get l243c13 => 'rejoin if seats are still available.';
-	@override String get l217c33 => 'Cancel';
-	@override String get l199c19 => 'Select a player to remove from the table.';
-	@override String get l191c29 => 'Remove a Player';
-	@override String get l148c33 => 'Leave';
-	@override String get l140c33 => 'Cancel';
-	@override String get l135c13 => 'players list. You can rejoin later if seats are still available.';
-	@override String get l134c13 => 'You will be unsubscribed from this match and removed from the ';
-	@override String get l132c29 => 'Leave this table?';
-	@override String get l92c32 => 'Unable to load table details.';
-	@override String get l91c26 => 'Table not found';
+	@override String get remove => 'Remover';
+	@override String get cancel => 'Cancelar';
+	@override String get rejoinIfSeatsAreStillAvailable => 'volte se ainda houver vagas disponíveis.';
+	@override String get cancel2 => 'Cancelar';
+	@override String get selectAPlayerToRemoveFromTheTable => 'Selecione um jogador para remover da mesa.';
+	@override String get removeAPlayer => 'Remover um jogador';
+	@override String get leave => 'Deixar';
+	@override String get cancel3 => 'Cancelar';
+	@override String get playersListYouCanRejoinLaterIfSeatsAreStillAvailable => 'lista de jogadores. Você poderá voltar mais tarde se ainda houver vagas disponíveis.';
+	@override String get youWillBeUnsubscribedFromThisMatchAndRemovedFromThe => 'Sua inscrição nesta partida será cancelada e removida do ';
+	@override String get leaveThisTable => 'Sair desta mesa?';
+	@override String get unableToLoadTableDetails => 'Não foi possível carregar os detalhes da tabela.';
+	@override String get tableNotFound => 'Tabela não encontrada';
 }
 
 // Path: match.ui_sheets_match_table_info_content_widget
@@ -394,12 +407,12 @@ class _TranslationsMatchUiSheetsMatchTableInfoContentWidgetPtBr extends Translat
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l192c23 => 'No players have joined this table yet.';
-	@override String get l174c25 => 'These are the current players that will participate.';
-	@override String get l173c25 => 'No players subscribed yet.';
-	@override String get l165c19 => 'Players in this match';
-	@override String get l114c56 => 'Unknown host';
-	@override String get l73c19 => 'Table Details';
+	@override String get noPlayersHaveJoinedThisTableYet => 'Nenhum jogador se juntou a esta mesa ainda.';
+	@override String get theseAreTheCurrentPlayersThatWillParticipate => 'Estes são os jogadores atuais que participarão.';
+	@override String get noPlayersSubscribedYet => 'Nenhum jogador inscrito ainda.';
+	@override String get playersInThisMatch => 'Jogadores nesta partida';
+	@override String get unknownHost => 'Anfitrião desconhecido';
+	@override String get tableDetails => 'Detalhes da tabela';
 }
 
 // Path: match.ui_sheets_match_table_info_error_widget
@@ -409,8 +422,8 @@ class _TranslationsMatchUiSheetsMatchTableInfoErrorWidgetPtBr extends Translatio
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l55c37 => 'Retry';
-	@override String get l47c37 => 'Close';
+	@override String get retry => 'Tentar novamente';
+	@override String get close => 'Fechar';
 }
 
 // Path: match.ui_sheets_match_table_info_participant_card_widget
@@ -420,7 +433,7 @@ class _TranslationsMatchUiSheetsMatchTableInfoParticipantCardWidgetPtBr extends 
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l69c21 => 'Favorite Faction';
+	@override String get favoriteFaction => 'Facção Favorita';
 }
 
 // Path: match.ui_sheets_match_edit_table_sheet
@@ -430,19 +443,19 @@ class _TranslationsMatchUiSheetsMatchEditTableSheetPtBr extends TranslationsMatc
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l282c13 => 'The scheduled time cannot be more than ';
-	@override String get l280c16 => 'Date is too far';
-	@override String get l265c13 => 'The scheduled time must be at least ';
-	@override String get l263c16 => 'Time is too soon';
-	@override String get l240c13 => 'You cannot set the maximum below that number.';
-	@override String get l237c16 => 'Too many players subscribed';
-	@override String get l229c13 => 'with minimum not greater than maximum.';
-	@override String get l228c13 => 'Players range must be between 2 and 6, ';
-	@override String get l226c16 => 'Invalid players range';
-	@override String get l218c22 => 'Please add a title for your table.';
-	@override String get l217c16 => 'Title required';
-	@override String get l111c32 => 'Unable to load table details.';
-	@override String get l110c26 => 'Table not found';
+	@override String get theScheduledTimeCannotBeMoreThan => 'O horário agendado não pode ser superior ';
+	@override String get dateIsTooFar => 'A data está muito longe';
+	@override String get theScheduledTimeMustBeAtLeast => 'O horário agendado deve ser pelo menos ';
+	@override String get timeIsTooSoon => 'O tempo é muito cedo';
+	@override String get youCannotSetTheMaximumBelowThatNumber => 'Você não pode definir o máximo abaixo desse número.';
+	@override String get tooManyPlayersSubscribed => 'Muitos jogadores inscritos';
+	@override String get withMinimumNotGreaterThanMaximum => 'com mínimo não maior que máximo.';
+	@override String get playersRangeMustBeBetween2And6 => 'O intervalo dos jogadores deve estar entre 2 e 6, ';
+	@override String get invalidPlayersRange => 'Intervalo de jogadores inválido';
+	@override String get pleaseAddATitleForYourTable => 'Adicione um título para sua tabela.';
+	@override String get titleRequired => 'Título obrigatório';
+	@override String get unableToLoadTableDetails => 'Não foi possível carregar os detalhes da tabela.';
+	@override String get tableNotFound => 'Tabela não encontrada';
 }
 
 // Path: match.ui_sheets_match_table_info_loading_widget
@@ -452,7 +465,7 @@ class _TranslationsMatchUiSheetsMatchTableInfoLoadingWidgetPtBr extends Translat
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l29c19 => 'Loading table details...';
+	@override String get loadingTableDetails => 'Carregando detalhes da tabela...';
 }
 
 // Path: match.ui_sheets_match_edit_table_form_widget
@@ -462,26 +475,26 @@ class _TranslationsMatchUiSheetsMatchEditTableFormWidgetPtBr extends Translation
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l293c58 => 'Save Changes';
-	@override String get l293c44 => 'Saving...';
-	@override String get l272c39 => 'Cancel';
-	@override String get l230c23 => 'Must be at least 10 minutes from now, up to ';
-	@override String get l228c26 => 'Schedule';
-	@override String get l217c34 => 'Maximum';
-	@override String get l204c34 => 'Minimum';
-	@override String get l188c25 => 'Set between 2 and 6 players.';
-	@override String get l185c26 => 'Players range';
-	@override String get l173c31 => 'Example: We have Marauder expansion.';
-	@override String get l164c23 => 'Extra details like expansions, parking tips, etc.';
-	@override String get l162c26 => 'Description (optional)';
-	@override String get l150c31 => 'Example: Saturday ROOT at Lantern Café';
-	@override String get l142c32 => 'A short name so players can find your table.';
-	@override String get l141c26 => 'Table title';
-	@override String get l122c37 => 'New players can still join this table.';
-	@override String get l121c37 => 'New players cannot join this table.';
-	@override String get l113c31 => 'Close subscriptions';
-	@override String get l73c19 => 'Edit Details';
-	@override String get l65c19 => 'Edit Table';
+	@override String get saveChanges => 'Salvar alterações';
+	@override String get saving => 'Salvando...';
+	@override String get cancel => 'Cancelar';
+	@override String get mustBeAtLeast10MinutesFromNowUpTo => 'Deve ser pelo menos 10 minutos a partir de agora, até ';
+	@override String get schedule => 'Agendar';
+	@override String get maximum => 'Máximo';
+	@override String get minimum => 'Mínimo';
+	@override String get setBetween2And6Players => 'Defina entre 2 e 6 jogadores.';
+	@override String get playersRange => 'Gama de jogadores';
+	@override String get exampleWeHaveMarauderExpansion => 'Exemplo: Temos a expansão Marauder.';
+	@override String get extraDetailsLikeExpansionsParkingTipsEtc => 'Detalhes extras como expansões, dicas de estacionamento, etc.';
+	@override String get descriptionOptional => 'Descrição (opcional)';
+	@override String get exampleSaturdayRootAtLanternCaf => 'Exemplo: sábado ROOT no Lantern Café';
+	@override String get aShortNameSoPlayersCanFindYourTable => 'Um nome curto para que os jogadores possam encontrar sua mesa.';
+	@override String get tableTitle => 'Título da tabela';
+	@override String get newPlayersCanStillJoinThisTable => 'Novos jogadores ainda podem entrar nesta mesa.';
+	@override String get newPlayersCannotJoinThisTable => 'Novos jogadores não podem entrar nesta mesa.';
+	@override String get closeSubscriptions => 'Fechar assinaturas';
+	@override String get editDetails => 'Editar detalhes';
+	@override String get editTable => 'Editar tabela';
 }
 
 // Path: match.ui_sheets_match_table_info_bottom_actions_widget
@@ -491,11 +504,11 @@ class _TranslationsMatchUiSheetsMatchTableInfoBottomActionsWidgetPtBr extends Tr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l112c54 => 'Remove Player';
-	@override String get l112c38 => 'Removing...';
-	@override String get l79c56 => 'Leave Table';
-	@override String get l79c41 => 'Leaving...';
-	@override String get l55c39 => 'Close';
+	@override String get removePlayer => 'Remover jogador';
+	@override String get removing => 'Removendo...';
+	@override String get leaveTable => 'Sair da mesa';
+	@override String get leaving => 'Saindo...';
+	@override String get close => 'Fechar';
 }
 
 // Path: match.ui_screens_match_create_table_location_loading_search_widget
@@ -505,7 +518,7 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l21c13 => 'Searching locations...';
+	@override String get searchingLocations => 'Pesquisando locais...';
 }
 
 // Path: match.ui_screens_match_create_table_location_screen
@@ -515,14 +528,14 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationScreenPtBr extends Tran
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l287c29 => 'Continue';
-	@override String get l236c23 => 'Previously selected locations';
-	@override String get l203c25 => 'Search results';
-	@override String get l160c19 => 'Tap a location to select it. Previously selected locations are saved here for faster hosting.';
-	@override String get l148c31 => 'Search location (Google Places)';
-	@override String get l122c25 => 'Choose Table Location';
-	@override String get l61c13 => 'Choose one location from the list before creating the table.';
-	@override String get l59c16 => 'Location required';
+	@override String get previouslySelectedLocations => 'Locais previamente selecionados';
+	@override String get searchResults => 'Resultados da pesquisa';
+	@override String get tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo => 'Toque em um local para selecioná-lo. Os locais previamente selecionados são salvos aqui para uma hospedagem mais rápida.';
+	@override String get searchLocationGooglePlaces => 'Local de pesquisa (Google Places)';
+	@override String get chooseTableLocation => 'Escolha o local da mesa';
+	@override String get chooseOneLocationFromTheListBeforeCreatingTheTable => 'Escolha um local da lista antes de criar a tabela.';
+	@override String get locationRequired => 'Local obrigatório';
+	@override String get continueButton => 'Continuar';
 }
 
 // Path: match.ui_screens_match_join_sheet_error_widget
@@ -532,8 +545,8 @@ class _TranslationsMatchUiScreensMatchJoinSheetErrorWidgetPtBr extends Translati
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l62c37 => 'Retry';
-	@override String get l54c37 => 'Close';
+	@override String get retry => 'Tentar novamente';
+	@override String get close => 'Fechar';
 }
 
 // Path: match.ui_screens_match_screen
@@ -543,24 +556,24 @@ class _TranslationsMatchUiScreensMatchScreenPtBr extends TranslationsMatchUiScre
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l849c23 => 'Unable to open the dialer right now.';
-	@override String get l829c25 => 'Invalid phone number format.';
-	@override String get l816c23 => 'Unable to open the link right now.';
-	@override String get l800c25 => 'Invalid URL format.';
-	@override String get l763c43 => 'Close';
-	@override String get l716c33 => 'Manual location notes';
-	@override String get l693c38 => 'Phone';
-	@override String get l688c34 => 'Phone';
-	@override String get l677c38 => 'Website';
-	@override String get l672c34 => 'Website';
-	@override String get l661c38 => 'Map link';
-	@override String get l656c34 => 'Map link';
-	@override String get l607c41 => 'Public';
-	@override String get l606c41 => 'Private';
-	@override String get l564c47 => 'matches played here';
-	@override String get l563c47 => 'match played here';
-	@override String get l239c15 => 'Host Table';
-	@override String get l191c21 => 'Report Result';
+	@override String get unableToOpenTheDialerRightNow => 'Não é possível abrir o discador no momento.';
+	@override String get invalidPhoneNumberFormat => 'Formato de número de telefone inválido.';
+	@override String get unableToOpenTheLinkRightNow => 'Não é possível abrir o link no momento.';
+	@override String get invalidUrlFormat => 'Formato de URL inválido.';
+	@override String get close => 'Fechar';
+	@override String get manualLocationNotes => 'Notas de localização manuais';
+	@override String get phone => 'Telefone';
+	@override String get phone2 => 'Telefone';
+	@override String get website => 'Site';
+	@override String get website2 => 'Site';
+	@override String get mapLink => 'Link do mapa';
+	@override String get mapLink2 => 'Link do mapa';
+	@override String get public => 'Público';
+	@override String get private => 'Privado';
+	@override String get matchesPlayedHere => 'partidas disputadas aqui';
+	@override String get matchPlayedHere => 'partida disputada aqui';
+	@override String get hostTable => 'Tabela hospedeira';
+	@override String get reportResult => 'Resultado do relatório';
 }
 
 // Path: match.ui_screens_match_loading_error_state_widget
@@ -570,7 +583,7 @@ class _TranslationsMatchUiScreensMatchLoadingErrorStateWidgetPtBr extends Transl
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l48c31 => 'Try again';
+	@override String get tryAgain => 'Tente novamente';
 }
 
 // Path: match.ui_screens_match_nearby_header_widget
@@ -580,9 +593,9 @@ class _TranslationsMatchUiScreensMatchNearbyHeaderWidgetPtBr extends Translation
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l83c13 => 'Only tables that did not start more than 2 hours ago are listed.';
-	@override String get l48c19 => 'Nearby Match Tables';
-	@override String get l35c19 => 'Match Finder';
+	@override String get onlyTablesThatDidNotStartMoreThan2HoursAgoAreListed => 'Somente as tabelas que não foram iniciadas há mais de 2 horas serão listadas.';
+	@override String get nearbyMatchTables => 'Tabelas de correspondência próximas';
+	@override String get matchFinder => 'Localizador de correspondência';
 }
 
 // Path: match.ui_screens_match_no_matches_state_widget
@@ -592,9 +605,9 @@ class _TranslationsMatchUiScreensMatchNoMatchesStateWidgetPtBr extends Translati
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l65c31 => 'Host the first table';
-	@override String get l54c13 => 'Be the first to start one. Host a new table so nearby players can subscribe.';
-	@override String get l47c13 => 'No tables in your area yet';
+	@override String get hostTheFirstTable => 'Hospede a primeira mesa';
+	@override String get beTheFirstToStartOneHostANewTableSoNearbyPlayersCanSubscribe => 'Seja o primeiro a iniciar um. Hospede uma nova mesa para que jogadores próximos possam se inscrever.';
+	@override String get noTablesInYourAreaYet => 'Ainda não há mesas na sua área';
 }
 
 // Path: match.ui_screens_match_time_status_chip_widget
@@ -604,8 +617,8 @@ class _TranslationsMatchUiScreensMatchTimeStatusChipWidgetPtBr extends Translati
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l27c13 => 'Remaining time until the match starts.';
-	@override String get l26c13 => 'This match already started. Recently started tables stay visible for a short period.';
+	@override String get remainingTimeUntilTheMatchStarts => 'Tempo restante até o início da partida.';
+	@override String get thisMatchAlreadyStartedRecentlyStartedTablesStayVisibleForAShortPeriod => 'Esta partida já começou. As tabelas iniciadas recentemente permanecem visíveis por um curto período.';
 }
 
 // Path: match.ui_screens_match_create_table_location_no_search_results_widget
@@ -615,7 +628,7 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationNoSearchResultsWidgetPt
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l20c9 => 'No locations found for this query. Try another place name or area.';
+	@override String get noLocationsFoundForThisQueryTryAnotherPlaceNameOrArea => 'Nenhum local encontrado para esta consulta. Experimente outro nome de lugar ou área.';
 }
 
 // Path: match.ui_screens_match_create_table_screen
@@ -625,35 +638,35 @@ class _TranslationsMatchUiScreensMatchCreateTableScreenPtBr extends Translations
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l424c23 => 'Continue';
-	@override String get l384c31 => 'No, I am only hosting this table';
-	@override String get l383c31 => 'Yes, I will play this match';
-	@override String get l365c25 => 'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.';
-	@override String get l363c28 => 'Will you, the host, play?';
-	@override String get l339c25 => 'Pick the day and start hour. Choose a time you can reliably show up.';
-	@override String get l337c28 => 'Schedule';
-	@override String get l318c36 => 'Maximum';
-	@override String get l297c36 => 'Minimum';
-	@override String get l283c25 => 'Default is 3-4. You can set between 2 and 6 players.';
-	@override String get l281c28 => 'Players range';
-	@override String get l271c27 => 'Example: We have Marauder expansion and spare sleeves.';
-	@override String get l261c25 => 'Add extra details like expansions available, parking tips, or reference points.';
-	@override String get l259c28 => 'Description (optional)';
-	@override String get l249c33 => 'Example: Saturday ROOT at Lantern Café';
-	@override String get l241c25 => 'This can be anything that helps identify the table, like a place name or event style.';
-	@override String get l239c28 => 'Table title';
-	@override String get l229c21 => 'Set table details first. On the next screen you will choose the location.';
-	@override String get l217c27 => 'Host a New Table';
-	@override String get l155c22 => 'Select the start hour for this table before continuing.';
-	@override String get l154c16 => 'Start hour required';
-	@override String get l146c22 => 'You cannot select a day in the past.';
-	@override String get l145c16 => 'Invalid date';
-	@override String get l137c22 => 'Select the day for this table before continuing.';
-	@override String get l136c16 => 'Day required';
-	@override String get l127c13 => 'Add a title so players can quickly identify your table. Example: "Downtown Café Night".';
-	@override String get l125c16 => 'Title required';
-	@override String get l92c22 => 'You cannot select a day in the past.';
-	@override String get l91c16 => 'Invalid date';
+	@override String get noIAmOnlyHostingThisTable => 'Não, estou apenas hospedando esta mesa';
+	@override String get yesIWillPlayThisMatch => 'Sim, vou jogar esta partida';
+	@override String get ifYouAreAVenueBoardGameClubOrOrganizerBringingPlayersTogetherButNotJoini => 'Se você é um local, clube de jogos de tabuleiro ou organizador que reúne jogadores, mas não participa da partida, deixe esta opção desmarcada.';
+	@override String get willYouTheHostPlay => 'Você, o anfitrião, vai jogar?';
+	@override String get pickTheDayAndStartHourChooseATimeYouCanReliablyShowUp => 'Escolha o dia e a hora de início. Escolha um horário em que você possa aparecer com segurança.';
+	@override String get schedule => 'Agendar';
+	@override String get maximum => 'Máximo';
+	@override String get minimum => 'Mínimo';
+	@override String get defaultIs34YouCanSetBetween2And6Players => 'O padrão é 3-4. Você pode definir entre 2 e 6 jogadores.';
+	@override String get playersRange => 'Gama de jogadores';
+	@override String get exampleWeHaveMarauderExpansionAndSpareSleeves => 'Exemplo: Temos expansão Marauder e mangas sobressalentes.';
+	@override String get addExtraDetailsLikeExpansionsAvailableParkingTipsOrReferencePoints => 'Adicione detalhes extras, como expansões disponíveis, dicas de estacionamento ou pontos de referência.';
+	@override String get descriptionOptional => 'Descrição (opcional)';
+	@override String get exampleSaturdayRootAtLanternCaf => 'Exemplo: sábado ROOT no Lantern Café';
+	@override String get thisCanBeAnythingThatHelpsIdentifyTheTableLikeAPlaceNameOrEventStyle => 'Pode ser qualquer coisa que ajude a identificar a mesa, como o nome de um local ou o estilo do evento.';
+	@override String get tableTitle => 'Título da tabela';
+	@override String get setTableDetailsFirstOnTheNextScreenYouWillChooseTheLocation => 'Defina os detalhes da tabela primeiro. Na próxima tela você escolherá o local.';
+	@override String get hostANewTable => 'Hospede uma nova mesa';
+	@override String get selectTheStartHourForThisTableBeforeContinuing => 'Selecione a hora de início desta tabela antes de continuar.';
+	@override String get startHourRequired => 'Hora de início obrigatória';
+	@override String get youCannotSelectADayInThePast => 'Você não pode selecionar um dia no passado.';
+	@override String get invalidDate => 'Data inválida';
+	@override String get selectTheDayForThisTableBeforeContinuing => 'Selecione o dia para esta tabela antes de continuar.';
+	@override String get dayRequired => 'Dia necessário';
+	@override String get addATitleSoPlayersCanQuicklyIdentifyYourTableExampleDowntownCafNight => 'Adicione um título para que os jogadores possam identificar rapidamente sua mesa. Exemplo: "Noite do Café no Centro".';
+	@override String get titleRequired => 'Título obrigatório';
+	@override String get youCannotSelectADayInThePast2 => 'Você não pode selecionar um dia no passado.';
+	@override String get invalidDate2 => 'Data inválida';
+	@override String get continueButton => 'Continuar';
 }
 
 // Path: match.ui_screens_match_chat_loading_error_state_widget
@@ -663,7 +676,7 @@ class _TranslationsMatchUiScreensMatchChatLoadingErrorStateWidgetPtBr extends Tr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l52c33 => 'Try again';
+	@override String get tryAgain => 'Tente novamente';
 }
 
 // Path: match.ui_screens_match_report_available_chip_widget
@@ -673,8 +686,8 @@ class _TranslationsMatchUiScreensMatchReportAvailableChipWidgetPtBr extends Tran
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l31c15 => 'Report available';
-	@override String get l13c16 => 'You can report this match result now.';
+	@override String get reportAvailable => 'Relatório disponível';
+	@override String get youCanReportThisMatchResultNow => 'Você pode relatar o resultado desta partida agora.';
 }
 
 // Path: match.ui_screens_match_initial_loading_state_widget
@@ -684,7 +697,7 @@ class _TranslationsMatchUiScreensMatchInitialLoadingStateWidgetPtBr extends Tran
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l31c13 => 'Loading nearby tables...';
+	@override String get loadingNearbyTables => 'Carregando mesas próximas...';
 }
 
 // Path: match.ui_screens_match_participant_card_widget
@@ -694,7 +707,7 @@ class _TranslationsMatchUiScreensMatchParticipantCardWidgetPtBr extends Translat
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l73c21 => 'Favorite Faction';
+	@override String get favoriteFaction => 'Facção Favorita';
 }
 
 // Path: match.ui_screens_match_join_sheet_content_widget
@@ -704,19 +717,19 @@ class _TranslationsMatchUiScreensMatchJoinSheetContentWidgetPtBr extends Transla
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l323c29 => 'Confirm Join';
-	@override String get l322c29 => 'Subscriptions closed';
-	@override String get l320c29 => 'Already subscribed';
-	@override String get l303c39 => 'Cancel';
-	@override String get l262c23 => 'You can be the first player to lock this table in.';
-	@override String get l244c25 => 'These are the current players that will participate.';
-	@override String get l243c25 => 'No players subscribed yet.';
-	@override String get l235c19 => 'Players in this match';
-	@override String get l175c56 => 'Unknown host';
-	@override String get l151c39 => 'See table chat';
-	@override String get l130c29 => 'New players cannot join at this time.';
-	@override String get l129c29 => 'The host has closed subscriptions for this table. ';
-	@override String get l81c19 => 'Confirm table subscription';
+	@override String get confirmJoin => 'Confirmar adesão';
+	@override String get subscriptionsClosed => 'Assinaturas encerradas';
+	@override String get alreadySubscribed => 'Já inscrito';
+	@override String get cancel => 'Cancelar';
+	@override String get youCanBeTheFirstPlayerToLockThisTableIn => 'Você pode ser o primeiro jogador a bloquear esta mesa.';
+	@override String get theseAreTheCurrentPlayersThatWillParticipate => 'Estes são os jogadores atuais que participarão.';
+	@override String get noPlayersSubscribedYet => 'Nenhum jogador inscrito ainda.';
+	@override String get playersInThisMatch => 'Jogadores nesta partida';
+	@override String get unknownHost => 'Anfitrião desconhecido';
+	@override String get seeTableChat => 'Ver bate-papo à mesa';
+	@override String get newPlayersCannotJoinAtThisTime => 'Novos jogadores não podem entrar neste momento.';
+	@override String get theHostHasClosedSubscriptionsForThisTable => 'O host encerrou assinaturas para esta tabela. ';
+	@override String get confirmTableSubscription => 'Confirmar assinatura da mesa';
 }
 
 // Path: match.ui_screens_match_table_card_widget
@@ -726,13 +739,13 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetPtBr extends TranslationsMa
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l362c17 => 'Subscribed';
-	@override String get l275c25 => 'Tap card to open chat';
-	@override String get l265c25 => 'Subscriptions closed';
-	@override String get l235c26 => 'Open full location details';
-	@override String get l155c72 => 'places';
-	@override String get l155c62 => 'place';
-	@override String get l154c89 => 's';
+	@override String get subscribed => 'Inscrito';
+	@override String get tapCardToOpenChat => 'Toque no cartão para abrir o bate-papo';
+	@override String get subscriptionsClosed => 'Assinaturas encerradas';
+	@override String get openFullLocationDetails => 'Abra detalhes completos do local';
+	@override String get places => 'lugares';
+	@override String get place => 'lugar';
+	@override String get s => 'é';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget
@@ -742,7 +755,7 @@ class _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetPtBr extends Tran
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l67c19 => 'Location Details';
+	@override String get locationDetails => 'Detalhes do local';
 }
 
 // Path: match.ui_screens_match_create_table_location_no_recent_locations_widget
@@ -752,7 +765,7 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidget
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l20c9 => 'No previous locations yet. Search and select one above.';
+	@override String get noPreviousLocationsYetSearchAndSelectOneAbove => 'Ainda não há locais anteriores. Pesquise e selecione um acima.';
 }
 
 // Path: match.ui_screens_match_chat_screen
@@ -762,19 +775,19 @@ class _TranslationsMatchUiScreensMatchChatScreenPtBr extends TranslationsMatchUi
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l513c35 => 'Choose from Gallery';
-	@override String get l506c35 => 'Take Photo';
-	@override String get l488c31 => 'Cancel';
-	@override String get l480c33 => 'Choose from Library';
-	@override String get l474c33 => 'Take Photo';
-	@override String get l468c29 => 'Send a photo';
-	@override String get l407c33 => 'Compress';
-	@override String get l403c33 => 'Cancel';
-	@override String get l395c29 => 'Image is too large';
-	@override String get l273c37 => 'Subscribed';
-	@override String get l142c21 => 'Unable to resolve your account information.';
-	@override String get l128c22 => 'Table info';
-	@override String get l123c24 => 'Edit table';
+	@override String get chooseFromGallery => 'Escolha na Galeria';
+	@override String get takePhoto => 'Tirar foto';
+	@override String get cancel => 'Cancelar';
+	@override String get chooseFromLibrary => 'Escolha na biblioteca';
+	@override String get takePhoto2 => 'Tirar foto';
+	@override String get sendAPhoto => 'Envie uma foto';
+	@override String get compress => 'Compressa';
+	@override String get cancel2 => 'Cancelar';
+	@override String get imageIsTooLarge => 'A imagem é muito grande';
+	@override String get subscribed => 'Inscrito';
+	@override String get unableToResolveYourAccountInformation => 'Não foi possível resolver as informações da sua conta.';
+	@override String get tableInfo => 'Informações da tabela';
+	@override String get editTable => 'Editar tabela';
 }
 
 // Path: match.ui_screens_match_create_table_location_loading_recent_widget
@@ -784,7 +797,7 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationLoadingRecentWidgetPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l21c13 => 'Loading previous locations...';
+	@override String get loadingPreviousLocations => 'Carregando locais anteriores...';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_winner_step_section
@@ -794,12 +807,12 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l101c27 => 'Dominance';
-	@override String get l96c27 => 'Total points (30)';
-	@override String get l82c11 => 'Dominance means the winner completed a Dominance card objective instead of winning by points.';
-	@override String get l81c11 => 'Total points means the winner reached 30 victory points on the score track. ';
-	@override String get l74c11 => 'How did the winner won?';
-	@override String get l36c11 => 'Pick the player who won this match.';
+	@override String get dominance => 'Domínio';
+	@override String get totalPoints30 => 'Total de pontos (30)';
+	@override String get dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB => 'Dominância significa que o vencedor completou um objetivo da carta de Dominância em vez de vencer por pontos.';
+	@override String get totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack => 'O total de pontos significa que o vencedor alcançou 30 pontos de vitória na trilha de pontuação. ';
+	@override String get howDidTheWinnerWon => 'Como o vencedor venceu?';
+	@override String get pickThePlayerWhoWonThisMatch => 'Escolha o jogador que venceu esta partida.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_timing_step_section
@@ -809,12 +822,12 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardTimingStepSectionPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l134c17 => 'Estimated duration';
-	@override String get l112c11 => 'Estimated duration';
-	@override String get l103c11 => 'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).';
-	@override String get l90c33 => 'Change time';
-	@override String get l57c11 => 'Match started at';
-	@override String get l48c11 => 'Set the time the match actually started.';
+	@override String get estimatedDuration => 'Duração estimada';
+	@override String get estimatedDuration2 => 'Duração estimada';
+	@override String get setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours => 'Defina a duração estimada. Ajuste em etapas de 15 minutos (máximo de 8 horas).';
+	@override String get changeTime => 'Alterar horário';
+	@override String get matchStartedAt => 'A partida começou às';
+	@override String get setTheTimeTheMatchActuallyStarted => 'Defina a hora em que a partida realmente começou.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_participants_step_section
@@ -824,12 +837,12 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardParticipantsStepSecti
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l97c31 => 'Add registered player from platform';
-	@override String get l88c31 => 'Add anonymous player';
-	@override String get l63c23 => 'Registered player';
-	@override String get l62c23 => 'Anonymous player';
-	@override String get l33c11 => 'Select registered players who were present. You can add anonymous players or search for other registered players.';
-	@override String get l26c11 => '1) Who actually played?';
+	@override String get addRegisteredPlayerFromPlatform => 'Adicionar jogador registrado da plataforma';
+	@override String get addAnonymousPlayer => 'Adicionar jogador anônimo';
+	@override String get registeredPlayer => 'Jogador registrado';
+	@override String get anonymousPlayer => 'Jogador anônimo';
+	@override String get selectRegisteredPlayersWhoWerePresentYouCanAddAnonymousPlayersOrSearchFo => 'Selecione os jogadores registrados que estiveram presentes. Você pode adicionar jogadores anônimos ou procurar outros jogadores registrados.';
+	@override String get value1WhoActuallyPlayed => '1) Quem realmente jogou?';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_error_section
@@ -839,7 +852,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerErrorSectionPtBr exte
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l51c35 => 'Retry';
+	@override String get retry => 'Tentar novamente';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_match_item_card
@@ -849,8 +862,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerMatchItemCardPtBr ext
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l140c56 => 'Not available yet';
-	@override String get l140c38 => 'Tap to report';
+	@override String get notAvailableYet => 'Ainda não disponível';
+	@override String get tapToReport => 'Toque para denunciar';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_factions_step_section
@@ -860,10 +873,10 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionPt
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l71c38 => 'Select faction';
-	@override String get l68c34 => 'Faction';
-	@override String get l35c11 => 'Choose the faction used by each player in this match.';
-	@override String get l28c11 => '2) Select factions';
+	@override String get selectFaction => 'Selecione a facção';
+	@override String get faction => 'Facção';
+	@override String get chooseTheFactionUsedByEachPlayerInThisMatch => 'Escolha a facção usada por cada jogador nesta partida.';
+	@override String get value2SelectFactions => '2) Selecione facções';
 }
 
 // Path: register_match.ui_sheets_register_match_search_registered_player_sheet
@@ -873,11 +886,11 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchSearchRegisteredPlayerSheet
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l181c37 => 'Tap to add';
-	@override String get l180c37 => 'Already added to this report';
-	@override String get l157c35 => 'No registered players were found.';
-	@override String get l113c32 => 'Search by display name';
-	@override String get l98c19 => 'Add registered player';
+	@override String get tapToAdd => 'Toque para adicionar';
+	@override String get alreadyAddedToThisReport => 'Já adicionado a este relatório';
+	@override String get noRegisteredPlayersWereFound => 'Nenhum jogador registrado foi encontrado.';
+	@override String get searchByDisplayName => 'Pesquisar por nome de exibição';
+	@override String get addRegisteredPlayer => 'Adicionar jogador registrado';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_points_step_section
@@ -887,16 +900,16 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l152c35 => '0 to 29';
-	@override String get l151c36 => 'Points';
-	@override String get l139c30 => 'Dominance attempt';
-	@override String get l133c30 => 'Winner by dominance';
-	@override String get l127c30 => 'Winner by points';
-	@override String get l108c39 => 'Failed dominance';
-	@override String get l103c39 => 'Points';
-	@override String get l87c29 => 'Winner';
-	@override String get l40c11 => 'Failed dominance always counts as no points.';
-	@override String get l39c11 => 'For each non-winner, set points or mark failed dominance attempt. ';
+	@override String get value0To29 => '0 a 29';
+	@override String get points => 'Pontos';
+	@override String get dominanceAttempt => 'Tentativa de domínio';
+	@override String get winnerByDominance => 'Vencedor por domínio';
+	@override String get winnerByPoints => 'Vencedor por pontos';
+	@override String get failedDominance => 'Domínio falhado';
+	@override String get points2 => 'Pontos';
+	@override String get winner => 'Ganhador';
+	@override String get failedDominanceAlwaysCountsAsNoPoints => 'O domínio falhado sempre conta como nenhum ponto.';
+	@override String get forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt => 'Para cada não vencedor, defina pontos ou marque uma tentativa de domínio fracassada. ';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_bottom_actions_section
@@ -906,10 +919,10 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardBottomActionsSectionP
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l61c59 => 'Continue';
-	@override String get l61c41 => 'Submit report';
-	@override String get l40c54 => 'Back';
-	@override String get l40c43 => 'Cancel';
+	@override String get submitReport => 'Enviar relatório';
+	@override String get back => 'Voltar';
+	@override String get cancel => 'Cancelar';
+	@override String get continueButton => 'Continuar';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_empty_section
@@ -919,8 +932,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerEmptySectionPtBr exte
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l34c17 => 'You do not have any hosted/subscribed match pending result registration.';
-	@override String get l27c17 => 'No pending matches';
+	@override String get youDoNotHaveAnyHostedSubscribedMatchPendingResultRegistration => 'Você não tem nenhuma partida hospedada/inscrita com registro de resultado pendente.';
+	@override String get noPendingMatches => 'Nenhuma correspondência pendente';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_loading_section
@@ -930,7 +943,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardLoadingSectionPtBr ex
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l24c13 => 'Loading match details...';
+	@override String get loadingMatchDetails => 'Carregando detalhes da partida...';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_sheet
@@ -940,8 +953,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerSheetPtBr extends Tra
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l107c13 => 'You can register this match from 2 hours before its scheduled start. ';
-	@override String get l105c16 => 'Result registration not available yet';
+	@override String get youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart => 'Você pode registrar esta partida 2 horas antes do início programado. ';
+	@override String get resultRegistrationNotAvailableYet => 'Cadastro de resultados ainda não disponível';
 }
 
 // Path: register_match.ui_sheets_register_match_add_anonymous_player_sheet
@@ -951,13 +964,13 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchAddAnonymousPlayerSheetPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l232c37 => 'Tap to add';
-	@override String get l231c37 => 'Already added to this report';
-	@override String get l205c29 => 'No anonymous players yet. Create one using first and last name.';
-	@override String get l178c42 => 'Create and add player';
-	@override String get l158c36 => 'Last name';
-	@override String get l149c36 => 'First name';
-	@override String get l132c19 => 'Add anonymous player';
+	@override String get tapToAdd => 'Toque para adicionar';
+	@override String get alreadyAddedToThisReport => 'Já adicionado a este relatório';
+	@override String get noAnonymousPlayersYetCreateOneUsingFirstAndLastName => 'Nenhum jogador anônimo ainda. Crie um usando nome e sobrenome.';
+	@override String get createAndAddPlayer => 'Criar e adicionar jogador';
+	@override String get lastName => 'Sobrenome';
+	@override String get firstName => 'Primeiro nome';
+	@override String get addAnonymousPlayer => 'Adicionar jogador anônimo';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_top_bar_section
@@ -967,7 +980,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardTopBarSectionPtBr ext
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l42c19 => 'Register Match Result';
+	@override String get registerMatchResult => 'Registrar Resultado da Partida';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_error_section
@@ -977,8 +990,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardErrorSectionPtBr exte
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l54c33 => 'Close';
-	@override String get l27c17 => 'Register Match';
+	@override String get close => 'Fechar';
+	@override String get registerMatch => 'Registrar partida';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_sheet
@@ -988,59 +1001,59 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetPtBr extends Tra
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l1069c35 => 'Gallery';
-	@override String get l1062c35 => 'Camera';
-	@override String get l1045c33 => 'Cancel';
-	@override String get l1037c35 => 'Gallery';
-	@override String get l1031c35 => 'Camera';
-	@override String get l1025c31 => 'Select source';
-	@override String get l996c22 => 'Selected image is empty. Choose another image.';
-	@override String get l995c16 => 'Invalid image';
-	@override String get l978c13 => 'Allow camera and photo permissions in system settings and try again.';
-	@override String get l976c16 => 'Unable to access camera or gallery';
-	@override String get l947c35 => 'Ok';
-	@override String get l942c15 => 'Take a selfie with everyone at the table. If possible, include the board in the same photo.';
-	@override String get l940c31 => 'Group selfie proof';
-	@override String get l786c22 => 'Complete all report steps before submitting.';
-	@override String get l785c16 => 'Incomplete report';
-	@override String get l752c26 => 'Add the board photo before continuing.';
-	@override String get l751c20 => 'Board photo required';
-	@override String get l746c26 => 'Add the group selfie before continuing.';
-	@override String get l745c20 => 'Group photo required';
-	@override String get l738c26 => 'Match duration must be at most 8 hours.';
-	@override String get l737c20 => 'Invalid duration';
-	@override String get l732c26 => 'Match duration must be greater than zero.';
-	@override String get l731c20 => 'Invalid duration';
-	@override String get l726c26 => 'Match start time cannot be in the future.';
-	@override String get l725c20 => 'Invalid match registration';
-	@override String get l720c26 => 'Select when this match started.';
-	@override String get l719c20 => 'Match start missing';
-	@override String get l706c24 => 'Invalid points';
-	@override String get l698c24 => 'Points missing';
-	@override String get l677c26 => 'Select how the winner won before continuing.';
-	@override String get l676c20 => 'Winner method missing';
-	@override String get l671c26 => 'Select the winner before continuing.';
-	@override String get l670c20 => 'Winner missing';
-	@override String get l661c17 => 'The selected winner is no longer in the participant list.';
-	@override String get l659c20 => 'Winner missing';
-	@override String get l650c26 => 'Select the winner before continuing.';
-	@override String get l649c20 => 'Winner missing';
-	@override String get l638c22 => 'Invalid faction setup';
-	@override String get l626c22 => 'Faction missing';
-	@override String get l617c17 => 'Select at least 2 participants (registered and/or anonymous) to continue.';
-	@override String get l615c20 => 'Not enough players';
-	@override String get l592c35 => 'Continue';
-	@override String get l588c35 => 'Edit';
-	@override String get l583c15 => 'You kept the default duration of 1 hour. Do you want to continue with it?';
-	@override String get l581c31 => 'Keep default duration?';
-	@override String get l505c22 => 'Match start time cannot be in the future.';
-	@override String get l504c16 => 'Invalid match registration';
-	@override String get l470c22 => 'Match start time cannot be in the future.';
-	@override String get l469c16 => 'Invalid match registration';
-	@override String get l141c32 => 'Unable to load this match report flow.';
-	@override String get l140c26 => 'Match not found';
-	@override String get l87c24 => 'Unable to load this match report flow.';
-	@override String get l86c18 => 'Invalid match';
+	@override String get gallery => 'Galeria';
+	@override String get camera => 'Câmera';
+	@override String get cancel => 'Cancelar';
+	@override String get gallery2 => 'Galeria';
+	@override String get camera2 => 'Câmera';
+	@override String get selectSource => 'Selecione a fonte';
+	@override String get selectedImageIsEmptyChooseAnotherImage => 'A imagem selecionada está vazia. Escolha outra imagem.';
+	@override String get invalidImage => 'Imagem inválida';
+	@override String get allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain => 'Permita permissões de câmera e foto nas configurações do sistema e tente novamente.';
+	@override String get unableToAccessCameraOrGallery => 'Não foi possível acessar a câmera ou a galeria';
+	@override String get ok => 'OK';
+	@override String get takeASelfieWithEveryoneAtTheTableIfPossibleIncludeTheBoardInTheSamePhoto => 'Tire uma selfie com todos na mesa. Se possível, inclua o quadro na mesma foto.';
+	@override String get groupSelfieProof => 'Prova de selfie em grupo';
+	@override String get completeAllReportStepsBeforeSubmitting => 'Conclua todas as etapas do relatório antes de enviá-lo.';
+	@override String get incompleteReport => 'Relatório incompleto';
+	@override String get addTheBoardPhotoBeforeContinuing => 'Adicione a foto do quadro antes de continuar.';
+	@override String get boardPhotoRequired => 'Foto do quadro necessária';
+	@override String get addTheGroupSelfieBeforeContinuing => 'Adicione a selfie do grupo antes de continuar.';
+	@override String get groupPhotoRequired => 'Foto do grupo obrigatória';
+	@override String get matchDurationMustBeAtMost8Hours => 'A duração da partida deve ser de no máximo 8 horas.';
+	@override String get invalidDuration => 'Duração inválida';
+	@override String get matchDurationMustBeGreaterThanZero => 'A duração da partida deve ser maior que zero.';
+	@override String get invalidDuration2 => 'Duração inválida';
+	@override String get matchStartTimeCannotBeInTheFuture => 'O horário de início da partida não pode ser no futuro.';
+	@override String get invalidMatchRegistration => 'Registro de partida inválido';
+	@override String get selectWhenThisMatchStarted => 'Selecione quando esta partida começou.';
+	@override String get matchStartMissing => 'Partida começa faltando';
+	@override String get invalidPoints => 'Pontos inválidos';
+	@override String get pointsMissing => 'Faltam pontos';
+	@override String get selectHowTheWinnerWonBeforeContinuing => 'Selecione como o vencedor ganhou antes de continuar.';
+	@override String get winnerMethodMissing => 'Método vencedor ausente';
+	@override String get selectTheWinnerBeforeContinuing => 'Selecione o vencedor antes de continuar.';
+	@override String get winnerMissing => 'Vencedor ausente';
+	@override String get theSelectedWinnerIsNoLongerInTheParticipantList => 'O vencedor selecionado não está mais na lista de participantes.';
+	@override String get winnerMissing2 => 'Vencedor ausente';
+	@override String get selectTheWinnerBeforeContinuing2 => 'Selecione o vencedor antes de continuar.';
+	@override String get winnerMissing3 => 'Vencedor ausente';
+	@override String get invalidFactionSetup => 'Configuração de facção inválida';
+	@override String get factionMissing => 'Facção desaparecida';
+	@override String get selectAtLeast2ParticipantsRegisteredAndOrAnonymousToContinue => 'Selecione pelo menos 2 participantes (registrados e/ou anônimos) para continuar.';
+	@override String get notEnoughPlayers => 'Não há jogadores suficientes';
+	@override String get edit => 'Editar';
+	@override String get youKeptTheDefaultDurationOf1HourDoYouWantToContinueWithIt => 'Você manteve a duração padrão de 1 hora. Você quer continuar com isso?';
+	@override String get keepDefaultDuration => 'Manter a duração padrão?';
+	@override String get matchStartTimeCannotBeInTheFuture2 => 'O horário de início da partida não pode ser no futuro.';
+	@override String get invalidMatchRegistration2 => 'Registro de partida inválido';
+	@override String get matchStartTimeCannotBeInTheFuture3 => 'O horário de início da partida não pode ser no futuro.';
+	@override String get invalidMatchRegistration3 => 'Registro de partida inválido';
+	@override String get unableToLoadThisMatchReportFlow => 'Não foi possível carregar este fluxo de relatório de partida.';
+	@override String get matchNotFound => 'Correspondência não encontrada';
+	@override String get unableToLoadThisMatchReportFlow2 => 'Não foi possível carregar este fluxo de relatório de partida.';
+	@override String get invalidMatch => 'Correspondência inválida';
+	@override String get continueButton => 'Continuar';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section
@@ -1050,11 +1063,11 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardReviewStepSectionPtBr
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l166c18 => 'Board photo';
-	@override String get l161c18 => 'Group photo';
-	@override String get l154c11 => 'Social proof';
-	@override String get l92c11 => 'Ranking';
-	@override String get l42c11 => 'Confirm all details before logging this match.';
+	@override String get boardPhoto => 'Foto do quadro';
+	@override String get groupPhoto => 'Foto do grupo';
+	@override String get socialProof => 'Prova social';
+	@override String get ranking => 'Classificação';
+	@override String get confirmAllDetailsBeforeLoggingThisMatch => 'Confirme todos os detalhes antes de registrar esta partida.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_photo_tile
@@ -1064,8 +1077,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardReviewPhotoTilePtBr e
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l66c45 => 'Ready';
-	@override String get l66c33 => 'Missing';
+	@override String get ready => 'Preparar';
+	@override String get missing => 'Ausente';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_proof_card_section
@@ -1075,8 +1088,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionPtBr 
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l79c60 => 'Tap to replace';
-	@override String get l79c39 => 'Tap to add photo';
+	@override String get tapToReplace => 'Toque para substituir';
+	@override String get tapToAddPhoto => 'Toque para adicionar foto';
 }
 
 // Path: register_match.ui_sheets_register_match_picker_header_section
@@ -1086,8 +1099,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionPtBr ext
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l62c13 => 'Select a match you participated in. You can register a result from 2 hours before scheduled start.';
-	@override String get l35c19 => 'Register Match Result';
+	@override String get selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu => 'Selecione uma partida da qual você participou. Você pode registrar o resultado 2 horas antes do início programado.';
+	@override String get registerMatchResult => 'Registrar Resultado da Partida';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_social_proof_step_section
@@ -1097,13 +1110,13 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectio
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l67c21 => 'Capture the board and score track clearly.';
-	@override String get l66c18 => 'Board photo';
-	@override String get l57c11 => 'Upload a photo of the board with the score track clearly visible.';
-	@override String get l50c11 => 'Board photo proof';
-	@override String get l44c21 => 'Selfie with all players. Include the board if possible.';
-	@override String get l43c18 => 'Group photo';
-	@override String get l34c11 => 'Upload both photos to confirm this match happened in person.';
+	@override String get captureTheBoardAndScoreTrackClearly => 'Capture o tabuleiro e marque a pontuação com clareza.';
+	@override String get boardPhoto => 'Foto do quadro';
+	@override String get uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible => 'Carregue uma foto do tabuleiro com a trilha de pontuação claramente visível.';
+	@override String get boardPhotoProof => 'Prova fotográfica do quadro';
+	@override String get selfieWithAllPlayersIncludeTheBoardIfPossible => 'Selfie com todos os jogadores. Inclua o quadro, se possível.';
+	@override String get groupPhoto => 'Foto do grupo';
+	@override String get uploadBothPhotosToConfirmThisMatchHappenedInPerson => 'Faça upload de ambas as fotos para confirmar que esta partida aconteceu pessoalmente.';
 }
 
 // Path: shop.ui_screens_shop_screen
@@ -1113,10 +1126,10 @@ class _TranslationsShopUiScreensShopScreenPtBr extends TranslationsShopUiScreens
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
-	@override String get l77c17 => 'supporter packs linked to community tournaments.';
-	@override String get l76c17 => 'Planned: themed profile packs, faction cosmetics, and event ';
-	@override String get l69c17 => 'Roadmap placeholder';
-	@override String get l48c17 => 'community-driven bundles for ROOT players.';
-	@override String get l47c17 => 'This area will host future digital goods, cosmetics, and ';
-	@override String get l40c17 => 'Shop feature placeholder';
+	@override String get supporterPacksLinkedToCommunityTournaments => 'pacotes de torcedor vinculados a torneios comunitários.';
+	@override String get plannedThemedProfilePacksFactionCosmeticsAndEvent => 'Planejado: pacotes de perfis temáticos, cosméticos de facção e evento ';
+	@override String get roadmapPlaceholder => 'Espaço reservado para roteiro';
+	@override String get communityDrivenBundlesForRootPlayers => 'pacotes orientados pela comunidade para ROOT jogadores.';
+	@override String get thisAreaWillHostFutureDigitalGoodsCosmeticsAnd => 'Esta área abrigará futuros produtos digitais, cosméticos e ';
+	@override String get shopFeaturePlaceholder => 'Espaço reservado para recurso de loja';
 }

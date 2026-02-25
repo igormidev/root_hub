@@ -45,14 +45,20 @@ class MatchNoMatchesStateWidget extends StatelessWidget {
           ),
           SizedBox(height: 12),
           Text(
-            t.match.ui_screens_match_no_matches_state_widget.l47c13,
+            t
+                .match
+                .ui_screens_match_no_matches_state_widget
+                .noTablesInYourAreaYet,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w900,
             ),
           ),
           SizedBox(height: 6),
           Text(
-            t.match.ui_screens_match_no_matches_state_widget.l54c13,
+            t
+                .match
+                .ui_screens_match_no_matches_state_widget
+                .beTheFirstToStartOneHostANewTableSoNearbyPlayersCanSubscribe,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,
@@ -64,7 +70,10 @@ class MatchNoMatchesStateWidget extends StatelessWidget {
             onPressed: onHostFirstTable,
             icon: Icon(Icons.add_rounded),
             label: Text(
-              t.match.ui_screens_match_no_matches_state_widget.l65c31,
+              t
+                  .match
+                  .ui_screens_match_no_matches_state_widget
+                  .hostTheFirstTable,
             ),
           ),
         ],

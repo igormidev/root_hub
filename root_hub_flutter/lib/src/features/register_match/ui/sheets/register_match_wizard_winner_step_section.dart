@@ -36,7 +36,7 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_winner_step_section
-              .l36c11,
+              .pickThePlayerWhoWonThisMatch,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -77,7 +77,7 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_winner_step_section
-              .l74c11,
+              .howDidTheWinnerWon,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -87,11 +87,11 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
           t
                   .register_match
                   .ui_sheets_register_match_wizard_winner_step_section
-                  .l81c11 +
+                  .totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack +
               t
                   .register_match
                   .ui_sheets_register_match_wizard_winner_step_section
-                  .l82c11,
+                  .dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -109,7 +109,7 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_wizard_winner_step_section
-                    .l96c27,
+                    .totalPoints30,
               ),
             ),
             ButtonSegment<_WinnerType>(
@@ -119,7 +119,7 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
                 t
                     .register_match
                     .ui_sheets_register_match_wizard_winner_step_section
-                    .l101c27,
+                    .dominance,
               ),
             ),
           ],

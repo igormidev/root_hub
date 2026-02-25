@@ -57,7 +57,7 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
                       t
                           .match
                           .ui_sheets_match_table_info_bottom_actions_widget
-                          .l55c39,
+                          .close,
                     ),
                   ),
                 ),
@@ -86,11 +86,11 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
                           ? t
                                 .match
                                 .ui_sheets_match_table_info_bottom_actions_widget
-                                .l79c41
+                                .leaving
                           : t
                                 .match
                                 .ui_sheets_match_table_info_bottom_actions_widget
-                                .l79c56,
+                                .leaveTable,
                     ),
                   ),
                 ),
@@ -127,11 +127,11 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
                       ? t
                             .match
                             .ui_sheets_match_table_info_bottom_actions_widget
-                            .l112c38
+                            .removing
                       : t
                             .match
                             .ui_sheets_match_table_info_bottom_actions_widget
-                            .l112c54,
+                            .removePlayer,
                 ),
               ),
             ],

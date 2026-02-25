@@ -22,7 +22,7 @@ class MatchCreateTableLocationLoadingSearchWidget extends StatelessWidget {
             t
                 .match
                 .ui_screens_match_create_table_location_loading_search_widget
-                .l21c13,
+                .searchingLocations,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

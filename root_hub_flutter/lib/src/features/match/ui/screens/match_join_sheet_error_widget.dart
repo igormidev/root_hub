@@ -53,7 +53,7 @@ class MatchJoinSheetErrorWidget extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () => Navigator.of(context).pop(false),
                   child: Text(
-                    t.match.ui_screens_match_join_sheet_error_widget.l54c37,
+                    t.match.ui_screens_match_join_sheet_error_widget.close,
                   ),
                 ),
               ),
@@ -63,7 +63,7 @@ class MatchJoinSheetErrorWidget extends StatelessWidget {
                   onPressed: onRetry,
                   icon: Icon(Icons.refresh_rounded),
                   label: Text(
-                    t.match.ui_screens_match_join_sheet_error_widget.l62c37,
+                    t.match.ui_screens_match_join_sheet_error_widget.retry,
                   ),
                 ),
               ),

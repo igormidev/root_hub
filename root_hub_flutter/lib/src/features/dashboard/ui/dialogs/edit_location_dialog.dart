@@ -182,7 +182,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              t.dashboard.ui_dialogs_edit_location_dialog.l184c15,
+              t.dashboard.ui_dialogs_edit_location_dialog.editLocation,
               style: GoogleFonts.cinzel(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
@@ -190,7 +190,10 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
             ),
             SizedBox(height: 8),
             Text(
-              t.dashboard.ui_dialogs_edit_location_dialog.l192c15,
+              t
+                  .dashboard
+                  .ui_dialogs_edit_location_dialog
+                  .updateYourCoordinatesAndTargetSearchRatioForMatchDiscovery,
               textAlign: TextAlign.center,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w700,
@@ -225,7 +228,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
                             Navigator.of(context).pop(false);
                           },
                     child: Text(
-                      t.dashboard.ui_dialogs_edit_location_dialog.l227c23,
+                      t.dashboard.ui_dialogs_edit_location_dialog.cancel,
                       style: GoogleFonts.nunitoSans(
                         fontWeight: FontWeight.w700,
                       ),
@@ -245,7 +248,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
                             ),
                           )
                         : Text(
-                            t.dashboard.ui_dialogs_edit_location_dialog.l247c29,
+                            t.dashboard.ui_dialogs_edit_location_dialog.save,
                             style: GoogleFonts.nunitoSans(
                               fontWeight: FontWeight.w800,
                             ),

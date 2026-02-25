@@ -189,7 +189,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   onPressed: _openRegisterMatchFlow,
                   icon: Icon(Icons.emoji_events_rounded),
                   label: Text(
-                    t.match.ui_screens_match_screen.l191c21,
+                    t.match.ui_screens_match_screen.reportResult,
                     style: GoogleFonts.nunitoSans(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.2,
@@ -237,7 +237,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
             },
             icon: Icon(Icons.campaign_rounded),
             label: Text(
-              t.match.ui_screens_match_screen.l239c15,
+              t.match.ui_screens_match_screen.hostTable,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.2,
@@ -564,11 +564,11 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                                             ? t
                                                   .match
                                                   .ui_screens_match_screen
-                                                  .l563c47
+                                                  .matchPlayedHere
                                             : t
                                                   .match
                                                   .ui_screens_match_screen
-                                                  .l564c47,
+                                                  .matchesPlayedHere,
                                         style: Theme.of(dialogContext)
                                             .textTheme
                                             .labelLarge
@@ -610,8 +610,8 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                                 SizedBox(height: 4),
                                 Text(
                                   google?.isPublicPlace == false
-                                      ? t.match.ui_screens_match_screen.l606c41
-                                      : t.match.ui_screens_match_screen.l607c41,
+                                      ? t.match.ui_screens_match_screen.private
+                                      : t.match.ui_screens_match_screen.public,
                                   style: Theme.of(dialogContext)
                                       .textTheme
                                       .labelMedium
@@ -660,12 +660,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                       if (google?.url != null && google!.url!.trim().isNotEmpty)
                         MatchActionableInfoRowWidget(
                           icon: Icons.map_rounded,
-                          label: t.match.ui_screens_match_screen.l656c34,
+                          label: t.match.ui_screens_match_screen.mapLink2,
                           value: google.url!.trim(),
                           onCopyTap: () {
                             _copyValue(
                               value: google.url!.trim(),
-                              label: t.match.ui_screens_match_screen.l661c38,
+                              label: t.match.ui_screens_match_screen.mapLink,
                             );
                           },
                           onActionTap: () {
@@ -676,12 +676,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           google!.websiteUri!.trim().isNotEmpty)
                         MatchActionableInfoRowWidget(
                           icon: Icons.language_rounded,
-                          label: t.match.ui_screens_match_screen.l672c34,
+                          label: t.match.ui_screens_match_screen.website2,
                           value: google.websiteUri!.trim(),
                           onCopyTap: () {
                             _copyValue(
                               value: google.websiteUri!.trim(),
-                              label: t.match.ui_screens_match_screen.l677c38,
+                              label: t.match.ui_screens_match_screen.website,
                             );
                           },
                           onActionTap: () {
@@ -692,12 +692,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           google!.phoneNumber!.trim().isNotEmpty)
                         MatchActionableInfoRowWidget(
                           icon: Icons.phone_rounded,
-                          label: t.match.ui_screens_match_screen.l688c34,
+                          label: t.match.ui_screens_match_screen.phone2,
                           value: google.phoneNumber!.trim(),
                           onCopyTap: () {
                             _copyValue(
                               value: google.phoneNumber!.trim(),
-                              label: t.match.ui_screens_match_screen.l693c38,
+                              label: t.match.ui_screens_match_screen.phone,
                             );
                           },
                           onActionTap: () {
@@ -720,7 +720,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                t.match.ui_screens_match_screen.l716c33,
+                                t
+                                    .match
+                                    .ui_screens_match_screen
+                                    .manualLocationNotes,
                                 style: Theme.of(dialogContext)
                                     .textTheme
                                     .titleSmall
@@ -768,7 +771,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                       child: FilledButton.tonal(
                         onPressed: () => Navigator.of(dialogContext).pop(),
                         child: Text(
-                          t.match.ui_screens_match_screen.l763c43,
+                          t.match.ui_screens_match_screen.close,
                         ),
                       ),
                     ),
@@ -807,7 +810,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            t.match.ui_screens_match_screen.l800c25,
+            t.match.ui_screens_match_screen.invalidUrlFormat,
           ),
         ),
       );
@@ -825,7 +828,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          t.match.ui_screens_match_screen.l816c23,
+          t.match.ui_screens_match_screen.unableToOpenTheLinkRightNow,
         ),
       ),
     );
@@ -840,7 +843,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            t.match.ui_screens_match_screen.l829c25,
+            t.match.ui_screens_match_screen.invalidPhoneNumberFormat,
           ),
         ),
       );
@@ -862,7 +865,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          t.match.ui_screens_match_screen.l849c23,
+          t.match.ui_screens_match_screen.unableToOpenTheDialerRightNow,
         ),
       ),
     );

@@ -45,7 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              t.home.ui_screens_home_screen.l47c15,
+              t.home.ui_screens_home_screen.communityDashboard,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -55,7 +55,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              t.home.ui_screens_home_screen.l57c15,
+              t
+                  .home
+                  .ui_screens_home_screen
+                  .seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
@@ -74,8 +77,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
           SizedBox(height: 18),
           HomeStatsSection(
-            title: t.home.ui_screens_home_screen.l76c20,
-            description: t.home.ui_screens_home_screen.l78c17,
+            title: t.home.ui_screens_home_screen.communityStats,
+            description: t
+                .home
+                .ui_screens_home_screen
+                .factionPerformanceFromAllPlayedMatchesInRootHub,
             emptyTitle: 'No community stats yet',
             emptyDescription:
                 'As soon as players register completed matches, this section will fill with faction trends.',
@@ -88,8 +94,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           SizedBox(height: 26),
           HomeStatsSection(
-            title: t.home.ui_screens_home_screen.l91c20,
-            description: t.home.ui_screens_home_screen.l92c26,
+            title: t.home.ui_screens_home_screen.myStats,
+            description: t
+                .home
+                .ui_screens_home_screen
+                .yourPersonalFactionPerformanceAndMatchProfile,
             emptyTitle: 'No personal stats yet',
             emptyDescription:
                 'Play and register your first match to start your personal dashboard.',

@@ -80,11 +80,11 @@ class _RegisterMatchWizardProofCardSection extends StatelessWidget {
                           ? t
                                 .register_match
                                 .ui_sheets_register_match_wizard_proof_card_section
-                                .l79c39
+                                .tapToAddPhoto
                           : t
                                 .register_match
                                 .ui_sheets_register_match_wizard_proof_card_section
-                                .l79c60,
+                                .tapToReplace,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: colorScheme.primary,

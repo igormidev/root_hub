@@ -84,9 +84,14 @@ class _RegisterMatchWizardSheetState
     if (scheduleId == null || scheduleId <= 0) {
       _tableDetailsFuture = Future<MatchScheduleInfo>.error(
         RootHubException(
-          title: t.register_match.ui_sheets_register_match_wizard_sheet.l86c18,
-          description:
-              t.register_match.ui_sheets_register_match_wizard_sheet.l87c24,
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .invalidMatch,
+          description: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .unableToLoadThisMatchReportFlow2,
         ),
       );
     } else {
@@ -142,11 +147,11 @@ class _RegisterMatchWizardSheetState
                   title: t
                       .register_match
                       .ui_sheets_register_match_wizard_sheet
-                      .l140c26,
+                      .matchNotFound,
                   description: t
                       .register_match
                       .ui_sheets_register_match_wizard_sheet
-                      .l141c32,
+                      .unableToLoadThisMatchReportFlow,
                 ),
               );
             }
@@ -474,9 +479,14 @@ class _RegisterMatchWizardSheetState
     if (selectedDateTime.isAfter(DateTime.now())) {
       await showErrorDialog(
         context,
-        title: t.register_match.ui_sheets_register_match_wizard_sheet.l469c16,
-        description:
-            t.register_match.ui_sheets_register_match_wizard_sheet.l470c22,
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .invalidMatchRegistration3,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .matchStartTimeCannotBeInTheFuture3,
       );
       return;
     }
@@ -510,9 +520,14 @@ class _RegisterMatchWizardSheetState
     if (selectedDateTime.isAfter(DateTime.now())) {
       await showErrorDialog(
         context,
-        title: t.register_match.ui_sheets_register_match_wizard_sheet.l504c16,
-        description:
-            t.register_match.ui_sheets_register_match_wizard_sheet.l505c22,
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .invalidMatchRegistration2,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .matchStartTimeCannotBeInTheFuture2,
       );
       return;
     }
@@ -589,19 +604,22 @@ class _RegisterMatchWizardSheetState
         builder: (dialogContext) {
           return AlertDialog(
             title: Text(
-              t.register_match.ui_sheets_register_match_wizard_sheet.l581c31,
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .keepDefaultDuration,
             ),
             content: Text(
-              t.register_match.ui_sheets_register_match_wizard_sheet.l583c15,
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .youKeptTheDefaultDurationOf1HourDoYouWantToContinueWithIt,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
                 child: Text(
-                  t
-                      .register_match
-                      .ui_sheets_register_match_wizard_sheet
-                      .l588c35,
+                  t.register_match.ui_sheets_register_match_wizard_sheet.edit,
                 ),
               ),
               FilledButton(
@@ -610,7 +628,7 @@ class _RegisterMatchWizardSheetState
                   t
                       .register_match
                       .ui_sheets_register_match_wizard_sheet
-                      .l592c35,
+                      .continueButton,
                 ),
               ),
             ],
@@ -634,10 +652,14 @@ class _RegisterMatchWizardSheetState
         final selectedCount = _selectedParticipants.length;
         if (selectedCount < 2) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l615c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l617c17,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .notEnoughPlayers,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectAtLeast2ParticipantsRegisteredAndOrAnonymousToContinue,
           );
         }
         return null;
@@ -649,7 +671,7 @@ class _RegisterMatchWizardSheetState
               title: t
                   .register_match
                   .ui_sheets_register_match_wizard_sheet
-                  .l626c22,
+                  .factionMissing,
               description:
                   'Select a faction for ${participant.displayName} before continuing.',
             );
@@ -664,7 +686,7 @@ class _RegisterMatchWizardSheetState
               title: t
                   .register_match
                   .ui_sheets_register_match_wizard_sheet
-                  .l638c22,
+                  .invalidFactionSetup,
               description:
                   '${faction.displayName} was selected more than once. Each faction can only be selected once.',
             );
@@ -675,10 +697,14 @@ class _RegisterMatchWizardSheetState
       case _RegisterMatchStep.winner:
         if (_winnerParticipantKey == null) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l649c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l650c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMissing3,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectTheWinnerBeforeContinuing2,
           );
         }
 
@@ -687,10 +713,14 @@ class _RegisterMatchWizardSheetState
         );
         if (!winnerStillSelected) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l659c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l661c17,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMissing2,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .theSelectedWinnerIsNoLongerInTheParticipantList,
           );
         }
         return null;
@@ -699,18 +729,26 @@ class _RegisterMatchWizardSheetState
         final winnerType = _winnerType;
         if (winnerKey == null) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l670c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l671c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectTheWinnerBeforeContinuing,
           );
         }
         if (winnerType == null) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l676c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l677c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMethodMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectHowTheWinnerWonBeforeContinuing,
           );
         }
 
@@ -734,7 +772,7 @@ class _RegisterMatchWizardSheetState
                 title: t
                     .register_match
                     .ui_sheets_register_match_wizard_sheet
-                    .l698c24,
+                    .pointsMissing,
                 description:
                     'Enter valid points for ${participant.displayName}, or mark failed dominance.',
               );
@@ -745,7 +783,7 @@ class _RegisterMatchWizardSheetState
                 title: t
                     .register_match
                     .ui_sheets_register_match_wizard_sheet
-                    .l706c24,
+                    .invalidPoints,
                 description:
                     '${participant.displayName} must have points between 0 and 29.',
               );
@@ -758,52 +796,76 @@ class _RegisterMatchWizardSheetState
         final matchStartedAt = _matchStartedAt;
         if (matchStartedAt == null) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l719c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l720c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchStartMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectWhenThisMatchStarted,
           );
         }
         if (matchStartedAt.isAfter(DateTime.now())) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l725c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l726c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .invalidMatchRegistration,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchStartTimeCannotBeInTheFuture,
           );
         }
         if (_matchEstimatedDuration <= Duration.zero) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l731c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l732c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .invalidDuration2,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchDurationMustBeGreaterThanZero,
           );
         }
         if (_matchEstimatedDuration > Duration(hours: 8)) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l737c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l738c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .invalidDuration,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchDurationMustBeAtMost8Hours,
           );
         }
         return null;
       case _RegisterMatchStep.socialProof:
         if (_groupPhoto == null) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l745c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l746c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .groupPhotoRequired,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .addTheGroupSelfieBeforeContinuing,
           );
         }
         if (_boardPhoto == null) {
           return RootHubException(
-            title:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l751c20,
-            description:
-                t.register_match.ui_sheets_register_match_wizard_sheet.l752c26,
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .boardPhotoRequired,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .addTheBoardPhotoBeforeContinuing,
           );
         }
         return null;
@@ -836,9 +898,14 @@ class _RegisterMatchWizardSheetState
         boardPhoto == null) {
       await showErrorDialog(
         context,
-        title: t.register_match.ui_sheets_register_match_wizard_sheet.l785c16,
-        description:
-            t.register_match.ui_sheets_register_match_wizard_sheet.l786c22,
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .incompleteReport,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .completeAllReportStepsBeforeSubmitting,
       );
       return;
     }
@@ -993,19 +1060,22 @@ class _RegisterMatchWizardSheetState
         builder: (dialogContext) {
           return AlertDialog(
             title: Text(
-              t.register_match.ui_sheets_register_match_wizard_sheet.l940c31,
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .groupSelfieProof,
             ),
             content: Text(
-              t.register_match.ui_sheets_register_match_wizard_sheet.l942c15,
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .takeASelfieWithEveryoneAtTheTableIfPossibleIncludeTheBoardInTheSamePhoto,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(),
                 child: Text(
-                  t
-                      .register_match
-                      .ui_sheets_register_match_wizard_sheet
-                      .l947c35,
+                  t.register_match.ui_sheets_register_match_wizard_sheet.ok,
                 ),
               ),
             ],
@@ -1035,9 +1105,14 @@ class _RegisterMatchWizardSheetState
 
       await showErrorDialog(
         context,
-        title: t.register_match.ui_sheets_register_match_wizard_sheet.l976c16,
-        description:
-            t.register_match.ui_sheets_register_match_wizard_sheet.l978c13,
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .unableToAccessCameraOrGallery,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain,
       );
       return;
     }
@@ -1054,9 +1129,12 @@ class _RegisterMatchWizardSheetState
     if (bytes.isEmpty) {
       await showErrorDialog(
         context,
-        title: t.register_match.ui_sheets_register_match_wizard_sheet.l995c16,
-        description:
-            t.register_match.ui_sheets_register_match_wizard_sheet.l996c22,
+        title:
+            t.register_match.ui_sheets_register_match_wizard_sheet.invalidImage,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .selectedImageIsEmptyChooseAnotherImage,
       );
       return;
     }
@@ -1086,7 +1164,10 @@ class _RegisterMatchWizardSheetState
         builder: (dialogContext) {
           return CupertinoActionSheet(
             title: Text(
-              t.register_match.ui_sheets_register_match_wizard_sheet.l1025c31,
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .selectSource,
             ),
             actions: [
               CupertinoActionSheetAction(
@@ -1097,7 +1178,7 @@ class _RegisterMatchWizardSheetState
                   t
                       .register_match
                       .ui_sheets_register_match_wizard_sheet
-                      .l1031c35,
+                      .camera2,
                 ),
               ),
               CupertinoActionSheetAction(
@@ -1108,7 +1189,7 @@ class _RegisterMatchWizardSheetState
                   t
                       .register_match
                       .ui_sheets_register_match_wizard_sheet
-                      .l1037c35,
+                      .gallery2,
                 ),
               ),
             ],
@@ -1118,7 +1199,7 @@ class _RegisterMatchWizardSheetState
                 Navigator.of(dialogContext).pop();
               },
               child: Text(
-                t.register_match.ui_sheets_register_match_wizard_sheet.l1045c33,
+                t.register_match.ui_sheets_register_match_wizard_sheet.cancel,
               ),
             ),
           );
@@ -1137,10 +1218,7 @@ class _RegisterMatchWizardSheetState
               ListTile(
                 leading: Icon(Icons.photo_camera_rounded),
                 title: Text(
-                  t
-                      .register_match
-                      .ui_sheets_register_match_wizard_sheet
-                      .l1062c35,
+                  t.register_match.ui_sheets_register_match_wizard_sheet.camera,
                 ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
@@ -1152,7 +1230,7 @@ class _RegisterMatchWizardSheetState
                   t
                       .register_match
                       .ui_sheets_register_match_wizard_sheet
-                      .l1069c35,
+                      .gallery,
                 ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);

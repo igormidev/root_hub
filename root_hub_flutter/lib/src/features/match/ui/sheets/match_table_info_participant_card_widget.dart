@@ -70,7 +70,7 @@ class MatchTableInfoParticipantCardWidget extends StatelessWidget {
                     t
                         .match
                         .ui_sheets_match_table_info_participant_card_widget
-                        .l69c21,
+                        .favoriteFaction,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w800,

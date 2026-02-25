@@ -89,8 +89,11 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
             if (table == null) {
               return MatchTableInfoErrorWidget(
                 error: RootHubException(
-                  title: t.match.ui_sheets_match_table_info_sheet.l91c26,
-                  description: t.match.ui_sheets_match_table_info_sheet.l92c32,
+                  title: t.match.ui_sheets_match_table_info_sheet.tableNotFound,
+                  description: t
+                      .match
+                      .ui_sheets_match_table_info_sheet
+                      .unableToLoadTableDetails,
                 ),
                 onClose: () => Navigator.of(context).pop(false),
                 onRetry: () {
@@ -131,17 +134,23 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       builder: (dialogContext) {
         return AlertDialog(
           title: Text(
-            t.match.ui_sheets_match_table_info_sheet.l132c29,
+            t.match.ui_sheets_match_table_info_sheet.leaveThisTable,
           ),
           content: Text(
-            t.match.ui_sheets_match_table_info_sheet.l134c13 +
-                t.match.ui_sheets_match_table_info_sheet.l135c13,
+            t
+                    .match
+                    .ui_sheets_match_table_info_sheet
+                    .youWillBeUnsubscribedFromThisMatchAndRemovedFromThe +
+                t
+                    .match
+                    .ui_sheets_match_table_info_sheet
+                    .playersListYouCanRejoinLaterIfSeatsAreStillAvailable,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
               child: Text(
-                t.match.ui_sheets_match_table_info_sheet.l140c33,
+                t.match.ui_sheets_match_table_info_sheet.cancel3,
               ),
             ),
             FilledButton(
@@ -151,7 +160,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                 foregroundColor: Theme.of(dialogContext).colorScheme.onError,
               ),
               child: Text(
-                t.match.ui_sheets_match_table_info_sheet.l148c33,
+                t.match.ui_sheets_match_table_info_sheet.leave,
               ),
             ),
           ],
@@ -196,7 +205,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       builder: (dialogContext) {
         return AlertDialog(
           title: Text(
-            t.match.ui_sheets_match_table_info_sheet.l191c29,
+            t.match.ui_sheets_match_table_info_sheet.removeAPlayer,
           ),
           content: SizedBox(
             width: double.maxFinite,
@@ -205,7 +214,10 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.match.ui_sheets_match_table_info_sheet.l199c19,
+                  t
+                      .match
+                      .ui_sheets_match_table_info_sheet
+                      .selectAPlayerToRemoveFromTheTable,
                   style: Theme.of(dialogContext).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -224,7 +236,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
               child: Text(
-                t.match.ui_sheets_match_table_info_sheet.l217c33,
+                t.match.ui_sheets_match_table_info_sheet.cancel2,
               ),
             ),
           ],
@@ -250,13 +262,13 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
         return AlertDialog(
           title: Text('Remove $playerName?'),
           content: Text(
-            '$playerName will be removed from the table and will need to ${t.match.ui_sheets_match_table_info_sheet.l243c13}',
+            '$playerName will be removed from the table and will need to ${t.match.ui_sheets_match_table_info_sheet.rejoinIfSeatsAreStillAvailable}',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
               child: Text(
-                t.match.ui_sheets_match_table_info_sheet.l248c33,
+                t.match.ui_sheets_match_table_info_sheet.cancel,
               ),
             ),
             FilledButton(
@@ -266,7 +278,7 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                 foregroundColor: Theme.of(dialogContext).colorScheme.onError,
               ),
               child: Text(
-                t.match.ui_sheets_match_table_info_sheet.l256c33,
+                t.match.ui_sheets_match_table_info_sheet.remove,
               ),
             ),
           ],

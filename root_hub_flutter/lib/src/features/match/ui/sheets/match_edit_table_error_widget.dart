@@ -43,7 +43,7 @@ class MatchEditTableErrorWidget extends StatelessWidget {
             child: OutlinedButton(
               onPressed: onClose,
               child: Text(
-                t.match.ui_sheets_match_edit_table_error_widget.l44c33,
+                t.match.ui_sheets_match_edit_table_error_widget.close,
               ),
             ),
           ),

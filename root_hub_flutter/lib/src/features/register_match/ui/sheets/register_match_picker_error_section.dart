@@ -53,7 +53,7 @@ class RegisterMatchPickerErrorSection extends StatelessWidget {
                   t
                       .register_match
                       .ui_sheets_register_match_picker_error_section
-                      .l51c35,
+                      .retry,
                 ),
               ),
             ],

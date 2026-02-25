@@ -26,7 +26,7 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_participants_step_section
-              .l26c11,
+              .value1WhoActuallyPlayed,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -36,7 +36,7 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
           t
               .register_match
               .ui_sheets_register_match_wizard_participants_step_section
-              .l33c11,
+              .selectRegisteredPlayersWhoWerePresentYouCanAddAnonymousPlayersOrSearchFo,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
@@ -68,11 +68,11 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
                     ? t
                           .register_match
                           .ui_sheets_register_match_wizard_participants_step_section
-                          .l62c23
+                          .anonymousPlayer
                     : t
                           .register_match
                           .ui_sheets_register_match_wizard_participants_step_section
-                          .l63c23,
+                          .registeredPlayer,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w700,
@@ -101,7 +101,7 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
               t
                   .register_match
                   .ui_sheets_register_match_wizard_participants_step_section
-                  .l88c31,
+                  .addAnonymousPlayer,
             ),
           ),
         ),
@@ -115,7 +115,7 @@ class _RegisterMatchWizardParticipantsStepSection extends StatelessWidget {
               t
                   .register_match
                   .ui_sheets_register_match_wizard_participants_step_section
-                  .l97c31,
+                  .addRegisteredPlayerFromPlatform,
             ),
           ),
         ),
