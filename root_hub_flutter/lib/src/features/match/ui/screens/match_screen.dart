@@ -12,9 +12,9 @@ import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_sheet.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
-import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_sheet.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
@@ -1618,6 +1618,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
+
                   Text(
                     'Favorite Faction',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(

@@ -809,7 +809,8 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 4),
+
                   Text(
                     'Favorite Faction',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
