@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_pie_chart_widget.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_snapshot.dart';
 
 class HomeStatsSection extends StatefulWidget {
@@ -271,7 +271,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                                 children: [
                                   Expanded(
                                     child: _buildMetricChart(
-                                      context,
                                       stats,
                                       metricConfig.type,
                                     ),
@@ -370,7 +369,6 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
   }
 
   Widget _buildMetricChart(
-    BuildContext context,
     HomeStatsSnapshot stats,
     _StatsMetricType metricType,
   ) {
@@ -382,88 +380,24 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
           metricType,
         ),
     };
-    final totalValue = valuesByFaction.values.fold<double>(
-      0,
-      (sum, currentValue) => sum + currentValue,
-    );
-    final centerMetricValue = _buildCenterMetricValue(
+    final allFactionsMetricValue = _buildAllFactionsMetricValue(
       stats: stats,
       metricType: metricType,
       valuesByFaction: valuesByFaction,
     );
-    final colorScheme = Theme.of(context).colorScheme;
 
-    if (totalValue <= 0) {
-      return DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: [
-              colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
-              colorScheme.surface.withValues(alpha: 0.2),
-            ],
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(28),
-            child: Text(
-              'No values for this metric yet.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: [
-                colorScheme.primary.withValues(alpha: 0.09),
-                colorScheme.tertiary.withValues(alpha: 0.05),
-                colorScheme.surface.withValues(alpha: 0.01),
-              ],
-            ),
-          ),
-          child: const SizedBox.expand(),
-        ),
-        PieChart(
-          PieChartData(
-            centerSpaceRadius: 72,
-            sectionsSpace: 2,
-            pieTouchData: PieTouchData(
-              enabled: false,
-            ),
-            sections: HomeStatsSnapshot.allFactions
-                .where((faction) => (valuesByFaction[faction] ?? 0) > 0)
-                .map(
-                  (faction) => PieChartSectionData(
-                    value: valuesByFaction[faction],
-                    color: faction.factionColor,
-                    radius: 64,
-                    showTitle: false,
-                    badgePositionPercentageOffset: 1.22,
-                    badgeWidget: _buildFactionBadge(faction),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-        _buildCenterMetricValueLabel(context, centerMetricValue),
-      ],
+    return HomeStatsPieChartWidget(
+      factions: HomeStatsSnapshot.allFactions,
+      valuesByFaction: valuesByFaction,
+      allFactionsValue: allFactionsMetricValue.value,
+      allFactionsLabel: allFactionsMetricValue.label,
+      selectedFactionValueBuilder: (value) {
+        return _formatSelectedFactionMetricValue(metricType, value);
+      },
     );
   }
 
-  _MetricCenterValue _buildCenterMetricValue({
+  _MetricCenterValue _buildAllFactionsMetricValue({
     required HomeStatsSnapshot stats,
     required _StatsMetricType metricType,
     required Map<Faction, double> valuesByFaction,
@@ -471,14 +405,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
     return switch (metricType) {
       _StatsMetricType.winRate => _MetricCenterValue(
         value: _formatPercentValue(
-          valuesByFaction.values.fold<double>(
-            0,
-            (currentTopRate, value) {
-              return value > currentTopRate ? value : currentTopRate;
-            },
-          ),
+          _averageNonZeroValue(valuesByFaction.values),
         ),
-        label: 'Top rate',
+        label: 'All factions avg',
       ),
       _StatsMetricType.playedGames => _MetricCenterValue(
         value: _formatGroupedInt(
@@ -487,81 +416,17 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             (sum, value) => sum + value.round(),
           ),
         ),
-        label: 'Total picks',
+        label: 'All factions total',
       ),
       _StatsMetricType.avgPoints => _MetricCenterValue(
         value: _formatDecimalValue(stats.avgPoints),
-        label: 'Overall avg',
+        label: 'All factions avg',
       ),
       _StatsMetricType.totalWins => _MetricCenterValue(
         value: _formatGroupedInt(stats.totalWins),
-        label: 'Total wins',
+        label: 'All factions total',
       ),
     };
-  }
-
-  Widget _buildCenterMetricValueLabel(
-    BuildContext context,
-    _MetricCenterValue centerMetricValue,
-  ) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return IgnorePointer(
-      child: SizedBox(
-        width: 116,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                centerMetricValue.value,
-                textAlign: TextAlign.center,
-                style: textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.2,
-                ),
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              centerMetricValue.label,
-              textAlign: TextAlign.center,
-              style: textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFactionBadge(Faction faction) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.94),
-        shape: BoxShape.circle,
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1F000000),
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Image.asset(
-          faction.getFactionIconPath(size: FactionIconSize.size80),
-          width: 20,
-          height: 20,
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
   }
 
   Widget _buildLegendChip(
@@ -677,6 +542,31 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         stats.playedGamesForFaction(faction).toDouble(),
       _StatsMetricType.avgPoints => stats.avgPointsForFaction(faction),
       _StatsMetricType.totalWins => stats.winsForFaction(faction).toDouble(),
+    };
+  }
+
+  double _averageNonZeroValue(Iterable<double> values) {
+    final nonZeroValues = values.where((value) => value > 0).toList();
+    if (nonZeroValues.isEmpty) {
+      return 0;
+    }
+
+    final total = nonZeroValues.fold<double>(
+      0,
+      (sum, value) => sum + value,
+    );
+    return total / nonZeroValues.length;
+  }
+
+  String _formatSelectedFactionMetricValue(
+    _StatsMetricType metricType,
+    double value,
+  ) {
+    return switch (metricType) {
+      _StatsMetricType.winRate => _formatPercentValue(value),
+      _StatsMetricType.playedGames => _formatGroupedInt(value.round()),
+      _StatsMetricType.avgPoints => _formatDecimalValue(value),
+      _StatsMetricType.totalWins => _formatGroupedInt(value.round()),
     };
   }
 
