@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -33,6 +34,8 @@ class HomeStatsSection extends StatefulWidget {
 }
 
 class _HomeStatsSectionState extends State<HomeStatsSection> {
+  static const _carouselInterval = Duration(minutes: 2);
+  static const _carouselAnimationDuration = Duration(milliseconds: 420);
   static const _metricConfigs = <_StatsMetricConfig>[
     _StatsMetricConfig(
       type: _StatsMetricType.winRate,
@@ -57,18 +60,23 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
   ];
 
   late final PageController _pageController;
+  Timer? _autoSlideTimer;
   double _currentPage = 0;
   int _activePage = 0;
+  final Set<int> _activePointerIds = <int>{};
+  bool _isPointerHovering = false;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 0.7);
     _pageController.addListener(_handlePageScroll);
+    _syncAutoSlideTimer();
   }
 
   @override
   void dispose() {
+    _autoSlideTimer?.cancel();
     _pageController
       ..removeListener(_handlePageScroll)
       ..dispose();
@@ -92,6 +100,76 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         _metricConfigs.length - 1,
       );
     });
+  }
+
+  bool get _isUserInteractingWithCarousel {
+    return _isPointerHovering || _activePointerIds.isNotEmpty;
+  }
+
+  void _handleAutoSlideTick(Timer _) {
+    if (!_pageController.hasClients ||
+        !mounted ||
+        _isUserInteractingWithCarousel) {
+      return;
+    }
+
+    final currentRoundedPage = (_pageController.page ?? _activePage.toDouble())
+        .round();
+    final nextPage = (currentRoundedPage + 1) % _metricConfigs.length;
+    _pageController.animateToPage(
+      nextPage,
+      duration: _carouselAnimationDuration,
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  // The carousel must pause while the user is touching/hovering it and only
+  // resume after all interaction has ended (all active pointers lifted).
+  void _syncAutoSlideTimer() {
+    if (_isUserInteractingWithCarousel) {
+      _autoSlideTimer?.cancel();
+      _autoSlideTimer = null;
+      return;
+    }
+
+    if (_autoSlideTimer != null) {
+      return;
+    }
+
+    _autoSlideTimer = Timer.periodic(_carouselInterval, _handleAutoSlideTick);
+  }
+
+  void _handlePointerDown(PointerDownEvent event) {
+    _activePointerIds.add(event.pointer);
+    _syncAutoSlideTimer();
+  }
+
+  void _handlePointerUp(PointerUpEvent event) {
+    _activePointerIds.remove(event.pointer);
+    _syncAutoSlideTimer();
+  }
+
+  void _handlePointerCancel(PointerCancelEvent event) {
+    _activePointerIds.remove(event.pointer);
+    _syncAutoSlideTimer();
+  }
+
+  void _handlePointerEnter(PointerEvent _) {
+    if (_isPointerHovering) {
+      return;
+    }
+
+    _isPointerHovering = true;
+    _syncAutoSlideTimer();
+  }
+
+  void _handlePointerExit(PointerEvent _) {
+    if (!_isPointerHovering) {
+      return;
+    }
+
+    _isPointerHovering = false;
+    _syncAutoSlideTimer();
   }
 
   @override
@@ -151,113 +229,129 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             onActionTap: null,
           )
         else ...[
-          SizedBox(
-            height: 360,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: _metricConfigs.length,
-              physics: const BouncingScrollPhysics(),
-              onPageChanged: (index) {
-                setState(() {
-                  _activePage = index;
-                });
-              },
-              itemBuilder: (context, index) {
-                final stats = widget.stats!;
-                final metricConfig = _metricConfigs[index];
-                final scale = _buildPageScale(index);
-                final opacity = _buildPageOpacity(index);
+          MouseRegion(
+            onEnter: _handlePointerEnter,
+            onExit: _handlePointerExit,
+            child: Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerDown: _handlePointerDown,
+              onPointerUp: _handlePointerUp,
+              onPointerCancel: _handlePointerCancel,
+              // Auto-page should stop while this component is interacted with
+              // and continue only after interaction fully ends.
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 360,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: _metricConfigs.length,
+                      physics: const BouncingScrollPhysics(),
+                      onPageChanged: (index) {
+                        setState(() {
+                          _activePage = index;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        final stats = widget.stats!;
+                        final metricConfig = _metricConfigs[index];
+                        final scale = _buildPageScale(index);
+                        final opacity = _buildPageOpacity(index);
 
-                return Transform.scale(
-                  scale: scale,
-                  child: Opacity(
-                    opacity: opacity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _buildMetricChart(
-                              context,
-                              stats,
-                              metricConfig.type,
+                        return Transform.scale(
+                          scale: scale,
+                          child: Opacity(
+                            opacity: opacity,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: _buildMetricChart(
+                                      context,
+                                      stats,
+                                      metricConfig.type,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    metricConfig.title,
+                                    style: textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    metricConfig.description,
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          Text(
-                            metricConfig.title,
-                            style: textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        _metricConfigs.length,
+                        (index) {
+                          final selected = index == _activePage;
+                          return GestureDetector(
+                            onTap: () {
+                              _pageController.animateToPage(
+                                index,
+                                duration: const Duration(milliseconds: 260),
+                                curve: Curves.easeOutCubic,
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 220),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 8,
+                              ),
+                              height: 8,
+                              width: selected ? 22 : 8,
+                              decoration: BoxDecoration(
+                                color: selected
+                                    ? colorScheme.primary
+                                    : colorScheme.outlineVariant,
+                                borderRadius: BorderRadius.circular(999),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            metricConfig.description,
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 2),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                _metricConfigs.length,
-                (index) {
-                  final selected = index == _activePage;
-                  return GestureDetector(
-                    onTap: () {
-                      _pageController.animateToPage(
-                        index,
-                        duration: const Duration(milliseconds: 260),
-                        curve: Curves.easeOutCubic,
-                      );
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 220),
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 8,
-                      ),
-                      height: 8,
-                      width: selected ? 22 : 8,
-                      decoration: BoxDecoration(
-                        color: selected
-                            ? colorScheme.primary
-                            : colorScheme.outlineVariant,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: HomeStatsSnapshot.allFactions.map((faction) {
+                        return _buildLegendChip(
+                          context,
+                          faction,
+                        );
+                      }).toList(),
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: HomeStatsSnapshot.allFactions.map((faction) {
-                return _buildLegendChip(
-                  context,
-                  faction,
-                );
-              }).toList(),
             ),
           ),
         ],
@@ -291,6 +385,11 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
     final totalValue = valuesByFaction.values.fold<double>(
       0,
       (sum, currentValue) => sum + currentValue,
+    );
+    final centerMetricValue = _buildCenterMetricValue(
+      stats: stats,
+      metricType: metricType,
+      valuesByFaction: valuesByFaction,
     );
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -359,7 +458,84 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                 .toList(),
           ),
         ),
+        _buildCenterMetricValueLabel(context, centerMetricValue),
       ],
+    );
+  }
+
+  _MetricCenterValue _buildCenterMetricValue({
+    required HomeStatsSnapshot stats,
+    required _StatsMetricType metricType,
+    required Map<Faction, double> valuesByFaction,
+  }) {
+    return switch (metricType) {
+      _StatsMetricType.winRate => _MetricCenterValue(
+        value: _formatPercentValue(
+          valuesByFaction.values.fold<double>(
+            0,
+            (currentTopRate, value) {
+              return value > currentTopRate ? value : currentTopRate;
+            },
+          ),
+        ),
+        label: 'Top rate',
+      ),
+      _StatsMetricType.playedGames => _MetricCenterValue(
+        value: _formatGroupedInt(
+          valuesByFaction.values.fold<int>(
+            0,
+            (sum, value) => sum + value.round(),
+          ),
+        ),
+        label: 'Total picks',
+      ),
+      _StatsMetricType.avgPoints => _MetricCenterValue(
+        value: _formatDecimalValue(stats.avgPoints),
+        label: 'Overall avg',
+      ),
+      _StatsMetricType.totalWins => _MetricCenterValue(
+        value: _formatGroupedInt(stats.totalWins),
+        label: 'Total wins',
+      ),
+    };
+  }
+
+  Widget _buildCenterMetricValueLabel(
+    BuildContext context,
+    _MetricCenterValue centerMetricValue,
+  ) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return IgnorePointer(
+      child: SizedBox(
+        width: 116,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                centerMetricValue.value,
+                textAlign: TextAlign.center,
+                style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              centerMetricValue.label,
+              textAlign: TextAlign.center,
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -503,6 +679,31 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
       _StatsMetricType.totalWins => stats.winsForFaction(faction).toDouble(),
     };
   }
+
+  String _formatGroupedInt(int value) {
+    final sign = value < 0 ? '-' : '';
+    final digits = value.abs().toString();
+    final grouped = digits.replaceAllMapped(
+      RegExp(r'\B(?=(\d{3})+(?!\d))'),
+      (_) => ',',
+    );
+    return '$sign$grouped';
+  }
+
+  String _formatDecimalValue(double value) {
+    final oneDecimal = value.toStringAsFixed(1);
+    if (oneDecimal.endsWith('.0')) {
+      return oneDecimal.substring(0, oneDecimal.length - 2);
+    }
+    return oneDecimal;
+  }
+
+  String _formatPercentValue(double ratio) {
+    final percentage = ratio * 100;
+    final fractionDigits =
+        percentage >= 10 || percentage == percentage.roundToDouble() ? 0 : 1;
+    return '${percentage.toStringAsFixed(fractionDigits)}%';
+  }
 }
 
 enum _StatsMetricType {
@@ -522,4 +723,14 @@ class _StatsMetricConfig {
   final _StatsMetricType type;
   final String title;
   final String description;
+}
+
+class _MetricCenterValue {
+  const _MetricCenterValue({
+    required this.value,
+    required this.label,
+  });
+
+  final String value;
+  final String label;
 }
