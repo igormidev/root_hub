@@ -83,8 +83,12 @@ root_hub_server/
 
 ### `match_chat`
 - `get_match_chat_message.dart`: paginated match chat history + subscribed player IDs for sender badges.
+- `get_match_chat_activity_overview.dart`: aggregated activity payload for subscribed active schedules, active chats, and latest ended chats.
+- `get_match_chat_unread_count.dart`: high-performance unread total for current player badge usage.
+- `get_match_chat_played_match_summary.dart`: played-match summary used by completed-chat info UI.
 - `send_match_chat_message.dart`: send text or image messages to a match chat.
   - Image uploads are handled server-side through UploadThing (`/v7/prepareUpload`).
+- `match_chat_participant_state_service.dart`: chat participant lifecycle + unread/read state updates.
 
 ### `match`
 - `register_match_data.dart`: validates and persists played match + participants + performances.
@@ -113,6 +117,11 @@ Source model definitions live in `lib/src/entities/**/*.spy.yaml` and API payloa
 Generated equivalents are produced into `lib/src/generated/**`.
 
 Do not manually edit generated files under `lib/src/generated/**`.
+
+Unread architecture for match chat:
+- `match_chat_participant_state` stores per-player, per-chat read cursor and unread counter.
+- rows are created for hosts/subscribers and also when a user opens a chat.
+- sending a message updates unread counters for recipients and clears sender unread when appropriate.
 
 ## Relationship Persistence Rule (Mandatory)
 - Every relationship write in Serverpod **must** use `attachRow` (sometimes referenced as `attatchRow` in team notes).

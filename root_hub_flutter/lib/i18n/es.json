@@ -57,6 +57,7 @@
     "ui_screens_dashboard_screen": {
       "shop": "Tienda",
       "match": "Partidas",
+      "activity": "Actividad",
       "home": "Inicio",
       "rootHub": "ROOT HUB",
       "chooseFromGallery": "Elige de la galería",
@@ -71,9 +72,11 @@
       "welcomeBack": "Bienvenido de nuevo, {displayName}",
       "communityDashboardTitle": "Panel de la Comunidad",
       "matchFinderTitle": "Buscar Partidas",
+      "activityCenterTitle": "Centro de Actividad",
       "shopPreviewTitle": "Vista previa de la Tienda",
       "communityDashboardSubtitle": "Mira qué está pasando en la comunidad de ROOT.",
       "matchFinderSubtitle": "Busca partidas cercanas o crea una nueva con tu grupo local.",
+      "activityCenterSubtitle": "Sigue tus mesas activas y las novedades de chat en un solo lugar.",
       "shopPreviewSubtitle": "Consigue cosméticos, fichas y paquetes de la comunidad próximamente."
     },
     "ui_screens_dashboard_faction_editor_screen": {
@@ -112,6 +115,40 @@
       "spanish": "Español",
       "french": "Francés",
       "german": "Alemán"
+    }
+  },
+  "activity": {
+    "ui_screens_activity_screen": {
+      "myScheduledTablesTitle": "Mis Mesas Programadas",
+      "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Mesas a las que te suscribiste y que no han comenzado o comenzaron hace menos de 6 horas.",
+      "noActiveSchedules": "Sin suscripciones activas",
+      "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Cuando te unas a una mesa, aparecerá aquí como una tarjeta deslizable.",
+      "activeChatsTitle": "Chats Activos",
+      "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats de mesas próximas o recién iniciadas, ordenados primero por mensajes no leídos.",
+      "noActiveChats": "No hay chats activos",
+      "openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription": "Abre cualquier chat de mesa y se rastreará aquí, incluso sin suscripción.",
+      "completedMatchesTitle": "Chats de Partidas Finalizadas",
+      "latestEightCompletedOrArchivedMatchChatsYouParticipatedIn": "Los últimos 8 chats de partidas que ya sucedieron.",
+      "noCompletedChats": "Aún no hay chats finalizados",
+      "onceMatchesFinishTheirChatsWillStayAvailableHere": "Cuando las partidas terminen, sus chats seguirán disponibles en esta sección."
+    },
+    "ui_widgets_activity_subscribed_schedule_card": {
+      "unknownLocation": "Ubicación desconocida",
+      "selected": "Seleccionado",
+      "alreadyStarted": "Ya comenzó",
+      "notStartedYet": "Aún no comenzó",
+      "playersLabel": "{minPlayers}-{maxPlayers} jugadores",
+      "openChatHint": "Toca la tarjeta para abrir el chat"
+    },
+    "ui_widgets_activity_chat_card": {
+      "ended": "Finalizada",
+      "started": "Iniciada",
+      "upcoming": "Próxima",
+      "senderMessage": "{sender}: {message}",
+      "newMessage": "Nuevo mensaje",
+      "photoShared": "Foto compartida",
+      "systemUpdate": "Actualización del sistema",
+      "noMessagesYet": "Sin mensajes aún"
     }
   },
   "home": {
@@ -380,7 +417,22 @@
       "subscribed": "suscrito",
       "unableToResolveYourAccountInformation": "No se puede resolver la información de su cuenta.",
       "tableInfo": "Información de la partida",
+      "playedMatchInfo": "Información de partida finalizada",
       "editTable": "Editar partida"
+    },
+    "ui_dialogs_match_played_match_summary_dialog": {
+      "completedMatchReport": "Reporte de Partida Finalizada",
+      "winner": "Ganador",
+      "notAvailable": "No disponible",
+      "startedAtLabel": "Inicio: {value}",
+      "durationLabel": "Duración: {value}",
+      "scheduledAtLabel": "Programada: {value}",
+      "matchProofs": "Pruebas de la Partida",
+      "players": "Jugadores",
+      "domination": "Dominación",
+      "scoreLabel": "{value} pts",
+      "close": "Cerrar",
+      "hoursMinutes": "{hours}h {minutes}m"
     },
     "ui_screens_match_create_table_location_loading_recent_widget": {
       "loadingPreviousLocations": "Cargando ubicaciones anteriores..."

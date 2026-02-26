@@ -57,6 +57,7 @@
     "ui_screens_dashboard_screen": {
       "shop": "Shop",
       "match": "Match",
+      "activity": "Activity",
       "home": "Home",
       "rootHub": "ROOT HUB",
       "chooseFromGallery": "Choose from Gallery",
@@ -71,9 +72,11 @@
       "welcomeBack": "Welcome back, {displayName}",
       "communityDashboardTitle": "Community Dashboard",
       "matchFinderTitle": "Match Finder",
+      "activityCenterTitle": "Activity Center",
       "shopPreviewTitle": "Shop Preview",
       "communityDashboardSubtitle": "Discover what is happening around your ROOT community.",
       "matchFinderSubtitle": "Browse and create match schedules with your local group.",
+      "activityCenterSubtitle": "Track your active tables and chat updates in one place.",
       "shopPreviewSubtitle": "Collect future cosmetics, tokens, and community bundles."
     },
     "ui_screens_dashboard_faction_editor_screen": {
@@ -112,6 +115,40 @@
       "spanish": "Spanish",
       "french": "French",
       "german": "German"
+    }
+  },
+  "activity": {
+    "ui_screens_activity_screen": {
+      "myScheduledTablesTitle": "My Scheduled Tables",
+      "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tables you subscribed to that have not started yet or started less than 6 hours ago.",
+      "noActiveSchedules": "No active subscriptions",
+      "whenYouJoinATableItWillAppearHereAsASwipeableCard": "When you subscribe to a table, it appears here as a swipeable card.",
+      "activeChatsTitle": "Active Chats",
+      "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats for upcoming or recently started tables, ordered by unread messages first.",
+      "noActiveChats": "No active chats",
+      "openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription": "Open a table chat and it will be tracked here, even if you are not subscribed.",
+      "completedMatchesTitle": "Completed Match Chats",
+      "latestEightCompletedOrArchivedMatchChatsYouParticipatedIn": "Latest 8 chats from matches that already happened.",
+      "noCompletedChats": "No completed chats yet",
+      "onceMatchesFinishTheirChatsWillStayAvailableHere": "Once matches finish, their chats remain available in this section."
+    },
+    "ui_widgets_activity_subscribed_schedule_card": {
+      "unknownLocation": "Unknown location",
+      "selected": "Selected",
+      "alreadyStarted": "Already started",
+      "notStartedYet": "Not started yet",
+      "playersLabel": "{minPlayers}-{maxPlayers} players",
+      "openChatHint": "Tap card to open chat"
+    },
+    "ui_widgets_activity_chat_card": {
+      "ended": "Ended",
+      "started": "Started",
+      "upcoming": "Upcoming",
+      "senderMessage": "{sender}: {message}",
+      "newMessage": "New message",
+      "photoShared": "Photo shared",
+      "systemUpdate": "System update",
+      "noMessagesYet": "No messages yet"
     }
   },
   "home": {
@@ -380,7 +417,22 @@
       "subscribed": "Subscribed",
       "unableToResolveYourAccountInformation": "Unable to resolve your account information.",
       "tableInfo": "Table info",
+      "playedMatchInfo": "Played match info",
       "editTable": "Edit table"
+    },
+    "ui_dialogs_match_played_match_summary_dialog": {
+      "completedMatchReport": "Completed Match Report",
+      "winner": "Winner",
+      "notAvailable": "Not available",
+      "startedAtLabel": "Started: {value}",
+      "durationLabel": "Duration: {value}",
+      "scheduledAtLabel": "Scheduled: {value}",
+      "matchProofs": "Match Proofs",
+      "players": "Players",
+      "domination": "Domination",
+      "scoreLabel": "{value} pts",
+      "close": "Close",
+      "hoursMinutes": "{hours}h {minutes}m"
     },
     "ui_screens_match_create_table_location_loading_recent_widget": {
       "loadingPreviousLocations": "Loading previous locations..."

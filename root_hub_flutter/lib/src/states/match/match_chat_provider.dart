@@ -66,6 +66,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       state = MatchChatState(
         scheduledMatchId: scheduledMatchId,
         isLoading: true,
+        isLoadingPlayedMatchSummary: true,
       );
 
       _chatMessages.clear();
@@ -73,10 +74,13 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       _profileImageUrlsByAuthorId.clear();
       await _chatController.setMessages(const <Message>[], animated: false);
 
-      await _loadPage(
-        page: 1,
-        replaceMessages: true,
-      );
+      await Future.wait([
+        _loadPage(
+          page: 1,
+          replaceMessages: true,
+        ),
+        _loadPlayedMatchSummary(scheduledMatchId),
+      ]);
     } finally {
       _isOpeningChat = false;
     }
@@ -591,6 +595,35 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           isLoadingMore: false,
           loadError: hasExistingMessages ? null : error,
           actionError: hasExistingMessages ? error : state.actionError,
+        );
+      },
+    );
+  }
+
+  Future<void> _loadPlayedMatchSummary(int scheduledMatchId) async {
+    final result = await ref
+        .read(clientProvider)
+        .getMatchChatPlayedMatchSummary
+        .v1(scheduledMatchId: scheduledMatchId)
+        .toResult;
+
+    if (state.scheduledMatchId != scheduledMatchId) {
+      return;
+    }
+
+    result.fold(
+      (summaryValue) {
+        state = state.copyWith(
+          isLoadingPlayedMatchSummary: false,
+          playedMatchSummaryError: null,
+          playedMatchSummary: summaryValue.value,
+        );
+      },
+      (error) {
+        state = state.copyWith(
+          isLoadingPlayedMatchSummary: false,
+          playedMatchSummaryError: error,
+          playedMatchSummary: null,
         );
       },
     );

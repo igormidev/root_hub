@@ -1,0 +1,22 @@
+class: MatchChatParticipantState
+table: match_chat_participant_state
+fields:
+  playerDataId: int
+  playerData: PlayerData?, relation(name=player_chat_participant_states, field=playerDataId)
+  matchChatHistoryId: int
+  matchChatHistory: MatchChatHistory?, relation(name=chat_history_participant_states, field=matchChatHistoryId)
+  firstSeenAt: DateTime
+  lastOpenedAt: DateTime
+  lastReadMessageAt: DateTime?
+  unreadMessagesCount: int, default=0
+
+indexes:
+  chat_participant_state_unique_idx:
+    fields: playerDataId, matchChatHistoryId
+    unique: true
+  chat_participant_state_player_unread_idx:
+    fields: playerDataId, unreadMessagesCount
+  chat_participant_state_player_last_opened_idx:
+    fields: playerDataId, lastOpenedAt
+  chat_participant_state_history_idx:
+    fields: matchChatHistoryId

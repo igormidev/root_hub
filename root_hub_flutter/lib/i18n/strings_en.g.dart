@@ -38,6 +38,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsAppEn app = TranslationsAppEn.internal(_root);
 	late final TranslationsAuthEn auth = TranslationsAuthEn.internal(_root);
 	late final TranslationsDashboardEn dashboard = TranslationsDashboardEn.internal(_root);
+	late final TranslationsActivityEn activity = TranslationsActivityEn.internal(_root);
 	late final TranslationsHomeEn home = TranslationsHomeEn.internal(_root);
 	late final TranslationsMatchEn match = TranslationsMatchEn.internal(_root);
 	late final TranslationsRegisterMatchEn register_match = TranslationsRegisterMatchEn.internal(_root);
@@ -82,6 +83,18 @@ class TranslationsDashboardEn {
 	late final TranslationsDashboardUiDialogsEditLocationDialogEn ui_dialogs_edit_location_dialog = TranslationsDashboardUiDialogsEditLocationDialogEn.internal(_root);
 	late final TranslationsDashboardUiDialogsEditDisplayNameDialogEn ui_dialogs_edit_display_name_dialog = TranslationsDashboardUiDialogsEditDisplayNameDialogEn.internal(_root);
 	late final TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEn ui_widgets_dashboard_profile_drawer_widget = TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEn.internal(_root);
+}
+
+// Path: activity
+class TranslationsActivityEn {
+	TranslationsActivityEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsActivityUiScreensActivityScreenEn ui_screens_activity_screen = TranslationsActivityUiScreensActivityScreenEn.internal(_root);
+	late final TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn ui_widgets_activity_subscribed_schedule_card = TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn.internal(_root);
+	late final TranslationsActivityUiWidgetsActivityChatCardEn ui_widgets_activity_chat_card = TranslationsActivityUiWidgetsActivityChatCardEn.internal(_root);
 }
 
 // Path: home
@@ -132,6 +145,7 @@ class TranslationsMatchEn {
 	late final TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn ui_screens_match_location_header_image_widget = TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEn ui_screens_match_create_table_location_no_recent_locations_widget = TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchChatScreenEn ui_screens_match_chat_screen = TranslationsMatchUiScreensMatchChatScreenEn.internal(_root);
+	late final TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEn ui_dialogs_match_played_match_summary_dialog = TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchCreateTableLocationLoadingRecentWidgetEn ui_screens_match_create_table_location_loading_recent_widget = TranslationsMatchUiScreensMatchCreateTableLocationLoadingRecentWidgetEn.internal(_root);
 }
 
@@ -351,6 +365,9 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 	/// en: 'Match'
 	String get match => 'Match';
 
+	/// en: 'Activity'
+	String get activity => 'Activity';
+
 	/// en: 'Home'
 	String get home => 'Home';
 
@@ -393,6 +410,9 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 	/// en: 'Match Finder'
 	String get matchFinderTitle => 'Match Finder';
 
+	/// en: 'Activity Center'
+	String get activityCenterTitle => 'Activity Center';
+
 	/// en: 'Shop Preview'
 	String get shopPreviewTitle => 'Shop Preview';
 
@@ -401,6 +421,9 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 
 	/// en: 'Browse and create match schedules with your local group.'
 	String get matchFinderSubtitle => 'Browse and create match schedules with your local group.';
+
+	/// en: 'Track your active tables and chat updates in one place.'
+	String get activityCenterSubtitle => 'Track your active tables and chat updates in one place.';
 
 	/// en: 'Collect future cosmetics, tokens, and community bundles.'
 	String get shopPreviewSubtitle => 'Collect future cosmetics, tokens, and community bundles.';
@@ -527,6 +550,111 @@ class TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEn {
 
 	/// en: 'German'
 	String get german => 'German';
+}
+
+// Path: activity.ui_screens_activity_screen
+class TranslationsActivityUiScreensActivityScreenEn {
+	TranslationsActivityUiScreensActivityScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'My Scheduled Tables'
+	String get myScheduledTablesTitle => 'My Scheduled Tables';
+
+	/// en: 'Tables you subscribed to that have not started yet or started less than 6 hours ago.'
+	String get tablesYouSubscribedToThatAreStillWithinTheActiveWindow => 'Tables you subscribed to that have not started yet or started less than 6 hours ago.';
+
+	/// en: 'No active subscriptions'
+	String get noActiveSchedules => 'No active subscriptions';
+
+	/// en: 'When you subscribe to a table, it appears here as a swipeable card.'
+	String get whenYouJoinATableItWillAppearHereAsASwipeableCard => 'When you subscribe to a table, it appears here as a swipeable card.';
+
+	/// en: 'Active Chats'
+	String get activeChatsTitle => 'Active Chats';
+
+	/// en: 'Chats for upcoming or recently started tables, ordered by unread messages first.'
+	String get chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages => 'Chats for upcoming or recently started tables, ordered by unread messages first.';
+
+	/// en: 'No active chats'
+	String get noActiveChats => 'No active chats';
+
+	/// en: 'Open a table chat and it will be tracked here, even if you are not subscribed.'
+	String get openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription => 'Open a table chat and it will be tracked here, even if you are not subscribed.';
+
+	/// en: 'Completed Match Chats'
+	String get completedMatchesTitle => 'Completed Match Chats';
+
+	/// en: 'Latest 8 chats from matches that already happened.'
+	String get latestEightCompletedOrArchivedMatchChatsYouParticipatedIn => 'Latest 8 chats from matches that already happened.';
+
+	/// en: 'No completed chats yet'
+	String get noCompletedChats => 'No completed chats yet';
+
+	/// en: 'Once matches finish, their chats remain available in this section.'
+	String get onceMatchesFinishTheirChatsWillStayAvailableHere => 'Once matches finish, their chats remain available in this section.';
+}
+
+// Path: activity.ui_widgets_activity_subscribed_schedule_card
+class TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn {
+	TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Unknown location'
+	String get unknownLocation => 'Unknown location';
+
+	/// en: 'Selected'
+	String get selected => 'Selected';
+
+	/// en: 'Already started'
+	String get alreadyStarted => 'Already started';
+
+	/// en: 'Not started yet'
+	String get notStartedYet => 'Not started yet';
+
+	/// en: '{minPlayers}-{maxPlayers} players'
+	String playersLabel({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} players';
+
+	/// en: 'Tap card to open chat'
+	String get openChatHint => 'Tap card to open chat';
+}
+
+// Path: activity.ui_widgets_activity_chat_card
+class TranslationsActivityUiWidgetsActivityChatCardEn {
+	TranslationsActivityUiWidgetsActivityChatCardEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Ended'
+	String get ended => 'Ended';
+
+	/// en: 'Started'
+	String get started => 'Started';
+
+	/// en: 'Upcoming'
+	String get upcoming => 'Upcoming';
+
+	/// en: '{sender}: {message}'
+	String senderMessage({required Object sender, required Object message}) => '${sender}: ${message}';
+
+	/// en: 'New message'
+	String get newMessage => 'New message';
+
+	/// en: 'Photo shared'
+	String get photoShared => 'Photo shared';
+
+	/// en: 'System update'
+	String get systemUpdate => 'System update';
+
+	/// en: 'No messages yet'
+	String get noMessagesYet => 'No messages yet';
 }
 
 // Path: home.ui_sections_home_stats_section
@@ -1416,8 +1544,56 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 	/// en: 'Table info'
 	String get tableInfo => 'Table info';
 
+	/// en: 'Played match info'
+	String get playedMatchInfo => 'Played match info';
+
 	/// en: 'Edit table'
 	String get editTable => 'Edit table';
+}
+
+// Path: match.ui_dialogs_match_played_match_summary_dialog
+class TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEn {
+	TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Completed Match Report'
+	String get completedMatchReport => 'Completed Match Report';
+
+	/// en: 'Winner'
+	String get winner => 'Winner';
+
+	/// en: 'Not available'
+	String get notAvailable => 'Not available';
+
+	/// en: 'Started: {value}'
+	String startedAtLabel({required Object value}) => 'Started: ${value}';
+
+	/// en: 'Duration: {value}'
+	String durationLabel({required Object value}) => 'Duration: ${value}';
+
+	/// en: 'Scheduled: {value}'
+	String scheduledAtLabel({required Object value}) => 'Scheduled: ${value}';
+
+	/// en: 'Match Proofs'
+	String get matchProofs => 'Match Proofs';
+
+	/// en: 'Players'
+	String get players => 'Players';
+
+	/// en: 'Domination'
+	String get domination => 'Domination';
+
+	/// en: '{value} pts'
+	String scoreLabel({required Object value}) => '${value} pts';
+
+	/// en: 'Close'
+	String get close => 'Close';
+
+	/// en: '{hours}h {minutes}m'
+	String hoursMinutes({required Object hours, required Object minutes}) => '${hours}h ${minutes}m';
 }
 
 // Path: match.ui_screens_match_create_table_location_loading_recent_widget

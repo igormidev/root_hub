@@ -1,0 +1,7 @@
+class: MatchChatPlayedMatchPlayer
+fields:
+  displayName: String
+  faction: Faction
+  didWin: bool
+  score: int?
+  isAnonymous: bool

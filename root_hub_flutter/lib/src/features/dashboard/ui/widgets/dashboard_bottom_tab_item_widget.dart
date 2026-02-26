@@ -8,6 +8,7 @@ class DashboardBottomTabItemWidget extends StatelessWidget {
     required this.selectedIcon,
     required this.selected,
     required this.onTap,
+    this.badgeCount = 0,
     super.key,
   });
 
@@ -17,6 +18,7 @@ class DashboardBottomTabItemWidget extends StatelessWidget {
   final IconData selectedIcon;
   final bool selected;
   final VoidCallback onTap;
+  final int badgeCount;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +40,40 @@ class DashboardBottomTabItemWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                selected ? selectedIcon : icon,
-                size: 23,
-                color: selected
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(
+                    selected ? selectedIcon : icon,
+                    size: 23,
+                    color: selected
+                        ? colorScheme.primary
+                        : colorScheme.onSurfaceVariant,
+                  ),
+                  if (badgeCount > 0)
+                    Positioned(
+                      right: -10,
+                      top: -8,
+                      child: Container(
+                        constraints: BoxConstraints(minWidth: 18),
+                        padding: EdgeInsets.fromLTRB(5, 1, 5, 1),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(999),
+                          color: colorScheme.error,
+                        ),
+                        child: Text(
+                          // ignore: feature_hardcoded_ui_string
+                          badgeCount > 99 ? '99+' : '$badgeCount',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: colorScheme.onError,
+                                fontWeight: FontWeight.w900,
+                              ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               SizedBox(height: 2),
               Text(

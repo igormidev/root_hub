@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/api/match_chat/send_system_chat_message.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
@@ -33,6 +34,7 @@ class SubscribeToMatch extends Endpoint {
           scheduledMatchId,
           include: MatchSchedulePairingAttempt.include(
             subscriptions: MatchSubscription.includeList(),
+            chatHistory: MatchChatHistory.include(),
           ),
         );
 
@@ -97,6 +99,36 @@ class SubscribeToMatch extends Endpoint {
           subscription,
           playerData,
         );
+
+        final chatHistory = match.chatHistory;
+        final chatHistoryId = chatHistory?.id;
+        if (chatHistory != null && chatHistoryId != null) {
+          final existingState = await MatchChatParticipantState.db.findFirstRow(
+            session,
+            where: (t) =>
+                t.matchChatHistoryId.equals(chatHistoryId) &
+                t.playerDataId.equals(playerData.id!),
+          );
+
+          if (existingState == null) {
+            final unreadFromExistingMessages = await MatchChatMessage.db.count(
+              session,
+              where: (t) =>
+                  t.matchChatHistoryId.equals(chatHistoryId) &
+                  t.playerDataId.notEquals(playerData.id!),
+            );
+
+            await MatchChatParticipantStateService.ensureParticipantStateExists(
+              session,
+              chatHistory: chatHistory,
+              playerData: playerData,
+              initialUnreadMessagesCount: unreadFromExistingMessages,
+              initialLastReadMessageAt: unreadFromExistingMessages == 0
+                  ? DateTime.now()
+                  : null,
+            );
+          }
+        }
 
         await sendSystemChatMessage(
           session,

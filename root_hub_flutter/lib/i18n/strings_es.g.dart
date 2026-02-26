@@ -36,6 +36,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsAppEs app = _TranslationsAppEs._(_root);
 	@override late final _TranslationsAuthEs auth = _TranslationsAuthEs._(_root);
 	@override late final _TranslationsDashboardEs dashboard = _TranslationsDashboardEs._(_root);
+	@override late final _TranslationsActivityEs activity = _TranslationsActivityEs._(_root);
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
 	@override late final _TranslationsMatchEs match = _TranslationsMatchEs._(_root);
 	@override late final _TranslationsRegisterMatchEs register_match = _TranslationsRegisterMatchEs._(_root);
@@ -78,6 +79,18 @@ class _TranslationsDashboardEs extends TranslationsDashboardEn {
 	@override late final _TranslationsDashboardUiDialogsEditLocationDialogEs ui_dialogs_edit_location_dialog = _TranslationsDashboardUiDialogsEditLocationDialogEs._(_root);
 	@override late final _TranslationsDashboardUiDialogsEditDisplayNameDialogEs ui_dialogs_edit_display_name_dialog = _TranslationsDashboardUiDialogsEditDisplayNameDialogEs._(_root);
 	@override late final _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEs ui_widgets_dashboard_profile_drawer_widget = _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEs._(_root);
+}
+
+// Path: activity
+class _TranslationsActivityEs extends TranslationsActivityEn {
+	_TranslationsActivityEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsActivityUiScreensActivityScreenEs ui_screens_activity_screen = _TranslationsActivityUiScreensActivityScreenEs._(_root);
+	@override late final _TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEs ui_widgets_activity_subscribed_schedule_card = _TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEs._(_root);
+	@override late final _TranslationsActivityUiWidgetsActivityChatCardEs ui_widgets_activity_chat_card = _TranslationsActivityUiWidgetsActivityChatCardEs._(_root);
 }
 
 // Path: home
@@ -128,6 +141,7 @@ class _TranslationsMatchEs extends TranslationsMatchEn {
 	@override late final _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEs ui_screens_match_location_header_image_widget = _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEs._(_root);
 	@override late final _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEs ui_screens_match_create_table_location_no_recent_locations_widget = _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEs._(_root);
 	@override late final _TranslationsMatchUiScreensMatchChatScreenEs ui_screens_match_chat_screen = _TranslationsMatchUiScreensMatchChatScreenEs._(_root);
+	@override late final _TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEs ui_dialogs_match_played_match_summary_dialog = _TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEs._(_root);
 	@override late final _TranslationsMatchUiScreensMatchCreateTableLocationLoadingRecentWidgetEs ui_screens_match_create_table_location_loading_recent_widget = _TranslationsMatchUiScreensMatchCreateTableLocationLoadingRecentWidgetEs._(_root);
 }
 
@@ -264,6 +278,7 @@ class _TranslationsDashboardUiScreensDashboardScreenEs extends TranslationsDashb
 	// Translations
 	@override String get shop => 'Tienda';
 	@override String get match => 'Partidas';
+	@override String get activity => 'Actividad';
 	@override String get home => 'Inicio';
 	@override String get rootHub => 'ROOT HUB';
 	@override String get chooseFromGallery => 'Elige de la galería';
@@ -278,9 +293,11 @@ class _TranslationsDashboardUiScreensDashboardScreenEs extends TranslationsDashb
 	@override String welcomeBack({required Object displayName}) => 'Bienvenido de nuevo, ${displayName}';
 	@override String get communityDashboardTitle => 'Panel de la Comunidad';
 	@override String get matchFinderTitle => 'Buscar Partidas';
+	@override String get activityCenterTitle => 'Centro de Actividad';
 	@override String get shopPreviewTitle => 'Vista previa de la Tienda';
 	@override String get communityDashboardSubtitle => 'Mira qué está pasando en la comunidad de ROOT.';
 	@override String get matchFinderSubtitle => 'Busca partidas cercanas o crea una nueva con tu grupo local.';
+	@override String get activityCenterSubtitle => 'Sigue tus mesas activas y las novedades de chat en un solo lugar.';
 	@override String get shopPreviewSubtitle => 'Consigue cosméticos, fichas y paquetes de la comunidad próximamente.';
 }
 
@@ -347,6 +364,59 @@ class _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEs extends Tran
 	@override String get spanish => 'Español';
 	@override String get french => 'Francés';
 	@override String get german => 'Alemán';
+}
+
+// Path: activity.ui_screens_activity_screen
+class _TranslationsActivityUiScreensActivityScreenEs extends TranslationsActivityUiScreensActivityScreenEn {
+	_TranslationsActivityUiScreensActivityScreenEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get myScheduledTablesTitle => 'Mis Mesas Programadas';
+	@override String get tablesYouSubscribedToThatAreStillWithinTheActiveWindow => 'Mesas a las que te suscribiste y que no han comenzado o comenzaron hace menos de 6 horas.';
+	@override String get noActiveSchedules => 'Sin suscripciones activas';
+	@override String get whenYouJoinATableItWillAppearHereAsASwipeableCard => 'Cuando te unas a una mesa, aparecerá aquí como una tarjeta deslizable.';
+	@override String get activeChatsTitle => 'Chats Activos';
+	@override String get chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages => 'Chats de mesas próximas o recién iniciadas, ordenados primero por mensajes no leídos.';
+	@override String get noActiveChats => 'No hay chats activos';
+	@override String get openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription => 'Abre cualquier chat de mesa y se rastreará aquí, incluso sin suscripción.';
+	@override String get completedMatchesTitle => 'Chats de Partidas Finalizadas';
+	@override String get latestEightCompletedOrArchivedMatchChatsYouParticipatedIn => 'Los últimos 8 chats de partidas que ya sucedieron.';
+	@override String get noCompletedChats => 'Aún no hay chats finalizados';
+	@override String get onceMatchesFinishTheirChatsWillStayAvailableHere => 'Cuando las partidas terminen, sus chats seguirán disponibles en esta sección.';
+}
+
+// Path: activity.ui_widgets_activity_subscribed_schedule_card
+class _TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEs extends TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn {
+	_TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get unknownLocation => 'Ubicación desconocida';
+	@override String get selected => 'Seleccionado';
+	@override String get alreadyStarted => 'Ya comenzó';
+	@override String get notStartedYet => 'Aún no comenzó';
+	@override String playersLabel({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} jugadores';
+	@override String get openChatHint => 'Toca la tarjeta para abrir el chat';
+}
+
+// Path: activity.ui_widgets_activity_chat_card
+class _TranslationsActivityUiWidgetsActivityChatCardEs extends TranslationsActivityUiWidgetsActivityChatCardEn {
+	_TranslationsActivityUiWidgetsActivityChatCardEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get ended => 'Finalizada';
+	@override String get started => 'Iniciada';
+	@override String get upcoming => 'Próxima';
+	@override String senderMessage({required Object sender, required Object message}) => '${sender}: ${message}';
+	@override String get newMessage => 'Nuevo mensaje';
+	@override String get photoShared => 'Foto compartida';
+	@override String get systemUpdate => 'Actualización del sistema';
+	@override String get noMessagesYet => 'Sin mensajes aún';
 }
 
 // Path: home.ui_sections_home_stats_section
@@ -835,7 +905,29 @@ class _TranslationsMatchUiScreensMatchChatScreenEs extends TranslationsMatchUiSc
 	@override String get subscribed => 'suscrito';
 	@override String get unableToResolveYourAccountInformation => 'No se puede resolver la información de su cuenta.';
 	@override String get tableInfo => 'Información de la partida';
+	@override String get playedMatchInfo => 'Información de partida finalizada';
 	@override String get editTable => 'Editar partida';
+}
+
+// Path: match.ui_dialogs_match_played_match_summary_dialog
+class _TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEs extends TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEn {
+	_TranslationsMatchUiDialogsMatchPlayedMatchSummaryDialogEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get completedMatchReport => 'Reporte de Partida Finalizada';
+	@override String get winner => 'Ganador';
+	@override String get notAvailable => 'No disponible';
+	@override String startedAtLabel({required Object value}) => 'Inicio: ${value}';
+	@override String durationLabel({required Object value}) => 'Duración: ${value}';
+	@override String scheduledAtLabel({required Object value}) => 'Programada: ${value}';
+	@override String get matchProofs => 'Pruebas de la Partida';
+	@override String get players => 'Jugadores';
+	@override String get domination => 'Dominación';
+	@override String scoreLabel({required Object value}) => '${value} pts';
+	@override String get close => 'Cerrar';
+	@override String hoursMinutes({required Object hours, required Object minutes}) => '${hours}h ${minutes}m';
 }
 
 // Path: match.ui_screens_match_create_table_location_loading_recent_widget

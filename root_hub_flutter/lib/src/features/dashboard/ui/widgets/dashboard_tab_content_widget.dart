@@ -1,3 +1,4 @@
+import 'package:root_hub_flutter/src/features/activity/ui/screens/activity_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:root_hub_flutter/src/features/home/ui/screens/home_screen.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_screen.dart';
@@ -19,6 +20,8 @@ class DashboardTabContentWidget extends StatelessWidget {
         return HomeScreen();
       case DashboardTab.match:
         return MatchScreen();
+      case DashboardTab.activity:
+        return ActivityScreen();
       case DashboardTab.shop:
         return ShopScreen();
     }

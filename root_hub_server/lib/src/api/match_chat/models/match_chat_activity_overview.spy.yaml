@@ -1,0 +1,6 @@
+class: MatchChatActivityOverview
+fields:
+  subscribedActiveSchedules: List<MatchSchedulePairingAttempt>
+  activeChats: List<MatchChatActivityChatItem>
+  endedChats: List<MatchChatActivityChatItem>
+  unreadMessagesCount: int

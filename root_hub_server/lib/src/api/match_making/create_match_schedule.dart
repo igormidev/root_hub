@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -128,6 +129,15 @@ class CreateMatchSchedule extends Endpoint {
             session,
             chatHistory,
             match,
+            transaction: transaction,
+          );
+
+          await MatchChatParticipantStateService.ensureParticipantStateExists(
+            session,
+            chatHistory: chatHistory,
+            playerData: playerData,
+            initialUnreadMessagesCount: 0,
+            initialLastReadMessageAt: DateTime.now(),
             transaction: transaction,
           );
 

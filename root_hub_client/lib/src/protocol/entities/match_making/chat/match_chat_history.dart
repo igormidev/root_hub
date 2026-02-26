@@ -13,7 +13,9 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import '../../../entities/match_making/match_schedule.dart' as _i2;
 import '../../../entities/match_making/chat/match_chat_message.dart' as _i3;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i4;
+import '../../../entities/match_making/chat/match_chat_participant_state.dart'
+    as _i4;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i5;
 
 abstract class MatchChatHistory implements _i1.SerializableModel {
   MatchChatHistory._({
@@ -22,6 +24,7 @@ abstract class MatchChatHistory implements _i1.SerializableModel {
     required this.matchSchedulePairingAttemptId,
     this.matchSchedulePairingAttempt,
     this.messages,
+    this.participantStates,
   });
 
   factory MatchChatHistory({
@@ -30,6 +33,7 @@ abstract class MatchChatHistory implements _i1.SerializableModel {
     required int matchSchedulePairingAttemptId,
     _i2.MatchSchedulePairingAttempt? matchSchedulePairingAttempt,
     List<_i3.MatchChatMessage>? messages,
+    List<_i4.MatchChatParticipantState>? participantStates,
   }) = _MatchChatHistoryImpl;
 
   factory MatchChatHistory.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -41,13 +45,18 @@ abstract class MatchChatHistory implements _i1.SerializableModel {
       matchSchedulePairingAttempt:
           jsonSerialization['matchSchedulePairingAttempt'] == null
           ? null
-          : _i4.Protocol().deserialize<_i2.MatchSchedulePairingAttempt>(
+          : _i5.Protocol().deserialize<_i2.MatchSchedulePairingAttempt>(
               jsonSerialization['matchSchedulePairingAttempt'],
             ),
       messages: jsonSerialization['messages'] == null
           ? null
-          : _i4.Protocol().deserialize<List<_i3.MatchChatMessage>>(
+          : _i5.Protocol().deserialize<List<_i3.MatchChatMessage>>(
               jsonSerialization['messages'],
+            ),
+      participantStates: jsonSerialization['participantStates'] == null
+          ? null
+          : _i5.Protocol().deserialize<List<_i4.MatchChatParticipantState>>(
+              jsonSerialization['participantStates'],
             ),
     );
   }
@@ -65,6 +74,8 @@ abstract class MatchChatHistory implements _i1.SerializableModel {
 
   List<_i3.MatchChatMessage>? messages;
 
+  List<_i4.MatchChatParticipantState>? participantStates;
+
   /// Returns a shallow copy of this [MatchChatHistory]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -74,6 +85,7 @@ abstract class MatchChatHistory implements _i1.SerializableModel {
     int? matchSchedulePairingAttemptId,
     _i2.MatchSchedulePairingAttempt? matchSchedulePairingAttempt,
     List<_i3.MatchChatMessage>? messages,
+    List<_i4.MatchChatParticipantState>? participantStates,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -86,6 +98,10 @@ abstract class MatchChatHistory implements _i1.SerializableModel {
         'matchSchedulePairingAttempt': matchSchedulePairingAttempt?.toJson(),
       if (messages != null)
         'messages': messages?.toJson(valueToJson: (v) => v.toJson()),
+      if (participantStates != null)
+        'participantStates': participantStates?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
     };
   }
 
@@ -104,12 +120,14 @@ class _MatchChatHistoryImpl extends MatchChatHistory {
     required int matchSchedulePairingAttemptId,
     _i2.MatchSchedulePairingAttempt? matchSchedulePairingAttempt,
     List<_i3.MatchChatMessage>? messages,
+    List<_i4.MatchChatParticipantState>? participantStates,
   }) : super._(
          id: id,
          content: content,
          matchSchedulePairingAttemptId: matchSchedulePairingAttemptId,
          matchSchedulePairingAttempt: matchSchedulePairingAttempt,
          messages: messages,
+         participantStates: participantStates,
        );
 
   /// Returns a shallow copy of this [MatchChatHistory]
@@ -122,6 +140,7 @@ class _MatchChatHistoryImpl extends MatchChatHistory {
     int? matchSchedulePairingAttemptId,
     Object? matchSchedulePairingAttempt = _Undefined,
     Object? messages = _Undefined,
+    Object? participantStates = _Undefined,
   }) {
     return MatchChatHistory(
       id: id is int? ? id : this.id,
@@ -135,6 +154,10 @@ class _MatchChatHistoryImpl extends MatchChatHistory {
       messages: messages is List<_i3.MatchChatMessage>?
           ? messages
           : this.messages?.map((e0) => e0.copyWith()).toList(),
+      participantStates:
+          participantStates is List<_i4.MatchChatParticipantState>?
+          ? participantStates
+          : this.participantStates?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }

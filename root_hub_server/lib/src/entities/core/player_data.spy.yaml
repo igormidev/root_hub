@@ -13,6 +13,7 @@ fields:
   currentHosting: List<MatchSchedulePairingAttempt>?, relation(name=hosted_pairing_attempts)
   subscriptions: List<MatchSubscription>?, relation(name=player_subscriptions)
   chatMessages: List<MatchChatMessage>?, relation(name=player_chat_messages)
+  chatParticipantStates: List<MatchChatParticipantState>?, relation(name=player_chat_participant_states)
   manualInputLocations: List<ManualInputLocation>?, relation(name=player_manual_input_locations)
   createdAnonymousPlayers: List<AnonymousPlayer>?, relation(name=created_anonymous_players)
   perfomances: List<PlayerPerfomanceInMatch>?, relation(name=player_data_perfomances)

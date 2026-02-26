@@ -1,0 +1,15 @@
+class: MatchChatPlayedMatchSummary
+fields:
+  scheduledMatchId: int
+  matchTitle: String
+  attemptedAt: DateTime
+  matchStartedAt: DateTime
+  matchEstimatedDuration: Duration?
+  locationTitle: String
+  locationSubtitle: String?
+  winnerDisplayName: String?
+  winnerFaction: Faction?
+  winnerScore: int?
+  players: List<MatchChatPlayedMatchPlayer>
+  groupPhotoUrl: String?
+  boardPhotoUrl: String?

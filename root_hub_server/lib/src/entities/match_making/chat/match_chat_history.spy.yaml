@@ -5,6 +5,7 @@ fields:
   matchSchedulePairingAttemptId: int
   matchSchedulePairingAttempt: MatchSchedulePairingAttempt?, relation(name=pairing_attempt_chat_history, field=matchSchedulePairingAttemptId)
   messages: List<MatchChatMessage>?, relation(name=chat_history_messages)
+  participantStates: List<MatchChatParticipantState>?, relation(name=chat_history_participant_states)
 
 indexes:
   chat_history_pairing_attempt_id_idx:

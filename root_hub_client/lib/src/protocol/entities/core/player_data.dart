@@ -21,10 +21,12 @@ import '../../entities/community/post_comment.dart' as _i7;
 import '../../entities/match_making/match_schedule.dart' as _i8;
 import '../../entities/match_making/match_subscription.dart' as _i9;
 import '../../entities/match_making/chat/match_chat_message.dart' as _i10;
-import '../../entities/match_making/manual_input_location.dart' as _i11;
-import '../../entities/core/anonymous_player.dart' as _i12;
-import '../../entities/match/player_perfomance_in_match.dart' as _i13;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i14;
+import '../../entities/match_making/chat/match_chat_participant_state.dart'
+    as _i11;
+import '../../entities/match_making/manual_input_location.dart' as _i12;
+import '../../entities/core/anonymous_player.dart' as _i13;
+import '../../entities/match/player_perfomance_in_match.dart' as _i14;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i15;
 
 abstract class PlayerData implements _i1.SerializableModel {
   PlayerData._({
@@ -41,6 +43,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     this.currentHosting,
     this.subscriptions,
     this.chatMessages,
+    this.chatParticipantStates,
     this.manualInputLocations,
     this.createdAnonymousPlayers,
     this.perfomances,
@@ -60,9 +63,10 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
-    List<_i11.ManualInputLocation>? manualInputLocations,
-    List<_i12.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i13.PlayerPerfomanceInMatch>? perfomances,
+    List<_i11.MatchChatParticipantState>? chatParticipantStates,
+    List<_i12.ManualInputLocation>? manualInputLocations,
+    List<_i13.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i14.PlayerPerfomanceInMatch>? perfomances,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -73,14 +77,14 @@ abstract class PlayerData implements _i1.SerializableModel {
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i14.Protocol().deserialize<_i2.AuthUser>(
+          : _i15.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       displayName: jsonSerialization['displayName'] as String,
       currentLocationId: jsonSerialization['currentLocationId'] as int?,
       currentLocation: jsonSerialization['currentLocation'] == null
           ? null
-          : _i14.Protocol().deserialize<_i3.GeoLocation>(
+          : _i15.Protocol().deserialize<_i3.GeoLocation>(
               jsonSerialization['currentLocation'],
             ),
       favoriteFaction: _i4.Faction.fromJson(
@@ -88,48 +92,53 @@ abstract class PlayerData implements _i1.SerializableModel {
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i15.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i6.Post>>(
+          : _i15.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i15.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
       currentHosting: jsonSerialization['currentHosting'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i15.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
               jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i9.MatchSubscription>>(
+          : _i15.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i10.MatchChatMessage>>(
+          : _i15.Protocol().deserialize<List<_i10.MatchChatMessage>>(
               jsonSerialization['chatMessages'],
+            ),
+      chatParticipantStates: jsonSerialization['chatParticipantStates'] == null
+          ? null
+          : _i15.Protocol().deserialize<List<_i11.MatchChatParticipantState>>(
+              jsonSerialization['chatParticipantStates'],
             ),
       manualInputLocations: jsonSerialization['manualInputLocations'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i11.ManualInputLocation>>(
+          : _i15.Protocol().deserialize<List<_i12.ManualInputLocation>>(
               jsonSerialization['manualInputLocations'],
             ),
       createdAnonymousPlayers:
           jsonSerialization['createdAnonymousPlayers'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i12.AnonymousPlayer>>(
+          : _i15.Protocol().deserialize<List<_i13.AnonymousPlayer>>(
               jsonSerialization['createdAnonymousPlayers'],
             ),
       perfomances: jsonSerialization['perfomances'] == null
           ? null
-          : _i14.Protocol().deserialize<List<_i13.PlayerPerfomanceInMatch>>(
+          : _i15.Protocol().deserialize<List<_i14.PlayerPerfomanceInMatch>>(
               jsonSerialization['perfomances'],
             ),
     );
@@ -165,11 +174,13 @@ abstract class PlayerData implements _i1.SerializableModel {
 
   List<_i10.MatchChatMessage>? chatMessages;
 
-  List<_i11.ManualInputLocation>? manualInputLocations;
+  List<_i11.MatchChatParticipantState>? chatParticipantStates;
 
-  List<_i12.AnonymousPlayer>? createdAnonymousPlayers;
+  List<_i12.ManualInputLocation>? manualInputLocations;
 
-  List<_i13.PlayerPerfomanceInMatch>? perfomances;
+  List<_i13.AnonymousPlayer>? createdAnonymousPlayers;
+
+  List<_i14.PlayerPerfomanceInMatch>? perfomances;
 
   /// Returns a shallow copy of this [PlayerData]
   /// with some or all fields replaced by the given arguments.
@@ -188,9 +199,10 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
-    List<_i11.ManualInputLocation>? manualInputLocations,
-    List<_i12.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i13.PlayerPerfomanceInMatch>? perfomances,
+    List<_i11.MatchChatParticipantState>? chatParticipantStates,
+    List<_i12.ManualInputLocation>? manualInputLocations,
+    List<_i13.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i14.PlayerPerfomanceInMatch>? perfomances,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -216,6 +228,10 @@ abstract class PlayerData implements _i1.SerializableModel {
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
       if (chatMessages != null)
         'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
+      if (chatParticipantStates != null)
+        'chatParticipantStates': chatParticipantStates?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
       if (manualInputLocations != null)
         'manualInputLocations': manualInputLocations?.toJson(
           valueToJson: (v) => v.toJson(),
@@ -252,9 +268,10 @@ class _PlayerDataImpl extends PlayerData {
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
-    List<_i11.ManualInputLocation>? manualInputLocations,
-    List<_i12.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i13.PlayerPerfomanceInMatch>? perfomances,
+    List<_i11.MatchChatParticipantState>? chatParticipantStates,
+    List<_i12.ManualInputLocation>? manualInputLocations,
+    List<_i13.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i14.PlayerPerfomanceInMatch>? perfomances,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -269,6 +286,7 @@ class _PlayerDataImpl extends PlayerData {
          currentHosting: currentHosting,
          subscriptions: subscriptions,
          chatMessages: chatMessages,
+         chatParticipantStates: chatParticipantStates,
          manualInputLocations: manualInputLocations,
          createdAnonymousPlayers: createdAnonymousPlayers,
          perfomances: perfomances,
@@ -292,6 +310,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
     Object? chatMessages = _Undefined,
+    Object? chatParticipantStates = _Undefined,
     Object? manualInputLocations = _Undefined,
     Object? createdAnonymousPlayers = _Undefined,
     Object? perfomances = _Undefined,
@@ -328,15 +347,19 @@ class _PlayerDataImpl extends PlayerData {
       chatMessages: chatMessages is List<_i10.MatchChatMessage>?
           ? chatMessages
           : this.chatMessages?.map((e0) => e0.copyWith()).toList(),
+      chatParticipantStates:
+          chatParticipantStates is List<_i11.MatchChatParticipantState>?
+          ? chatParticipantStates
+          : this.chatParticipantStates?.map((e0) => e0.copyWith()).toList(),
       manualInputLocations:
-          manualInputLocations is List<_i11.ManualInputLocation>?
+          manualInputLocations is List<_i12.ManualInputLocation>?
           ? manualInputLocations
           : this.manualInputLocations?.map((e0) => e0.copyWith()).toList(),
       createdAnonymousPlayers:
-          createdAnonymousPlayers is List<_i12.AnonymousPlayer>?
+          createdAnonymousPlayers is List<_i13.AnonymousPlayer>?
           ? createdAnonymousPlayers
           : this.createdAnonymousPlayers?.map((e0) => e0.copyWith()).toList(),
-      perfomances: perfomances is List<_i13.PlayerPerfomanceInMatch>?
+      perfomances: perfomances is List<_i14.PlayerPerfomanceInMatch>?
           ? perfomances
           : this.perfomances?.map((e0) => e0.copyWith()).toList(),
     );

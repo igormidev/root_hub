@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/match/ui/dialogs/match_played_match_summary_dialog.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_loading_error_state_widget.dart';
@@ -79,6 +80,12 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     final isLoadingInitial =
         !isCurrentChat || (chatState.isLoading && !chatState.hasLoadedOnce);
     final loadError = isCurrentChat ? chatState.loadError : null;
+    final playedMatchSummary = isCurrentChat
+        ? chatState.playedMatchSummary
+        : null;
+    final isLoadingPlayedMatchSummary = isCurrentChat
+        ? chatState.isLoadingPlayedMatchSummary
+        : false;
     final title = widget.matchTitle?.trim().isNotEmpty == true
         ? widget.matchTitle!.trim()
         : 'Match #${widget.scheduledMatchId} Chat';
@@ -119,16 +126,42 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 ),
               ),
             ),
-          if (isHost)
+          if (isHost && playedMatchSummary == null)
             IconButton(
               tooltip: t.match.ui_screens_match_chat_screen.editTable,
               icon: Icon(Icons.edit_outlined),
               onPressed: () => _openEditSheet(context),
             ),
+          if (isLoadingPlayedMatchSummary)
+            Padding(
+              padding: EdgeInsets.only(right: 4),
+              child: Center(
+                child: SizedBox(
+                  width: 17,
+                  height: 17,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.1,
+                    color: colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
           IconButton(
-            tooltip: t.match.ui_screens_match_chat_screen.tableInfo,
-            icon: Icon(Icons.info_outline_rounded),
-            onPressed: _openTableInfoSheet,
+            tooltip: playedMatchSummary != null
+                ? t.match.ui_screens_match_chat_screen.playedMatchInfo
+                : t.match.ui_screens_match_chat_screen.tableInfo,
+            icon: Icon(
+              playedMatchSummary != null
+                  ? Icons.emoji_events_rounded
+                  : Icons.info_outline_rounded,
+            ),
+            onPressed: isLoadingPlayedMatchSummary
+                ? null
+                : playedMatchSummary != null
+                ? () {
+                    _openPlayedMatchSummaryDialog(playedMatchSummary);
+                  }
+                : _openTableInfoSheet,
           ),
         ],
       ),
@@ -382,6 +415,17 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       }
       context.pop();
     }
+  }
+
+  Future<void> _openPlayedMatchSummaryDialog(
+    MatchChatPlayedMatchSummary summary,
+  ) async {
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return MatchPlayedMatchSummaryDialog(summary: summary);
+      },
+    );
   }
 
   Future<bool> _showImageCompressionDialog({

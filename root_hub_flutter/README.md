@@ -16,8 +16,9 @@ With Root Hub, users can:
 3. User authenticates (email/password or Google when enabled on server).
 4. User sees the list of available match schedules.
 5. User subscribes to an existing match or creates a new one.
-6. User can interact socially via posts/comments.
-7. After a game, user registers the result and factions.
+6. User tracks subscribed tables and chat activity in the Activity tab.
+7. User can interact socially via posts/comments.
+8. After a game, user registers the result and factions.
 
 ## Authentication (Serverpod)
 Authentication is handled with **Serverpod auth session management**:
@@ -56,8 +57,10 @@ root_hub_flutter/
 │       │   ├── account/
 │       │   ├── auth_flow/
 │       │   ├── onboarding/
+│       │   ├── activity/
 │       │   └── dashboard/
 │       └── features/              # UI feature modules (screens/widgets/sections/dialogs)
+│           ├── activity/
 │           ├── auth/
 │           ├── dashboard/
 │           ├── home/

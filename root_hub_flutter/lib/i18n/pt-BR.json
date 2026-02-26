@@ -57,6 +57,7 @@
     "ui_screens_dashboard_screen": {
       "shop": "Loja",
       "match": "Partidas",
+      "activity": "Atividade",
       "home": "Home",
       "rootHub": "ROOT HUB",
       "chooseFromGallery": "Escolha na Galeria",
@@ -71,9 +72,11 @@
       "welcomeBack": "Bem-vindo de volta, {displayName}",
       "communityDashboardTitle": "Painel da Comunidade",
       "matchFinderTitle": "Achar Partidas",
+      "activityCenterTitle": "Central de Atividade",
       "shopPreviewTitle": "Prévia da Loja",
       "communityDashboardSubtitle": "Veja o que está acontecendo na comunidade de ROOT.",
       "matchFinderSubtitle": "Busque partidas perto de você ou marque uma nova com seu grupo local.",
+      "activityCenterSubtitle": "Acompanhe suas mesas ativas e atualizações de chat em um só lugar.",
       "shopPreviewSubtitle": "Colecione cosméticos, tokens e pacotes da comunidade no futuro."
     },
     "ui_screens_dashboard_faction_editor_screen": {
@@ -112,6 +115,40 @@
       "spanish": "Espanhol",
       "french": "Francês",
       "german": "Alemão"
+    }
+  },
+  "activity": {
+    "ui_screens_activity_screen": {
+      "myScheduledTablesTitle": "Minhas Mesas Agendadas",
+      "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Mesas em que você se inscreveu e que ainda não começaram ou começaram há menos de 6 horas.",
+      "noActiveSchedules": "Nenhuma inscrição ativa",
+      "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Quando você entrar em uma mesa, ela aparecerá aqui em cartões deslizáveis.",
+      "activeChatsTitle": "Chats Ativos",
+      "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats de mesas futuras ou que começaram recentemente, ordenados por mensagens não lidas.",
+      "noActiveChats": "Nenhum chat ativo",
+      "openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription": "Abra qualquer chat de mesa e ele será acompanhado aqui, mesmo sem inscrição.",
+      "completedMatchesTitle": "Chats de Partidas Concluídas",
+      "latestEightCompletedOrArchivedMatchChatsYouParticipatedIn": "Últimos 8 chats de partidas que já aconteceram.",
+      "noCompletedChats": "Nenhum chat concluído ainda",
+      "onceMatchesFinishTheirChatsWillStayAvailableHere": "Quando as partidas terminarem, os chats continuarão disponíveis nesta seção."
+    },
+    "ui_widgets_activity_subscribed_schedule_card": {
+      "unknownLocation": "Local desconhecido",
+      "selected": "Selecionado",
+      "alreadyStarted": "Já começou",
+      "notStartedYet": "Ainda não começou",
+      "playersLabel": "{minPlayers}-{maxPlayers} jogadores",
+      "openChatHint": "Toque no card para abrir o chat"
+    },
+    "ui_widgets_activity_chat_card": {
+      "ended": "Encerrada",
+      "started": "Iniciada",
+      "upcoming": "Próxima",
+      "senderMessage": "{sender}: {message}",
+      "newMessage": "Nova mensagem",
+      "photoShared": "Foto compartilhada",
+      "systemUpdate": "Atualização do sistema",
+      "noMessagesYet": "Sem mensagens ainda"
     }
   },
   "home": {
@@ -380,7 +417,22 @@
       "subscribed": "Inscrito",
       "unableToResolveYourAccountInformation": "Não foi possível resolver as informações da sua conta.",
       "tableInfo": "Informações da partida",
+      "playedMatchInfo": "Informações da partida finalizada",
       "editTable": "Editar partida"
+    },
+    "ui_dialogs_match_played_match_summary_dialog": {
+      "completedMatchReport": "Relatório da Partida Concluída",
+      "winner": "Vencedor",
+      "notAvailable": "Não disponível",
+      "startedAtLabel": "Início: {value}",
+      "durationLabel": "Duração: {value}",
+      "scheduledAtLabel": "Agendada: {value}",
+      "matchProofs": "Provas da Partida",
+      "players": "Jogadores",
+      "domination": "Dominação",
+      "scoreLabel": "{value} pts",
+      "close": "Fechar",
+      "hoursMinutes": "{hours}h {minutes}m"
     },
     "ui_screens_match_create_table_location_loading_recent_widget": {
       "loadingPreviousLocations": "Carregando locais anteriores..."

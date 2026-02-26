@@ -57,6 +57,7 @@
     "ui_screens_dashboard_screen": {
       "shop": "Shop",
       "match": "Partien",
+      "activity": "Aktivität",
       "home": "Start",
       "rootHub": "ROOT HUB",
       "chooseFromGallery": "Wählen Sie aus der Galerie",
@@ -71,9 +72,11 @@
       "welcomeBack": "Willkommen zurück, {displayName}",
       "communityDashboardTitle": "Community-Dashboard",
       "matchFinderTitle": "Partien finden",
+      "activityCenterTitle": "Aktivitätszentrum",
       "shopPreviewTitle": "Shop-Vorschau",
       "communityDashboardSubtitle": "Sieh dir an, was in der ROOT-Community passiert.",
       "matchFinderSubtitle": "Finde Partien in deiner Nähe oder erstelle eine neue mit deiner Gruppe.",
+      "activityCenterSubtitle": "Verfolge deine aktiven Tische und Chat-Updates an einem Ort.",
       "shopPreviewSubtitle": "Sammle künftig Kosmetik, Token und Community-Bundles."
     },
     "ui_screens_dashboard_faction_editor_screen": {
@@ -112,6 +115,40 @@
       "spanish": "Spanisch",
       "french": "Französisch",
       "german": "Deutsch"
+    }
+  },
+  "activity": {
+    "ui_screens_activity_screen": {
+      "myScheduledTablesTitle": "Meine Geplanten Tische",
+      "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tische, denen du beigetreten bist und die noch nicht gestartet sind oder vor weniger als 6 Stunden gestartet haben.",
+      "noActiveSchedules": "Keine aktiven Anmeldungen",
+      "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Wenn du einem Tisch beitrittst, erscheint er hier als wischbare Karte.",
+      "activeChatsTitle": "Aktive Chats",
+      "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats für kommende oder kürzlich gestartete Tische, zuerst nach ungelesenen Nachrichten sortiert.",
+      "noActiveChats": "Keine aktiven Chats",
+      "openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription": "Öffne einen Tisch-Chat und er wird hier verfolgt, auch ohne Anmeldung.",
+      "completedMatchesTitle": "Chats Abgeschlossener Partien",
+      "latestEightCompletedOrArchivedMatchChatsYouParticipatedIn": "Die letzten 8 Chats von bereits gespielten Partien.",
+      "noCompletedChats": "Noch keine abgeschlossenen Chats",
+      "onceMatchesFinishTheirChatsWillStayAvailableHere": "Sobald Partien beendet sind, bleiben ihre Chats in diesem Bereich verfügbar."
+    },
+    "ui_widgets_activity_subscribed_schedule_card": {
+      "unknownLocation": "Unbekannter Ort",
+      "selected": "Ausgewählt",
+      "alreadyStarted": "Bereits gestartet",
+      "notStartedYet": "Noch nicht gestartet",
+      "playersLabel": "{minPlayers}-{maxPlayers} Spieler",
+      "openChatHint": "Karte antippen, um den Chat zu öffnen"
+    },
+    "ui_widgets_activity_chat_card": {
+      "ended": "Beendet",
+      "started": "Gestartet",
+      "upcoming": "Bevorstehend",
+      "senderMessage": "{sender}: {message}",
+      "newMessage": "Neue Nachricht",
+      "photoShared": "Foto geteilt",
+      "systemUpdate": "System-Update",
+      "noMessagesYet": "Noch keine Nachrichten"
     }
   },
   "home": {
@@ -380,7 +417,22 @@
       "subscribed": "Gezeichnet",
       "unableToResolveYourAccountInformation": "Ihre Kontoinformationen können nicht aufgelöst werden.",
       "tableInfo": "Partieinfo",
+      "playedMatchInfo": "Info zur beendeten Partie",
       "editTable": "Partie bearbeiten"
+    },
+    "ui_dialogs_match_played_match_summary_dialog": {
+      "completedMatchReport": "Bericht zur Abgeschlossenen Partie",
+      "winner": "Sieger",
+      "notAvailable": "Nicht verfügbar",
+      "startedAtLabel": "Start: {value}",
+      "durationLabel": "Dauer: {value}",
+      "scheduledAtLabel": "Geplant: {value}",
+      "matchProofs": "Partie-Nachweise",
+      "players": "Spieler",
+      "domination": "Dominanz",
+      "scoreLabel": "{value} Pkt",
+      "close": "Schließen",
+      "hoursMinutes": "{hours}h {minutes}m"
     },
     "ui_screens_match_create_table_location_loading_recent_widget": {
       "loadingPreviousLocations": "Vorherige Standorte werden geladen..."

@@ -1,3 +1,4 @@
+import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -54,6 +55,19 @@ Future<MatchChatMessage> sendSystemChatMessage(
     session,
     message,
     playerData,
+  );
+
+  await MatchChatParticipantStateService.ensureParticipantStateExists(
+    session,
+    chatHistory: chatHistory,
+    playerData: playerData,
+  );
+  await MatchChatParticipantStateService.incrementUnreadForRecipients(
+    session,
+    chatHistoryId: chatHistoryId,
+    senderPlayerDataId: playerData.id!,
+    sentAt: message.sentAt,
+    markSenderAsRead: false,
   );
 
   session.log(

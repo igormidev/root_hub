@@ -57,6 +57,7 @@
     "ui_screens_dashboard_screen": {
       "shop": "Boutique",
       "match": "Parties",
+      "activity": "Activité",
       "home": "Accueil",
       "rootHub": "ROOT HUB",
       "chooseFromGallery": "Choisissez dans la galerie",
@@ -71,9 +72,11 @@
       "welcomeBack": "Bon retour, {displayName}",
       "communityDashboardTitle": "Tableau Communautaire",
       "matchFinderTitle": "Trouver des parties",
+      "activityCenterTitle": "Centre d'Activité",
       "shopPreviewTitle": "Aperçu de la boutique",
       "communityDashboardSubtitle": "Découvrez ce qui se passe dans la communauté ROOT.",
       "matchFinderSubtitle": "Trouvez des parties proches ou créez-en une avec votre groupe local.",
+      "activityCenterSubtitle": "Suivez vos tables actives et les mises à jour de chat en un seul endroit.",
       "shopPreviewSubtitle": "Récupérez bientôt des cosmétiques, jetons et packs communautaires."
     },
     "ui_screens_dashboard_faction_editor_screen": {
@@ -112,6 +115,40 @@
       "spanish": "Espagnol",
       "french": "Français",
       "german": "Allemand"
+    }
+  },
+  "activity": {
+    "ui_screens_activity_screen": {
+      "myScheduledTablesTitle": "Mes Tables Planifiées",
+      "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tables auxquelles vous êtes inscrit et qui n'ont pas encore commencé ou ont commencé il y a moins de 6 heures.",
+      "noActiveSchedules": "Aucun abonnement actif",
+      "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Quand vous rejoignez une table, elle apparaît ici sous forme de carte à faire glisser.",
+      "activeChatsTitle": "Chats Actifs",
+      "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats des tables à venir ou récemment lancées, triés d'abord par messages non lus.",
+      "noActiveChats": "Aucun chat actif",
+      "openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription": "Ouvrez n'importe quel chat de table et il sera suivi ici, même sans abonnement.",
+      "completedMatchesTitle": "Chats de Parties Terminées",
+      "latestEightCompletedOrArchivedMatchChatsYouParticipatedIn": "Les 8 derniers chats de parties déjà jouées.",
+      "noCompletedChats": "Aucun chat terminé pour le moment",
+      "onceMatchesFinishTheirChatsWillStayAvailableHere": "Une fois les parties terminées, leurs chats restent disponibles dans cette section."
+    },
+    "ui_widgets_activity_subscribed_schedule_card": {
+      "unknownLocation": "Lieu inconnu",
+      "selected": "Sélectionné",
+      "alreadyStarted": "Déjà commencée",
+      "notStartedYet": "Pas encore commencée",
+      "playersLabel": "{minPlayers}-{maxPlayers} joueurs",
+      "openChatHint": "Touchez la carte pour ouvrir le chat"
+    },
+    "ui_widgets_activity_chat_card": {
+      "ended": "Terminée",
+      "started": "Commencée",
+      "upcoming": "À venir",
+      "senderMessage": "{sender}: {message}",
+      "newMessage": "Nouveau message",
+      "photoShared": "Photo partagée",
+      "systemUpdate": "Mise à jour système",
+      "noMessagesYet": "Pas encore de messages"
     }
   },
   "home": {
@@ -380,7 +417,22 @@
       "subscribed": "Abonné",
       "unableToResolveYourAccountInformation": "Impossible de résoudre les informations de votre compte.",
       "tableInfo": "Infos de la partie",
+      "playedMatchInfo": "Infos de la partie terminée",
       "editTable": "Modifier la partie"
+    },
+    "ui_dialogs_match_played_match_summary_dialog": {
+      "completedMatchReport": "Rapport de Partie Terminée",
+      "winner": "Vainqueur",
+      "notAvailable": "Non disponible",
+      "startedAtLabel": "Début : {value}",
+      "durationLabel": "Durée : {value}",
+      "scheduledAtLabel": "Planifiée : {value}",
+      "matchProofs": "Preuves de la Partie",
+      "players": "Joueurs",
+      "domination": "Domination",
+      "scoreLabel": "{value} pts",
+      "close": "Fermer",
+      "hoursMinutes": "{hours}h {minutes}m"
     },
     "ui_screens_match_create_table_location_loading_recent_widget": {
       "loadingPreviousLocations": "Chargement des emplacements précédents..."

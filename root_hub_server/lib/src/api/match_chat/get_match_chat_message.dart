@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/settings.dart';
+import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -27,6 +28,11 @@ class GetMatchChatMessage extends Endpoint {
           );
         }
 
+        final playerData =
+            await MatchChatParticipantStateService.getAuthenticatedPlayerData(
+              session,
+            );
+
         final matchSchedule = await MatchSchedulePairingAttempt.db.findById(
           session,
           scheduledMatchId,
@@ -51,6 +57,13 @@ class GetMatchChatMessage extends Endpoint {
                 'Chat history for scheduled match $scheduledMatchId was not found.',
           );
         }
+
+        final chatHistory = matchSchedule.chatHistory!;
+        await MatchChatParticipantStateService.ensureParticipantStateExists(
+          session,
+          chatHistory: chatHistory,
+          playerData: playerData,
+        );
 
         final pageSize = RootHubSettings.pageSizeMatchChatMessages;
 
@@ -89,6 +102,13 @@ class GetMatchChatMessage extends Endpoint {
               ..sort();
 
         final totalPages = (totalCount / pageSize).ceil();
+
+        await MatchChatParticipantStateService.markChatAsRead(
+          session,
+          chatHistory: chatHistory,
+          playerData: playerData,
+          readAt: DateTime.now(),
+        );
 
         return MatchChatMessagesPagination(
           messages: messages,

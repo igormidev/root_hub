@@ -12,6 +12,7 @@ import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_bot
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_tab_content_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
+import 'package:root_hub_flutter/src/states/activity/activity_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
@@ -45,6 +46,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       }
 
       ref.read(dashboardProfileProvider.notifier).ensureProfileImageLoaded();
+      ref.read(activityProvider.notifier).ensureUnreadCountLoaded();
     });
   }
 
@@ -245,6 +247,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final selectedTab = ref.watch(dashboardProvider).selectedTab;
+    final unreadActivityCount = ref.watch(
+      activityProvider.select((value) => value.unreadMessagesCount),
+    );
     final profileState = ref.watch(dashboardProfileProvider);
     final playerData = ref
         .watch(authFlowProvider)
@@ -486,6 +491,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
+                        label: t.dashboard.ui_screens_dashboard_screen.activity,
+                        icon: Icons.forum_outlined,
+                        selectedIcon: Icons.forum_rounded,
+                        selected: selectedTab == DashboardTab.activity,
+                        badgeCount: unreadActivityCount,
+                        onTap: () {
+                          ref
+                              .read(dashboardProvider.notifier)
+                              .changeTab(DashboardTab.activity);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: DashboardBottomTabItemWidget(
+                        colorScheme: colorScheme,
                         label: t.dashboard.ui_screens_dashboard_screen.shop,
                         icon: Icons.storefront_outlined,
                         selectedIcon: Icons.storefront_rounded,
@@ -513,6 +533,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         return t.dashboard.ui_screens_dashboard_screen.communityDashboardTitle;
       case DashboardTab.match:
         return t.dashboard.ui_screens_dashboard_screen.matchFinderTitle;
+      case DashboardTab.activity:
+        return t.dashboard.ui_screens_dashboard_screen.activityCenterTitle;
       case DashboardTab.shop:
         return t.dashboard.ui_screens_dashboard_screen.shopPreviewTitle;
     }
@@ -527,6 +549,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             .communityDashboardSubtitle;
       case DashboardTab.match:
         return t.dashboard.ui_screens_dashboard_screen.matchFinderSubtitle;
+      case DashboardTab.activity:
+        return t.dashboard.ui_screens_dashboard_screen.activityCenterSubtitle;
       case DashboardTab.shop:
         return t.dashboard.ui_screens_dashboard_screen.shopPreviewSubtitle;
     }

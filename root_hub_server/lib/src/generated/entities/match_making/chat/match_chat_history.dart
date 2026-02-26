@@ -14,7 +14,9 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../../../entities/match_making/match_schedule.dart' as _i2;
 import '../../../entities/match_making/chat/match_chat_message.dart' as _i3;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i4;
+import '../../../entities/match_making/chat/match_chat_participant_state.dart'
+    as _i4;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
 
 abstract class MatchChatHistory
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -24,6 +26,7 @@ abstract class MatchChatHistory
     required this.matchSchedulePairingAttemptId,
     this.matchSchedulePairingAttempt,
     this.messages,
+    this.participantStates,
   });
 
   factory MatchChatHistory({
@@ -32,6 +35,7 @@ abstract class MatchChatHistory
     required int matchSchedulePairingAttemptId,
     _i2.MatchSchedulePairingAttempt? matchSchedulePairingAttempt,
     List<_i3.MatchChatMessage>? messages,
+    List<_i4.MatchChatParticipantState>? participantStates,
   }) = _MatchChatHistoryImpl;
 
   factory MatchChatHistory.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -43,13 +47,18 @@ abstract class MatchChatHistory
       matchSchedulePairingAttempt:
           jsonSerialization['matchSchedulePairingAttempt'] == null
           ? null
-          : _i4.Protocol().deserialize<_i2.MatchSchedulePairingAttempt>(
+          : _i5.Protocol().deserialize<_i2.MatchSchedulePairingAttempt>(
               jsonSerialization['matchSchedulePairingAttempt'],
             ),
       messages: jsonSerialization['messages'] == null
           ? null
-          : _i4.Protocol().deserialize<List<_i3.MatchChatMessage>>(
+          : _i5.Protocol().deserialize<List<_i3.MatchChatMessage>>(
               jsonSerialization['messages'],
+            ),
+      participantStates: jsonSerialization['participantStates'] == null
+          ? null
+          : _i5.Protocol().deserialize<List<_i4.MatchChatParticipantState>>(
+              jsonSerialization['participantStates'],
             ),
     );
   }
@@ -69,6 +78,8 @@ abstract class MatchChatHistory
 
   List<_i3.MatchChatMessage>? messages;
 
+  List<_i4.MatchChatParticipantState>? participantStates;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -81,6 +92,7 @@ abstract class MatchChatHistory
     int? matchSchedulePairingAttemptId,
     _i2.MatchSchedulePairingAttempt? matchSchedulePairingAttempt,
     List<_i3.MatchChatMessage>? messages,
+    List<_i4.MatchChatParticipantState>? participantStates,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -93,6 +105,10 @@ abstract class MatchChatHistory
         'matchSchedulePairingAttempt': matchSchedulePairingAttempt?.toJson(),
       if (messages != null)
         'messages': messages?.toJson(valueToJson: (v) => v.toJson()),
+      if (participantStates != null)
+        'participantStates': participantStates?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
     };
   }
 
@@ -108,16 +124,22 @@ abstract class MatchChatHistory
             ?.toJsonForProtocol(),
       if (messages != null)
         'messages': messages?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (participantStates != null)
+        'participantStates': participantStates?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
   static MatchChatHistoryInclude include({
     _i2.MatchSchedulePairingAttemptInclude? matchSchedulePairingAttempt,
     _i3.MatchChatMessageIncludeList? messages,
+    _i4.MatchChatParticipantStateIncludeList? participantStates,
   }) {
     return MatchChatHistoryInclude._(
       matchSchedulePairingAttempt: matchSchedulePairingAttempt,
       messages: messages,
+      participantStates: participantStates,
     );
   }
 
@@ -156,12 +178,14 @@ class _MatchChatHistoryImpl extends MatchChatHistory {
     required int matchSchedulePairingAttemptId,
     _i2.MatchSchedulePairingAttempt? matchSchedulePairingAttempt,
     List<_i3.MatchChatMessage>? messages,
+    List<_i4.MatchChatParticipantState>? participantStates,
   }) : super._(
          id: id,
          content: content,
          matchSchedulePairingAttemptId: matchSchedulePairingAttemptId,
          matchSchedulePairingAttempt: matchSchedulePairingAttempt,
          messages: messages,
+         participantStates: participantStates,
        );
 
   /// Returns a shallow copy of this [MatchChatHistory]
@@ -174,6 +198,7 @@ class _MatchChatHistoryImpl extends MatchChatHistory {
     int? matchSchedulePairingAttemptId,
     Object? matchSchedulePairingAttempt = _Undefined,
     Object? messages = _Undefined,
+    Object? participantStates = _Undefined,
   }) {
     return MatchChatHistory(
       id: id is int? ? id : this.id,
@@ -187,6 +212,10 @@ class _MatchChatHistoryImpl extends MatchChatHistory {
       messages: messages is List<_i3.MatchChatMessage>?
           ? messages
           : this.messages?.map((e0) => e0.copyWith()).toList(),
+      participantStates:
+          participantStates is List<_i4.MatchChatParticipantState>?
+          ? participantStates
+          : this.participantStates?.map((e0) => e0.copyWith()).toList(),
     );
   }
 }
@@ -233,6 +262,10 @@ class MatchChatHistoryTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i3.MatchChatMessageTable>? _messages;
 
+  _i4.MatchChatParticipantStateTable? ___participantStates;
+
+  _i1.ManyRelation<_i4.MatchChatParticipantStateTable>? _participantStates;
+
   _i2.MatchSchedulePairingAttemptTable get matchSchedulePairingAttempt {
     if (_matchSchedulePairingAttempt != null)
       return _matchSchedulePairingAttempt!;
@@ -262,6 +295,20 @@ class MatchChatHistoryTable extends _i1.Table<int?> {
     return ___messages!;
   }
 
+  _i4.MatchChatParticipantStateTable get __participantStates {
+    if (___participantStates != null) return ___participantStates!;
+    ___participantStates = _i1.createRelationTable(
+      relationFieldName: '__participantStates',
+      field: MatchChatHistory.t.id,
+      foreignField: _i4.MatchChatParticipantState.t.matchChatHistoryId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) => _i4.MatchChatParticipantStateTable(
+        tableRelation: foreignTableRelation,
+      ),
+    );
+    return ___participantStates!;
+  }
+
   _i1.ManyRelation<_i3.MatchChatMessageTable> get messages {
     if (_messages != null) return _messages!;
     var relationTable = _i1.createRelationTable(
@@ -281,6 +328,26 @@ class MatchChatHistoryTable extends _i1.Table<int?> {
     return _messages!;
   }
 
+  _i1.ManyRelation<_i4.MatchChatParticipantStateTable> get participantStates {
+    if (_participantStates != null) return _participantStates!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'participantStates',
+      field: MatchChatHistory.t.id,
+      foreignField: _i4.MatchChatParticipantState.t.matchChatHistoryId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) => _i4.MatchChatParticipantStateTable(
+        tableRelation: foreignTableRelation,
+      ),
+    );
+    _participantStates = _i1.ManyRelation<_i4.MatchChatParticipantStateTable>(
+      tableWithRelations: relationTable,
+      table: _i4.MatchChatParticipantStateTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _participantStates!;
+  }
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -296,6 +363,9 @@ class MatchChatHistoryTable extends _i1.Table<int?> {
     if (relationField == 'messages') {
       return __messages;
     }
+    if (relationField == 'participantStates') {
+      return __participantStates;
+    }
     return null;
   }
 }
@@ -304,19 +374,24 @@ class MatchChatHistoryInclude extends _i1.IncludeObject {
   MatchChatHistoryInclude._({
     _i2.MatchSchedulePairingAttemptInclude? matchSchedulePairingAttempt,
     _i3.MatchChatMessageIncludeList? messages,
+    _i4.MatchChatParticipantStateIncludeList? participantStates,
   }) {
     _matchSchedulePairingAttempt = matchSchedulePairingAttempt;
     _messages = messages;
+    _participantStates = participantStates;
   }
 
   _i2.MatchSchedulePairingAttemptInclude? _matchSchedulePairingAttempt;
 
   _i3.MatchChatMessageIncludeList? _messages;
 
+  _i4.MatchChatParticipantStateIncludeList? _participantStates;
+
   @override
   Map<String, _i1.Include?> get includes => {
     'matchSchedulePairingAttempt': _matchSchedulePairingAttempt,
     'messages': _messages,
+    'participantStates': _participantStates,
   };
 
   @override
@@ -639,6 +714,31 @@ class MatchChatHistoryAttachRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [MatchChatHistory] and the given [MatchChatParticipantState]s
+  /// by setting each [MatchChatParticipantState]'s foreign key `matchChatHistoryId` to refer to this [MatchChatHistory].
+  Future<void> participantStates(
+    _i1.Session session,
+    MatchChatHistory matchChatHistory,
+    List<_i4.MatchChatParticipantState> matchChatParticipantState, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatParticipantState.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchChatParticipantState.id');
+    }
+    if (matchChatHistory.id == null) {
+      throw ArgumentError.notNull('matchChatHistory.id');
+    }
+
+    var $matchChatParticipantState = matchChatParticipantState
+        .map((e) => e.copyWith(matchChatHistoryId: matchChatHistory.id))
+        .toList();
+    await session.db.update<_i4.MatchChatParticipantState>(
+      $matchChatParticipantState,
+      columns: [_i4.MatchChatParticipantState.t.matchChatHistoryId],
+      transaction: transaction,
+    );
+  }
 }
 
 class MatchChatHistoryAttachRowRepository {
@@ -693,6 +793,31 @@ class MatchChatHistoryAttachRowRepository {
       transaction: transaction,
     );
   }
+
+  /// Creates a relation between this [MatchChatHistory] and the given [MatchChatParticipantState]
+  /// by setting the [MatchChatParticipantState]'s foreign key `matchChatHistoryId` to refer to this [MatchChatHistory].
+  Future<void> participantStates(
+    _i1.Session session,
+    MatchChatHistory matchChatHistory,
+    _i4.MatchChatParticipantState matchChatParticipantState, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatParticipantState.id == null) {
+      throw ArgumentError.notNull('matchChatParticipantState.id');
+    }
+    if (matchChatHistory.id == null) {
+      throw ArgumentError.notNull('matchChatHistory.id');
+    }
+
+    var $matchChatParticipantState = matchChatParticipantState.copyWith(
+      matchChatHistoryId: matchChatHistory.id,
+    );
+    await session.db.updateRow<_i4.MatchChatParticipantState>(
+      $matchChatParticipantState,
+      columns: [_i4.MatchChatParticipantState.t.matchChatHistoryId],
+      transaction: transaction,
+    );
+  }
 }
 
 class MatchChatHistoryDetachRepository {
@@ -721,6 +846,30 @@ class MatchChatHistoryDetachRepository {
       transaction: transaction,
     );
   }
+
+  /// Detaches the relation between this [MatchChatHistory] and the given [MatchChatParticipantState]
+  /// by setting the [MatchChatParticipantState]'s foreign key `matchChatHistoryId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> participantStates(
+    _i1.Session session,
+    List<_i4.MatchChatParticipantState> matchChatParticipantState, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatParticipantState.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchChatParticipantState.id');
+    }
+
+    var $matchChatParticipantState = matchChatParticipantState
+        .map((e) => e.copyWith(matchChatHistoryId: null))
+        .toList();
+    await session.db.update<_i4.MatchChatParticipantState>(
+      $matchChatParticipantState,
+      columns: [_i4.MatchChatParticipantState.t.matchChatHistoryId],
+      transaction: transaction,
+    );
+  }
 }
 
 class MatchChatHistoryDetachRowRepository {
@@ -744,6 +893,30 @@ class MatchChatHistoryDetachRowRepository {
     await session.db.updateRow<_i3.MatchChatMessage>(
       $matchChatMessage,
       columns: [_i3.MatchChatMessage.t.matchChatHistoryId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [MatchChatHistory] and the given [MatchChatParticipantState]
+  /// by setting the [MatchChatParticipantState]'s foreign key `matchChatHistoryId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> participantStates(
+    _i1.Session session,
+    _i4.MatchChatParticipantState matchChatParticipantState, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchChatParticipantState.id == null) {
+      throw ArgumentError.notNull('matchChatParticipantState.id');
+    }
+
+    var $matchChatParticipantState = matchChatParticipantState.copyWith(
+      matchChatHistoryId: null,
+    );
+    await session.db.updateRow<_i4.MatchChatParticipantState>(
+      $matchChatParticipantState,
+      columns: [_i4.MatchChatParticipantState.t.matchChatHistoryId],
       transaction: transaction,
     );
   }

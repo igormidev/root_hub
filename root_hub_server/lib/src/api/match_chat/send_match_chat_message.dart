@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:image/image.dart' as img;
+import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
@@ -52,7 +53,10 @@ class SendMatchChatMessage extends Endpoint {
           );
         }
 
-        final playerData = await _getPlayerData(session);
+        final playerData =
+            await MatchChatParticipantStateService.getAuthenticatedPlayerData(
+              session,
+            );
         session.log(
           '[MatchChat] Sending message. '
           'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id} '
@@ -199,6 +203,19 @@ class SendMatchChatMessage extends Endpoint {
           playerData,
         );
 
+        await MatchChatParticipantStateService.ensureParticipantStateExists(
+          session,
+          chatHistory: chatHistory,
+          playerData: playerData,
+        );
+        await MatchChatParticipantStateService.incrementUnreadForRecipients(
+          session,
+          chatHistoryId: chatHistoryId,
+          senderPlayerDataId: playerData.id!,
+          sentAt: message.sentAt,
+          markSenderAsRead: true,
+        );
+
         message.sender = playerData;
         session.log(
           '[MatchChat] Message sent. '
@@ -212,24 +229,5 @@ class SendMatchChatMessage extends Endpoint {
       fallbackDescription:
           'Unable to send the message right now. Please try again.',
     );
-  }
-
-  Future<PlayerData> _getPlayerData(Session session) async {
-    final userIdentifier = session.authenticated!.userIdentifier;
-    final authUserId = UuidValue.fromString(userIdentifier);
-
-    final playerData = await PlayerData.db.findFirstRow(
-      session,
-      where: (t) => t.authUserId.equals(authUserId),
-    );
-
-    if (playerData == null) {
-      throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
-      );
-    }
-
-    return playerData;
   }
 }
