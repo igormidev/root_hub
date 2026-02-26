@@ -280,10 +280,7 @@ class _LocationSelectionSearchSheetState
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: EdgeInsets.only(
-            top: viewPadding.top,
-            bottom: viewInsets.bottom,
-          ),
+          padding: EdgeInsets.only(bottom: viewInsets.bottom),
           child: Column(
             children: [
               const SizedBox(height: 10),

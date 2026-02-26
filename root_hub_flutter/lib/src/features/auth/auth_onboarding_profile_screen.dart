@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_panel_widget.dart';
 import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_search_sheet.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthOnboardingProfileScreen extends ConsumerStatefulWidget {
   const AuthOnboardingProfileScreen({
@@ -64,6 +64,7 @@ class _AuthOnboardingProfileScreenState
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (_) {
         return LocationSelectionSearchSheet(
@@ -287,57 +288,40 @@ class _AuthOnboardingProfileScreenState
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: colorScheme.outlineVariant),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            colorScheme.surfaceContainerHighest.withValues(
-                              alpha: 0.76,
-                            ),
-                            colorScheme.surfaceContainer.withValues(alpha: 0.8),
-                          ],
+                    TextField(
+                      controller: _displayNameController,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        hintText: t
+                            .auth
+                            .auth_onboarding_profile_screen
+                            .enterYourDisplayName,
+                        filled: true,
+                        fillColor: colorScheme.surface.withValues(
+                          alpha: 0.95,
                         ),
-                      ),
-                      child: TextField(
-                        controller: _displayNameController,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          hintText: t
-                              .auth
-                              .auth_onboarding_profile_screen
-                              .enterYourDisplayName,
-                          filled: true,
-                          fillColor: colorScheme.surface.withValues(
-                            alpha: 0.95,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(
+                            color: colorScheme.outlineVariant,
                           ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(
-                              color: colorScheme.outlineVariant,
-                            ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(
+                            color: colorScheme.outlineVariant,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(
-                              color: colorScheme.outlineVariant,
-                            ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(
+                            color: colorScheme.primary,
+                            width: 1.4,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(
-                              color: colorScheme.primary,
-                              width: 1.4,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 14,
-                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 14,
                         ),
                       ),
                     ),

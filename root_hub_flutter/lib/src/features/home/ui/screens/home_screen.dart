@@ -42,29 +42,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         padding: EdgeInsets.fromLTRB(0, 4, 0, 28),
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              t.home.ui_screens_home_screen.communityDashboard,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          SizedBox(height: 4),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              t
-                  .home
-                  .ui_screens_home_screen
-                  .seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
           if (hasError && homeStatsState.platformStats != null) ...[
             SizedBox(height: 12),
             Text(

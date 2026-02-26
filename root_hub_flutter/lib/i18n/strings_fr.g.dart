@@ -451,8 +451,6 @@ class _TranslationsHomeUiScreensHomeScreenFr extends TranslationsHomeUiScreensHo
 	@override String get myStats => 'Mes statistiques';
 	@override String get factionPerformanceFromAllPlayedMatchesInRootHub => 'Performance des factions sur toutes les parties jouées dans Root Hub.';
 	@override String get communityStats => 'Statistiques de la communauté';
-	@override String get seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress => 'Voyez comment la plateforme ROOT évolue et comparez-la à vos progrès.';
-	@override String get communityDashboard => 'Tableau de bord communautaire';
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget

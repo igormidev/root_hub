@@ -170,9 +170,7 @@
       "yourPersonalFactionPerformanceAndMatchProfile": "Tu desempeño personal de facción y perfil de partido.",
       "myStats": "Mis estadísticas",
       "factionPerformanceFromAllPlayedMatchesInRootHub": "Rendimiento de facciones en todas las partidas jugadas en Root Hub.",
-      "communityStats": "Estadísticas de la comunidad",
-      "seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress": "Mira cómo evoluciona la plataforma ROOT y compárala con tu propio progreso.",
-      "communityDashboard": "Panel de la comunidad"
+      "communityStats": "Estadísticas de la comunidad"
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Aún no hay valores para esta métrica."

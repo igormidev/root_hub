@@ -721,12 +721,6 @@ class TranslationsHomeUiScreensHomeScreenEn {
 
 	/// en: 'Community Stats'
 	String get communityStats => 'Community Stats';
-
-	/// en: 'See how the ROOT platform is evolving and compare it with your own progress.'
-	String get seeHowTheRootPlatformIsEvolvingAndCompareItWithYourOwnProgress => 'See how the ROOT platform is evolving and compare it with your own progress.';
-
-	/// en: 'Community Dashboard'
-	String get communityDashboard => 'Community Dashboard';
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget
