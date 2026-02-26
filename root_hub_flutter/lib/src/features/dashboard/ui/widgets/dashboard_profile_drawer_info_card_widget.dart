@@ -31,48 +31,67 @@ class DashboardProfileDrawerInfoCardWidget extends StatelessWidget {
         border: Border.all(color: colorScheme.outlineVariant),
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.62),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Icon(icon, color: colorScheme.primary),
-          SizedBox(width: 10),
-          Expanded(
-            child: Column(
+          Padding(
+            padding: EdgeInsets.only(right: 34),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w800,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                SizedBox(height: 3),
-                Text(
-                  value,
-                  style: GoogleFonts.nunitoSans(
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurfaceVariant,
-                    height: 1.35,
+                Icon(icon, color: colorScheme.primary),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: GoogleFonts.nunitoSans(
+                          fontWeight: FontWeight.w800,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      SizedBox(height: 3),
+                      Text(
+                        value,
+                        style: GoogleFonts.nunitoSans(
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurfaceVariant,
+                          height: 1.35,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(width: 10),
-          OutlinedButton.icon(
-            onPressed: isLoading ? null : onPressed,
-            icon: isLoading
-                ? SizedBox(
-                    width: 14,
-                    height: 14,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Icon(Icons.edit_rounded, size: 18),
-            label: Text(
-              buttonLabel,
-              style: GoogleFonts.nunitoSans(
-                fontWeight: FontWeight.w800,
+          Positioned(
+            top: -4,
+            right: -4,
+            child: Material(
+              color: Colors.transparent,
+              shape: CircleBorder(),
+              child: Tooltip(
+                message: buttonLabel,
+                child: InkWell(
+                  customBorder: CircleBorder(),
+                  onTap: isLoading ? null : onPressed,
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            Icons.edit_rounded,
+                            size: 18,
+                            color: colorScheme.primary,
+                          ),
+                  ),
+                ),
               ),
             ),
           ),
