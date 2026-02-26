@@ -1910,6 +1910,12 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEn {
 
 	/// en: 'Continue'
 	String get continueButton => 'Continue';
+
+	/// en: 'Select a faction for {participantName} before continuing.'
+	String selectFactionForParticipantBeforeContinuing({required Object participantName}) => 'Select a faction for ${participantName} before continuing.';
+
+	/// en: '{factionName} was selected more than once. Each faction can only be selected once.'
+	String factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce({required Object factionName}) => '${factionName} was selected more than once. Each faction can only be selected once.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section

@@ -672,8 +672,12 @@ class _RegisterMatchWizardSheetState
                   .register_match
                   .ui_sheets_register_match_wizard_sheet
                   .factionMissing,
-              description:
-                  'Select a faction for ${participant.displayName} before continuing.',
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .selectFactionForParticipantBeforeContinuing(
+                    participantName: participant.displayName,
+                  ),
             );
           }
         }
@@ -687,8 +691,12 @@ class _RegisterMatchWizardSheetState
                   .register_match
                   .ui_sheets_register_match_wizard_sheet
                   .invalidFactionSetup,
-              description:
-                  '${faction.displayName} was selected more than once. Each faction can only be selected once.',
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce(
+                    factionName: faction.displayName,
+                  ),
             );
           }
         }

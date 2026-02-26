@@ -196,6 +196,15 @@ The app theme uses Google Fonts to avoid generic defaults:
 - For compact UI (for example card headers and tight rows), use faction icons with the best size for the context.
 - `factionIcon` returns the default icon path (`256` size), and `getFactionIconPath(size: ...)` allows selecting a specific size.
 
+### Localized Faction Names
+- Faction names must be resolved through `FactionUiExtension.displayName` in `lib/src/core/extension/faction_ui_extension.dart`.
+- Do not derive faction names from enum keys or machine-translate them at runtime.
+- The extension stores locale-specific canonical names for:
+  - `en`, `pt-BR`, `es`, `fr`, `de`.
+- Source policy:
+  - `pt-BR`, `es`, `de`: localized names validated against the corresponding language pages in The Root Database (Law of Root).
+  - `fr`: names follow the French ROOT ecosystem naming used in Matagot/French releases.
+
 ## Daily Commands
 ```bash
 flutter pub get

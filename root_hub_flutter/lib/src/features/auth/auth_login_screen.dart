@@ -284,7 +284,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                               ),
                                               SizedBox(height: 10),
                                               Text(
-                                                _formatFactionName(faction),
+                                                faction.displayName,
                                                 textAlign: TextAlign.center,
                                                 style: GoogleFonts.nunitoSans(
                                                   color: faction.factionColor,
@@ -399,18 +399,5 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
         ),
       ),
     );
-  }
-
-  String _formatFactionName(Faction faction) {
-    final raw = faction.toJson();
-    final withSpaces = raw.replaceAllMapped(
-      RegExp(r'([a-z])([A-Z])'),
-      (match) => '${match.group(1)} ${match.group(2)}',
-    );
-    return withSpaces
-        .split(' ')
-        .where((word) => word.isNotEmpty)
-        .map((word) => '${word[0].toUpperCase()}${word.substring(1)}')
-        .join(' ');
   }
 }

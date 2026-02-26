@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 enum FactionIconSize {
   size80._('80'),
@@ -13,24 +14,91 @@ enum FactionIconSize {
 }
 
 extension FactionUiExtension on Faction {
-  String get displayName {
-    final raw = toJson();
-    final withSpaces = raw.replaceAllMapped(
-      RegExp(r'([a-z])([A-Z])'),
-      (match) => '${match.group(1)} ${match.group(2)}',
-    );
+  String get displayName => localizedDisplayName();
 
-    return withSpaces
-        .split(' ')
-        .map((word) {
-          if (word.isEmpty) {
-            return word;
-          }
+  String localizedDisplayName({AppLocale? locale}) {
+    final activeLocale = locale ?? LocaleSettings.currentLocale;
 
-          return '${word[0].toUpperCase()}${word.substring(1)}';
-        })
-        .join(' ');
+    return switch (activeLocale) {
+      AppLocale.en => _nameEn,
+      AppLocale.ptBr => _namePtBr,
+      AppLocale.es => _nameEs,
+      AppLocale.fr => _nameFr,
+      AppLocale.de => _nameDe,
+    };
   }
+
+  String get _nameEn => switch (this) {
+    Faction.marquiseDeCat => 'Marquise de Cat',
+    Faction.eyrieDynasties => 'Eyrie Dynasties',
+    Faction.woodlandAlliance => 'Woodland Alliance',
+    Faction.vagabond => 'Vagabond',
+    Faction.riverfolkCompany => 'Riverfolk Company',
+    Faction.theLizardCult => 'The Lizard Cult',
+    Faction.undergroundDuchy => 'Underground Duchy',
+    Faction.corvidConspiracy => 'Corvid Conspiracy',
+    Faction.lordOfTheHundreds => 'Lord of the Hundreds',
+    Faction.keepersInIron => 'Keepers in Iron',
+  };
+
+  // Source: localized Law pages in The Root Database (pt / es / de).
+  // Example references:
+  // - https://www.therootdatabase.com/law/marquise-de-cat/pt/
+  // - https://www.therootdatabase.com/law/marquise-de-cat/es/
+  // - https://www.therootdatabase.com/law/marquise-de-cat/de/
+  // - https://www.therootdatabase.com/law/the-lizard-cult/pt/
+  String get _namePtBr => switch (this) {
+    Faction.marquiseDeCat => 'Marqueses',
+    Faction.eyrieDynasties => 'Dinastia das Rapinas',
+    Faction.woodlandAlliance => 'Aliança da Floresta',
+    Faction.vagabond => 'Malandro',
+    Faction.riverfolkCompany => 'Companhia Ribeirinha',
+    Faction.theLizardCult => 'Lagartos Cultistas',
+    Faction.undergroundDuchy => 'Ducado Subterrâneo',
+    Faction.corvidConspiracy => 'Conspiração Corvídea',
+    Faction.lordOfTheHundreds => 'Senhor das Centenas',
+    Faction.keepersInIron => 'Guardiões de Ferro',
+  };
+
+  String get _nameEs => switch (this) {
+    Faction.marquiseDeCat => 'El Marquesado',
+    Faction.eyrieDynasties => 'El Nido de Águilas',
+    Faction.woodlandAlliance => 'La Alianza',
+    Faction.vagabond => 'El Vagabundo',
+    Faction.riverfolkCompany => 'La Compañía del Río',
+    Faction.theLizardCult => 'El Culto Reptiliano',
+    Faction.undergroundDuchy => 'El Ducado Subterráneo',
+    Faction.corvidConspiracy => 'La Conspiración Córvida',
+    Faction.lordOfTheHundreds => 'El Señor de los Cientos',
+    Faction.keepersInIron => 'Los Guardianes de Hierro',
+  };
+
+  // Source: French ROOT ecosystem naming used in French releases.
+  String get _nameFr => switch (this) {
+    Faction.marquiseDeCat => 'Marquise de Chat',
+    Faction.eyrieDynasties => 'Dynasties de la Canopée',
+    Faction.woodlandAlliance => 'Alliance de la Forêt',
+    Faction.vagabond => 'Vagabond',
+    Faction.riverfolkCompany => 'Compagnie de la Rivière',
+    Faction.theLizardCult => 'Culte du Lézard',
+    Faction.undergroundDuchy => 'Grand Duché Souterrain',
+    Faction.corvidConspiracy => 'Conspiration Corvidée',
+    Faction.lordOfTheHundreds => 'Seigneur des Cents',
+    Faction.keepersInIron => 'Gardiens de Fer',
+  };
+
+  String get _nameDe => switch (this) {
+    Faction.marquiseDeCat => 'Marquise de Katz',
+    Faction.eyrieDynasties => 'Horst-Dynastien',
+    Faction.woodlandAlliance => 'Waldland-Allianz',
+    Faction.vagabond => 'Vagabund',
+    Faction.riverfolkCompany => 'Flussvolk-Kompanie',
+    Faction.theLizardCult => 'Echsen-Kult',
+    Faction.undergroundDuchy => 'Untergrund-Herzogtum',
+    Faction.corvidConspiracy => 'Krähen-Komplott',
+    Faction.lordOfTheHundreds => 'Herr der Scharen',
+    Faction.keepersInIron => 'Eisenwächter',
+  };
 
   Color get factionColor => switch (this) {
     Faction.marquiseDeCat => const Color(0xFFFFA500), // orange

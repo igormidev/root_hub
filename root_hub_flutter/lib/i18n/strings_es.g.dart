@@ -1102,6 +1102,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEs extends Trans
 	@override String get unableToLoadThisMatchReportFlow2 => 'No se puede cargar este flujo de informe de partido.';
 	@override String get invalidMatch => 'Partida inválida';
 	@override String get continueButton => 'Continuar';
+	@override String selectFactionForParticipantBeforeContinuing({required Object participantName}) => 'Selecciona una facción para ${participantName} antes de continuar.';
+	@override String factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce({required Object factionName}) => '${factionName} se seleccionó más de una vez. Cada facción solo se puede seleccionar una vez.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section
