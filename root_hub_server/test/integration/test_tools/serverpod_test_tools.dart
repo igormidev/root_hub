@@ -61,10 +61,12 @@ import 'package:root_hub_server/src/generated/api/match_making/models/subscribed
     as _i26;
 import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i27;
-import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
+import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
     as _i28;
-import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
     as _i29;
+import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+    as _i30;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -230,6 +232,10 @@ class TestEndpoints {
 
   late final _UnsubscribeFromMatch unsubscribeFromMatch;
 
+  late final _DeactivatePushNotificationToken deactivatePushNotificationToken;
+
+  late final _SyncPushNotificationToken syncPushNotificationToken;
+
   late final _GetPlatformStats getPlatformStats;
 
   late final _GetPlayerStats getPlayerStats;
@@ -361,6 +367,14 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     unsubscribeFromMatch = _UnsubscribeFromMatch(
+      endpoints,
+      serializationManager,
+    );
+    deactivatePushNotificationToken = _DeactivatePushNotificationToken(
+      endpoints,
+      serializationManager,
+    );
+    syncPushNotificationToken = _SyncPushNotificationToken(
       endpoints,
       serializationManager,
     );
@@ -1831,6 +1845,94 @@ class _UnsubscribeFromMatch {
   }
 }
 
+class _DeactivatePushNotificationToken {
+  _DeactivatePushNotificationToken(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required String token,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'deactivatePushNotificationToken',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'deactivatePushNotificationToken',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({'token': token}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _SyncPushNotificationToken {
+  _SyncPushNotificationToken(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required String token,
+    required _i28.PushNotificationPlatform platform,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'syncPushNotificationToken',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'syncPushNotificationToken',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'token': token,
+            'platform': platform,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _GetPlatformStats {
   _GetPlatformStats(
     this._endpointDispatch,
@@ -1841,7 +1943,7 @@ class _GetPlatformStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i28.PlatformStats?> v1(
+  _i3.Future<_i29.PlatformStats?> v1(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1863,7 +1965,7 @@ class _GetPlatformStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i28.PlatformStats?>);
+                as _i3.Future<_i29.PlatformStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1882,7 +1984,7 @@ class _GetPlayerStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i29.PlayerStats?> v1(
+  _i3.Future<_i30.PlayerStats?> v1(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1904,7 +2006,7 @@ class _GetPlayerStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i29.PlayerStats?>);
+                as _i3.Future<_i30.PlayerStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

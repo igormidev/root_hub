@@ -58,13 +58,15 @@ import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_
     as _i25;
 import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i26;
-import 'package:root_hub_client/src/protocol/api/stats/models/platform_stats.dart'
+import 'package:root_hub_client/src/protocol/entities/core/push_notification_platform.dart'
     as _i27;
-import 'package:root_hub_client/src/protocol/api/stats/models/player_stats.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/platform_stats.dart'
     as _i28;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/player_stats.dart'
     as _i29;
-import 'protocol.dart' as _i30;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i30;
+import 'protocol.dart' as _i31;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -669,14 +671,50 @@ class EndpointUnsubscribeFromMatch extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointDeactivatePushNotificationToken extends _i1.EndpointRef {
+  EndpointDeactivatePushNotificationToken(_i1.EndpointCaller caller)
+    : super(caller);
+
+  @override
+  String get name => 'deactivatePushNotificationToken';
+
+  _i2.Future<void> v1({required String token}) =>
+      caller.callServerEndpoint<void>(
+        'deactivatePushNotificationToken',
+        'v1',
+        {'token': token},
+      );
+}
+
+/// {@category Endpoint}
+class EndpointSyncPushNotificationToken extends _i1.EndpointRef {
+  EndpointSyncPushNotificationToken(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'syncPushNotificationToken';
+
+  _i2.Future<void> v1({
+    required String token,
+    required _i27.PushNotificationPlatform platform,
+  }) => caller.callServerEndpoint<void>(
+    'syncPushNotificationToken',
+    'v1',
+    {
+      'token': token,
+      'platform': platform,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointGetPlatformStats extends _i1.EndpointRef {
   EndpointGetPlatformStats(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'getPlatformStats';
 
-  _i2.Future<_i27.PlatformStats?> v1() =>
-      caller.callServerEndpoint<_i27.PlatformStats?>(
+  _i2.Future<_i28.PlatformStats?> v1() =>
+      caller.callServerEndpoint<_i28.PlatformStats?>(
         'getPlatformStats',
         'v1',
         {},
@@ -690,8 +728,8 @@ class EndpointGetPlayerStats extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerStats';
 
-  _i2.Future<_i28.PlayerStats?> v1() =>
-      caller.callServerEndpoint<_i28.PlayerStats?>(
+  _i2.Future<_i29.PlayerStats?> v1() =>
+      caller.callServerEndpoint<_i29.PlayerStats?>(
         'getPlayerStats',
         'v1',
         {},
@@ -702,7 +740,7 @@ class EndpointGetPlayerStats extends _i1.EndpointRef {
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i29.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i30.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -884,7 +922,7 @@ class EndpointEmailIdp extends _i29.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i29.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i30.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -955,11 +993,11 @@ class EndpointJwtRefresh extends _i6.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i29.Caller(client);
+    serverpod_auth_idp = _i30.Caller(client);
     serverpod_auth_core = _i6.Caller(client);
   }
 
-  late final _i29.Caller serverpod_auth_idp;
+  late final _i30.Caller serverpod_auth_idp;
 
   late final _i6.Caller serverpod_auth_core;
 }
@@ -984,7 +1022,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i30.Protocol(),
+         _i31.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -1024,6 +1062,10 @@ class Client extends _i1.ServerpodClientShared {
     removePlayerFromMatch = EndpointRemovePlayerFromMatch(this);
     subscribeToMatch = EndpointSubscribeToMatch(this);
     unsubscribeFromMatch = EndpointUnsubscribeFromMatch(this);
+    deactivatePushNotificationToken = EndpointDeactivatePushNotificationToken(
+      this,
+    );
+    syncPushNotificationToken = EndpointSyncPushNotificationToken(this);
     getPlatformStats = EndpointGetPlatformStats(this);
     getPlayerStats = EndpointGetPlayerStats(this);
     emailIdp = EndpointEmailIdp(this);
@@ -1091,6 +1133,11 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointUnsubscribeFromMatch unsubscribeFromMatch;
 
+  late final EndpointDeactivatePushNotificationToken
+  deactivatePushNotificationToken;
+
+  late final EndpointSyncPushNotificationToken syncPushNotificationToken;
+
   late final EndpointGetPlatformStats getPlatformStats;
 
   late final EndpointGetPlayerStats getPlayerStats;
@@ -1134,6 +1181,8 @@ class Client extends _i1.ServerpodClientShared {
     'removePlayerFromMatch': removePlayerFromMatch,
     'subscribeToMatch': subscribeToMatch,
     'unsubscribeFromMatch': unsubscribeFromMatch,
+    'deactivatePushNotificationToken': deactivatePushNotificationToken,
+    'syncPushNotificationToken': syncPushNotificationToken,
     'getPlatformStats': getPlatformStats,
     'getPlayerStats': getPlayerStats,
     'emailIdp': emailIdp,

@@ -19,6 +19,7 @@ With Root Hub, users can:
 6. User tracks subscribed tables and chat activity in the Activity tab.
 7. User can interact socially via posts/comments.
 8. After a game, user registers the result and factions.
+9. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
 
 ## Authentication (Serverpod)
 Authentication is handled with **Serverpod auth session management**:
@@ -169,6 +170,7 @@ These rules are intentionally strict to force component separation and predictab
 - `google_fonts`: project typography (configured in app theme).
 - `flutter_animate`: onboarding and authentication motion design.
 - `slang` + `slang_flutter`: JSON localization + generated typed translation accessors.
+- `firebase_core` + `firebase_messaging`: push token sync and background push reception.
 
 ## Typography
 The app theme uses Google Fonts to avoid generic defaults:

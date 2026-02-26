@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_display_name_dialog.dart';
@@ -11,7 +12,9 @@ import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_location
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_bottom_tab_item_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_tab_content_widget.dart';
+import 'package:root_hub_flutter/src/global_providers/push_notifications_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/activity/activity_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -19,7 +22,6 @@ import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_state.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({
@@ -47,6 +49,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
       ref.read(dashboardProfileProvider.notifier).ensureProfileImageLoaded();
       ref.read(activityProvider.notifier).ensureUnreadCountLoaded();
+      ref
+          .read(pushNotificationsSyncProvider)
+          .ensureInitializedForAuthenticatedUser();
     });
   }
 
@@ -102,7 +107,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     if (!mounted) {
       return;
     }
-
+    await ref.read(sharedPreferencesProvider).clear();
+    await ref.read(pushNotificationsSyncProvider).deactivateCurrentToken();
     await ref.read(clientProvider).auth.signOutDevice();
   }
 

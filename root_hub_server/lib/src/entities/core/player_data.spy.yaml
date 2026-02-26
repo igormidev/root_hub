@@ -14,6 +14,7 @@ fields:
   subscriptions: List<MatchSubscription>?, relation(name=player_subscriptions)
   chatMessages: List<MatchChatMessage>?, relation(name=player_chat_messages)
   chatParticipantStates: List<MatchChatParticipantState>?, relation(name=player_chat_participant_states)
+  pushNotificationTokens: List<PlayerPushNotificationToken>?, relation(name=player_push_notification_tokens)
   manualInputLocations: List<ManualInputLocation>?, relation(name=player_manual_input_locations)
   createdAnonymousPlayers: List<AnonymousPlayer>?, relation(name=created_anonymous_players)
   perfomances: List<PlayerPerfomanceInMatch>?, relation(name=player_data_perfomances)

@@ -1,0 +1,6 @@
+enum: PushNotificationPlatform
+values:
+  - android
+  - ios
+  - web
+  - unknown

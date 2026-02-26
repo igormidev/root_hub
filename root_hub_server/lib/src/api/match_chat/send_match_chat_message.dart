@@ -6,6 +6,7 @@ import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
+import 'package:root_hub_server/src/notifications/match_chat_push_notification_service.dart';
 import 'package:serverpod/serverpod.dart';
 
 class SendMatchChatMessage extends Endpoint {
@@ -215,6 +216,26 @@ class SendMatchChatMessage extends Endpoint {
           sentAt: message.sentAt,
           markSenderAsRead: true,
         );
+
+        try {
+          await MatchChatPushNotificationService.notifySubscribedPlayersForNewMessage(
+            session,
+            scheduledMatchId: scheduledMatchId,
+            chatHistoryId: chatHistoryId,
+            message: message,
+            senderPlayerData: playerData,
+            matchTitle: matchSchedule.title,
+          );
+        } catch (error, stackTrace) {
+          session.log(
+            '[PushNotifications] Failed to dispatch match chat push '
+            'notifications. scheduledMatchId=$scheduledMatchId '
+            'playerDataId=${playerData.id} messageId=${message.id}',
+            level: LogLevel.error,
+            exception: error,
+            stackTrace: stackTrace,
+          );
+        }
 
         message.sender = playerData;
         session.log(

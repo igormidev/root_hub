@@ -24,10 +24,11 @@ import '../../entities/match_making/match_subscription.dart' as _i9;
 import '../../entities/match_making/chat/match_chat_message.dart' as _i10;
 import '../../entities/match_making/chat/match_chat_participant_state.dart'
     as _i11;
-import '../../entities/match_making/manual_input_location.dart' as _i12;
-import '../../entities/core/anonymous_player.dart' as _i13;
-import '../../entities/match/player_perfomance_in_match.dart' as _i14;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i15;
+import '../../entities/core/player_push_notification_token.dart' as _i12;
+import '../../entities/match_making/manual_input_location.dart' as _i13;
+import '../../entities/core/anonymous_player.dart' as _i14;
+import '../../entities/match/player_perfomance_in_match.dart' as _i15;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i16;
 
 abstract class PlayerData
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -46,6 +47,7 @@ abstract class PlayerData
     this.subscriptions,
     this.chatMessages,
     this.chatParticipantStates,
+    this.pushNotificationTokens,
     this.manualInputLocations,
     this.createdAnonymousPlayers,
     this.perfomances,
@@ -66,9 +68,10 @@ abstract class PlayerData
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
-    List<_i12.ManualInputLocation>? manualInputLocations,
-    List<_i13.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i14.PlayerPerfomanceInMatch>? perfomances,
+    List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
+    List<_i13.ManualInputLocation>? manualInputLocations,
+    List<_i14.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i15.PlayerPerfomanceInMatch>? perfomances,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -79,14 +82,14 @@ abstract class PlayerData
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i15.Protocol().deserialize<_i2.AuthUser>(
+          : _i16.Protocol().deserialize<_i2.AuthUser>(
               jsonSerialization['authUser'],
             ),
       displayName: jsonSerialization['displayName'] as String,
       currentLocationId: jsonSerialization['currentLocationId'] as int?,
       currentLocation: jsonSerialization['currentLocation'] == null
           ? null
-          : _i15.Protocol().deserialize<_i3.GeoLocation>(
+          : _i16.Protocol().deserialize<_i3.GeoLocation>(
               jsonSerialization['currentLocation'],
             ),
       favoriteFaction: _i4.Faction.fromJson(
@@ -94,53 +97,59 @@ abstract class PlayerData
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i16.Protocol().deserialize<List<_i5.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i6.Post>>(
+          : _i16.Protocol().deserialize<List<_i6.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i16.Protocol().deserialize<List<_i7.PostComment>>(
               jsonSerialization['comments'],
             ),
       currentHosting: jsonSerialization['currentHosting'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i16.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
               jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i9.MatchSubscription>>(
+          : _i16.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i10.MatchChatMessage>>(
+          : _i16.Protocol().deserialize<List<_i10.MatchChatMessage>>(
               jsonSerialization['chatMessages'],
             ),
       chatParticipantStates: jsonSerialization['chatParticipantStates'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i11.MatchChatParticipantState>>(
+          : _i16.Protocol().deserialize<List<_i11.MatchChatParticipantState>>(
               jsonSerialization['chatParticipantStates'],
+            ),
+      pushNotificationTokens:
+          jsonSerialization['pushNotificationTokens'] == null
+          ? null
+          : _i16.Protocol().deserialize<List<_i12.PlayerPushNotificationToken>>(
+              jsonSerialization['pushNotificationTokens'],
             ),
       manualInputLocations: jsonSerialization['manualInputLocations'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i12.ManualInputLocation>>(
+          : _i16.Protocol().deserialize<List<_i13.ManualInputLocation>>(
               jsonSerialization['manualInputLocations'],
             ),
       createdAnonymousPlayers:
           jsonSerialization['createdAnonymousPlayers'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i13.AnonymousPlayer>>(
+          : _i16.Protocol().deserialize<List<_i14.AnonymousPlayer>>(
               jsonSerialization['createdAnonymousPlayers'],
             ),
       perfomances: jsonSerialization['perfomances'] == null
           ? null
-          : _i15.Protocol().deserialize<List<_i14.PlayerPerfomanceInMatch>>(
+          : _i16.Protocol().deserialize<List<_i15.PlayerPerfomanceInMatch>>(
               jsonSerialization['perfomances'],
             ),
     );
@@ -180,11 +189,13 @@ abstract class PlayerData
 
   List<_i11.MatchChatParticipantState>? chatParticipantStates;
 
-  List<_i12.ManualInputLocation>? manualInputLocations;
+  List<_i12.PlayerPushNotificationToken>? pushNotificationTokens;
 
-  List<_i13.AnonymousPlayer>? createdAnonymousPlayers;
+  List<_i13.ManualInputLocation>? manualInputLocations;
 
-  List<_i14.PlayerPerfomanceInMatch>? perfomances;
+  List<_i14.AnonymousPlayer>? createdAnonymousPlayers;
+
+  List<_i15.PlayerPerfomanceInMatch>? perfomances;
 
   @override
   _i1.Table<int?> get table => t;
@@ -207,9 +218,10 @@ abstract class PlayerData
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
-    List<_i12.ManualInputLocation>? manualInputLocations,
-    List<_i13.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i14.PlayerPerfomanceInMatch>? perfomances,
+    List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
+    List<_i13.ManualInputLocation>? manualInputLocations,
+    List<_i14.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i15.PlayerPerfomanceInMatch>? perfomances,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -237,6 +249,10 @@ abstract class PlayerData
         'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
       if (chatParticipantStates != null)
         'chatParticipantStates': chatParticipantStates?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
+      if (pushNotificationTokens != null)
+        'pushNotificationTokens': pushNotificationTokens?.toJson(
           valueToJson: (v) => v.toJson(),
         ),
       if (manualInputLocations != null)
@@ -288,6 +304,10 @@ abstract class PlayerData
         'chatParticipantStates': chatParticipantStates?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
+      if (pushNotificationTokens != null)
+        'pushNotificationTokens': pushNotificationTokens?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
       if (manualInputLocations != null)
         'manualInputLocations': manualInputLocations?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
@@ -313,9 +333,10 @@ abstract class PlayerData
     _i9.MatchSubscriptionIncludeList? subscriptions,
     _i10.MatchChatMessageIncludeList? chatMessages,
     _i11.MatchChatParticipantStateIncludeList? chatParticipantStates,
-    _i12.ManualInputLocationIncludeList? manualInputLocations,
-    _i13.AnonymousPlayerIncludeList? createdAnonymousPlayers,
-    _i14.PlayerPerfomanceInMatchIncludeList? perfomances,
+    _i12.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
+    _i13.ManualInputLocationIncludeList? manualInputLocations,
+    _i14.AnonymousPlayerIncludeList? createdAnonymousPlayers,
+    _i15.PlayerPerfomanceInMatchIncludeList? perfomances,
   }) {
     return PlayerDataInclude._(
       authUser: authUser,
@@ -327,6 +348,7 @@ abstract class PlayerData
       subscriptions: subscriptions,
       chatMessages: chatMessages,
       chatParticipantStates: chatParticipantStates,
+      pushNotificationTokens: pushNotificationTokens,
       manualInputLocations: manualInputLocations,
       createdAnonymousPlayers: createdAnonymousPlayers,
       perfomances: perfomances,
@@ -377,9 +399,10 @@ class _PlayerDataImpl extends PlayerData {
     List<_i9.MatchSubscription>? subscriptions,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
-    List<_i12.ManualInputLocation>? manualInputLocations,
-    List<_i13.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i14.PlayerPerfomanceInMatch>? perfomances,
+    List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
+    List<_i13.ManualInputLocation>? manualInputLocations,
+    List<_i14.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i15.PlayerPerfomanceInMatch>? perfomances,
   }) : super._(
          id: id,
          authUserId: authUserId,
@@ -395,6 +418,7 @@ class _PlayerDataImpl extends PlayerData {
          subscriptions: subscriptions,
          chatMessages: chatMessages,
          chatParticipantStates: chatParticipantStates,
+         pushNotificationTokens: pushNotificationTokens,
          manualInputLocations: manualInputLocations,
          createdAnonymousPlayers: createdAnonymousPlayers,
          perfomances: perfomances,
@@ -419,6 +443,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? subscriptions = _Undefined,
     Object? chatMessages = _Undefined,
     Object? chatParticipantStates = _Undefined,
+    Object? pushNotificationTokens = _Undefined,
     Object? manualInputLocations = _Undefined,
     Object? createdAnonymousPlayers = _Undefined,
     Object? perfomances = _Undefined,
@@ -459,15 +484,19 @@ class _PlayerDataImpl extends PlayerData {
           chatParticipantStates is List<_i11.MatchChatParticipantState>?
           ? chatParticipantStates
           : this.chatParticipantStates?.map((e0) => e0.copyWith()).toList(),
+      pushNotificationTokens:
+          pushNotificationTokens is List<_i12.PlayerPushNotificationToken>?
+          ? pushNotificationTokens
+          : this.pushNotificationTokens?.map((e0) => e0.copyWith()).toList(),
       manualInputLocations:
-          manualInputLocations is List<_i12.ManualInputLocation>?
+          manualInputLocations is List<_i13.ManualInputLocation>?
           ? manualInputLocations
           : this.manualInputLocations?.map((e0) => e0.copyWith()).toList(),
       createdAnonymousPlayers:
-          createdAnonymousPlayers is List<_i13.AnonymousPlayer>?
+          createdAnonymousPlayers is List<_i14.AnonymousPlayer>?
           ? createdAnonymousPlayers
           : this.createdAnonymousPlayers?.map((e0) => e0.copyWith()).toList(),
-      perfomances: perfomances is List<_i14.PlayerPerfomanceInMatch>?
+      perfomances: perfomances is List<_i15.PlayerPerfomanceInMatch>?
           ? perfomances
           : this.perfomances?.map((e0) => e0.copyWith()).toList(),
     );
@@ -567,17 +596,22 @@ class PlayerDataTable extends _i1.Table<int?> {
 
   _i1.ManyRelation<_i11.MatchChatParticipantStateTable>? _chatParticipantStates;
 
-  _i12.ManualInputLocationTable? ___manualInputLocations;
+  _i12.PlayerPushNotificationTokenTable? ___pushNotificationTokens;
 
-  _i1.ManyRelation<_i12.ManualInputLocationTable>? _manualInputLocations;
+  _i1.ManyRelation<_i12.PlayerPushNotificationTokenTable>?
+  _pushNotificationTokens;
 
-  _i13.AnonymousPlayerTable? ___createdAnonymousPlayers;
+  _i13.ManualInputLocationTable? ___manualInputLocations;
 
-  _i1.ManyRelation<_i13.AnonymousPlayerTable>? _createdAnonymousPlayers;
+  _i1.ManyRelation<_i13.ManualInputLocationTable>? _manualInputLocations;
 
-  _i14.PlayerPerfomanceInMatchTable? ___perfomances;
+  _i14.AnonymousPlayerTable? ___createdAnonymousPlayers;
 
-  _i1.ManyRelation<_i14.PlayerPerfomanceInMatchTable>? _perfomances;
+  _i1.ManyRelation<_i14.AnonymousPlayerTable>? _createdAnonymousPlayers;
+
+  _i15.PlayerPerfomanceInMatchTable? ___perfomances;
+
+  _i1.ManyRelation<_i15.PlayerPerfomanceInMatchTable>? _perfomances;
 
   _i2.AuthUserTable get authUser {
     if (_authUser != null) return _authUser!;
@@ -700,40 +734,55 @@ class PlayerDataTable extends _i1.Table<int?> {
     return ___chatParticipantStates!;
   }
 
-  _i12.ManualInputLocationTable get __manualInputLocations {
+  _i12.PlayerPushNotificationTokenTable get __pushNotificationTokens {
+    if (___pushNotificationTokens != null) return ___pushNotificationTokens!;
+    ___pushNotificationTokens = _i1.createRelationTable(
+      relationFieldName: '__pushNotificationTokens',
+      field: PlayerData.t.id,
+      foreignField: _i12.PlayerPushNotificationToken.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i12.PlayerPushNotificationTokenTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    return ___pushNotificationTokens!;
+  }
+
+  _i13.ManualInputLocationTable get __manualInputLocations {
     if (___manualInputLocations != null) return ___manualInputLocations!;
     ___manualInputLocations = _i1.createRelationTable(
       relationFieldName: '__manualInputLocations',
       field: PlayerData.t.id,
-      foreignField: _i12.ManualInputLocation.t.playerDataId,
+      foreignField: _i13.ManualInputLocation.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i12.ManualInputLocationTable(tableRelation: foreignTableRelation),
+          _i13.ManualInputLocationTable(tableRelation: foreignTableRelation),
     );
     return ___manualInputLocations!;
   }
 
-  _i13.AnonymousPlayerTable get __createdAnonymousPlayers {
+  _i14.AnonymousPlayerTable get __createdAnonymousPlayers {
     if (___createdAnonymousPlayers != null) return ___createdAnonymousPlayers!;
     ___createdAnonymousPlayers = _i1.createRelationTable(
       relationFieldName: '__createdAnonymousPlayers',
       field: PlayerData.t.id,
-      foreignField: _i13.AnonymousPlayer.t.createdByPlayerId,
+      foreignField: _i14.AnonymousPlayer.t.createdByPlayerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i13.AnonymousPlayerTable(tableRelation: foreignTableRelation),
+          _i14.AnonymousPlayerTable(tableRelation: foreignTableRelation),
     );
     return ___createdAnonymousPlayers!;
   }
 
-  _i14.PlayerPerfomanceInMatchTable get __perfomances {
+  _i15.PlayerPerfomanceInMatchTable get __perfomances {
     if (___perfomances != null) return ___perfomances!;
     ___perfomances = _i1.createRelationTable(
       relationFieldName: '__perfomances',
       field: PlayerData.t.id,
-      foreignField: _i14.PlayerPerfomanceInMatch.t.playerDataId,
+      foreignField: _i15.PlayerPerfomanceInMatch.t.playerDataId,
       tableRelation: tableRelation,
-      createTable: (foreignTableRelation) => _i14.PlayerPerfomanceInMatchTable(
+      createTable: (foreignTableRelation) => _i15.PlayerPerfomanceInMatchTable(
         tableRelation: foreignTableRelation,
       ),
     );
@@ -879,58 +928,81 @@ class PlayerDataTable extends _i1.Table<int?> {
     return _chatParticipantStates!;
   }
 
-  _i1.ManyRelation<_i12.ManualInputLocationTable> get manualInputLocations {
+  _i1.ManyRelation<_i12.PlayerPushNotificationTokenTable>
+  get pushNotificationTokens {
+    if (_pushNotificationTokens != null) return _pushNotificationTokens!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'pushNotificationTokens',
+      field: PlayerData.t.id,
+      foreignField: _i12.PlayerPushNotificationToken.t.playerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i12.PlayerPushNotificationTokenTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    _pushNotificationTokens =
+        _i1.ManyRelation<_i12.PlayerPushNotificationTokenTable>(
+          tableWithRelations: relationTable,
+          table: _i12.PlayerPushNotificationTokenTable(
+            tableRelation: relationTable.tableRelation!.lastRelation,
+          ),
+        );
+    return _pushNotificationTokens!;
+  }
+
+  _i1.ManyRelation<_i13.ManualInputLocationTable> get manualInputLocations {
     if (_manualInputLocations != null) return _manualInputLocations!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'manualInputLocations',
       field: PlayerData.t.id,
-      foreignField: _i12.ManualInputLocation.t.playerDataId,
+      foreignField: _i13.ManualInputLocation.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i12.ManualInputLocationTable(tableRelation: foreignTableRelation),
+          _i13.ManualInputLocationTable(tableRelation: foreignTableRelation),
     );
-    _manualInputLocations = _i1.ManyRelation<_i12.ManualInputLocationTable>(
+    _manualInputLocations = _i1.ManyRelation<_i13.ManualInputLocationTable>(
       tableWithRelations: relationTable,
-      table: _i12.ManualInputLocationTable(
+      table: _i13.ManualInputLocationTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _manualInputLocations!;
   }
 
-  _i1.ManyRelation<_i13.AnonymousPlayerTable> get createdAnonymousPlayers {
+  _i1.ManyRelation<_i14.AnonymousPlayerTable> get createdAnonymousPlayers {
     if (_createdAnonymousPlayers != null) return _createdAnonymousPlayers!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'createdAnonymousPlayers',
       field: PlayerData.t.id,
-      foreignField: _i13.AnonymousPlayer.t.createdByPlayerId,
+      foreignField: _i14.AnonymousPlayer.t.createdByPlayerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i13.AnonymousPlayerTable(tableRelation: foreignTableRelation),
+          _i14.AnonymousPlayerTable(tableRelation: foreignTableRelation),
     );
-    _createdAnonymousPlayers = _i1.ManyRelation<_i13.AnonymousPlayerTable>(
+    _createdAnonymousPlayers = _i1.ManyRelation<_i14.AnonymousPlayerTable>(
       tableWithRelations: relationTable,
-      table: _i13.AnonymousPlayerTable(
+      table: _i14.AnonymousPlayerTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _createdAnonymousPlayers!;
   }
 
-  _i1.ManyRelation<_i14.PlayerPerfomanceInMatchTable> get perfomances {
+  _i1.ManyRelation<_i15.PlayerPerfomanceInMatchTable> get perfomances {
     if (_perfomances != null) return _perfomances!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'perfomances',
       field: PlayerData.t.id,
-      foreignField: _i14.PlayerPerfomanceInMatch.t.playerDataId,
+      foreignField: _i15.PlayerPerfomanceInMatch.t.playerDataId,
       tableRelation: tableRelation,
-      createTable: (foreignTableRelation) => _i14.PlayerPerfomanceInMatchTable(
+      createTable: (foreignTableRelation) => _i15.PlayerPerfomanceInMatchTable(
         tableRelation: foreignTableRelation,
       ),
     );
-    _perfomances = _i1.ManyRelation<_i14.PlayerPerfomanceInMatchTable>(
+    _perfomances = _i1.ManyRelation<_i15.PlayerPerfomanceInMatchTable>(
       tableWithRelations: relationTable,
-      table: _i14.PlayerPerfomanceInMatchTable(
+      table: _i15.PlayerPerfomanceInMatchTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
@@ -975,6 +1047,9 @@ class PlayerDataTable extends _i1.Table<int?> {
     if (relationField == 'chatParticipantStates') {
       return __chatParticipantStates;
     }
+    if (relationField == 'pushNotificationTokens') {
+      return __pushNotificationTokens;
+    }
     if (relationField == 'manualInputLocations') {
       return __manualInputLocations;
     }
@@ -999,9 +1074,10 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i9.MatchSubscriptionIncludeList? subscriptions,
     _i10.MatchChatMessageIncludeList? chatMessages,
     _i11.MatchChatParticipantStateIncludeList? chatParticipantStates,
-    _i12.ManualInputLocationIncludeList? manualInputLocations,
-    _i13.AnonymousPlayerIncludeList? createdAnonymousPlayers,
-    _i14.PlayerPerfomanceInMatchIncludeList? perfomances,
+    _i12.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
+    _i13.ManualInputLocationIncludeList? manualInputLocations,
+    _i14.AnonymousPlayerIncludeList? createdAnonymousPlayers,
+    _i15.PlayerPerfomanceInMatchIncludeList? perfomances,
   }) {
     _authUser = authUser;
     _currentLocation = currentLocation;
@@ -1012,6 +1088,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _subscriptions = subscriptions;
     _chatMessages = chatMessages;
     _chatParticipantStates = chatParticipantStates;
+    _pushNotificationTokens = pushNotificationTokens;
     _manualInputLocations = manualInputLocations;
     _createdAnonymousPlayers = createdAnonymousPlayers;
     _perfomances = perfomances;
@@ -1035,11 +1112,13 @@ class PlayerDataInclude extends _i1.IncludeObject {
 
   _i11.MatchChatParticipantStateIncludeList? _chatParticipantStates;
 
-  _i12.ManualInputLocationIncludeList? _manualInputLocations;
+  _i12.PlayerPushNotificationTokenIncludeList? _pushNotificationTokens;
 
-  _i13.AnonymousPlayerIncludeList? _createdAnonymousPlayers;
+  _i13.ManualInputLocationIncludeList? _manualInputLocations;
 
-  _i14.PlayerPerfomanceInMatchIncludeList? _perfomances;
+  _i14.AnonymousPlayerIncludeList? _createdAnonymousPlayers;
+
+  _i15.PlayerPerfomanceInMatchIncludeList? _perfomances;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -1052,6 +1131,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     'subscriptions': _subscriptions,
     'chatMessages': _chatMessages,
     'chatParticipantStates': _chatParticipantStates,
+    'pushNotificationTokens': _pushNotificationTokens,
     'manualInputLocations': _manualInputLocations,
     'createdAnonymousPlayers': _createdAnonymousPlayers,
     'perfomances': _perfomances,
@@ -1524,12 +1604,37 @@ class PlayerDataAttachRepository {
     );
   }
 
+  /// Creates a relation between this [PlayerData] and the given [PlayerPushNotificationToken]s
+  /// by setting each [PlayerPushNotificationToken]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> pushNotificationTokens(
+    _i1.Session session,
+    PlayerData playerData,
+    List<_i12.PlayerPushNotificationToken> playerPushNotificationToken, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playerPushNotificationToken.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('playerPushNotificationToken.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $playerPushNotificationToken = playerPushNotificationToken
+        .map((e) => e.copyWith(playerDataId: playerData.id))
+        .toList();
+    await session.db.update<_i12.PlayerPushNotificationToken>(
+      $playerPushNotificationToken,
+      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between this [PlayerData] and the given [ManualInputLocation]s
   /// by setting each [ManualInputLocation]'s foreign key `playerDataId` to refer to this [PlayerData].
   Future<void> manualInputLocations(
     _i1.Session session,
     PlayerData playerData,
-    List<_i12.ManualInputLocation> manualInputLocation, {
+    List<_i13.ManualInputLocation> manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.any((e) => e.id == null)) {
@@ -1542,9 +1647,9 @@ class PlayerDataAttachRepository {
     var $manualInputLocation = manualInputLocation
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i12.ManualInputLocation>(
+    await session.db.update<_i13.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i12.ManualInputLocation.t.playerDataId],
+      columns: [_i13.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1554,7 +1659,7 @@ class PlayerDataAttachRepository {
   Future<void> createdAnonymousPlayers(
     _i1.Session session,
     PlayerData playerData,
-    List<_i13.AnonymousPlayer> anonymousPlayer, {
+    List<_i14.AnonymousPlayer> anonymousPlayer, {
     _i1.Transaction? transaction,
   }) async {
     if (anonymousPlayer.any((e) => e.id == null)) {
@@ -1567,9 +1672,9 @@ class PlayerDataAttachRepository {
     var $anonymousPlayer = anonymousPlayer
         .map((e) => e.copyWith(createdByPlayerId: playerData.id))
         .toList();
-    await session.db.update<_i13.AnonymousPlayer>(
+    await session.db.update<_i14.AnonymousPlayer>(
       $anonymousPlayer,
-      columns: [_i13.AnonymousPlayer.t.createdByPlayerId],
+      columns: [_i14.AnonymousPlayer.t.createdByPlayerId],
       transaction: transaction,
     );
   }
@@ -1579,7 +1684,7 @@ class PlayerDataAttachRepository {
   Future<void> perfomances(
     _i1.Session session,
     PlayerData playerData,
-    List<_i14.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
+    List<_i15.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.any((e) => e.id == null)) {
@@ -1592,9 +1697,9 @@ class PlayerDataAttachRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i14.PlayerPerfomanceInMatch>(
+    await session.db.update<_i15.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i14.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1820,12 +1925,37 @@ class PlayerDataAttachRowRepository {
     );
   }
 
+  /// Creates a relation between this [PlayerData] and the given [PlayerPushNotificationToken]
+  /// by setting the [PlayerPushNotificationToken]'s foreign key `playerDataId` to refer to this [PlayerData].
+  Future<void> pushNotificationTokens(
+    _i1.Session session,
+    PlayerData playerData,
+    _i12.PlayerPushNotificationToken playerPushNotificationToken, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playerPushNotificationToken.id == null) {
+      throw ArgumentError.notNull('playerPushNotificationToken.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $playerPushNotificationToken = playerPushNotificationToken.copyWith(
+      playerDataId: playerData.id,
+    );
+    await session.db.updateRow<_i12.PlayerPushNotificationToken>(
+      $playerPushNotificationToken,
+      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between this [PlayerData] and the given [ManualInputLocation]
   /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to refer to this [PlayerData].
   Future<void> manualInputLocations(
     _i1.Session session,
     PlayerData playerData,
-    _i12.ManualInputLocation manualInputLocation, {
+    _i13.ManualInputLocation manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.id == null) {
@@ -1838,9 +1968,9 @@ class PlayerDataAttachRowRepository {
     var $manualInputLocation = manualInputLocation.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i12.ManualInputLocation>(
+    await session.db.updateRow<_i13.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i12.ManualInputLocation.t.playerDataId],
+      columns: [_i13.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1850,7 +1980,7 @@ class PlayerDataAttachRowRepository {
   Future<void> createdAnonymousPlayers(
     _i1.Session session,
     PlayerData playerData,
-    _i13.AnonymousPlayer anonymousPlayer, {
+    _i14.AnonymousPlayer anonymousPlayer, {
     _i1.Transaction? transaction,
   }) async {
     if (anonymousPlayer.id == null) {
@@ -1863,9 +1993,9 @@ class PlayerDataAttachRowRepository {
     var $anonymousPlayer = anonymousPlayer.copyWith(
       createdByPlayerId: playerData.id,
     );
-    await session.db.updateRow<_i13.AnonymousPlayer>(
+    await session.db.updateRow<_i14.AnonymousPlayer>(
       $anonymousPlayer,
-      columns: [_i13.AnonymousPlayer.t.createdByPlayerId],
+      columns: [_i14.AnonymousPlayer.t.createdByPlayerId],
       transaction: transaction,
     );
   }
@@ -1875,7 +2005,7 @@ class PlayerDataAttachRowRepository {
   Future<void> perfomances(
     _i1.Session session,
     PlayerData playerData,
-    _i14.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
+    _i15.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.id == null) {
@@ -1888,9 +2018,9 @@ class PlayerDataAttachRowRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i14.PlayerPerfomanceInMatch>(
+    await session.db.updateRow<_i15.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i14.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2041,6 +2171,30 @@ class PlayerDataDetachRepository {
     );
   }
 
+  /// Detaches the relation between this [PlayerData] and the given [PlayerPushNotificationToken]
+  /// by setting the [PlayerPushNotificationToken]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> pushNotificationTokens(
+    _i1.Session session,
+    List<_i12.PlayerPushNotificationToken> playerPushNotificationToken, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playerPushNotificationToken.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('playerPushNotificationToken.id');
+    }
+
+    var $playerPushNotificationToken = playerPushNotificationToken
+        .map((e) => e.copyWith(playerDataId: null))
+        .toList();
+    await session.db.update<_i12.PlayerPushNotificationToken>(
+      $playerPushNotificationToken,
+      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
   /// Detaches the relation between this [PlayerData] and the given [ManualInputLocation]
   /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to `null`.
   ///
@@ -2048,7 +2202,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> manualInputLocations(
     _i1.Session session,
-    List<_i12.ManualInputLocation> manualInputLocation, {
+    List<_i13.ManualInputLocation> manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.any((e) => e.id == null)) {
@@ -2058,9 +2212,9 @@ class PlayerDataDetachRepository {
     var $manualInputLocation = manualInputLocation
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i12.ManualInputLocation>(
+    await session.db.update<_i13.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i12.ManualInputLocation.t.playerDataId],
+      columns: [_i13.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2072,7 +2226,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> perfomances(
     _i1.Session session,
-    List<_i14.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
+    List<_i15.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.any((e) => e.id == null)) {
@@ -2082,9 +2236,9 @@ class PlayerDataDetachRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i14.PlayerPerfomanceInMatch>(
+    await session.db.update<_i15.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i14.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2251,6 +2405,30 @@ class PlayerDataDetachRowRepository {
     );
   }
 
+  /// Detaches the relation between this [PlayerData] and the given [PlayerPushNotificationToken]
+  /// by setting the [PlayerPushNotificationToken]'s foreign key `playerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> pushNotificationTokens(
+    _i1.Session session,
+    _i12.PlayerPushNotificationToken playerPushNotificationToken, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (playerPushNotificationToken.id == null) {
+      throw ArgumentError.notNull('playerPushNotificationToken.id');
+    }
+
+    var $playerPushNotificationToken = playerPushNotificationToken.copyWith(
+      playerDataId: null,
+    );
+    await session.db.updateRow<_i12.PlayerPushNotificationToken>(
+      $playerPushNotificationToken,
+      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
   /// Detaches the relation between this [PlayerData] and the given [ManualInputLocation]
   /// by setting the [ManualInputLocation]'s foreign key `playerDataId` to `null`.
   ///
@@ -2258,7 +2436,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> manualInputLocations(
     _i1.Session session,
-    _i12.ManualInputLocation manualInputLocation, {
+    _i13.ManualInputLocation manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.id == null) {
@@ -2266,9 +2444,9 @@ class PlayerDataDetachRowRepository {
     }
 
     var $manualInputLocation = manualInputLocation.copyWith(playerDataId: null);
-    await session.db.updateRow<_i12.ManualInputLocation>(
+    await session.db.updateRow<_i13.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i12.ManualInputLocation.t.playerDataId],
+      columns: [_i13.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2280,7 +2458,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> perfomances(
     _i1.Session session,
-    _i14.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
+    _i15.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.id == null) {
@@ -2290,9 +2468,9 @@ class PlayerDataDetachRowRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
       playerDataId: null,
     );
-    await session.db.updateRow<_i14.PlayerPerfomanceInMatch>(
+    await session.db.updateRow<_i15.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i14.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }

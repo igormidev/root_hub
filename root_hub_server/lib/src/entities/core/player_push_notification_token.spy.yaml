@@ -1,0 +1,18 @@
+class: PlayerPushNotificationToken
+table: player_push_notification_token
+fields:
+  token: String
+  platform: PushNotificationPlatform
+  isActive: bool, default=true
+  lastConfirmedAt: DateTime
+  playerDataId: int
+  playerData: PlayerData?, relation(name=player_push_notification_tokens, field=playerDataId)
+
+indexes:
+  player_push_notification_token_unique_token_idx:
+    fields: token
+    unique: true
+  player_push_notification_token_player_active_idx:
+    fields: playerDataId, isActive
+  player_push_notification_token_last_confirmed_idx:
+    fields: lastConfirmedAt

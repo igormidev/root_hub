@@ -35,6 +35,7 @@ root_hub_server/
 │       │   └── match_making/
 │       ├── auth/
 │       ├── core/
+│       ├── notifications/             # Firebase Cloud Messaging module
 │       ├── entities/                  # Source-of-truth .spy.yaml models
 │       ├── generated/                 # Generated Dart protocol/endpoints/models
 │       └── web/
@@ -88,11 +89,16 @@ root_hub_server/
 - `get_match_chat_played_match_summary.dart`: played-match summary used by completed-chat info UI.
 - `send_match_chat_message.dart`: send text or image messages to a match chat.
   - Image uploads are handled server-side through UploadThing (`/v7/prepareUpload`).
+  - Also dispatches push notifications to subscribed players in that match (excluding sender).
 - `match_chat_participant_state_service.dart`: chat participant lifecycle + unread/read state updates.
 
 ### `match`
 - `register_match_data.dart`: validates and persists played match + participants + performances.
 - `get_my_played_matches.dart`: endpoint declared but intentionally not implemented yet.
+
+### `push_notifications`
+- `sync_push_notification_token.dart`: upsert and attach a Firebase token to the authenticated player profile.
+- `deactivate_push_notification_token.dart`: deactivate current device token on logout.
 
 ## Authentication
 - Server auth is enabled in `lib/server.dart`.
@@ -123,6 +129,13 @@ Unread architecture for match chat:
 - rows are created for hosts/subscribers and also when a user opens a chat.
 - sending a message updates unread counters for recipients and clears sender unread when appropriate.
 
+Push notification architecture:
+- `player_push_notification_token` stores per-device FCM tokens attached to `player_data`.
+- token sync endpoints keep token-to-player ownership current and deactivate tokens on logout.
+- `notifications/fcm/` handles credentials, OAuth access-token caching, HTTP v1 FCM transport, and response parsing.
+- `match_chat_push_notification_service.dart` targets only active subscribers for the scheduled match.
+- invalid/unregistered FCM tokens are automatically marked inactive after send failures.
+
 ## Relationship Persistence Rule (Mandatory)
 - Every relationship write in Serverpod **must** use `attachRow` (sometimes referenced as `attatchRow` in team notes).
 - Do not rely on manually assigning relation ids as a replacement for relationship attachment.
@@ -139,6 +152,26 @@ Unread architecture for match chat:
   - `GOOGLE_MAPS_API_KEY` environment variable.
 - UploadThing keys used by match chat image uploads:
   - `uploadThingApiKey` and / or `uploadThingToken` in `config/passwords.yaml`.
+- Firebase Cloud Messaging keys:
+  - `firebaseServiceAccountJson` in `config/passwords.yaml` (service account JSON as a string).
+  - `firebaseMessagingProjectId` in `config/passwords.yaml` (optional override for project id).
+
+## Sending Push Notifications to a Player
+Use the reusable dispatch service:
+
+```dart
+await PushNotificationDispatchService.sendToPlayerDataIds(
+  session,
+  playerDataIds: {playerDataId},
+  title: 'Your title',
+  body: 'Your message body',
+  data: {
+    'type': 'custom_event',
+  },
+);
+```
+
+For match chat, this is already wired in `send_match_chat_message.dart` and only notifies current subscribers of that table.
 
 ## Local Infrastructure
 Use Docker for local database services:

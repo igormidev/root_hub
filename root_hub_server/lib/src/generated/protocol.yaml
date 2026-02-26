@@ -60,6 +60,10 @@ subscribeToMatch:
   - v1:
 unsubscribeFromMatch:
   - v1:
+deactivatePushNotificationToken:
+  - v1:
+syncPushNotificationToken:
+  - v1:
 getPlatformStats:
   - v1:
 getPlayerStats:
