@@ -5,13 +5,42 @@
   "auth": {
     "auth_onboarding_screen": {
       "pickYourFavoriteRootFactionBeforeEnteringTheHub": "Elige tu facción ROOT favorita antes de ingresar al centro.",
-      "chooseYourFaction": "Elige tu facción"
+      "chooseYourFaction": "Elige tu facción",
+      "iAlreadyHaveAnAccount": "Ya tengo una cuenta"
     },
     "auth_onboarding_profile_screen": {
       "currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat": "La ubicación actual utiliza las coordenadas de tu teléfono (x e y) y es necesaria para mostrar coincidencias cercanas.",
       "yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub": "Tu nombre para mostrar es cómo te verán otros jugadores en Root Hub. ",
       "setYourHubIdentity": "Configure su identidad central",
-      "continueButton": "Continuar"
+      "continueButton": "Continuar",
+      "chooseHowYouAppearAndSetYourLocationToFindNearbyMatches": "Elige cómo apareces y define tu ubicación para encontrar partidas cercanas.",
+      "howYouWillBeCalled": "Cómo te llamarán",
+      "thisIsHowOtherPlayersWillSeeYourProfileInRootHub": "Así es como otros jugadores verán tu perfil en Root Hub.",
+      "enterYourDisplayName": "Ingresa tu nombre para mostrar",
+      "currentLocation": "Ubicación actual",
+      "locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch": "La ubicación es obligatoria para mostrar mesas cercanas. Elige ubicación del dispositivo o busca un lugar.",
+      "useMyCurrentDeviceLocation": "Usar la ubicación actual del dispositivo",
+      "capturingCoordinates": "Capturando coordenadas...",
+      "instantlyUseYourPhonesGpsCoordinates": "Usa al instante las coordenadas GPS de tu teléfono.",
+      "searchForATableLocation": "Buscar una ubicación",
+      "openTheSearchAndSelectAnyPlaceYouPrefer": "Abre la búsqueda y selecciona cualquier lugar que prefieras.",
+      "selectedCoordinates": "Coordenadas seleccionadas",
+      "searchAreaRadius": "Radio del área de búsqueda",
+      "howFarShouldWeSearchForNearbyPlayersAroundYou": "¿Qué tan lejos debemos buscar jugadores cercanos a tu alrededor?",
+      "value25KmIsTheRecommendedStartingPoint": "25 km es el punto de inicio recomendado.",
+      "disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby": "Desactiva VPN o proxy antes de capturar ubicación. Coordenadas incorrectas pueden ocultar partidas cercanas.",
+      "locationSelectedFromSearch": "Ubicación seleccionada desde la búsqueda.",
+      "enableLocationServicesOnYourPhoneAndTryAgain": "Activa los servicios de ubicación en tu teléfono e inténtalo de nuevo.",
+      "locationPermissionDeniedLocationIsRequiredToContinue": "Permiso de ubicación denegado. La ubicación es obligatoria para continuar.",
+      "locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue": "El permiso de ubicación está denegado para siempre. Actívalo en la configuración del sistema para continuar.",
+      "locationCapturedSuccessfully": "Ubicación capturada correctamente.",
+      "unableToCaptureLocationRightNowLocationIsRequiredToContinue": "No se puede capturar la ubicación ahora. La ubicación es obligatoria para continuar.",
+      "searchForLocation": "Buscar ubicación",
+      "searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches": "Busca y elige un lugar. Usaremos sus coordenadas para partidas cercanas.",
+      "useSelectedLocation": "Usar ubicación seleccionada",
+      "selectALocationFromTheListBeforeContinuing": "Selecciona una ubicación de la lista antes de continuar.",
+      "unableToUseTheSelectedLocationCoordinatesRightNow": "No se pueden usar ahora las coordenadas de la ubicación seleccionada.",
+      "kilometersUnit": "km"
     },
     "auth_loading_screen": {
       "rootHub": "__TERMINO_1__"

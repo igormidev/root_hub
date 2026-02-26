@@ -180,6 +180,7 @@ class _TranslationsAuthAuthOnboardingScreenFr extends TranslationsAuthAuthOnboar
 	// Translations
 	@override String get pickYourFavoriteRootFactionBeforeEnteringTheHub => 'Choisissez votre faction ROOT préférée avant d\'entrer dans le hub.';
 	@override String get chooseYourFaction => 'Choisissez votre faction';
+	@override String get iAlreadyHaveAnAccount => 'J\'ai déjà un compte';
 }
 
 // Path: auth.auth_onboarding_profile_screen
@@ -193,6 +194,34 @@ class _TranslationsAuthAuthOnboardingProfileScreenFr extends TranslationsAuthAut
 	@override String get yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub => 'Votre nom d\'affichage correspond à la façon dont les autres joueurs vous verront dans Root Hub. ';
 	@override String get setYourHubIdentity => 'Définir votre identité de hub';
 	@override String get continueButton => 'Continuer';
+	@override String get chooseHowYouAppearAndSetYourLocationToFindNearbyMatches => 'Choisissez comment vous apparaissez et définissez votre emplacement pour trouver des parties proches.';
+	@override String get howYouWillBeCalled => 'Comment vous serez appelé';
+	@override String get thisIsHowOtherPlayersWillSeeYourProfileInRootHub => 'C\'est ainsi que les autres joueurs verront votre profil dans Root Hub.';
+	@override String get enterYourDisplayName => 'Entrez votre nom d\'affichage';
+	@override String get currentLocation => 'Emplacement actuel';
+	@override String get locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch => 'L\'emplacement est requis pour afficher les tables proches. Choisissez la position de l\'appareil ou recherchez un lieu.';
+	@override String get useMyCurrentDeviceLocation => 'Utiliser la position actuelle de mon appareil';
+	@override String get capturingCoordinates => 'Capture des coordonnées...';
+	@override String get instantlyUseYourPhonesGpsCoordinates => 'Utilisez instantanément les coordonnées GPS de votre téléphone.';
+	@override String get searchForATableLocation => 'Rechercher un lieu';
+	@override String get openTheSearchAndSelectAnyPlaceYouPrefer => 'Ouvrez la recherche et sélectionnez le lieu que vous préférez.';
+	@override String get selectedCoordinates => 'Coordonnées sélectionnées';
+	@override String get searchAreaRadius => 'Rayon de recherche';
+	@override String get howFarShouldWeSearchForNearbyPlayersAroundYou => 'À quelle distance devons-nous chercher des joueurs proches autour de vous ?';
+	@override String get value25KmIsTheRecommendedStartingPoint => '25 km est le point de départ recommandé.';
+	@override String get disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby => 'Désactivez le VPN ou le proxy avant de capturer la position. De mauvaises coordonnées peuvent masquer les parties proches.';
+	@override String get locationSelectedFromSearch => 'Emplacement sélectionné depuis la recherche.';
+	@override String get enableLocationServicesOnYourPhoneAndTryAgain => 'Activez les services de localisation sur votre téléphone et réessayez.';
+	@override String get locationPermissionDeniedLocationIsRequiredToContinue => 'Autorisation de localisation refusée. La localisation est requise pour continuer.';
+	@override String get locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue => 'L\'autorisation de localisation est refusée définitivement. Activez-la dans les paramètres système pour continuer.';
+	@override String get locationCapturedSuccessfully => 'Position capturée avec succès.';
+	@override String get unableToCaptureLocationRightNowLocationIsRequiredToContinue => 'Impossible de capturer la position pour le moment. La localisation est requise pour continuer.';
+	@override String get searchForLocation => 'Rechercher un emplacement';
+	@override String get searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches => 'Recherchez et choisissez un lieu. Nous utiliserons ses coordonnées pour les parties proches.';
+	@override String get useSelectedLocation => 'Utiliser l\'emplacement sélectionné';
+	@override String get selectALocationFromTheListBeforeContinuing => 'Sélectionnez un emplacement dans la liste avant de continuer.';
+	@override String get unableToUseTheSelectedLocationCoordinatesRightNow => 'Impossible d\'utiliser les coordonnées de l\'emplacement sélectionné pour le moment.';
+	@override String get kilometersUnit => 'km';
 }
 
 // Path: auth.auth_loading_screen

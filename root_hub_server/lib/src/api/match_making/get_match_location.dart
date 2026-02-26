@@ -7,6 +7,9 @@ import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GetMatchLocation extends Endpoint {
+  @override
+  bool get requireLogin => false;
+
   static const List<String> _placesSearchFieldMask = [
     'places.id',
     'places.displayName',

@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_panel_widget.dart';
+import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_search_sheet.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
-import 'package:root_hub_flutter/src/design_system/profile_editor/profile_location_editor_card.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
@@ -34,6 +35,31 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
     _draftLocation = widget.initialLocation;
   }
 
+  Future<void> _openLocationSearchSheet() async {
+    final currentRatio =
+        _draftLocation?.ratio ?? widget.initialLocation?.ratio ?? 25;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return LocationSelectionSearchSheet(
+          initialRatioKm: currentRatio,
+          onLocationPicked: (selectedLocation) {
+            setState(() {
+              _draftLocation = selectedLocation;
+            });
+            _setLocationMessage(
+              t.auth.auth_onboarding_profile_screen.locationSelectedFromSearch,
+              isError: false,
+            );
+          },
+        );
+      },
+    );
+  }
+
   Future<void> _resolveCurrentLocation() async {
     if (_isResolvingLocation) {
       return;
@@ -49,7 +75,10 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
       final isServiceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!isServiceEnabled) {
         _setLocationMessage(
-          'Enable location services on your phone and try again.',
+          t
+              .auth
+              .auth_onboarding_profile_screen
+              .enableLocationServicesOnYourPhoneAndTryAgain,
           isError: true,
         );
         return;
@@ -62,7 +91,10 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
 
       if (permission == LocationPermission.denied) {
         _setLocationMessage(
-          'Location permission denied. Location is required to continue.',
+          t
+              .auth
+              .auth_onboarding_profile_screen
+              .locationPermissionDeniedLocationIsRequiredToContinue,
           isError: true,
         );
         return;
@@ -70,7 +102,10 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
 
       if (permission == LocationPermission.deniedForever) {
         _setLocationMessage(
-          'Location permission is denied forever. Enable it in system settings to continue.',
+          t
+              .auth
+              .auth_onboarding_profile_screen
+              .locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue,
           isError: true,
         );
         return;
@@ -95,12 +130,15 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
       });
 
       _setLocationMessage(
-        'Location captured successfully.',
+        t.auth.auth_onboarding_profile_screen.locationCapturedSuccessfully,
         isError: false,
       );
     } catch (_) {
       _setLocationMessage(
-        'Unable to capture location right now. Try again in a moment.',
+        t
+            .auth
+            .auth_onboarding_profile_screen
+            .unableToCaptureLocationRightNowLocationIsRequiredToContinue,
         isError: true,
       );
     } finally {
@@ -142,7 +180,10 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
     final location = _draftLocation;
     if (location == null) {
       _setLocationMessage(
-        'Capture a location before saving.',
+        t
+            .auth
+            .auth_onboarding_profile_screen
+            .selectALocationFromTheListBeforeContinuing,
         isError: true,
       );
       return;
@@ -173,91 +214,99 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
     final isSaving = ref.watch(
       dashboardProfileProvider.select((value) => value.isUpdatingLocation),
     );
+    final maxDialogHeight = MediaQuery.sizeOf(context).height * 0.86;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 14),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              t.dashboard.ui_dialogs_edit_location_dialog.editLocation,
-              style: GoogleFonts.cinzel(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxDialogHeight),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 14),
+          child: Column(
+            children: [
+              Text(
+                t.dashboard.ui_dialogs_edit_location_dialog.editLocation,
+                style: GoogleFonts.cinzel(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              t
-                  .dashboard
-                  .ui_dialogs_edit_location_dialog
-                  .updateYourCoordinatesAndTargetSearchRatioForMatchDiscovery,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.nunitoSans(
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              SizedBox(height: 8),
+              Text(
+                t
+                    .dashboard
+                    .ui_dialogs_edit_location_dialog
+                    .updateYourCoordinatesAndTargetSearchRatioForMatchDiscovery,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunitoSans(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
-            ),
-            SizedBox(height: 14),
-            ProfileLocationEditorCard(
-              currentLocation: _draftLocation,
-              isResolvingLocation: _isResolvingLocation,
-              onResolveLocation: _resolveCurrentLocation,
-              onClearLocation: () {
-                setState(() {
-                  _draftLocation = null;
-                });
-              },
-              onDecreaseRatio: () => _changeRatio(-_ratioStepKm),
-              onIncreaseRatio: () => _changeRatio(_ratioStepKm),
-              statusMessage: _locationStatusMessage,
-              statusIsError: _locationStatusError,
-              enabled: !isSaving,
-              showOuterCard: false,
-            ),
-            SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: isSaving
+              SizedBox(height: 14),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: LocationSelectionPanelWidget(
+                    currentLocation: _draftLocation,
+                    isResolvingLocation: _isResolvingLocation,
+                    onUseCurrentLocation: _resolveCurrentLocation,
+                    onSearchLocation: _openLocationSearchSheet,
+                    onDecreaseRatio: _draftLocation == null
                         ? null
-                        : () {
-                            Navigator.of(context).pop(false);
-                          },
-                    child: Text(
-                      t.dashboard.ui_dialogs_edit_location_dialog.cancel,
-                      style: GoogleFonts.nunitoSans(
-                        fontWeight: FontWeight.w700,
+                        : () => _changeRatio(-_ratioStepKm),
+                    onIncreaseRatio: _draftLocation == null
+                        ? null
+                        : () => _changeRatio(_ratioStepKm),
+                    statusMessage: _locationStatusMessage,
+                    statusIsError: _locationStatusError,
+                    enabled: !isSaving,
+                  ),
+                ),
+              ),
+              SizedBox(height: 14),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: isSaving
+                          ? null
+                          : () {
+                              Navigator.of(context).pop(false);
+                            },
+                      child: Text(
+                        t.dashboard.ui_dialogs_edit_location_dialog.cancel,
+                        style: GoogleFonts.nunitoSans(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: isSaving ? null : _saveLocation,
-                    child: isSaving
-                        ? SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: isSaving ? null : _saveLocation,
+                      child: isSaving
+                          ? SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(
+                              t.dashboard.ui_dialogs_edit_location_dialog.save,
+                              style: GoogleFonts.nunitoSans(
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
-                          )
-                        : Text(
-                            t.dashboard.ui_dialogs_edit_location_dialog.save,
-                            style: GoogleFonts.nunitoSans(
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

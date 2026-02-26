@@ -188,6 +188,9 @@ class TranslationsAuthAuthOnboardingScreenEn {
 
 	/// en: 'Choose Your Faction'
 	String get chooseYourFaction => 'Choose Your Faction';
+
+	/// en: 'I already have an account'
+	String get iAlreadyHaveAnAccount => 'I already have an account';
 }
 
 // Path: auth.auth_onboarding_profile_screen
@@ -209,6 +212,90 @@ class TranslationsAuthAuthOnboardingProfileScreenEn {
 
 	/// en: 'Continue'
 	String get continueButton => 'Continue';
+
+	/// en: 'Choose how you appear and set your location to find nearby matches.'
+	String get chooseHowYouAppearAndSetYourLocationToFindNearbyMatches => 'Choose how you appear and set your location to find nearby matches.';
+
+	/// en: 'How you will be called'
+	String get howYouWillBeCalled => 'How you will be called';
+
+	/// en: 'This is how other players will see your profile in Root Hub.'
+	String get thisIsHowOtherPlayersWillSeeYourProfileInRootHub => 'This is how other players will see your profile in Root Hub.';
+
+	/// en: 'Enter your display name'
+	String get enterYourDisplayName => 'Enter your display name';
+
+	/// en: 'Current location'
+	String get currentLocation => 'Current location';
+
+	/// en: 'Location is required to show nearby tables. Choose device location or search for a place.'
+	String get locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch => 'Location is required to show nearby tables. Choose device location or search for a place.';
+
+	/// en: 'Use my current device location'
+	String get useMyCurrentDeviceLocation => 'Use my current device location';
+
+	/// en: 'Capturing coordinates...'
+	String get capturingCoordinates => 'Capturing coordinates...';
+
+	/// en: 'Instantly use your phone GPS coordinates.'
+	String get instantlyUseYourPhonesGpsCoordinates => 'Instantly use your phone GPS coordinates.';
+
+	/// en: 'Search for a location'
+	String get searchForATableLocation => 'Search for a location';
+
+	/// en: 'Open the search and select any place you prefer.'
+	String get openTheSearchAndSelectAnyPlaceYouPrefer => 'Open the search and select any place you prefer.';
+
+	/// en: 'Selected coordinates'
+	String get selectedCoordinates => 'Selected coordinates';
+
+	/// en: 'Search area radius'
+	String get searchAreaRadius => 'Search area radius';
+
+	/// en: 'How far should we search for nearby players around you?'
+	String get howFarShouldWeSearchForNearbyPlayersAroundYou => 'How far should we search for nearby players around you?';
+
+	/// en: '25 km is the recommended starting point.'
+	String get value25KmIsTheRecommendedStartingPoint => '25 km is the recommended starting point.';
+
+	/// en: 'Disable VPN or proxy before capturing location. Wrong coordinates may hide nearby matches.'
+	String get disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby => 'Disable VPN or proxy before capturing location. Wrong coordinates may hide nearby matches.';
+
+	/// en: 'Location selected from search.'
+	String get locationSelectedFromSearch => 'Location selected from search.';
+
+	/// en: 'Enable location services on your phone and try again.'
+	String get enableLocationServicesOnYourPhoneAndTryAgain => 'Enable location services on your phone and try again.';
+
+	/// en: 'Location permission denied. Location is required to continue.'
+	String get locationPermissionDeniedLocationIsRequiredToContinue => 'Location permission denied. Location is required to continue.';
+
+	/// en: 'Location permission is denied forever. Enable it in system settings to continue.'
+	String get locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue => 'Location permission is denied forever. Enable it in system settings to continue.';
+
+	/// en: 'Location captured successfully.'
+	String get locationCapturedSuccessfully => 'Location captured successfully.';
+
+	/// en: 'Unable to capture location right now. Location is required to continue.'
+	String get unableToCaptureLocationRightNowLocationIsRequiredToContinue => 'Unable to capture location right now. Location is required to continue.';
+
+	/// en: 'Search for location'
+	String get searchForLocation => 'Search for location';
+
+	/// en: 'Search and pick one place. We will use its coordinates for nearby matches.'
+	String get searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches => 'Search and pick one place. We will use its coordinates for nearby matches.';
+
+	/// en: 'Use selected location'
+	String get useSelectedLocation => 'Use selected location';
+
+	/// en: 'Select a location from the list before continuing.'
+	String get selectALocationFromTheListBeforeContinuing => 'Select a location from the list before continuing.';
+
+	/// en: 'Unable to use the selected location coordinates right now.'
+	String get unableToUseTheSelectedLocationCoordinatesRightNow => 'Unable to use the selected location coordinates right now.';
+
+	/// en: 'km'
+	String get kilometersUnit => 'km';
 }
 
 // Path: auth.auth_loading_screen

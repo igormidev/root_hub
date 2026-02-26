@@ -5,8 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
-import 'package:root_hub_flutter/src/design_system/profile_editor/profile_display_name_editor_card.dart';
-import 'package:root_hub_flutter/src/design_system/profile_editor/profile_location_editor_card.dart';
+import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_panel_widget.dart';
+import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_search_sheet.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
@@ -56,6 +56,32 @@ class _AuthOnboardingProfileScreenState
         );
   }
 
+  Future<void> _openLocationSearchSheet() async {
+    final currentRatio =
+        ref.read(onboardingProvider).currentLocation?.ratio ??
+        OnboardingNotifier.defaultLocationRatioKm;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return LocationSelectionSearchSheet(
+          initialRatioKm: currentRatio,
+          onLocationPicked: (selectedLocation) {
+            ref
+                .read(onboardingProvider.notifier)
+                .setCurrentLocation(selectedLocation);
+            _setLocationMessage(
+              t.auth.auth_onboarding_profile_screen.locationSelectedFromSearch,
+              isError: false,
+            );
+          },
+        );
+      },
+    );
+  }
+
   Future<void> _resolveCurrentLocation() async {
     if (_isResolvingLocation) {
       return;
@@ -71,7 +97,10 @@ class _AuthOnboardingProfileScreenState
       final isServiceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!isServiceEnabled) {
         _setLocationMessage(
-          'Enable location services on your phone and try again.',
+          t
+              .auth
+              .auth_onboarding_profile_screen
+              .enableLocationServicesOnYourPhoneAndTryAgain,
           isError: true,
         );
         return;
@@ -84,7 +113,10 @@ class _AuthOnboardingProfileScreenState
 
       if (permission == LocationPermission.denied) {
         _setLocationMessage(
-          'Location permission denied. Location is required to continue.',
+          t
+              .auth
+              .auth_onboarding_profile_screen
+              .locationPermissionDeniedLocationIsRequiredToContinue,
           isError: true,
         );
         return;
@@ -92,14 +124,17 @@ class _AuthOnboardingProfileScreenState
 
       if (permission == LocationPermission.deniedForever) {
         _setLocationMessage(
-          'Location permission is denied forever. Enable it in system settings to continue.',
+          t
+              .auth
+              .auth_onboarding_profile_screen
+              .locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue,
           isError: true,
         );
         return;
       }
 
       final position = await Geolocator.getCurrentPosition(
-        locationSettings: LocationSettings(
+        locationSettings: const LocationSettings(
           accuracy: LocationAccuracy.high,
         ),
       );
@@ -119,12 +154,15 @@ class _AuthOnboardingProfileScreenState
           );
 
       _setLocationMessage(
-        'Location captured successfully.',
+        t.auth.auth_onboarding_profile_screen.locationCapturedSuccessfully,
         isError: false,
       );
     } catch (_) {
       _setLocationMessage(
-        'Unable to capture location right now. Location is required to continue.',
+        t
+            .auth
+            .auth_onboarding_profile_screen
+            .unableToCaptureLocationRightNowLocationIsRequiredToContinue,
         isError: true,
       );
     } finally {
@@ -170,7 +208,7 @@ class _AuthOnboardingProfileScreenState
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            center: Alignment(0, -0.8),
+            center: const Alignment(0, -0.8),
             radius: 1.25,
             colors: [
               colorScheme.primaryContainer.withValues(alpha: 0.55),
@@ -183,7 +221,7 @@ class _AuthOnboardingProfileScreenState
           children: [
             SizedBox(height: viewPadding.top + 22),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child:
                   Text(
                         t
@@ -200,20 +238,20 @@ class _AuthOnboardingProfileScreenState
                       )
                       .animate()
                       .fadeIn(duration: 400.ms)
-                      .slideY(begin: -0.2, end: 0, duration: 400.ms),
+                      .slideY(
+                        begin: -0.2,
+                        end: 0,
+                        duration: 400.ms,
+                      ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 t
-                        .auth
-                        .auth_onboarding_profile_screen
-                        .yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub +
-                    t
-                        .auth
-                        .auth_onboarding_profile_screen
-                        .currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat,
+                    .auth
+                    .auth_onboarding_profile_screen
+                    .chooseHowYouAppearAndSetYourLocationToFindNearbyMatches,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,
@@ -222,28 +260,112 @@ class _AuthOnboardingProfileScreenState
                 ),
               ).animate().fadeIn(delay: 120.ms, duration: 420.ms),
             ),
-            SizedBox(height: 18),
+            const SizedBox(height: 18),
             Expanded(
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProfileDisplayNameEditorCard(
-                      controller: _displayNameController,
+                    Text(
+                      t.auth.auth_onboarding_profile_screen.howYouWillBeCalled,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                    SizedBox(height: 12),
-                    ProfileLocationEditorCard(
+                    const SizedBox(height: 6),
+                    Text(
+                      t
+                          .auth
+                          .auth_onboarding_profile_screen
+                          .thisIsHowOtherPlayersWillSeeYourProfileInRootHub,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
+                        height: 1.35,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: colorScheme.outlineVariant),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            colorScheme.surfaceContainerHighest.withValues(
+                              alpha: 0.76,
+                            ),
+                            colorScheme.surfaceContainer.withValues(alpha: 0.8),
+                          ],
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _displayNameController,
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                          hintText: t
+                              .auth
+                              .auth_onboarding_profile_screen
+                              .enterYourDisplayName,
+                          filled: true,
+                          fillColor: colorScheme.surface.withValues(
+                            alpha: 0.95,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(
+                              color: colorScheme.outlineVariant,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(
+                              color: colorScheme.outlineVariant,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(
+                              color: colorScheme.primary,
+                              width: 1.4,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      t.auth.auth_onboarding_profile_screen.currentLocation,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      t
+                          .auth
+                          .auth_onboarding_profile_screen
+                          .locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
+                        height: 1.35,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    LocationSelectionPanelWidget(
                       currentLocation: currentLocation,
                       isResolvingLocation: _isResolvingLocation,
-                      onResolveLocation: _resolveCurrentLocation,
-                      onClearLocation: currentLocation == null
-                          ? null
-                          : () {
-                              ref
-                                  .read(onboardingProvider.notifier)
-                                  .clearCurrentLocation();
-                            },
+                      onUseCurrentLocation: _resolveCurrentLocation,
+                      onSearchLocation: _openLocationSearchSheet,
                       onDecreaseRatio: currentLocation == null
                           ? null
                           : () {
@@ -272,48 +394,45 @@ class _AuthOnboardingProfileScreenState
             Padding(
               padding: EdgeInsets.fromLTRB(16, 8, 16, viewPadding.bottom + 16),
               child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 280),
+                duration: const Duration(milliseconds: 280),
                 child: hasDisplayName && hasCurrentLocation
                     ? SizedBox(
-                            key: ValueKey('profile-continue'),
-                            height: 58,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await ref
-                                    .read(onboardingProvider.notifier)
-                                    .persistProfileData();
-                                ref
-                                    .read(authFlowProvider.notifier)
-                                    .moveToLoginAfterOnboarding();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: continueColor,
-                                foregroundColor: continueTextColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Text(
-                                t
-                                    .auth
-                                    .auth_onboarding_profile_screen
-                                    .continueButton,
-                                style: GoogleFonts.getFont(
-                                  'MedievalSharp',
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0.7,
-                                  color: continueTextColor,
-                                ),
-                              ),
+                        key: const ValueKey('profile-continue'),
+                        height: 58,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await ref
+                                .read(onboardingProvider.notifier)
+                                .persistProfileData();
+                            ref
+                                .read(authFlowProvider.notifier)
+                                .moveToLoginAfterOnboarding();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: continueColor,
+                            foregroundColor: continueTextColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          )
-                          .animate()
-                          .fadeIn(duration: 240.ms)
-                          .slideY(begin: 0.25, end: 0, duration: 240.ms)
-                    : SizedBox(
+                          ),
+                          child: Text(
+                            t
+                                .auth
+                                .auth_onboarding_profile_screen
+                                .continueButton,
+                            style: GoogleFonts.getFont(
+                              'MedievalSharp',
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.7,
+                              color: continueTextColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(
                         key: ValueKey('profile-continue-placeholder'),
                         height: 58,
                       ),

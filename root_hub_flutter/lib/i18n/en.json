@@ -5,13 +5,42 @@
   "auth": {
     "auth_onboarding_screen": {
       "pickYourFavoriteRootFactionBeforeEnteringTheHub": "Pick your favorite ROOT faction before entering the hub.",
-      "chooseYourFaction": "Choose Your Faction"
+      "chooseYourFaction": "Choose Your Faction",
+      "iAlreadyHaveAnAccount": "I already have an account"
     },
     "auth_onboarding_profile_screen": {
       "currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat": "Current location uses your phone coordinates (x and y) and is required to show nearby matches.",
       "yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub": "Your display name is how other players will see you in Root Hub. ",
       "setYourHubIdentity": "Set Your Hub Identity",
-      "continueButton": "Continue"
+      "continueButton": "Continue",
+      "chooseHowYouAppearAndSetYourLocationToFindNearbyMatches": "Choose how you appear and set your location to find nearby matches.",
+      "howYouWillBeCalled": "How you will be called",
+      "thisIsHowOtherPlayersWillSeeYourProfileInRootHub": "This is how other players will see your profile in Root Hub.",
+      "enterYourDisplayName": "Enter your display name",
+      "currentLocation": "Current location",
+      "locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch": "Location is required to show nearby tables. Choose device location or search for a place.",
+      "useMyCurrentDeviceLocation": "Use my current device location",
+      "capturingCoordinates": "Capturing coordinates...",
+      "instantlyUseYourPhonesGpsCoordinates": "Instantly use your phone GPS coordinates.",
+      "searchForATableLocation": "Search for a location",
+      "openTheSearchAndSelectAnyPlaceYouPrefer": "Open the search and select any place you prefer.",
+      "selectedCoordinates": "Selected coordinates",
+      "searchAreaRadius": "Search area radius",
+      "howFarShouldWeSearchForNearbyPlayersAroundYou": "How far should we search for nearby players around you?",
+      "value25KmIsTheRecommendedStartingPoint": "25 km is the recommended starting point.",
+      "disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby": "Disable VPN or proxy before capturing location. Wrong coordinates may hide nearby matches.",
+      "locationSelectedFromSearch": "Location selected from search.",
+      "enableLocationServicesOnYourPhoneAndTryAgain": "Enable location services on your phone and try again.",
+      "locationPermissionDeniedLocationIsRequiredToContinue": "Location permission denied. Location is required to continue.",
+      "locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue": "Location permission is denied forever. Enable it in system settings to continue.",
+      "locationCapturedSuccessfully": "Location captured successfully.",
+      "unableToCaptureLocationRightNowLocationIsRequiredToContinue": "Unable to capture location right now. Location is required to continue.",
+      "searchForLocation": "Search for location",
+      "searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches": "Search and pick one place. We will use its coordinates for nearby matches.",
+      "useSelectedLocation": "Use selected location",
+      "selectALocationFromTheListBeforeContinuing": "Select a location from the list before continuing.",
+      "unableToUseTheSelectedLocationCoordinatesRightNow": "Unable to use the selected location coordinates right now.",
+      "kilometersUnit": "km"
     },
     "auth_loading_screen": {
       "rootHub": "ROOT HUB"

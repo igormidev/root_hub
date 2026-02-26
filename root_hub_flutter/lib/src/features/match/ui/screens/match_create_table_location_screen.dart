@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
+import 'package:root_hub_flutter/src/design_system/location_picker/location_search_picker_widget.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 
-import 'match_create_table_location_list_tile_widget.dart';
-import 'match_create_table_location_loading_recent_widget.dart';
-import 'match_create_table_location_loading_search_widget.dart';
-import 'match_create_table_location_no_recent_locations_widget.dart';
-import 'match_create_table_location_no_search_results_widget.dart';
-import 'match_create_table_location_search_error_widget.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchCreateTableLocationScreen extends ConsumerStatefulWidget {
@@ -93,9 +87,6 @@ class _MatchCreateTableLocationScreenState
     final colorScheme = Theme.of(context).colorScheme;
     final state = ref.watch(matchCreateTableProvider);
 
-    final selectedLocation = state.selectedLocation;
-    final queryIsEmpty = state.locationQuery.trim().isEmpty;
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -139,146 +130,22 @@ class _MatchCreateTableLocationScreenState
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-                child: TextField(
-                  controller: _searchController,
-                  textInputAction: TextInputAction.search,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search_rounded),
-                    suffixIcon: _searchController.text.trim().isEmpty
-                        ? null
-                        : IconButton(
-                            onPressed: () {
-                              _searchController.clear();
-                            },
-                            icon: Icon(Icons.clear_rounded),
-                          ),
-                    hintText: t
-                        .match
-                        .ui_screens_match_create_table_location_screen
-                        .searchLocationGooglePlaces,
-                    filled: true,
-                    fillColor: colorScheme.surface.withValues(alpha: 0.94),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
-                child: Text(
-                  t
-                      .match
-                      .ui_screens_match_create_table_location_screen
-                      .tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w700,
-                    height: 1.3,
-                  ),
-                ),
-              ),
               Expanded(
-                child: ListView(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 18),
-                  children: [
-                    if (selectedLocation != null)
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: colorScheme.primary),
-                          color: colorScheme.primaryContainer.withValues(
-                            alpha: 0.45,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle_rounded,
-                              color: colorScheme.primary,
-                            ),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _locationTitle(selectedLocation),
-                                style: Theme.of(context).textTheme.bodyLarge
-                                    ?.copyWith(fontWeight: FontWeight.w900),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    if (!queryIsEmpty) ...[
-                      Text(
-                        t
-                            .match
-                            .ui_screens_match_create_table_location_screen
-                            .searchResults,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w900,
-                            ),
-                      ),
-                      SizedBox(height: 8),
-                      if (state.isSearchingLocations)
-                        MatchCreateTableLocationLoadingSearchWidget()
-                      else if (state.locationSearchError != null)
-                        MatchCreateTableLocationSearchErrorWidget(
-                          error: state.locationSearchError!,
-                        )
-                      else if (state.hasPerformedLocationSearch &&
-                          state.searchResults.isEmpty)
-                        MatchCreateTableLocationNoSearchResultsWidget()
-                      else
-                        for (final location in state.searchResults)
-                          MatchCreateTableLocationListTileWidget(
-                            title: _locationTitle(location),
-                            subtitle: _locationSubtitle(location),
-                            isSelected:
-                                location.id != null &&
-                                location.id == selectedLocation?.id,
-                            onTap: () {
-                              ref
-                                  .read(matchCreateTableProvider.notifier)
-                                  .selectLocation(location);
-                            },
-                          ),
-                      SizedBox(height: 14),
-                    ],
-                    Text(
-                      t
-                          .match
-                          .ui_screens_match_create_table_location_screen
-                          .previouslySelectedLocations,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    if (!state.hasLoadedRecentLocations)
-                      MatchCreateTableLocationLoadingRecentWidget()
-                    else if (state.recentLocations.isEmpty)
-                      MatchCreateTableLocationNoRecentLocationsWidget()
-                    else
-                      for (final location in state.recentLocations)
-                        MatchCreateTableLocationListTileWidget(
-                          title: _locationTitle(location),
-                          subtitle: _locationSubtitle(location),
-                          isSelected:
-                              location.id != null &&
-                              location.id == selectedLocation?.id,
-                          onTap: () {
-                            ref
-                                .read(matchCreateTableProvider.notifier)
-                                .selectLocation(location);
-                          },
-                        ),
-                  ],
+                child: LocationSearchPickerWidget(
+                  searchController: _searchController,
+                  locationQuery: state.locationQuery,
+                  isSearchingLocations: state.isSearchingLocations,
+                  hasPerformedLocationSearch: state.hasPerformedLocationSearch,
+                  searchResults: state.searchResults,
+                  locationSearchError: state.locationSearchError,
+                  hasLoadedRecentLocations: state.hasLoadedRecentLocations,
+                  recentLocations: state.recentLocations,
+                  selectedLocation: state.selectedLocation,
+                  onLocationSelected: (location) {
+                    ref
+                        .read(matchCreateTableProvider.notifier)
+                        .selectLocation(location);
+                  },
                 ),
               ),
               Padding(
@@ -325,22 +192,5 @@ class _MatchCreateTableLocationScreenState
         ),
       ),
     );
-  }
-
-  String _locationTitle(Location location) {
-    final googlePlace = location.googlePlaceLocation;
-    final manualLocation = location.manualInputLocation;
-
-    return googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
-  }
-
-  String _locationSubtitle(Location location) {
-    final googlePlace = location.googlePlaceLocation;
-    final manualLocation = location.manualInputLocation;
-
-    return googlePlace?.shortFormattedAddress ??
-        googlePlace?.formattedAddress ??
-        manualLocation?.cityName ??
-        'Address unavailable';
   }
 }

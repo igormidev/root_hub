@@ -180,6 +180,7 @@ class _TranslationsAuthAuthOnboardingScreenEs extends TranslationsAuthAuthOnboar
 	// Translations
 	@override String get pickYourFavoriteRootFactionBeforeEnteringTheHub => 'Elige tu facción ROOT favorita antes de ingresar al centro.';
 	@override String get chooseYourFaction => 'Elige tu facción';
+	@override String get iAlreadyHaveAnAccount => 'Ya tengo una cuenta';
 }
 
 // Path: auth.auth_onboarding_profile_screen
@@ -193,6 +194,34 @@ class _TranslationsAuthAuthOnboardingProfileScreenEs extends TranslationsAuthAut
 	@override String get yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub => 'Tu nombre para mostrar es cómo te verán otros jugadores en Root Hub. ';
 	@override String get setYourHubIdentity => 'Configure su identidad central';
 	@override String get continueButton => 'Continuar';
+	@override String get chooseHowYouAppearAndSetYourLocationToFindNearbyMatches => 'Elige cómo apareces y define tu ubicación para encontrar partidas cercanas.';
+	@override String get howYouWillBeCalled => 'Cómo te llamarán';
+	@override String get thisIsHowOtherPlayersWillSeeYourProfileInRootHub => 'Así es como otros jugadores verán tu perfil en Root Hub.';
+	@override String get enterYourDisplayName => 'Ingresa tu nombre para mostrar';
+	@override String get currentLocation => 'Ubicación actual';
+	@override String get locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch => 'La ubicación es obligatoria para mostrar mesas cercanas. Elige ubicación del dispositivo o busca un lugar.';
+	@override String get useMyCurrentDeviceLocation => 'Usar la ubicación actual del dispositivo';
+	@override String get capturingCoordinates => 'Capturando coordenadas...';
+	@override String get instantlyUseYourPhonesGpsCoordinates => 'Usa al instante las coordenadas GPS de tu teléfono.';
+	@override String get searchForATableLocation => 'Buscar una ubicación';
+	@override String get openTheSearchAndSelectAnyPlaceYouPrefer => 'Abre la búsqueda y selecciona cualquier lugar que prefieras.';
+	@override String get selectedCoordinates => 'Coordenadas seleccionadas';
+	@override String get searchAreaRadius => 'Radio del área de búsqueda';
+	@override String get howFarShouldWeSearchForNearbyPlayersAroundYou => '¿Qué tan lejos debemos buscar jugadores cercanos a tu alrededor?';
+	@override String get value25KmIsTheRecommendedStartingPoint => '25 km es el punto de inicio recomendado.';
+	@override String get disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby => 'Desactiva VPN o proxy antes de capturar ubicación. Coordenadas incorrectas pueden ocultar partidas cercanas.';
+	@override String get locationSelectedFromSearch => 'Ubicación seleccionada desde la búsqueda.';
+	@override String get enableLocationServicesOnYourPhoneAndTryAgain => 'Activa los servicios de ubicación en tu teléfono e inténtalo de nuevo.';
+	@override String get locationPermissionDeniedLocationIsRequiredToContinue => 'Permiso de ubicación denegado. La ubicación es obligatoria para continuar.';
+	@override String get locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue => 'El permiso de ubicación está denegado para siempre. Actívalo en la configuración del sistema para continuar.';
+	@override String get locationCapturedSuccessfully => 'Ubicación capturada correctamente.';
+	@override String get unableToCaptureLocationRightNowLocationIsRequiredToContinue => 'No se puede capturar la ubicación ahora. La ubicación es obligatoria para continuar.';
+	@override String get searchForLocation => 'Buscar ubicación';
+	@override String get searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches => 'Busca y elige un lugar. Usaremos sus coordenadas para partidas cercanas.';
+	@override String get useSelectedLocation => 'Usar ubicación seleccionada';
+	@override String get selectALocationFromTheListBeforeContinuing => 'Selecciona una ubicación de la lista antes de continuar.';
+	@override String get unableToUseTheSelectedLocationCoordinatesRightNow => 'No se pueden usar ahora las coordenadas de la ubicación seleccionada.';
+	@override String get kilometersUnit => 'km';
 }
 
 // Path: auth.auth_loading_screen

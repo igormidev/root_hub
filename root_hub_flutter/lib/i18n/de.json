@@ -5,13 +5,42 @@
   "auth": {
     "auth_onboarding_screen": {
       "pickYourFavoriteRootFactionBeforeEnteringTheHub": "Wählen Sie Ihre bevorzugte ROOT-Fraktion aus, bevor Sie den Hub betreten.",
-      "chooseYourFaction": "Wähle deine Fraktion"
+      "chooseYourFaction": "Wähle deine Fraktion",
+      "iAlreadyHaveAnAccount": "Ich habe bereits ein Konto"
     },
     "auth_onboarding_profile_screen": {
       "currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat": "Der aktuelle Standort verwendet die Koordinaten Ihres Telefons (x und y) und ist erforderlich, um Übereinstimmungen in der Nähe anzuzeigen.",
       "yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub": "Ihr Anzeigename ist, wie andere Spieler Sie in Root Hub sehen werden. ",
       "setYourHubIdentity": "Legen Sie Ihre Hub-Identität fest",
-      "continueButton": "Weitermachen"
+      "continueButton": "Weitermachen",
+      "chooseHowYouAppearAndSetYourLocationToFindNearbyMatches": "Wähle, wie du erscheinst, und setze deinen Standort, um nahe Matches zu finden.",
+      "howYouWillBeCalled": "Wie du genannt wirst",
+      "thisIsHowOtherPlayersWillSeeYourProfileInRootHub": "So sehen andere Spieler dein Profil im Root Hub.",
+      "enterYourDisplayName": "Gib deinen Anzeigenamen ein",
+      "currentLocation": "Aktueller Standort",
+      "locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch": "Der Standort ist erforderlich, um nahe Tische zu zeigen. Wähle Gerätestandort oder suche einen Ort.",
+      "useMyCurrentDeviceLocation": "Meinen aktuellen Gerätestandort verwenden",
+      "capturingCoordinates": "Koordinaten werden erfasst...",
+      "instantlyUseYourPhonesGpsCoordinates": "Verwende sofort die GPS-Koordinaten deines Telefons.",
+      "searchForATableLocation": "Standort suchen",
+      "openTheSearchAndSelectAnyPlaceYouPrefer": "Öffne die Suche und wähle einen Ort, den du bevorzugst.",
+      "selectedCoordinates": "Ausgewählte Koordinaten",
+      "searchAreaRadius": "Suchradius",
+      "howFarShouldWeSearchForNearbyPlayersAroundYou": "Wie weit sollen wir nach nahegelegenen Spielern um dich herum suchen?",
+      "value25KmIsTheRecommendedStartingPoint": "25 km ist der empfohlene Startwert.",
+      "disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby": "Deaktiviere VPN oder Proxy vor der Standorterfassung. Falsche Koordinaten können nahe Matches ausblenden.",
+      "locationSelectedFromSearch": "Standort aus der Suche ausgewählt.",
+      "enableLocationServicesOnYourPhoneAndTryAgain": "Aktiviere die Standortdienste auf deinem Telefon und versuche es erneut.",
+      "locationPermissionDeniedLocationIsRequiredToContinue": "Standortberechtigung verweigert. Standort ist erforderlich, um fortzufahren.",
+      "locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue": "Standortberechtigung dauerhaft verweigert. Aktiviere sie in den Systemeinstellungen, um fortzufahren.",
+      "locationCapturedSuccessfully": "Standort erfolgreich erfasst.",
+      "unableToCaptureLocationRightNowLocationIsRequiredToContinue": "Standort kann derzeit nicht erfasst werden. Standort ist erforderlich, um fortzufahren.",
+      "searchForLocation": "Standort suchen",
+      "searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches": "Suche und wähle einen Ort. Wir verwenden dessen Koordinaten für nahe Matches.",
+      "useSelectedLocation": "Ausgewählten Standort verwenden",
+      "selectALocationFromTheListBeforeContinuing": "Wähle einen Standort aus der Liste, bevor du fortfährst.",
+      "unableToUseTheSelectedLocationCoordinatesRightNow": "Die Koordinaten des ausgewählten Standorts können derzeit nicht verwendet werden.",
+      "kilometersUnit": "km"
     },
     "auth_loading_screen": {
       "rootHub": "ROOT HUB"

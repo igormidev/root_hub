@@ -180,6 +180,7 @@ class _TranslationsAuthAuthOnboardingScreenPtBr extends TranslationsAuthAuthOnbo
 	// Translations
 	@override String get pickYourFavoriteRootFactionBeforeEnteringTheHub => 'Escolha sua facção ROOT favorita antes de entrar no hub.';
 	@override String get chooseYourFaction => 'Escolha sua facção';
+	@override String get iAlreadyHaveAnAccount => 'Eu já tenho uma conta';
 }
 
 // Path: auth.auth_onboarding_profile_screen
@@ -193,6 +194,34 @@ class _TranslationsAuthAuthOnboardingProfileScreenPtBr extends TranslationsAuthA
 	@override String get yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub => 'Seu nome de exibição é como os outros jogadores verão você em Root Hub. ';
 	@override String get setYourHubIdentity => 'Defina a identidade do seu hub';
 	@override String get continueButton => 'Continuar';
+	@override String get chooseHowYouAppearAndSetYourLocationToFindNearbyMatches => 'Escolha como você aparece e defina sua localização para encontrar partidas próximas.';
+	@override String get howYouWillBeCalled => 'Como você será chamado';
+	@override String get thisIsHowOtherPlayersWillSeeYourProfileInRootHub => 'É assim que outros jogadores verão seu perfil no Root Hub.';
+	@override String get enterYourDisplayName => 'Digite seu nome de exibição';
+	@override String get currentLocation => 'Localização atual';
+	@override String get locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch => 'A localização é obrigatória para mostrar mesas próximas. Escolha a localização do dispositivo ou pesquise um lugar.';
+	@override String get useMyCurrentDeviceLocation => 'Usar minha localização atual do dispositivo';
+	@override String get capturingCoordinates => 'Capturando coordenadas...';
+	@override String get instantlyUseYourPhonesGpsCoordinates => 'Use instantaneamente as coordenadas GPS do seu telefone.';
+	@override String get searchForATableLocation => 'Pesquisar por localização';
+	@override String get openTheSearchAndSelectAnyPlaceYouPrefer => 'Abra a busca e selecione qualquer lugar que você preferir.';
+	@override String get selectedCoordinates => 'Coordenadas selecionadas';
+	@override String get searchAreaRadius => 'Raio da área de busca';
+	@override String get howFarShouldWeSearchForNearbyPlayersAroundYou => 'Quão longe devemos buscar jogadores próximos ao seu redor?';
+	@override String get value25KmIsTheRecommendedStartingPoint => '25 km é o ponto de partida recomendado.';
+	@override String get disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby => 'Desative VPN ou proxy antes de capturar a localização. Coordenadas incorretas podem ocultar partidas próximas.';
+	@override String get locationSelectedFromSearch => 'Localização selecionada pela busca.';
+	@override String get enableLocationServicesOnYourPhoneAndTryAgain => 'Ative os serviços de localização no seu telefone e tente novamente.';
+	@override String get locationPermissionDeniedLocationIsRequiredToContinue => 'Permissão de localização negada. A localização é obrigatória para continuar.';
+	@override String get locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue => 'A permissão de localização foi negada para sempre. Ative nas configurações do sistema para continuar.';
+	@override String get locationCapturedSuccessfully => 'Localização capturada com sucesso.';
+	@override String get unableToCaptureLocationRightNowLocationIsRequiredToContinue => 'Não foi possível capturar a localização agora. A localização é obrigatória para continuar.';
+	@override String get searchForLocation => 'Pesquisar localização';
+	@override String get searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches => 'Pesquise e escolha um lugar. Usaremos as coordenadas para partidas próximas.';
+	@override String get useSelectedLocation => 'Usar localização selecionada';
+	@override String get selectALocationFromTheListBeforeContinuing => 'Selecione uma localização da lista antes de continuar.';
+	@override String get unableToUseTheSelectedLocationCoordinatesRightNow => 'Não foi possível usar as coordenadas da localização selecionada agora.';
+	@override String get kilometersUnit => 'km';
 }
 
 // Path: auth.auth_loading_screen
