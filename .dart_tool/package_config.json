@@ -272,6 +272,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "csv",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/csv-6.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
@@ -1338,6 +1344,24 @@
       "rootUri": "file:///Users/igor/Installations/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.9"
+    },
+    {
+      "name": "slang",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/slang-4.12.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "slang_build_runner",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/slang_build_runner-4.12.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "slang_flutter",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/slang_flutter-4.12.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
     },
     {
       "name": "source_gen",

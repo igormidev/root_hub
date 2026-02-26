@@ -39,6 +39,7 @@ void main() async {
 
   await client.auth.initialize();
   final pref = await SharedPreferences.getInstance();
+  await pref.clear();
   final preferredLocaleRaw = pref.getString(_preferredLocaleKey);
   if (preferredLocaleRaw == null ||
       preferredLocaleRaw == _deviceLocalePreferenceValue) {

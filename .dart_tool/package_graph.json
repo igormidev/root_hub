@@ -55,6 +55,7 @@
         "flutter_cache_manager",
         "flutter_chat_core",
         "flutter_chat_ui",
+        "flutter_localizations",
         "flutter_riverpod",
         "flyer_chat_image_message",
         "freezed_annotation",
@@ -63,12 +64,15 @@
         "google_fonts",
         "image",
         "image_picker",
+        "intl",
         "result_dart",
         "riverpod",
         "root_hub_client",
         "serverpod_auth_idp_flutter",
         "serverpod_flutter",
         "shared_preferences",
+        "slang",
+        "slang_flutter",
         "synchronized",
         "talker",
         "talker_flutter",
@@ -80,7 +84,8 @@
         "flutter_launcher_icons",
         "flutter_lints",
         "flutter_test",
-        "freezed"
+        "freezed",
+        "slang_build_runner"
       ]
     },
     {
@@ -209,6 +214,16 @@
         "source_span",
         "watcher",
         "yaml"
+      ]
+    },
+    {
+      "name": "slang_build_runner",
+      "version": "4.12.1",
+      "dependencies": [
+        "build",
+        "dart_style",
+        "glob",
+        "slang"
       ]
     },
     {
@@ -551,6 +566,35 @@
       ]
     },
     {
+      "name": "slang_flutter",
+      "version": "4.12.1",
+      "dependencies": [
+        "flutter",
+        "flutter_localizations",
+        "slang"
+      ]
+    },
+    {
+      "name": "slang",
+      "version": "4.12.1",
+      "dependencies": [
+        "collection",
+        "csv",
+        "intl",
+        "watcher",
+        "yaml"
+      ]
+    },
+    {
+      "name": "intl",
+      "version": "0.20.2",
+      "dependencies": [
+        "clock",
+        "meta",
+        "path"
+      ]
+    },
+    {
       "name": "babel_text",
       "version": "2.1.0",
       "dependencies": [
@@ -595,6 +639,15 @@
         "flutter",
         "http",
         "path_provider"
+      ]
+    },
+    {
+      "name": "flutter_localizations",
+      "version": "0.0.0",
+      "dependencies": [
+        "flutter",
+        "intl",
+        "path"
       ]
     },
     {
@@ -1000,6 +1053,18 @@
       ]
     },
     {
+      "name": "build",
+      "version": "4.0.4",
+      "dependencies": [
+        "analyzer",
+        "crypto",
+        "glob",
+        "logging",
+        "package_config",
+        "path"
+      ]
+    },
+    {
       "name": "json_annotation",
       "version": "4.11.0",
       "dependencies": [
@@ -1029,18 +1094,6 @@
         "json_annotation",
         "path",
         "pubspec_parse"
-      ]
-    },
-    {
-      "name": "build",
-      "version": "4.0.4",
-      "dependencies": [
-        "analyzer",
-        "crypto",
-        "glob",
-        "logging",
-        "package_config",
-        "path"
       ]
     },
     {
@@ -1358,15 +1411,6 @@
       "name": "diffutil_dart",
       "version": "4.0.1",
       "dependencies": []
-    },
-    {
-      "name": "intl",
-      "version": "0.20.2",
-      "dependencies": [
-        "clock",
-        "meta",
-        "path"
-      ]
     },
     {
       "name": "dio",
@@ -1724,6 +1768,11 @@
       ]
     },
     {
+      "name": "csv",
+      "version": "6.0.0",
+      "dependencies": []
+    },
+    {
       "name": "connectivity_plus",
       "version": "7.0.0",
       "dependencies": [
@@ -1810,15 +1859,6 @@
         "vector_graphics",
         "vector_graphics_codec",
         "vector_graphics_compiler"
-      ]
-    },
-    {
-      "name": "flutter_localizations",
-      "version": "0.0.0",
-      "dependencies": [
-        "flutter",
-        "intl",
-        "path"
       ]
     },
     {
