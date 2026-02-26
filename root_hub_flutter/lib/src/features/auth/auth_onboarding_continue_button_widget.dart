@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
-import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthOnboardingContinueButtonWidget extends ConsumerWidget {
@@ -27,10 +26,7 @@ class AuthOnboardingContinueButtonWidget extends ConsumerWidget {
           height: 58,
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () async {
-              await ref
-                  .read(onboardingProvider.notifier)
-                  .persistSelectedFaction();
+            onPressed: () {
               ref.read(authFlowProvider.notifier).moveToOnboardingProfile();
             },
             style: ElevatedButton.styleFrom(

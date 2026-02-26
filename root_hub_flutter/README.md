@@ -12,14 +12,15 @@ With Root Hub, users can:
 
 ## Main User Flow
 1. App validates session and player profile on startup.
-2. If needed, user completes onboarding (favorite faction + display name + mandatory device location coordinates and match search ratio).
-3. User authenticates (email/password or Google when enabled on server).
-4. User sees the list of available match schedules.
-5. User subscribes to an existing match or creates a new one.
-6. User tracks subscribed tables and chat activity in the Activity tab.
-7. User can interact socially via posts/comments.
-8. After a game, user registers the result and factions.
-9. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
+2. If user is not authenticated, user signs in (email/password or Google when enabled on server).
+3. After authentication, app calls `getPlayerData.v1()` to check if profile data exists.
+4. If profile data is missing, user completes onboarding (favorite faction + display name + mandatory device location coordinates and match search ratio).
+5. User sees the list of available match schedules.
+6. User subscribes to an existing match or creates a new one.
+7. User tracks subscribed tables and chat activity in the Activity tab.
+8. User can interact socially via posts/comments.
+9. After a game, user registers the result and factions.
+10. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
 
 ## Authentication (Serverpod)
 Authentication is handled with **Serverpod auth session management**:
@@ -36,7 +37,7 @@ Required behavior for auth-related features:
 - Startup flow is managed by `auth_flow` state/provider:
   - Checks `client.auth.isAuthenticated`.
   - Calls `getPlayerData.v1()` to verify profile existence.
-  - Routes users through onboarding faction -> onboarding profile -> login -> authenticated area.
+  - Routes users through login first, then onboarding only when `getPlayerData` returns `null`.
 
 ## Architecture
 The app follows feature-first presentation with centralized state management:

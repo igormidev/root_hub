@@ -385,13 +385,10 @@ class _AuthOnboardingProfileScreenState
                         height: 58,
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            await ref
-                                .read(onboardingProvider.notifier)
-                                .persistProfileData();
+                          onPressed: () {
                             ref
                                 .read(authFlowProvider.notifier)
-                                .moveToLoginAfterOnboarding();
+                                .completeOnboardingProfile();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: continueColor,
