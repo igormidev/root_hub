@@ -15,8 +15,10 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final ratioKm = playerData?.currentLocation?.ratio;
     final nearbySummary = ratioKm == null
-        ? 'Set profile location'
-        : '${ratioKm.toStringAsFixed(0)} km search area';
+        ? t.match.ui_screens_match_nearby_header_widget.setProfileLocation
+        : t.match.ui_screens_match_nearby_header_widget.searchAreaKm(
+            ratioKm: ratioKm.toStringAsFixed(0),
+          );
 
     return Padding(
       padding: EdgeInsets.fromLTRB(4, 6, 4, 4),

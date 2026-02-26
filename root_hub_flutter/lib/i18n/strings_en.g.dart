@@ -380,6 +380,30 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 
 	/// en: 'Unable to access camera or gallery'
 	String get unableToAccessCameraOrGallery => 'Unable to access camera or gallery';
+
+	/// en: 'Root Player'
+	String get rootPlayer => 'Root Player';
+
+	/// en: 'Welcome back, {displayName}'
+	String welcomeBack({required Object displayName}) => 'Welcome back, ${displayName}';
+
+	/// en: 'Community Dashboard'
+	String get communityDashboardTitle => 'Community Dashboard';
+
+	/// en: 'Match Finder'
+	String get matchFinderTitle => 'Match Finder';
+
+	/// en: 'Shop Preview'
+	String get shopPreviewTitle => 'Shop Preview';
+
+	/// en: 'Discover what is happening around your ROOT community.'
+	String get communityDashboardSubtitle => 'Discover what is happening around your ROOT community.';
+
+	/// en: 'Browse and create match schedules with your local group.'
+	String get matchFinderSubtitle => 'Browse and create match schedules with your local group.';
+
+	/// en: 'Collect future cosmetics, tokens, and community bundles.'
+	String get shopPreviewSubtitle => 'Collect future cosmetics, tokens, and community bundles.';
 }
 
 // Path: dashboard.ui_screens_dashboard_faction_editor_screen
@@ -1019,6 +1043,12 @@ class TranslationsMatchUiScreensMatchNearbyHeaderWidgetEn {
 
 	/// en: 'Match Finder'
 	String get matchFinder => 'Match Finder';
+
+	/// en: 'Set profile location'
+	String get setProfileLocation => 'Set profile location';
+
+	/// en: '{ratioKm} km search area'
+	String searchAreaKm({required Object ratioKm}) => '${ratioKm} km search area';
 }
 
 // Path: match.ui_screens_match_no_matches_state_widget
@@ -1289,6 +1319,33 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 
 	/// en: 's'
 	String get s => 's';
+
+	/// en: 'Joining...'
+	String get joining => 'Joining...';
+
+	/// en: 'Closed'
+	String get closed => 'Closed';
+
+	/// en: 'Table Full'
+	String get tableFull => 'Table Full';
+
+	/// en: 'Join Table'
+	String get joinTable => 'Join Table';
+
+	/// en: 'Unknown location'
+	String get unknownLocation => 'Unknown location';
+
+	/// en: 'Address unavailable'
+	String get addressUnavailable => 'Address unavailable';
+
+	/// en: 'player'
+	String get player => 'player';
+
+	/// en: 'players'
+	String get players => 'players';
+
+	/// en: '{subscribedPlayersCount} {playersWord} subscribed and {remainingSeats} {placesWord} remaining to close the table.'
+	String subscriptionTooltip({required Object subscribedPlayersCount, required Object playersWord, required Object remainingSeats, required Object placesWord}) => '${subscribedPlayersCount} ${playersWord} subscribed and ${remainingSeats} ${placesWord} remaining to close the table.';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget

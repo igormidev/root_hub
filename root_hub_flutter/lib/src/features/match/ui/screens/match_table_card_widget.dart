@@ -54,12 +54,14 @@ class MatchTableCardWidget extends StatelessWidget {
     final googlePlace = location?.googlePlaceLocation;
     final manualLocation = location?.manualInputLocation;
     final locationTitle =
-        googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
+        googlePlace?.name ??
+        manualLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
     final locationSubtitle =
         googlePlace?.shortFormattedAddress ??
         googlePlace?.formattedAddress ??
         manualLocation?.cityName ??
-        'Address unavailable';
+        t.match.ui_screens_match_table_card_widget.addressUnavailable;
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
@@ -84,10 +86,10 @@ class MatchTableCardWidget extends StatelessWidget {
     final canOpenSubscribedChat = tableId != null && isSubscribed;
 
     final actionLabel = switch ((isSubscribing, isClosed, isFull)) {
-      (true, _, _) => 'Joining...',
-      (_, true, _) => 'Closed',
-      (_, _, true) => 'Table Full',
-      _ => 'Join Table',
+      (true, _, _) => t.match.ui_screens_match_table_card_widget.joining,
+      (_, true, _) => t.match.ui_screens_match_table_card_widget.closed,
+      (_, _, true) => t.match.ui_screens_match_table_card_widget.tableFull,
+      _ => t.match.ui_screens_match_table_card_widget.joinTable,
     };
 
     final cardContent = Container(
@@ -151,9 +153,17 @@ class MatchTableCardWidget extends StatelessWidget {
               SizedBox(width: 8),
               Tooltip(
                 triggerMode: TooltipTriggerMode.tap,
-                message:
-                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : t.match.ui_screens_match_table_card_widget.s} subscribed and '
-                    '$remainingSeats ${remainingSeats == 1 ? t.match.ui_screens_match_table_card_widget.place : t.match.ui_screens_match_table_card_widget.places} remaining to close the table.',
+                message: t.match.ui_screens_match_table_card_widget
+                    .subscriptionTooltip(
+                      subscribedPlayersCount: subscribedPlayersCount.toString(),
+                      playersWord: subscribedPlayersCount == 1
+                          ? t.match.ui_screens_match_table_card_widget.player
+                          : t.match.ui_screens_match_table_card_widget.players,
+                      remainingSeats: remainingSeats.toString(),
+                      placesWord: remainingSeats == 1
+                          ? t.match.ui_screens_match_table_card_widget.place
+                          : t.match.ui_screens_match_table_card_widget.places,
+                    ),
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 10,

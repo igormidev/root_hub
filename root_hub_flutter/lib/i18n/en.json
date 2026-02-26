@@ -66,7 +66,15 @@
       "takePhoto2": "Take Photo",
       "changeProfilePhoto": "Change profile photo",
       "allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain": "Allow camera and photo permissions in system settings and try again.",
-      "unableToAccessCameraOrGallery": "Unable to access camera or gallery"
+      "unableToAccessCameraOrGallery": "Unable to access camera or gallery",
+      "rootPlayer": "Root Player",
+      "welcomeBack": "Welcome back, {displayName}",
+      "communityDashboardTitle": "Community Dashboard",
+      "matchFinderTitle": "Match Finder",
+      "shopPreviewTitle": "Shop Preview",
+      "communityDashboardSubtitle": "Discover what is happening around your ROOT community.",
+      "matchFinderSubtitle": "Browse and create match schedules with your local group.",
+      "shopPreviewSubtitle": "Collect future cosmetics, tokens, and community bundles."
     },
     "ui_screens_dashboard_faction_editor_screen": {
       "chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference": "Choose the faction shown in your profile and used as your default preference.",
@@ -260,7 +268,9 @@
     "ui_screens_match_nearby_header_widget": {
       "onlyTablesThatDidNotStartMoreThan2HoursAgoAreListed": "Only tables that did not start more than 2 hours ago are listed.",
       "nearbyMatchTables": "Nearby Match Tables",
-      "matchFinder": "Match Finder"
+      "matchFinder": "Match Finder",
+      "setProfileLocation": "Set profile location",
+      "searchAreaKm": "{ratioKm} km search area"
     },
     "ui_screens_match_no_matches_state_widget": {
       "hostTheFirstTable": "Host the first table",
@@ -340,7 +350,16 @@
       "openFullLocationDetails": "Open full location details",
       "places": "places",
       "place": "place",
-      "s": "s"
+      "s": "s",
+      "joining": "Joining...",
+      "closed": "Closed",
+      "tableFull": "Table Full",
+      "joinTable": "Join Table",
+      "unknownLocation": "Unknown location",
+      "addressUnavailable": "Address unavailable",
+      "player": "player",
+      "players": "players",
+      "subscriptionTooltip": "{subscribedPlayersCount} {playersWord} subscribed and {remainingSeats} {placesWord} remaining to close the table."
     },
     "ui_screens_match_location_header_image_widget": {
       "locationDetails": "Location Details"

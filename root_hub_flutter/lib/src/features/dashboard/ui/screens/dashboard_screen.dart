@@ -252,7 +252,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           authenticated: (playerData) => playerData,
           orElse: () => null,
         );
-    final displayName = playerData?.displayName ?? 'Root Player';
+    final displayName =
+        playerData?.displayName ??
+        t.dashboard.ui_screens_dashboard_screen.rootPlayer;
     final viewPadding = MediaQuery.viewPaddingOf(context);
 
     if (playerData != null &&
@@ -343,7 +345,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                       ),
                                 ),
                                 Text(
-                                  'Welcome back, $displayName',
+                                  t.dashboard.ui_screens_dashboard_screen
+                                      .welcomeBack(displayName: displayName),
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
                                         color: colorScheme.onSurfaceVariant,
@@ -507,22 +510,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   String _titleFromTab(DashboardTab tab) {
     switch (tab) {
       case DashboardTab.home:
-        return 'Community Dashboard';
+        return t.dashboard.ui_screens_dashboard_screen.communityDashboardTitle;
       case DashboardTab.match:
-        return 'Match Finder';
+        return t.dashboard.ui_screens_dashboard_screen.matchFinderTitle;
       case DashboardTab.shop:
-        return 'Shop Preview';
+        return t.dashboard.ui_screens_dashboard_screen.shopPreviewTitle;
     }
   }
 
   String _subtitleFromTab(DashboardTab tab) {
     switch (tab) {
       case DashboardTab.home:
-        return 'Discover what is happening around your ROOT community.';
+        return t
+            .dashboard
+            .ui_screens_dashboard_screen
+            .communityDashboardSubtitle;
       case DashboardTab.match:
-        return 'Browse and create match schedules with your local group.';
+        return t.dashboard.ui_screens_dashboard_screen.matchFinderSubtitle;
       case DashboardTab.shop:
-        return 'Collect future cosmetics, tokens, and community bundles.';
+        return t.dashboard.ui_screens_dashboard_screen.shopPreviewSubtitle;
     }
   }
 }
