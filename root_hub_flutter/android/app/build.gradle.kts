@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.root_hub_flutter"
+    namespace = "com.root_hub_flutter"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.root_hub_flutter"
+        applicationId = "com.root_hub_flutter"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -38,6 +38,11 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+}
+
+dependencies {
+    // Import the Firebase BoM to keep Firebase Android SDK versions aligned.
+    implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
 }
 
 flutter {
