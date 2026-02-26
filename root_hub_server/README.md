@@ -67,7 +67,8 @@ root_hub_server/
 
 ### `account`
 - `create_player_data.dart`: creates `PlayerData` for authenticated user (display name, favorite faction, mandatory current geolocation coordinates + search ratio; idempotent conflict handling).
-- `get_account.dart`: returns authenticated user profile.
+- `get_player_data.dart`: returns authenticated user profile.
+- `reverse_geocode_city.dart`: resolves city/area labels from latitude/longitude using Google Geocoding API.
 - `update_player_data.dart`: updates authenticated user profile fields (display name, favorite faction, and current geolocation coordinates + search ratio).
 
 ### `community`

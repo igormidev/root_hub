@@ -242,8 +242,14 @@ class TranslationsAuthAuthOnboardingProfileScreenEn {
 	/// en: 'Current location'
 	String get currentLocation => 'Current location';
 
+	/// en: 'Where do you want to play?'
+	String get whereDoYouWantToPlay => 'Where do you want to play?';
+
 	/// en: 'Location is required to show nearby tables. Choose device location or search for a place.'
 	String get locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch => 'Location is required to show nearby tables. Choose device location or search for a place.';
+
+	/// en: 'Choose the area where you want to find nearby players and tables.'
+	String get chooseTheAreaWhereYouWantToFindNearbyPlayers => 'Choose the area where you want to find nearby players and tables.';
 
 	/// en: 'Use my current device location'
 	String get useMyCurrentDeviceLocation => 'Use my current device location';
@@ -259,6 +265,24 @@ class TranslationsAuthAuthOnboardingProfileScreenEn {
 
 	/// en: 'Open the search and select any place you prefer.'
 	String get openTheSearchAndSelectAnyPlaceYouPrefer => 'Open the search and select any place you prefer.';
+
+	/// en: 'Your play area'
+	String get yourPlayArea => 'Your play area';
+
+	/// en: 'Finding city name...'
+	String get findingCityName => 'Finding city name...';
+
+	/// en: 'Selected area'
+	String get selectedArea => 'Selected area';
+
+	/// en: 'We will show matches near {city}.'
+	String weWillShowMatchesNear({required Object city}) => 'We will show matches near ${city}.';
+
+	/// en: 'We will show matches near your selected area.'
+	String get weWillShowMatchesNearTheSelectedArea => 'We will show matches near your selected area.';
+
+	/// en: 'Change location'
+	String get changeLocation => 'Change location';
 
 	/// en: 'Selected coordinates'
 	String get selectedCoordinates => 'Selected coordinates';
@@ -292,6 +316,9 @@ class TranslationsAuthAuthOnboardingProfileScreenEn {
 
 	/// en: 'Unable to capture location right now. Location is required to continue.'
 	String get unableToCaptureLocationRightNowLocationIsRequiredToContinue => 'Unable to capture location right now. Location is required to continue.';
+
+	/// en: 'Unable to resolve the city name right now.'
+	String get unableToResolveCityNameRightNow => 'Unable to resolve the city name right now.';
 
 	/// en: 'Search for location'
 	String get searchForLocation => 'Search for location';

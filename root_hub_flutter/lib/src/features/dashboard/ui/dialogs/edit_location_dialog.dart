@@ -251,9 +251,17 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
                   physics: BouncingScrollPhysics(),
                   child: LocationSelectionPanelWidget(
                     currentLocation: _draftLocation,
+                    currentLocationCityName: null,
+                    currentLocationShortAddress: null,
                     isResolvingLocation: _isResolvingLocation,
+                    isResolvingLocationLabel: false,
                     onUseCurrentLocation: _resolveCurrentLocation,
                     onSearchLocation: _openLocationSearchSheet,
+                    onUnselectLocation: () {
+                      setState(() {
+                        _draftLocation = null;
+                      });
+                    },
                     onDecreaseRatio: _draftLocation == null
                         ? null
                         : () => _changeRatio(-_ratioStepKm),
