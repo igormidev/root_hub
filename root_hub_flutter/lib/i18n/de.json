@@ -82,11 +82,9 @@
       "communityDashboardTitle": "Community-Dashboard",
       "matchFinderTitle": "Partien finden",
       "activityCenterTitle": "Aktivitätszentrum",
-      "shopPreviewTitle": "Shop-Vorschau",
       "communityDashboardSubtitle": "Sieh dir an, was in der ROOT-Community passiert.",
       "matchFinderSubtitle": "Finde Partien in deiner Nähe oder erstelle eine neue mit deiner Gruppe.",
-      "activityCenterSubtitle": "Verfolge deine aktiven Tische und Chat-Updates an einem Ort.",
-      "shopPreviewSubtitle": "Sammle künftig Kosmetik, Token und Community-Bundles."
+      "activityCenterSubtitle": "Verfolge deine aktiven Tische und Chat-Updates an einem Ort."
     },
     "ui_screens_dashboard_faction_editor_screen": {
       "chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference": "Wählen Sie die Fraktion aus, die in Ihrem Profil angezeigt und als Standardeinstellung verwendet wird.",
@@ -623,23 +621,14 @@
   },
   "shop": {
     "ui_screens_shop_screen": {
-      "overviewTitle": "Baue deine Root-Sammlung auf",
-      "overviewDescription": "Kaufe das Grundspiel und Erweiterungen mit lokalisierten Boxdetails und schnellen Marketplace-Links.",
-      "imageInteractionHint": "Tippe auf ein Bild für Vollbild-Zoom",
-      "catalogSectionTitle": "Verfügbare Boxen",
-      "catalogSectionDescription": "Jede Karte enthält Fraktionen, Box-Inhalte und Kauf-Links.",
+      "shopHeaderTitle": "Baue deine Root-Sammlung auf",
+      "shopHeaderDescription": "Kaufe das Grundspiel und Erweiterungen mit lokalisierten Boxdetails und schnellen Marketplace-Links.",
       "whereToBuy": "Wo kaufen",
       "buyAt": "Bei {store} kaufen",
       "invalidStoreUrl": "Dieser Shop-Link ist ungültig.",
       "unableToOpenStoreUrl": "Dieser Shop-Link kann gerade nicht geöffnet werden.",
       "closeGallery": "Galerie schließen",
-      "noProductsAvailable": "Für diese Sprache sind noch keine Produkte verfügbar.",
-      "supporterPacksLinkedToCommunityTournaments": "Unterstützerpakete, die mit Community-Turnieren verknüpft sind.",
-      "plannedThemedProfilePacksFactionCosmeticsAndEvent": "Geplant: Themenprofilpakete, Fraktionskosmetik und Event",
-      "roadmapPlaceholder": "Roadmap-Platzhalter",
-      "communityDrivenBundlesForRootPlayers": "Community-getriebene Bundles für ROOT-Spieler.",
-      "thisAreaWillHostFutureDigitalGoodsCosmeticsAnd": "In diesem Bereich werden künftig digitale Waren, Kosmetika usw. untergebracht sein",
-      "shopFeaturePlaceholder": "Platzhalter für die Shop-Funktion"
+      "noProductsAvailable": "Für diese Sprache sind noch keine Produkte verfügbar."
     }
   }
 }

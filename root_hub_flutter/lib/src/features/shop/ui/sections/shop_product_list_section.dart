@@ -21,21 +21,6 @@ class ShopProductListSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          t.shop.ui_screens_shop_screen.catalogSectionTitle,
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        SizedBox(height: 6),
-        Text(
-          t.shop.ui_screens_shop_screen.catalogSectionDescription,
-          style: textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        SizedBox(height: 14),
         if (products.isEmpty)
           Container(
             width: double.infinity,

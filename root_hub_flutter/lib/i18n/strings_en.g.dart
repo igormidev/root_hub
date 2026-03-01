@@ -440,9 +440,6 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 	/// en: 'Activity Center'
 	String get activityCenterTitle => 'Activity Center';
 
-	/// en: 'Shop Preview'
-	String get shopPreviewTitle => 'Shop Preview';
-
 	/// en: 'Discover what is happening around your ROOT community.'
 	String get communityDashboardSubtitle => 'Discover what is happening around your ROOT community.';
 
@@ -451,9 +448,6 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 
 	/// en: 'Track your active tables and chat updates in one place.'
 	String get activityCenterSubtitle => 'Track your active tables and chat updates in one place.';
-
-	/// en: 'Collect future cosmetics, tokens, and community bundles.'
-	String get shopPreviewSubtitle => 'Collect future cosmetics, tokens, and community bundles.';
 }
 
 // Path: dashboard.ui_screens_dashboard_faction_editor_screen
@@ -2223,19 +2217,10 @@ class TranslationsShopUiScreensShopScreenEn {
 	// Translations
 
 	/// en: 'Build Your Root Collection'
-	String get overviewTitle => 'Build Your Root Collection';
+	String get shopHeaderTitle => 'Build Your Root Collection';
 
 	/// en: 'Buy the base game and expansions with localized box details and quick marketplace shortcuts.'
-	String get overviewDescription => 'Buy the base game and expansions with localized box details and quick marketplace shortcuts.';
-
-	/// en: 'Tap any image to open full-screen zoom'
-	String get imageInteractionHint => 'Tap any image to open full-screen zoom';
-
-	/// en: 'Available Boxes'
-	String get catalogSectionTitle => 'Available Boxes';
-
-	/// en: 'Each card includes factions, box contents, and links to buy now.'
-	String get catalogSectionDescription => 'Each card includes factions, box contents, and links to buy now.';
+	String get shopHeaderDescription => 'Buy the base game and expansions with localized box details and quick marketplace shortcuts.';
 
 	/// en: 'Where to buy'
 	String get whereToBuy => 'Where to buy';
@@ -2254,22 +2239,4 @@ class TranslationsShopUiScreensShopScreenEn {
 
 	/// en: 'No products are available for this locale yet.'
 	String get noProductsAvailable => 'No products are available for this locale yet.';
-
-	/// en: 'supporter packs linked to community tournaments.'
-	String get supporterPacksLinkedToCommunityTournaments => 'supporter packs linked to community tournaments.';
-
-	/// en: 'Planned: themed profile packs, faction cosmetics, and event '
-	String get plannedThemedProfilePacksFactionCosmeticsAndEvent => 'Planned: themed profile packs, faction cosmetics, and event ';
-
-	/// en: 'Roadmap placeholder'
-	String get roadmapPlaceholder => 'Roadmap placeholder';
-
-	/// en: 'community-driven bundles for ROOT players.'
-	String get communityDrivenBundlesForRootPlayers => 'community-driven bundles for ROOT players.';
-
-	/// en: 'This area will host future digital goods, cosmetics, and '
-	String get thisAreaWillHostFutureDigitalGoodsCosmeticsAnd => 'This area will host future digital goods, cosmetics, and ';
-
-	/// en: 'Shop feature placeholder'
-	String get shopFeaturePlaceholder => 'Shop feature placeholder';
 }

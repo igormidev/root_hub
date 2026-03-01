@@ -33,8 +33,6 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
-  static const _bottomNavigationHeightOffset = 90.0;
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _imagePicker = ImagePicker();
 
@@ -322,131 +320,77 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           Positioned.fill(
             child: SafeArea(
               bottom: false,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: viewPadding.bottom + _bottomNavigationHeightOffset,
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16, 6, 16, 8),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/app_logo.png',
-                            width: 42,
-                            height: 42,
-                            fit: BoxFit.contain,
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  t
-                                      .dashboard
-                                      .ui_screens_dashboard_screen
-                                      .rootHub,
-                                  style: Theme.of(context).textTheme.titleLarge
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 0.5,
-                                      ),
-                                ),
-                                Text(
-                                  t.dashboard.ui_screens_dashboard_screen
-                                      .welcomeBack(displayName: displayName),
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 14),
-                          IconButton.filledTonal(
-                            onPressed: playerData == null
-                                ? null
-                                : () {
-                                    _scaffoldKey.currentState?.openDrawer();
-                                  },
-                            icon: Icon(Icons.menu_rounded),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (selectedTab == DashboardTab.shop)
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.fromLTRB(14, 12, 14, 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: colorScheme.outlineVariant,
-                            ),
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                colorScheme.surface.withValues(alpha: 0.95),
-                                colorScheme.surfaceContainerLowest.withValues(
-                                  alpha: 0.92,
-                                ),
-                              ],
-                            ),
-                          ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16, 6, 16, 8),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/app_logo.png',
+                          width: 42,
+                          height: 42,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                _titleFromTab(selectedTab),
+                                t.dashboard.ui_screens_dashboard_screen.rootHub,
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.5,
                                     ),
                               ),
-                              SizedBox(height: 4),
                               Text(
-                                _subtitleFromTab(selectedTab),
+                                t.dashboard.ui_screens_dashboard_screen
+                                    .welcomeBack(displayName: displayName),
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       color: colorScheme.onSurfaceVariant,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                     ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
                         ),
-                      )
-                    else
-                      SizedBox(height: 4),
-                    Expanded(
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        child: KeyedSubtree(
-                          key: ValueKey(selectedTab),
-                          child: DashboardTabContentWidget(tab: selectedTab),
+                        SizedBox(width: 14),
+                        IconButton.filledTonal(
+                          onPressed: playerData == null
+                              ? null
+                              : () {
+                                  _scaffoldKey.currentState?.openDrawer();
+                                },
+                          icon: Icon(Icons.menu_rounded),
                         ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      child: KeyedSubtree(
+                        key: ValueKey(selectedTab),
+                        child: DashboardTabContentWidget(tab: selectedTab),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
           Positioned(
             left: 14,
             right: 14,
-            bottom: viewPadding.bottom + 8,
+            bottom: viewPadding.bottom,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(999),
@@ -531,34 +475,5 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ],
       ),
     );
-  }
-
-  String _titleFromTab(DashboardTab tab) {
-    switch (tab) {
-      case DashboardTab.home:
-        return t.dashboard.ui_screens_dashboard_screen.communityDashboardTitle;
-      case DashboardTab.match:
-        return t.dashboard.ui_screens_dashboard_screen.matchFinderTitle;
-      case DashboardTab.activity:
-        return t.dashboard.ui_screens_dashboard_screen.activityCenterTitle;
-      case DashboardTab.shop:
-        return t.dashboard.ui_screens_dashboard_screen.shopPreviewTitle;
-    }
-  }
-
-  String _subtitleFromTab(DashboardTab tab) {
-    switch (tab) {
-      case DashboardTab.home:
-        return t
-            .dashboard
-            .ui_screens_dashboard_screen
-            .communityDashboardSubtitle;
-      case DashboardTab.match:
-        return t.dashboard.ui_screens_dashboard_screen.matchFinderSubtitle;
-      case DashboardTab.activity:
-        return t.dashboard.ui_screens_dashboard_screen.activityCenterSubtitle;
-      case DashboardTab.shop:
-        return t.dashboard.ui_screens_dashboard_screen.shopPreviewSubtitle;
-    }
   }
 }

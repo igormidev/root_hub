@@ -82,11 +82,9 @@
       "communityDashboardTitle": "Panel de la Comunidad",
       "matchFinderTitle": "Buscar Partidas",
       "activityCenterTitle": "Centro de Actividad",
-      "shopPreviewTitle": "Vista previa de la Tienda",
       "communityDashboardSubtitle": "Mira qué está pasando en la comunidad de ROOT.",
       "matchFinderSubtitle": "Busca partidas cercanas o crea una nueva con tu grupo local.",
-      "activityCenterSubtitle": "Sigue tus mesas activas y las novedades de chat en un solo lugar.",
-      "shopPreviewSubtitle": "Consigue cosméticos, fichas y paquetes de la comunidad próximamente."
+      "activityCenterSubtitle": "Sigue tus mesas activas y las novedades de chat en un solo lugar."
     },
     "ui_screens_dashboard_faction_editor_screen": {
       "chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference": "Elija la facción que se muestra en su perfil y se utiliza como su preferencia predeterminada.",
@@ -623,23 +621,14 @@
   },
   "shop": {
     "ui_screens_shop_screen": {
-      "overviewTitle": "Arma tu colección de Root",
-      "overviewDescription": "Compra el juego base y las expansiones con detalles localizados de la caja y accesos rápidos a marketplaces.",
-      "imageInteractionHint": "Toca una imagen para abrir zoom en pantalla completa",
-      "catalogSectionTitle": "Cajas disponibles",
-      "catalogSectionDescription": "Cada tarjeta incluye facciones, contenido de la caja y enlaces de compra.",
+      "shopHeaderTitle": "Arma tu colección de Root",
+      "shopHeaderDescription": "Compra el juego base y las expansiones con detalles localizados de la caja y accesos rápidos a marketplaces.",
       "whereToBuy": "Dónde comprar",
       "buyAt": "Comprar en {store}",
       "invalidStoreUrl": "Este enlace de tienda no es válido.",
       "unableToOpenStoreUrl": "No se pudo abrir este enlace de tienda ahora.",
       "closeGallery": "Cerrar galería",
-      "noProductsAvailable": "Aún no hay productos disponibles para este idioma.",
-      "supporterPacksLinkedToCommunityTournaments": "Paquetes de seguidores vinculados a torneos comunitarios.",
-      "plannedThemedProfilePacksFactionCosmeticsAndEvent": "Planificado: paquetes de perfiles temáticos, cosméticos de facción y evento.",
-      "roadmapPlaceholder": "Marcador de posición de hoja de ruta",
-      "communityDrivenBundlesForRootPlayers": "packs creados por la comunidad para jugadores de ROOT.",
-      "thisAreaWillHostFutureDigitalGoodsCosmeticsAnd": "Esta área albergará futuros productos digitales, cosméticos y",
-      "shopFeaturePlaceholder": "Marcador de posición de función de tienda"
+      "noProductsAvailable": "Aún no hay productos disponibles para este idioma."
     }
   }
 }

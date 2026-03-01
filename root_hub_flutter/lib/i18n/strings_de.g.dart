@@ -303,11 +303,9 @@ class _TranslationsDashboardUiScreensDashboardScreenDe extends TranslationsDashb
 	@override String get communityDashboardTitle => 'Community-Dashboard';
 	@override String get matchFinderTitle => 'Partien finden';
 	@override String get activityCenterTitle => 'Aktivitätszentrum';
-	@override String get shopPreviewTitle => 'Shop-Vorschau';
 	@override String get communityDashboardSubtitle => 'Sieh dir an, was in der ROOT-Community passiert.';
 	@override String get matchFinderSubtitle => 'Finde Partien in deiner Nähe oder erstelle eine neue mit deiner Gruppe.';
 	@override String get activityCenterSubtitle => 'Verfolge deine aktiven Tische und Chat-Updates an einem Ort.';
-	@override String get shopPreviewSubtitle => 'Sammle künftig Kosmetik, Token und Community-Bundles.';
 }
 
 // Path: dashboard.ui_screens_dashboard_faction_editor_screen
@@ -1275,21 +1273,12 @@ class _TranslationsShopUiScreensShopScreenDe extends TranslationsShopUiScreensSh
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
-	@override String get overviewTitle => 'Baue deine Root-Sammlung auf';
-	@override String get overviewDescription => 'Kaufe das Grundspiel und Erweiterungen mit lokalisierten Boxdetails und schnellen Marketplace-Links.';
-	@override String get imageInteractionHint => 'Tippe auf ein Bild für Vollbild-Zoom';
-	@override String get catalogSectionTitle => 'Verfügbare Boxen';
-	@override String get catalogSectionDescription => 'Jede Karte enthält Fraktionen, Box-Inhalte und Kauf-Links.';
+	@override String get shopHeaderTitle => 'Baue deine Root-Sammlung auf';
+	@override String get shopHeaderDescription => 'Kaufe das Grundspiel und Erweiterungen mit lokalisierten Boxdetails und schnellen Marketplace-Links.';
 	@override String get whereToBuy => 'Wo kaufen';
 	@override String buyAt({required Object store}) => 'Bei ${store} kaufen';
 	@override String get invalidStoreUrl => 'Dieser Shop-Link ist ungültig.';
 	@override String get unableToOpenStoreUrl => 'Dieser Shop-Link kann gerade nicht geöffnet werden.';
 	@override String get closeGallery => 'Galerie schließen';
 	@override String get noProductsAvailable => 'Für diese Sprache sind noch keine Produkte verfügbar.';
-	@override String get supporterPacksLinkedToCommunityTournaments => 'Unterstützerpakete, die mit Community-Turnieren verknüpft sind.';
-	@override String get plannedThemedProfilePacksFactionCosmeticsAndEvent => 'Geplant: Themenprofilpakete, Fraktionskosmetik und Event';
-	@override String get roadmapPlaceholder => 'Roadmap-Platzhalter';
-	@override String get communityDrivenBundlesForRootPlayers => 'Community-getriebene Bundles für ROOT-Spieler.';
-	@override String get thisAreaWillHostFutureDigitalGoodsCosmeticsAnd => 'In diesem Bereich werden künftig digitale Waren, Kosmetika usw. untergebracht sein';
-	@override String get shopFeaturePlaceholder => 'Platzhalter für die Shop-Funktion';
 }

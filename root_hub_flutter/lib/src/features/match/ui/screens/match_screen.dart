@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_actionable_info_row_widget.dart';
@@ -28,7 +29,6 @@ import 'package:root_hub_flutter/src/states/match/match_create_table_provider.da
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchScreen extends ConsumerStatefulWidget {
   const MatchScreen({
@@ -180,7 +180,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         if (hasPendingMatches)
           Positioned(
             left: 16,
-            bottom: 18,
+            bottom: 124,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -228,7 +228,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
           ),
         Positioned(
           right: 16,
-          bottom: 18,
+          bottom: 124,
           child: FloatingActionButton.extended(
             heroTag: 'host-match-fab',
             onPressed: () {
