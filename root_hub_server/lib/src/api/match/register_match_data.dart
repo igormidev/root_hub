@@ -88,11 +88,12 @@ class RegisterMatchData extends Endpoint {
           );
         }
 
-        _validatePlayersCount(
-          playersCount: players.length,
-          minAmountOfPlayers: scheduledPairingAttempt.minAmountOfPlayers,
-          maxAmountOfPlayers: scheduledPairingAttempt.maxAmountOfPlayers,
-        );
+        if (players.length < 2) {
+          _throwInvalidRequest(
+            'At least 2 players are required to register a match.',
+          );
+        }
+
         _validatePlayerResults(players);
 
         final playerDataById = await _loadPlayerDataById(
@@ -288,38 +289,6 @@ class RegisterMatchData extends Endpoint {
     }
 
     return playerData;
-  }
-
-  void _validatePlayersCount({
-    required int playersCount,
-    required MatchPodium minAmountOfPlayers,
-    required MatchPodium maxAmountOfPlayers,
-  }) {
-    final minPlayers = _podiumToPlayersCount(minAmountOfPlayers);
-    final maxPlayers = _podiumToPlayersCount(maxAmountOfPlayers);
-
-    if (playersCount < minPlayers || playersCount > maxPlayers) {
-      _throwInvalidRequest(
-        'Players count must be between $minPlayers and $maxPlayers for this scheduled pairing attempt.',
-      );
-    }
-  }
-
-  int _podiumToPlayersCount(MatchPodium podium) {
-    switch (podium) {
-      case MatchPodium.firstPlace:
-        return 1;
-      case MatchPodium.secondPlace:
-        return 2;
-      case MatchPodium.thirdPlace:
-        return 3;
-      case MatchPodium.fourthPlace:
-        return 4;
-      case MatchPodium.fifthPlace:
-        return 5;
-      case MatchPodium.sixthPlace:
-        return 6;
-    }
   }
 
   void _validatePlayerResults(List<PlayerMatchResultInput> players) {
