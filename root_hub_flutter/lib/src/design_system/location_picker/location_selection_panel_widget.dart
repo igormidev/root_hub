@@ -303,7 +303,7 @@ class LocationSelectionPanelWidget extends StatelessWidget {
                     border: Border.all(color: colorScheme.outlineVariant),
                     color: colorScheme.surface.withValues(alpha: 0.94),
                   ),
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -316,6 +316,7 @@ class LocationSelectionPanelWidget extends StatelessWidget {
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
+                      Spacer(),
                       const SizedBox(height: 6),
                       Text(
                         location.x.toStringAsFixed(6),
@@ -337,7 +338,7 @@ class LocationSelectionPanelWidget extends StatelessWidget {
                     border: Border.all(color: colorScheme.outlineVariant),
                     color: colorScheme.surface.withValues(alpha: 0.94),
                   ),
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -350,7 +351,7 @@ class LocationSelectionPanelWidget extends StatelessWidget {
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      Spacer(),
                       Text(
                         location.y.toStringAsFixed(6),
                         style: Theme.of(context).textTheme.titleMedium
