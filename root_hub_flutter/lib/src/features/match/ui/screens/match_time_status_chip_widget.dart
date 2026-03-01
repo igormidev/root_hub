@@ -23,6 +23,8 @@ class MatchTimeStatusChipWidget extends StatelessWidget {
         : formatDurationToClock(remaining);
 
     return Tooltip(
+      triggerMode: TooltipTriggerMode.tap,
+      preferBelow: false,
       message: alreadyStarted
           ? t
                 .match

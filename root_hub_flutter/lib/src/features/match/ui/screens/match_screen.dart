@@ -889,11 +889,19 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
   String _formatDurationToClock(Duration duration) {
     final clampedDuration = duration.inSeconds <= 0 ? Duration.zero : duration;
     final totalSeconds = clampedDuration.inSeconds;
-    final hours = totalSeconds ~/ 3600;
+    final days = totalSeconds ~/ Duration.secondsPerDay;
+    final hours = (totalSeconds % Duration.secondsPerDay) ~/ 3600;
     final minutes = (totalSeconds % 3600) ~/ 60;
     final seconds = totalSeconds % 60;
 
-    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    final timeLabel =
+        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+
+    if (days > 0) {
+      return '${days}d, $timeLabel';
+    }
+
+    return timeLabel;
   }
 
   String? _distanceLabel(
