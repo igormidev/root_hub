@@ -623,6 +623,17 @@
   },
   "shop": {
     "ui_screens_shop_screen": {
+      "overviewTitle": "Baue deine Root-Sammlung auf",
+      "overviewDescription": "Kaufe das Grundspiel und Erweiterungen mit lokalisierten Boxdetails und schnellen Marketplace-Links.",
+      "imageInteractionHint": "Tippe auf ein Bild für Vollbild-Zoom",
+      "catalogSectionTitle": "Verfügbare Boxen",
+      "catalogSectionDescription": "Jede Karte enthält Fraktionen, Box-Inhalte und Kauf-Links.",
+      "whereToBuy": "Wo kaufen",
+      "buyAt": "Bei {store} kaufen",
+      "invalidStoreUrl": "Dieser Shop-Link ist ungültig.",
+      "unableToOpenStoreUrl": "Dieser Shop-Link kann gerade nicht geöffnet werden.",
+      "closeGallery": "Galerie schließen",
+      "noProductsAvailable": "Für diese Sprache sind noch keine Produkte verfügbar.",
       "supporterPacksLinkedToCommunityTournaments": "Unterstützerpakete, die mit Community-Turnieren verknüpft sind.",
       "plannedThemedProfilePacksFactionCosmeticsAndEvent": "Geplant: Themenprofilpakete, Fraktionskosmetik und Event",
       "roadmapPlaceholder": "Roadmap-Platzhalter",

@@ -1275,6 +1275,17 @@ class _TranslationsShopUiScreensShopScreenDe extends TranslationsShopUiScreensSh
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
+	@override String get overviewTitle => 'Baue deine Root-Sammlung auf';
+	@override String get overviewDescription => 'Kaufe das Grundspiel und Erweiterungen mit lokalisierten Boxdetails und schnellen Marketplace-Links.';
+	@override String get imageInteractionHint => 'Tippe auf ein Bild für Vollbild-Zoom';
+	@override String get catalogSectionTitle => 'Verfügbare Boxen';
+	@override String get catalogSectionDescription => 'Jede Karte enthält Fraktionen, Box-Inhalte und Kauf-Links.';
+	@override String get whereToBuy => 'Wo kaufen';
+	@override String buyAt({required Object store}) => 'Bei ${store} kaufen';
+	@override String get invalidStoreUrl => 'Dieser Shop-Link ist ungültig.';
+	@override String get unableToOpenStoreUrl => 'Dieser Shop-Link kann gerade nicht geöffnet werden.';
+	@override String get closeGallery => 'Galerie schließen';
+	@override String get noProductsAvailable => 'Für diese Sprache sind noch keine Produkte verfügbar.';
 	@override String get supporterPacksLinkedToCommunityTournaments => 'Unterstützerpakete, die mit Community-Turnieren verknüpft sind.';
 	@override String get plannedThemedProfilePacksFactionCosmeticsAndEvent => 'Geplant: Themenprofilpakete, Fraktionskosmetik und Event';
 	@override String get roadmapPlaceholder => 'Roadmap-Platzhalter';

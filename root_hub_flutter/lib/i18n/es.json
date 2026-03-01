@@ -623,6 +623,17 @@
   },
   "shop": {
     "ui_screens_shop_screen": {
+      "overviewTitle": "Arma tu colección de Root",
+      "overviewDescription": "Compra el juego base y las expansiones con detalles localizados de la caja y accesos rápidos a marketplaces.",
+      "imageInteractionHint": "Toca una imagen para abrir zoom en pantalla completa",
+      "catalogSectionTitle": "Cajas disponibles",
+      "catalogSectionDescription": "Cada tarjeta incluye facciones, contenido de la caja y enlaces de compra.",
+      "whereToBuy": "Dónde comprar",
+      "buyAt": "Comprar en {store}",
+      "invalidStoreUrl": "Este enlace de tienda no es válido.",
+      "unableToOpenStoreUrl": "No se pudo abrir este enlace de tienda ahora.",
+      "closeGallery": "Cerrar galería",
+      "noProductsAvailable": "Aún no hay productos disponibles para este idioma.",
       "supporterPacksLinkedToCommunityTournaments": "Paquetes de seguidores vinculados a torneos comunitarios.",
       "plannedThemedProfilePacksFactionCosmeticsAndEvent": "Planificado: paquetes de perfiles temáticos, cosméticos de facción y evento.",
       "roadmapPlaceholder": "Marcador de posición de hoja de ruta",

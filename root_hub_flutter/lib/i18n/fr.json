@@ -623,6 +623,17 @@
   },
   "shop": {
     "ui_screens_shop_screen": {
+      "overviewTitle": "Construisez votre collection Root",
+      "overviewDescription": "Achetez le jeu de base et les extensions avec les détails localisés de la boîte et des raccourcis vers les marketplaces.",
+      "imageInteractionHint": "Touchez une image pour l’ouvrir en plein écran avec zoom",
+      "catalogSectionTitle": "Boîtes disponibles",
+      "catalogSectionDescription": "Chaque carte inclut les factions, le contenu de la boîte et des liens d’achat.",
+      "whereToBuy": "Où acheter",
+      "buyAt": "Acheter sur {store}",
+      "invalidStoreUrl": "Ce lien de boutique est invalide.",
+      "unableToOpenStoreUrl": "Impossible d’ouvrir ce lien de boutique pour le moment.",
+      "closeGallery": "Fermer la galerie",
+      "noProductsAvailable": "Aucun produit disponible pour cette langue pour le moment.",
       "supporterPacksLinkedToCommunityTournaments": "des packs de supporters liés aux tournois communautaires.",
       "plannedThemedProfilePacksFactionCosmeticsAndEvent": "Prévu : packs de profils thématiques, cosmétiques de faction et événement",
       "roadmapPlaceholder": "Espace réservé pour la feuille de route",

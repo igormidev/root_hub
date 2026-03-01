@@ -2222,6 +2222,39 @@ class TranslationsShopUiScreensShopScreenEn {
 
 	// Translations
 
+	/// en: 'Build Your Root Collection'
+	String get overviewTitle => 'Build Your Root Collection';
+
+	/// en: 'Buy the base game and expansions with localized box details and quick marketplace shortcuts.'
+	String get overviewDescription => 'Buy the base game and expansions with localized box details and quick marketplace shortcuts.';
+
+	/// en: 'Tap any image to open full-screen zoom'
+	String get imageInteractionHint => 'Tap any image to open full-screen zoom';
+
+	/// en: 'Available Boxes'
+	String get catalogSectionTitle => 'Available Boxes';
+
+	/// en: 'Each card includes factions, box contents, and links to buy now.'
+	String get catalogSectionDescription => 'Each card includes factions, box contents, and links to buy now.';
+
+	/// en: 'Where to buy'
+	String get whereToBuy => 'Where to buy';
+
+	/// en: 'Buy on {store}'
+	String buyAt({required Object store}) => 'Buy on ${store}';
+
+	/// en: 'This store link is invalid.'
+	String get invalidStoreUrl => 'This store link is invalid.';
+
+	/// en: 'Unable to open this store link right now.'
+	String get unableToOpenStoreUrl => 'Unable to open this store link right now.';
+
+	/// en: 'Close gallery'
+	String get closeGallery => 'Close gallery';
+
+	/// en: 'No products are available for this locale yet.'
+	String get noProductsAvailable => 'No products are available for this locale yet.';
+
 	/// en: 'supporter packs linked to community tournaments.'
 	String get supporterPacksLinkedToCommunityTournaments => 'supporter packs linked to community tournaments.';
 

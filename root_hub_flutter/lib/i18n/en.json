@@ -623,6 +623,17 @@
   },
   "shop": {
     "ui_screens_shop_screen": {
+      "overviewTitle": "Build Your Root Collection",
+      "overviewDescription": "Buy the base game and expansions with localized box details and quick marketplace shortcuts.",
+      "imageInteractionHint": "Tap any image to open full-screen zoom",
+      "catalogSectionTitle": "Available Boxes",
+      "catalogSectionDescription": "Each card includes factions, box contents, and links to buy now.",
+      "whereToBuy": "Where to buy",
+      "buyAt": "Buy on {store}",
+      "invalidStoreUrl": "This store link is invalid.",
+      "unableToOpenStoreUrl": "Unable to open this store link right now.",
+      "closeGallery": "Close gallery",
+      "noProductsAvailable": "No products are available for this locale yet.",
       "supporterPacksLinkedToCommunityTournaments": "supporter packs linked to community tournaments.",
       "plannedThemedProfilePacksFactionCosmeticsAndEvent": "Planned: themed profile packs, faction cosmetics, and event ",
       "roadmapPlaceholder": "Roadmap placeholder",

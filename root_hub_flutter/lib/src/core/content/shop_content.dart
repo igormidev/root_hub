@@ -740,3 +740,28 @@ enum RootProduct {
 enum ShopBrand { amazon, aliexpress, ebay, carrefour }
 
 enum ValidCountry { english, german, french, portugueseBrazil, spanish }
+
+extension ShopBrandUiMetadataX on ShopBrand {
+  String get displayName {
+    return switch (this) {
+      ShopBrand.amazon => 'Amazon',
+      ShopBrand.aliexpress => 'AliExpress',
+      ShopBrand.ebay => 'eBay',
+      ShopBrand.carrefour => 'Carrefour',
+    };
+  }
+
+  /// Wikimedia-hosted PNG thumbnails for stable rendering in Flutter.
+  String get logoPngUrl {
+    return switch (this) {
+      ShopBrand.amazon =>
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/960px-Amazon_logo.svg.png',
+      ShopBrand.aliexpress =>
+        'https://upload.wikimedia.org/wikipedia/commons/2/2a/AliExpress_logo_2.png',
+      ShopBrand.ebay =>
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/960px-EBay_logo.svg.png',
+      ShopBrand.carrefour =>
+        'https://upload.wikimedia.org/wikipedia/commons/1/13/Carrefour_International_Logo.png',
+    };
+  }
+}

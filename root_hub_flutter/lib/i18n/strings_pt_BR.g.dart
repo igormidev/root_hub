@@ -1275,6 +1275,17 @@ class _TranslationsShopUiScreensShopScreenPtBr extends TranslationsShopUiScreens
 	final TranslationsPtBr _root; // ignore: unused_field
 
 	// Translations
+	@override String get overviewTitle => 'Monte sua coleção de Root';
+	@override String get overviewDescription => 'Compre o jogo base e expansões com detalhes localizados da caixa e atalhos rápidos para marketplaces.';
+	@override String get imageInteractionHint => 'Toque em uma imagem para abrir em tela cheia com zoom';
+	@override String get catalogSectionTitle => 'Caixas disponíveis';
+	@override String get catalogSectionDescription => 'Cada card inclui facções, conteúdos da caixa e links para compra.';
+	@override String get whereToBuy => 'Onde comprar';
+	@override String buyAt({required Object store}) => 'Comprar na ${store}';
+	@override String get invalidStoreUrl => 'Este link de loja é inválido.';
+	@override String get unableToOpenStoreUrl => 'Não foi possível abrir este link de loja agora.';
+	@override String get closeGallery => 'Fechar galeria';
+	@override String get noProductsAvailable => 'Ainda não há produtos disponíveis para este idioma.';
 	@override String get supporterPacksLinkedToCommunityTournaments => 'pacotes de torcedor vinculados a torneios comunitários.';
 	@override String get plannedThemedProfilePacksFactionCosmeticsAndEvent => 'Planejado: pacotes de perfis temáticos, cosméticos de facção e evento';
 	@override String get roadmapPlaceholder => 'Espaço reservado para roteiro';
