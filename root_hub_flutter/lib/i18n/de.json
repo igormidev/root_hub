@@ -174,7 +174,7 @@
       "factionWinRate": "Fraktionssiegrate"
     },
     "ui_screens_home_screen": {
-      "yourPersonalFactionPerformanceAndMatchProfile": "Ihre persönliche Fraktionsleistung und Ihr Match-Profil.",
+      "yourPersonalFactionPerformanceAndMatchProfile": "Deine persönlichen Fraktionsstatistiken basieren nur auf Fraktionen, die du gespielt hast.",
       "myStats": "Meine Statistiken",
       "factionPerformanceFromAllPlayedMatchesInRootHub": "Fraktionsleistung aus allen in Root Hub gespielten Partien.",
       "communityStats": "Community-Statistiken"

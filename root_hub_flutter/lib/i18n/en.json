@@ -174,7 +174,7 @@
       "factionWinRate": "Faction Win Rate"
     },
     "ui_screens_home_screen": {
-      "yourPersonalFactionPerformanceAndMatchProfile": "Your personal faction performance and match profile.",
+      "yourPersonalFactionPerformanceAndMatchProfile": "Your personal faction stats based only on factions you have played.",
       "myStats": "My Stats",
       "factionPerformanceFromAllPlayedMatchesInRootHub": "Faction performance from all played matches in Root Hub.",
       "communityStats": "Community Stats"

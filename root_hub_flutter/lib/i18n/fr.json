@@ -174,7 +174,7 @@
       "factionWinRate": "Taux de victoire des factions"
     },
     "ui_screens_home_screen": {
-      "yourPersonalFactionPerformanceAndMatchProfile": "Vos performances personnelles de faction et votre profil de match.",
+      "yourPersonalFactionPerformanceAndMatchProfile": "Vos statistiques personnelles de faction basées uniquement sur les factions que vous avez jouées.",
       "myStats": "Mes statistiques",
       "factionPerformanceFromAllPlayedMatchesInRootHub": "Performance des factions sur toutes les parties jouées dans Root Hub.",
       "communityStats": "Statistiques de la communauté"

@@ -731,8 +731,8 @@ class TranslationsHomeUiScreensHomeScreenEn {
 
 	// Translations
 
-	/// en: 'Your personal faction performance and match profile.'
-	String get yourPersonalFactionPerformanceAndMatchProfile => 'Your personal faction performance and match profile.';
+	/// en: 'Your personal faction stats based only on factions you have played.'
+	String get yourPersonalFactionPerformanceAndMatchProfile => 'Your personal faction stats based only on factions you have played.';
 
 	/// en: 'My Stats'
 	String get myStats => 'My Stats';

@@ -454,7 +454,7 @@ class _TranslationsHomeUiScreensHomeScreenFr extends TranslationsHomeUiScreensHo
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get yourPersonalFactionPerformanceAndMatchProfile => 'Vos performances personnelles de faction et votre profil de match.';
+	@override String get yourPersonalFactionPerformanceAndMatchProfile => 'Vos statistiques personnelles de faction basées uniquement sur les factions que vous avez jouées.';
 	@override String get myStats => 'Mes statistiques';
 	@override String get factionPerformanceFromAllPlayedMatchesInRootHub => 'Performance des factions sur toutes les parties jouées dans Root Hub.';
 	@override String get communityStats => 'Statistiques de la communauté';
