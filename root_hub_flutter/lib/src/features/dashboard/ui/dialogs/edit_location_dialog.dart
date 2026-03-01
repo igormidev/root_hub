@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,6 +8,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_panel_widget.dart';
 import 'package:root_hub_flutter/src/design_system/location_picker/location_selection_search_sheet.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
@@ -33,6 +36,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
   void initState() {
     super.initState();
     _draftLocation = widget.initialLocation;
+    unawaited(_resolveLocationLabelForDraft());
   }
 
   Future<void> _openLocationSearchSheet() async {
@@ -55,6 +59,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
               t.auth.auth_onboarding_profile_screen.locationSelectedFromSearch,
               isError: false,
             );
+            unawaited(_resolveLocationLabelForDraft());
           },
         );
       },
@@ -134,6 +139,7 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
         t.auth.auth_onboarding_profile_screen.locationCapturedSuccessfully,
         isError: false,
       );
+      unawaited(_resolveLocationLabelForDraft());
     } catch (_) {
       _setLocationMessage(
         t
@@ -210,11 +216,69 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
     Navigator.of(context).pop(true);
   }
 
+  Future<void> _resolveLocationLabelForDraft() async {
+    final draftLocation = _draftLocation;
+    if (draftLocation == null) {
+      return;
+    }
+
+    await ref
+        .read(dashboardProfileProvider.notifier)
+        .ensureLocationLabelLoaded(draftLocation);
+  }
+
+  String? _activeLocationLabelKey({
+    required ServerSupportedTranslation serverSupportedTranslation,
+  }) {
+    final location = _draftLocation;
+    if (location == null) {
+      return null;
+    }
+
+    return DashboardProfileNotifier.buildLocationLabelKey(
+      location: location,
+      language: serverSupportedTranslation,
+    );
+  }
+
+  String? _firstFilledValue(List<String?> values) {
+    for (final value in values) {
+      final normalizedValue = value?.trim();
+      if (normalizedValue == null || normalizedValue.isEmpty) {
+        continue;
+      }
+      return normalizedValue;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isSaving = ref.watch(
-      dashboardProfileProvider.select((value) => value.isUpdatingLocation),
+    final profileState = ref.watch(dashboardProfileProvider);
+    final isSaving = profileState.isUpdatingLocation;
+    final serverSupportedTranslation = ref.watch(
+      serverSupportedTranslationProvider,
     );
+    final activeLocationLabelKey = _activeLocationLabelKey(
+      serverSupportedTranslation: serverSupportedTranslation,
+    );
+    final hasResolvedLabelForDraft =
+        activeLocationLabelKey != null &&
+        profileState.resolvedLocationLabelKey == activeLocationLabelKey;
+    final isResolvingLabelForDraft =
+        activeLocationLabelKey != null &&
+        profileState.isResolvingLocationLabel &&
+        profileState.resolvingLocationLabelKey == activeLocationLabelKey;
+    final draftLocationCityName = hasResolvedLabelForDraft
+        ? _firstFilledValue([
+            profileState.currentLocationCityName,
+            profileState.currentLocationShortAddress,
+            profileState.currentLocationFormattedAddress,
+          ])
+        : null;
+    final draftLocationShortAddress = hasResolvedLabelForDraft
+        ? profileState.currentLocationShortAddress
+        : null;
     final maxDialogHeight = MediaQuery.sizeOf(context).height * 0.86;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -251,10 +315,10 @@ class _EditLocationDialogState extends ConsumerState<EditLocationDialog> {
                   physics: BouncingScrollPhysics(),
                   child: LocationSelectionPanelWidget(
                     currentLocation: _draftLocation,
-                    currentLocationCityName: null,
-                    currentLocationShortAddress: null,
+                    currentLocationCityName: draftLocationCityName,
+                    currentLocationShortAddress: draftLocationShortAddress,
                     isResolvingLocation: _isResolvingLocation,
-                    isResolvingLocationLabel: false,
+                    isResolvingLocationLabel: isResolvingLabelForDraft,
                     onUseCurrentLocation: _resolveCurrentLocation,
                     onSearchLocation: _openLocationSearchSheet,
                     onUnselectLocation: () {

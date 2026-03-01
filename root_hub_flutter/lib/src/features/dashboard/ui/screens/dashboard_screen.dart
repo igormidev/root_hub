@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +15,7 @@ import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_bot
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_tab_content_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/push_notifications_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/activity/activity_provider.dart';
@@ -255,6 +258,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       activityProvider.select((value) => value.unreadMessagesCount),
     );
     final profileState = ref.watch(dashboardProfileProvider);
+    final serverSupportedTranslation = ref.watch(
+      serverSupportedTranslationProvider,
+    );
     final playerData = ref
         .watch(authFlowProvider)
         .maybeWhen(
@@ -276,6 +282,55 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
         ref.read(dashboardProfileProvider.notifier).ensureProfileImageLoaded();
       });
+    }
+
+    final currentLocation = playerData?.currentLocation;
+    if (currentLocation == null) {
+      final shouldClearResolvedLocationLabel =
+          profileState.resolvedLocationLabelKey != null ||
+          profileState.resolvingLocationLabelKey != null ||
+          profileState.currentLocationCityName != null ||
+          profileState.currentLocationShortAddress != null ||
+          profileState.currentLocationFormattedAddress != null;
+      if (shouldClearResolvedLocationLabel) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) {
+            return;
+          }
+
+          unawaited(
+            ref
+                .read(dashboardProfileProvider.notifier)
+                .ensureLocationLabelLoaded(null),
+          );
+        });
+      }
+    } else {
+      final expectedLocationLabelKey =
+          DashboardProfileNotifier.buildLocationLabelKey(
+            location: currentLocation,
+            language: serverSupportedTranslation,
+          );
+      final hasResolvedExpectedLocationLabel =
+          profileState.resolvedLocationLabelKey == expectedLocationLabelKey;
+      final isResolvingExpectedLocationLabel =
+          profileState.isResolvingLocationLabel &&
+          profileState.resolvingLocationLabelKey == expectedLocationLabelKey;
+
+      if (!hasResolvedExpectedLocationLabel &&
+          !isResolvingExpectedLocationLabel) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) {
+            return;
+          }
+
+          unawaited(
+            ref
+                .read(dashboardProfileProvider.notifier)
+                .ensureLocationLabelLoaded(currentLocation),
+          );
+        });
+      }
     }
 
     return Scaffold(

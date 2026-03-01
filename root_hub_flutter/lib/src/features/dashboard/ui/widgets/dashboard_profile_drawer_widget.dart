@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
+import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
+import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_state.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 const _preferredLocaleKey = 'preferred_locale';
@@ -70,7 +73,16 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final currentLocation = playerData.currentLocation;
     final sharedPreferences = ref.read(sharedPreferencesProvider);
+    final profileState = ref.watch(dashboardProfileProvider);
+    final serverSupportedTranslation = ref.watch(
+      serverSupportedTranslationProvider,
+    );
     final currentLocaleLabel = _localeLabel(LocaleSettings.currentLocale);
+    final resolvedAreaLabel = _resolvedAreaLabel(
+      profileState: profileState,
+      currentLocation: currentLocation,
+      serverSupportedTranslation: serverSupportedTranslation,
+    );
 
     return Drawer(
       child: SafeArea(
@@ -213,12 +225,10 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                 .dashboard
                                 .ui_widgets_dashboard_profile_drawer_widget
                                 .noLocationConfigured
-                          : '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.xLabel}: '
-                                '${currentLocation.x.toStringAsFixed(6)}\n'
-                                '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.yLabel}: '
-                                '${currentLocation.y.toStringAsFixed(6)}\n'
-                                '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.ratioLabel}: '
-                                '${currentLocation.ratio.toStringAsFixed(0)} km',
+                          : _locationSummary(
+                              currentLocation,
+                              areaLabel: resolvedAreaLabel,
+                            ),
                       buttonLabel: t
                           .dashboard
                           .ui_widgets_dashboard_profile_drawer_widget
@@ -538,5 +548,59 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _locationSummary(
+    GeoLocation currentLocation, {
+    required String? areaLabel,
+  }) {
+    final summaryLines = <String>[];
+    if (areaLabel != null) {
+      summaryLines.add(areaLabel);
+    }
+    summaryLines.addAll([
+      '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.xLabel}: '
+          '${currentLocation.x.toStringAsFixed(6)}',
+      '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.yLabel}: '
+          '${currentLocation.y.toStringAsFixed(6)}',
+      '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.ratioLabel}: '
+          '${currentLocation.ratio.toStringAsFixed(0)} km',
+    ]);
+    return summaryLines.join('\n');
+  }
+
+  String? _resolvedAreaLabel({
+    required DashboardProfileState profileState,
+    required GeoLocation? currentLocation,
+    required ServerSupportedTranslation serverSupportedTranslation,
+  }) {
+    if (currentLocation == null) {
+      return null;
+    }
+
+    final expectedLabelKey = DashboardProfileNotifier.buildLocationLabelKey(
+      location: currentLocation,
+      language: serverSupportedTranslation,
+    );
+    if (profileState.resolvedLocationLabelKey != expectedLabelKey) {
+      return null;
+    }
+
+    return _firstFilledValue([
+      profileState.currentLocationCityName,
+      profileState.currentLocationShortAddress,
+      profileState.currentLocationFormattedAddress,
+    ]);
+  }
+
+  String? _firstFilledValue(List<String?> values) {
+    for (final value in values) {
+      final normalizedValue = value?.trim();
+      if (normalizedValue == null || normalizedValue.isEmpty) {
+        continue;
+      }
+      return normalizedValue;
+    }
+    return null;
   }
 }
