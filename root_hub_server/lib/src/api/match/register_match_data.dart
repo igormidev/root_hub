@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -15,6 +16,7 @@ class RegisterMatchData extends Endpoint {
 
   Future<PlayedMatch> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required DateTime matchStartedAt,
     required Duration matchEstimatedDuration,
     required int locationId,
@@ -27,25 +29,31 @@ class RegisterMatchData extends Endpoint {
     String? boardPhotoFileName,
     String? boardPhotoContentType,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (matchEstimatedDuration <= Duration.zero) {
           _throwInvalidRequest(
-            'Match estimated duration must be greater than zero.',
+            language: language,
+            description: t.errors.matchEstimatedDurationMustBeGreaterThanZero,
           );
         }
 
         _validateProofImage(
+          language: language,
           imageBytes: groupPhotoBytes,
-          imageDescription: 'Group photo',
+          imageDescription: t.labels.groupPhoto,
         );
         _validateProofImage(
+          language: language,
           imageBytes: boardPhotoBytes,
-          imageDescription: 'Board photo',
+          imageDescription: t.labels.boardPhoto,
         );
 
         final authenticatedPlayerData = await _getAuthenticatedPlayerData(
           session,
+          language: language,
         );
 
         final scheduledPairingAttempt = await MatchSchedulePairingAttempt.db
@@ -58,18 +66,21 @@ class RegisterMatchData extends Endpoint {
             );
         if (scheduledPairingAttempt == null) {
           _throwNotFound(
-            title: 'Scheduled match not found',
-            description: 'Scheduled pairing attempt not found.',
+            language: language,
+            title: t.errors.scheduledMatchNotFoundTitle,
+            description: t.errors.scheduledPairingAttemptNotFound,
           );
         }
 
         if (scheduledPairingAttempt.playedMatch != null) {
           _throwInvalidRequest(
-            'This scheduled match already has a registered result.',
+            language: language,
+            description: t.errors.scheduledMatchAlreadyHasResult,
           );
         }
 
         _validateRegistrationWindow(
+          language: language,
           scheduledPairingAttempt: scheduledPairingAttempt,
           matchStartedAt: matchStartedAt,
         );
@@ -77,53 +88,65 @@ class RegisterMatchData extends Endpoint {
         final location = await Location.db.findById(session, locationId);
         if (location == null) {
           _throwNotFound(
-            title: 'Location not found',
-            description: 'Location not found.',
+            language: language,
+            title: t.errors.locationNotFoundTitle,
+            description: t.errors.locationNotFound,
           );
         }
 
         if (scheduledPairingAttempt.locationId != locationId) {
           _throwInvalidRequest(
-            'Provided location does not match the scheduled pairing attempt location.',
+            language: language,
+            description: t.errors.providedLocationDoesNotMatchScheduledPairing,
           );
         }
 
         if (players.length < 2) {
           _throwInvalidRequest(
-            'At least 2 players are required to register a match.',
+            language: language,
+            description: t.errors.atLeastTwoPlayersRequiredToRegister,
           );
         }
 
-        _validatePlayerResults(players);
+        _validatePlayerResults(
+          language: language,
+          players: players,
+        );
 
         final playerDataById = await _loadPlayerDataById(
           session,
+          language: language,
           players: players,
         );
         final anonymousPlayersById = await _loadAnonymousPlayersById(
           session,
+          language: language,
           players: players,
         );
 
         _validateAnonymousPlayersOwnership(
+          language: language,
           authenticatedPlayerData: authenticatedPlayerData,
           anonymousPlayersById: anonymousPlayersById,
         );
 
         await _validateAuthenticatedPlayerCanRegister(
           session,
+          language: language,
           authenticatedPlayerData: authenticatedPlayerData,
           scheduledPairingAttempt: scheduledPairingAttempt,
         );
 
         final groupPhotoUrl = await _uploadProofImage(
           session,
+          language: language,
           imageBytes: groupPhotoBytes,
           fileName: groupPhotoFileName ?? 'match-group-photo.jpg',
           contentType: groupPhotoContentType,
         );
         final boardPhotoUrl = await _uploadProofImage(
           session,
+          language: language,
           imageBytes: boardPhotoBytes,
           fileName: boardPhotoFileName ?? 'match-board-photo.jpg',
           contentType: boardPhotoContentType,
@@ -179,7 +202,10 @@ class RegisterMatchData extends Endpoint {
               final playerData = playerDataById[playerDataId];
               if (playerData == null) {
                 _throwInvalidRequest(
-                  'playerDataId not found for id: $playerDataId.',
+                  language: language,
+                  description: t.errors.playerDataIdNotFoundForId(
+                    playerDataId: playerDataId,
+                  ),
                 );
               }
 
@@ -195,7 +221,10 @@ class RegisterMatchData extends Endpoint {
               final anonymousPlayer = anonymousPlayersById[anonymousPlayerId];
               if (anonymousPlayer == null) {
                 _throwInvalidRequest(
-                  'anonymousPlayerId not found for id: $anonymousPlayerId.',
+                  language: language,
+                  description: t.errors.anonymousPlayerIdNotFoundForId(
+                    anonymousPlayerId: anonymousPlayerId,
+                  ),
                 );
               }
 
@@ -220,7 +249,10 @@ class RegisterMatchData extends Endpoint {
             final playerData = playerDataById[playerDataId];
             if (playerData == null) {
               _throwInvalidRequest(
-                'playerDataId not found for id: $playerDataId.',
+                language: language,
+                description: t.errors.playerDataIdNotFoundForId(
+                  playerDataId: playerDataId,
+                ),
               );
             }
 
@@ -267,12 +299,17 @@ class RegisterMatchData extends Endpoint {
           return playedMatch;
         });
       },
-      fallbackDescription:
-          'Unable to register this match result right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToRegisterMatchResult,
     );
   }
 
-  Future<PlayerData> _getAuthenticatedPlayerData(Session session) async {
+  Future<PlayerData> _getAuthenticatedPlayerData(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -283,28 +320,41 @@ class RegisterMatchData extends Endpoint {
 
     if (playerData == null) {
       _throwNotFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 
     return playerData;
   }
 
-  void _validatePlayerResults(List<PlayerMatchResultInput> players) {
+  void _validatePlayerResults({
+    required ServerSupportedTranslation language,
+    required List<PlayerMatchResultInput> players,
+  }) {
+    final t = ServerTranslations.of(language);
+
     if (players.length < 2 || players.length > 6) {
-      _throwInvalidRequest('Root matches must have between 2 and 6 players.');
+      _throwInvalidRequest(
+        language: language,
+        description: t.errors.rootMatchesMustHaveBetweenTwoAndSixPlayers,
+      );
     }
 
     final winnerCount = players.where((player) => player.didWin).length;
     if (winnerCount == 0) {
       _throwInvalidRequest(
-        'A match must have exactly one winner, but none was provided.',
+        language: language,
+        description: t.errors.exactlyOneWinnerRequiredNoneProvided,
       );
     }
     if (winnerCount > 1) {
       _throwInvalidRequest(
-        'A match must have exactly one winner, but $winnerCount winners were provided.',
+        language: language,
+        description: t.errors.exactlyOneWinnerRequiredCountProvided(
+          winnerCount: winnerCount,
+        ),
       );
     }
 
@@ -317,14 +367,18 @@ class RegisterMatchData extends Endpoint {
       final hasPlayerData = player.playerDataId != null;
       if (hasAnonymousPlayer == hasPlayerData) {
         _throwInvalidRequest(
-          'Each player must provide exactly one identifier: anonymousPlayerId or playerDataId.',
+          language: language,
+          description: t.errors.eachPlayerMustProvideExactlyOneIdentifier,
         );
       }
 
       if (player.playerDataId case final playerDataId?) {
         if (!seenPlayerDataIds.add(playerDataId)) {
           _throwInvalidRequest(
-            'Duplicate playerDataId found in players list: $playerDataId.',
+            language: language,
+            description: t.errors.duplicatePlayerDataId(
+              playerDataId: playerDataId,
+            ),
           );
         }
       }
@@ -332,7 +386,10 @@ class RegisterMatchData extends Endpoint {
       if (player.anonymousPlayerId case final anonymousPlayerId?) {
         if (!seenAnonymousPlayerIds.add(anonymousPlayerId)) {
           _throwInvalidRequest(
-            'Duplicate anonymousPlayerId found in players list: $anonymousPlayerId.',
+            language: language,
+            description: t.errors.duplicateAnonymousPlayerId(
+              anonymousPlayerId: anonymousPlayerId,
+            ),
           );
         }
       }
@@ -340,14 +397,18 @@ class RegisterMatchData extends Endpoint {
       if (player.scoreInMatch case final score?) {
         if (score < 0 || score > 30) {
           _throwInvalidRequest(
-            'scoreInMatch must be between 0 and 30 when provided.',
+            language: language,
+            description: t.errors.scoreMustBeBetweenZeroAndThirty,
           );
         }
       }
 
       if (!uniqueFactions.add(player.factionUsedInMatch)) {
         _throwInvalidRequest(
-          'Faction ${player.factionUsedInMatch.name} is duplicated. Each faction can be used by only one player.',
+          language: language,
+          description: t.errors.factionDuplicated(
+            factionName: player.factionUsedInMatch.name,
+          ),
         );
       }
     }
@@ -358,7 +419,8 @@ class RegisterMatchData extends Endpoint {
 
     if (!winnerByPoints && !winnerByDominance) {
       _throwInvalidRequest(
-        'Winner must have (didWin=true and scoreInMatch=30) or (didWin=true and scoreInMatch=null).',
+        language: language,
+        description: t.errors.winnerScoreValidation,
       );
     }
 
@@ -367,15 +429,19 @@ class RegisterMatchData extends Endpoint {
     );
     if (invalidNonWinners.isNotEmpty) {
       _throwInvalidRequest(
-        'Only the winner can have scoreInMatch equal to 30.',
+        language: language,
+        description: t.errors.onlyWinnerCanHaveThirtyPoints,
       );
     }
   }
 
   Future<Map<int, PlayerData>> _loadPlayerDataById(
     Session session, {
+    required ServerSupportedTranslation language,
     required List<PlayerMatchResultInput> players,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final playerDataIds = players
         .map((player) => player.playerDataId)
         .whereType<int>()
@@ -402,7 +468,10 @@ class RegisterMatchData extends Endpoint {
     if (missingPlayerDataIds.isNotEmpty) {
       final missingIds = missingPlayerDataIds.toList()..sort();
       _throwInvalidRequest(
-        'playerDataId not found for ids: ${missingIds.join(', ')}.',
+        language: language,
+        description: t.errors.playerDataIdNotFoundForIds(
+          missingIds: missingIds.join(', '),
+        ),
       );
     }
 
@@ -411,8 +480,11 @@ class RegisterMatchData extends Endpoint {
 
   Future<Map<int, AnonymousPlayer>> _loadAnonymousPlayersById(
     Session session, {
+    required ServerSupportedTranslation language,
     required List<PlayerMatchResultInput> players,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final anonymousPlayerIds = players
         .map((player) => player.anonymousPlayerId)
         .whereType<int>()
@@ -440,7 +512,10 @@ class RegisterMatchData extends Endpoint {
     if (missingAnonymousPlayerIds.isNotEmpty) {
       final missingIds = missingAnonymousPlayerIds.toList()..sort();
       _throwInvalidRequest(
-        'anonymousPlayerId not found for ids: ${missingIds.join(', ')}.',
+        language: language,
+        description: t.errors.anonymousPlayerIdNotFoundForIds(
+          missingIds: missingIds.join(', '),
+        ),
       );
     }
 
@@ -448,9 +523,12 @@ class RegisterMatchData extends Endpoint {
   }
 
   void _validateAnonymousPlayersOwnership({
+    required ServerSupportedTranslation language,
     required PlayerData authenticatedPlayerData,
     required Map<int, AnonymousPlayer> anonymousPlayersById,
   }) {
+    final t = ServerTranslations.of(language);
+
     if (anonymousPlayersById.isEmpty) {
       return;
     }
@@ -469,43 +547,55 @@ class RegisterMatchData extends Endpoint {
 
     if (invalidAnonymousPlayers.isNotEmpty) {
       _throwAccessDenied(
-        'Anonymous players can only be used by the player that created them. Invalid ids: ${invalidAnonymousPlayers.join(', ')}.',
+        language: language,
+        description: t.errors.anonymousPlayersOwnershipInvalid(
+          invalidIds: invalidAnonymousPlayers.join(', '),
+        ),
       );
     }
   }
 
   void _validateRegistrationWindow({
+    required ServerSupportedTranslation language,
     required MatchSchedulePairingAttempt scheduledPairingAttempt,
     required DateTime matchStartedAt,
   }) {
+    final t = ServerTranslations.of(language);
+
     final now = DateTime.now();
     final earliestAllowedRegistrationTime = scheduledPairingAttempt.attemptedAt
         .subtract(_registerBeforeScheduledStartAllowance);
 
     if (now.isBefore(earliestAllowedRegistrationTime)) {
       _throwInvalidRequest(
-        'You can only register this result from 2 hours before the scheduled start time.',
+        language: language,
+        description: t.errors.registerResultOnlyTwoHoursBefore,
       );
     }
 
     if (matchStartedAt.isBefore(earliestAllowedRegistrationTime)) {
       _throwInvalidRequest(
-        'Match start time cannot be earlier than 2 hours before the scheduled start time.',
+        language: language,
+        description: t.errors.matchStartCannotBeEarlierThanTwoHoursBefore,
       );
     }
 
     if (matchStartedAt.isAfter(now.add(const Duration(minutes: 5)))) {
       _throwInvalidRequest(
-        'Match start time cannot be in the future.',
+        language: language,
+        description: t.errors.matchStartCannotBeInFuture,
       );
     }
   }
 
   Future<void> _validateAuthenticatedPlayerCanRegister(
     Session session, {
+    required ServerSupportedTranslation language,
     required PlayerData authenticatedPlayerData,
     required MatchSchedulePairingAttempt scheduledPairingAttempt,
   }) async {
+    final t = ServerTranslations.of(language);
+
     if (scheduledPairingAttempt.playerDataId == authenticatedPlayerData.id) {
       return;
     }
@@ -519,28 +609,39 @@ class RegisterMatchData extends Endpoint {
 
     if (isSubscribed == null) {
       _throwAccessDenied(
-        'Only host or subscribed players can register this match result.',
+        language: language,
+        description: t.errors.onlyHostOrSubscribedCanRegister,
       );
     }
   }
 
   void _validateProofImage({
+    required ServerSupportedTranslation language,
     required ByteData imageBytes,
     required String imageDescription,
   }) {
+    final t = ServerTranslations.of(language);
+
     if (imageBytes.lengthInBytes <= 0) {
-      _throwInvalidRequest('$imageDescription is required.');
+      _throwInvalidRequest(
+        language: language,
+        description: t.errors.imageRequired(imageDescription: imageDescription),
+      );
     }
 
     if (imageBytes.lengthInBytes > _maxProofImageBytes) {
       _throwInvalidRequest(
-        '$imageDescription is too large. Please upload an image smaller than 6 MB.',
+        language: language,
+        description: t.errors.imageTooLargeWithDescription(
+          imageDescription: imageDescription,
+        ),
       );
     }
   }
 
   Future<String> _uploadProofImage(
     Session session, {
+    required ServerSupportedTranslation language,
     required ByteData imageBytes,
     required String fileName,
     required String? contentType,
@@ -552,32 +653,47 @@ class RegisterMatchData extends Endpoint {
 
     return _uploadThingStorageClient.uploadPublicImage(
       session,
+      language: language,
       imageBytes: imageBytesList,
       fileName: fileName,
       contentType: contentType,
     );
   }
 
-  Never _throwInvalidRequest(String description) {
+  Never _throwInvalidRequest({
+    required ServerSupportedTranslation language,
+    required String description,
+  }) {
+    final t = ServerTranslations.of(language);
+
     throw RootHubEndpointError.invalidRequest(
-      title: 'Invalid match registration',
+      language: language,
+      title: t.errors.invalidMatchRegistrationTitle,
       description: description,
     );
   }
 
   Never _throwNotFound({
+    required ServerSupportedTranslation language,
     required String title,
     required String description,
   }) {
     throw RootHubEndpointError.notFound(
+      language: language,
       title: title,
       description: description,
     );
   }
 
-  Never _throwAccessDenied(String description) {
+  Never _throwAccessDenied({
+    required ServerSupportedTranslation language,
+    required String description,
+  }) {
+    final t = ServerTranslations.of(language);
+
     throw RootHubEndpointError.accessDenied(
-      title: 'Registration not allowed',
+      language: language,
+      title: t.errors.registrationNotAllowedTitle,
       description: description,
     );
   }

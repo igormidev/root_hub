@@ -33,11 +33,16 @@
         "image",
         "serverpod",
         "serverpod_auth_core_server",
-        "serverpod_auth_idp_server"
+        "serverpod_auth_idp_server",
+        "slang"
       ],
       "devDependencies": [
+        "build_runner",
+        "custom_lint",
         "lints",
+        "root_hub_flutter_lints",
         "serverpod_test",
+        "slang_build_runner",
         "test"
       ]
     },
@@ -728,6 +733,30 @@
       "dependencies": []
     },
     {
+      "name": "custom_lint",
+      "version": "0.8.1",
+      "dependencies": [
+        "analyzer",
+        "analyzer_plugin",
+        "args",
+        "async",
+        "ci",
+        "cli_util",
+        "collection",
+        "custom_lint_core",
+        "freezed_annotation",
+        "json_annotation",
+        "meta",
+        "package_config",
+        "path",
+        "pub_semver",
+        "pubspec_parse",
+        "rxdart",
+        "uuid",
+        "yaml"
+      ]
+    },
+    {
       "name": "googleapis_auth",
       "version": "2.0.0",
       "dependencies": [
@@ -980,30 +1009,6 @@
         "path",
         "pubspec_parse",
         "source_span",
-        "uuid",
-        "yaml"
-      ]
-    },
-    {
-      "name": "custom_lint",
-      "version": "0.8.1",
-      "dependencies": [
-        "analyzer",
-        "analyzer_plugin",
-        "args",
-        "async",
-        "ci",
-        "cli_util",
-        "collection",
-        "custom_lint_core",
-        "freezed_annotation",
-        "json_annotation",
-        "meta",
-        "package_config",
-        "path",
-        "pub_semver",
-        "pubspec_parse",
-        "rxdart",
         "uuid",
         "yaml"
       ]
@@ -2049,6 +2054,11 @@
       ]
     },
     {
+      "name": "ci",
+      "version": "0.1.0",
+      "dependencies": []
+    },
+    {
       "name": "http_parser",
       "version": "4.1.2",
       "dependencies": [
@@ -2266,11 +2276,6 @@
       "dependencies": [
         "source_span"
       ]
-    },
-    {
-      "name": "ci",
-      "version": "0.1.0",
-      "dependencies": []
     },
     {
       "name": "term_glyph",

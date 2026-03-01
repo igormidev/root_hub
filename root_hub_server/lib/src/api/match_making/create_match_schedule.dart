@@ -1,5 +1,6 @@
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -12,6 +13,7 @@ class CreateMatchSchedule extends Endpoint {
 
   Future<MatchSchedulePairingAttempt> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required String title,
     String? description,
     required MatchPodium minAmountOfPlayers,
@@ -20,13 +22,16 @@ class CreateMatchSchedule extends Endpoint {
     required int locationId,
     required bool hostWillPlay,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedTitle = title.trim();
         final normalizedDescription = description?.trim();
         if (normalizedTitle.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Title cannot be empty.',
+            language: language,
+            description: t.errors.titleCannotBeEmpty,
           );
         }
 
@@ -34,8 +39,8 @@ class CreateMatchSchedule extends Endpoint {
         final maxPlayers = _podiumToPlayersCount(maxAmountOfPlayers);
         if (minPlayers < 2 || maxPlayers > 6 || minPlayers > maxPlayers) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'Players range must stay between 2 and 6, with min not greater than max.',
+            language: language,
+            description: t.errors.playersRangeMustStayBetweenTwoAndSix,
           );
         }
 
@@ -45,9 +50,10 @@ class CreateMatchSchedule extends Endpoint {
         );
         if (attemptedAt.isBefore(minAllowedTime)) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'The scheduled time must be at least '
-                '$_minScheduleMinutes minutes in the future.',
+            language: language,
+            description: t.errors.scheduledTimeMustBeAtLeastMinutesInTheFuture(
+              minutes: _minScheduleMinutes,
+            ),
           );
         }
 
@@ -56,9 +62,10 @@ class CreateMatchSchedule extends Endpoint {
         );
         if (attemptedAt.isAfter(maxAllowedTime)) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'The scheduled time cannot be more than '
-                '$_maxScheduleDays days in the future.',
+            language: language,
+            description: t.errors.scheduledTimeCannotBeMoreThanDaysInTheFuture(
+              days: _maxScheduleDays,
+            ),
           );
         }
 
@@ -72,16 +79,18 @@ class CreateMatchSchedule extends Endpoint {
 
         if (playerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
         final location = await Location.db.findById(session, locationId);
         if (location == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Location not found',
-            description: 'Location with id $locationId was not found.',
+            language: language,
+            title: t.errors.locationNotFoundTitle,
+            description: t.errors.locationWithIdNotFound(locationId: locationId),
           );
         }
 
@@ -134,6 +143,7 @@ class CreateMatchSchedule extends Endpoint {
 
           await MatchChatParticipantStateService.ensureParticipantStateExists(
             session,
+            language: language,
             chatHistory: chatHistory,
             playerData: playerData,
             initialUnreadMessagesCount: 0,
@@ -169,8 +179,8 @@ class CreateMatchSchedule extends Endpoint {
           return match;
         });
       },
-      fallbackDescription:
-          'Unable to create a match schedule right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToCreateMatchSchedule,
     );
   }
 

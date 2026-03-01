@@ -5,6 +5,7 @@ import 'package:result_dart/result_dart.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/account/account_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -95,6 +96,7 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
         .read(clientProvider)
         .createPlayerData
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           displayName: displayName,
           favoriteFaction: selectedFaction,
           currentLocation: currentLocation,
@@ -214,7 +216,7 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     return ref
         .read(clientProvider)
         .getPlayerData
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .timeout(_playerDataTimeout)
         .toResult;
   }

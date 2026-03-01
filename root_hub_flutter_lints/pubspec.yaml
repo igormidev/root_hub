@@ -1,5 +1,5 @@
 name: root_hub_flutter_lints
-description: Custom lint rules for the Root Hub Flutter app.
+description: Custom lint rules for Root Hub Flutter and Serverpod projects.
 publish_to: 'none'
 version: 0.1.0
 

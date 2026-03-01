@@ -1,11 +1,17 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class MatchChatParticipantStateService {
   const MatchChatParticipantStateService._();
 
-  static Future<PlayerData> getAuthenticatedPlayerData(Session session) async {
+  static Future<PlayerData> getAuthenticatedPlayerData(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -16,8 +22,9 @@ class MatchChatParticipantStateService {
 
     if (playerData == null) {
       throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 
@@ -26,18 +33,22 @@ class MatchChatParticipantStateService {
 
   static Future<MatchChatParticipantState> ensureParticipantStateExists(
     Session session, {
+    required ServerSupportedTranslation language,
     required MatchChatHistory chatHistory,
     required PlayerData playerData,
     int initialUnreadMessagesCount = 0,
     DateTime? initialLastReadMessageAt,
     Transaction? transaction,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final chatHistoryId = chatHistory.id;
     final playerDataId = playerData.id;
 
     if (chatHistoryId == null || playerDataId == null) {
       throw RootHubEndpointError.invalidRequest(
-        description: 'Chat history and player must be persisted.',
+        language: language,
+        description: t.errors.chatHistoryAndPlayerMustBePersisted,
       );
     }
 
@@ -84,6 +95,7 @@ class MatchChatParticipantStateService {
 
   static Future<void> markChatAsRead(
     Session session, {
+    required ServerSupportedTranslation language,
     required MatchChatHistory chatHistory,
     required PlayerData playerData,
     DateTime? readAt,
@@ -93,6 +105,7 @@ class MatchChatParticipantStateService {
 
     final participantState = await ensureParticipantStateExists(
       session,
+      language: language,
       chatHistory: chatHistory,
       playerData: playerData,
       initialUnreadMessagesCount: 0,

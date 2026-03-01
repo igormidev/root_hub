@@ -21,6 +21,8 @@ linter:
     avoid_print: true
 
 analyzer:
+  plugins:
+    - custom_lint
   exclude:
     - lib/src/generated/**
     - test/integration/test_tools/serverpod_test_tools.dart

@@ -8,16 +8,19 @@ The app is only available for mobile platforms, and all screens must be adapted 
 3. If working on the Flutter client (`root_hub_flutter`), reading `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints/README.md` is mandatory.
 
 ## Mandatory Validation Workflow (No Exceptions)
+Always execute this full workflow before finalizing, even when a local README does not explicitly repeat these steps.
+
 After finishing any task, run all of the following:
 
 1. `serverpod generate` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
 2. `dart pub get` in `/Users/igor/PersonalProjects/root_hub`
-3. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
-4. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
-5. `flutter analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter`
-6. `dart run root_hub_flutter_lints:check_flutter_feature_lints --flutter-root ../root_hub_flutter` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
+3. `dart run custom_lint` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
+4. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
+5. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
+6. `flutter analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter`
+7. `dart run root_hub_flutter_lints:check_flutter_feature_lints --flutter-root ../root_hub_flutter` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
 
-Do not finalize while any static analysis error, warning, or custom lint issue remains.
+Do not finalize while any static analysis error, warning, or custom lint issue remains. Zero warnings and zero lint violations are mandatory.
 
 ## Formatting Rule
 If Flutter code was touched, run `dart format` on all changed Flutter Dart files before finalizing.

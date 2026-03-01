@@ -1,6 +1,7 @@
 import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart';
@@ -11,26 +12,32 @@ class GetMatchChatMessage extends Endpoint {
 
   Future<MatchChatMessagesPagination> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
     required int page,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
         if (page < 1) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Page must be greater than or equal to 1.',
+            language: language,
+            description: t.errors.pageMustBeAtLeastOne,
           );
         }
 
         final playerData =
             await MatchChatParticipantStateService.getAuthenticatedPlayerData(
               session,
+              language: language,
             );
 
         final matchSchedule = await MatchSchedulePairingAttempt.db.findById(
@@ -43,24 +50,29 @@ class GetMatchChatMessage extends Endpoint {
 
         if (matchSchedule == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Scheduled match not found',
-            description:
-                'Scheduled match with id $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.scheduledMatchNotFoundTitle,
+            description: t.errors.scheduledMatchWithIdNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
         final chatHistoryId = matchSchedule.chatHistory?.id;
         if (chatHistoryId == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Chat not found',
-            description:
-                'Chat history for scheduled match $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.chatNotFoundTitle,
+            description: t.errors.chatHistoryForScheduledMatchNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
         final chatHistory = matchSchedule.chatHistory!;
         await MatchChatParticipantStateService.ensureParticipantStateExists(
           session,
+          language: language,
           chatHistory: chatHistory,
           playerData: playerData,
         );
@@ -105,6 +117,7 @@ class GetMatchChatMessage extends Endpoint {
 
         await MatchChatParticipantStateService.markChatAsRead(
           session,
+          language: language,
           chatHistory: chatHistory,
           playerData: playerData,
           readAt: DateTime.now(),
@@ -124,8 +137,8 @@ class GetMatchChatMessage extends Endpoint {
           ),
         );
       },
-      fallbackDescription:
-          'Unable to load chat messages right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadChatMessages,
     );
   }
 

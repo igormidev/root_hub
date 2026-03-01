@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
@@ -61,7 +62,10 @@ class PushNotificationsSyncService {
     final deactivateRequest = _ref
         .read(clientProvider)
         .deactivatePushNotificationToken
-        .v1(token: token);
+        .v1(
+          language: _ref.read(serverSupportedTranslationProvider),
+          token: token,
+        );
     final result = await FutureServerpodToResultVoidExt(
       deactivateRequest,
     ).toResult;
@@ -142,6 +146,7 @@ class PushNotificationsSyncService {
         .read(clientProvider)
         .syncPushNotificationToken
         .v1(
+          language: _ref.read(serverSupportedTranslationProvider),
           token: token,
           platform: _resolvePlatform(),
         );

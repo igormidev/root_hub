@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart';
@@ -9,22 +10,27 @@ class UpdatePlayerData extends Endpoint {
 
   Future<PlayerData> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     String? displayName,
     Faction? favoriteFaction,
     GeoLocation? currentLocation,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedDisplayName = displayName?.trim();
         if (displayName != null && normalizedDisplayName!.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Display name cannot be empty.',
+            language: language,
+            description: t.errors.displayNameCannotBeEmpty,
           );
         }
 
         if (currentLocation != null && currentLocation.ratio <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Location ratio must be greater than zero.',
+            language: language,
+            description: t.errors.locationRatioMustBeGreaterThanZero,
           );
         }
 
@@ -32,7 +38,8 @@ class UpdatePlayerData extends Endpoint {
             favoriteFaction == null &&
             currentLocation == null) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'No profile fields were provided for update.',
+            language: language,
+            description: t.errors.noProfileFieldsProvided,
           );
         }
 
@@ -44,8 +51,9 @@ class UpdatePlayerData extends Endpoint {
 
         if (existingAccount == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Authenticated user profile was not found.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.authenticatedUserProfileNotFound,
           );
         }
 
@@ -96,8 +104,8 @@ class UpdatePlayerData extends Endpoint {
         return await _findAccountByAuthUserId(session, authUserId) ??
             updatedAccount;
       },
-      fallbackDescription:
-          'Unable to update account info right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToUpdateAccountInfo,
     );
   }
 

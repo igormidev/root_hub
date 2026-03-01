@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/account/account_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
@@ -102,7 +103,10 @@ class DashboardProfileNotifier extends Notifier<DashboardProfileState> {
     final result = await ref
         .read(clientProvider)
         .updatePlayerData
-        .v1(displayName: normalizedDisplayName)
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          displayName: normalizedDisplayName,
+        )
         .toResult;
 
     return result.fold(
@@ -139,7 +143,10 @@ class DashboardProfileNotifier extends Notifier<DashboardProfileState> {
     final result = await ref
         .read(clientProvider)
         .updatePlayerData
-        .v1(currentLocation: location)
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          currentLocation: location,
+        )
         .toResult;
 
     return result.fold(
@@ -169,7 +176,10 @@ class DashboardProfileNotifier extends Notifier<DashboardProfileState> {
     final result = await ref
         .read(clientProvider)
         .updatePlayerData
-        .v1(favoriteFaction: faction)
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          favoriteFaction: faction,
+        )
         .toResult;
 
     return result.fold(

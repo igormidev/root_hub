@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -14,14 +15,22 @@ class ReverseGeocodeCity extends Endpoint {
 
   Future<ReverseGeocodeCityResult?> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required double x,
     required double y,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
-        _validateCoordinates(x: x, y: y);
+        _validateCoordinates(
+          language: language,
+          x: x,
+          y: y,
+        );
 
         final geocodeResponse = await _fetchGeocodeResponse(
+          language: language,
           session: session,
           x: x,
           y: y,
@@ -35,10 +44,13 @@ class ReverseGeocodeCity extends Endpoint {
             geocodeResponse['error_message'],
           );
           throw RootHubEndpointError.unexpected(
-            title: 'Location provider error',
+            language: language,
+            title: t.errors.locationProviderErrorTitle,
             description: providerError == null
-                ? 'Failed to resolve city from coordinates.'
-                : 'Failed to resolve city from coordinates: $providerError',
+                ? t.errors.failedToResolveCityFromCoordinates
+                : t.errors.failedToResolveCityFromCoordinatesWithProviderError(
+                    providerError: providerError,
+                  ),
           );
         }
 
@@ -90,22 +102,28 @@ class ReverseGeocodeCity extends Endpoint {
           formattedAddress: formattedAddress,
         );
       },
-      fallbackDescription:
-          'Unable to resolve location details right now. Please try again later.',
+      language: language,
+      fallbackDescription: t.fallback.unableToResolveLocationDetails,
     );
   }
 
   Future<Map<String, dynamic>> _fetchGeocodeResponse({
+    required ServerSupportedTranslation language,
     required Session session,
     required double x,
     required double y,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final uri = Uri.https(
       _googleGeocodeHost,
       _googleGeocodePath,
       {
         'latlng': '${x.toStringAsFixed(7)},${y.toStringAsFixed(7)}',
-        'key': _resolveGoogleMapsApiKey(session),
+        'key': _resolveGoogleMapsApiKey(
+          session,
+          language: language,
+        ),
       },
     );
 
@@ -116,17 +134,20 @@ class ReverseGeocodeCity extends Endpoint {
       final body = await utf8.decodeStream(response);
       if (response.statusCode != HttpStatus.ok) {
         throw RootHubEndpointError.unexpected(
-          title: 'Location provider error',
-          description:
-              'Geocoding request failed with HTTP ${response.statusCode}.',
+          language: language,
+          title: t.errors.locationProviderErrorTitle,
+          description: t.errors.geocodingRequestFailedWithHttp(
+            statusCode: response.statusCode,
+          ),
         );
       }
 
       final decodedBody = jsonDecode(body);
       if (decodedBody is! Map) {
         throw RootHubEndpointError.unexpected(
-          title: 'Location provider error',
-          description: 'Geocoding response format is invalid.',
+          language: language,
+          title: t.errors.locationProviderErrorTitle,
+          description: t.errors.geocodingResponseFormatInvalid,
         );
       }
       return decodedBody.cast<String, dynamic>();
@@ -232,22 +253,32 @@ class ReverseGeocodeCity extends Endpoint {
   }
 
   void _validateCoordinates({
+    required ServerSupportedTranslation language,
     required double x,
     required double y,
   }) {
+    final t = ServerTranslations.of(language);
+
     if (x < -90 || x > 90) {
       throw RootHubEndpointError.invalidRequest(
-        description: 'Latitude (x) must be between -90 and 90.',
+        language: language,
+        description: t.errors.latitudeMustBeBetween,
       );
     }
     if (y < -180 || y > 180) {
       throw RootHubEndpointError.invalidRequest(
-        description: 'Longitude (y) must be between -180 and 180.',
+        language: language,
+        description: t.errors.longitudeMustBeBetween,
       );
     }
   }
 
-  String _resolveGoogleMapsApiKey(Session session) {
+  String _resolveGoogleMapsApiKey(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+
     final passwordValue = session.passwords['googleMapsApiKey'];
     final keyFromPasswords = passwordValue is String ? passwordValue : null;
     final key =
@@ -256,9 +287,8 @@ class ReverseGeocodeCity extends Endpoint {
 
     if (key == null || key.isEmpty) {
       throw RootHubEndpointError.configuration(
-        description:
-            'Google Maps API key is not configured. '
-            'Set `googleMapsApiKey` in config/passwords.yaml or `GOOGLE_MAPS_API_KEY`.',
+        language: language,
+        description: t.errors.googleMapsApiKeyNotConfigured,
       );
     }
 

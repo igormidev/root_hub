@@ -181,6 +181,7 @@ The app theme uses Google Fonts to avoid generic defaults:
 ## Localization (Mandatory)
 - Locale files live in `lib/i18n/*.json`.
 - Generated localization file: `lib/i18n/strings.g.dart`.
+- Server calls must forward locale as `ServerSupportedTranslation` using `serverSupportedTranslationProvider` (`lib/src/global_providers/server_supported_translation_provider.dart`) on every endpoint `vN(...)` call.
 - Supported locales:
   - `en` (English)
   - `pt-BR` (Portuguese - Brazil)

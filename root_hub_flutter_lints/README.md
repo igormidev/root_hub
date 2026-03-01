@@ -1,13 +1,18 @@
 # root_hub_flutter_lints
 
-Custom lint plugin used by `root_hub_flutter` to enforce UI file conventions.
+Custom lint plugin used by:
+- `root_hub_flutter` for client UI architecture conventions.
+- `root_hub_server` for endpoint contract and translation conventions.
 
 ## Purpose
-This package enforces strict component-splitting and naming conventions in feature UI code.
+This package enforces:
+- strict component-splitting and naming conventions in Flutter feature UI code.
+- strict endpoint contract conventions in Serverpod endpoint classes.
 
 Scope:
 - `feature_*` rules: only files under `lib/src/features/**` in the Flutter app.
 - `no_widget_returning_function`: all files under `lib/**` in the Flutter app (excluding generated files).
+- `server_*` rules: only files under `root_hub_server/lib/src/api/**` (excluding generated files).
 
 ## Enforced Rules
 
@@ -41,6 +46,19 @@ Scope:
 - Enforces: hard-coded strings in feature UI code must be moved to localization.
 - Allowed escape hatch: add `// ignore: feature_hardcoded_ui_string` above non-translatable values (for example keys, IDs, routes, or asset paths).
 
+### `server_endpoint_method_version_rule`
+- Scope: `root_hub_server/lib/src/api/**` in classes that extend `Endpoint`.
+- Enforces: every public endpoint method must be versioned (`v1`, `v2`, `v3`, ...).
+
+### `server_endpoint_language_parameter_rule`
+- Scope: `root_hub_server/lib/src/api/**` in classes that extend `Endpoint`.
+- Enforces: each endpoint version method must declare `required ServerSupportedTranslation language` as a named parameter (no default value).
+
+### `server_hardcoded_response_string`
+- Scope: `root_hub_server/lib/src/api/**` in classes that extend `Endpoint`.
+- Enforces: endpoint response titles/descriptions/fallback text/system chat content must come from server translation files, not hardcoded string literals.
+- Allowed escape hatch: add `// ignore: server_hardcoded_response_string` above non-translatable values.
+
 ## Where Rules Are Wired
 - Rule definitions (custom_lint-compatible): `lib/root_hub_flutter_lints.dart`
 - Enforced workspace checker executable: `bin/check_flutter_feature_lints.dart`
@@ -60,4 +78,12 @@ cd /Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints
 dart analyze
 cd /Users/igor/PersonalProjects/root_hub/root_hub_flutter
 flutter analyze
+```
+
+For backend lint validation:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_server
+dart run custom_lint
+dart analyze
 ```

@@ -118,6 +118,44 @@ root_hub_server/
 ## Error Handling Pattern
 - Centralized helpers in `lib/src/core/root_hub_endpoint_error.dart`.
 - Endpoints use `guardRootHubEndpointErrors(...)` to convert unexpected exceptions into `RootHubException` payloads.
+- Endpoint error titles / descriptions / fallback messages must come from server translations (no hardcoded response text in endpoint code).
+
+## Endpoint Contract Lints (Mandatory)
+Server endpoint linting is enforced through `root_hub_flutter_lints` + `custom_lint`.
+
+Rules for classes extending `Endpoint` in `lib/src/api/**`:
+- Public endpoint methods must be versioned (`v1`, `v2`, `v3`, ...).
+- Each endpoint version method must include `required ServerSupportedTranslation language` as a named parameter (no default value).
+- Response-facing literals (error title/description/fallback/system chat content) must be translated.
+
+Run:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_server
+dart run custom_lint
+dart analyze
+```
+
+## Server Response Translation (Mandatory)
+Server API responses are localized with `slang` in pure Dart mode.
+
+Source of truth:
+- Locale JSON files: `lib/src/i18n/*.json`
+- Generated translation API: `lib/src/i18n/strings.g.dart`
+- Centralized preloaded registry: `lib/src/core/server_translations.dart`
+- Supported transport enum: `ServerSupportedTranslation` (`lib/src/entities/core/server_supported_translation.spy.yaml`)
+
+Usage pattern in endpoints:
+- Receive `required ServerSupportedTranslation language` in `vN` methods.
+- Resolve locale instance once with `ServerTranslations.of(language)`.
+- Use translated keys for all API response strings.
+
+When translation keys or locale files change, regenerate:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_server
+dart run slang
+```
 
 ## Domain Models
 Source model definitions live in `lib/src/entities/**/*.spy.yaml` and API payload models in `lib/src/api/**/models/*.spy.yaml`.
@@ -194,6 +232,7 @@ From `/Users/igor/PersonalProjects/root_hub/root_hub_server`:
 
 ```bash
 dart pub get
+dart run custom_lint
 serverpod generate
 dart analyze
 dart bin/main.dart --apply-migrations

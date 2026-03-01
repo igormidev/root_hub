@@ -1,5 +1,6 @@
 import 'package:root_hub_server/src/api/match_chat/send_system_chat_message.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -9,13 +10,17 @@ class UnsubscribeFromMatch extends Endpoint {
 
   Future<void> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
@@ -29,8 +34,9 @@ class UnsubscribeFromMatch extends Endpoint {
 
         if (playerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
@@ -43,8 +49,9 @@ class UnsubscribeFromMatch extends Endpoint {
 
         if (subscription == null) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Not subscribed',
-            description: 'You are not subscribed to this match.',
+            language: language,
+            title: t.errors.notSubscribedTitle,
+            description: t.errors.youAreNotSubscribedToThisMatch,
           );
         }
 
@@ -58,14 +65,17 @@ class UnsubscribeFromMatch extends Endpoint {
 
         await sendSystemChatMessage(
           session,
+          language: language,
           scheduledMatchId: scheduledMatchId,
           playerData: playerData,
           messageType: MatchChatMessageType.systemLeave,
-          content: '${playerData.displayName} left the table',
+          content: t.systemMessages.leftTheTable(
+            displayName: playerData.displayName,
+          ),
         );
       },
-      fallbackDescription:
-          'Unable to unsubscribe from this match right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToUnsubscribeFromMatch,
     );
   }
 }

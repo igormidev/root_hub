@@ -5,6 +5,7 @@ import 'package:image/image.dart' as img;
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/notifications/match_chat_push_notification_service.dart';
 import 'package:serverpod/serverpod.dart';
@@ -18,17 +19,21 @@ class SendMatchChatMessage extends Endpoint {
 
   Future<MatchChatMessage> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String content,
     ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
@@ -37,26 +42,29 @@ class SendMatchChatMessage extends Endpoint {
 
         if (normalizedContent.isEmpty && !hasImage) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Message must include text content or an image.',
+            language: language,
+            description: t.errors.messageMustIncludeTextOrImage,
           );
         }
 
         if (imageBytes != null && imageBytes.lengthInBytes == 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Image bytes cannot be empty.',
+            language: language,
+            description: t.errors.imageBytesCannotBeEmpty,
           );
         }
 
         if (imageBytes != null && imageBytes.lengthInBytes > _maxImageBytes) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'Image is too large. Please send an image smaller than 6 MB.',
+            language: language,
+            description: t.errors.imageTooLargeSixMb,
           );
         }
 
         final playerData =
             await MatchChatParticipantStateService.getAuthenticatedPlayerData(
               session,
+              language: language,
             );
         session.log(
           '[MatchChat] Sending message. '
@@ -75,9 +83,11 @@ class SendMatchChatMessage extends Endpoint {
 
         if (matchSchedule == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Scheduled match not found',
-            description:
-                'Scheduled match with id $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.scheduledMatchNotFoundTitle,
+            description: t.errors.scheduledMatchWithIdNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
@@ -85,9 +95,11 @@ class SendMatchChatMessage extends Endpoint {
         final chatHistoryId = chatHistory?.id;
         if (chatHistory == null || chatHistoryId == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Chat not found',
-            description:
-                'Chat history for scheduled match $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.chatNotFoundTitle,
+            description: t.errors.chatHistoryForScheduledMatchNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
@@ -151,6 +163,7 @@ class SendMatchChatMessage extends Endpoint {
             uploadedImageUrl = await _uploadThingStorageClient
                 .uploadPublicImage(
                   session,
+                  language: language,
                   imageBytes: imageBytesList,
                   fileName: imageFileName ?? '',
                   contentType: imageContentType,
@@ -172,8 +185,8 @@ class SendMatchChatMessage extends Endpoint {
               stackTrace: stackTrace,
             );
             throw RootHubEndpointError.endpointUnavailable(
-              description:
-                  'Unable to upload image right now. Please try again.',
+              language: language,
+              description: t.fallback.unableToUploadImage,
             );
           }
         }
@@ -206,6 +219,7 @@ class SendMatchChatMessage extends Endpoint {
 
         await MatchChatParticipantStateService.ensureParticipantStateExists(
           session,
+          language: language,
           chatHistory: chatHistory,
           playerData: playerData,
         );
@@ -247,8 +261,8 @@ class SendMatchChatMessage extends Endpoint {
 
         return message;
       },
-      fallbackDescription:
-          'Unable to send the message right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToSendMessage,
     );
   }
 }

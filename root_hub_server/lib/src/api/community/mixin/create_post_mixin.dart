@@ -1,15 +1,19 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 mixin CreatePostMixin {
   Future<Post> createPost(
     Session session, {
+    required ServerSupportedTranslation language,
     required String title,
     required String content,
-    required Language language,
+    required Language postLanguage,
     int? attachedMatchId,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -20,8 +24,9 @@ mixin CreatePostMixin {
 
     if (playerData == null) {
       throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 
@@ -30,8 +35,9 @@ mixin CreatePostMixin {
       match = await PlayedMatch.db.findById(session, attachedMatchId);
       if (match == null) {
         throw RootHubEndpointError.notFound(
-          title: 'Match not found',
-          description: 'Match with id $attachedMatchId not found.',
+          language: language,
+          title: t.errors.matchNotFoundTitle,
+          description: t.errors.matchWithIdNotFound(matchId: attachedMatchId),
         );
       }
     }
@@ -41,7 +47,7 @@ mixin CreatePostMixin {
       title: title,
       content: content,
       likesCount: 0,
-      language: language,
+      language: postLanguage,
     );
 
     final insertedPost = await Post.db.insertRow(session, post);

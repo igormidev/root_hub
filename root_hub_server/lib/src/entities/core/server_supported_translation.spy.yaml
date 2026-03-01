@@ -1,0 +1,7 @@
+enum: ServerSupportedTranslation
+values:
+    - english
+    - portugueseBrazil
+    - spanish
+    - french
+    - german

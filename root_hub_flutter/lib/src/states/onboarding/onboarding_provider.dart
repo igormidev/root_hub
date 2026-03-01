@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_state.dart';
 
@@ -76,7 +77,11 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     final result = await ref
         .read(clientProvider)
         .reverseGeocodeCity
-        .v1(x: location.x, y: location.y)
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          x: location.x,
+          y: location.y,
+        )
         .toResult;
 
     return result.fold(

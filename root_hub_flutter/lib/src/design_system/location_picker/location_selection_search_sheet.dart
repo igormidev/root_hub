@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
@@ -122,6 +123,7 @@ class _LocationSelectionSearchSheetState
         .read(clientProvider)
         .getMatchLocation
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           query: normalizedQuery,
           page: 1,
         )

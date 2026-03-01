@@ -1,5 +1,6 @@
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -10,12 +11,18 @@ class GetMatchChatActivityOverview extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<MatchChatActivityOverview> v1(Session session) async {
+  Future<MatchChatActivityOverview> v1(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final playerData =
             await MatchChatParticipantStateService.getAuthenticatedPlayerData(
               session,
+              language: language,
             );
         final playerDataId = playerData.id!;
         final now = DateTime.now();
@@ -51,6 +58,7 @@ class GetMatchChatActivityOverview extends Endpoint {
           subscribedScheduleIds.add(scheduleId);
           await _ensureParticipantStateForSubscribedSchedule(
             session,
+            language: language,
             schedule: schedule,
             playerData: playerData,
           );
@@ -106,7 +114,10 @@ class GetMatchChatActivityOverview extends Endpoint {
             continue;
           }
 
-          final locationTitle = _resolveLocationTitle(schedule.location);
+          final locationTitle = _resolveLocationTitle(
+            schedule.location,
+            language: language,
+          );
           final locationSubtitle = _resolveLocationSubtitle(schedule.location);
           final isSubscribed =
               subscribedScheduleIds.contains(scheduleId) ||
@@ -181,13 +192,14 @@ class GetMatchChatActivityOverview extends Endpoint {
           unreadMessagesCount: unreadMessagesCount,
         );
       },
-      fallbackDescription:
-          'Unable to load match activity right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadMatchActivity,
     );
   }
 
   Future<void> _ensureParticipantStateForSubscribedSchedule(
     Session session, {
+    required ServerSupportedTranslation language,
     required MatchSchedulePairingAttempt schedule,
     required PlayerData playerData,
   }) async {
@@ -218,6 +230,7 @@ class GetMatchChatActivityOverview extends Endpoint {
 
     await MatchChatParticipantStateService.ensureParticipantStateExists(
       session,
+      language: language,
       chatHistory: chatHistory,
       playerData: playerData,
       initialUnreadMessagesCount: unreadMessagesCount,
@@ -265,10 +278,15 @@ class GetMatchChatActivityOverview extends Endpoint {
     return b.attemptedAt.compareTo(a.attemptedAt);
   }
 
-  String _resolveLocationTitle(Location? location) {
+  String _resolveLocationTitle(
+    Location? location, {
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+
     final google = location?.googlePlaceLocation;
     final manual = location?.manualInputLocation;
-    return google?.name ?? manual?.title ?? 'Unknown location';
+    return google?.name ?? manual?.title ?? t.errors.unknownLocation;
   }
 
   String? _resolveLocationSubtitle(Location? location) {

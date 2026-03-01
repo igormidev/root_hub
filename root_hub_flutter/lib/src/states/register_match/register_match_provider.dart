@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_state.dart';
@@ -74,7 +75,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .getPendingMatchResultsCount
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     result.fold(
@@ -109,7 +110,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .getPendingMatchResults
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     RootHubException? loadError;
@@ -162,7 +163,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .getMyAnonymousPlayers
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     RootHubException? loadError;
@@ -210,6 +211,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         .read(clientProvider)
         .createAnonymousPlayer
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           firstName: normalizedFirstName,
           lastName: normalizedLastName,
         )
@@ -253,7 +255,10 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .searchRegisteredPlayers
-        .v1(query: query.trim())
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          query: query.trim(),
+        )
         .toResult;
 
     RootHubException? searchError;
@@ -372,6 +377,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         .read(clientProvider)
         .registerMatchData
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           matchStartedAt: matchStartedAt,
           matchEstimatedDuration: matchEstimatedDuration,
           locationId: locationId,

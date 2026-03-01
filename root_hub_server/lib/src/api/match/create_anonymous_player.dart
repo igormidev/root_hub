@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -11,18 +12,30 @@ class CreateAnonymousPlayer extends Endpoint {
 
   Future<AnonymousPlayer> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required String firstName,
     required String lastName,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedFirstName = _normalizeNamePart(firstName);
         final normalizedLastName = _normalizeNamePart(lastName);
-        _validateNamePart(namePart: normalizedFirstName, label: 'First name');
-        _validateNamePart(namePart: normalizedLastName, label: 'Last name');
+        _validateNamePart(
+          language: language,
+          namePart: normalizedFirstName,
+          label: t.labels.firstName,
+        );
+        _validateNamePart(
+          language: language,
+          namePart: normalizedLastName,
+          label: t.labels.lastName,
+        );
 
         final authenticatedPlayerData = await _getAuthenticatedPlayerData(
           session,
+          language: language,
         );
 
         final existingAnonymousPlayer = await AnonymousPlayer.db.findFirstRow(
@@ -56,12 +69,17 @@ class CreateAnonymousPlayer extends Endpoint {
 
         return anonymousPlayer;
       },
-      fallbackDescription:
-          'Unable to create an anonymous player right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToCreateAnonymousPlayer,
     );
   }
 
-  Future<PlayerData> _getAuthenticatedPlayerData(Session session) async {
+  Future<PlayerData> _getAuthenticatedPlayerData(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -72,8 +90,9 @@ class CreateAnonymousPlayer extends Endpoint {
 
     if (playerData == null) {
       throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 
@@ -81,27 +100,39 @@ class CreateAnonymousPlayer extends Endpoint {
   }
 
   void _validateNamePart({
+    required ServerSupportedTranslation language,
     required String namePart,
     required String label,
   }) {
+    final t = ServerTranslations.of(language);
+
     if (namePart.isEmpty) {
       throw RootHubEndpointError.invalidRequest(
-        title: 'Invalid anonymous player',
-        description: '$label cannot be empty.',
+        language: language,
+        title: t.errors.invalidAnonymousPlayerTitle,
+        description: t.errors.firstNameCannotBeEmpty(label: label),
       );
     }
 
     if (namePart.length < _minNameLength) {
       throw RootHubEndpointError.invalidRequest(
-        title: 'Invalid anonymous player',
-        description: '$label must have at least $_minNameLength characters.',
+        language: language,
+        title: t.errors.invalidAnonymousPlayerTitle,
+        description: t.errors.nameMustHaveAtLeastCharacters(
+          label: label,
+          minLength: _minNameLength,
+        ),
       );
     }
 
     if (namePart.length > _maxNameLength) {
       throw RootHubEndpointError.invalidRequest(
-        title: 'Invalid anonymous player',
-        description: '$label cannot exceed $_maxNameLength characters.',
+        language: language,
+        title: t.errors.invalidAnonymousPlayerTitle,
+        description: t.errors.nameCannotExceedCharacters(
+          label: label,
+          maxLength: _maxNameLength,
+        ),
       );
     }
   }

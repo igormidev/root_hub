@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -8,18 +9,25 @@ class DeactivatePushNotificationToken extends Endpoint {
 
   Future<void> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required String token,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedToken = token.trim();
         if (normalizedToken.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Push token cannot be empty.',
+            language: language,
+            description: t.errors.pushTokenCannotBeEmpty,
           );
         }
 
-        final playerData = await _findAuthenticatedPlayerData(session);
+        final playerData = await _findAuthenticatedPlayerData(
+          session,
+          language: language,
+        );
         final playerDataId = playerData.id!;
 
         final existingToken = await PlayerPushNotificationToken.db.findFirstRow(
@@ -46,12 +54,17 @@ class DeactivatePushNotificationToken extends Endpoint {
           existingToken,
         );
       },
-      fallbackDescription:
-          'Unable to disable push notifications for this device right now.',
+      language: language,
+      fallbackDescription: t.fallback.unableToDisablePushNotifications,
     );
   }
 
-  Future<PlayerData> _findAuthenticatedPlayerData(Session session) async {
+  Future<PlayerData> _findAuthenticatedPlayerData(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
     final playerData = await PlayerData.db.findFirstRow(
@@ -60,8 +73,9 @@ class DeactivatePushNotificationToken extends Endpoint {
     );
     if (playerData == null) {
       throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 

@@ -1,6 +1,7 @@
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/api/match_chat/send_system_chat_message.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -10,8 +11,11 @@ class SubscribeToMatch extends Endpoint {
 
   Future<MatchSubscription> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final userIdentifier = session.authenticated!.userIdentifier;
@@ -24,8 +28,9 @@ class SubscribeToMatch extends Endpoint {
 
         if (playerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
@@ -40,18 +45,19 @@ class SubscribeToMatch extends Endpoint {
 
         if (match == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Scheduled match not found',
-            description:
-                'Scheduled match with id $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.scheduledMatchNotFoundTitle,
+            description: t.errors.scheduledMatchWithIdNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
         if (match.closedForSubscriptions == true) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Subscriptions closed',
-            description:
-                'The host has closed subscriptions for this table. '
-                'No new players can join at this time.',
+            language: language,
+            title: t.errors.subscriptionsClosedTitle,
+            description: t.errors.hostClosedSubscriptions,
           );
         }
 
@@ -60,9 +66,11 @@ class SubscribeToMatch extends Endpoint {
         final maxPlayers = _podiumToPlayersCount(match.maxAmountOfPlayers);
         if (currentSubscriptions.length >= maxPlayers) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Table is full',
-            description:
-                'This table has reached its maximum of $maxPlayers players.',
+            language: language,
+            title: t.errors.tableIsFullTitle,
+            description: t.errors.tableReachedMaximumPlayers(
+              maxPlayers: maxPlayers,
+            ),
           );
         }
 
@@ -75,8 +83,9 @@ class SubscribeToMatch extends Endpoint {
 
         if (existing != null) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Subscription already exists',
-            description: 'Already subscribed to this match.',
+            language: language,
+            title: t.errors.subscriptionAlreadyExistsTitle,
+            description: t.errors.alreadySubscribedToThisMatch,
           );
         }
 
@@ -120,6 +129,7 @@ class SubscribeToMatch extends Endpoint {
 
             await MatchChatParticipantStateService.ensureParticipantStateExists(
               session,
+              language: language,
               chatHistory: chatHistory,
               playerData: playerData,
               initialUnreadMessagesCount: unreadFromExistingMessages,
@@ -132,16 +142,19 @@ class SubscribeToMatch extends Endpoint {
 
         await sendSystemChatMessage(
           session,
+          language: language,
           scheduledMatchId: scheduledMatchId,
           playerData: playerData,
           messageType: MatchChatMessageType.systemJoin,
-          content: '${playerData.displayName} joined the table',
+          content: t.systemMessages.joinedTheTable(
+            displayName: playerData.displayName,
+          ),
         );
 
         return subscription;
       },
-      fallbackDescription:
-          'Unable to subscribe to this match right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToSubscribeToMatch,
     );
   }
 

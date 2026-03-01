@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -6,11 +7,17 @@ class GetMyAnonymousPlayers extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<List<AnonymousPlayer>> v1(Session session) async {
+  Future<List<AnonymousPlayer>> v1(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final authenticatedPlayerData = await _getAuthenticatedPlayerData(
           session,
+          language: language,
         );
 
         return AnonymousPlayer.db.find(
@@ -20,12 +27,17 @@ class GetMyAnonymousPlayers extends Endpoint {
           orderDescending: true,
         );
       },
-      fallbackDescription:
-          'Unable to load anonymous players right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadAnonymousPlayers,
     );
   }
 
-  Future<PlayerData> _getAuthenticatedPlayerData(Session session) async {
+  Future<PlayerData> _getAuthenticatedPlayerData(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -36,8 +48,9 @@ class GetMyAnonymousPlayers extends Endpoint {
 
     if (playerData == null) {
       throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 

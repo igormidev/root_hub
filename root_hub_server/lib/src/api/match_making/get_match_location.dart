@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:google_maps_apis/places_new.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -32,25 +33,33 @@ class GetMatchLocation extends Endpoint {
 
   Future<List<Location>> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required String query,
     required int page,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedQuery = query.trim();
         if (normalizedQuery.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Query must not be empty.',
+            language: language,
+            description: t.errors.queryMustNotBeEmpty,
           );
         }
         if (page < 1) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Page must be greater than or equal to 1.',
+            language: language,
+            description: t.errors.pageMustBeAtLeastOne,
           );
         }
 
         final placesApi = PlacesAPINew(
-          apiKey: _resolveGoogleMapsApiKey(session),
+          apiKey: _resolveGoogleMapsApiKey(
+            session,
+            language: language,
+          ),
         );
 
         String? nextPageToken;
@@ -67,6 +76,7 @@ class GetMatchLocation extends Endpoint {
 
           final placesResponse = _parseSearchResponse(
             response,
+            language: language,
             requestedPage: currentPage,
           );
           final persistedPageLocations = await _upsertPlaces(
@@ -81,8 +91,11 @@ class GetMatchLocation extends Endpoint {
           final token = placesResponse.nextPageToken?.trim();
           if (token == null || token.isEmpty) {
             throw RootHubEndpointError.invalidRequest(
-              description:
-                  'Page $page is out of range for query "$normalizedQuery".',
+              language: language,
+              description: t.errors.placesPageOutOfRange(
+                page: page,
+                query: normalizedQuery,
+              ),
             );
           }
           nextPageToken = token;
@@ -90,26 +103,34 @@ class GetMatchLocation extends Endpoint {
 
         return const <Location>[];
       },
-      fallbackDescription:
-          'Unable to fetch locations right now. Please try again later.',
+      language: language,
+      fallbackDescription: t.fallback.unableToFetchLocations,
     );
   }
 
   PlacesResponse _parseSearchResponse(
     GoogleHTTPResponse<PlacesResponse?> response, {
+    required ServerSupportedTranslation language,
     required int requestedPage,
   }) {
+    final t = ServerTranslations.of(language);
+
     if (response.isSuccessful && response.body != null) {
       return response.body!;
     }
 
     final message = response.error?.error?.message?.trim().isNotEmpty == true
         ? response.error!.error!.message!
-        : 'Google Places API request failed with HTTP ${response.statusCode}.';
+        : t.errors.googlePlacesRequestFailedWithHttp(
+            statusCode: response.statusCode,
+          );
     throw RootHubEndpointError.unexpected(
-      title: 'Location provider error',
-      description:
-          'Failed to fetch match locations (page $requestedPage): $message',
+      language: language,
+      title: t.errors.locationProviderErrorTitle,
+      description: t.errors.failedToFetchMatchLocations(
+        requestedPage: requestedPage,
+        message: message,
+      ),
     );
   }
 
@@ -301,7 +322,12 @@ class GetMatchLocation extends Endpoint {
     return orderedRows;
   }
 
-  String _resolveGoogleMapsApiKey(Session session) {
+  String _resolveGoogleMapsApiKey(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+
     final passwordValue = session.passwords['googleMapsApiKey'];
     final keyFromPasswords = passwordValue is String ? passwordValue : null;
     final key =
@@ -310,9 +336,8 @@ class GetMatchLocation extends Endpoint {
 
     if (key == null || key.isEmpty) {
       throw RootHubEndpointError.configuration(
-        description:
-            'Google Maps API key is not configured. '
-            'Set `googleMapsApiKey` in config/passwords.yaml or `GOOGLE_MAPS_API_KEY`.',
+        language: language,
+        description: t.errors.googleMapsApiKeyNotConfigured,
       );
     }
 

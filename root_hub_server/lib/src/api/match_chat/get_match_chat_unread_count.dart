@@ -1,17 +1,25 @@
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
+import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GetMatchChatUnreadCount extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<int> v1(Session session) async {
+  Future<int> v1(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final playerData =
             await MatchChatParticipantStateService.getAuthenticatedPlayerData(
               session,
+              language: language,
             );
         final playerDataId = playerData.id!;
 
@@ -47,8 +55,8 @@ class GetMatchChatUnreadCount extends Endpoint {
 
         return 0;
       },
-      fallbackDescription:
-          'Unable to load unread chat count right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadUnreadChatCount,
     );
   }
 }

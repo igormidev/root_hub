@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/activity/activity_state.dart';
 
@@ -70,7 +71,7 @@ class ActivityNotifier extends Notifier<ActivityState> {
     final result = await ref
         .read(clientProvider)
         .getMatchChatActivityOverview
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     result.fold(
@@ -111,7 +112,7 @@ class ActivityNotifier extends Notifier<ActivityState> {
     final result = await ref
         .read(clientProvider)
         .getMatchChatUnreadCount
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     result.fold(

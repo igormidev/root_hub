@@ -1,5 +1,6 @@
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -9,18 +10,23 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
 
   Future<MatchChatPlayedMatchSummary?> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
         await MatchChatParticipantStateService.getAuthenticatedPlayerData(
           session,
+          language: language,
         );
 
         final schedule = await MatchSchedulePairingAttempt.db.findById(
@@ -45,9 +51,11 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
 
         if (schedule == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Scheduled match not found',
-            description:
-                'Scheduled match with id $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.scheduledMatchNotFoundTitle,
+            description: t.errors.scheduledMatchWithIdNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
@@ -60,7 +68,10 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
             (playedMatch.playerPerfomances ?? const <PlayerPerfomanceInMatch>[])
                 .map(
                   (performance) => MatchChatPlayedMatchPlayer(
-                    displayName: _resolvePlayerDisplayName(performance),
+                    displayName: _resolvePlayerDisplayName(
+                      performance,
+                      language: language,
+                    ),
                     faction: performance.factionUsedInMatch,
                     didWin: performance.didWin,
                     score: performance.scoreInMatch,
@@ -78,7 +89,10 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
           }
         }
 
-        final locationTitle = _resolveLocationTitle(schedule.location);
+        final locationTitle = _resolveLocationTitle(
+          schedule.location,
+          language: language,
+        );
         final locationSubtitle = _resolveLocationSubtitle(schedule.location);
         final proof = playedMatch.inPersonProof;
 
@@ -98,12 +112,17 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
           boardPhotoUrl: proof?.boardPhotoUrl,
         );
       },
-      fallbackDescription:
-          'Unable to load played match summary right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadPlayedMatchSummary,
     );
   }
 
-  String _resolvePlayerDisplayName(PlayerPerfomanceInMatch performance) {
+  String _resolvePlayerDisplayName(
+    PlayerPerfomanceInMatch performance, {
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+
     final playerData = performance.playerData;
     if (playerData != null) {
       return playerData.displayName;
@@ -114,7 +133,7 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
       return '${anonymousPlayer.firstName} ${anonymousPlayer.lastName}'.trim();
     }
 
-    return 'Unknown player';
+    return t.errors.unknownPlayer;
   }
 
   int _comparePlayedMatchPlayers(
@@ -140,10 +159,15 @@ class GetMatchChatPlayedMatchSummary extends Endpoint {
     return bScore.compareTo(aScore);
   }
 
-  String _resolveLocationTitle(Location? location) {
+  String _resolveLocationTitle(
+    Location? location, {
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+
     final google = location?.googlePlaceLocation;
     final manual = location?.manualInputLocation;
-    return google?.name ?? manual?.title ?? 'Unknown location';
+    return google?.name ?? manual?.title ?? t.errors.unknownLocation;
   }
 
   String? _resolveLocationSubtitle(Location? location) {
