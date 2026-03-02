@@ -20,6 +20,7 @@ dependencies:
   root_hub_client:
     path: ../root_hub_client
   serverpod_auth_idp_flutter: 3.3.1
+  serverpod_auth_idp_client: 3.3.1
   serverpod_flutter: 3.3.1
   babel_text: ^2.1.0
   intl: any

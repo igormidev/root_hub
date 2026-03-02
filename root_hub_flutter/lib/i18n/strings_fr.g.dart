@@ -266,6 +266,38 @@ class _TranslationsAuthAuthLoginScreenFr extends TranslationsAuthAuthLoginScreen
 	// Translations
 	@override String get signInToBrowseSchedulesAndJoinTables => 'Connectez-vous pour consulter les horaires et rejoindre des parties.';
 	@override String get findYourNextRootMatch => 'Trouvez votre prochaine\npartie de ROOT';
+	@override String get signInWithEmailTitle => 'Se connecter avec e-mail';
+	@override String get signUpWithEmailTitle => 'Créer un compte avec e-mail';
+	@override String get verifyAccountTitle => 'Vérifier le compte';
+	@override String get verifyAccountMessage => 'Un e-mail de vérification a été envoyé. Consultez votre e-mail et saisissez le code ci-dessous.';
+	@override String get setAccountPasswordTitle => 'Définir le mot de passe du compte';
+	@override String get resetPasswordTitle => 'Réinitialiser le mot de passe';
+	@override String get requestResetDescription => 'Saisissez l\'e-mail de votre compte pour recevoir un code de réinitialisation.';
+	@override String get verifyResetCodeTitle => 'Vérifier le code de réinitialisation';
+	@override String get verifyResetMessage => 'Saisissez le code de réinitialisation envoyé à votre e-mail.';
+	@override String get setNewPasswordTitle => 'Définir un nouveau mot de passe';
+	@override String get emailLabel => 'E-mail';
+	@override String get passwordLabel => 'Mot de passe';
+	@override String get newPasswordLabel => 'Nouveau mot de passe';
+	@override String get forgotPasswordButton => 'Mot de passe oublié ?';
+	@override String get signInButton => 'Se connecter';
+	@override String get signUpButton => 'Créer un compte';
+	@override String get continueButton => 'Continuer';
+	@override String get verifyButton => 'Vérifier';
+	@override String get requestResetButton => 'Demander une réinitialisation';
+	@override String get resetPasswordButton => 'Réinitialiser le mot de passe';
+	@override String get dontHaveAnAccount => 'Vous n\'avez pas de compte ?';
+	@override String get alreadyHaveAnAccount => 'Vous avez déjà un compte ?';
+	@override String get signUpLink => 'Créer un compte';
+	@override String get signInLink => 'Se connecter';
+	@override String get backToSignIn => 'Retour à la connexion';
+	@override String get resendCode => 'Rien reçu ? Envoyer un nouveau code';
+	@override String resendCodeIn({required Object time}) => 'Envoyer un nouveau code (${time})';
+	@override String get passwordRuleMinLength => 'Au moins 8 caractères';
+	@override String get passwordRuleUppercase => 'Contient au moins une lettre majuscule';
+	@override String get passwordRuleLowercase => 'Contient au moins une lettre minuscule';
+	@override String get passwordRuleNumber => 'Contient au moins un chiffre';
+	@override late final _TranslationsAuthAuthLoginScreenErrorsFr errors = _TranslationsAuthAuthLoginScreenErrorsFr._(_root);
 }
 
 // Path: auth.auth_onboarding_continue_button_widget
@@ -1281,4 +1313,26 @@ class _TranslationsShopUiScreensShopScreenFr extends TranslationsShopUiScreensSh
 	@override String get unableToOpenStoreUrl => 'Impossible d’ouvrir ce lien de boutique pour le moment.';
 	@override String get closeGallery => 'Fermer la galerie';
 	@override String get noProductsAvailable => 'Aucun produit disponible pour cette langue pour le moment.';
+}
+
+// Path: auth.auth_login_screen.errors
+class _TranslationsAuthAuthLoginScreenErrorsFr extends TranslationsAuthAuthLoginScreenErrorsEn {
+	_TranslationsAuthAuthLoginScreenErrorsFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get invalidEmail => 'Adresse e-mail invalide.';
+	@override String get invalidCredentials => 'E-mail ou mot de passe invalide. Vérifiez vos identifiants et réessayez.';
+	@override String get tooManyLoginAttempts => 'Trop de tentatives de connexion. Réessayez plus tard.';
+	@override String get loginFailed => 'Une erreur est survenue lors de la connexion. Réessayez.';
+	@override String get tooManyRegistrationAttempts => 'Trop de tentatives d\'inscription. Réessayez plus tard.';
+	@override String get verificationCodeExpired => 'Le code de vérification a expiré. Demandez-en un nouveau.';
+	@override String get invalidVerificationCode => 'Code de vérification invalide. Vérifiez-le et réessayez.';
+	@override String get passwordPolicyViolation => 'Le mot de passe ne respecte pas les exigences. Choisissez-en un autre.';
+	@override String get registrationFailed => 'Une erreur est survenue pendant l\'inscription. Réessayez plus tard.';
+	@override String get tooManyPasswordResetAttempts => 'Trop de tentatives de réinitialisation du mot de passe. Réessayez plus tard.';
+	@override String get passwordResetFailed => 'Une erreur est survenue pendant la réinitialisation du mot de passe. Réessayez plus tard.';
+	@override String get networkUnavailable => 'Impossible de se connecter au serveur. Vérifiez votre connexion et réessayez.';
+	@override String get unexpected => 'Une erreur inattendue est survenue. Réessayez.';
 }

@@ -76,6 +76,7 @@
         "result_dart",
         "riverpod",
         "root_hub_client",
+        "serverpod_auth_idp_client",
         "serverpod_auth_idp_flutter",
         "serverpod_flutter",
         "shared_preferences",
@@ -641,6 +642,14 @@
       ]
     },
     {
+      "name": "serverpod_auth_idp_client",
+      "version": "3.3.1",
+      "dependencies": [
+        "serverpod_auth_core_client",
+        "serverpod_client"
+      ]
+    },
+    {
       "name": "serverpod_auth_idp_flutter",
       "version": "3.3.1",
       "dependencies": [
@@ -861,14 +870,6 @@
         "serverpod_serialization",
         "web_socket",
         "web_socket_channel"
-      ]
-    },
-    {
-      "name": "serverpod_auth_idp_client",
-      "version": "3.3.1",
-      "dependencies": [
-        "serverpod_auth_core_client",
-        "serverpod_client"
       ]
     },
     {
@@ -1874,6 +1875,14 @@
       ]
     },
     {
+      "name": "serverpod_auth_core_client",
+      "version": "3.3.1",
+      "dependencies": [
+        "clock",
+        "serverpod_client"
+      ]
+    },
+    {
       "name": "sign_in_with_apple",
       "version": "7.0.1",
       "dependencies": [
@@ -2213,14 +2222,6 @@
       "name": "mustache_template",
       "version": "2.0.3",
       "dependencies": []
-    },
-    {
-      "name": "serverpod_auth_core_client",
-      "version": "3.3.1",
-      "dependencies": [
-        "clock",
-        "serverpod_client"
-      ]
     },
     {
       "name": "path_provider_windows",

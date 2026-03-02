@@ -48,6 +48,9 @@ void main() async {
     await LocaleSettings.setLocaleRaw(preferredLocaleRaw);
   }
 
+  await pref.setString('preferred_locale', 'pt-BR'); // opcional (persistir)
+  await LocaleSettings.setLocale(AppLocale.ptBr); // muda idioma imediatamente
+
   runApp(
     TranslationProvider(
       child: MyApp(

@@ -266,6 +266,38 @@ class _TranslationsAuthAuthLoginScreenDe extends TranslationsAuthAuthLoginScreen
 	// Translations
 	@override String get signInToBrowseSchedulesAndJoinTables => 'Melde dich an, um Spieltermine zu sehen und Partien beizutreten.';
 	@override String get findYourNextRootMatch => 'Finde dein nächstes\nROOT-Spiel';
+	@override String get signInWithEmailTitle => 'Mit E-Mail anmelden';
+	@override String get signUpWithEmailTitle => 'Konto mit E-Mail erstellen';
+	@override String get verifyAccountTitle => 'Konto verifizieren';
+	@override String get verifyAccountMessage => 'Eine Verifizierungs-E-Mail wurde gesendet. Prüfe dein Postfach und gib den Code unten ein.';
+	@override String get setAccountPasswordTitle => 'Kontopasswort festlegen';
+	@override String get resetPasswordTitle => 'Passwort zurücksetzen';
+	@override String get requestResetDescription => 'Gib die E-Mail deines Kontos ein, um einen Zurücksetzungscode zu erhalten.';
+	@override String get verifyResetCodeTitle => 'Zurücksetzungscode verifizieren';
+	@override String get verifyResetMessage => 'Gib den an deine E-Mail gesendeten Zurücksetzungscode ein.';
+	@override String get setNewPasswordTitle => 'Neues Passwort festlegen';
+	@override String get emailLabel => 'E-Mail';
+	@override String get passwordLabel => 'Passwort';
+	@override String get newPasswordLabel => 'Neues Passwort';
+	@override String get forgotPasswordButton => 'Passwort vergessen?';
+	@override String get signInButton => 'Anmelden';
+	@override String get signUpButton => 'Konto erstellen';
+	@override String get continueButton => 'Weiter';
+	@override String get verifyButton => 'Verifizieren';
+	@override String get requestResetButton => 'Zurücksetzung anfordern';
+	@override String get resetPasswordButton => 'Passwort zurücksetzen';
+	@override String get dontHaveAnAccount => 'Du hast noch kein Konto?';
+	@override String get alreadyHaveAnAccount => 'Du hast bereits ein Konto?';
+	@override String get signUpLink => 'Konto erstellen';
+	@override String get signInLink => 'Anmelden';
+	@override String get backToSignIn => 'Zurück zur Anmeldung';
+	@override String get resendCode => 'Nicht erhalten? Neuen Code senden';
+	@override String resendCodeIn({required Object time}) => 'Neuen Code senden (${time})';
+	@override String get passwordRuleMinLength => 'Mindestens 8 Zeichen';
+	@override String get passwordRuleUppercase => 'Enthält mindestens einen Großbuchstaben';
+	@override String get passwordRuleLowercase => 'Enthält mindestens einen Kleinbuchstaben';
+	@override String get passwordRuleNumber => 'Enthält mindestens eine Zahl';
+	@override late final _TranslationsAuthAuthLoginScreenErrorsDe errors = _TranslationsAuthAuthLoginScreenErrorsDe._(_root);
 }
 
 // Path: auth.auth_onboarding_continue_button_widget
@@ -1281,4 +1313,26 @@ class _TranslationsShopUiScreensShopScreenDe extends TranslationsShopUiScreensSh
 	@override String get unableToOpenStoreUrl => 'Dieser Shop-Link kann gerade nicht geöffnet werden.';
 	@override String get closeGallery => 'Galerie schließen';
 	@override String get noProductsAvailable => 'Für diese Sprache sind noch keine Produkte verfügbar.';
+}
+
+// Path: auth.auth_login_screen.errors
+class _TranslationsAuthAuthLoginScreenErrorsDe extends TranslationsAuthAuthLoginScreenErrorsEn {
+	_TranslationsAuthAuthLoginScreenErrorsDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get invalidEmail => 'Ungültige E-Mail-Adresse.';
+	@override String get invalidCredentials => 'Ungültige E-Mail oder Passwort. Bitte überprüfe deine Daten und versuche es erneut.';
+	@override String get tooManyLoginAttempts => 'Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuche es später erneut.';
+	@override String get loginFailed => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuche es erneut.';
+	@override String get tooManyRegistrationAttempts => 'Zu viele fehlgeschlagene Registrierungsversuche. Bitte versuche es später erneut.';
+	@override String get verificationCodeExpired => 'Der Verifizierungscode ist abgelaufen. Bitte fordere einen neuen an.';
+	@override String get invalidVerificationCode => 'Ungültiger Verifizierungscode. Bitte prüfe ihn und versuche es erneut.';
+	@override String get passwordPolicyViolation => 'Das Passwort erfüllt die Anforderungen nicht. Bitte wähle ein anderes Passwort.';
+	@override String get registrationFailed => 'Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuche es später erneut.';
+	@override String get tooManyPasswordResetAttempts => 'Zu viele fehlgeschlagene Zurücksetzungsversuche. Bitte versuche es später erneut.';
+	@override String get passwordResetFailed => 'Beim Zurücksetzen des Passworts ist ein Fehler aufgetreten. Bitte versuche es später erneut.';
+	@override String get networkUnavailable => 'Keine Verbindung zum Server möglich. Prüfe deine Verbindung und versuche es erneut.';
+	@override String get unexpected => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.';
 }

@@ -3,11 +3,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_legend_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_metric_chart_widget.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_status_message_widget.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_snapshot.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class HomeStatsSection extends StatefulWidget {
   const HomeStatsSection({
@@ -214,7 +214,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           ),
         ),
-        SizedBox(height: 14),
+        SizedBox(height: 10),
         if (widget.isLoading && widget.stats == null)
           SizedBox(
             height: 360,
@@ -225,20 +225,26 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           )
         else if (widget.stats == null && widget.error != null)
-          HomeStatsStatusMessageWidget(
-            icon: Icons.error_outline_rounded,
-            title: widget.error!.title,
-            description: widget.error!.description,
-            actionLabel: 'Retry',
-            onActionTap: widget.onRetry,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: HomeStatsStatusMessageWidget(
+              icon: Icons.error_outline_rounded,
+              title: widget.error!.title,
+              description: widget.error!.description,
+              actionLabel: 'Retry',
+              onActionTap: widget.onRetry,
+            ),
           )
         else if (widget.stats == null)
-          HomeStatsStatusMessageWidget(
-            icon: Icons.insights_rounded,
-            title: widget.emptyTitle,
-            description: widget.emptyDescription,
-            actionLabel: null,
-            onActionTap: null,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: HomeStatsStatusMessageWidget(
+              icon: Icons.insights_rounded,
+              title: widget.emptyTitle,
+              description: widget.emptyDescription,
+              actionLabel: null,
+              onActionTap: null,
+            ),
           )
         else ...[
           MouseRegion(

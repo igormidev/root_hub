@@ -364,6 +364,101 @@ class TranslationsAuthAuthLoginScreenEn {
 
 	/// en: 'Find Your Next ROOT Match'
 	String get findYourNextRootMatch => 'Find Your Next\nROOT Match';
+
+	/// en: 'Sign In with email'
+	String get signInWithEmailTitle => 'Sign In with email';
+
+	/// en: 'Sign Up with email'
+	String get signUpWithEmailTitle => 'Sign Up with email';
+
+	/// en: 'Verify account'
+	String get verifyAccountTitle => 'Verify account';
+
+	/// en: 'A verification email has been sent. Check your email and enter the code below.'
+	String get verifyAccountMessage => 'A verification email has been sent. Check your email and enter the code below.';
+
+	/// en: 'Set account password'
+	String get setAccountPasswordTitle => 'Set account password';
+
+	/// en: 'Reset password'
+	String get resetPasswordTitle => 'Reset password';
+
+	/// en: 'Enter your account email to receive a reset code.'
+	String get requestResetDescription => 'Enter your account email to receive a reset code.';
+
+	/// en: 'Verify reset code'
+	String get verifyResetCodeTitle => 'Verify reset code';
+
+	/// en: 'Enter the password reset code sent to your email.'
+	String get verifyResetMessage => 'Enter the password reset code sent to your email.';
+
+	/// en: 'Set new password'
+	String get setNewPasswordTitle => 'Set new password';
+
+	/// en: 'Email'
+	String get emailLabel => 'Email';
+
+	/// en: 'Password'
+	String get passwordLabel => 'Password';
+
+	/// en: 'New password'
+	String get newPasswordLabel => 'New password';
+
+	/// en: 'Forgot password?'
+	String get forgotPasswordButton => 'Forgot password?';
+
+	/// en: 'Sign in'
+	String get signInButton => 'Sign in';
+
+	/// en: 'Sign up'
+	String get signUpButton => 'Sign up';
+
+	/// en: 'Continue'
+	String get continueButton => 'Continue';
+
+	/// en: 'Verify'
+	String get verifyButton => 'Verify';
+
+	/// en: 'Request password reset'
+	String get requestResetButton => 'Request password reset';
+
+	/// en: 'Reset password'
+	String get resetPasswordButton => 'Reset password';
+
+	/// en: 'Don't have an account?'
+	String get dontHaveAnAccount => 'Don\'t have an account?';
+
+	/// en: 'Already have an account?'
+	String get alreadyHaveAnAccount => 'Already have an account?';
+
+	/// en: 'Sign up'
+	String get signUpLink => 'Sign up';
+
+	/// en: 'Sign in'
+	String get signInLink => 'Sign in';
+
+	/// en: 'Back to sign in'
+	String get backToSignIn => 'Back to sign in';
+
+	/// en: 'Didn't receive it? Send a new code'
+	String get resendCode => 'Didn\'t receive it? Send a new code';
+
+	/// en: 'Send a new code ({time})'
+	String resendCodeIn({required Object time}) => 'Send a new code (${time})';
+
+	/// en: 'At least 8 characters'
+	String get passwordRuleMinLength => 'At least 8 characters';
+
+	/// en: 'Contains at least one uppercase letter'
+	String get passwordRuleUppercase => 'Contains at least one uppercase letter';
+
+	/// en: 'Contains at least one lowercase letter'
+	String get passwordRuleLowercase => 'Contains at least one lowercase letter';
+
+	/// en: 'Contains at least one number'
+	String get passwordRuleNumber => 'Contains at least one number';
+
+	late final TranslationsAuthAuthLoginScreenErrorsEn errors = TranslationsAuthAuthLoginScreenErrorsEn.internal(_root);
 }
 
 // Path: auth.auth_onboarding_continue_button_widget
@@ -2239,4 +2334,52 @@ class TranslationsShopUiScreensShopScreenEn {
 
 	/// en: 'No products are available for this locale yet.'
 	String get noProductsAvailable => 'No products are available for this locale yet.';
+}
+
+// Path: auth.auth_login_screen.errors
+class TranslationsAuthAuthLoginScreenErrorsEn {
+	TranslationsAuthAuthLoginScreenErrorsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Invalid email address.'
+	String get invalidEmail => 'Invalid email address.';
+
+	/// en: 'Invalid email or password. Please check your credentials and try again.'
+	String get invalidCredentials => 'Invalid email or password. Please check your credentials and try again.';
+
+	/// en: 'Too many failed login attempts. Please try again later.'
+	String get tooManyLoginAttempts => 'Too many failed login attempts. Please try again later.';
+
+	/// en: 'An error occurred during login. Please try again.'
+	String get loginFailed => 'An error occurred during login. Please try again.';
+
+	/// en: 'Too many failed registration attempts. Please try again later.'
+	String get tooManyRegistrationAttempts => 'Too many failed registration attempts. Please try again later.';
+
+	/// en: 'The verification code has expired. Please request a new one.'
+	String get verificationCodeExpired => 'The verification code has expired. Please request a new one.';
+
+	/// en: 'Invalid verification code. Please check and try again.'
+	String get invalidVerificationCode => 'Invalid verification code. Please check and try again.';
+
+	/// en: 'The password does not meet the requirements. Please choose a different password.'
+	String get passwordPolicyViolation => 'The password does not meet the requirements. Please choose a different password.';
+
+	/// en: 'An error occurred during registration. Please try again later.'
+	String get registrationFailed => 'An error occurred during registration. Please try again later.';
+
+	/// en: 'Too many failed password reset attempts. Please try again later.'
+	String get tooManyPasswordResetAttempts => 'Too many failed password reset attempts. Please try again later.';
+
+	/// en: 'An error occurred during password reset. Please try again later.'
+	String get passwordResetFailed => 'An error occurred during password reset. Please try again later.';
+
+	/// en: 'Unable to connect to the server. Check your connection and try again.'
+	String get networkUnavailable => 'Unable to connect to the server. Check your connection and try again.';
+
+	/// en: 'An unexpected error occurred. Please try again.'
+	String get unexpected => 'An unexpected error occurred. Please try again.';
 }

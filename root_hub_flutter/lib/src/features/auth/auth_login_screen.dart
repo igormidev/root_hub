@@ -7,13 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/features/auth/auth_email_sign_in_widget.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_login_glow_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
-// ignore: implementation_imports
-import 'package:serverpod_auth_idp_flutter/src/common/widgets/password_requirements.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthLoginScreen extends ConsumerStatefulWidget {
@@ -27,12 +26,6 @@ class AuthLoginScreen extends ConsumerStatefulWidget {
 
 class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
   static const _carouselInterval = Duration(seconds: 3);
-  static final _emailPasswordRequirements = [
-    PasswordRequirement.minLength(8),
-    PasswordRequirement.containsUppercase(),
-    PasswordRequirement.containsLowercase(),
-    PasswordRequirement.containsNumber(),
-  ];
 
   final _factions = Faction.values;
   late final PageController _pageController;
@@ -359,27 +352,8 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                       removeBottom: true,
                                       removeLeft: true,
                                       removeRight: true,
-                                      child: SignInWidget(
+                                      child: AuthEmailSignInWidget(
                                         client: client,
-                                        disableAnonymousSignInWidget: true,
-                                        emailSignInWidget: EmailSignInWidget(
-                                          client: client,
-                                          startScreen: EmailFlowScreen.login,
-                                          passwordRequirements:
-                                              _emailPasswordRequirements,
-                                          onAuthenticated:
-                                              _requestLoginCompletion,
-                                          onError: (error) {
-                                            if (!mounted) {
-                                              return;
-                                            }
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(content: Text('$error')),
-                                            );
-                                          },
-                                        ),
                                         onAuthenticated:
                                             _requestLoginCompletion,
                                         onError: (error) {
