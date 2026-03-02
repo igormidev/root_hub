@@ -57,7 +57,7 @@ root_hub_server/
 ```
 
 Related project:
-- `../root_hub_match_redirect_web`: Jaspr web app used for shared match links.
+- `../root_hub_web_portal`: Jaspr web app used for shared match links and lightweight admin panels.
 
 ## Runtime Entry Points
 - `bin/main.dart`: boot entrypoint that calls `run(args)` from `lib/server.dart`.
@@ -66,7 +66,8 @@ Related project:
   - configures auth services (`JwtConfigFromPasswords`, `EmailIdpConfigFromPasswords`).
   - registers web routes:
     - `/` and `/index.html` => built-with-serverpod page.
-    - `/join` => Jaspr share redirect app (build output from `../root_hub_match_redirect_web/build/jaspr`).
+    - `/join` => Jaspr web portal app (build output from `../root_hub_web_portal/build/jaspr`).
+      - includes the invite redirect flow and `/join/analytics` admin panel.
     - `/app/assets/assets/config.json` => app config JSON consumed by Flutter.
     - `/app/**` => Flutter web app (if built) or fallback page.
 
@@ -103,6 +104,11 @@ Related project:
 ### `match`
 - `register_match_data.dart`: validates and persists played match + participants + performances.
 - `get_my_played_matches.dart`: endpoint declared but intentionally not implemented yet.
+
+### `stats`
+- `get_platform_stats.dart`: global platform stats from played matches.
+- `get_player_stats.dart`: per-player stats snapshot.
+- `get_web_analytics_dashboard.dart`: password-protected analytics payload used by the Jaspr admin panel (`/join/analytics`), including totals, grouped metrics, timeline, and paginated click list.
 
 ### `push_notifications`
 - `sync_push_notification_token.dart`: upsert and attach a Firebase token to the authenticated player profile.
@@ -248,7 +254,7 @@ dart bin/main.dart --apply-migrations
 Build the shared-link Jaspr app:
 
 ```bash
-cd /Users/igor/PersonalProjects/root_hub/root_hub_match_redirect_web
+cd /Users/igor/PersonalProjects/root_hub/root_hub_web_portal
 dart pub global run jaspr_cli:jaspr build
 ```
 

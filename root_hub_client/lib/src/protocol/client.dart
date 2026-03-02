@@ -70,9 +70,11 @@ import 'package:root_hub_client/src/protocol/api/stats/models/platform_stats.dar
     as _i31;
 import 'package:root_hub_client/src/protocol/api/stats/models/player_stats.dart'
     as _i32;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/web_analytics_dashboard.dart'
     as _i33;
-import 'protocol.dart' as _i34;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i34;
+import 'protocol.dart' as _i35;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -861,11 +863,33 @@ class EndpointGetPlayerStats extends _i1.EndpointRef {
   );
 }
 
+/// {@category Endpoint}
+class EndpointGetWebAnalyticsDashboard extends _i1.EndpointRef {
+  EndpointGetWebAnalyticsDashboard(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getWebAnalyticsDashboard';
+
+  _i2.Future<_i33.WebAnalyticsDashboard> v1({
+    required _i4.ServerSupportedTranslation language,
+    required String password,
+    required int page,
+  }) => caller.callServerEndpoint<_i33.WebAnalyticsDashboard>(
+    'getWebAnalyticsDashboard',
+    'v1',
+    {
+      'language': language,
+      'password': password,
+      'page': page,
+    },
+  );
+}
+
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i33.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i34.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -1047,7 +1071,7 @@ class EndpointEmailIdp extends _i33.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i33.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i34.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -1118,11 +1142,11 @@ class EndpointJwtRefresh extends _i8.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i33.Caller(client);
+    serverpod_auth_idp = _i34.Caller(client);
     serverpod_auth_core = _i8.Caller(client);
   }
 
-  late final _i33.Caller serverpod_auth_idp;
+  late final _i34.Caller serverpod_auth_idp;
 
   late final _i8.Caller serverpod_auth_core;
 }
@@ -1147,7 +1171,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i34.Protocol(),
+         _i35.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -1195,6 +1219,7 @@ class Client extends _i1.ServerpodClientShared {
     syncPushNotificationToken = EndpointSyncPushNotificationToken(this);
     getPlatformStats = EndpointGetPlatformStats(this);
     getPlayerStats = EndpointGetPlayerStats(this);
+    getWebAnalyticsDashboard = EndpointGetWebAnalyticsDashboard(this);
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
@@ -1273,6 +1298,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetPlayerStats getPlayerStats;
 
+  late final EndpointGetWebAnalyticsDashboard getWebAnalyticsDashboard;
+
   late final EndpointEmailIdp emailIdp;
 
   late final EndpointGoogleIdp googleIdp;
@@ -1318,6 +1345,7 @@ class Client extends _i1.ServerpodClientShared {
     'syncPushNotificationToken': syncPushNotificationToken,
     'getPlatformStats': getPlatformStats,
     'getPlayerStats': getPlayerStats,
+    'getWebAnalyticsDashboard': getWebAnalyticsDashboard,
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,

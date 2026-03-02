@@ -73,7 +73,9 @@ import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.da
     as _i32;
 import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
     as _i33;
-import 'package:root_hub_server/src/generated/future_calls.dart' as _i34;
+import 'package:root_hub_server/src/generated/api/stats/models/web_analytics_dashboard.dart'
+    as _i34;
+import 'package:root_hub_server/src/generated/future_calls.dart' as _i35;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -253,6 +255,8 @@ class TestEndpoints {
 
   late final _GetPlayerStats getPlayerStats;
 
+  late final _GetWebAnalyticsDashboard getWebAnalyticsDashboard;
+
   late final _EmailIdpEndpoint emailIdp;
 
   late final _GoogleIdpEndpoint googleIdp;
@@ -404,6 +408,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPlayerStats = _GetPlayerStats(
+      endpoints,
+      serializationManager,
+    );
+    getWebAnalyticsDashboard = _GetWebAnalyticsDashboard(
       endpoints,
       serializationManager,
     );
@@ -2205,6 +2213,54 @@ class _GetPlayerStats {
   }
 }
 
+class _GetWebAnalyticsDashboard {
+  _GetWebAnalyticsDashboard(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i34.WebAnalyticsDashboard> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required String password,
+    required int page,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getWebAnalyticsDashboard',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getWebAnalyticsDashboard',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'password': password,
+            'page': page,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i34.WebAnalyticsDashboard>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _EmailIdpEndpoint {
   _EmailIdpEndpoint(
     this._endpointDispatch,
@@ -2605,7 +2661,7 @@ class _MarkStaleMatchSchedulesNotPlayedPeriodicCallFutureCall {
     var _localUniqueSession = (sessionBuilder as _i1.InternalTestSessionBuilder)
         .internalBuild();
     try {
-      await _i34.MarkStaleMatchSchedulesNotPlayedPeriodicCallInvokeFutureCall()
+      await _i35.MarkStaleMatchSchedulesNotPlayedPeriodicCallInvokeFutureCall()
           .invoke(
             _localUniqueSession,
             object,

@@ -1,0 +1,14 @@
+class: WebAnalyticsClickItem
+fields:
+  clickId: int
+  clickedAt: DateTime
+  matchId: int?
+  countryCode: String?
+  countryName: String?
+  city: String?
+  deviceType: WebAnalyticsDeviceType
+  osName: String?
+  browserName: String?
+  requestPath: String
+  requestQuery: String?
+  ipAddress: String?

@@ -47,31 +47,32 @@ import '../api/push_notifications/deactivate_push_notification_token.dart'
 import '../api/push_notifications/sync_push_notification_token.dart' as _i34;
 import '../api/stats/get_platform_stats.dart' as _i35;
 import '../api/stats/get_player_stats.dart' as _i36;
-import '../auth/email_idp_endpoint.dart' as _i37;
-import '../auth/google_idp_endpoint.dart' as _i38;
-import '../auth/jwt_refresh_endpoint.dart' as _i39;
+import '../api/stats/get_web_analytics_dashboard.dart' as _i37;
+import '../auth/email_idp_endpoint.dart' as _i38;
+import '../auth/google_idp_endpoint.dart' as _i39;
+import '../auth/jwt_refresh_endpoint.dart' as _i40;
 import 'package:root_hub_server/src/generated/entities/core/server_supported_translation.dart'
-    as _i40;
-import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i41;
-import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
+import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i42;
-import 'dart:typed_data' as _i43;
+import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
+    as _i43;
+import 'dart:typed_data' as _i44;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
-    as _i44;
-import 'package:root_hub_server/src/generated/entities/match_making/match_schedule_not_played_reason.dart'
     as _i45;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule_not_played_reason.dart'
     as _i46;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i47;
-import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i48;
-import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
+import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
     as _i49;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _i50;
-import 'package:root_hub_server/src/generated/future_calls.dart' as _i51;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i51;
+import 'package:root_hub_server/src/generated/future_calls.dart' as _i52;
 export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 class Endpoints extends _i1.EndpointDispatch {
@@ -288,19 +289,25 @@ class Endpoints extends _i1.EndpointDispatch {
           'getPlayerStats',
           null,
         ),
-      'emailIdp': _i37.EmailIdpEndpoint()
+      'getWebAnalyticsDashboard': _i37.GetWebAnalyticsDashboard()
+        ..initialize(
+          server,
+          'getWebAnalyticsDashboard',
+          null,
+        ),
+      'emailIdp': _i38.EmailIdpEndpoint()
         ..initialize(
           server,
           'emailIdp',
           null,
         ),
-      'googleIdp': _i38.GoogleIdpEndpoint()
+      'googleIdp': _i39.GoogleIdpEndpoint()
         ..initialize(
           server,
           'googleIdp',
           null,
         ),
-      'jwtRefresh': _i39.JwtRefreshEndpoint()
+      'jwtRefresh': _i40.JwtRefreshEndpoint()
         ..initialize(
           server,
           'jwtRefresh',
@@ -316,7 +323,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'displayName': _i1.ParameterDescription(
@@ -326,12 +333,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'favoriteFaction': _i1.ParameterDescription(
               name: 'favoriteFaction',
-              type: _i1.getType<_i41.Faction>(),
+              type: _i1.getType<_i42.Faction>(),
               nullable: false,
             ),
             'currentLocation': _i1.ParameterDescription(
               name: 'currentLocation',
-              type: _i1.getType<_i42.GeoLocation>(),
+              type: _i1.getType<_i43.GeoLocation>(),
               nullable: false,
             ),
           },
@@ -359,7 +366,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -383,7 +390,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'x': _i1.ParameterDescription(
@@ -421,7 +428,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'displayName': _i1.ParameterDescription(
@@ -431,12 +438,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'favoriteFaction': _i1.ParameterDescription(
               name: 'favoriteFaction',
-              type: _i1.getType<_i41.Faction?>(),
+              type: _i1.getType<_i42.Faction?>(),
               nullable: true,
             ),
             'currentLocation': _i1.ParameterDescription(
               name: 'currentLocation',
-              type: _i1.getType<_i42.GeoLocation?>(),
+              type: _i1.getType<_i43.GeoLocation?>(),
               nullable: true,
             ),
           },
@@ -474,7 +481,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'image': _i1.ParameterDescription(
               name: 'image',
-              type: _i1.getType<_i43.ByteData>(),
+              type: _i1.getType<_i44.ByteData>(),
               nullable: false,
             ),
           },
@@ -547,7 +554,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'postId': _i1.ParameterDescription(
@@ -562,7 +569,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'commentLanguage': _i1.ParameterDescription(
               name: 'commentLanguage',
-              type: _i1.getType<_i44.Language>(),
+              type: _i1.getType<_i45.Language>(),
               nullable: false,
             ),
           },
@@ -590,7 +597,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'title': _i1.ParameterDescription(
@@ -605,7 +612,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'postLanguage': _i1.ParameterDescription(
               name: 'postLanguage',
-              type: _i1.getType<_i44.Language>(),
+              type: _i1.getType<_i45.Language>(),
               nullable: false,
             ),
             'attachedMatchId': _i1.ParameterDescription(
@@ -638,7 +645,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'postId': _i1.ParameterDescription(
@@ -675,7 +682,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'page': _i1.ParameterDescription(
@@ -685,7 +692,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'postLanguage': _i1.ParameterDescription(
               name: 'postLanguage',
-              type: _i1.getType<_i44.Language?>(),
+              type: _i1.getType<_i45.Language?>(),
               nullable: true,
             ),
           },
@@ -711,7 +718,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -721,7 +728,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'notPlayedReason': _i1.ParameterDescription(
               name: 'notPlayedReason',
-              type: _i1.getType<_i45.MatchScheduleNotPlayedReason>(),
+              type: _i1.getType<_i46.MatchScheduleNotPlayedReason>(),
               nullable: false,
             ),
             'notPlayedReasonDetails': _i1.ParameterDescription(
@@ -756,7 +763,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'firstName': _i1.ParameterDescription(
@@ -795,7 +802,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -822,7 +829,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -846,7 +853,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -873,7 +880,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -900,7 +907,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'matchStartedAt': _i1.ParameterDescription(
@@ -925,12 +932,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'players': _i1.ParameterDescription(
               name: 'players',
-              type: _i1.getType<List<_i46.PlayerMatchResultInput>>(),
+              type: _i1.getType<List<_i47.PlayerMatchResultInput>>(),
               nullable: false,
             ),
             'groupPhotoBytes': _i1.ParameterDescription(
               name: 'groupPhotoBytes',
-              type: _i1.getType<_i43.ByteData>(),
+              type: _i1.getType<_i44.ByteData>(),
               nullable: false,
             ),
             'groupPhotoFileName': _i1.ParameterDescription(
@@ -945,7 +952,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'boardPhotoBytes': _i1.ParameterDescription(
               name: 'boardPhotoBytes',
-              type: _i1.getType<_i43.ByteData>(),
+              type: _i1.getType<_i44.ByteData>(),
               nullable: false,
             ),
             'boardPhotoFileName': _i1.ParameterDescription(
@@ -992,7 +999,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'query': _i1.ParameterDescription(
@@ -1025,7 +1032,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -1052,7 +1059,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1090,7 +1097,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1123,7 +1130,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -1150,7 +1157,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1165,7 +1172,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'imageBytes': _i1.ParameterDescription(
               name: 'imageBytes',
-              type: _i1.getType<_i43.ByteData?>(),
+              type: _i1.getType<_i44.ByteData?>(),
               nullable: true,
             ),
             'imageFileName': _i1.ParameterDescription(
@@ -1207,7 +1214,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'title': _i1.ParameterDescription(
@@ -1222,12 +1229,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'minAmountOfPlayers': _i1.ParameterDescription(
               name: 'minAmountOfPlayers',
-              type: _i1.getType<_i47.MatchPodium>(),
+              type: _i1.getType<_i48.MatchPodium>(),
               nullable: false,
             ),
             'maxAmountOfPlayers': _i1.ParameterDescription(
               name: 'maxAmountOfPlayers',
-              type: _i1.getType<_i47.MatchPodium>(),
+              type: _i1.getType<_i48.MatchPodium>(),
               nullable: false,
             ),
             'attemptedAt': _i1.ParameterDescription(
@@ -1275,7 +1282,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1295,12 +1302,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'minAmountOfPlayers': _i1.ParameterDescription(
               name: 'minAmountOfPlayers',
-              type: _i1.getType<_i47.MatchPodium>(),
+              type: _i1.getType<_i48.MatchPodium>(),
               nullable: false,
             ),
             'maxAmountOfPlayers': _i1.ParameterDescription(
               name: 'maxAmountOfPlayers',
-              type: _i1.getType<_i47.MatchPodium>(),
+              type: _i1.getType<_i48.MatchPodium>(),
               nullable: false,
             ),
             'attemptedAt': _i1.ParameterDescription(
@@ -1342,7 +1349,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'query': _i1.ParameterDescription(
@@ -1379,7 +1386,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1412,7 +1419,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'page': _i1.ParameterDescription(
@@ -1445,7 +1452,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -1470,7 +1477,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1509,7 +1516,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1540,7 +1547,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'scheduledMatchId': _i1.ParameterDescription(
@@ -1573,7 +1580,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'token': _i1.ParameterDescription(
@@ -1606,7 +1613,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
             'token': _i1.ParameterDescription(
@@ -1616,7 +1623,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'platform': _i1.ParameterDescription(
               name: 'platform',
-              type: _i1.getType<_i48.PushNotificationPlatform>(),
+              type: _i1.getType<_i49.PushNotificationPlatform>(),
               nullable: false,
             ),
           },
@@ -1645,7 +1652,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -1670,7 +1677,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'language': _i1.ParameterDescription(
               name: 'language',
-              type: _i1.getType<_i40.ServerSupportedTranslation>(),
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
               nullable: false,
             ),
           },
@@ -1683,6 +1690,45 @@ class Endpoints extends _i1.EndpointDispatch {
                     session,
                     language: params['language'],
                   ),
+        ),
+      },
+    );
+    connectors['getWebAnalyticsDashboard'] = _i1.EndpointConnector(
+      name: 'getWebAnalyticsDashboard',
+      endpoint: endpoints['getWebAnalyticsDashboard']!,
+      methodConnectors: {
+        'v1': _i1.MethodConnector(
+          name: 'v1',
+          params: {
+            'language': _i1.ParameterDescription(
+              name: 'language',
+              type: _i1.getType<_i41.ServerSupportedTranslation>(),
+              nullable: false,
+            ),
+            'password': _i1.ParameterDescription(
+              name: 'password',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'page': _i1.ParameterDescription(
+              name: 'page',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['getWebAnalyticsDashboard']
+                          as _i37.GetWebAnalyticsDashboard)
+                      .v1(
+                        session,
+                        language: params['language'],
+                        password: params['password'],
+                        page: params['page'],
+                      ),
         ),
       },
     );
@@ -1708,7 +1754,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint).login(
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint).login(
                 session,
                 email: params['email'],
                 password: params['password'],
@@ -1727,7 +1773,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .startRegistration(
                     session,
                     email: params['email'],
@@ -1751,7 +1797,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .verifyRegistrationCode(
                     session,
                     accountRequestId: params['accountRequestId'],
@@ -1776,7 +1822,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .finishRegistration(
                     session,
                     registrationToken: params['registrationToken'],
@@ -1796,7 +1842,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .startPasswordReset(
                     session,
                     email: params['email'],
@@ -1820,7 +1866,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .verifyPasswordResetCode(
                     session,
                     passwordResetRequestId: params['passwordResetRequestId'],
@@ -1845,7 +1891,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .finishPasswordReset(
                     session,
                     finishPasswordResetToken:
@@ -1860,7 +1906,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _i37.EmailIdpEndpoint)
+              ) async => (endpoints['emailIdp'] as _i38.EmailIdpEndpoint)
                   .hasAccount(session),
         ),
       },
@@ -1888,7 +1934,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['googleIdp'] as _i38.GoogleIdpEndpoint).login(
+                  (endpoints['googleIdp'] as _i39.GoogleIdpEndpoint).login(
                     session,
                     idToken: params['idToken'],
                     accessToken: params['accessToken'],
@@ -1901,7 +1947,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['googleIdp'] as _i38.GoogleIdpEndpoint)
+              ) async => (endpoints['googleIdp'] as _i39.GoogleIdpEndpoint)
                   .hasAccount(session),
         ),
       },
@@ -1923,7 +1969,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['jwtRefresh'] as _i39.JwtRefreshEndpoint)
+              ) async => (endpoints['jwtRefresh'] as _i40.JwtRefreshEndpoint)
                   .refreshAccessToken(
                     session,
                     refreshToken: params['refreshToken'],
@@ -1931,14 +1977,14 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i49.Endpoints()
+    modules['serverpod_auth_idp'] = _i50.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i50.Endpoints()
+    modules['serverpod_auth_core'] = _i51.Endpoints()
       ..initializeEndpoints(server);
   }
 
   @override
   _i1.FutureCallDispatch? get futureCalls {
-    return _i51.FutureCalls();
+    return _i52.FutureCalls();
   }
 }

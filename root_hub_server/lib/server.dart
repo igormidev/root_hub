@@ -11,8 +11,8 @@ import 'package:root_hub_server/src/future_calls/mark_stale_match_schedules_not_
 import 'src/generated/endpoints.dart';
 import 'src/generated/protocol.dart';
 import 'src/web/routes/app_config_route.dart';
-import 'src/web/routes/match_share_route.dart';
 import 'src/web/routes/root.dart';
+import 'src/web/routes/root_hub_web_portal_route.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
@@ -43,19 +43,19 @@ void run(List<String> args) async {
   pod.webServer.addRoute(RootRoute(), '/');
   pod.webServer.addRoute(RootRoute(), '/index.html');
 
-  // Hosts the lightweight match share redirect page built with Jaspr.
-  final matchShareDir = Directory(
-    Uri(path: '../root_hub_match_redirect_web/build/jaspr').toFilePath(),
+  // Hosts the lightweight Root Hub web portal built with Jaspr.
+  final webPortalDir = Directory(
+    Uri(path: '../root_hub_web_portal/build/jaspr').toFilePath(),
   );
-  if (matchShareDir.existsSync()) {
+  if (webPortalDir.existsSync()) {
     pod.webServer.addRoute(
-      MatchShareRoute(matchShareDir),
+      RootHubWebPortalRoute(webPortalDir),
       '/join',
     );
   } else {
     final buildPageRoute = StaticRoute.file(
       File(
-        Uri(path: 'web/pages/build_match_redirect_web.html').toFilePath(),
+        Uri(path: 'web/pages/build_web_portal.html').toFilePath(),
       ),
     );
     pod.webServer.addRoute(buildPageRoute, '/join');

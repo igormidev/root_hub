@@ -7,6 +7,10 @@ The app is only available for mobile platforms, and all screens must be adapted 
 2. Read the README of the project you are modifying.
 3. If working on the Flutter client (`root_hub_flutter`), reading `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints/README.md` is mandatory.
 
+## Jaspr Web Portal
+- The Jaspr project (`root_hub_web_portal`) is the lightweight web layer for share redirects and web admin panels (for example analytics dashboards).
+- It is served by `root_hub_server` under `/join` and should stay framework-light (Jaspr only, no Flutter web).
+
 ## Mandatory Validation Workflow (No Exceptions)
 Always execute this full workflow before finalizing, even when a local README does not explicitly repeat these steps.
 

@@ -72,6 +72,8 @@ getPlatformStats:
   - v1:
 getPlayerStats:
   - v1:
+getWebAnalyticsDashboard:
+  - v1:
 emailIdp:
   - login:
   - startRegistration:

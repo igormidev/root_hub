@@ -1,0 +1,5 @@
+class: WebAnalyticsMetricItem
+fields:
+  key: String
+  label: String
+  count: int

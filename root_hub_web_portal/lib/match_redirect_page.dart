@@ -6,14 +6,14 @@ import 'dart:html' as html;
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
-class App extends StatefulComponent {
-  const App({super.key});
+class MatchRedirectPage extends StatefulComponent {
+  const MatchRedirectPage({super.key});
 
   @override
-  State<App> createState() => _AppState();
+  State<MatchRedirectPage> createState() => _MatchRedirectPageState();
 }
 
-class _AppState extends State<App> {
+class _MatchRedirectPageState extends State<MatchRedirectPage> {
   static const _defaultPlayStoreUrl = 'https://play.google.com/store/apps/details?id=com.root_hub_flutter';
   static const _defaultAppleStoreUrl = 'https://apps.apple.com/us/search?term=Root%20Hub';
 

@@ -4,8 +4,8 @@
     "root_hub_client",
     "root_hub_flutter",
     "root_hub_flutter_lints",
-    "root_hub_match_redirect_web",
-    "root_hub_server"
+    "root_hub_server",
+    "root_hub_web_portal"
   ],
   "packages": [
     {
@@ -111,10 +111,11 @@
       "devDependencies": []
     },
     {
-      "name": "root_hub_match_redirect_web",
+      "name": "root_hub_web_portal",
       "version": "0.0.1",
       "dependencies": [
-        "jaspr"
+        "jaspr",
+        "root_hub_client"
       ],
       "devDependencies": [
         "build_runner",

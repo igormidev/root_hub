@@ -1,0 +1,8 @@
+enum: WebAnalyticsDeviceType
+values:
+  - android
+  - iphone
+  - macos
+  - windows
+  - linux
+  - other

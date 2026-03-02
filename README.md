@@ -8,14 +8,14 @@ This repository is split into focused projects. Start with the project README th
 - Backend server: [`root_hub_server/README.md`](root_hub_server/README.md)
 - Custom lint package (Flutter + server endpoint rules): [`root_hub_flutter_lints/README.md`](root_hub_flutter_lints/README.md)
 - Generated client package: [`root_hub_client/README.md`](root_hub_client/README.md)
-- Match share redirect web (Jaspr): `root_hub_match_redirect_web`
+- Web portal (Jaspr): `root_hub_web_portal`
 
 ## Workspace Projects
 - `root_hub_server`: Serverpod backend.
 - `root_hub_client`: generated Dart/Flutter client from Serverpod protocol.
 - `root_hub_flutter`: Flutter mobile/web app.
 - `root_hub_flutter_lints`: custom analyzer rules enforced in the Flutter app and Serverpod backend.
-- `root_hub_match_redirect_web`: lightweight Jaspr web app used by shared match links (`/join`).
+- `root_hub_web_portal`: lightweight Jaspr web app used by shared match links and admin panels (`/join`).
 
 ## Lint Coverage
 - Client lints: UI architecture and feature localization rules enforced by `root_hub_flutter_lints` + `check_flutter_feature_lints`.

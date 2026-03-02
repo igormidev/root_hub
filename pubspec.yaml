@@ -9,6 +9,6 @@ workspace:
   - root_hub_server
   - root_hub_flutter
   - root_hub_flutter_lints
-  - root_hub_match_redirect_web
+  - root_hub_web_portal
 dependency_overrides:
   flutter_secure_storage: ^10.0.0

@@ -1844,8 +1844,8 @@
       "languageVersion": "3.8"
     },
     {
-      "name": "root_hub_match_redirect_web",
-      "rootUri": "../root_hub_match_redirect_web",
+      "name": "root_hub_web_portal",
+      "rootUri": "../root_hub_web_portal",
       "packageUri": "lib/",
       "languageVersion": "3.10"
     }
