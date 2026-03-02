@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:html' as html;
 
 import 'package:jaspr/dom.dart';
@@ -15,11 +16,12 @@ class AnalyticsDashboardPage extends StatefulComponent {
 }
 
 class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage> {
-  late final Client _client;
+  Client? _client;
   late final ServerSupportedTranslation _language;
 
   StreamSubscription<html.Event>? _resizeSubscription;
 
+  bool _isApiConfigLoading = true;
   String _typedPassword = '';
   String? _memoryPassword;
   bool _isAuthenticating = false;
@@ -32,16 +34,8 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage> {
   void initState() {
     super.initState();
 
-    final baseUri = Uri.base;
-    final apiHost = Uri(
-      scheme: baseUri.scheme,
-      host: baseUri.host,
-      port: baseUri.hasPort ? baseUri.port : null,
-      path: '/',
-    );
-
-    _client = Client(apiHost.toString());
     _language = _resolveLanguage();
+    _bootstrapClient();
 
     html.document.title = 'Root Hub | Analytics';
 
@@ -77,9 +71,54 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage> {
     return ServerSupportedTranslation.english;
   }
 
+  Future<void> _bootstrapClient() async {
+    final apiHost = await _resolveApiHost();
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _client = Client(apiHost);
+      _isApiConfigLoading = false;
+    });
+  }
+
+  Future<String> _resolveApiHost() async {
+    try {
+      final response = await html.HttpRequest.request(
+        '/join/config.json',
+        method: 'GET',
+        requestHeaders: <String, String>{'Accept': 'application/json'},
+      );
+
+      if (response.status == 200) {
+        final responseText = response.responseText;
+        if (responseText != null && responseText.isNotEmpty) {
+          final decoded = jsonDecode(responseText);
+          if (decoded is Map<String, dynamic>) {
+            final apiUrl = decoded['apiUrl'];
+            if (apiUrl is String && apiUrl.trim().isNotEmpty) {
+              return apiUrl.trim();
+            }
+          }
+        }
+      }
+    } catch (_) {
+      // Fallback handled below.
+    }
+
+    final baseHost = Uri.base.host.toLowerCase();
+    if (baseHost == 'localhost' || baseHost == '127.0.0.1') {
+      return 'http://localhost:8080/';
+    }
+
+    return 'https://roothub.api.serverpod.space/';
+  }
+
   Future<void> _authenticate() async {
     final password = _typedPassword.trim();
-    if (password.isEmpty || _isAuthenticating) {
+    if (password.isEmpty || _isAuthenticating || _isApiConfigLoading) {
       return;
     }
 
@@ -138,8 +177,13 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage> {
     required String password,
     required int page,
   }) async {
+    final client = _client;
+    if (client == null) {
+      return null;
+    }
+
     try {
-      return await _client.getWebAnalyticsDashboard.v1(
+      return await client.getWebAnalyticsDashboard.v1(
         language: _language,
         password: password,
         page: page,
@@ -461,11 +505,15 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage> {
         ),
         button(
           classes: 'analytics-auth-button',
-          disabled: _isAuthenticating,
+          disabled: _isAuthenticating || _isApiConfigLoading,
           onClick: _authenticate,
           [
             Component.text(
-              _isAuthenticating ? 'Verificando...' : 'Entrar',
+              _isApiConfigLoading
+                  ? 'Carregando configuracoes...'
+                  : _isAuthenticating
+                  ? 'Verificando...'
+                  : 'Entrar',
             ),
           ],
         ),

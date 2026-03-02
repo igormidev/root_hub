@@ -68,6 +68,7 @@ Related project:
     - `/` and `/index.html` => built-with-serverpod page.
     - `/join` => Jaspr web portal app (build output from `../root_hub_web_portal/build/jaspr`).
       - includes the invite redirect flow and `/join/analytics` admin panel.
+    - `/join/config.json` => runtime config consumed by the Jaspr portal (API base URL based on run mode).
     - `/app/assets/assets/config.json` => app config JSON consumed by Flutter.
     - `/app/**` => Flutter web app (if built) or fallback page.
 

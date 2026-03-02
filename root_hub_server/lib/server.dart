@@ -13,6 +13,7 @@ import 'src/generated/protocol.dart';
 import 'src/web/routes/app_config_route.dart';
 import 'src/web/routes/root.dart';
 import 'src/web/routes/root_hub_web_portal_route.dart';
+import 'src/web/routes/web_portal_config_route.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
@@ -48,6 +49,14 @@ void run(List<String> args) async {
     Uri(path: '../root_hub_web_portal/build/jaspr').toFilePath(),
   );
   if (webPortalDir.existsSync()) {
+    pod.webServer.addRoute(
+      WebPortalConfigRoute(
+        apiConfig: pod.config.apiServer,
+        runMode: pod.runMode,
+      ),
+      '/join/config.json',
+    );
+
     pod.webServer.addRoute(
       RootHubWebPortalRoute(webPortalDir),
       '/join',

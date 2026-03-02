@@ -6,6 +6,7 @@ Lightweight Jaspr web portal for Root Hub.
 This project runs under `/join` in `root_hub_server` and currently serves two flows:
 - Match invite redirect (`/join?matchId=...`) with mobile deep-link + app-store fallback.
 - Password-protected analytics admin panel (`/join/analytics`) for invite click metrics.
+- Runtime web portal config (`/join/config.json`) used by the Jaspr app to resolve the correct API URL per server run mode.
 
 It is intentionally framework-light (Jaspr only) and is the place for lightweight web utilities, admin pages, and redirect pages.
 

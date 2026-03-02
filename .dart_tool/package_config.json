@@ -957,9 +957,9 @@
     },
     {
       "name": "json_annotation",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/json_annotation-4.11.0",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/json_annotation-4.9.0",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.0"
     },
     {
       "name": "leak_tracker",
