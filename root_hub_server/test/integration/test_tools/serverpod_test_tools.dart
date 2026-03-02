@@ -22,14 +22,14 @@ import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i6;
 import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
     as _i7;
-import 'package:root_hub_server/src/generated/api/account/models/reverse_geocode_city_result.dart'
-    as _i8;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
-    as _i9;
-import 'dart:typed_data' as _i10;
-import 'package:root_hub_server/src/generated/entities/community/post_comment.dart'
-    as _i11;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
+    as _i8;
+import 'package:root_hub_server/src/generated/api/account/models/reverse_geocode_city_result.dart'
+    as _i9;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+    as _i10;
+import 'dart:typed_data' as _i11;
+import 'package:root_hub_server/src/generated/entities/community/post_comment.dart'
     as _i12;
 import 'package:root_hub_server/src/generated/entities/community/post.dart'
     as _i13;
@@ -451,6 +451,7 @@ class _CreatePlayerData {
     required String displayName,
     required _i6.Faction favoriteFaction,
     required _i7.GeoLocation currentLocation,
+    required _i8.Language preferredLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -468,6 +469,7 @@ class _CreatePlayerData {
             'displayName': displayName,
             'favoriteFaction': favoriteFaction,
             'currentLocation': currentLocation,
+            'preferredLanguage': preferredLanguage,
           }),
           serializationManager: _serializationManager,
         );
@@ -537,7 +539,7 @@ class _ReverseGeocodeCity {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i8.ReverseGeocodeCityResult?> v1(
+  _i3.Future<_i9.ReverseGeocodeCityResult?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required double x,
@@ -566,7 +568,7 @@ class _ReverseGeocodeCity {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i8.ReverseGeocodeCityResult?>);
+                as _i3.Future<_i9.ReverseGeocodeCityResult?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -591,6 +593,7 @@ class _UpdatePlayerData {
     String? displayName,
     _i6.Faction? favoriteFaction,
     _i7.GeoLocation? currentLocation,
+    _i8.Language? preferredLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -608,6 +611,7 @@ class _UpdatePlayerData {
             'displayName': displayName,
             'favoriteFaction': favoriteFaction,
             'currentLocation': currentLocation,
+            'preferredLanguage': preferredLanguage,
           }),
           serializationManager: _serializationManager,
         );
@@ -635,7 +639,7 @@ class _UserProfileEdit {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.UserProfileModel> removeUserImage(
+  _i3.Future<_i10.UserProfileModel> removeUserImage(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -657,7 +661,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -665,9 +669,9 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i9.UserProfileModel> setUserImage(
+  _i3.Future<_i10.UserProfileModel> setUserImage(
     _i1.TestSessionBuilder sessionBuilder,
-    _i10.ByteData image,
+    _i11.ByteData image,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -688,7 +692,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -696,7 +700,7 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i9.UserProfileModel> changeUserName(
+  _i3.Future<_i10.UserProfileModel> changeUserName(
     _i1.TestSessionBuilder sessionBuilder,
     String? userName,
   ) async {
@@ -719,7 +723,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -727,7 +731,7 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i9.UserProfileModel> changeFullName(
+  _i3.Future<_i10.UserProfileModel> changeFullName(
     _i1.TestSessionBuilder sessionBuilder,
     String? fullName,
   ) async {
@@ -750,7 +754,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -758,7 +762,7 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i9.UserProfileModel> get(
+  _i3.Future<_i10.UserProfileModel> get(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -780,7 +784,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -799,12 +803,12 @@ class _CreateCommentEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i11.PostComment> v1(
+  _i3.Future<_i12.PostComment> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int postId,
     required String content,
-    required _i12.Language commentLanguage,
+    required _i8.Language commentLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -830,7 +834,7 @@ class _CreateCommentEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i11.PostComment>);
+                as _i3.Future<_i12.PostComment>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -854,7 +858,7 @@ class _CreatePostEndpoint {
     required _i5.ServerSupportedTranslation language,
     required String title,
     required String content,
-    required _i12.Language postLanguage,
+    required _i8.Language postLanguage,
     int? attachedMatchId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -953,7 +957,7 @@ class _GetPostsEndpoint {
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int page,
-    _i12.Language? postLanguage,
+    _i8.Language? postLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1271,10 +1275,10 @@ class _RegisterMatchData {
     required int locationId,
     required int scheduledPairingAttemptId,
     required List<_i20.PlayerMatchResultInput> players,
-    required _i10.ByteData groupPhotoBytes,
+    required _i11.ByteData groupPhotoBytes,
     String? groupPhotoFileName,
     String? groupPhotoContentType,
-    required _i10.ByteData boardPhotoBytes,
+    required _i11.ByteData boardPhotoBytes,
     String? boardPhotoFileName,
     String? boardPhotoContentType,
   }) async {
@@ -1558,7 +1562,7 @@ class _SendMatchChatMessage {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String content,
-    _i10.ByteData? imageBytes,
+    _i11.ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
   }) async {
@@ -2271,7 +2275,7 @@ class _EmailIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.AuthSuccess> login(
+  _i3.Future<_i10.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String email,
     required String password,
@@ -2298,7 +2302,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2372,7 +2376,7 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<_i9.AuthSuccess> finishRegistration(
+  _i3.Future<_i10.AuthSuccess> finishRegistration(
     _i1.TestSessionBuilder sessionBuilder, {
     required String registrationToken,
     required String password,
@@ -2399,7 +2403,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2547,7 +2551,7 @@ class _GoogleIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.AuthSuccess> login(
+  _i3.Future<_i10.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String idToken,
     required String? accessToken,
@@ -2574,7 +2578,7 @@ class _GoogleIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2621,7 +2625,7 @@ class _JwtRefreshEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.AuthSuccess> refreshAccessToken(
+  _i3.Future<_i10.AuthSuccess> refreshAccessToken(
     _i1.TestSessionBuilder sessionBuilder, {
     required String refreshToken,
   }) async {
@@ -2644,7 +2648,7 @@ class _JwtRefreshEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

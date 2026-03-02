@@ -19,14 +19,14 @@ import 'package:root_hub_client/src/protocol/entities/core/server_supported_tran
 import 'package:root_hub_client/src/protocol/entities/core/faction.dart' as _i5;
 import 'package:root_hub_client/src/protocol/entities/core/geo_location.dart'
     as _i6;
-import 'package:root_hub_client/src/protocol/api/account/models/reverse_geocode_city_result.dart'
-    as _i7;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
-    as _i8;
-import 'dart:typed_data' as _i9;
-import 'package:root_hub_client/src/protocol/entities/community/post_comment.dart'
-    as _i10;
 import 'package:root_hub_client/src/protocol/entities/core/language.dart'
+    as _i7;
+import 'package:root_hub_client/src/protocol/api/account/models/reverse_geocode_city_result.dart'
+    as _i8;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i9;
+import 'dart:typed_data' as _i10;
+import 'package:root_hub_client/src/protocol/entities/community/post_comment.dart'
     as _i11;
 import 'package:root_hub_client/src/protocol/entities/community/post.dart'
     as _i12;
@@ -88,6 +88,7 @@ class EndpointCreatePlayerData extends _i1.EndpointRef {
     required String displayName,
     required _i5.Faction favoriteFaction,
     required _i6.GeoLocation currentLocation,
+    required _i7.Language preferredLanguage,
   }) => caller.callServerEndpoint<_i3.PlayerData>(
     'createPlayerData',
     'v1',
@@ -96,6 +97,7 @@ class EndpointCreatePlayerData extends _i1.EndpointRef {
       'displayName': displayName,
       'favoriteFaction': favoriteFaction,
       'currentLocation': currentLocation,
+      'preferredLanguage': preferredLanguage,
     },
   );
 }
@@ -123,11 +125,11 @@ class EndpointReverseGeocodeCity extends _i1.EndpointRef {
   @override
   String get name => 'reverseGeocodeCity';
 
-  _i2.Future<_i7.ReverseGeocodeCityResult?> v1({
+  _i2.Future<_i8.ReverseGeocodeCityResult?> v1({
     required _i4.ServerSupportedTranslation language,
     required double x,
     required double y,
-  }) => caller.callServerEndpoint<_i7.ReverseGeocodeCityResult?>(
+  }) => caller.callServerEndpoint<_i8.ReverseGeocodeCityResult?>(
     'reverseGeocodeCity',
     'v1',
     {
@@ -150,6 +152,7 @@ class EndpointUpdatePlayerData extends _i1.EndpointRef {
     String? displayName,
     _i5.Faction? favoriteFaction,
     _i6.GeoLocation? currentLocation,
+    _i7.Language? preferredLanguage,
   }) => caller.callServerEndpoint<_i3.PlayerData>(
     'updatePlayerData',
     'v1',
@@ -158,12 +161,13 @@ class EndpointUpdatePlayerData extends _i1.EndpointRef {
       'displayName': displayName,
       'favoriteFaction': favoriteFaction,
       'currentLocation': currentLocation,
+      'preferredLanguage': preferredLanguage,
     },
   );
 }
 
 /// {@category Endpoint}
-class EndpointUserProfileEdit extends _i8.EndpointUserProfileEditBase {
+class EndpointUserProfileEdit extends _i9.EndpointUserProfileEditBase {
   EndpointUserProfileEdit(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -173,8 +177,8 @@ class EndpointUserProfileEdit extends _i8.EndpointUserProfileEditBase {
   ///
   /// The client should handle displaying a placeholder for users without images.
   @override
-  _i2.Future<_i8.UserProfileModel> removeUserImage() =>
-      caller.callServerEndpoint<_i8.UserProfileModel>(
+  _i2.Future<_i9.UserProfileModel> removeUserImage() =>
+      caller.callServerEndpoint<_i9.UserProfileModel>(
         'userProfileEdit',
         'removeUserImage',
         {},
@@ -182,8 +186,8 @@ class EndpointUserProfileEdit extends _i8.EndpointUserProfileEditBase {
 
   /// Sets a new user image for the signed in user.
   @override
-  _i2.Future<_i8.UserProfileModel> setUserImage(_i9.ByteData image) =>
-      caller.callServerEndpoint<_i8.UserProfileModel>(
+  _i2.Future<_i9.UserProfileModel> setUserImage(_i10.ByteData image) =>
+      caller.callServerEndpoint<_i9.UserProfileModel>(
         'userProfileEdit',
         'setUserImage',
         {'image': image},
@@ -191,8 +195,8 @@ class EndpointUserProfileEdit extends _i8.EndpointUserProfileEditBase {
 
   /// Changes the name of a user.
   @override
-  _i2.Future<_i8.UserProfileModel> changeUserName(String? userName) =>
-      caller.callServerEndpoint<_i8.UserProfileModel>(
+  _i2.Future<_i9.UserProfileModel> changeUserName(String? userName) =>
+      caller.callServerEndpoint<_i9.UserProfileModel>(
         'userProfileEdit',
         'changeUserName',
         {'userName': userName},
@@ -200,8 +204,8 @@ class EndpointUserProfileEdit extends _i8.EndpointUserProfileEditBase {
 
   /// Changes the full name of a user.
   @override
-  _i2.Future<_i8.UserProfileModel> changeFullName(String? fullName) =>
-      caller.callServerEndpoint<_i8.UserProfileModel>(
+  _i2.Future<_i9.UserProfileModel> changeFullName(String? fullName) =>
+      caller.callServerEndpoint<_i9.UserProfileModel>(
         'userProfileEdit',
         'changeFullName',
         {'fullName': fullName},
@@ -209,8 +213,8 @@ class EndpointUserProfileEdit extends _i8.EndpointUserProfileEditBase {
 
   /// Returns the user profile of the current user.
   @override
-  _i2.Future<_i8.UserProfileModel> get() =>
-      caller.callServerEndpoint<_i8.UserProfileModel>(
+  _i2.Future<_i9.UserProfileModel> get() =>
+      caller.callServerEndpoint<_i9.UserProfileModel>(
         'userProfileEdit',
         'get',
         {},
@@ -224,12 +228,12 @@ class EndpointCreateComment extends _i1.EndpointRef {
   @override
   String get name => 'createComment';
 
-  _i2.Future<_i10.PostComment> v1({
+  _i2.Future<_i11.PostComment> v1({
     required _i4.ServerSupportedTranslation language,
     required int postId,
     required String content,
-    required _i11.Language commentLanguage,
-  }) => caller.callServerEndpoint<_i10.PostComment>(
+    required _i7.Language commentLanguage,
+  }) => caller.callServerEndpoint<_i11.PostComment>(
     'createComment',
     'v1',
     {
@@ -252,7 +256,7 @@ class EndpointCreatePost extends _i1.EndpointRef {
     required _i4.ServerSupportedTranslation language,
     required String title,
     required String content,
-    required _i11.Language postLanguage,
+    required _i7.Language postLanguage,
     int? attachedMatchId,
   }) => caller.callServerEndpoint<_i12.Post>(
     'createPost',
@@ -299,7 +303,7 @@ class EndpointGetPosts extends _i1.EndpointRef {
   _i2.Future<_i14.PostPagination> v1({
     required _i4.ServerSupportedTranslation language,
     required int page,
-    _i11.Language? postLanguage,
+    _i7.Language? postLanguage,
   }) => caller.callServerEndpoint<_i14.PostPagination>(
     'getPosts',
     'v1',
@@ -435,10 +439,10 @@ class EndpointRegisterMatchData extends _i1.EndpointRef {
     required int locationId,
     required int scheduledPairingAttemptId,
     required List<_i19.PlayerMatchResultInput> players,
-    required _i9.ByteData groupPhotoBytes,
+    required _i10.ByteData groupPhotoBytes,
     String? groupPhotoFileName,
     String? groupPhotoContentType,
-    required _i9.ByteData boardPhotoBytes,
+    required _i10.ByteData boardPhotoBytes,
     String? boardPhotoFileName,
     String? boardPhotoContentType,
   }) => caller.callServerEndpoint<_i18.PlayedMatch>(
@@ -567,7 +571,7 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
     required _i4.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String content,
-    _i9.ByteData? imageBytes,
+    _i10.ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
   }) => caller.callServerEndpoint<_i24.MatchChatMessage>(
@@ -905,10 +909,10 @@ class EndpointEmailIdp extends _i34.EndpointEmailIdpBase {
   ///
   /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _i2.Future<_i8.AuthSuccess> login({
+  _i2.Future<_i9.AuthSuccess> login({
     required String email,
     required String password,
-  }) => caller.callServerEndpoint<_i8.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
     'emailIdp',
     'login',
     {
@@ -973,10 +977,10 @@ class EndpointEmailIdp extends _i34.EndpointEmailIdpBase {
   ///
   /// Returns a session for the newly created user.
   @override
-  _i2.Future<_i8.AuthSuccess> finishRegistration({
+  _i2.Future<_i9.AuthSuccess> finishRegistration({
     required String registrationToken,
     required String password,
-  }) => caller.callServerEndpoint<_i8.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
     'emailIdp',
     'finishRegistration',
     {
@@ -1082,10 +1086,10 @@ class EndpointGoogleIdp extends _i34.EndpointGoogleIdpBase {
   ///
   /// If a new user is created an associated [UserProfile] is also created.
   @override
-  _i2.Future<_i8.AuthSuccess> login({
+  _i2.Future<_i9.AuthSuccess> login({
     required String idToken,
     required String? accessToken,
-  }) => caller.callServerEndpoint<_i8.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
     'googleIdp',
     'login',
     {
@@ -1105,7 +1109,7 @@ class EndpointGoogleIdp extends _i34.EndpointGoogleIdpBase {
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
-class EndpointJwtRefresh extends _i8.EndpointRefreshJwtTokens {
+class EndpointJwtRefresh extends _i9.EndpointRefreshJwtTokens {
   EndpointJwtRefresh(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -1130,9 +1134,9 @@ class EndpointJwtRefresh extends _i8.EndpointRefreshJwtTokens {
   /// This endpoint is unauthenticated, meaning the client won't include any
   /// authentication information with the call.
   @override
-  _i2.Future<_i8.AuthSuccess> refreshAccessToken({
+  _i2.Future<_i9.AuthSuccess> refreshAccessToken({
     required String refreshToken,
-  }) => caller.callServerEndpoint<_i8.AuthSuccess>(
+  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
     'jwtRefresh',
     'refreshAccessToken',
     {'refreshToken': refreshToken},
@@ -1143,12 +1147,12 @@ class EndpointJwtRefresh extends _i8.EndpointRefreshJwtTokens {
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _i34.Caller(client);
-    serverpod_auth_core = _i8.Caller(client);
+    serverpod_auth_core = _i9.Caller(client);
   }
 
   late final _i34.Caller serverpod_auth_idp;
 
-  late final _i8.Caller serverpod_auth_core;
+  late final _i9.Caller serverpod_auth_core;
 }
 
 class Client extends _i1.ServerpodClientShared {

@@ -12,23 +12,24 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import '../../entities/core/language.dart' as _i2;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
-    as _i2;
-import '../../entities/core/geo_location.dart' as _i3;
-import '../../entities/core/faction.dart' as _i4;
-import '../../entities/match/player_in_match.dart' as _i5;
-import '../../entities/community/post.dart' as _i6;
-import '../../entities/community/post_comment.dart' as _i7;
-import '../../entities/match_making/match_schedule.dart' as _i8;
-import '../../entities/match_making/match_subscription.dart' as _i9;
-import '../../entities/match_making/chat/match_chat_message.dart' as _i10;
+    as _i3;
+import '../../entities/core/geo_location.dart' as _i4;
+import '../../entities/core/faction.dart' as _i5;
+import '../../entities/match/player_in_match.dart' as _i6;
+import '../../entities/community/post.dart' as _i7;
+import '../../entities/community/post_comment.dart' as _i8;
+import '../../entities/match_making/match_schedule.dart' as _i9;
+import '../../entities/match_making/match_subscription.dart' as _i10;
+import '../../entities/match_making/chat/match_chat_message.dart' as _i11;
 import '../../entities/match_making/chat/match_chat_participant_state.dart'
-    as _i11;
-import '../../entities/core/player_push_notification_token.dart' as _i12;
-import '../../entities/match_making/manual_input_location.dart' as _i13;
-import '../../entities/core/anonymous_player.dart' as _i14;
-import '../../entities/match/player_perfomance_in_match.dart' as _i15;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i16;
+    as _i12;
+import '../../entities/core/player_push_notification_token.dart' as _i13;
+import '../../entities/match_making/manual_input_location.dart' as _i14;
+import '../../entities/core/anonymous_player.dart' as _i15;
+import '../../entities/match/player_perfomance_in_match.dart' as _i16;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i17;
 
 abstract class PlayerData
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -37,6 +38,7 @@ abstract class PlayerData
     required this.authUserId,
     this.authUser,
     required this.displayName,
+    _i2.Language? preferredLanguage,
     this.currentLocationId,
     this.currentLocation,
     required this.favoriteFaction,
@@ -52,28 +54,29 @@ abstract class PlayerData
     this.manualInputLocations,
     this.createdAnonymousPlayers,
     this.perfomances,
-  });
+  }) : preferredLanguage = preferredLanguage ?? _i2.Language.english;
 
   factory PlayerData({
     int? id,
     required _i1.UuidValue authUserId,
-    _i2.AuthUser? authUser,
+    _i3.AuthUser? authUser,
     required String displayName,
+    _i2.Language? preferredLanguage,
     int? currentLocationId,
-    _i3.GeoLocation? currentLocation,
-    required _i4.Faction favoriteFaction,
-    List<_i5.PlayerInMatch>? matchEntries,
-    List<_i6.Post>? posts,
-    List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
-    List<_i9.MatchSubscription>? subscriptions,
-    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
-    List<_i10.MatchChatMessage>? chatMessages,
-    List<_i11.MatchChatParticipantState>? chatParticipantStates,
-    List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
-    List<_i13.ManualInputLocation>? manualInputLocations,
-    List<_i14.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i15.PlayerPerfomanceInMatch>? perfomances,
+    _i4.GeoLocation? currentLocation,
+    required _i5.Faction favoriteFaction,
+    List<_i6.PlayerInMatch>? matchEntries,
+    List<_i7.Post>? posts,
+    List<_i8.PostComment>? comments,
+    List<_i9.MatchSchedulePairingAttempt>? currentHosting,
+    List<_i10.MatchSubscription>? subscriptions,
+    List<_i9.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
+    List<_i11.MatchChatMessage>? chatMessages,
+    List<_i12.MatchChatParticipantState>? chatParticipantStates,
+    List<_i13.PlayerPushNotificationToken>? pushNotificationTokens,
+    List<_i14.ManualInputLocation>? manualInputLocations,
+    List<_i15.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i16.PlayerPerfomanceInMatch>? perfomances,
   }) = _PlayerDataImpl;
 
   factory PlayerData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -84,80 +87,85 @@ abstract class PlayerData
       ),
       authUser: jsonSerialization['authUser'] == null
           ? null
-          : _i16.Protocol().deserialize<_i2.AuthUser>(
+          : _i17.Protocol().deserialize<_i3.AuthUser>(
               jsonSerialization['authUser'],
             ),
       displayName: jsonSerialization['displayName'] as String,
+      preferredLanguage: jsonSerialization['preferredLanguage'] == null
+          ? null
+          : _i2.Language.fromJson(
+              (jsonSerialization['preferredLanguage'] as String),
+            ),
       currentLocationId: jsonSerialization['currentLocationId'] as int?,
       currentLocation: jsonSerialization['currentLocation'] == null
           ? null
-          : _i16.Protocol().deserialize<_i3.GeoLocation>(
+          : _i17.Protocol().deserialize<_i4.GeoLocation>(
               jsonSerialization['currentLocation'],
             ),
-      favoriteFaction: _i4.Faction.fromJson(
+      favoriteFaction: _i5.Faction.fromJson(
         (jsonSerialization['favoriteFaction'] as String),
       ),
       matchEntries: jsonSerialization['matchEntries'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i5.PlayerInMatch>>(
+          : _i17.Protocol().deserialize<List<_i6.PlayerInMatch>>(
               jsonSerialization['matchEntries'],
             ),
       posts: jsonSerialization['posts'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i6.Post>>(
+          : _i17.Protocol().deserialize<List<_i7.Post>>(
               jsonSerialization['posts'],
             ),
       comments: jsonSerialization['comments'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i7.PostComment>>(
+          : _i17.Protocol().deserialize<List<_i8.PostComment>>(
               jsonSerialization['comments'],
             ),
       currentHosting: jsonSerialization['currentHosting'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i17.Protocol().deserialize<List<_i9.MatchSchedulePairingAttempt>>(
               jsonSerialization['currentHosting'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i9.MatchSubscription>>(
+          : _i17.Protocol().deserialize<List<_i10.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       notPlayedMarkedSchedules:
           jsonSerialization['notPlayedMarkedSchedules'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+          : _i17.Protocol().deserialize<List<_i9.MatchSchedulePairingAttempt>>(
               jsonSerialization['notPlayedMarkedSchedules'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i10.MatchChatMessage>>(
+          : _i17.Protocol().deserialize<List<_i11.MatchChatMessage>>(
               jsonSerialization['chatMessages'],
             ),
       chatParticipantStates: jsonSerialization['chatParticipantStates'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i11.MatchChatParticipantState>>(
+          : _i17.Protocol().deserialize<List<_i12.MatchChatParticipantState>>(
               jsonSerialization['chatParticipantStates'],
             ),
       pushNotificationTokens:
           jsonSerialization['pushNotificationTokens'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i12.PlayerPushNotificationToken>>(
+          : _i17.Protocol().deserialize<List<_i13.PlayerPushNotificationToken>>(
               jsonSerialization['pushNotificationTokens'],
             ),
       manualInputLocations: jsonSerialization['manualInputLocations'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i13.ManualInputLocation>>(
+          : _i17.Protocol().deserialize<List<_i14.ManualInputLocation>>(
               jsonSerialization['manualInputLocations'],
             ),
       createdAnonymousPlayers:
           jsonSerialization['createdAnonymousPlayers'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i14.AnonymousPlayer>>(
+          : _i17.Protocol().deserialize<List<_i15.AnonymousPlayer>>(
               jsonSerialization['createdAnonymousPlayers'],
             ),
       perfomances: jsonSerialization['perfomances'] == null
           ? null
-          : _i16.Protocol().deserialize<List<_i15.PlayerPerfomanceInMatch>>(
+          : _i17.Protocol().deserialize<List<_i16.PlayerPerfomanceInMatch>>(
               jsonSerialization['perfomances'],
             ),
     );
@@ -173,39 +181,41 @@ abstract class PlayerData
   _i1.UuidValue authUserId;
 
   /// The [AuthUser] this profile belongs to
-  _i2.AuthUser? authUser;
+  _i3.AuthUser? authUser;
 
   String displayName;
 
+  _i2.Language preferredLanguage;
+
   int? currentLocationId;
 
-  _i3.GeoLocation? currentLocation;
+  _i4.GeoLocation? currentLocation;
 
-  _i4.Faction favoriteFaction;
+  _i5.Faction favoriteFaction;
 
-  List<_i5.PlayerInMatch>? matchEntries;
+  List<_i6.PlayerInMatch>? matchEntries;
 
-  List<_i6.Post>? posts;
+  List<_i7.Post>? posts;
 
-  List<_i7.PostComment>? comments;
+  List<_i8.PostComment>? comments;
 
-  List<_i8.MatchSchedulePairingAttempt>? currentHosting;
+  List<_i9.MatchSchedulePairingAttempt>? currentHosting;
 
-  List<_i9.MatchSubscription>? subscriptions;
+  List<_i10.MatchSubscription>? subscriptions;
 
-  List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules;
+  List<_i9.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules;
 
-  List<_i10.MatchChatMessage>? chatMessages;
+  List<_i11.MatchChatMessage>? chatMessages;
 
-  List<_i11.MatchChatParticipantState>? chatParticipantStates;
+  List<_i12.MatchChatParticipantState>? chatParticipantStates;
 
-  List<_i12.PlayerPushNotificationToken>? pushNotificationTokens;
+  List<_i13.PlayerPushNotificationToken>? pushNotificationTokens;
 
-  List<_i13.ManualInputLocation>? manualInputLocations;
+  List<_i14.ManualInputLocation>? manualInputLocations;
 
-  List<_i14.AnonymousPlayer>? createdAnonymousPlayers;
+  List<_i15.AnonymousPlayer>? createdAnonymousPlayers;
 
-  List<_i15.PlayerPerfomanceInMatch>? perfomances;
+  List<_i16.PlayerPerfomanceInMatch>? perfomances;
 
   @override
   _i1.Table<int?> get table => t;
@@ -216,23 +226,24 @@ abstract class PlayerData
   PlayerData copyWith({
     int? id,
     _i1.UuidValue? authUserId,
-    _i2.AuthUser? authUser,
+    _i3.AuthUser? authUser,
     String? displayName,
+    _i2.Language? preferredLanguage,
     int? currentLocationId,
-    _i3.GeoLocation? currentLocation,
-    _i4.Faction? favoriteFaction,
-    List<_i5.PlayerInMatch>? matchEntries,
-    List<_i6.Post>? posts,
-    List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
-    List<_i9.MatchSubscription>? subscriptions,
-    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
-    List<_i10.MatchChatMessage>? chatMessages,
-    List<_i11.MatchChatParticipantState>? chatParticipantStates,
-    List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
-    List<_i13.ManualInputLocation>? manualInputLocations,
-    List<_i14.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i15.PlayerPerfomanceInMatch>? perfomances,
+    _i4.GeoLocation? currentLocation,
+    _i5.Faction? favoriteFaction,
+    List<_i6.PlayerInMatch>? matchEntries,
+    List<_i7.Post>? posts,
+    List<_i8.PostComment>? comments,
+    List<_i9.MatchSchedulePairingAttempt>? currentHosting,
+    List<_i10.MatchSubscription>? subscriptions,
+    List<_i9.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
+    List<_i11.MatchChatMessage>? chatMessages,
+    List<_i12.MatchChatParticipantState>? chatParticipantStates,
+    List<_i13.PlayerPushNotificationToken>? pushNotificationTokens,
+    List<_i14.ManualInputLocation>? manualInputLocations,
+    List<_i15.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i16.PlayerPerfomanceInMatch>? perfomances,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -242,6 +253,7 @@ abstract class PlayerData
       'authUserId': authUserId.toJson(),
       if (authUser != null) 'authUser': authUser?.toJson(),
       'displayName': displayName,
+      'preferredLanguage': preferredLanguage.toJson(),
       if (currentLocationId != null) 'currentLocationId': currentLocationId,
       if (currentLocation != null) 'currentLocation': currentLocation?.toJson(),
       'favoriteFaction': favoriteFaction.toJson(),
@@ -291,6 +303,7 @@ abstract class PlayerData
       'authUserId': authUserId.toJson(),
       if (authUser != null) 'authUser': authUser?.toJsonForProtocol(),
       'displayName': displayName,
+      'preferredLanguage': preferredLanguage.toJson(),
       if (currentLocationId != null) 'currentLocationId': currentLocationId,
       if (currentLocation != null)
         'currentLocation': currentLocation?.toJsonForProtocol(),
@@ -343,20 +356,20 @@ abstract class PlayerData
   }
 
   static PlayerDataInclude include({
-    _i2.AuthUserInclude? authUser,
-    _i3.GeoLocationInclude? currentLocation,
-    _i5.PlayerInMatchIncludeList? matchEntries,
-    _i6.PostIncludeList? posts,
-    _i7.PostCommentIncludeList? comments,
-    _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
-    _i9.MatchSubscriptionIncludeList? subscriptions,
-    _i8.MatchSchedulePairingAttemptIncludeList? notPlayedMarkedSchedules,
-    _i10.MatchChatMessageIncludeList? chatMessages,
-    _i11.MatchChatParticipantStateIncludeList? chatParticipantStates,
-    _i12.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
-    _i13.ManualInputLocationIncludeList? manualInputLocations,
-    _i14.AnonymousPlayerIncludeList? createdAnonymousPlayers,
-    _i15.PlayerPerfomanceInMatchIncludeList? perfomances,
+    _i3.AuthUserInclude? authUser,
+    _i4.GeoLocationInclude? currentLocation,
+    _i6.PlayerInMatchIncludeList? matchEntries,
+    _i7.PostIncludeList? posts,
+    _i8.PostCommentIncludeList? comments,
+    _i9.MatchSchedulePairingAttemptIncludeList? currentHosting,
+    _i10.MatchSubscriptionIncludeList? subscriptions,
+    _i9.MatchSchedulePairingAttemptIncludeList? notPlayedMarkedSchedules,
+    _i11.MatchChatMessageIncludeList? chatMessages,
+    _i12.MatchChatParticipantStateIncludeList? chatParticipantStates,
+    _i13.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
+    _i14.ManualInputLocationIncludeList? manualInputLocations,
+    _i15.AnonymousPlayerIncludeList? createdAnonymousPlayers,
+    _i16.PlayerPerfomanceInMatchIncludeList? perfomances,
   }) {
     return PlayerDataInclude._(
       authUser: authUser,
@@ -408,28 +421,30 @@ class _PlayerDataImpl extends PlayerData {
   _PlayerDataImpl({
     int? id,
     required _i1.UuidValue authUserId,
-    _i2.AuthUser? authUser,
+    _i3.AuthUser? authUser,
     required String displayName,
+    _i2.Language? preferredLanguage,
     int? currentLocationId,
-    _i3.GeoLocation? currentLocation,
-    required _i4.Faction favoriteFaction,
-    List<_i5.PlayerInMatch>? matchEntries,
-    List<_i6.Post>? posts,
-    List<_i7.PostComment>? comments,
-    List<_i8.MatchSchedulePairingAttempt>? currentHosting,
-    List<_i9.MatchSubscription>? subscriptions,
-    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
-    List<_i10.MatchChatMessage>? chatMessages,
-    List<_i11.MatchChatParticipantState>? chatParticipantStates,
-    List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
-    List<_i13.ManualInputLocation>? manualInputLocations,
-    List<_i14.AnonymousPlayer>? createdAnonymousPlayers,
-    List<_i15.PlayerPerfomanceInMatch>? perfomances,
+    _i4.GeoLocation? currentLocation,
+    required _i5.Faction favoriteFaction,
+    List<_i6.PlayerInMatch>? matchEntries,
+    List<_i7.Post>? posts,
+    List<_i8.PostComment>? comments,
+    List<_i9.MatchSchedulePairingAttempt>? currentHosting,
+    List<_i10.MatchSubscription>? subscriptions,
+    List<_i9.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
+    List<_i11.MatchChatMessage>? chatMessages,
+    List<_i12.MatchChatParticipantState>? chatParticipantStates,
+    List<_i13.PlayerPushNotificationToken>? pushNotificationTokens,
+    List<_i14.ManualInputLocation>? manualInputLocations,
+    List<_i15.AnonymousPlayer>? createdAnonymousPlayers,
+    List<_i16.PlayerPerfomanceInMatch>? perfomances,
   }) : super._(
          id: id,
          authUserId: authUserId,
          authUser: authUser,
          displayName: displayName,
+         preferredLanguage: preferredLanguage,
          currentLocationId: currentLocationId,
          currentLocation: currentLocation,
          favoriteFaction: favoriteFaction,
@@ -456,9 +471,10 @@ class _PlayerDataImpl extends PlayerData {
     _i1.UuidValue? authUserId,
     Object? authUser = _Undefined,
     String? displayName,
+    _i2.Language? preferredLanguage,
     Object? currentLocationId = _Undefined,
     Object? currentLocation = _Undefined,
-    _i4.Faction? favoriteFaction,
+    _i5.Faction? favoriteFaction,
     Object? matchEntries = _Undefined,
     Object? posts = _Undefined,
     Object? comments = _Undefined,
@@ -475,56 +491,57 @@ class _PlayerDataImpl extends PlayerData {
     return PlayerData(
       id: id is int? ? id : this.id,
       authUserId: authUserId ?? this.authUserId,
-      authUser: authUser is _i2.AuthUser?
+      authUser: authUser is _i3.AuthUser?
           ? authUser
           : this.authUser?.copyWith(),
       displayName: displayName ?? this.displayName,
+      preferredLanguage: preferredLanguage ?? this.preferredLanguage,
       currentLocationId: currentLocationId is int?
           ? currentLocationId
           : this.currentLocationId,
-      currentLocation: currentLocation is _i3.GeoLocation?
+      currentLocation: currentLocation is _i4.GeoLocation?
           ? currentLocation
           : this.currentLocation?.copyWith(),
       favoriteFaction: favoriteFaction ?? this.favoriteFaction,
-      matchEntries: matchEntries is List<_i5.PlayerInMatch>?
+      matchEntries: matchEntries is List<_i6.PlayerInMatch>?
           ? matchEntries
           : this.matchEntries?.map((e0) => e0.copyWith()).toList(),
-      posts: posts is List<_i6.Post>?
+      posts: posts is List<_i7.Post>?
           ? posts
           : this.posts?.map((e0) => e0.copyWith()).toList(),
-      comments: comments is List<_i7.PostComment>?
+      comments: comments is List<_i8.PostComment>?
           ? comments
           : this.comments?.map((e0) => e0.copyWith()).toList(),
-      currentHosting: currentHosting is List<_i8.MatchSchedulePairingAttempt>?
+      currentHosting: currentHosting is List<_i9.MatchSchedulePairingAttempt>?
           ? currentHosting
           : this.currentHosting?.map((e0) => e0.copyWith()).toList(),
-      subscriptions: subscriptions is List<_i9.MatchSubscription>?
+      subscriptions: subscriptions is List<_i10.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
       notPlayedMarkedSchedules:
-          notPlayedMarkedSchedules is List<_i8.MatchSchedulePairingAttempt>?
+          notPlayedMarkedSchedules is List<_i9.MatchSchedulePairingAttempt>?
           ? notPlayedMarkedSchedules
           : this.notPlayedMarkedSchedules?.map((e0) => e0.copyWith()).toList(),
-      chatMessages: chatMessages is List<_i10.MatchChatMessage>?
+      chatMessages: chatMessages is List<_i11.MatchChatMessage>?
           ? chatMessages
           : this.chatMessages?.map((e0) => e0.copyWith()).toList(),
       chatParticipantStates:
-          chatParticipantStates is List<_i11.MatchChatParticipantState>?
+          chatParticipantStates is List<_i12.MatchChatParticipantState>?
           ? chatParticipantStates
           : this.chatParticipantStates?.map((e0) => e0.copyWith()).toList(),
       pushNotificationTokens:
-          pushNotificationTokens is List<_i12.PlayerPushNotificationToken>?
+          pushNotificationTokens is List<_i13.PlayerPushNotificationToken>?
           ? pushNotificationTokens
           : this.pushNotificationTokens?.map((e0) => e0.copyWith()).toList(),
       manualInputLocations:
-          manualInputLocations is List<_i13.ManualInputLocation>?
+          manualInputLocations is List<_i14.ManualInputLocation>?
           ? manualInputLocations
           : this.manualInputLocations?.map((e0) => e0.copyWith()).toList(),
       createdAnonymousPlayers:
-          createdAnonymousPlayers is List<_i14.AnonymousPlayer>?
+          createdAnonymousPlayers is List<_i15.AnonymousPlayer>?
           ? createdAnonymousPlayers
           : this.createdAnonymousPlayers?.map((e0) => e0.copyWith()).toList(),
-      perfomances: perfomances is List<_i15.PlayerPerfomanceInMatch>?
+      perfomances: perfomances is List<_i16.PlayerPerfomanceInMatch>?
           ? perfomances
           : this.perfomances?.map((e0) => e0.copyWith()).toList(),
     );
@@ -546,13 +563,20 @@ class PlayerDataUpdateTable extends _i1.UpdateTable<PlayerDataTable> {
     value,
   );
 
+  _i1.ColumnValue<_i2.Language, _i2.Language> preferredLanguage(
+    _i2.Language value,
+  ) => _i1.ColumnValue(
+    table.preferredLanguage,
+    value,
+  );
+
   _i1.ColumnValue<int, int> currentLocationId(int? value) => _i1.ColumnValue(
     table.currentLocationId,
     value,
   );
 
-  _i1.ColumnValue<_i4.Faction, _i4.Faction> favoriteFaction(
-    _i4.Faction value,
+  _i1.ColumnValue<_i5.Faction, _i5.Faction> favoriteFaction(
+    _i5.Faction value,
   ) => _i1.ColumnValue(
     table.favoriteFaction,
     value,
@@ -570,6 +594,12 @@ class PlayerDataTable extends _i1.Table<int?> {
       'displayName',
       this,
     );
+    preferredLanguage = _i1.ColumnEnum(
+      'preferredLanguage',
+      this,
+      _i1.EnumSerialization.byName,
+      hasDefault: true,
+    );
     currentLocationId = _i1.ColumnInt(
       'currentLocationId',
       this,
@@ -586,497 +616,499 @@ class PlayerDataTable extends _i1.Table<int?> {
   late final _i1.ColumnUuid authUserId;
 
   /// The [AuthUser] this profile belongs to
-  _i2.AuthUserTable? _authUser;
+  _i3.AuthUserTable? _authUser;
 
   late final _i1.ColumnString displayName;
 
+  late final _i1.ColumnEnum<_i2.Language> preferredLanguage;
+
   late final _i1.ColumnInt currentLocationId;
 
-  _i3.GeoLocationTable? _currentLocation;
+  _i4.GeoLocationTable? _currentLocation;
 
-  late final _i1.ColumnEnum<_i4.Faction> favoriteFaction;
+  late final _i1.ColumnEnum<_i5.Faction> favoriteFaction;
 
-  _i5.PlayerInMatchTable? ___matchEntries;
+  _i6.PlayerInMatchTable? ___matchEntries;
 
-  _i1.ManyRelation<_i5.PlayerInMatchTable>? _matchEntries;
+  _i1.ManyRelation<_i6.PlayerInMatchTable>? _matchEntries;
 
-  _i6.PostTable? ___posts;
+  _i7.PostTable? ___posts;
 
-  _i1.ManyRelation<_i6.PostTable>? _posts;
+  _i1.ManyRelation<_i7.PostTable>? _posts;
 
-  _i7.PostCommentTable? ___comments;
+  _i8.PostCommentTable? ___comments;
 
-  _i1.ManyRelation<_i7.PostCommentTable>? _comments;
+  _i1.ManyRelation<_i8.PostCommentTable>? _comments;
 
-  _i8.MatchSchedulePairingAttemptTable? ___currentHosting;
+  _i9.MatchSchedulePairingAttemptTable? ___currentHosting;
 
-  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>? _currentHosting;
+  _i1.ManyRelation<_i9.MatchSchedulePairingAttemptTable>? _currentHosting;
 
-  _i9.MatchSubscriptionTable? ___subscriptions;
+  _i10.MatchSubscriptionTable? ___subscriptions;
 
-  _i1.ManyRelation<_i9.MatchSubscriptionTable>? _subscriptions;
+  _i1.ManyRelation<_i10.MatchSubscriptionTable>? _subscriptions;
 
-  _i8.MatchSchedulePairingAttemptTable? ___notPlayedMarkedSchedules;
+  _i9.MatchSchedulePairingAttemptTable? ___notPlayedMarkedSchedules;
 
-  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>?
+  _i1.ManyRelation<_i9.MatchSchedulePairingAttemptTable>?
   _notPlayedMarkedSchedules;
 
-  _i10.MatchChatMessageTable? ___chatMessages;
+  _i11.MatchChatMessageTable? ___chatMessages;
 
-  _i1.ManyRelation<_i10.MatchChatMessageTable>? _chatMessages;
+  _i1.ManyRelation<_i11.MatchChatMessageTable>? _chatMessages;
 
-  _i11.MatchChatParticipantStateTable? ___chatParticipantStates;
+  _i12.MatchChatParticipantStateTable? ___chatParticipantStates;
 
-  _i1.ManyRelation<_i11.MatchChatParticipantStateTable>? _chatParticipantStates;
+  _i1.ManyRelation<_i12.MatchChatParticipantStateTable>? _chatParticipantStates;
 
-  _i12.PlayerPushNotificationTokenTable? ___pushNotificationTokens;
+  _i13.PlayerPushNotificationTokenTable? ___pushNotificationTokens;
 
-  _i1.ManyRelation<_i12.PlayerPushNotificationTokenTable>?
+  _i1.ManyRelation<_i13.PlayerPushNotificationTokenTable>?
   _pushNotificationTokens;
 
-  _i13.ManualInputLocationTable? ___manualInputLocations;
+  _i14.ManualInputLocationTable? ___manualInputLocations;
 
-  _i1.ManyRelation<_i13.ManualInputLocationTable>? _manualInputLocations;
+  _i1.ManyRelation<_i14.ManualInputLocationTable>? _manualInputLocations;
 
-  _i14.AnonymousPlayerTable? ___createdAnonymousPlayers;
+  _i15.AnonymousPlayerTable? ___createdAnonymousPlayers;
 
-  _i1.ManyRelation<_i14.AnonymousPlayerTable>? _createdAnonymousPlayers;
+  _i1.ManyRelation<_i15.AnonymousPlayerTable>? _createdAnonymousPlayers;
 
-  _i15.PlayerPerfomanceInMatchTable? ___perfomances;
+  _i16.PlayerPerfomanceInMatchTable? ___perfomances;
 
-  _i1.ManyRelation<_i15.PlayerPerfomanceInMatchTable>? _perfomances;
+  _i1.ManyRelation<_i16.PlayerPerfomanceInMatchTable>? _perfomances;
 
-  _i2.AuthUserTable get authUser {
+  _i3.AuthUserTable get authUser {
     if (_authUser != null) return _authUser!;
     _authUser = _i1.createRelationTable(
       relationFieldName: 'authUser',
       field: PlayerData.t.authUserId,
-      foreignField: _i2.AuthUser.t.id,
+      foreignField: _i3.AuthUser.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.AuthUserTable(tableRelation: foreignTableRelation),
+          _i3.AuthUserTable(tableRelation: foreignTableRelation),
     );
     return _authUser!;
   }
 
-  _i3.GeoLocationTable get currentLocation {
+  _i4.GeoLocationTable get currentLocation {
     if (_currentLocation != null) return _currentLocation!;
     _currentLocation = _i1.createRelationTable(
       relationFieldName: 'currentLocation',
       field: PlayerData.t.currentLocationId,
-      foreignField: _i3.GeoLocation.t.id,
+      foreignField: _i4.GeoLocation.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.GeoLocationTable(tableRelation: foreignTableRelation),
+          _i4.GeoLocationTable(tableRelation: foreignTableRelation),
     );
     return _currentLocation!;
   }
 
-  _i5.PlayerInMatchTable get __matchEntries {
+  _i6.PlayerInMatchTable get __matchEntries {
     if (___matchEntries != null) return ___matchEntries!;
     ___matchEntries = _i1.createRelationTable(
       relationFieldName: '__matchEntries',
       field: PlayerData.t.id,
-      foreignField: _i5.PlayerInMatch.t.playerId,
+      foreignField: _i6.PlayerInMatch.t.playerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i5.PlayerInMatchTable(tableRelation: foreignTableRelation),
+          _i6.PlayerInMatchTable(tableRelation: foreignTableRelation),
     );
     return ___matchEntries!;
   }
 
-  _i6.PostTable get __posts {
+  _i7.PostTable get __posts {
     if (___posts != null) return ___posts!;
     ___posts = _i1.createRelationTable(
       relationFieldName: '__posts',
       field: PlayerData.t.id,
-      foreignField: _i6.Post.t.authorId,
+      foreignField: _i7.Post.t.authorId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i6.PostTable(tableRelation: foreignTableRelation),
+          _i7.PostTable(tableRelation: foreignTableRelation),
     );
     return ___posts!;
   }
 
-  _i7.PostCommentTable get __comments {
+  _i8.PostCommentTable get __comments {
     if (___comments != null) return ___comments!;
     ___comments = _i1.createRelationTable(
       relationFieldName: '__comments',
       field: PlayerData.t.id,
-      foreignField: _i7.PostComment.t.ownerId,
+      foreignField: _i8.PostComment.t.ownerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i7.PostCommentTable(tableRelation: foreignTableRelation),
+          _i8.PostCommentTable(tableRelation: foreignTableRelation),
     );
     return ___comments!;
   }
 
-  _i8.MatchSchedulePairingAttemptTable get __currentHosting {
+  _i9.MatchSchedulePairingAttemptTable get __currentHosting {
     if (___currentHosting != null) return ___currentHosting!;
     ___currentHosting = _i1.createRelationTable(
       relationFieldName: '__currentHosting',
       field: PlayerData.t.id,
-      foreignField: _i8.MatchSchedulePairingAttempt.t.playerDataId,
+      foreignField: _i9.MatchSchedulePairingAttempt.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i8.MatchSchedulePairingAttemptTable(
+          _i9.MatchSchedulePairingAttemptTable(
             tableRelation: foreignTableRelation,
           ),
     );
     return ___currentHosting!;
   }
 
-  _i9.MatchSubscriptionTable get __subscriptions {
+  _i10.MatchSubscriptionTable get __subscriptions {
     if (___subscriptions != null) return ___subscriptions!;
     ___subscriptions = _i1.createRelationTable(
       relationFieldName: '__subscriptions',
       field: PlayerData.t.id,
-      foreignField: _i9.MatchSubscription.t.playerDataId,
+      foreignField: _i10.MatchSubscription.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i9.MatchSubscriptionTable(tableRelation: foreignTableRelation),
+          _i10.MatchSubscriptionTable(tableRelation: foreignTableRelation),
     );
     return ___subscriptions!;
   }
 
-  _i8.MatchSchedulePairingAttemptTable get __notPlayedMarkedSchedules {
+  _i9.MatchSchedulePairingAttemptTable get __notPlayedMarkedSchedules {
     if (___notPlayedMarkedSchedules != null)
       return ___notPlayedMarkedSchedules!;
     ___notPlayedMarkedSchedules = _i1.createRelationTable(
       relationFieldName: '__notPlayedMarkedSchedules',
       field: PlayerData.t.id,
       foreignField:
-          _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+          _i9.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i8.MatchSchedulePairingAttemptTable(
+          _i9.MatchSchedulePairingAttemptTable(
             tableRelation: foreignTableRelation,
           ),
     );
     return ___notPlayedMarkedSchedules!;
   }
 
-  _i10.MatchChatMessageTable get __chatMessages {
+  _i11.MatchChatMessageTable get __chatMessages {
     if (___chatMessages != null) return ___chatMessages!;
     ___chatMessages = _i1.createRelationTable(
       relationFieldName: '__chatMessages',
       field: PlayerData.t.id,
-      foreignField: _i10.MatchChatMessage.t.playerDataId,
+      foreignField: _i11.MatchChatMessage.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i10.MatchChatMessageTable(tableRelation: foreignTableRelation),
+          _i11.MatchChatMessageTable(tableRelation: foreignTableRelation),
     );
     return ___chatMessages!;
   }
 
-  _i11.MatchChatParticipantStateTable get __chatParticipantStates {
+  _i12.MatchChatParticipantStateTable get __chatParticipantStates {
     if (___chatParticipantStates != null) return ___chatParticipantStates!;
     ___chatParticipantStates = _i1.createRelationTable(
       relationFieldName: '__chatParticipantStates',
       field: PlayerData.t.id,
-      foreignField: _i11.MatchChatParticipantState.t.playerDataId,
+      foreignField: _i12.MatchChatParticipantState.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i11.MatchChatParticipantStateTable(
+          _i12.MatchChatParticipantStateTable(
             tableRelation: foreignTableRelation,
           ),
     );
     return ___chatParticipantStates!;
   }
 
-  _i12.PlayerPushNotificationTokenTable get __pushNotificationTokens {
+  _i13.PlayerPushNotificationTokenTable get __pushNotificationTokens {
     if (___pushNotificationTokens != null) return ___pushNotificationTokens!;
     ___pushNotificationTokens = _i1.createRelationTable(
       relationFieldName: '__pushNotificationTokens',
       field: PlayerData.t.id,
-      foreignField: _i12.PlayerPushNotificationToken.t.playerDataId,
+      foreignField: _i13.PlayerPushNotificationToken.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i12.PlayerPushNotificationTokenTable(
+          _i13.PlayerPushNotificationTokenTable(
             tableRelation: foreignTableRelation,
           ),
     );
     return ___pushNotificationTokens!;
   }
 
-  _i13.ManualInputLocationTable get __manualInputLocations {
+  _i14.ManualInputLocationTable get __manualInputLocations {
     if (___manualInputLocations != null) return ___manualInputLocations!;
     ___manualInputLocations = _i1.createRelationTable(
       relationFieldName: '__manualInputLocations',
       field: PlayerData.t.id,
-      foreignField: _i13.ManualInputLocation.t.playerDataId,
+      foreignField: _i14.ManualInputLocation.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i13.ManualInputLocationTable(tableRelation: foreignTableRelation),
+          _i14.ManualInputLocationTable(tableRelation: foreignTableRelation),
     );
     return ___manualInputLocations!;
   }
 
-  _i14.AnonymousPlayerTable get __createdAnonymousPlayers {
+  _i15.AnonymousPlayerTable get __createdAnonymousPlayers {
     if (___createdAnonymousPlayers != null) return ___createdAnonymousPlayers!;
     ___createdAnonymousPlayers = _i1.createRelationTable(
       relationFieldName: '__createdAnonymousPlayers',
       field: PlayerData.t.id,
-      foreignField: _i14.AnonymousPlayer.t.createdByPlayerId,
+      foreignField: _i15.AnonymousPlayer.t.createdByPlayerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i14.AnonymousPlayerTable(tableRelation: foreignTableRelation),
+          _i15.AnonymousPlayerTable(tableRelation: foreignTableRelation),
     );
     return ___createdAnonymousPlayers!;
   }
 
-  _i15.PlayerPerfomanceInMatchTable get __perfomances {
+  _i16.PlayerPerfomanceInMatchTable get __perfomances {
     if (___perfomances != null) return ___perfomances!;
     ___perfomances = _i1.createRelationTable(
       relationFieldName: '__perfomances',
       field: PlayerData.t.id,
-      foreignField: _i15.PlayerPerfomanceInMatch.t.playerDataId,
+      foreignField: _i16.PlayerPerfomanceInMatch.t.playerDataId,
       tableRelation: tableRelation,
-      createTable: (foreignTableRelation) => _i15.PlayerPerfomanceInMatchTable(
+      createTable: (foreignTableRelation) => _i16.PlayerPerfomanceInMatchTable(
         tableRelation: foreignTableRelation,
       ),
     );
     return ___perfomances!;
   }
 
-  _i1.ManyRelation<_i5.PlayerInMatchTable> get matchEntries {
+  _i1.ManyRelation<_i6.PlayerInMatchTable> get matchEntries {
     if (_matchEntries != null) return _matchEntries!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'matchEntries',
       field: PlayerData.t.id,
-      foreignField: _i5.PlayerInMatch.t.playerId,
+      foreignField: _i6.PlayerInMatch.t.playerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i5.PlayerInMatchTable(tableRelation: foreignTableRelation),
+          _i6.PlayerInMatchTable(tableRelation: foreignTableRelation),
     );
-    _matchEntries = _i1.ManyRelation<_i5.PlayerInMatchTable>(
+    _matchEntries = _i1.ManyRelation<_i6.PlayerInMatchTable>(
       tableWithRelations: relationTable,
-      table: _i5.PlayerInMatchTable(
+      table: _i6.PlayerInMatchTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _matchEntries!;
   }
 
-  _i1.ManyRelation<_i6.PostTable> get posts {
+  _i1.ManyRelation<_i7.PostTable> get posts {
     if (_posts != null) return _posts!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'posts',
       field: PlayerData.t.id,
-      foreignField: _i6.Post.t.authorId,
+      foreignField: _i7.Post.t.authorId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i6.PostTable(tableRelation: foreignTableRelation),
+          _i7.PostTable(tableRelation: foreignTableRelation),
     );
-    _posts = _i1.ManyRelation<_i6.PostTable>(
+    _posts = _i1.ManyRelation<_i7.PostTable>(
       tableWithRelations: relationTable,
-      table: _i6.PostTable(
+      table: _i7.PostTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _posts!;
   }
 
-  _i1.ManyRelation<_i7.PostCommentTable> get comments {
+  _i1.ManyRelation<_i8.PostCommentTable> get comments {
     if (_comments != null) return _comments!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'comments',
       field: PlayerData.t.id,
-      foreignField: _i7.PostComment.t.ownerId,
+      foreignField: _i8.PostComment.t.ownerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i7.PostCommentTable(tableRelation: foreignTableRelation),
+          _i8.PostCommentTable(tableRelation: foreignTableRelation),
     );
-    _comments = _i1.ManyRelation<_i7.PostCommentTable>(
+    _comments = _i1.ManyRelation<_i8.PostCommentTable>(
       tableWithRelations: relationTable,
-      table: _i7.PostCommentTable(
+      table: _i8.PostCommentTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _comments!;
   }
 
-  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable> get currentHosting {
+  _i1.ManyRelation<_i9.MatchSchedulePairingAttemptTable> get currentHosting {
     if (_currentHosting != null) return _currentHosting!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'currentHosting',
       field: PlayerData.t.id,
-      foreignField: _i8.MatchSchedulePairingAttempt.t.playerDataId,
+      foreignField: _i9.MatchSchedulePairingAttempt.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i8.MatchSchedulePairingAttemptTable(
+          _i9.MatchSchedulePairingAttemptTable(
             tableRelation: foreignTableRelation,
           ),
     );
-    _currentHosting = _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>(
+    _currentHosting = _i1.ManyRelation<_i9.MatchSchedulePairingAttemptTable>(
       tableWithRelations: relationTable,
-      table: _i8.MatchSchedulePairingAttemptTable(
+      table: _i9.MatchSchedulePairingAttemptTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _currentHosting!;
   }
 
-  _i1.ManyRelation<_i9.MatchSubscriptionTable> get subscriptions {
+  _i1.ManyRelation<_i10.MatchSubscriptionTable> get subscriptions {
     if (_subscriptions != null) return _subscriptions!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'subscriptions',
       field: PlayerData.t.id,
-      foreignField: _i9.MatchSubscription.t.playerDataId,
+      foreignField: _i10.MatchSubscription.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i9.MatchSubscriptionTable(tableRelation: foreignTableRelation),
+          _i10.MatchSubscriptionTable(tableRelation: foreignTableRelation),
     );
-    _subscriptions = _i1.ManyRelation<_i9.MatchSubscriptionTable>(
+    _subscriptions = _i1.ManyRelation<_i10.MatchSubscriptionTable>(
       tableWithRelations: relationTable,
-      table: _i9.MatchSubscriptionTable(
+      table: _i10.MatchSubscriptionTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _subscriptions!;
   }
 
-  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>
+  _i1.ManyRelation<_i9.MatchSchedulePairingAttemptTable>
   get notPlayedMarkedSchedules {
     if (_notPlayedMarkedSchedules != null) return _notPlayedMarkedSchedules!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'notPlayedMarkedSchedules',
       field: PlayerData.t.id,
       foreignField:
-          _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+          _i9.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i8.MatchSchedulePairingAttemptTable(
+          _i9.MatchSchedulePairingAttemptTable(
             tableRelation: foreignTableRelation,
           ),
     );
     _notPlayedMarkedSchedules =
-        _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>(
+        _i1.ManyRelation<_i9.MatchSchedulePairingAttemptTable>(
           tableWithRelations: relationTable,
-          table: _i8.MatchSchedulePairingAttemptTable(
+          table: _i9.MatchSchedulePairingAttemptTable(
             tableRelation: relationTable.tableRelation!.lastRelation,
           ),
         );
     return _notPlayedMarkedSchedules!;
   }
 
-  _i1.ManyRelation<_i10.MatchChatMessageTable> get chatMessages {
+  _i1.ManyRelation<_i11.MatchChatMessageTable> get chatMessages {
     if (_chatMessages != null) return _chatMessages!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'chatMessages',
       field: PlayerData.t.id,
-      foreignField: _i10.MatchChatMessage.t.playerDataId,
+      foreignField: _i11.MatchChatMessage.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i10.MatchChatMessageTable(tableRelation: foreignTableRelation),
+          _i11.MatchChatMessageTable(tableRelation: foreignTableRelation),
     );
-    _chatMessages = _i1.ManyRelation<_i10.MatchChatMessageTable>(
+    _chatMessages = _i1.ManyRelation<_i11.MatchChatMessageTable>(
       tableWithRelations: relationTable,
-      table: _i10.MatchChatMessageTable(
+      table: _i11.MatchChatMessageTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _chatMessages!;
   }
 
-  _i1.ManyRelation<_i11.MatchChatParticipantStateTable>
+  _i1.ManyRelation<_i12.MatchChatParticipantStateTable>
   get chatParticipantStates {
     if (_chatParticipantStates != null) return _chatParticipantStates!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'chatParticipantStates',
       field: PlayerData.t.id,
-      foreignField: _i11.MatchChatParticipantState.t.playerDataId,
+      foreignField: _i12.MatchChatParticipantState.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i11.MatchChatParticipantStateTable(
+          _i12.MatchChatParticipantStateTable(
             tableRelation: foreignTableRelation,
           ),
     );
     _chatParticipantStates =
-        _i1.ManyRelation<_i11.MatchChatParticipantStateTable>(
+        _i1.ManyRelation<_i12.MatchChatParticipantStateTable>(
           tableWithRelations: relationTable,
-          table: _i11.MatchChatParticipantStateTable(
+          table: _i12.MatchChatParticipantStateTable(
             tableRelation: relationTable.tableRelation!.lastRelation,
           ),
         );
     return _chatParticipantStates!;
   }
 
-  _i1.ManyRelation<_i12.PlayerPushNotificationTokenTable>
+  _i1.ManyRelation<_i13.PlayerPushNotificationTokenTable>
   get pushNotificationTokens {
     if (_pushNotificationTokens != null) return _pushNotificationTokens!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'pushNotificationTokens',
       field: PlayerData.t.id,
-      foreignField: _i12.PlayerPushNotificationToken.t.playerDataId,
+      foreignField: _i13.PlayerPushNotificationToken.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i12.PlayerPushNotificationTokenTable(
+          _i13.PlayerPushNotificationTokenTable(
             tableRelation: foreignTableRelation,
           ),
     );
     _pushNotificationTokens =
-        _i1.ManyRelation<_i12.PlayerPushNotificationTokenTable>(
+        _i1.ManyRelation<_i13.PlayerPushNotificationTokenTable>(
           tableWithRelations: relationTable,
-          table: _i12.PlayerPushNotificationTokenTable(
+          table: _i13.PlayerPushNotificationTokenTable(
             tableRelation: relationTable.tableRelation!.lastRelation,
           ),
         );
     return _pushNotificationTokens!;
   }
 
-  _i1.ManyRelation<_i13.ManualInputLocationTable> get manualInputLocations {
+  _i1.ManyRelation<_i14.ManualInputLocationTable> get manualInputLocations {
     if (_manualInputLocations != null) return _manualInputLocations!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'manualInputLocations',
       field: PlayerData.t.id,
-      foreignField: _i13.ManualInputLocation.t.playerDataId,
+      foreignField: _i14.ManualInputLocation.t.playerDataId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i13.ManualInputLocationTable(tableRelation: foreignTableRelation),
+          _i14.ManualInputLocationTable(tableRelation: foreignTableRelation),
     );
-    _manualInputLocations = _i1.ManyRelation<_i13.ManualInputLocationTable>(
+    _manualInputLocations = _i1.ManyRelation<_i14.ManualInputLocationTable>(
       tableWithRelations: relationTable,
-      table: _i13.ManualInputLocationTable(
+      table: _i14.ManualInputLocationTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _manualInputLocations!;
   }
 
-  _i1.ManyRelation<_i14.AnonymousPlayerTable> get createdAnonymousPlayers {
+  _i1.ManyRelation<_i15.AnonymousPlayerTable> get createdAnonymousPlayers {
     if (_createdAnonymousPlayers != null) return _createdAnonymousPlayers!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'createdAnonymousPlayers',
       field: PlayerData.t.id,
-      foreignField: _i14.AnonymousPlayer.t.createdByPlayerId,
+      foreignField: _i15.AnonymousPlayer.t.createdByPlayerId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i14.AnonymousPlayerTable(tableRelation: foreignTableRelation),
+          _i15.AnonymousPlayerTable(tableRelation: foreignTableRelation),
     );
-    _createdAnonymousPlayers = _i1.ManyRelation<_i14.AnonymousPlayerTable>(
+    _createdAnonymousPlayers = _i1.ManyRelation<_i15.AnonymousPlayerTable>(
       tableWithRelations: relationTable,
-      table: _i14.AnonymousPlayerTable(
+      table: _i15.AnonymousPlayerTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
     return _createdAnonymousPlayers!;
   }
 
-  _i1.ManyRelation<_i15.PlayerPerfomanceInMatchTable> get perfomances {
+  _i1.ManyRelation<_i16.PlayerPerfomanceInMatchTable> get perfomances {
     if (_perfomances != null) return _perfomances!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'perfomances',
       field: PlayerData.t.id,
-      foreignField: _i15.PlayerPerfomanceInMatch.t.playerDataId,
+      foreignField: _i16.PlayerPerfomanceInMatch.t.playerDataId,
       tableRelation: tableRelation,
-      createTable: (foreignTableRelation) => _i15.PlayerPerfomanceInMatchTable(
+      createTable: (foreignTableRelation) => _i16.PlayerPerfomanceInMatchTable(
         tableRelation: foreignTableRelation,
       ),
     );
-    _perfomances = _i1.ManyRelation<_i15.PlayerPerfomanceInMatchTable>(
+    _perfomances = _i1.ManyRelation<_i16.PlayerPerfomanceInMatchTable>(
       tableWithRelations: relationTable,
-      table: _i15.PlayerPerfomanceInMatchTable(
+      table: _i16.PlayerPerfomanceInMatchTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
@@ -1088,6 +1120,7 @@ class PlayerDataTable extends _i1.Table<int?> {
     id,
     authUserId,
     displayName,
+    preferredLanguage,
     currentLocationId,
     favoriteFaction,
   ];
@@ -1142,20 +1175,20 @@ class PlayerDataTable extends _i1.Table<int?> {
 
 class PlayerDataInclude extends _i1.IncludeObject {
   PlayerDataInclude._({
-    _i2.AuthUserInclude? authUser,
-    _i3.GeoLocationInclude? currentLocation,
-    _i5.PlayerInMatchIncludeList? matchEntries,
-    _i6.PostIncludeList? posts,
-    _i7.PostCommentIncludeList? comments,
-    _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
-    _i9.MatchSubscriptionIncludeList? subscriptions,
-    _i8.MatchSchedulePairingAttemptIncludeList? notPlayedMarkedSchedules,
-    _i10.MatchChatMessageIncludeList? chatMessages,
-    _i11.MatchChatParticipantStateIncludeList? chatParticipantStates,
-    _i12.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
-    _i13.ManualInputLocationIncludeList? manualInputLocations,
-    _i14.AnonymousPlayerIncludeList? createdAnonymousPlayers,
-    _i15.PlayerPerfomanceInMatchIncludeList? perfomances,
+    _i3.AuthUserInclude? authUser,
+    _i4.GeoLocationInclude? currentLocation,
+    _i6.PlayerInMatchIncludeList? matchEntries,
+    _i7.PostIncludeList? posts,
+    _i8.PostCommentIncludeList? comments,
+    _i9.MatchSchedulePairingAttemptIncludeList? currentHosting,
+    _i10.MatchSubscriptionIncludeList? subscriptions,
+    _i9.MatchSchedulePairingAttemptIncludeList? notPlayedMarkedSchedules,
+    _i11.MatchChatMessageIncludeList? chatMessages,
+    _i12.MatchChatParticipantStateIncludeList? chatParticipantStates,
+    _i13.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
+    _i14.ManualInputLocationIncludeList? manualInputLocations,
+    _i15.AnonymousPlayerIncludeList? createdAnonymousPlayers,
+    _i16.PlayerPerfomanceInMatchIncludeList? perfomances,
   }) {
     _authUser = authUser;
     _currentLocation = currentLocation;
@@ -1173,33 +1206,33 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _perfomances = perfomances;
   }
 
-  _i2.AuthUserInclude? _authUser;
+  _i3.AuthUserInclude? _authUser;
 
-  _i3.GeoLocationInclude? _currentLocation;
+  _i4.GeoLocationInclude? _currentLocation;
 
-  _i5.PlayerInMatchIncludeList? _matchEntries;
+  _i6.PlayerInMatchIncludeList? _matchEntries;
 
-  _i6.PostIncludeList? _posts;
+  _i7.PostIncludeList? _posts;
 
-  _i7.PostCommentIncludeList? _comments;
+  _i8.PostCommentIncludeList? _comments;
 
-  _i8.MatchSchedulePairingAttemptIncludeList? _currentHosting;
+  _i9.MatchSchedulePairingAttemptIncludeList? _currentHosting;
 
-  _i9.MatchSubscriptionIncludeList? _subscriptions;
+  _i10.MatchSubscriptionIncludeList? _subscriptions;
 
-  _i8.MatchSchedulePairingAttemptIncludeList? _notPlayedMarkedSchedules;
+  _i9.MatchSchedulePairingAttemptIncludeList? _notPlayedMarkedSchedules;
 
-  _i10.MatchChatMessageIncludeList? _chatMessages;
+  _i11.MatchChatMessageIncludeList? _chatMessages;
 
-  _i11.MatchChatParticipantStateIncludeList? _chatParticipantStates;
+  _i12.MatchChatParticipantStateIncludeList? _chatParticipantStates;
 
-  _i12.PlayerPushNotificationTokenIncludeList? _pushNotificationTokens;
+  _i13.PlayerPushNotificationTokenIncludeList? _pushNotificationTokens;
 
-  _i13.ManualInputLocationIncludeList? _manualInputLocations;
+  _i14.ManualInputLocationIncludeList? _manualInputLocations;
 
-  _i14.AnonymousPlayerIncludeList? _createdAnonymousPlayers;
+  _i15.AnonymousPlayerIncludeList? _createdAnonymousPlayers;
 
-  _i15.PlayerPerfomanceInMatchIncludeList? _perfomances;
+  _i16.PlayerPerfomanceInMatchIncludeList? _perfomances;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -1518,7 +1551,7 @@ class PlayerDataAttachRepository {
   Future<void> matchEntries(
     _i1.Session session,
     PlayerData playerData,
-    List<_i5.PlayerInMatch> playerInMatch, {
+    List<_i6.PlayerInMatch> playerInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerInMatch.any((e) => e.id == null)) {
@@ -1531,9 +1564,9 @@ class PlayerDataAttachRepository {
     var $playerInMatch = playerInMatch
         .map((e) => e.copyWith(playerId: playerData.id))
         .toList();
-    await session.db.update<_i5.PlayerInMatch>(
+    await session.db.update<_i6.PlayerInMatch>(
       $playerInMatch,
-      columns: [_i5.PlayerInMatch.t.playerId],
+      columns: [_i6.PlayerInMatch.t.playerId],
       transaction: transaction,
     );
   }
@@ -1543,7 +1576,7 @@ class PlayerDataAttachRepository {
   Future<void> posts(
     _i1.Session session,
     PlayerData playerData,
-    List<_i6.Post> post, {
+    List<_i7.Post> post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.any((e) => e.id == null)) {
@@ -1554,9 +1587,9 @@ class PlayerDataAttachRepository {
     }
 
     var $post = post.map((e) => e.copyWith(authorId: playerData.id)).toList();
-    await session.db.update<_i6.Post>(
+    await session.db.update<_i7.Post>(
       $post,
-      columns: [_i6.Post.t.authorId],
+      columns: [_i7.Post.t.authorId],
       transaction: transaction,
     );
   }
@@ -1566,7 +1599,7 @@ class PlayerDataAttachRepository {
   Future<void> comments(
     _i1.Session session,
     PlayerData playerData,
-    List<_i7.PostComment> postComment, {
+    List<_i8.PostComment> postComment, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.any((e) => e.id == null)) {
@@ -1579,9 +1612,9 @@ class PlayerDataAttachRepository {
     var $postComment = postComment
         .map((e) => e.copyWith(ownerId: playerData.id))
         .toList();
-    await session.db.update<_i7.PostComment>(
+    await session.db.update<_i8.PostComment>(
       $postComment,
-      columns: [_i7.PostComment.t.ownerId],
+      columns: [_i8.PostComment.t.ownerId],
       transaction: transaction,
     );
   }
@@ -1591,7 +1624,7 @@ class PlayerDataAttachRepository {
   Future<void> currentHosting(
     _i1.Session session,
     PlayerData playerData,
-    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    List<_i9.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
@@ -1604,9 +1637,9 @@ class PlayerDataAttachRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+    await session.db.update<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      columns: [_i9.MatchSchedulePairingAttempt.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1616,7 +1649,7 @@ class PlayerDataAttachRepository {
   Future<void> subscriptions(
     _i1.Session session,
     PlayerData playerData,
-    List<_i9.MatchSubscription> matchSubscription, {
+    List<_i10.MatchSubscription> matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.any((e) => e.id == null)) {
@@ -1629,9 +1662,9 @@ class PlayerDataAttachRepository {
     var $matchSubscription = matchSubscription
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i9.MatchSubscription>(
+    await session.db.update<_i10.MatchSubscription>(
       $matchSubscription,
-      columns: [_i9.MatchSubscription.t.playerDataId],
+      columns: [_i10.MatchSubscription.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1641,7 +1674,7 @@ class PlayerDataAttachRepository {
   Future<void> notPlayedMarkedSchedules(
     _i1.Session session,
     PlayerData playerData,
-    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    List<_i9.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
@@ -1654,10 +1687,10 @@ class PlayerDataAttachRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
         .map((e) => e.copyWith(notPlayedMarkedByPlayerDataId: playerData.id))
         .toList();
-    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+    await session.db.update<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
       columns: [
-        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+        _i9.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
       ],
       transaction: transaction,
     );
@@ -1668,7 +1701,7 @@ class PlayerDataAttachRepository {
   Future<void> chatMessages(
     _i1.Session session,
     PlayerData playerData,
-    List<_i10.MatchChatMessage> matchChatMessage, {
+    List<_i11.MatchChatMessage> matchChatMessage, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.any((e) => e.id == null)) {
@@ -1681,9 +1714,9 @@ class PlayerDataAttachRepository {
     var $matchChatMessage = matchChatMessage
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i10.MatchChatMessage>(
+    await session.db.update<_i11.MatchChatMessage>(
       $matchChatMessage,
-      columns: [_i10.MatchChatMessage.t.playerDataId],
+      columns: [_i11.MatchChatMessage.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1693,7 +1726,7 @@ class PlayerDataAttachRepository {
   Future<void> chatParticipantStates(
     _i1.Session session,
     PlayerData playerData,
-    List<_i11.MatchChatParticipantState> matchChatParticipantState, {
+    List<_i12.MatchChatParticipantState> matchChatParticipantState, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatParticipantState.any((e) => e.id == null)) {
@@ -1706,9 +1739,9 @@ class PlayerDataAttachRepository {
     var $matchChatParticipantState = matchChatParticipantState
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i11.MatchChatParticipantState>(
+    await session.db.update<_i12.MatchChatParticipantState>(
       $matchChatParticipantState,
-      columns: [_i11.MatchChatParticipantState.t.playerDataId],
+      columns: [_i12.MatchChatParticipantState.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1718,7 +1751,7 @@ class PlayerDataAttachRepository {
   Future<void> pushNotificationTokens(
     _i1.Session session,
     PlayerData playerData,
-    List<_i12.PlayerPushNotificationToken> playerPushNotificationToken, {
+    List<_i13.PlayerPushNotificationToken> playerPushNotificationToken, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPushNotificationToken.any((e) => e.id == null)) {
@@ -1731,9 +1764,9 @@ class PlayerDataAttachRepository {
     var $playerPushNotificationToken = playerPushNotificationToken
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i12.PlayerPushNotificationToken>(
+    await session.db.update<_i13.PlayerPushNotificationToken>(
       $playerPushNotificationToken,
-      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      columns: [_i13.PlayerPushNotificationToken.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1743,7 +1776,7 @@ class PlayerDataAttachRepository {
   Future<void> manualInputLocations(
     _i1.Session session,
     PlayerData playerData,
-    List<_i13.ManualInputLocation> manualInputLocation, {
+    List<_i14.ManualInputLocation> manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.any((e) => e.id == null)) {
@@ -1756,9 +1789,9 @@ class PlayerDataAttachRepository {
     var $manualInputLocation = manualInputLocation
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i13.ManualInputLocation>(
+    await session.db.update<_i14.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i13.ManualInputLocation.t.playerDataId],
+      columns: [_i14.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1768,7 +1801,7 @@ class PlayerDataAttachRepository {
   Future<void> createdAnonymousPlayers(
     _i1.Session session,
     PlayerData playerData,
-    List<_i14.AnonymousPlayer> anonymousPlayer, {
+    List<_i15.AnonymousPlayer> anonymousPlayer, {
     _i1.Transaction? transaction,
   }) async {
     if (anonymousPlayer.any((e) => e.id == null)) {
@@ -1781,9 +1814,9 @@ class PlayerDataAttachRepository {
     var $anonymousPlayer = anonymousPlayer
         .map((e) => e.copyWith(createdByPlayerId: playerData.id))
         .toList();
-    await session.db.update<_i14.AnonymousPlayer>(
+    await session.db.update<_i15.AnonymousPlayer>(
       $anonymousPlayer,
-      columns: [_i14.AnonymousPlayer.t.createdByPlayerId],
+      columns: [_i15.AnonymousPlayer.t.createdByPlayerId],
       transaction: transaction,
     );
   }
@@ -1793,7 +1826,7 @@ class PlayerDataAttachRepository {
   Future<void> perfomances(
     _i1.Session session,
     PlayerData playerData,
-    List<_i15.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
+    List<_i16.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.any((e) => e.id == null)) {
@@ -1806,9 +1839,9 @@ class PlayerDataAttachRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch
         .map((e) => e.copyWith(playerDataId: playerData.id))
         .toList();
-    await session.db.update<_i15.PlayerPerfomanceInMatch>(
+    await session.db.update<_i16.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i16.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1822,7 +1855,7 @@ class PlayerDataAttachRowRepository {
   Future<void> authUser(
     _i1.Session session,
     PlayerData playerData,
-    _i2.AuthUser authUser, {
+    _i3.AuthUser authUser, {
     _i1.Transaction? transaction,
   }) async {
     if (playerData.id == null) {
@@ -1845,7 +1878,7 @@ class PlayerDataAttachRowRepository {
   Future<void> currentLocation(
     _i1.Session session,
     PlayerData playerData,
-    _i3.GeoLocation currentLocation, {
+    _i4.GeoLocation currentLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (playerData.id == null) {
@@ -1870,7 +1903,7 @@ class PlayerDataAttachRowRepository {
   Future<void> matchEntries(
     _i1.Session session,
     PlayerData playerData,
-    _i5.PlayerInMatch playerInMatch, {
+    _i6.PlayerInMatch playerInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerInMatch.id == null) {
@@ -1881,9 +1914,9 @@ class PlayerDataAttachRowRepository {
     }
 
     var $playerInMatch = playerInMatch.copyWith(playerId: playerData.id);
-    await session.db.updateRow<_i5.PlayerInMatch>(
+    await session.db.updateRow<_i6.PlayerInMatch>(
       $playerInMatch,
-      columns: [_i5.PlayerInMatch.t.playerId],
+      columns: [_i6.PlayerInMatch.t.playerId],
       transaction: transaction,
     );
   }
@@ -1893,7 +1926,7 @@ class PlayerDataAttachRowRepository {
   Future<void> posts(
     _i1.Session session,
     PlayerData playerData,
-    _i6.Post post, {
+    _i7.Post post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.id == null) {
@@ -1904,9 +1937,9 @@ class PlayerDataAttachRowRepository {
     }
 
     var $post = post.copyWith(authorId: playerData.id);
-    await session.db.updateRow<_i6.Post>(
+    await session.db.updateRow<_i7.Post>(
       $post,
-      columns: [_i6.Post.t.authorId],
+      columns: [_i7.Post.t.authorId],
       transaction: transaction,
     );
   }
@@ -1916,7 +1949,7 @@ class PlayerDataAttachRowRepository {
   Future<void> comments(
     _i1.Session session,
     PlayerData playerData,
-    _i7.PostComment postComment, {
+    _i8.PostComment postComment, {
     _i1.Transaction? transaction,
   }) async {
     if (postComment.id == null) {
@@ -1927,9 +1960,9 @@ class PlayerDataAttachRowRepository {
     }
 
     var $postComment = postComment.copyWith(ownerId: playerData.id);
-    await session.db.updateRow<_i7.PostComment>(
+    await session.db.updateRow<_i8.PostComment>(
       $postComment,
-      columns: [_i7.PostComment.t.ownerId],
+      columns: [_i8.PostComment.t.ownerId],
       transaction: transaction,
     );
   }
@@ -1939,7 +1972,7 @@ class PlayerDataAttachRowRepository {
   Future<void> currentHosting(
     _i1.Session session,
     PlayerData playerData,
-    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i9.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -1952,9 +1985,9 @@ class PlayerDataAttachRowRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+    await session.db.updateRow<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      columns: [_i9.MatchSchedulePairingAttempt.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1964,7 +1997,7 @@ class PlayerDataAttachRowRepository {
   Future<void> subscriptions(
     _i1.Session session,
     PlayerData playerData,
-    _i9.MatchSubscription matchSubscription, {
+    _i10.MatchSubscription matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.id == null) {
@@ -1977,9 +2010,9 @@ class PlayerDataAttachRowRepository {
     var $matchSubscription = matchSubscription.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i9.MatchSubscription>(
+    await session.db.updateRow<_i10.MatchSubscription>(
       $matchSubscription,
-      columns: [_i9.MatchSubscription.t.playerDataId],
+      columns: [_i10.MatchSubscription.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -1989,7 +2022,7 @@ class PlayerDataAttachRowRepository {
   Future<void> notPlayedMarkedSchedules(
     _i1.Session session,
     PlayerData playerData,
-    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i9.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -2002,10 +2035,10 @@ class PlayerDataAttachRowRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
       notPlayedMarkedByPlayerDataId: playerData.id,
     );
-    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+    await session.db.updateRow<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
       columns: [
-        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+        _i9.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
       ],
       transaction: transaction,
     );
@@ -2016,7 +2049,7 @@ class PlayerDataAttachRowRepository {
   Future<void> chatMessages(
     _i1.Session session,
     PlayerData playerData,
-    _i10.MatchChatMessage matchChatMessage, {
+    _i11.MatchChatMessage matchChatMessage, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.id == null) {
@@ -2029,9 +2062,9 @@ class PlayerDataAttachRowRepository {
     var $matchChatMessage = matchChatMessage.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i10.MatchChatMessage>(
+    await session.db.updateRow<_i11.MatchChatMessage>(
       $matchChatMessage,
-      columns: [_i10.MatchChatMessage.t.playerDataId],
+      columns: [_i11.MatchChatMessage.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2041,7 +2074,7 @@ class PlayerDataAttachRowRepository {
   Future<void> chatParticipantStates(
     _i1.Session session,
     PlayerData playerData,
-    _i11.MatchChatParticipantState matchChatParticipantState, {
+    _i12.MatchChatParticipantState matchChatParticipantState, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatParticipantState.id == null) {
@@ -2054,9 +2087,9 @@ class PlayerDataAttachRowRepository {
     var $matchChatParticipantState = matchChatParticipantState.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i11.MatchChatParticipantState>(
+    await session.db.updateRow<_i12.MatchChatParticipantState>(
       $matchChatParticipantState,
-      columns: [_i11.MatchChatParticipantState.t.playerDataId],
+      columns: [_i12.MatchChatParticipantState.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2066,7 +2099,7 @@ class PlayerDataAttachRowRepository {
   Future<void> pushNotificationTokens(
     _i1.Session session,
     PlayerData playerData,
-    _i12.PlayerPushNotificationToken playerPushNotificationToken, {
+    _i13.PlayerPushNotificationToken playerPushNotificationToken, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPushNotificationToken.id == null) {
@@ -2079,9 +2112,9 @@ class PlayerDataAttachRowRepository {
     var $playerPushNotificationToken = playerPushNotificationToken.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i12.PlayerPushNotificationToken>(
+    await session.db.updateRow<_i13.PlayerPushNotificationToken>(
       $playerPushNotificationToken,
-      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      columns: [_i13.PlayerPushNotificationToken.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2091,7 +2124,7 @@ class PlayerDataAttachRowRepository {
   Future<void> manualInputLocations(
     _i1.Session session,
     PlayerData playerData,
-    _i13.ManualInputLocation manualInputLocation, {
+    _i14.ManualInputLocation manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.id == null) {
@@ -2104,9 +2137,9 @@ class PlayerDataAttachRowRepository {
     var $manualInputLocation = manualInputLocation.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i13.ManualInputLocation>(
+    await session.db.updateRow<_i14.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i13.ManualInputLocation.t.playerDataId],
+      columns: [_i14.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2116,7 +2149,7 @@ class PlayerDataAttachRowRepository {
   Future<void> createdAnonymousPlayers(
     _i1.Session session,
     PlayerData playerData,
-    _i14.AnonymousPlayer anonymousPlayer, {
+    _i15.AnonymousPlayer anonymousPlayer, {
     _i1.Transaction? transaction,
   }) async {
     if (anonymousPlayer.id == null) {
@@ -2129,9 +2162,9 @@ class PlayerDataAttachRowRepository {
     var $anonymousPlayer = anonymousPlayer.copyWith(
       createdByPlayerId: playerData.id,
     );
-    await session.db.updateRow<_i14.AnonymousPlayer>(
+    await session.db.updateRow<_i15.AnonymousPlayer>(
       $anonymousPlayer,
-      columns: [_i14.AnonymousPlayer.t.createdByPlayerId],
+      columns: [_i15.AnonymousPlayer.t.createdByPlayerId],
       transaction: transaction,
     );
   }
@@ -2141,7 +2174,7 @@ class PlayerDataAttachRowRepository {
   Future<void> perfomances(
     _i1.Session session,
     PlayerData playerData,
-    _i15.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
+    _i16.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.id == null) {
@@ -2154,9 +2187,9 @@ class PlayerDataAttachRowRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
       playerDataId: playerData.id,
     );
-    await session.db.updateRow<_i15.PlayerPerfomanceInMatch>(
+    await session.db.updateRow<_i16.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i16.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2172,7 +2205,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> matchEntries(
     _i1.Session session,
-    List<_i5.PlayerInMatch> playerInMatch, {
+    List<_i6.PlayerInMatch> playerInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerInMatch.any((e) => e.id == null)) {
@@ -2182,9 +2215,9 @@ class PlayerDataDetachRepository {
     var $playerInMatch = playerInMatch
         .map((e) => e.copyWith(playerId: null))
         .toList();
-    await session.db.update<_i5.PlayerInMatch>(
+    await session.db.update<_i6.PlayerInMatch>(
       $playerInMatch,
-      columns: [_i5.PlayerInMatch.t.playerId],
+      columns: [_i6.PlayerInMatch.t.playerId],
       transaction: transaction,
     );
   }
@@ -2196,7 +2229,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> posts(
     _i1.Session session,
-    List<_i6.Post> post, {
+    List<_i7.Post> post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.any((e) => e.id == null)) {
@@ -2204,9 +2237,9 @@ class PlayerDataDetachRepository {
     }
 
     var $post = post.map((e) => e.copyWith(authorId: null)).toList();
-    await session.db.update<_i6.Post>(
+    await session.db.update<_i7.Post>(
       $post,
-      columns: [_i6.Post.t.authorId],
+      columns: [_i7.Post.t.authorId],
       transaction: transaction,
     );
   }
@@ -2218,7 +2251,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> currentHosting(
     _i1.Session session,
-    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    List<_i9.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
@@ -2228,9 +2261,9 @@ class PlayerDataDetachRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+    await session.db.update<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      columns: [_i9.MatchSchedulePairingAttempt.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2242,7 +2275,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> subscriptions(
     _i1.Session session,
-    List<_i9.MatchSubscription> matchSubscription, {
+    List<_i10.MatchSubscription> matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.any((e) => e.id == null)) {
@@ -2252,9 +2285,9 @@ class PlayerDataDetachRepository {
     var $matchSubscription = matchSubscription
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i9.MatchSubscription>(
+    await session.db.update<_i10.MatchSubscription>(
       $matchSubscription,
-      columns: [_i9.MatchSubscription.t.playerDataId],
+      columns: [_i10.MatchSubscription.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2266,7 +2299,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> notPlayedMarkedSchedules(
     _i1.Session session,
-    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    List<_i9.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
@@ -2276,10 +2309,10 @@ class PlayerDataDetachRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
         .map((e) => e.copyWith(notPlayedMarkedByPlayerDataId: null))
         .toList();
-    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+    await session.db.update<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
       columns: [
-        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+        _i9.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
       ],
       transaction: transaction,
     );
@@ -2292,7 +2325,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> chatMessages(
     _i1.Session session,
-    List<_i10.MatchChatMessage> matchChatMessage, {
+    List<_i11.MatchChatMessage> matchChatMessage, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.any((e) => e.id == null)) {
@@ -2302,9 +2335,9 @@ class PlayerDataDetachRepository {
     var $matchChatMessage = matchChatMessage
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i10.MatchChatMessage>(
+    await session.db.update<_i11.MatchChatMessage>(
       $matchChatMessage,
-      columns: [_i10.MatchChatMessage.t.playerDataId],
+      columns: [_i11.MatchChatMessage.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2316,7 +2349,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> chatParticipantStates(
     _i1.Session session,
-    List<_i11.MatchChatParticipantState> matchChatParticipantState, {
+    List<_i12.MatchChatParticipantState> matchChatParticipantState, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatParticipantState.any((e) => e.id == null)) {
@@ -2326,9 +2359,9 @@ class PlayerDataDetachRepository {
     var $matchChatParticipantState = matchChatParticipantState
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i11.MatchChatParticipantState>(
+    await session.db.update<_i12.MatchChatParticipantState>(
       $matchChatParticipantState,
-      columns: [_i11.MatchChatParticipantState.t.playerDataId],
+      columns: [_i12.MatchChatParticipantState.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2340,7 +2373,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> pushNotificationTokens(
     _i1.Session session,
-    List<_i12.PlayerPushNotificationToken> playerPushNotificationToken, {
+    List<_i13.PlayerPushNotificationToken> playerPushNotificationToken, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPushNotificationToken.any((e) => e.id == null)) {
@@ -2350,9 +2383,9 @@ class PlayerDataDetachRepository {
     var $playerPushNotificationToken = playerPushNotificationToken
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i12.PlayerPushNotificationToken>(
+    await session.db.update<_i13.PlayerPushNotificationToken>(
       $playerPushNotificationToken,
-      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      columns: [_i13.PlayerPushNotificationToken.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2364,7 +2397,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> manualInputLocations(
     _i1.Session session,
-    List<_i13.ManualInputLocation> manualInputLocation, {
+    List<_i14.ManualInputLocation> manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.any((e) => e.id == null)) {
@@ -2374,9 +2407,9 @@ class PlayerDataDetachRepository {
     var $manualInputLocation = manualInputLocation
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i13.ManualInputLocation>(
+    await session.db.update<_i14.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i13.ManualInputLocation.t.playerDataId],
+      columns: [_i14.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2388,7 +2421,7 @@ class PlayerDataDetachRepository {
   /// the related record.
   Future<void> perfomances(
     _i1.Session session,
-    List<_i15.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
+    List<_i16.PlayerPerfomanceInMatch> playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.any((e) => e.id == null)) {
@@ -2398,9 +2431,9 @@ class PlayerDataDetachRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch
         .map((e) => e.copyWith(playerDataId: null))
         .toList();
-    await session.db.update<_i15.PlayerPerfomanceInMatch>(
+    await session.db.update<_i16.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i16.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2438,7 +2471,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> matchEntries(
     _i1.Session session,
-    _i5.PlayerInMatch playerInMatch, {
+    _i6.PlayerInMatch playerInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerInMatch.id == null) {
@@ -2446,9 +2479,9 @@ class PlayerDataDetachRowRepository {
     }
 
     var $playerInMatch = playerInMatch.copyWith(playerId: null);
-    await session.db.updateRow<_i5.PlayerInMatch>(
+    await session.db.updateRow<_i6.PlayerInMatch>(
       $playerInMatch,
-      columns: [_i5.PlayerInMatch.t.playerId],
+      columns: [_i6.PlayerInMatch.t.playerId],
       transaction: transaction,
     );
   }
@@ -2460,7 +2493,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> posts(
     _i1.Session session,
-    _i6.Post post, {
+    _i7.Post post, {
     _i1.Transaction? transaction,
   }) async {
     if (post.id == null) {
@@ -2468,9 +2501,9 @@ class PlayerDataDetachRowRepository {
     }
 
     var $post = post.copyWith(authorId: null);
-    await session.db.updateRow<_i6.Post>(
+    await session.db.updateRow<_i7.Post>(
       $post,
-      columns: [_i6.Post.t.authorId],
+      columns: [_i7.Post.t.authorId],
       transaction: transaction,
     );
   }
@@ -2482,7 +2515,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> currentHosting(
     _i1.Session session,
-    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i9.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -2492,9 +2525,9 @@ class PlayerDataDetachRowRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
       playerDataId: null,
     );
-    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+    await session.db.updateRow<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
-      columns: [_i8.MatchSchedulePairingAttempt.t.playerDataId],
+      columns: [_i9.MatchSchedulePairingAttempt.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2506,7 +2539,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> subscriptions(
     _i1.Session session,
-    _i9.MatchSubscription matchSubscription, {
+    _i10.MatchSubscription matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.id == null) {
@@ -2514,9 +2547,9 @@ class PlayerDataDetachRowRepository {
     }
 
     var $matchSubscription = matchSubscription.copyWith(playerDataId: null);
-    await session.db.updateRow<_i9.MatchSubscription>(
+    await session.db.updateRow<_i10.MatchSubscription>(
       $matchSubscription,
-      columns: [_i9.MatchSubscription.t.playerDataId],
+      columns: [_i10.MatchSubscription.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2528,7 +2561,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> notPlayedMarkedSchedules(
     _i1.Session session,
-    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i9.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -2538,10 +2571,10 @@ class PlayerDataDetachRowRepository {
     var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
       notPlayedMarkedByPlayerDataId: null,
     );
-    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+    await session.db.updateRow<_i9.MatchSchedulePairingAttempt>(
       $matchSchedulePairingAttempt,
       columns: [
-        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+        _i9.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
       ],
       transaction: transaction,
     );
@@ -2554,7 +2587,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> chatMessages(
     _i1.Session session,
-    _i10.MatchChatMessage matchChatMessage, {
+    _i11.MatchChatMessage matchChatMessage, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.id == null) {
@@ -2562,9 +2595,9 @@ class PlayerDataDetachRowRepository {
     }
 
     var $matchChatMessage = matchChatMessage.copyWith(playerDataId: null);
-    await session.db.updateRow<_i10.MatchChatMessage>(
+    await session.db.updateRow<_i11.MatchChatMessage>(
       $matchChatMessage,
-      columns: [_i10.MatchChatMessage.t.playerDataId],
+      columns: [_i11.MatchChatMessage.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2576,7 +2609,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> chatParticipantStates(
     _i1.Session session,
-    _i11.MatchChatParticipantState matchChatParticipantState, {
+    _i12.MatchChatParticipantState matchChatParticipantState, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatParticipantState.id == null) {
@@ -2586,9 +2619,9 @@ class PlayerDataDetachRowRepository {
     var $matchChatParticipantState = matchChatParticipantState.copyWith(
       playerDataId: null,
     );
-    await session.db.updateRow<_i11.MatchChatParticipantState>(
+    await session.db.updateRow<_i12.MatchChatParticipantState>(
       $matchChatParticipantState,
-      columns: [_i11.MatchChatParticipantState.t.playerDataId],
+      columns: [_i12.MatchChatParticipantState.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2600,7 +2633,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> pushNotificationTokens(
     _i1.Session session,
-    _i12.PlayerPushNotificationToken playerPushNotificationToken, {
+    _i13.PlayerPushNotificationToken playerPushNotificationToken, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPushNotificationToken.id == null) {
@@ -2610,9 +2643,9 @@ class PlayerDataDetachRowRepository {
     var $playerPushNotificationToken = playerPushNotificationToken.copyWith(
       playerDataId: null,
     );
-    await session.db.updateRow<_i12.PlayerPushNotificationToken>(
+    await session.db.updateRow<_i13.PlayerPushNotificationToken>(
       $playerPushNotificationToken,
-      columns: [_i12.PlayerPushNotificationToken.t.playerDataId],
+      columns: [_i13.PlayerPushNotificationToken.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2624,7 +2657,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> manualInputLocations(
     _i1.Session session,
-    _i13.ManualInputLocation manualInputLocation, {
+    _i14.ManualInputLocation manualInputLocation, {
     _i1.Transaction? transaction,
   }) async {
     if (manualInputLocation.id == null) {
@@ -2632,9 +2665,9 @@ class PlayerDataDetachRowRepository {
     }
 
     var $manualInputLocation = manualInputLocation.copyWith(playerDataId: null);
-    await session.db.updateRow<_i13.ManualInputLocation>(
+    await session.db.updateRow<_i14.ManualInputLocation>(
       $manualInputLocation,
-      columns: [_i13.ManualInputLocation.t.playerDataId],
+      columns: [_i14.ManualInputLocation.t.playerDataId],
       transaction: transaction,
     );
   }
@@ -2646,7 +2679,7 @@ class PlayerDataDetachRowRepository {
   /// the related record.
   Future<void> perfomances(
     _i1.Session session,
-    _i15.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
+    _i16.PlayerPerfomanceInMatch playerPerfomanceInMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playerPerfomanceInMatch.id == null) {
@@ -2656,9 +2689,9 @@ class PlayerDataDetachRowRepository {
     var $playerPerfomanceInMatch = playerPerfomanceInMatch.copyWith(
       playerDataId: null,
     );
-    await session.db.updateRow<_i15.PlayerPerfomanceInMatch>(
+    await session.db.updateRow<_i16.PlayerPerfomanceInMatch>(
       $playerPerfomanceInMatch,
-      columns: [_i15.PlayerPerfomanceInMatch.t.playerDataId],
+      columns: [_i16.PlayerPerfomanceInMatch.t.playerDataId],
       transaction: transaction,
     );
   }

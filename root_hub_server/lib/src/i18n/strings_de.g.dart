@@ -36,6 +36,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsErrorsDe errors = _TranslationsErrorsDe._(_root);
 	@override late final _TranslationsFallbackDe fallback = _TranslationsFallbackDe._(_root);
 	@override late final _TranslationsSystemMessagesDe systemMessages = _TranslationsSystemMessagesDe._(_root);
+	@override late final _TranslationsPushNotificationsDe pushNotifications = _TranslationsPushNotificationsDe._(_root);
 	@override late final _TranslationsLabelsDe labels = _TranslationsLabelsDe._(_root);
 }
 
@@ -227,6 +228,18 @@ class _TranslationsSystemMessagesDe extends TranslationsSystemMessagesEn {
 	@override String removedPlayerFromTable({required Object hostDisplayName, required Object targetDisplayName}) => '${hostDisplayName} removed ${targetDisplayName} from the table';
 }
 
+// Path: pushNotifications
+class _TranslationsPushNotificationsDe extends TranslationsPushNotificationsEn {
+	_TranslationsPushNotificationsDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsPushNotificationsCommonDe common = _TranslationsPushNotificationsCommonDe._(_root);
+	@override late final _TranslationsPushNotificationsMatchChatDe matchChat = _TranslationsPushNotificationsMatchChatDe._(_root);
+	@override late final _TranslationsPushNotificationsNearbyMatchDe nearbyMatch = _TranslationsPushNotificationsNearbyMatchDe._(_root);
+}
+
 // Path: labels
 class _TranslationsLabelsDe extends TranslationsLabelsEn {
 	_TranslationsLabelsDe._(TranslationsDe root) : this._root = root, super.internal(root);
@@ -238,4 +251,42 @@ class _TranslationsLabelsDe extends TranslationsLabelsEn {
 	@override String get lastName => 'Last name';
 	@override String get groupPhoto => 'Group photo';
 	@override String get boardPhoto => 'Board photo';
+}
+
+// Path: pushNotifications.common
+class _TranslationsPushNotificationsCommonDe extends TranslationsPushNotificationsCommonEn {
+	_TranslationsPushNotificationsCommonDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get genericSender => 'Ein Spieler';
+}
+
+// Path: pushNotifications.matchChat
+class _TranslationsPushNotificationsMatchChatDe extends TranslationsPushNotificationsMatchChatEn {
+	_TranslationsPushNotificationsMatchChatDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get newMessageInMatchChatTitle => 'Neue Nachricht im Tisch-Chat';
+	@override String newMessageInMatchTitle({required Object matchTitle}) => 'Neue Nachricht in ${matchTitle}';
+	@override String senderMessagePreview({required Object senderDisplayName, required Object messagePreview}) => '${senderDisplayName}: ${messagePreview}';
+	@override String senderSentImage({required Object senderDisplayName}) => '${senderDisplayName} hat ein Bild gesendet';
+	@override String senderSentMessage({required Object senderDisplayName}) => '${senderDisplayName} hat eine neue Nachricht gesendet';
+}
+
+// Path: pushNotifications.nearbyMatch
+class _TranslationsPushNotificationsNearbyMatchDe extends TranslationsPushNotificationsNearbyMatchEn {
+	_TranslationsPushNotificationsNearbyMatchDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get newTableNearYouTitle => 'Neuer Tisch in deiner Nähe';
+	@override String tableScheduledAtLocation({required Object matchTitle, required Object locationName}) => '${matchTitle} bei ${locationName}';
+	@override String tableScheduledNearby({required Object matchTitle}) => '${matchTitle} wurde gerade in deiner Nähe geplant';
+	@override String newTableScheduledNearLocation({required Object locationName}) => 'Ein neuer Tisch wurde in der Nähe von ${locationName} geplant';
+	@override String get newTableScheduledInSearchArea => 'Ein neuer Tisch wurde in deinem Suchbereich geplant';
 }

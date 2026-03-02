@@ -10,6 +10,7 @@ import 'package:root_hub_flutter/src/global_providers/server_supported_translati
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const _preferredLocaleKey = 'preferred_locale';
 const _deviceLocalePreferenceValue = 'device';
@@ -28,6 +29,7 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
     required this.isUpdatingDisplayName,
     required this.isUpdatingLocation,
     required this.isUpdatingFaction,
+    required this.isUpdatingPreferredLanguage,
     super.key,
   });
 
@@ -43,6 +45,7 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
   final bool isUpdatingDisplayName;
   final bool isUpdatingLocation;
   final bool isUpdatingFaction;
+  final bool isUpdatingPreferredLanguage;
 
   String _localeLabel(AppLocale locale) {
     return switch (locale) {
@@ -66,6 +69,82 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
       return localeValue.languageCode;
     }
     return '${localeValue.languageCode}-$countryCode';
+  }
+
+  Future<void> _applySpecificLocaleSelection(
+    BuildContext context,
+    WidgetRef ref, {
+    required BuildContext sheetContext,
+    required AppLocale locale,
+    required SharedPreferences sharedPreferences,
+  }) async {
+    await sharedPreferences.setString(
+      _preferredLocaleKey,
+      _localeRaw(locale),
+    );
+    await LocaleSettings.setLocale(locale);
+    if (!sheetContext.mounted) {
+      return;
+    }
+    Navigator.of(sheetContext).pop();
+    await _syncPreferredLanguageWithServer(
+      context,
+      ref,
+      locale: locale,
+    );
+  }
+
+  Future<void> _applyDeviceLocaleSelection(
+    BuildContext context,
+    WidgetRef ref, {
+    required BuildContext sheetContext,
+    required SharedPreferences sharedPreferences,
+  }) async {
+    await sharedPreferences.setString(
+      _preferredLocaleKey,
+      _deviceLocalePreferenceValue,
+    );
+    await LocaleSettings.useDeviceLocale();
+    final resolvedLocale = LocaleSettings.currentLocale;
+    if (!sheetContext.mounted) {
+      return;
+    }
+    Navigator.of(sheetContext).pop();
+    await _syncPreferredLanguageWithServer(
+      context,
+      ref,
+      locale: resolvedLocale,
+    );
+  }
+
+  Future<void> _syncPreferredLanguageWithServer(
+    BuildContext context,
+    WidgetRef ref, {
+    required AppLocale locale,
+  }) async {
+    final error = await ref
+        .read(dashboardProfileProvider.notifier)
+        .updatePreferredLanguage(
+          preferredLanguage: locale.toPreferredLanguage,
+          requestLanguage: locale.toServerSupportedTranslation,
+        );
+    if (error == null || !context.mounted) {
+      return;
+    }
+
+    final normalizedDescription = error.description.trim();
+    final message = normalizedDescription.isNotEmpty
+        ? normalizedDescription
+        : error.title;
+    if (message.trim().isEmpty) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   @override
@@ -265,15 +344,12 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                           .useDeviceLanguage,
                                     ),
                                     onTap: () async {
-                                      await sharedPreferences.setString(
-                                        _preferredLocaleKey,
-                                        _deviceLocalePreferenceValue,
+                                      await _applyDeviceLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        sharedPreferences: sharedPreferences,
                                       );
-                                      await LocaleSettings.useDeviceLocale();
-                                      if (!sheetContext.mounted) {
-                                        return;
-                                      }
-                                      Navigator.of(sheetContext).pop();
                                     },
                                   ),
                                   ListTile(
@@ -284,17 +360,13 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                           .english,
                                     ),
                                     onTap: () async {
-                                      await sharedPreferences.setString(
-                                        _preferredLocaleKey,
-                                        _localeRaw(AppLocale.en),
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.en,
+                                        sharedPreferences: sharedPreferences,
                                       );
-                                      await LocaleSettings.setLocale(
-                                        AppLocale.en,
-                                      );
-                                      if (!sheetContext.mounted) {
-                                        return;
-                                      }
-                                      Navigator.of(sheetContext).pop();
                                     },
                                   ),
                                   ListTile(
@@ -305,17 +377,13 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                           .portugueseBrazil,
                                     ),
                                     onTap: () async {
-                                      await sharedPreferences.setString(
-                                        _preferredLocaleKey,
-                                        _localeRaw(AppLocale.ptBr),
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.ptBr,
+                                        sharedPreferences: sharedPreferences,
                                       );
-                                      await LocaleSettings.setLocale(
-                                        AppLocale.ptBr,
-                                      );
-                                      if (!sheetContext.mounted) {
-                                        return;
-                                      }
-                                      Navigator.of(sheetContext).pop();
                                     },
                                   ),
                                   ListTile(
@@ -326,17 +394,13 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                           .spanish,
                                     ),
                                     onTap: () async {
-                                      await sharedPreferences.setString(
-                                        _preferredLocaleKey,
-                                        _localeRaw(AppLocale.es),
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.es,
+                                        sharedPreferences: sharedPreferences,
                                       );
-                                      await LocaleSettings.setLocale(
-                                        AppLocale.es,
-                                      );
-                                      if (!sheetContext.mounted) {
-                                        return;
-                                      }
-                                      Navigator.of(sheetContext).pop();
                                     },
                                   ),
                                   ListTile(
@@ -347,17 +411,13 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                           .french,
                                     ),
                                     onTap: () async {
-                                      await sharedPreferences.setString(
-                                        _preferredLocaleKey,
-                                        _localeRaw(AppLocale.fr),
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.fr,
+                                        sharedPreferences: sharedPreferences,
                                       );
-                                      await LocaleSettings.setLocale(
-                                        AppLocale.fr,
-                                      );
-                                      if (!sheetContext.mounted) {
-                                        return;
-                                      }
-                                      Navigator.of(sheetContext).pop();
                                     },
                                   ),
                                   ListTile(
@@ -368,17 +428,13 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                                           .german,
                                     ),
                                     onTap: () async {
-                                      await sharedPreferences.setString(
-                                        _preferredLocaleKey,
-                                        _localeRaw(AppLocale.de),
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.de,
+                                        sharedPreferences: sharedPreferences,
                                       );
-                                      await LocaleSettings.setLocale(
-                                        AppLocale.de,
-                                      );
-                                      if (!sheetContext.mounted) {
-                                        return;
-                                      }
-                                      Navigator.of(sheetContext).pop();
                                     },
                                   ),
                                 ],
@@ -387,7 +443,7 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                           },
                         );
                       },
-                      isLoading: false,
+                      isLoading: isUpdatingPreferredLanguage,
                     ),
                     SizedBox(height: 2),
                     SizedBox(

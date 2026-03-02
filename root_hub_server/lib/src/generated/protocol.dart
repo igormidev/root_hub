@@ -1438,6 +1438,13 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String',
         ),
         _i2.ColumnDefinition(
+          name: 'preferredLanguage',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Language',
+          columnDefault: '\'english\'::text',
+        ),
+        _i2.ColumnDefinition(
           name: 'currentLocationId',
           columnType: _i2.ColumnType.bigint,
           isNullable: true,

@@ -91,15 +91,17 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
 
     final runId = _nextRunId();
     _setStateIfCurrent(runId, const AuthFlowState.loading());
+    final requestLanguage = ref.read(serverSupportedTranslationProvider);
 
     final createPlayerResult = await ref
         .read(clientProvider)
         .createPlayerData
         .v1(
-          language: ref.read(serverSupportedTranslationProvider),
+          language: requestLanguage,
           displayName: displayName,
           favoriteFaction: selectedFaction,
           currentLocation: currentLocation,
+          preferredLanguage: requestLanguage.toPreferredLanguage,
         )
         .toResult;
 

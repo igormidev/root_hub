@@ -159,6 +159,25 @@
     "leftTheTable": "{displayName} left the table",
     "removedPlayerFromTable": "{hostDisplayName} removed {targetDisplayName} from the table"
   },
+  "pushNotifications": {
+    "common": {
+      "genericSender": "Um jogador"
+    },
+    "matchChat": {
+      "newMessageInMatchChatTitle": "Nova mensagem no chat da mesa",
+      "newMessageInMatchTitle": "Nova mensagem em {matchTitle}",
+      "senderMessagePreview": "{senderDisplayName}: {messagePreview}",
+      "senderSentImage": "{senderDisplayName} enviou uma imagem",
+      "senderSentMessage": "{senderDisplayName} enviou uma nova mensagem"
+    },
+    "nearbyMatch": {
+      "newTableNearYouTitle": "Nova mesa perto de você",
+      "tableScheduledAtLocation": "{matchTitle} em {locationName}",
+      "tableScheduledNearby": "{matchTitle} acabou de ser marcada perto de você",
+      "newTableScheduledNearLocation": "Uma nova mesa foi marcada perto de {locationName}",
+      "newTableScheduledInSearchArea": "Uma nova mesa foi marcada na sua área de busca"
+    }
+  },
   "labels": {
     "firstName": "First name",
     "lastName": "Last name",

@@ -8,10 +8,12 @@ final appLocaleProvider = StreamProvider<AppLocale>((ref) {
 
 final serverSupportedTranslationProvider = Provider<ServerSupportedTranslation>(
   (ref) {
-    final appLocale = ref.watch(appLocaleProvider).maybeWhen<AppLocale?>(
-      data: (locale) => locale,
-      orElse: () => null,
-    );
+    final appLocale = ref
+        .watch(appLocaleProvider)
+        .maybeWhen<AppLocale?>(
+          data: (locale) => locale,
+          orElse: () => null,
+        );
     return (appLocale ?? LocaleSettings.currentLocale)
         .toServerSupportedTranslation;
   },
@@ -24,5 +26,24 @@ extension AppLocaleServerSupportedTranslationX on AppLocale {
     AppLocale.es => ServerSupportedTranslation.spanish,
     AppLocale.fr => ServerSupportedTranslation.french,
     AppLocale.de => ServerSupportedTranslation.german,
+  };
+
+  Language get toPreferredLanguage => switch (this) {
+    AppLocale.en => Language.english,
+    AppLocale.ptBr => Language.portugueseBrazil,
+    AppLocale.es => Language.spanish,
+    AppLocale.fr => Language.french,
+    AppLocale.de => Language.german,
+  };
+}
+
+extension ServerSupportedTranslationPreferredLanguageX
+    on ServerSupportedTranslation {
+  Language get toPreferredLanguage => switch (this) {
+    ServerSupportedTranslation.english => Language.english,
+    ServerSupportedTranslation.portugueseBrazil => Language.portugueseBrazil,
+    ServerSupportedTranslation.spanish => Language.spanish,
+    ServerSupportedTranslation.french => Language.french,
+    ServerSupportedTranslation.german => Language.german,
   };
 }

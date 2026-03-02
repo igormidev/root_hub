@@ -1,5 +1,7 @@
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/notifications/push_notification_dispatch_service.dart';
+import 'package:root_hub_server/src/notifications/push_notification_recipient_language_resolver.dart';
 import 'package:serverpod/serverpod.dart';
 
 class NearbyMatchPushNotificationService {
@@ -46,32 +48,60 @@ class NearbyMatchPushNotificationService {
       return;
     }
 
-    final dispatchStats =
-        await PushNotificationDispatchService.sendToPlayerDataIds(
+    final recipientsByTranslation =
+        await PushNotificationRecipientLanguageResolver.groupPlayerDataIds(
           session,
           playerDataIds: nearbyPlayerIds,
-          title: _buildTitle(),
-          body: _buildBody(
-            matchTitle: matchSchedule.title,
-            locationName: coordinates.locationName,
-          ),
-          data: <String, String>{
-            'type': 'nearby_match_schedule_created',
-            'scheduledMatchId': '$scheduledMatchId',
-          },
         );
+    if (recipientsByTranslation.isEmpty) {
+      return;
+    }
 
-    if (dispatchStats.attemptedCount == 0) {
+    var attemptedCount = 0;
+    var successCount = 0;
+    var failureCount = 0;
+    var invalidatedTokenCount = 0;
+
+    for (final entry in recipientsByTranslation.entries) {
+      final translation = entry.key;
+      final translatedRecipients = entry.value;
+      if (translatedRecipients.isEmpty) {
+        continue;
+      }
+
+      final dispatchStats =
+          await PushNotificationDispatchService.sendToPlayerDataIds(
+            session,
+            playerDataIds: translatedRecipients,
+            title: _buildTitle(language: translation),
+            body: _buildBody(
+              language: translation,
+              matchTitle: matchSchedule.title,
+              locationName: coordinates.locationName,
+            ),
+            data: <String, String>{
+              'type': 'nearby_match_schedule_created',
+              'scheduledMatchId': '$scheduledMatchId',
+            },
+          );
+
+      attemptedCount += dispatchStats.attemptedCount;
+      successCount += dispatchStats.successCount;
+      failureCount += dispatchStats.failureCount;
+      invalidatedTokenCount += dispatchStats.invalidatedTokenCount;
+    }
+
+    if (attemptedCount == 0) {
       return;
     }
 
     session.log(
       '[PushNotifications] Nearby match dispatch completed. '
       'scheduledMatchId=$scheduledMatchId '
-      'attempted=${dispatchStats.attemptedCount} '
-      'success=${dispatchStats.successCount} '
-      'failed=${dispatchStats.failureCount} '
-      'invalidated=${dispatchStats.invalidatedTokenCount}',
+      'attempted=$attemptedCount '
+      'success=$successCount '
+      'failed=$failureCount '
+      'invalidated=$invalidatedTokenCount',
       level: LogLevel.info,
     );
   }
@@ -167,30 +197,42 @@ class NearbyMatchPushNotificationService {
     return playerIds;
   }
 
-  static String _buildTitle() {
-    return 'New table near you';
+  static String _buildTitle({
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+    return t.pushNotifications.nearbyMatch.newTableNearYouTitle;
   }
 
   static String _buildBody({
+    required ServerSupportedTranslation language,
     required String matchTitle,
     required String locationName,
   }) {
+    final t = ServerTranslations.of(language);
     final normalizedTitle = matchTitle.trim();
     final normalizedLocation = locationName.trim();
 
     if (normalizedTitle.isNotEmpty && normalizedLocation.isNotEmpty) {
-      return '$normalizedTitle at $normalizedLocation';
+      return t.pushNotifications.nearbyMatch.tableScheduledAtLocation(
+        matchTitle: normalizedTitle,
+        locationName: normalizedLocation,
+      );
     }
 
     if (normalizedTitle.isNotEmpty) {
-      return '$normalizedTitle was just scheduled nearby';
+      return t.pushNotifications.nearbyMatch.tableScheduledNearby(
+        matchTitle: normalizedTitle,
+      );
     }
 
     if (normalizedLocation.isNotEmpty) {
-      return 'A new table was scheduled near $normalizedLocation';
+      return t.pushNotifications.nearbyMatch.newTableScheduledNearLocation(
+        locationName: normalizedLocation,
+      );
     }
 
-    return 'A new table was scheduled in your search area';
+    return t.pushNotifications.nearbyMatch.newTableScheduledInSearchArea;
   }
 }
 

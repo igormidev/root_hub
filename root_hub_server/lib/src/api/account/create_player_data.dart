@@ -14,6 +14,7 @@ class CreatePlayerData extends Endpoint {
     required String displayName,
     required Faction favoriteFaction,
     required GeoLocation currentLocation,
+    required Language preferredLanguage,
   }) async {
     final t = ServerTranslations.of(language);
 
@@ -74,6 +75,7 @@ class CreatePlayerData extends Endpoint {
               PlayerData(
                 authUserId: authUserId,
                 displayName: normalizedDisplayName,
+                preferredLanguage: preferredLanguage,
                 favoriteFaction: favoriteFaction,
               ),
               transaction: transaction,

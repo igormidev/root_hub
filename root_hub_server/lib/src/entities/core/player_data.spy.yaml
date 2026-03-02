@@ -4,6 +4,7 @@ fields:
   ### The [AuthUser] this profile belongs to
   authUser: module:serverpod_auth_core:AuthUser?, relation(onDelete=Cascade)
   displayName: String
+  preferredLanguage: Language, default=english
   currentLocationId: int?
   currentLocation: GeoLocation?, relation(name=player_current_geo_location, field=currentLocationId)
   favoriteFaction: Faction

@@ -14,6 +14,7 @@ class UpdatePlayerData extends Endpoint {
     String? displayName,
     Faction? favoriteFaction,
     GeoLocation? currentLocation,
+    Language? preferredLanguage,
   }) async {
     final t = ServerTranslations.of(language);
 
@@ -36,7 +37,8 @@ class UpdatePlayerData extends Endpoint {
 
         if (displayName == null &&
             favoriteFaction == null &&
-            currentLocation == null) {
+            currentLocation == null &&
+            preferredLanguage == null) {
           throw RootHubEndpointError.invalidRequest(
             language: language,
             description: t.errors.noProfileFieldsProvided,
@@ -61,6 +63,8 @@ class UpdatePlayerData extends Endpoint {
             normalizedDisplayName ?? existingAccount.displayName;
         final nextFavoriteFaction =
             favoriteFaction ?? existingAccount.favoriteFaction;
+        final nextPreferredLanguage =
+            preferredLanguage ?? existingAccount.preferredLanguage;
 
         final updatedAccount = await session.db.transaction((
           transaction,
@@ -69,7 +73,8 @@ class UpdatePlayerData extends Endpoint {
 
           final shouldUpdateMainFields =
               nextDisplayName != existingAccount.displayName ||
-              nextFavoriteFaction != existingAccount.favoriteFaction;
+              nextFavoriteFaction != existingAccount.favoriteFaction ||
+              nextPreferredLanguage != existingAccount.preferredLanguage;
 
           if (shouldUpdateMainFields) {
             accountToPersist = await PlayerData.db.updateRow(
@@ -77,6 +82,7 @@ class UpdatePlayerData extends Endpoint {
               existingAccount.copyWith(
                 displayName: nextDisplayName,
                 favoriteFaction: nextFavoriteFaction,
+                preferredLanguage: nextPreferredLanguage,
               ),
               transaction: transaction,
             );

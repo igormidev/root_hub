@@ -382,6 +382,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               isUpdatingDisplayName: profileState.isUpdatingDisplayName,
               isUpdatingLocation: profileState.isUpdatingLocation,
               isUpdatingFaction: profileState.isUpdatingFaction,
+              isUpdatingPreferredLanguage:
+                  profileState.isUpdatingPreferredLanguage,
             ),
       body: Stack(
         children: [

@@ -305,6 +305,42 @@ class DashboardProfileNotifier extends Notifier<DashboardProfileState> {
     );
   }
 
+  Future<RootHubException?> updatePreferredLanguage({
+    required Language preferredLanguage,
+    required ServerSupportedTranslation requestLanguage,
+  }) async {
+    state = state.copyWith(
+      isUpdatingPreferredLanguage: true,
+      lastError: null,
+    );
+
+    final result = await ref
+        .read(clientProvider)
+        .updatePlayerData
+        .v1(
+          language: requestLanguage,
+          preferredLanguage: preferredLanguage,
+        )
+        .toResult;
+
+    return result.fold(
+      (updatedPlayerData) {
+        _setPlayerData(updatedPlayerData);
+        state = state.copyWith(
+          isUpdatingPreferredLanguage: false,
+        );
+        return null;
+      },
+      (error) {
+        state = state.copyWith(
+          isUpdatingPreferredLanguage: false,
+          lastError: error,
+        );
+        return error;
+      },
+    );
+  }
+
   void clearError() {
     state = state.copyWith(lastError: null);
   }

@@ -57,9 +57,9 @@ import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i42;
 import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
     as _i43;
-import 'dart:typed_data' as _i44;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
-    as _i45;
+    as _i44;
+import 'dart:typed_data' as _i45;
 import 'package:root_hub_server/src/generated/entities/match_making/match_schedule_not_played_reason.dart'
     as _i46;
 import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
@@ -341,6 +341,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<_i43.GeoLocation>(),
               nullable: false,
             ),
+            'preferredLanguage': _i1.ParameterDescription(
+              name: 'preferredLanguage',
+              type: _i1.getType<_i44.Language>(),
+              nullable: false,
+            ),
           },
           call:
               (
@@ -353,6 +358,7 @@ class Endpoints extends _i1.EndpointDispatch {
                     displayName: params['displayName'],
                     favoriteFaction: params['favoriteFaction'],
                     currentLocation: params['currentLocation'],
+                    preferredLanguage: params['preferredLanguage'],
                   ),
         ),
       },
@@ -446,6 +452,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<_i43.GeoLocation?>(),
               nullable: true,
             ),
+            'preferredLanguage': _i1.ParameterDescription(
+              name: 'preferredLanguage',
+              type: _i1.getType<_i44.Language?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -458,6 +469,7 @@ class Endpoints extends _i1.EndpointDispatch {
                     displayName: params['displayName'],
                     favoriteFaction: params['favoriteFaction'],
                     currentLocation: params['currentLocation'],
+                    preferredLanguage: params['preferredLanguage'],
                   ),
         ),
       },
@@ -481,7 +493,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'image': _i1.ParameterDescription(
               name: 'image',
-              type: _i1.getType<_i44.ByteData>(),
+              type: _i1.getType<_i45.ByteData>(),
               nullable: false,
             ),
           },
@@ -569,7 +581,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'commentLanguage': _i1.ParameterDescription(
               name: 'commentLanguage',
-              type: _i1.getType<_i45.Language>(),
+              type: _i1.getType<_i44.Language>(),
               nullable: false,
             ),
           },
@@ -612,7 +624,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'postLanguage': _i1.ParameterDescription(
               name: 'postLanguage',
-              type: _i1.getType<_i45.Language>(),
+              type: _i1.getType<_i44.Language>(),
               nullable: false,
             ),
             'attachedMatchId': _i1.ParameterDescription(
@@ -692,7 +704,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'postLanguage': _i1.ParameterDescription(
               name: 'postLanguage',
-              type: _i1.getType<_i45.Language?>(),
+              type: _i1.getType<_i44.Language?>(),
               nullable: true,
             ),
           },
@@ -937,7 +949,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'groupPhotoBytes': _i1.ParameterDescription(
               name: 'groupPhotoBytes',
-              type: _i1.getType<_i44.ByteData>(),
+              type: _i1.getType<_i45.ByteData>(),
               nullable: false,
             ),
             'groupPhotoFileName': _i1.ParameterDescription(
@@ -952,7 +964,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'boardPhotoBytes': _i1.ParameterDescription(
               name: 'boardPhotoBytes',
-              type: _i1.getType<_i44.ByteData>(),
+              type: _i1.getType<_i45.ByteData>(),
               nullable: false,
             ),
             'boardPhotoFileName': _i1.ParameterDescription(
@@ -1172,7 +1184,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'imageBytes': _i1.ParameterDescription(
               name: 'imageBytes',
-              type: _i1.getType<_i44.ByteData?>(),
+              type: _i1.getType<_i45.ByteData?>(),
               nullable: true,
             ),
             'imageFileName': _i1.ParameterDescription(

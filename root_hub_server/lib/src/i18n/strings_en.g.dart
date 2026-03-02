@@ -33,6 +33,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsErrorsEn errors = TranslationsErrorsEn.internal(_root);
 	late final TranslationsFallbackEn fallback = TranslationsFallbackEn.internal(_root);
 	late final TranslationsSystemMessagesEn systemMessages = TranslationsSystemMessagesEn.internal(_root);
+	late final TranslationsPushNotificationsEn pushNotifications = TranslationsPushNotificationsEn.internal(_root);
 	late final TranslationsLabelsEn labels = TranslationsLabelsEn.internal(_root);
 }
 
@@ -549,6 +550,18 @@ class TranslationsSystemMessagesEn {
 	String removedPlayerFromTable({required Object hostDisplayName, required Object targetDisplayName}) => '${hostDisplayName} removed ${targetDisplayName} from the table';
 }
 
+// Path: pushNotifications
+class TranslationsPushNotificationsEn {
+	TranslationsPushNotificationsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsPushNotificationsCommonEn common = TranslationsPushNotificationsCommonEn.internal(_root);
+	late final TranslationsPushNotificationsMatchChatEn matchChat = TranslationsPushNotificationsMatchChatEn.internal(_root);
+	late final TranslationsPushNotificationsNearbyMatchEn nearbyMatch = TranslationsPushNotificationsNearbyMatchEn.internal(_root);
+}
+
 // Path: labels
 class TranslationsLabelsEn {
 	TranslationsLabelsEn.internal(this._root);
@@ -568,4 +581,64 @@ class TranslationsLabelsEn {
 
 	/// en: 'Board photo'
 	String get boardPhoto => 'Board photo';
+}
+
+// Path: pushNotifications.common
+class TranslationsPushNotificationsCommonEn {
+	TranslationsPushNotificationsCommonEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'A player'
+	String get genericSender => 'A player';
+}
+
+// Path: pushNotifications.matchChat
+class TranslationsPushNotificationsMatchChatEn {
+	TranslationsPushNotificationsMatchChatEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'New message in match chat'
+	String get newMessageInMatchChatTitle => 'New message in match chat';
+
+	/// en: 'New message in {matchTitle}'
+	String newMessageInMatchTitle({required Object matchTitle}) => 'New message in ${matchTitle}';
+
+	/// en: '{senderDisplayName}: {messagePreview}'
+	String senderMessagePreview({required Object senderDisplayName, required Object messagePreview}) => '${senderDisplayName}: ${messagePreview}';
+
+	/// en: '{senderDisplayName} sent an image'
+	String senderSentImage({required Object senderDisplayName}) => '${senderDisplayName} sent an image';
+
+	/// en: '{senderDisplayName} sent a new message'
+	String senderSentMessage({required Object senderDisplayName}) => '${senderDisplayName} sent a new message';
+}
+
+// Path: pushNotifications.nearbyMatch
+class TranslationsPushNotificationsNearbyMatchEn {
+	TranslationsPushNotificationsNearbyMatchEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'New table near you'
+	String get newTableNearYouTitle => 'New table near you';
+
+	/// en: '{matchTitle} at {locationName}'
+	String tableScheduledAtLocation({required Object matchTitle, required Object locationName}) => '${matchTitle} at ${locationName}';
+
+	/// en: '{matchTitle} was just scheduled nearby'
+	String tableScheduledNearby({required Object matchTitle}) => '${matchTitle} was just scheduled nearby';
+
+	/// en: 'A new table was scheduled near {locationName}'
+	String newTableScheduledNearLocation({required Object locationName}) => 'A new table was scheduled near ${locationName}';
+
+	/// en: 'A new table was scheduled in your search area'
+	String get newTableScheduledInSearchArea => 'A new table was scheduled in your search area';
 }

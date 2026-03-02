@@ -23,3 +23,14 @@ extension ServerSupportedTranslationX on ServerSupportedTranslation {
     ServerSupportedTranslation.german => AppLocale.de,
   };
 }
+
+extension LanguageToServerSupportedTranslationX on Language {
+  ServerSupportedTranslation get toServerSupportedTranslation => switch (this) {
+    Language.english => ServerSupportedTranslation.english,
+    Language.portugueseBrazil => ServerSupportedTranslation.portugueseBrazil,
+    Language.spanish => ServerSupportedTranslation.spanish,
+    Language.french => ServerSupportedTranslation.french,
+    Language.german => ServerSupportedTranslation.german,
+    _ => ServerSupportedTranslation.english,
+  };
+}
