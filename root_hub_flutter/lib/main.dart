@@ -11,6 +11,7 @@ import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/go_router_providers.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
+import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -94,12 +95,28 @@ class MyApp extends StatelessWidget {
 }
 
 /// Inner widget that consumes the router provider.
-/// This needs to be a separate ConsumerWidget so it can access the ProviderScope.
-class _RouterApp extends ConsumerWidget {
+/// This needs to be a separate consumer widget so it can access the ProviderScope.
+class _RouterApp extends ConsumerStatefulWidget {
   const _RouterApp();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_RouterApp> createState() => _RouterAppState();
+}
+
+class _RouterAppState extends ConsumerState<_RouterApp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      ref.read(deepLinkProvider.notifier).ensureInitialized();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(

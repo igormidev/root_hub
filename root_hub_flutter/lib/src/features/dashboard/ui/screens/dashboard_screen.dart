@@ -24,6 +24,7 @@ import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_state.dart';
+import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -254,6 +255,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final selectedTab = ref.watch(dashboardProvider).selectedTab;
+    final pendingSharedMatchId = ref.watch(
+      deepLinkProvider.select((value) => value.pendingMatchId),
+    );
     final unreadActivityCount = ref.watch(
       activityProvider.select((value) => value.unreadMessagesCount),
     );
@@ -271,6 +275,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         playerData?.displayName ??
         t.dashboard.ui_screens_dashboard_screen.rootPlayer;
     final viewPadding = MediaQuery.viewPaddingOf(context);
+
+    if (pendingSharedMatchId != null && selectedTab != DashboardTab.match) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        ref.read(dashboardProvider.notifier).changeTab(DashboardTab.match);
+      });
+    }
 
     if (playerData != null &&
         !profileState.hasLoadedProfileImage &&

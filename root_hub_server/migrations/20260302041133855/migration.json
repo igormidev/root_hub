@@ -1,0 +1,100 @@
+{
+  "__className__": "serverpod.DatabaseMigration",
+  "actions": [
+    {
+      "__className__": "serverpod.DatabaseMigrationAction",
+      "type": "alterTable",
+      "alterTable": {
+        "__className__": "serverpod.TableMigration",
+        "name": "match_schedule_pairing_attempt",
+        "schema": "public",
+        "addColumns": [
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "status",
+            "columnType": 0,
+            "isNullable": false,
+            "columnDefault": "'scheduled'::text",
+            "dartType": "protocol:MatchScheduleStatus"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "notPlayedReason",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "protocol:MatchScheduleNotPlayedReason?"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "notPlayedReasonDetails",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "notPlayedMarkedByPlayerDataId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "deleteColumns": [],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [
+          {
+            "__className__": "serverpod.ForeignKeyDefinition",
+            "constraintName": "match_schedule_pairing_attempt_fk_2",
+            "columns": [
+              "playerDataId"
+            ],
+            "referenceTable": "player_data",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "__className__": "serverpod.ForeignKeyDefinition",
+            "constraintName": "match_schedule_pairing_attempt_fk_0",
+            "columns": [
+              "notPlayedMarkedByPlayerDataId"
+            ],
+            "referenceTable": "player_data",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "__className__": "serverpod.ForeignKeyDefinition",
+            "constraintName": "match_schedule_pairing_attempt_fk_1",
+            "columns": [
+              "locationId"
+            ],
+            "referenceTable": "locations",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "deleteForeignKeys": [
+          "match_schedule_pairing_attempt_fk_0",
+          "match_schedule_pairing_attempt_fk_1"
+        ],
+        "warnings": []
+      }
+    }
+  ],
+  "warnings": [],
+  "migrationApiVersion": 1
+}

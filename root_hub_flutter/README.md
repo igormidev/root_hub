@@ -17,10 +17,11 @@ With Root Hub, users can:
 4. If profile data is missing, user completes onboarding (favorite faction + display name + mandatory device location coordinates and match search ratio).
 5. User sees the list of available match schedules.
 6. User subscribes to an existing match or creates a new one.
-7. User tracks subscribed tables and chat activity in the Activity tab.
-8. User can interact socially via posts/comments.
-9. After a game, user registers the result and factions.
-10. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
+7. Shared match links (`/join`) are resolved through app deep links (`roothub://join?matchId=...`) and the app opens the subscribe flow after authentication.
+8. User tracks subscribed tables and chat activity in the Activity tab.
+9. User can interact socially via posts/comments.
+10. After a game, user registers the result and factions.
+11. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
 
 ## Authentication (Serverpod)
 Authentication is handled with **Serverpod auth session management**:
@@ -58,6 +59,7 @@ root_hub_flutter/
 │       │   ├── session/
 │       │   ├── account/
 │       │   ├── auth_flow/
+│       │   ├── deep_link/
 │       │   ├── onboarding/
 │       │   ├── activity/
 │       │   └── dashboard/
@@ -172,6 +174,8 @@ These rules are intentionally strict to force component separation and predictab
 - `flutter_animate`: onboarding and authentication motion design.
 - `slang` + `slang_flutter`: JSON localization + generated typed translation accessors.
 - `firebase_core` + `firebase_messaging`: push token sync and background push reception.
+- `app_links`: custom deep-link intake (`roothub://join?matchId=...`) for shared match links.
+- `share_plus`: native share dialog support for match invite links.
 
 ## Typography
 The app theme uses Google Fonts to avoid generic defaults:

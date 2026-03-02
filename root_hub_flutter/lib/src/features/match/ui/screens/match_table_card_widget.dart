@@ -19,6 +19,7 @@ class MatchTableCardWidget extends StatelessWidget {
     required this.onOpenLocationInfo,
     required this.onOpenJoinTable,
     required this.onOpenSubscribedChat,
+    required this.onShareTable,
     super.key,
   });
 
@@ -37,6 +38,7 @@ class MatchTableCardWidget extends StatelessWidget {
   })
   onOpenJoinTable;
   final void Function(int tableId, String tableTitle) onOpenSubscribedChat;
+  final Future<void> Function(MatchSchedulePairingAttempt table) onShareTable;
 
   @override
   Widget build(BuildContext context) {
@@ -242,22 +244,44 @@ class MatchTableCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Tooltip(
-                message: t
-                    .match
-                    .ui_screens_match_table_card_widget
-                    .openFullLocationDetails,
-                child: IconButton(
-                  visualDensity: VisualDensity.compact,
-                  onPressed: () {
-                    onOpenLocationInfo(location);
-                  },
-                  icon: Icon(
-                    Icons.info_outline_rounded,
-                    color: colorScheme.primary,
-                    size: 20,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Tooltip(
+                    message: t
+                        .match
+                        .ui_screens_match_table_card_widget
+                        .shareThisMatch,
+                    child: IconButton(
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () async {
+                        await onShareTable(table);
+                      },
+                      icon: Icon(
+                        Icons.share_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
+                    ),
                   ),
-                ),
+                  Tooltip(
+                    message: t
+                        .match
+                        .ui_screens_match_table_card_widget
+                        .openFullLocationDetails,
+                    child: IconButton(
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () {
+                        onOpenLocationInfo(location);
+                      },
+                      icon: Icon(
+                        Icons.info_outline_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

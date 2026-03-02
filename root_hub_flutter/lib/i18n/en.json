@@ -356,6 +356,9 @@
       "invalidPhoneNumberFormat": "Invalid phone number format.",
       "unableToOpenTheLinkRightNow": "Unable to open the link right now.",
       "invalidUrlFormat": "Invalid URL format.",
+      "unableToOpenSharedMatch": "Unable to open this shared match right now.",
+      "unableToShareThisMatch": "Unable to share this match right now.",
+      "shareMessage": "Root Hub connects players to play ROOT in person at public places. Join this match at {location} at {hour} on {day}: {link}",
       "close": "Close",
       "manualLocationNotes": "Manual location notes",
       "phone": "Phone",
@@ -455,6 +458,7 @@
     "ui_screens_match_table_card_widget": {
       "subscribed": "Subscribed",
       "tapCardToOpenChat": "Tap card to open chat",
+      "shareThisMatch": "Share this match",
       "subscriptionsClosed": "Subscriptions closed",
       "openFullLocationDetails": "Open full location details",
       "places": "places",
@@ -469,6 +473,17 @@
       "player": "player",
       "players": "players",
       "subscriptionTooltip": "{subscribedPlayersCount} {playersWord} subscribed and {remainingSeats} {placesWord} remaining to close the table."
+    },
+    "ui_sheets_match_share_sheet": {
+      "shareThisMatch": "Share this match",
+      "copyOrShareToInvitePlayers": "Copy the link or share directly to invite players.",
+      "copyLink": "Copy link",
+      "copied": "Copied",
+      "whatsApp": "WhatsApp",
+      "messenger": "Messenger",
+      "share": "Share",
+      "copyFailed": "Unable to copy the link.",
+      "unableToOpenWhatsApp": "Unable to open WhatsApp right now."
     },
     "ui_screens_match_location_header_image_widget": {
       "locationDetails": "Location Details"

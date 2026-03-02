@@ -138,6 +138,7 @@ class _TranslationsMatchFr extends TranslationsMatchEn {
 	@override late final _TranslationsMatchUiScreensMatchParticipantCardWidgetFr ui_screens_match_participant_card_widget = _TranslationsMatchUiScreensMatchParticipantCardWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchJoinSheetContentWidgetFr ui_screens_match_join_sheet_content_widget = _TranslationsMatchUiScreensMatchJoinSheetContentWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchTableCardWidgetFr ui_screens_match_table_card_widget = _TranslationsMatchUiScreensMatchTableCardWidgetFr._(_root);
+	@override late final _TranslationsMatchUiSheetsMatchShareSheetFr ui_sheets_match_share_sheet = _TranslationsMatchUiSheetsMatchShareSheetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetFr ui_screens_match_location_header_image_widget = _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetFr ui_screens_match_create_table_location_no_recent_locations_widget = _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchChatScreenFr ui_screens_match_chat_screen = _TranslationsMatchUiScreensMatchChatScreenFr._(_root);
@@ -708,6 +709,9 @@ class _TranslationsMatchUiScreensMatchScreenFr extends TranslationsMatchUiScreen
 	@override String get invalidPhoneNumberFormat => 'Format de numéro de téléphone invalide.';
 	@override String get unableToOpenTheLinkRightNow => 'Impossible d\'ouvrir le lien pour le moment.';
 	@override String get invalidUrlFormat => 'Format d\'URL invalide.';
+	@override String get unableToOpenSharedMatch => 'Impossible d\'ouvrir cette partie partagée pour le moment.';
+	@override String get unableToShareThisMatch => 'Impossible de partager cette partie pour le moment.';
+	@override String shareMessage({required Object location, required Object hour, required Object day, required Object link}) => 'Root Hub connecte des joueurs pour jouer à ROOT en présentiel dans des lieux publics. Rejoignez cette partie à ${location}, à ${hour}, le ${day} : ${link}';
 	@override String get close => 'Fermer';
 	@override String get manualLocationNotes => 'Notes de localisation manuelles';
 	@override String get phone => 'Téléphone';
@@ -891,6 +895,7 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetFr extends TranslationsMatc
 	// Translations
 	@override String get subscribed => 'Abonné';
 	@override String get tapCardToOpenChat => 'Appuyez sur la carte pour ouvrir le chat';
+	@override String get shareThisMatch => 'Partager la partie';
 	@override String get subscriptionsClosed => 'Inscriptions clôturées';
 	@override String get openFullLocationDetails => 'Ouvrir les détails complets de l\'emplacement';
 	@override String get places => 'places';
@@ -905,6 +910,24 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetFr extends TranslationsMatc
 	@override String get player => 'joueur';
 	@override String get players => 'joueurs';
 	@override String subscriptionTooltip({required Object subscribedPlayersCount, required Object playersWord, required Object remainingSeats, required Object placesWord}) => '${subscribedPlayersCount} ${playersWord} inscrits et ${remainingSeats} ${placesWord} restantes pour fermer la partie.';
+}
+
+// Path: match.ui_sheets_match_share_sheet
+class _TranslationsMatchUiSheetsMatchShareSheetFr extends TranslationsMatchUiSheetsMatchShareSheetEn {
+	_TranslationsMatchUiSheetsMatchShareSheetFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get shareThisMatch => 'Partager cette partie';
+	@override String get copyOrShareToInvitePlayers => 'Copiez le lien ou partagez-le pour inviter des joueurs.';
+	@override String get copyLink => 'Copier le lien';
+	@override String get copied => 'Copié';
+	@override String get whatsApp => 'WhatsApp';
+	@override String get messenger => 'Messenger';
+	@override String get share => 'Partager';
+	@override String get copyFailed => 'Impossible de copier le lien.';
+	@override String get unableToOpenWhatsApp => 'Impossible d\'ouvrir WhatsApp pour le moment.';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget

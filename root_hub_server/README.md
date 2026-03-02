@@ -56,6 +56,9 @@ root_hub_server/
 └── pubspec.yaml
 ```
 
+Related project:
+- `../root_hub_match_redirect_web`: Jaspr web app used for shared match links.
+
 ## Runtime Entry Points
 - `bin/main.dart`: boot entrypoint that calls `run(args)` from `lib/server.dart`.
 - `lib/server.dart`:
@@ -63,6 +66,7 @@ root_hub_server/
   - configures auth services (`JwtConfigFromPasswords`, `EmailIdpConfigFromPasswords`).
   - registers web routes:
     - `/` and `/index.html` => built-with-serverpod page.
+    - `/join` => Jaspr share redirect app (build output from `../root_hub_match_redirect_web/build/jaspr`).
     - `/app/assets/assets/config.json` => app config JSON consumed by Flutter.
     - `/app/**` => Flutter web app (if built) or fallback page.
 
@@ -239,6 +243,13 @@ dart run custom_lint
 serverpod generate
 dart analyze
 dart bin/main.dart --apply-migrations
+```
+
+Build the shared-link Jaspr app:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_match_redirect_web
+dart pub global run jaspr_cli:jaspr build
 ```
 
 ## Integration with Other Workspace Packages

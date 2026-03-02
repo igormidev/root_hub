@@ -142,6 +142,7 @@ class TranslationsMatchEn {
 	late final TranslationsMatchUiScreensMatchParticipantCardWidgetEn ui_screens_match_participant_card_widget = TranslationsMatchUiScreensMatchParticipantCardWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn ui_screens_match_join_sheet_content_widget = TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchTableCardWidgetEn ui_screens_match_table_card_widget = TranslationsMatchUiScreensMatchTableCardWidgetEn.internal(_root);
+	late final TranslationsMatchUiSheetsMatchShareSheetEn ui_sheets_match_share_sheet = TranslationsMatchUiSheetsMatchShareSheetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn ui_screens_match_location_header_image_widget = TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEn ui_screens_match_create_table_location_no_recent_locations_widget = TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchChatScreenEn ui_screens_match_chat_screen = TranslationsMatchUiScreensMatchChatScreenEn.internal(_root);
@@ -1274,6 +1275,15 @@ class TranslationsMatchUiScreensMatchScreenEn {
 	/// en: 'Invalid URL format.'
 	String get invalidUrlFormat => 'Invalid URL format.';
 
+	/// en: 'Unable to open this shared match right now.'
+	String get unableToOpenSharedMatch => 'Unable to open this shared match right now.';
+
+	/// en: 'Unable to share this match right now.'
+	String get unableToShareThisMatch => 'Unable to share this match right now.';
+
+	/// en: 'Root Hub connects players to play ROOT in person at public places. Join this match at {location} at {hour} on {day}: {link}'
+	String shareMessage({required Object location, required Object hour, required Object day, required Object link}) => 'Root Hub connects players to play ROOT in person at public places. Join this match at ${location} at ${hour} on ${day}: ${link}';
+
 	/// en: 'Close'
 	String get close => 'Close';
 
@@ -1607,6 +1617,9 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 	/// en: 'Tap card to open chat'
 	String get tapCardToOpenChat => 'Tap card to open chat';
 
+	/// en: 'Share this match'
+	String get shareThisMatch => 'Share this match';
+
 	/// en: 'Subscriptions closed'
 	String get subscriptionsClosed => 'Subscriptions closed';
 
@@ -1648,6 +1661,42 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 
 	/// en: '{subscribedPlayersCount} {playersWord} subscribed and {remainingSeats} {placesWord} remaining to close the table.'
 	String subscriptionTooltip({required Object subscribedPlayersCount, required Object playersWord, required Object remainingSeats, required Object placesWord}) => '${subscribedPlayersCount} ${playersWord} subscribed and ${remainingSeats} ${placesWord} remaining to close the table.';
+}
+
+// Path: match.ui_sheets_match_share_sheet
+class TranslationsMatchUiSheetsMatchShareSheetEn {
+	TranslationsMatchUiSheetsMatchShareSheetEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Share this match'
+	String get shareThisMatch => 'Share this match';
+
+	/// en: 'Copy the link or share directly to invite players.'
+	String get copyOrShareToInvitePlayers => 'Copy the link or share directly to invite players.';
+
+	/// en: 'Copy link'
+	String get copyLink => 'Copy link';
+
+	/// en: 'Copied'
+	String get copied => 'Copied';
+
+	/// en: 'WhatsApp'
+	String get whatsApp => 'WhatsApp';
+
+	/// en: 'Messenger'
+	String get messenger => 'Messenger';
+
+	/// en: 'Share'
+	String get share => 'Share';
+
+	/// en: 'Unable to copy the link.'
+	String get copyFailed => 'Unable to copy the link.';
+
+	/// en: 'Unable to open WhatsApp right now.'
+	String get unableToOpenWhatsApp => 'Unable to open WhatsApp right now.';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget

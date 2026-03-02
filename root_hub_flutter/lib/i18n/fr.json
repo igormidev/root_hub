@@ -339,6 +339,9 @@
       "invalidPhoneNumberFormat": "Format de numéro de téléphone invalide.",
       "unableToOpenTheLinkRightNow": "Impossible d'ouvrir le lien pour le moment.",
       "invalidUrlFormat": "Format d'URL invalide.",
+      "unableToOpenSharedMatch": "Impossible d'ouvrir cette partie partagée pour le moment.",
+      "unableToShareThisMatch": "Impossible de partager cette partie pour le moment.",
+      "shareMessage": "Root Hub connecte des joueurs pour jouer à ROOT en présentiel dans des lieux publics. Rejoignez cette partie à {location}, à {hour}, le {day} : {link}",
       "close": "Fermer",
       "manualLocationNotes": "Notes de localisation manuelles",
       "phone": "Téléphone",
@@ -438,6 +441,7 @@
     "ui_screens_match_table_card_widget": {
       "subscribed": "Abonné",
       "tapCardToOpenChat": "Appuyez sur la carte pour ouvrir le chat",
+      "shareThisMatch": "Partager la partie",
       "subscriptionsClosed": "Inscriptions clôturées",
       "openFullLocationDetails": "Ouvrir les détails complets de l'emplacement",
       "places": "places",
@@ -452,6 +456,17 @@
       "player": "joueur",
       "players": "joueurs",
       "subscriptionTooltip": "{subscribedPlayersCount} {playersWord} inscrits et {remainingSeats} {placesWord} restantes pour fermer la partie."
+    },
+    "ui_sheets_match_share_sheet": {
+      "shareThisMatch": "Partager cette partie",
+      "copyOrShareToInvitePlayers": "Copiez le lien ou partagez-le pour inviter des joueurs.",
+      "copyLink": "Copier le lien",
+      "copied": "Copié",
+      "whatsApp": "WhatsApp",
+      "messenger": "Messenger",
+      "share": "Partager",
+      "copyFailed": "Impossible de copier le lien.",
+      "unableToOpenWhatsApp": "Impossible d'ouvrir WhatsApp pour le moment."
     },
     "ui_screens_match_location_header_image_widget": {
       "locationDetails": "Détails de l'emplacement"

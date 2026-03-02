@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
+import 'package:root_hub_flutter/src/core/match_share/match_share_link_builder.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_actionable_info_row_widget.dart';
@@ -22,9 +23,12 @@ import 'package:root_hub_flutter/src/features/match/ui/screens/match_location_me
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_nearby_header_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_no_matches_state_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_card_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_share_sheet.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_sheet.dart';
+import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
+import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
@@ -42,6 +46,7 @@ class MatchScreen extends ConsumerStatefulWidget {
 class _MatchScreenState extends ConsumerState<MatchScreen> {
   late DateTime _currentTime;
   Timer? _countdownTimer;
+  int? _openingDeepLinkedMatchId;
 
   @override
   void initState() {
@@ -96,8 +101,22 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       registerMatchState.pendingMatches,
       currentPlayerId: currentPlayer?.id,
     );
+    final pendingDeepLinkedMatchId = ref.watch(
+      deepLinkProvider.select((value) => value.pendingMatchId),
+    );
     final reportablePendingMatchesCount = reportablePendingMatchIds.length;
     final hasPendingMatches = pendingSubscribedMatchIds.isNotEmpty;
+
+    if (pendingDeepLinkedMatchId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        unawaited(
+          _handlePendingDeepLinkedMatch(pendingDeepLinkedMatchId),
+        );
+      });
+    }
 
     return Stack(
       children: [
@@ -170,6 +189,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           dashboardMatchChatPathForMatch(tableId),
                           extra: tableTitle,
                         );
+                      },
+                      onShareTable: (tableToShare) async {
+                        await _openShareSheet(tableToShare);
                       },
                     ),
                   ),
@@ -295,6 +317,130 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       ref.read(matchTablesProvider.notifier).refresh(),
       ref.read(registerMatchProvider.notifier).refreshPendingMatchesOverview(),
     ]);
+  }
+
+  Future<void> _handlePendingDeepLinkedMatch(int matchId) async {
+    if (_openingDeepLinkedMatchId == matchId) {
+      return;
+    }
+
+    final currentPlayer = ref
+        .read(authFlowProvider)
+        .maybeWhen(
+          authenticated: (playerData) => playerData,
+          orElse: () => null,
+        );
+    if (currentPlayer == null || matchId <= 0) {
+      return;
+    }
+
+    _openingDeepLinkedMatchId = matchId;
+
+    try {
+      final tableInfo = await ref
+          .read(matchTablesProvider.notifier)
+          .getTableDetails(matchId);
+      if (!mounted) {
+        return;
+      }
+
+      await _openJoinTableBottomSheet(
+        context,
+        tableId: matchId,
+        fallbackTable: tableInfo.matchSchedule,
+        currentPlayer: currentPlayer,
+      );
+
+      if (!mounted) {
+        return;
+      }
+      ref.read(deepLinkProvider.notifier).consumePendingMatchId(matchId);
+    } on RootHubException catch (error) {
+      if (!mounted) {
+        return;
+      }
+      await showErrorDialog(
+        context,
+        title: error.title,
+        description: error.description,
+      );
+      if (!mounted) {
+        return;
+      }
+      ref.read(deepLinkProvider.notifier).consumePendingMatchId(matchId);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.match.ui_screens_match_screen.unableToOpenSharedMatch,
+          ),
+        ),
+      );
+      ref.read(deepLinkProvider.notifier).consumePendingMatchId(matchId);
+    } finally {
+      _openingDeepLinkedMatchId = null;
+    }
+  }
+
+  Future<void> _openShareSheet(MatchSchedulePairingAttempt table) async {
+    final tableId = table.id;
+    if (tableId == null || tableId <= 0) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.match.ui_screens_match_screen.unableToShareThisMatch,
+          ),
+        ),
+      );
+      return;
+    }
+
+    final localizations = MaterialLocalizations.of(context);
+    final attemptedAtLocal = table.attemptedAt.toLocal();
+    final dayLabel = localizations.formatMediumDate(attemptedAtLocal);
+    final hourLabel = localizations.formatTimeOfDay(
+      TimeOfDay.fromDateTime(attemptedAtLocal),
+    );
+
+    final location = table.location;
+    final locationName =
+        location?.googlePlaceLocation?.name ??
+        location?.manualInputLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
+
+    final shareLink = MatchShareLinkBuilder.buildLandingUri(
+      serverHost: ref.read(clientProvider).host,
+      matchId: tableId,
+      location: locationName,
+      day: dayLabel,
+      hour: hourLabel,
+    );
+
+    final shareMessage = t.match.ui_screens_match_screen.shareMessage(
+      location: locationName,
+      hour: hourLabel,
+      day: dayLabel,
+      link: shareLink.toString(),
+    );
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: false,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return MatchShareSheet(
+          rawLink: shareLink,
+          shareMessage: shareMessage,
+        );
+      },
+    );
   }
 
   Set<int> _buildReportablePendingMatchIds(

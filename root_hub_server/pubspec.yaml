@@ -46,3 +46,12 @@ serverpod:
       posix: |
         cd ../root_hub_flutter
         flutter build web --base-href /app/ --wasm --output ../root_hub_server/web/app
+
+    # Build the lightweight Jaspr page used for shared match links.
+    match_redirect_web_build:
+      windows: >-
+        cd /D ..\root_hub_match_redirect_web
+        && dart pub global run jaspr_cli:jaspr build
+      posix: |
+        cd ../root_hub_match_redirect_web
+        dart pub global run jaspr_cli:jaspr build
