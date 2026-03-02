@@ -119,9 +119,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                           label: Text(
                             t.match.ui_screens_match_table_card_widget.share,
                             style: Theme.of(context).textTheme.labelLarge
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                ),
+                                ?.copyWith(fontWeight: FontWeight.w900),
                           ),
                         ),
                       ),
