@@ -5,12 +5,10 @@ class _StatsScope {
   const _StatsScope({
     this.whereClause,
     this.parameters,
-    this.requiresAnonymousJoin = false,
   });
 
   final String? whereClause;
   final QueryParameters? parameters;
-  final bool requiresAnonymousJoin;
 }
 
 class FactionStatsSummary {
@@ -232,14 +230,12 @@ mixin StatsAggregationMixin {
     return _loadStatsSummary(
       session,
       _StatsScope(
-        whereClause:
-            '(ppm."playerDataId" = @playerDataId OR ap."createdByPlayerId" = @playerDataId)',
+        whereClause: 'ppm."playerDataId" = @playerDataId',
         parameters: QueryParameters.named(
           <String, Object?>{
             'playerDataId': playerDataId,
           },
         ),
-        requiresAnonymousJoin: true,
       ),
     );
   }
@@ -329,14 +325,7 @@ mixin StatsAggregationMixin {
   }
 
   String _buildFromClause(_StatsScope scope) {
-    final fromBuffer = StringBuffer('FROM player_perfomance_in_match ppm');
-    if (scope.requiresAnonymousJoin) {
-      fromBuffer.write(
-        ' LEFT JOIN anonymous_player ap ON ap.id = ppm."anonymousPlayerId"',
-      );
-    }
-
-    return fromBuffer.toString();
+    return 'FROM player_perfomance_in_match ppm';
   }
 
   String _buildWhereClause(_StatsScope scope) {

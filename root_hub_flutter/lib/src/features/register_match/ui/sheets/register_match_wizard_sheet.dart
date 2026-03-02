@@ -10,6 +10,7 @@ import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_search_registered_player_sheet.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 part 'register_match_wizard_bottom_actions_section.dart';
 part 'register_match_wizard_error_section.dart';
@@ -70,7 +71,7 @@ class _RegisterMatchWizardSheetState
   String? _winnerParticipantKey;
   _WinnerType? _winnerType;
   DateTime? _matchStartedAt;
-  Duration _matchEstimatedDuration = const Duration(hours: 1);
+  Duration _matchEstimatedDuration = Duration(hours: 1);
   bool _hasEditedMatchDuration = false;
   _ProofImageSelection? _groupPhoto;
   _ProofImageSelection? _boardPhoto;
@@ -83,8 +84,14 @@ class _RegisterMatchWizardSheetState
     if (scheduleId == null || scheduleId <= 0) {
       _tableDetailsFuture = Future<MatchScheduleInfo>.error(
         RootHubException(
-          title: 'Invalid match',
-          description: 'Unable to load this match report flow.',
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .invalidMatch,
+          description: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .unableToLoadThisMatchReportFlow2,
         ),
       );
     } else {
@@ -123,7 +130,7 @@ class _RegisterMatchWizardSheetState
           future: _tableDetailsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const _RegisterMatchWizardLoadingSection();
+              return _RegisterMatchWizardLoadingSection();
             }
 
             if (snapshot.hasError) {
@@ -137,8 +144,14 @@ class _RegisterMatchWizardSheetState
             if (tableInfo == null) {
               return _RegisterMatchWizardErrorSection(
                 error: RootHubException(
-                  title: 'Match not found',
-                  description: 'Unable to load this match report flow.',
+                  title: t
+                      .register_match
+                      .ui_sheets_register_match_wizard_sheet
+                      .matchNotFound,
+                  description: t
+                      .register_match
+                      .ui_sheets_register_match_wizard_sheet
+                      .unableToLoadThisMatchReportFlow,
                 ),
               );
             }
@@ -209,11 +222,11 @@ class _RegisterMatchWizardSheetState
                     );
                   },
                   onDecreaseDuration:
-                      _matchEstimatedDuration > const Duration(minutes: 15)
+                      _matchEstimatedDuration > Duration(minutes: 15)
                       ? _decreaseMatchEstimatedDuration
                       : null,
                   onIncreaseDuration:
-                      _matchEstimatedDuration < const Duration(hours: 8)
+                      _matchEstimatedDuration < Duration(hours: 8)
                       ? _increaseMatchEstimatedDuration
                       : null,
                 ),
@@ -260,14 +273,14 @@ class _RegisterMatchWizardSheetState
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 280),
+                      duration: Duration(milliseconds: 280),
                       switchInCurve: Curves.easeOutCubic,
                       switchOutCurve: Curves.easeInCubic,
                       transitionBuilder: (child, animation) {
                         final offsetAnimation = Tween<Offset>(
-                          begin: const Offset(0.05, 0),
+                          begin: Offset(0.05, 0),
                           end: Offset.zero,
                         ).animate(animation);
                         return FadeTransition(
@@ -374,14 +387,14 @@ class _RegisterMatchWizardSheetState
   void _decreaseMatchEstimatedDuration() {
     setState(() {
       _hasEditedMatchDuration = true;
-      _matchEstimatedDuration -= const Duration(minutes: 15);
+      _matchEstimatedDuration -= Duration(minutes: 15);
     });
   }
 
   void _increaseMatchEstimatedDuration() {
     setState(() {
       _hasEditedMatchDuration = true;
-      _matchEstimatedDuration += const Duration(minutes: 15);
+      _matchEstimatedDuration += Duration(minutes: 15);
     });
   }
 
@@ -422,12 +435,12 @@ class _RegisterMatchWizardSheetState
       scheduledStart.year,
       scheduledStart.month,
       scheduledStart.day,
-    ).subtract(const Duration(days: 1));
+    ).subtract(Duration(days: 1));
     final oneDayAheadFromSchedule = DateTime(
       scheduledStart.year,
       scheduledStart.month,
       scheduledStart.day,
-    ).add(const Duration(days: 1));
+    ).add(Duration(days: 1));
     DateTime lastDate = oneDayAheadFromSchedule.isAfter(today)
         ? today
         : oneDayAheadFromSchedule;
@@ -466,8 +479,14 @@ class _RegisterMatchWizardSheetState
     if (selectedDateTime.isAfter(DateTime.now())) {
       await showErrorDialog(
         context,
-        title: 'Invalid match registration',
-        description: 'Match start time cannot be in the future.',
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .invalidMatchRegistration3,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .matchStartTimeCannotBeInTheFuture3,
       );
       return;
     }
@@ -501,8 +520,14 @@ class _RegisterMatchWizardSheetState
     if (selectedDateTime.isAfter(DateTime.now())) {
       await showErrorDialog(
         context,
-        title: 'Invalid match registration',
-        description: 'Match start time cannot be in the future.',
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .invalidMatchRegistration2,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .matchStartTimeCannotBeInTheFuture2,
       );
       return;
     }
@@ -519,7 +544,7 @@ class _RegisterMatchWizardSheetState
 
     _didInitializeParticipants = true;
     _matchStartedAt = tableInfo.matchSchedule.attemptedAt.toLocal();
-    _matchEstimatedDuration = const Duration(hours: 1);
+    _matchEstimatedDuration = Duration(hours: 1);
     _hasEditedMatchDuration = false;
 
     for (final playerSnapshot in tableInfo.players) {
@@ -578,18 +603,33 @@ class _RegisterMatchWizardSheetState
         context: context,
         builder: (dialogContext) {
           return AlertDialog(
-            title: const Text('Keep default duration?'),
-            content: const Text(
-              'You kept the default duration of 1 hour. Do you want to continue with it?',
+            title: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .keepDefaultDuration,
+            ),
+            content: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .youKeptTheDefaultDurationOf1HourDoYouWantToContinueWithIt,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: const Text('Edit'),
+                child: Text(
+                  t.register_match.ui_sheets_register_match_wizard_sheet.edit,
+                ),
               ),
               FilledButton(
                 onPressed: () => Navigator.of(dialogContext).pop(true),
-                child: const Text('Continue'),
+                child: Text(
+                  t
+                      .register_match
+                      .ui_sheets_register_match_wizard_sheet
+                      .continueButton,
+                ),
               ),
             ],
           );
@@ -612,9 +652,14 @@ class _RegisterMatchWizardSheetState
         final selectedCount = _selectedParticipants.length;
         if (selectedCount < 2) {
           return RootHubException(
-            title: 'Not enough players',
-            description:
-                'Select at least 2 participants (registered and/or anonymous) to continue.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .notEnoughPlayers,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectAtLeast2ParticipantsRegisteredAndOrAnonymousToContinue,
           );
         }
         return null;
@@ -623,9 +668,16 @@ class _RegisterMatchWizardSheetState
         for (final participant in selectedParticipants) {
           if (participant.faction == null) {
             return RootHubException(
-              title: 'Faction missing',
-              description:
-                  'Select a faction for ${participant.displayName} before continuing.',
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .factionMissing,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .selectFactionForParticipantBeforeContinuing(
+                    participantName: participant.displayName,
+                  ),
             );
           }
         }
@@ -635,9 +687,16 @@ class _RegisterMatchWizardSheetState
           final faction = participant.faction!;
           if (!uniqueFactions.add(faction)) {
             return RootHubException(
-              title: 'Invalid faction setup',
-              description:
-                  '${faction.displayName} was selected more than once. Each faction can only be selected once.',
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .invalidFactionSetup,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce(
+                    factionName: faction.displayName,
+                  ),
             );
           }
         }
@@ -646,8 +705,14 @@ class _RegisterMatchWizardSheetState
       case _RegisterMatchStep.winner:
         if (_winnerParticipantKey == null) {
           return RootHubException(
-            title: 'Winner missing',
-            description: 'Select the winner before continuing.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMissing3,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectTheWinnerBeforeContinuing2,
           );
         }
 
@@ -656,9 +721,14 @@ class _RegisterMatchWizardSheetState
         );
         if (!winnerStillSelected) {
           return RootHubException(
-            title: 'Winner missing',
-            description:
-                'The selected winner is no longer in the participant list.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMissing2,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .theSelectedWinnerIsNoLongerInTheParticipantList,
           );
         }
         return null;
@@ -667,14 +737,26 @@ class _RegisterMatchWizardSheetState
         final winnerType = _winnerType;
         if (winnerKey == null) {
           return RootHubException(
-            title: 'Winner missing',
-            description: 'Select the winner before continuing.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectTheWinnerBeforeContinuing,
           );
         }
         if (winnerType == null) {
           return RootHubException(
-            title: 'Winner method missing',
-            description: 'Select how the winner won before continuing.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMethodMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectHowTheWinnerWonBeforeContinuing,
           );
         }
 
@@ -695,7 +777,10 @@ class _RegisterMatchWizardSheetState
             final parsedPoints = int.tryParse(rawPoints);
             if (parsedPoints == null) {
               return RootHubException(
-                title: 'Points missing',
+                title: t
+                    .register_match
+                    .ui_sheets_register_match_wizard_sheet
+                    .pointsMissing,
                 description:
                     'Enter valid points for ${participant.displayName}, or mark failed dominance.',
               );
@@ -703,7 +788,10 @@ class _RegisterMatchWizardSheetState
 
             if (parsedPoints < 0 || parsedPoints > 29) {
               return RootHubException(
-                title: 'Invalid points',
+                title: t
+                    .register_match
+                    .ui_sheets_register_match_wizard_sheet
+                    .invalidPoints,
                 description:
                     '${participant.displayName} must have points between 0 and 29.',
               );
@@ -716,40 +804,76 @@ class _RegisterMatchWizardSheetState
         final matchStartedAt = _matchStartedAt;
         if (matchStartedAt == null) {
           return RootHubException(
-            title: 'Match start missing',
-            description: 'Select when this match started.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchStartMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .selectWhenThisMatchStarted,
           );
         }
         if (matchStartedAt.isAfter(DateTime.now())) {
           return RootHubException(
-            title: 'Invalid match registration',
-            description: 'Match start time cannot be in the future.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .invalidMatchRegistration,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchStartTimeCannotBeInTheFuture,
           );
         }
         if (_matchEstimatedDuration <= Duration.zero) {
           return RootHubException(
-            title: 'Invalid duration',
-            description: 'Match duration must be greater than zero.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .invalidDuration2,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchDurationMustBeGreaterThanZero,
           );
         }
-        if (_matchEstimatedDuration > const Duration(hours: 8)) {
+        if (_matchEstimatedDuration > Duration(hours: 8)) {
           return RootHubException(
-            title: 'Invalid duration',
-            description: 'Match duration must be at most 8 hours.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .invalidDuration,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .matchDurationMustBeAtMost8Hours,
           );
         }
         return null;
       case _RegisterMatchStep.socialProof:
         if (_groupPhoto == null) {
           return RootHubException(
-            title: 'Group photo required',
-            description: 'Add the group selfie before continuing.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .groupPhotoRequired,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .addTheGroupSelfieBeforeContinuing,
           );
         }
         if (_boardPhoto == null) {
           return RootHubException(
-            title: 'Board photo required',
-            description: 'Add the board photo before continuing.',
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .boardPhotoRequired,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .addTheBoardPhotoBeforeContinuing,
           );
         }
         return null;
@@ -782,8 +906,14 @@ class _RegisterMatchWizardSheetState
         boardPhoto == null) {
       await showErrorDialog(
         context,
-        title: 'Incomplete report',
-        description: 'Complete all report steps before submitting.',
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .incompleteReport,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .completeAllReportStepsBeforeSubmitting,
       );
       return;
     }
@@ -937,14 +1067,24 @@ class _RegisterMatchWizardSheetState
         context: context,
         builder: (dialogContext) {
           return AlertDialog(
-            title: const Text('Group selfie proof'),
-            content: const Text(
-              'Take a selfie with everyone at the table. If possible, include the board in the same photo.',
+            title: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .groupSelfieProof,
+            ),
+            content: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .takeASelfieWithEveryoneAtTheTableIfPossibleIncludeTheBoardInTheSamePhoto,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('Ok'),
+                child: Text(
+                  t.register_match.ui_sheets_register_match_wizard_sheet.ok,
+                ),
               ),
             ],
           );
@@ -973,9 +1113,14 @@ class _RegisterMatchWizardSheetState
 
       await showErrorDialog(
         context,
-        title: 'Unable to access camera or gallery',
-        description:
-            'Allow camera and photo permissions in system settings and try again.',
+        title: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .unableToAccessCameraOrGallery,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain,
       );
       return;
     }
@@ -992,8 +1137,12 @@ class _RegisterMatchWizardSheetState
     if (bytes.isEmpty) {
       await showErrorDialog(
         context,
-        title: 'Invalid image',
-        description: 'Selected image is empty. Choose another image.',
+        title:
+            t.register_match.ui_sheets_register_match_wizard_sheet.invalidImage,
+        description: t
+            .register_match
+            .ui_sheets_register_match_wizard_sheet
+            .selectedImageIsEmptyChooseAnotherImage,
       );
       return;
     }
@@ -1022,19 +1171,34 @@ class _RegisterMatchWizardSheetState
         context: context,
         builder: (dialogContext) {
           return CupertinoActionSheet(
-            title: const Text('Select source'),
+            title: Text(
+              t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .selectSource,
+            ),
             actions: [
               CupertinoActionSheetAction(
                 onPressed: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
                 },
-                child: const Text('Camera'),
+                child: Text(
+                  t
+                      .register_match
+                      .ui_sheets_register_match_wizard_sheet
+                      .camera2,
+                ),
               ),
               CupertinoActionSheetAction(
                 onPressed: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
                 },
-                child: const Text('Gallery'),
+                child: Text(
+                  t
+                      .register_match
+                      .ui_sheets_register_match_wizard_sheet
+                      .gallery2,
+                ),
               ),
             ],
             cancelButton: CupertinoActionSheetAction(
@@ -1042,7 +1206,9 @@ class _RegisterMatchWizardSheetState
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('Cancel'),
+              child: Text(
+                t.register_match.ui_sheets_register_match_wizard_sheet.cancel,
+              ),
             ),
           );
         },
@@ -1058,20 +1224,27 @@ class _RegisterMatchWizardSheetState
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_camera_rounded),
-                title: const Text('Camera'),
+                leading: Icon(Icons.photo_camera_rounded),
+                title: Text(
+                  t.register_match.ui_sheets_register_match_wizard_sheet.camera,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_rounded),
-                title: const Text('Gallery'),
+                leading: Icon(Icons.photo_library_rounded),
+                title: Text(
+                  t
+                      .register_match
+                      .ui_sheets_register_match_wizard_sheet
+                      .gallery,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
                 },
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
             ],
           ),
         );
@@ -1244,7 +1417,7 @@ enum _ParticipantScoreMode {
 }
 
 class _ProofImageSelection {
-  const _ProofImageSelection({
+  _ProofImageSelection({
     required this.bytes,
     required this.fileName,
     required this.contentType,

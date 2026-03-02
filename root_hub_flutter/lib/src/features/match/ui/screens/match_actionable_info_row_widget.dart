@@ -21,10 +21,10 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: 8),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+        padding: EdgeInsets.fromLTRB(10, 9, 10, 9),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: colorScheme.outlineVariant),
@@ -37,7 +37,7 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
               icon,
               color: colorScheme.primary,
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +48,7 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 1),
+                  SizedBox(height: 1),
                   Text(
                     value,
                     maxLines: 2,
@@ -69,7 +69,7 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
                   child: IconButton(
                     visualDensity: VisualDensity.compact,
                     onPressed: onCopyTap,
-                    icon: const Icon(Icons.copy_rounded),
+                    icon: Icon(Icons.copy_rounded),
                   ),
                 ),
                 Tooltip(
@@ -77,7 +77,7 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
                   child: IconButton(
                     visualDensity: VisualDensity.compact,
                     onPressed: onActionTap,
-                    icon: const Icon(Icons.open_in_new_rounded),
+                    icon: Icon(Icons.open_in_new_rounded),
                   ),
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_drag_handle_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchEditTableLoadingWidget extends StatelessWidget {
   const MatchEditTableLoadingWidget({super.key});
@@ -10,7 +11,7 @@ class MatchEditTableLoadingWidget extends StatelessWidget {
 
     return Column(
       children: [
-        const MatchEditTableDragHandleWidget(),
+        MatchEditTableDragHandleWidget(),
         Expanded(
           child: Center(
             child: Column(
@@ -24,9 +25,12 @@ class MatchEditTableLoadingWidget extends StatelessWidget {
                     color: colorScheme.primary,
                   ),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 Text(
-                  'Loading table details...',
+                  t
+                      .match
+                      .ui_sheets_match_edit_table_loading_widget
+                      .loadingTableDetails,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,

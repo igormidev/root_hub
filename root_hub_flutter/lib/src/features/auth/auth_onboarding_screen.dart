@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/design_system/faction_selector/faction_selection_grid_widget.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_onboarding_continue_button_widget.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_provider.dart';
@@ -39,7 +40,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child:
                   Text(
-                        'Choose Your Faction',
+                        t.auth.auth_onboarding_screen.chooseYourFaction,
                         style: GoogleFonts.cinzel(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -49,13 +50,20 @@ class AuthOnboardingScreen extends ConsumerWidget {
                       )
                       .animate()
                       .fadeIn(duration: 400.ms)
-                      .slideY(begin: -0.2, end: 0, duration: 400.ms),
+                      .slideY(
+                        begin: -0.2,
+                        end: 0,
+                        duration: 400.ms,
+                      ),
             ),
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Pick your favorite ROOT faction before entering the hub.',
+                t
+                    .auth
+                    .auth_onboarding_screen
+                    .pickYourFavoriteRootFactionBeforeEnteringTheHub,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,
@@ -70,7 +78,7 @@ class AuthOnboardingScreen extends ConsumerWidget {
                 children: [
                   FactionSelectionGridWidget(
                     selectedFaction: selectedFaction,
-                    bottomPadding: hasSelectedFaction ? 110 : 0,
+                    bottomPadding: hasSelectedFaction ? 110 : 20,
                     onFactionPressed: (faction) {
                       final notifier = ref.read(onboardingProvider.notifier);
                       if (selectedFaction == faction) {

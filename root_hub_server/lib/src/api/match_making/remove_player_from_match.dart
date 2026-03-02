@@ -1,5 +1,6 @@
 import 'package:root_hub_server/src/api/match_chat/send_system_chat_message.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -9,20 +10,25 @@ class RemovePlayerFromMatch extends Endpoint {
 
   Future<void> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
     required int playerDataId,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
         if (playerDataId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Player data id must be greater than zero.',
+            language: language,
+            description: t.errors.playerDataIdMustBeGreaterThanZero,
           );
         }
 
@@ -36,8 +42,9 @@ class RemovePlayerFromMatch extends Endpoint {
 
         if (hostPlayerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
@@ -48,20 +55,30 @@ class RemovePlayerFromMatch extends Endpoint {
 
         if (matchSchedule == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Table not found',
-            description: 'The selected table was not found.',
+            language: language,
+            title: t.errors.tableNotFoundTitle,
+            description: t.errors.selectedTableWasNotFound,
           );
         }
 
         if (matchSchedule.playerDataId != hostPlayerData.id) {
           throw RootHubEndpointError.accessDenied(
-            description: 'Only the host of the table can remove players.',
+            language: language,
+            description: t.errors.onlyHostCanRemovePlayers,
+          );
+        }
+
+        if (matchSchedule.status != MatchScheduleStatus.scheduled) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.onlyScheduledMatchesCanManagePlayers,
           );
         }
 
         if (playerDataId == hostPlayerData.id) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'You cannot remove yourself. Use leave table instead.',
+            language: language,
+            description: t.errors.youCannotRemoveYourself,
           );
         }
 
@@ -72,8 +89,9 @@ class RemovePlayerFromMatch extends Endpoint {
 
         if (targetPlayerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player not found',
-            description: 'The player to remove was not found.',
+            language: language,
+            title: t.errors.playerNotFoundTitle,
+            description: t.errors.playerToRemoveWasNotFound,
           );
         }
 
@@ -86,8 +104,9 @@ class RemovePlayerFromMatch extends Endpoint {
 
         if (subscription == null) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Player not subscribed',
-            description: 'This player is not subscribed to the table.',
+            language: language,
+            title: t.errors.playerNotSubscribedTitle,
+            description: t.errors.playerIsNotSubscribedToTable,
           );
         }
 
@@ -103,16 +122,18 @@ class RemovePlayerFromMatch extends Endpoint {
 
         await sendSystemChatMessage(
           session,
+          language: language,
           scheduledMatchId: scheduledMatchId,
           playerData: hostPlayerData,
           messageType: MatchChatMessageType.systemLeave,
-          content:
-              '${hostPlayerData.displayName} removed '
-              '${targetPlayerData.displayName} from the table',
+          content: t.systemMessages.removedPlayerFromTable(
+            hostDisplayName: hostPlayerData.displayName,
+            targetDisplayName: targetPlayerData.displayName,
+          ),
         );
       },
-      fallbackDescription:
-          'Unable to remove this player right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToRemovePlayer,
     );
   }
 }

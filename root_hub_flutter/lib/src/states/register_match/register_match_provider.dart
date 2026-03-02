@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_state.dart';
@@ -74,7 +75,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .getPendingMatchResultsCount
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     result.fold(
@@ -109,7 +110,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .getPendingMatchResults
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     RootHubException? loadError;
@@ -162,7 +163,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .getMyAnonymousPlayers
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     RootHubException? loadError;
@@ -210,6 +211,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         .read(clientProvider)
         .createAnonymousPlayer
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           firstName: normalizedFirstName,
           lastName: normalizedLastName,
         )
@@ -253,7 +255,10 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final result = await ref
         .read(clientProvider)
         .searchRegisteredPlayers
-        .v1(query: query.trim())
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          query: query.trim(),
+        )
         .toResult;
 
     RootHubException? searchError;
@@ -372,6 +377,7 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         .read(clientProvider)
         .registerMatchData
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           matchStartedAt: matchStartedAt,
           matchEstimatedDuration: matchEstimatedDuration,
           locationId: locationId,
@@ -416,6 +422,58 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     );
 
     return submitError;
+  }
+
+  Future<RootHubException?> cancelScheduledMatch({
+    required MatchSchedulePairingAttempt scheduledMatch,
+    required MatchScheduleNotPlayedReason notPlayedReason,
+    String? notPlayedReasonDetails,
+  }) async {
+    final scheduledMatchId = scheduledMatch.id;
+    if (scheduledMatchId == null || scheduledMatchId <= 0) {
+      return RootHubException(
+        title: 'Invalid match',
+        description: 'The selected match schedule is invalid.',
+      );
+    }
+
+    final result = await ref
+        .read(clientProvider)
+        .cancelMatchSchedule
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          scheduledMatchId: scheduledMatchId,
+          notPlayedReason: notPlayedReason,
+          notPlayedReasonDetails: notPlayedReasonDetails?.trim(),
+        )
+        .toResult;
+
+    RootHubException? cancelError;
+    await result.fold(
+      (_) async {
+        final remainingMatches = state.pendingMatches
+            .where((match) => match.id != scheduledMatchId)
+            .toList();
+
+        state = state.copyWith(
+          pendingMatches: remainingMatches,
+          pendingMatchesCount: remainingMatches.length,
+          hasLoadedPendingMatches: true,
+          hasLoadedPendingMatchesCount: true,
+          pendingMatchesError: null,
+          pendingMatchesCountError: null,
+        );
+
+        await ref
+            .read(matchTablesProvider.notifier)
+            .loadTablesInArea(showLoadingIndicator: false);
+      },
+      (error) async {
+        cancelError = error;
+      },
+    );
+
+    return cancelError;
   }
 
   void clearErrors() {

@@ -31,7 +31,7 @@ class HomeStatsPieChartCenterValueLabelWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: 2),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(

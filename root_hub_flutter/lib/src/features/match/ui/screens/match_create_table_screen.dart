@@ -8,6 +8,7 @@ import 'package:root_hub_flutter/src/states/match/match_create_table_provider.da
 
 import 'match_create_table_counter_column_widget.dart';
 import 'match_create_table_section_title_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchCreateTableScreen extends ConsumerStatefulWidget {
   const MatchCreateTableScreen({
@@ -65,7 +66,7 @@ class _MatchCreateTableScreenState
     final state = ref.read(matchCreateTableProvider);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final maxDate = today.add(const Duration(days: _maxScheduleDays));
+    final maxDate = today.add(Duration(days: _maxScheduleDays));
     final currentScheduledDate = state.scheduledDate;
 
     final selectedDate = await showDatePicker(
@@ -88,8 +89,11 @@ class _MatchCreateTableScreenState
     if (selectedDate.isBefore(today)) {
       await showErrorDialog(
         context,
-        title: 'Invalid date',
-        description: 'You cannot select a day in the past.',
+        title: t.match.ui_screens_match_create_table_screen.invalidDate2,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .youCannotSelectADayInThePast2,
       );
       return;
     }
@@ -122,9 +126,11 @@ class _MatchCreateTableScreenState
     if (state.title.trim().isEmpty) {
       await showErrorDialog(
         context,
-        title: 'Title required',
-        description:
-            'Add a title so players can quickly identify your table. Example: "Downtown Café Night".',
+        title: t.match.ui_screens_match_create_table_screen.titleRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .addATitleSoPlayersCanQuicklyIdentifyYourTableExampleDowntownCafNight,
       );
       return;
     }
@@ -133,8 +139,11 @@ class _MatchCreateTableScreenState
     if (scheduledDate == null) {
       await showErrorDialog(
         context,
-        title: 'Day required',
-        description: 'Select the day for this table before continuing.',
+        title: t.match.ui_screens_match_create_table_screen.dayRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .selectTheDayForThisTableBeforeContinuing,
       );
       return;
     }
@@ -142,8 +151,11 @@ class _MatchCreateTableScreenState
     if (scheduledDate.isBefore(today)) {
       await showErrorDialog(
         context,
-        title: 'Invalid date',
-        description: 'You cannot select a day in the past.',
+        title: t.match.ui_screens_match_create_table_screen.invalidDate,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .youCannotSelectADayInThePast,
       );
       return;
     }
@@ -151,8 +163,11 @@ class _MatchCreateTableScreenState
     if (state.scheduledTime == null) {
       await showErrorDialog(
         context,
-        title: 'Start hour required',
-        description: 'Select the start hour for this table before continuing.',
+        title: t.match.ui_screens_match_create_table_screen.startHourRequired,
+        description: t
+            .match
+            .ui_screens_match_create_table_screen
+            .selectTheStartHourForThisTableBeforeContinuing,
       );
       return;
     }
@@ -185,7 +200,7 @@ class _MatchCreateTableScreenState
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
-                  center: const Alignment(0, -1.15),
+                  center: Alignment(0, -1.15),
                   radius: 1.42,
                   colors: [
                     colorScheme.primaryContainer.withValues(alpha: 0.65),
@@ -200,8 +215,8 @@ class _MatchCreateTableScreenState
             child: SafeArea(
               bottom: false,
               child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(16, 6, 16, 210),
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(16, 6, 16, 210),
                 children: [
                   Row(
                     children: [
@@ -209,12 +224,15 @@ class _MatchCreateTableScreenState
                         onPressed: () {
                           context.pop();
                         },
-                        icon: const Icon(Icons.arrow_back_rounded),
+                        icon: Icon(Icons.arrow_back_rounded),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'Host a New Table',
+                          t
+                              .match
+                              .ui_screens_match_create_table_screen
+                              .hostANewTable,
                           style: GoogleFonts.cinzel(
                             fontSize: 26,
                             fontWeight: FontWeight.w800,
@@ -224,9 +242,12 @@ class _MatchCreateTableScreenState
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(
-                    'Set table details first. On the next screen you will choose the location.',
+                    t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .setTableDetailsFirstOnTheNextScreenYouWillChooseTheLocation,
                     style: GoogleFonts.nunitoSans(
                       fontSize: 15,
                       color: colorScheme.onSurfaceVariant,
@@ -234,19 +255,25 @@ class _MatchCreateTableScreenState
                       height: 1.35,
                     ),
                   ),
-                  const SizedBox(height: 18),
-                  const MatchCreateTableSectionTitleWidget(
-                    title: 'Table title',
-                    description:
-                        'This can be anything that helps identify the table, like a place name or event style.',
+                  SizedBox(height: 18),
+                  MatchCreateTableSectionTitleWidget(
+                    title:
+                        t.match.ui_screens_match_create_table_screen.tableTitle,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .thisCanBeAnythingThatHelpsIdentifyTheTableLikeAPlaceNameOrEventStyle,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   TextField(
                     controller: _titleController,
                     textInputAction: TextInputAction.next,
                     maxLength: 80,
                     decoration: InputDecoration(
-                      hintText: 'Example: Saturday ROOT at Lantern Café',
+                      hintText: t
+                          .match
+                          .ui_screens_match_create_table_screen
+                          .exampleSaturdayRootAtLanternCaf,
                       filled: true,
                       fillColor: colorScheme.surface.withValues(alpha: 0.9),
                       border: OutlineInputBorder(
@@ -254,21 +281,28 @@ class _MatchCreateTableScreenState
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const MatchCreateTableSectionTitleWidget(
-                    title: 'Description (optional)',
-                    description:
-                        'Add extra details like expansions available, parking tips, or reference points.',
+                  SizedBox(height: 12),
+                  MatchCreateTableSectionTitleWidget(
+                    title: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .descriptionOptional,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .addExtraDetailsLikeExpansionsAvailableParkingTipsOrReferencePoints,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   TextField(
                     controller: _descriptionController,
                     minLines: 3,
                     maxLines: 6,
                     maxLength: 400,
                     decoration: InputDecoration(
-                      hintText:
-                          'Example: We have Marauder expansion and spare sleeves.',
+                      hintText: t
+                          .match
+                          .ui_screens_match_create_table_screen
+                          .exampleWeHaveMarauderExpansionAndSpareSleeves,
                       filled: true,
                       fillColor: colorScheme.surface.withValues(alpha: 0.9),
                       border: OutlineInputBorder(
@@ -276,15 +310,20 @@ class _MatchCreateTableScreenState
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const MatchCreateTableSectionTitleWidget(
-                    title: 'Players range',
-                    description:
-                        'Default is 3-4. You can set between 2 and 6 players.',
+                  SizedBox(height: 10),
+                  MatchCreateTableSectionTitleWidget(
+                    title: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .playersRange,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .defaultIs34YouCanSetBetween2And6Players,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: colorScheme.outlineVariant),
@@ -294,7 +333,10 @@ class _MatchCreateTableScreenState
                       children: [
                         Expanded(
                           child: MatchCreateTableCounterColumnWidget(
-                            title: 'Minimum',
+                            title: t
+                                .match
+                                .ui_screens_match_create_table_screen
+                                .minimum,
                             value: state.minPlayers,
                             onDecrease: state.minPlayers > 2
                                 ? ref
@@ -315,7 +357,10 @@ class _MatchCreateTableScreenState
                         ),
                         Expanded(
                           child: MatchCreateTableCounterColumnWidget(
-                            title: 'Maximum',
+                            title: t
+                                .match
+                                .ui_screens_match_create_table_screen
+                                .maximum,
                             value: state.maxPlayers,
                             onDecrease: state.maxPlayers > state.minPlayers
                                 ? ref
@@ -332,39 +377,47 @@ class _MatchCreateTableScreenState
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const MatchCreateTableSectionTitleWidget(
-                    title: 'Schedule',
-                    description:
-                        'Pick the day and start hour. Choose a time you can reliably show up.',
+                  SizedBox(height: 12),
+                  MatchCreateTableSectionTitleWidget(
+                    title:
+                        t.match.ui_screens_match_create_table_screen.schedule,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .pickTheDayAndStartHourChooseATimeYouCanReliablyShowUp,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Row(
                     children: [
                       Expanded(
                         child: FilledButton.tonalIcon(
                           onPressed: _pickDate,
-                          icon: const Icon(Icons.calendar_month_rounded),
+                          icon: Icon(Icons.calendar_month_rounded),
                           label: Text(dateLabel),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Expanded(
                         child: FilledButton.tonalIcon(
                           onPressed: _pickTime,
-                          icon: const Icon(Icons.access_time_rounded),
+                          icon: Icon(Icons.access_time_rounded),
                           label: Text(timeLabel),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  const MatchCreateTableSectionTitleWidget(
-                    title: 'Will you, the host, play?',
-                    description:
-                        'If you are a venue, board game club, or organizer bringing players together but not joining the match, leave this unchecked.',
+                  SizedBox(height: 12),
+                  MatchCreateTableSectionTitleWidget(
+                    title: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .willYouTheHostPlay,
+                    description: t
+                        .match
+                        .ui_screens_match_create_table_screen
+                        .ifYouAreAVenueBoardGameClubOrOrganizerBringingPlayersTogetherButNotJoini,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
@@ -374,14 +427,20 @@ class _MatchCreateTableScreenState
                     child: CheckboxListTile(
                       value: state.hostWillPlay,
                       dense: true,
-                      contentPadding: const EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 2,
                       ),
                       title: Text(
                         state.hostWillPlay
-                            ? 'Yes, I will play this match'
-                            : 'No, I am only hosting this table',
+                            ? t
+                                  .match
+                                  .ui_screens_match_create_table_screen
+                                  .yesIWillPlayThisMatch
+                            : t
+                                  .match
+                                  .ui_screens_match_create_table_screen
+                                  .noIAmOnlyHostingThisTable,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
@@ -421,7 +480,10 @@ class _MatchCreateTableScreenState
                       ),
                     ),
                     child: Text(
-                      'Continue',
+                      t
+                          .match
+                          .ui_screens_match_create_table_screen
+                          .continueButton,
                       style: GoogleFonts.getFont(
                         'MedievalSharp',
                         fontSize: 22,

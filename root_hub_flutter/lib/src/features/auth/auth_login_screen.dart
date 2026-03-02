@@ -7,11 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
+import 'package:root_hub_flutter/src/features/auth/auth_email_sign_in_widget.dart';
 import 'package:root_hub_flutter/src/features/auth/auth_login_glow_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class AuthLoginScreen extends ConsumerStatefulWidget {
   const AuthLoginScreen({
@@ -83,7 +85,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
     final next = (_pageController.page ?? _initialPage).round() + 1;
     _pageController.animateToPage(
       next,
-      duration: const Duration(milliseconds: 700),
+      duration: Duration(milliseconds: 700),
       curve: Curves.easeInOutCubicEmphasized,
     );
   }
@@ -160,10 +162,10 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
             ),
             Center(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.fromLTRB(0, 0, 0, viewPadding.bottom + 18),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 540),
+                  constraints: BoxConstraints(maxWidth: 540),
                   child: Column(
                     children: [
                       Padding(
@@ -175,7 +177,10 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                         ),
                         child:
                             Text(
-                                  'Find Your Next\nROOT Match',
+                                  t
+                                      .auth
+                                      .auth_login_screen
+                                      .findYourNextRootMatch,
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cinzel(
                                     fontSize: 32,
@@ -188,11 +193,14 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                 .fadeIn(duration: 460.ms)
                                 .slideY(begin: -0.18, end: 0, duration: 460.ms),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          'Sign in to browse schedules and join tables.',
+                          t
+                              .auth
+                              .auth_login_screen
+                              .signInToBrowseSchedulesAndJoinTables,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.nunitoSans(
                             fontSize: 15,
@@ -201,7 +209,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                           ),
                         ).animate().fadeIn(delay: 120.ms, duration: 480.ms),
                       ),
-                      const SizedBox(height: 18),
+                      SizedBox(height: 18),
                       SizedBox(
                             height: 295,
                             child: PageView.builder(
@@ -242,7 +250,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                     child: Opacity(
                                       opacity: opacity,
                                       child: Container(
-                                        margin: const EdgeInsets.symmetric(
+                                        margin: EdgeInsets.symmetric(
                                           horizontal: 6,
                                         ),
                                         decoration: BoxDecoration(
@@ -266,7 +274,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                           ),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(14),
+                                          padding: EdgeInsets.all(14),
                                           child: Column(
                                             children: [
                                               Expanded(
@@ -275,9 +283,9 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                                   fit: BoxFit.contain,
                                                 ),
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: 10),
                                               Text(
-                                                _formatFactionName(faction),
+                                                faction.displayName,
                                                 textAlign: TextAlign.center,
                                                 style: GoogleFonts.nunitoSans(
                                                   color: faction.factionColor,
@@ -299,9 +307,9 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                           .animate()
                           .fadeIn(delay: 200.ms, duration: 500.ms)
                           .slideY(begin: 0.18, end: 0, duration: 500.ms),
-                      const SizedBox(height: 18),
+                      SizedBox(height: 18),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         child:
                             Container(
                                   width: double.infinity,
@@ -326,7 +334,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        offset: const Offset(0, 16),
+                                        offset: Offset(0, 16),
                                         blurRadius: 34,
                                         color: colorScheme.shadow.withValues(
                                           alpha: 0.12,
@@ -344,25 +352,8 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                       removeBottom: true,
                                       removeLeft: true,
                                       removeRight: true,
-                                      child: SignInWidget(
+                                      child: AuthEmailSignInWidget(
                                         client: client,
-                                        disableAnonymousSignInWidget: true,
-                                        emailSignInWidget: EmailSignInWidget(
-                                          client: client,
-                                          startScreen: EmailFlowScreen.login,
-                                          onAuthenticated:
-                                              _requestLoginCompletion,
-                                          onError: (error) {
-                                            if (!mounted) {
-                                              return;
-                                            }
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(content: Text('$error')),
-                                            );
-                                          },
-                                        ),
                                         onAuthenticated:
                                             _requestLoginCompletion,
                                         onError: (error) {
@@ -392,18 +383,5 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
         ),
       ),
     );
-  }
-
-  String _formatFactionName(Faction faction) {
-    final raw = faction.toJson();
-    final withSpaces = raw.replaceAllMapped(
-      RegExp(r'([a-z])([A-Z])'),
-      (match) => '${match.group(1)} ${match.group(2)}',
-    );
-    return withSpaces
-        .split(' ')
-        .where((word) => word.isNotEmpty)
-        .map((word) => '${word[0].toUpperCase()}${word.substring(1)}')
-        .join(' ');
   }
 }

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -16,11 +17,16 @@ class UploadThingStorageClient {
 
   Future<String> uploadPublicImage(
     Session session, {
+    required ServerSupportedTranslation language,
     required Uint8List imageBytes,
     required String fileName,
     String? contentType,
   }) async {
-    final credentials = _resolveCredentials(session);
+    final t = ServerTranslations.of(language);
+    final credentials = _resolveCredentials(
+      session,
+      language: language,
+    );
     final normalizedFileName = _resolveFileName(fileName);
     final normalizedContentType = _resolveContentType(contentType);
     session.log(
@@ -33,6 +39,7 @@ class UploadThingStorageClient {
     try {
       final preparedUpload = await _prepareUpload(
         session: session,
+        language: language,
         apiKey: credentials.apiKey,
         fileName: normalizedFileName,
         fileSize: imageBytes.length,
@@ -41,13 +48,19 @@ class UploadThingStorageClient {
 
       await _performUpload(
         session: session,
+        language: language,
         uploadUrl: preparedUpload.uploadUrl,
         uploadKey: preparedUpload.key,
         imageBytes: imageBytes,
       );
 
       final appId =
-          credentials.appId ?? await _fetchAppId(session, credentials.apiKey);
+          credentials.appId ??
+          await _fetchAppId(
+            session,
+            credentials.apiKey,
+            language: language,
+          );
       final publicUrl = 'https://$appId.ufs.sh/f/${preparedUpload.key}';
       session.log(
         '[MatchChat][UploadThing] Upload completed. url=$publicUrl',
@@ -69,12 +82,18 @@ class UploadThingStorageClient {
         stackTrace: stackTrace,
       );
       throw RootHubEndpointError.endpointUnavailable(
-        description: 'Unable to upload image right now. Please try again.',
+        language: language,
+        description: t.fallback.unableToUploadImage,
       );
     }
   }
 
-  _UploadThingCredentials _resolveCredentials(Session session) {
+  _UploadThingCredentials _resolveCredentials(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) {
+    final t = ServerTranslations.of(language);
+
     final rawApiKey = _sanitizeSecret(
       _readPassword(
         session,
@@ -100,9 +119,8 @@ class UploadThingStorageClient {
     final apiKey = parsedToken?.apiKey ?? rawApiKey;
     if (apiKey == null || apiKey.isEmpty) {
       throw RootHubEndpointError.configuration(
-        description:
-            'UploadThing API key is not configured. Set `uploadThingApiKey` '
-            'or `uploadThingToken` in config/passwords.yaml.',
+        language: language,
+        description: t.errors.uploadThingApiKeyNotConfigured,
       );
     }
 
@@ -219,11 +237,14 @@ class UploadThingStorageClient {
 
   Future<_PreparedUpload> _prepareUpload({
     required Session session,
+    required ServerSupportedTranslation language,
     required String apiKey,
     required String fileName,
     required int fileSize,
     required String fileType,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final response = await http.post(
       Uri.parse(_prepareUploadEndpoint),
       headers: <String, String>{
@@ -246,9 +267,9 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
+        language: language,
         description: _buildErrorDescription(
-          fallback:
-              'UploadThing failed to prepare image upload. Please try again.',
+          fallback: t.errors.uploadThingPrepareUploadFailed,
           responseBody: response.body,
         ),
       );
@@ -262,8 +283,8 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
-        description:
-            'UploadThing returned an invalid upload preparation format.',
+        language: language,
+        description: t.errors.uploadThingInvalidUploadPreparationFormat,
       );
     }
 
@@ -279,7 +300,8 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
-        description: 'UploadThing response is missing key or upload URL.',
+        language: language,
+        description: t.errors.uploadThingMissingKeyOrUrl,
       );
     }
 
@@ -291,10 +313,13 @@ class UploadThingStorageClient {
 
   Future<void> _performUpload({
     required Session session,
+    required ServerSupportedTranslation language,
     required String uploadUrl,
     required String uploadKey,
     required Uint8List imageBytes,
   }) async {
+    final t = ServerTranslations.of(language);
+
     final request = http.MultipartRequest(
       'PUT',
       Uri.parse(uploadUrl),
@@ -317,8 +342,9 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
+        language: language,
         description: _buildErrorDescription(
-          fallback: 'UploadThing rejected the uploaded image bytes.',
+          fallback: t.errors.uploadThingRejectedImageBytes,
           responseBody: response.body,
         ),
       );
@@ -328,7 +354,12 @@ class UploadThingStorageClient {
   Future<String> _fetchAppId(
     Session session,
     String apiKey,
+    {
+    required ServerSupportedTranslation language,
+  }
   ) async {
+    final t = ServerTranslations.of(language);
+
     final response = await http.post(
       Uri.parse(_getAppInfoEndpoint),
       headers: <String, String>{
@@ -344,8 +375,9 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
+        language: language,
         description: _buildErrorDescription(
-          fallback: 'UploadThing app info lookup failed.',
+          fallback: t.errors.uploadThingAppInfoLookupFailed,
           responseBody: response.body,
         ),
       );
@@ -359,7 +391,8 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
-        description: 'UploadThing returned an invalid app info format.',
+        language: language,
+        description: t.errors.uploadThingInvalidAppInfoFormat,
       );
     }
 
@@ -371,7 +404,8 @@ class UploadThingStorageClient {
         level: LogLevel.warning,
       );
       throw RootHubEndpointError.endpointUnavailable(
-        description: 'UploadThing app id is missing in app info response.',
+        language: language,
+        description: t.errors.uploadThingAppIdMissing,
       );
     }
 

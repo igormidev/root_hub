@@ -10,21 +10,26 @@ class RegisterMatchPickerBodySection extends StatelessWidget {
     super.key,
     required this.registerState,
     required this.onRetry,
-    required this.onMatchSelected,
+    required this.onRegisterMatchTap,
+    required this.onCancelMatchTap,
     required this.isTooEarlyToRegister,
+    required this.processingMatchId,
   });
 
   final RegisterMatchState registerState;
   final VoidCallback onRetry;
   final Future<void> Function(MatchSchedulePairingAttempt match)
-  onMatchSelected;
+  onRegisterMatchTap;
+  final Future<void> Function(MatchSchedulePairingAttempt match)
+  onCancelMatchTap;
   final bool Function(MatchSchedulePairingAttempt match) isTooEarlyToRegister;
+  final int? processingMatchId;
 
   @override
   Widget build(BuildContext context) {
     if (registerState.isLoadingPendingMatches &&
         registerState.pendingMatches.isEmpty) {
-      return const Center(
+      return Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -38,25 +43,26 @@ class RegisterMatchPickerBodySection extends StatelessWidget {
     }
 
     if (registerState.pendingMatches.isEmpty) {
-      return const RegisterMatchPickerEmptySection();
+      return RegisterMatchPickerEmptySection();
     }
 
     return ListView.builder(
-      physics: const AlwaysScrollableScrollPhysics(
+      physics: AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
       ),
-      padding: const EdgeInsets.fromLTRB(14, 4, 14, 16),
+      padding: EdgeInsets.fromLTRB(14, 4, 14, 16),
       itemCount: registerState.pendingMatches.length,
       itemBuilder: (context, index) {
         final match = registerState.pendingMatches[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(bottom: 10),
           child: RegisterMatchPickerMatchItemCard(
             match: match,
             canRegisterNow: !isTooEarlyToRegister(match),
-            onTap: () {
-              onMatchSelected(match);
-            },
+            isProcessing:
+                processingMatchId != null && processingMatchId == match.id,
+            onRegisterTap: () => onRegisterMatchTap(match),
+            onCancelTap: () => onCancelMatchTap(match),
           ),
         );
       },

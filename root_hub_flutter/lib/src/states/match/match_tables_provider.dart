@@ -5,6 +5,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_state.dart';
 
@@ -44,7 +45,11 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
       );
     }
 
-    final result = await ref.read(clientProvider).getTablesInArea.v1().toResult;
+    final result = await ref
+        .read(clientProvider)
+        .getTablesInArea
+        .v1(language: ref.read(serverSupportedTranslationProvider))
+        .toResult;
 
     result.fold(
       (tables) {
@@ -98,7 +103,10 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
     final result = await ref
         .read(clientProvider)
         .subscribeToMatch
-        .v1(scheduledMatchId: tableId)
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          scheduledMatchId: tableId,
+        )
         .toResult;
 
     RootHubException? actionError;
@@ -148,6 +156,7 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
           .read(clientProvider)
           .editMatchSchedule
           .v1(
+            language: ref.read(serverSupportedTranslationProvider),
             scheduledMatchId: scheduledMatchId,
             title: title,
             description: description,
@@ -204,7 +213,10 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
     final result = await ref
         .read(clientProvider)
         .getMatchScheduleInfo
-        .v1(scheduledMatchId: tableId)
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          scheduledMatchId: tableId,
+        )
         .toResult;
 
     return result.fold(

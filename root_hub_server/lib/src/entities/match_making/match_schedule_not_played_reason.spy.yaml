@@ -1,0 +1,10 @@
+enum: MatchScheduleNotPlayedReason
+values:
+  - notEnoughPlayers
+  - hostUnavailable
+  - noGameCopyAvailable
+  - venueIssue
+  - playerNoShow
+  - weatherOrEmergency
+  - expiredWithoutResult
+  - other

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchAddAnonymousPlayerSheet extends ConsumerStatefulWidget {
   const RegisterMatchAddAnonymousPlayerSheet({
@@ -127,9 +128,12 @@ class _RegisterMatchAddAnonymousPlayerSheetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+                padding: EdgeInsets.fromLTRB(16, 6, 16, 8),
                 child: Text(
-                  'Add anonymous player',
+                  t
+                      .register_match
+                      .ui_sheets_register_match_add_anonymous_player_sheet
+                      .addAnonymousPlayer,
                   style:
                       Theme.of(
                         context,
@@ -139,28 +143,34 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                 child: Column(
                   children: [
                     TextField(
                       controller: _firstNameController,
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'First name',
+                      decoration: InputDecoration(
+                        labelText: t
+                            .register_match
+                            .ui_sheets_register_match_add_anonymous_player_sheet
+                            .firstName,
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     TextField(
                       controller: _lastNameController,
                       textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
-                        labelText: 'Last name',
+                      decoration: InputDecoration(
+                        labelText: t
+                            .register_match
+                            .ui_sheets_register_match_add_anonymous_player_sheet
+                            .lastName,
                         border: OutlineInputBorder(),
                       ),
                       onSubmitted: (_) => _createAnonymousPlayer(),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
@@ -168,19 +178,24 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                             ? null
                             : _createAnonymousPlayer,
                         child: _isCreatingPlayer
-                            ? const SizedBox(
+                            ? SizedBox(
                                 width: 18,
                                 height: 18,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text('Create and add player'),
+                            : Text(
+                                t
+                                    .register_match
+                                    .ui_sheets_register_match_add_anonymous_player_sheet
+                                    .createAndAddPlayer,
+                              ),
                       ),
                     ),
                     if (_inlineError != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 8),
+                        padding: EdgeInsets.only(top: 8),
                         child: Text(
                           _inlineError!,
                           style: Theme.of(context).textTheme.bodySmall
@@ -193,16 +208,19 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                   ],
                 ),
               ),
-              const Divider(height: 1),
+              Divider(height: 1),
               Expanded(
                 child: isLoading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(child: CircularProgressIndicator())
                     : anonymousPlayers.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            'No anonymous players yet. Create one using first and last name.',
+                            t
+                                .register_match
+                                .ui_sheets_register_match_add_anonymous_player_sheet
+                                .noAnonymousPlayersYetCreateOneUsingFirstAndLastName,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
@@ -224,12 +242,18 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                               );
 
                           return ListTile(
-                            leading: const Icon(Icons.person_outline_rounded),
+                            leading: Icon(Icons.person_outline_rounded),
                             title: Text(_anonymousPlayerName(anonymousPlayer)),
                             subtitle: Text(
                               alreadyAdded
-                                  ? 'Already added to this report'
-                                  : 'Tap to add',
+                                  ? t
+                                        .register_match
+                                        .ui_sheets_register_match_add_anonymous_player_sheet
+                                        .alreadyAddedToThisReport
+                                  : t
+                                        .register_match
+                                        .ui_sheets_register_match_add_anonymous_player_sheet
+                                        .tapToAdd,
                             ),
                             enabled: !alreadyAdded,
                             onTap: alreadyAdded || playerId == null
@@ -241,7 +265,7 @@ class _RegisterMatchAddAnonymousPlayerSheetState
                         },
                       ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
             ],
           ),
         ),

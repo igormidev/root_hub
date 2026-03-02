@@ -1,0 +1,703 @@
+{
+  "app": {
+    "rootHub": "Root Hub"
+  },
+  "auth": {
+    "auth_onboarding_screen": {
+      "pickYourFavoriteRootFactionBeforeEnteringTheHub": "Choisissez votre faction ROOT préférée avant d’entrer dans le hub.",
+      "chooseYourFaction": "Choisissez votre faction",
+      "iAlreadyHaveAnAccount": "J'ai déjà un compte"
+    },
+    "auth_onboarding_profile_screen": {
+      "currentLocationUsesYourPhoneCoordinatesXAndYAndIsRequiredToShowNearbyMat": "La position actuelle utilise les coordonnées de votre téléphone (x et y) et est nécessaire pour afficher des parties proches.",
+      "yourDisplayNameIsHowOtherPlayersWillSeeYouInRootHub": "Votre nom d’affichage est la façon dont les autres joueurs vous verront sur Root Hub.",
+      "setYourHubIdentity": "Définir votre identité de hub",
+      "continueButton": "Continuer",
+      "chooseHowYouAppearAndSetYourLocationToFindNearbyMatches": "Choisissez votre apparence et définissez votre position pour trouver des parties proches.",
+      "howYouWillBeCalled": "Comment tu seras appelé",
+      "thisIsHowOtherPlayersWillSeeYourProfileInRootHub": "C’est ainsi que les autres joueurs verront votre profil sur Root Hub.",
+      "enterYourDisplayName": "Entrez votre nom d'affichage",
+      "currentLocation": "Emplacement actuel",
+      "whereDoYouWantToPlay": "Où veux-tu jouer ?",
+      "locationIsRequiredToShowNearbyTablesChooseDeviceOrSearch": "La position est nécessaire pour afficher les parties proches. Choisissez la position de l’appareil ou recherchez un lieu.",
+      "chooseTheAreaWhereYouWantToFindNearbyPlayers": "Choisissez la zone où vous voulez trouver des joueurs et des tables à proximité.",
+      "useMyCurrentDeviceLocation": "Utiliser la position actuelle de mon appareil",
+      "capturingCoordinates": "Capturer les coordonnées...",
+      "instantlyUseYourPhonesGpsCoordinates": "Utilisez instantanément les coordonnées GPS de votre téléphone.",
+      "searchForATableLocation": "Rechercher un emplacement",
+      "openTheSearchAndSelectAnyPlaceYouPrefer": "Ouvrez la recherche et sélectionnez l'endroit que vous préférez.",
+      "yourPlayArea": "Votre zone de jeu",
+      "findingCityName": "Recherche du nom de la ville...",
+      "selectedArea": "Zone sélectionnée",
+      "weWillShowMatchesNear": "Nous afficherons des parties près de {city}.",
+      "weWillShowMatchesNearTheSelectedArea": "Nous afficherons des parties près de votre zone sélectionnée.",
+      "changeLocation": "Changer l'emplacement",
+      "selectedCoordinates": "Coordonnées sélectionnées",
+      "searchAreaRadius": "Rayon de la zone de recherche",
+      "howFarShouldWeSearchForNearbyPlayersAroundYou": "Jusqu’où devrions-nous rechercher des joueurs à proximité autour de vous ?",
+      "value25KmIsTheRecommendedStartingPoint": "25 km est le point de départ recommandé.",
+      "disableVpnOrProxyBeforeCapturingLocationWrongCoordinatesMayHideNearby": "Désactivez le VPN ou le proxy avant de capturer la position. De mauvaises coordonnées peuvent masquer des parties proches.",
+      "locationSelectedFromSearch": "Emplacement sélectionné dans la recherche.",
+      "enableLocationServicesOnYourPhoneAndTryAgain": "Activez les services de localisation sur votre téléphone et réessayez.",
+      "locationPermissionDeniedLocationIsRequiredToContinue": "Autorisation de localisation refusée. La localisation est requise pour continuer.",
+      "locationPermissionIsDeniedForeverEnableItInSystemSettingsToContinue": "L'autorisation de localisation est refusée pour toujours. Activez-le dans les paramètres système pour continuer.",
+      "locationCapturedSuccessfully": "Emplacement capturé avec succès.",
+      "unableToCaptureLocationRightNowLocationIsRequiredToContinue": "Impossible de capturer l'emplacement pour le moment. La localisation est requise pour continuer.",
+      "unableToResolveCityNameRightNow": "Impossible de résoudre le nom de la ville pour le moment.",
+      "searchForLocation": "Rechercher un emplacement",
+      "searchAndPickOnePlaceWeWillUseItsCoordinatesForNearbyMatches": "Recherchez et choisissez un endroit. Nous utiliserons ses coordonnées pour les matchs à proximité.",
+      "useSelectedLocation": "Utiliser l'emplacement sélectionné",
+      "selectALocationFromTheListBeforeContinuing": "Sélectionnez un emplacement dans la liste avant de continuer.",
+      "unableToUseTheSelectedLocationCoordinatesRightNow": "Impossible d'utiliser les coordonnées de l'emplacement sélectionné pour le moment.",
+      "kilometersUnit": "kilomètres"
+    },
+    "auth_loading_screen": {
+      "rootHub": "ROOT HUB"
+    },
+    "auth_login_screen": {
+      "signInToBrowseSchedulesAndJoinTables": "Connectez-vous pour consulter les horaires et rejoindre des parties.",
+      "findYourNextRootMatch": "Trouvez votre prochaine\npartie de ROOT",
+      "signInWithEmailTitle": "Se connecter avec e-mail",
+      "signUpWithEmailTitle": "Créer un compte avec e-mail",
+      "verifyAccountTitle": "Vérifier le compte",
+      "verifyAccountMessage": "Un e-mail de vérification a été envoyé. Consultez votre e-mail et saisissez le code ci-dessous.",
+      "setAccountPasswordTitle": "Définir le mot de passe du compte",
+      "resetPasswordTitle": "Réinitialiser le mot de passe",
+      "requestResetDescription": "Saisissez l'e-mail de votre compte pour recevoir un code de réinitialisation.",
+      "verifyResetCodeTitle": "Vérifier le code de réinitialisation",
+      "verifyResetMessage": "Saisissez le code de réinitialisation envoyé à votre e-mail.",
+      "setNewPasswordTitle": "Définir un nouveau mot de passe",
+      "emailLabel": "E-mail",
+      "passwordLabel": "Mot de passe",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "forgotPasswordButton": "Mot de passe oublié ?",
+      "signInButton": "Se connecter",
+      "signUpButton": "Créer un compte",
+      "continueButton": "Continuer",
+      "verifyButton": "Vérifier",
+      "requestResetButton": "Demander une réinitialisation",
+      "resetPasswordButton": "Réinitialiser le mot de passe",
+      "dontHaveAnAccount": "Vous n'avez pas de compte ?",
+      "alreadyHaveAnAccount": "Vous avez déjà un compte ?",
+      "signUpLink": "Créer un compte",
+      "signInLink": "Se connecter",
+      "backToSignIn": "Retour à la connexion",
+      "resendCode": "Rien reçu ? Envoyer un nouveau code",
+      "resendCodeIn": "Envoyer un nouveau code ({time})",
+      "passwordRuleMinLength": "Au moins 8 caractères",
+      "passwordRuleUppercase": "Contient au moins une lettre majuscule",
+      "passwordRuleLowercase": "Contient au moins une lettre minuscule",
+      "passwordRuleNumber": "Contient au moins un chiffre",
+      "errors": {
+        "invalidEmail": "Adresse e-mail invalide.",
+        "invalidCredentials": "E-mail ou mot de passe invalide. Vérifiez vos identifiants et réessayez.",
+        "tooManyLoginAttempts": "Trop de tentatives de connexion. Réessayez plus tard.",
+        "loginFailed": "Une erreur est survenue lors de la connexion. Réessayez.",
+        "tooManyRegistrationAttempts": "Trop de tentatives d'inscription. Réessayez plus tard.",
+        "verificationCodeExpired": "Le code de vérification a expiré. Demandez-en un nouveau.",
+        "invalidVerificationCode": "Code de vérification invalide. Vérifiez-le et réessayez.",
+        "passwordPolicyViolation": "Le mot de passe ne respecte pas les exigences. Choisissez-en un autre.",
+        "registrationFailed": "Une erreur est survenue pendant l'inscription. Réessayez plus tard.",
+        "tooManyPasswordResetAttempts": "Trop de tentatives de réinitialisation du mot de passe. Réessayez plus tard.",
+        "passwordResetFailed": "Une erreur est survenue pendant la réinitialisation du mot de passe. Réessayez plus tard.",
+        "networkUnavailable": "Impossible de se connecter au serveur. Vérifiez votre connexion et réessayez.",
+        "unexpected": "Une erreur inattendue est survenue. Réessayez."
+      }
+    },
+    "auth_onboarding_continue_button_widget": {
+      "continueButton": "Continuer"
+    }
+  },
+  "dashboard": {
+    "ui_screens_dashboard_screen": {
+      "shop": "Boutique",
+      "match": "Parties",
+      "activity": "Activité",
+      "home": "Accueil",
+      "rootHub": "ROOT HUB",
+      "chooseFromGallery": "Choisissez dans la galerie",
+      "takePhoto": "Prendre une photo",
+      "cancel": "Annuler",
+      "chooseFromLibrary": "Choisissez dans la bibliothèque",
+      "takePhoto2": "Prendre une photo",
+      "changeProfilePhoto": "Changer la photo de profil",
+      "allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain": "Autorisez les autorisations de l'appareil photo et des photos dans les paramètres système et réessayez.",
+      "unableToAccessCameraOrGallery": "Impossible d'accéder à la caméra ou à la galerie",
+      "rootPlayer": "Joueur Root",
+      "welcomeBack": "Bon retour, {displayName}",
+      "communityDashboardTitle": "Tableau Communautaire",
+      "matchFinderTitle": "Trouver des parties",
+      "activityCenterTitle": "Centre d'Activité",
+      "communityDashboardSubtitle": "Découvrez ce qui se passe dans la communauté ROOT.",
+      "matchFinderSubtitle": "Trouvez des parties proches ou créez-en une avec votre groupe local.",
+      "activityCenterSubtitle": "Suivez vos tables actives et les mises à jour de chat en un seul endroit."
+    },
+    "ui_screens_dashboard_faction_editor_screen": {
+      "chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference": "Choisissez la faction affichée dans votre profil et utilisée comme préférence par défaut.",
+      "changeFavoriteFaction": "Changer de faction préférée"
+    },
+    "ui_dialogs_edit_location_dialog": {
+      "save": "Sauvegarder",
+      "cancel": "Annuler",
+      "updateYourCoordinatesAndTargetSearchRatioForMatchDiscovery": "Mettez à jour vos coordonnées et le rayon de recherche pour trouver des parties.",
+      "editLocation": "Modifier l'emplacement"
+    },
+    "ui_dialogs_edit_display_name_dialog": {
+      "save": "Sauvegarder",
+      "cancel": "Annuler",
+      "thisIsHowPlayersWillSeeYouAcrossRootHub": "C’est ainsi que les joueurs vous verront sur Root Hub.",
+      "editDisplayName": "Modifier le nom d'affichage"
+    },
+    "ui_widgets_dashboard_profile_drawer_widget": {
+      "logOut": "Se déconnecter",
+      "changeFaction": "Changer de faction",
+      "saving": "Économie...",
+      "favoriteFaction": "Faction préférée",
+      "location": "Emplacement",
+      "displayName": "Nom d'affichage",
+      "edit": "Modifier",
+      "change": "Changement",
+      "noLocationConfigured": "Aucun emplacement configuré",
+      "xLabel": "x",
+      "yLabel": "oui",
+      "ratioLabel": "rayon",
+      "language": "Langue",
+      "useDeviceLanguage": "Utiliser la langue de l'appareil",
+      "english": "Anglais",
+      "portugueseBrazil": "Portugais (Brésil)",
+      "spanish": "Espagnol",
+      "french": "Français",
+      "german": "Allemand"
+    }
+  },
+  "activity": {
+    "ui_screens_activity_screen": {
+      "myScheduledTablesTitle": "Mes Tables Planifiées",
+      "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tables auxquelles vous êtes inscrit et qui n'ont pas encore commencé ou ont commencé il y a moins de 6 heures.",
+      "noActiveSchedules": "Aucun abonnement actif",
+      "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Quand vous rejoignez une table, elle apparaît ici sous forme de carte à faire glisser.",
+      "activeChatsTitle": "Chats Actifs",
+      "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats des tables à venir ou récemment lancées, triés d'abord par messages non lus.",
+      "noActiveChats": "Aucun chat actif",
+      "openAnyTableChatAndItWillBeTrackedHereEvenWithoutASubscription": "Ouvrez n'importe quel chat de table et il sera suivi ici, même sans abonnement.",
+      "completedMatchesTitle": "Chats de Parties Terminées",
+      "latestEightCompletedOrArchivedMatchChatsYouParticipatedIn": "Les 8 derniers chats de parties déjà jouées.",
+      "noCompletedChats": "Aucun chat terminé pour le moment",
+      "onceMatchesFinishTheirChatsWillStayAvailableHere": "Une fois les parties terminées, leurs chats restent disponibles dans cette section."
+    },
+    "ui_widgets_activity_subscribed_schedule_card": {
+      "unknownLocation": "Lieu inconnu",
+      "selected": "Sélectionné",
+      "alreadyStarted": "Déjà commencée",
+      "notStartedYet": "Pas encore commencée",
+      "playersLabel": "{minPlayers}-{maxPlayers} joueurs",
+      "openChatHint": "Touchez la carte pour ouvrir le chat"
+    },
+    "ui_widgets_activity_chat_card": {
+      "ended": "Terminée",
+      "started": "Commencée",
+      "upcoming": "À venir",
+      "senderMessage": "{sender}: {message}",
+      "newMessage": "Nouveau message",
+      "photoShared": "Photo partagée",
+      "systemUpdate": "Mise à jour système",
+      "noMessagesYet": "Pas encore de messages"
+    }
+  },
+  "home": {
+    "ui_sections_home_stats_section": {
+      "allFactionsTotal": "Toutes les factions au total",
+      "allFactionsAvg": "Moyenne de toutes les factions",
+      "allFactionsTotal2": "Toutes les factions au total",
+      "allFactionsAvg2": "Moyenne de toutes les factions",
+      "absoluteNumberOfWinsForEachFaction": "Nombre absolu de victoires pour chaque faction.",
+      "totalWins": "Total des gains",
+      "averageScorePerFactionWhenPointsWereTracked": "Score moyen par faction lorsque les points ont été suivis.",
+      "averagePoints": "Points moyens",
+      "howOftenEachFactionAppearsInCompletedGames": "La fréquence à laquelle chaque faction apparaît dans les parties terminées.",
+      "playedGames": "Jeux joués",
+      "whoIsWinningTheMostOftenRightNow": "Qui gagne le plus souvent en ce moment.",
+      "factionWinRate": "Taux de victoire des factions"
+    },
+    "ui_screens_home_screen": {
+      "yourPersonalFactionPerformanceAndMatchProfile": "Vos statistiques personnelles de faction basées uniquement sur les factions que vous avez jouées.",
+      "myStats": "Mes statistiques",
+      "factionPerformanceFromAllPlayedMatchesInRootHub": "Performance des factions sur toutes les parties jouées dans Root Hub.",
+      "communityStats": "Statistiques de la communauté",
+      "noCommunityStatsYet": "Aucune statistique de la communauté pour le moment",
+      "communityStatsWillAppearAfterCompletedMatches": "Dès que les joueurs enregistreront des parties terminées, cette section affichera les tendances des factions.",
+      "noPersonalStatsYet": "Aucune statistique personnelle pour le moment",
+      "registerYourFirstMatchToStartYourDashboard": "Jouez et enregistrez votre première partie pour démarrer votre tableau de bord personnel."
+    },
+    "ui_widgets_home_stats_pie_chart_widget": {
+      "noValuesForThisMetricYet": "Aucune valeur pour cette métrique pour l'instant."
+    }
+  },
+  "match": {
+    "ui_sheets_match_edit_table_error_widget": {
+      "close": "Fermer"
+    },
+    "ui_sheets_match_edit_table_loading_widget": {
+      "loadingTableDetails": "Chargement des détails de la partie..."
+    },
+    "ui_sheets_match_table_info_sheet": {
+      "remove": "Retirer",
+      "cancel": "Annuler",
+      "rejoinIfSeatsAreStillAvailable": "rejoignez-nous si des places sont encore disponibles.",
+      "cancel2": "Annuler",
+      "selectAPlayerToRemoveFromTheTable": "Sélectionnez un joueur à retirer de la partie.",
+      "removeAPlayer": "Supprimer un joueur",
+      "leave": "Partir",
+      "cancel3": "Annuler",
+      "playersListYouCanRejoinLaterIfSeatsAreStillAvailable": "liste des joueurs. Vous pourrez revenir plus tard si des places sont encore disponibles.",
+      "youWillBeUnsubscribedFromThisMatchAndRemovedFromThe": "Vous serez désabonné de cette partie et supprimé du",
+      "leaveThisTable": "Quitter cette partie ?",
+      "unableToLoadTableDetails": "Impossible de charger les détails de la partie.",
+      "tableNotFound": "Partie introuvable"
+    },
+    "ui_sheets_match_table_info_content_widget": {
+      "noPlayersHaveJoinedThisTableYet": "Aucun joueur n'a encore rejoint cette partie.",
+      "theseAreTheCurrentPlayersThatWillParticipate": "Ce sont les joueurs actuels qui participeront.",
+      "noPlayersSubscribedYet": "Aucun joueur abonné pour l'instant.",
+      "playersInThisMatch": "Joueurs dans cette partie",
+      "unknownHost": "Hôte inconnu",
+      "tableDetails": "Détails de la partie"
+    },
+    "ui_sheets_match_table_info_error_widget": {
+      "retry": "Réessayer",
+      "close": "Fermer"
+    },
+    "ui_sheets_match_table_info_participant_card_widget": {
+      "favoriteFaction": "Faction préférée"
+    },
+    "ui_sheets_match_edit_table_sheet": {
+      "theScheduledTimeCannotBeMoreThan": "L'heure prévue ne peut pas être supérieure à",
+      "dateIsTooFar": "La date est trop loin",
+      "theScheduledTimeMustBeAtLeast": "L'heure prévue doit être au moins",
+      "timeIsTooSoon": "Le temps est trop tôt",
+      "youCannotSetTheMaximumBelowThatNumber": "Vous ne pouvez pas définir le maximum en dessous de ce nombre.",
+      "tooManyPlayersSubscribed": "Trop de joueurs abonnés",
+      "withMinimumNotGreaterThanMaximum": "avec un minimum pas supérieur au maximum.",
+      "playersRangeMustBeBetween2And6": "La gamme de joueurs doit être comprise entre 2 et 6,",
+      "invalidPlayersRange": "Plage de joueurs invalide",
+      "pleaseAddATitleForYourTable": "Veuillez ajouter un titre pour votre partie.",
+      "titleRequired": "Titre requis",
+      "unableToLoadTableDetails": "Impossible de charger les détails de la partie.",
+      "tableNotFound": "Partie introuvable"
+    },
+    "ui_sheets_match_table_info_loading_widget": {
+      "loadingTableDetails": "Chargement des détails de la partie..."
+    },
+    "ui_sheets_match_edit_table_form_widget": {
+      "saveChanges": "Enregistrer les modifications",
+      "saving": "Économie...",
+      "cancel": "Annuler",
+      "mustBeAtLeast10MinutesFromNowUpTo": "Cela doit être dans au moins 10 minutes, jusqu'à",
+      "schedule": "Calendrier",
+      "maximum": "Maximum",
+      "minimum": "Minimum",
+      "setBetween2And6Players": "Se déroule entre 2 et 6 joueurs.",
+      "playersRange": "Gamme de joueurs",
+      "exampleWeHaveMarauderExpansion": "Exemple : nous avons l’extension Marauder.",
+      "extraDetailsLikeExpansionsParkingTipsEtc": "Détails supplémentaires comme les extensions, les conseils de stationnement, etc.",
+      "descriptionOptional": "Description (facultatif)",
+      "exampleSaturdayRootAtLanternCaf": "Exemple : ROOT du samedi au Lantern Café",
+      "aShortNameSoPlayersCanFindYourTable": "Un nom court pour que les joueurs puissent trouver votre partie.",
+      "tableTitle": "Titre de la partie",
+      "newPlayersCanStillJoinThisTable": "De nouveaux joueurs peuvent toujours rejoindre cette partie.",
+      "newPlayersCannotJoinThisTable": "Les nouveaux joueurs ne peuvent pas rejoindre cette partie.",
+      "closeSubscriptions": "Fermer les inscriptions",
+      "editDetails": "Modifier les détails",
+      "editTable": "Modifier la partie"
+    },
+    "ui_sheets_match_table_info_bottom_actions_widget": {
+      "removePlayer": "Supprimer un joueur",
+      "removing": "Suppression...",
+      "leaveTable": "Quitter la partie",
+      "leaving": "Sortie...",
+      "close": "Fermer"
+    },
+    "ui_screens_match_create_table_location_loading_search_widget": {
+      "searchingLocations": "Recherche d'emplacements..."
+    },
+    "ui_screens_match_create_table_location_screen": {
+      "previouslySelectedLocations": "Emplacements précédemment sélectionnés",
+      "searchResults": "Résultats de la recherche",
+      "tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo": "Appuyez sur un emplacement pour le sélectionner. Les emplacements précédemment sélectionnés sont enregistrés ici pour un hébergement plus rapide.",
+      "searchLocationGooglePlaces": "Localisation de recherche (Google Places)",
+      "chooseTableLocation": "Choisir l'emplacement de la partie",
+      "chooseOneLocationFromTheListBeforeCreatingTheTable": "Choisissez un lieu dans la liste avant de créer la partie.",
+      "locationRequired": "Emplacement requis",
+      "continueButton": "Continuer"
+    },
+    "ui_screens_match_join_sheet_error_widget": {
+      "retry": "Réessayer",
+      "close": "Fermer"
+    },
+    "ui_screens_match_screen": {
+      "unableToOpenTheDialerRightNow": "Impossible d'ouvrir le composeur pour le moment.",
+      "invalidPhoneNumberFormat": "Format de numéro de téléphone invalide.",
+      "unableToOpenTheLinkRightNow": "Impossible d'ouvrir le lien pour le moment.",
+      "invalidUrlFormat": "Format d'URL invalide.",
+      "unableToOpenSharedMatch": "Impossible d'ouvrir cette partie partagée pour le moment.",
+      "unableToShareThisMatch": "Impossible de partager cette partie pour le moment.",
+      "shareMessage": "Root Hub connecte des joueurs pour jouer à ROOT en présentiel dans des lieux publics. Rejoignez cette partie à {location}, à {hour}, le {day} : {link}",
+      "close": "Fermer",
+      "manualLocationNotes": "Notes de localisation manuelles",
+      "phone": "Téléphone",
+      "phone2": "Téléphone",
+      "website": "Site web",
+      "website2": "Site web",
+      "mapLink": "Lien vers la carte",
+      "mapLink2": "Lien vers la carte",
+      "public": "Publique",
+      "private": "Privé",
+      "matchesPlayedHere": "parties joués ici",
+      "matchPlayedHere": "partie joué ici",
+      "hostTable": "Créer une partie",
+      "reportResult": "Enregistrer le résultat"
+    },
+    "ui_screens_match_loading_error_state_widget": {
+      "tryAgain": "Essayer à nouveau"
+    },
+    "ui_screens_match_nearby_header_widget": {
+      "onlyTablesThatDidNotStartMoreThan2HoursAgoAreListed": "Seules les parties qui n'ont pas démarré il y a plus de 2 heures sont répertoriées.",
+      "nearbyMatchTables": "Parties proches",
+      "matchFinder": "Trouver des parties",
+      "setProfileLocation": "Définissez la position du profil",
+      "searchAreaKm": "{ratioKm} km de rayon"
+    },
+    "ui_screens_match_no_matches_state_widget": {
+      "hostTheFirstTable": "Créez la première partie",
+      "beTheFirstToStartOneHostANewTableSoNearbyPlayersCanSubscribe": "Soyez le premier à en lancer une. Créez une nouvella partie pour que les joueurs proches puissent s’inscrire.",
+      "noTablesInYourAreaYet": "Pas encore de parties dans votre région"
+    },
+    "ui_screens_match_time_status_chip_widget": {
+      "remainingTimeUntilTheMatchStarts": "Temps restant jusqu'au début de la partie.",
+      "thisMatchAlreadyStartedRecentlyStartedTablesStayVisibleForAShortPeriod": "Ce partie a déjà commencé. Les parties récemment démarrées restent visibles pendant une courte période."
+    },
+    "ui_screens_match_create_table_location_no_search_results_widget": {
+      "noLocationsFoundForThisQueryTryAnotherPlaceNameOrArea": "Aucun emplacement trouvé pour cette requête. Essayez un autre nom de lieu ou une autre zone."
+    },
+    "ui_screens_match_create_table_screen": {
+      "noIAmOnlyHostingThisTable": "Non, j'héberge seulement cette partie",
+      "yesIWillPlayThisMatch": "Oui, je jouerai cette partie",
+      "ifYouAreAVenueBoardGameClubOrOrganizerBringingPlayersTogetherButNotJoini": "Si vous êtes un lieu, un club de jeux de société ou un organisateur réunissant des joueurs mais ne rejoignant pas la partie, laissez cette case décochée.",
+      "willYouTheHostPlay": "Allez-vous, l'hôte, jouer ?",
+      "pickTheDayAndStartHourChooseATimeYouCanReliablyShowUp": "Choisissez le jour et l'heure de début. Choisissez une heure à laquelle vous pouvez vous présenter de manière fiable.",
+      "schedule": "Calendrier",
+      "maximum": "Maximum",
+      "minimum": "Minimum",
+      "defaultIs34YouCanSetBetween2And6Players": "La valeur par défaut est 3-4. Vous pouvez définir entre 2 et 6 joueurs.",
+      "playersRange": "Gamme de joueurs",
+      "exampleWeHaveMarauderExpansionAndSpareSleeves": "Exemple : Nous avons une extension Marauder et des manchons de rechange.",
+      "addExtraDetailsLikeExpansionsAvailableParkingTipsOrReferencePoints": "Ajoutez des détails supplémentaires tels que des extensions disponibles, des conseils de stationnement ou des points de référence.",
+      "descriptionOptional": "Description (facultatif)",
+      "exampleSaturdayRootAtLanternCaf": "Exemple : ROOT du samedi au Lantern Café",
+      "thisCanBeAnythingThatHelpsIdentifyTheTableLikeAPlaceNameOrEventStyle": "Il peut s'agir de tout ce qui permet d'identifier la partie, comme le nom d'un lieu ou le style d'un événement.",
+      "tableTitle": "Titre de la partie",
+      "setTableDetailsFirstOnTheNextScreenYouWillChooseTheLocation": "Définissez d’abord les détails de la partie. Sur l’écran suivant, vous choisirez le lieu.",
+      "hostANewTable": "Créer une nouvella partie",
+      "selectTheStartHourForThisTableBeforeContinuing": "Sélectionnez l’heure de début de cette partie avant de continuer.",
+      "startHourRequired": "Heure de début requise",
+      "youCannotSelectADayInThePast": "Vous ne pouvez pas sélectionner un jour dans le passé.",
+      "invalidDate": "Date invalide",
+      "selectTheDayForThisTableBeforeContinuing": "Sélectionnez le jour de cette partie avant de continuer.",
+      "dayRequired": "Jour requis",
+      "addATitleSoPlayersCanQuicklyIdentifyYourTableExampleDowntownCafNight": "Ajoutez un titre pour que les joueurs puissent identifier rapidement votre partie. Exemple : « Soirée au café du centre-ville ».",
+      "titleRequired": "Titre requis",
+      "youCannotSelectADayInThePast2": "Vous ne pouvez pas sélectionner un jour dans le passé.",
+      "invalidDate2": "Date invalide",
+      "continueButton": "Continuer"
+    },
+    "ui_screens_match_chat_loading_error_state_widget": {
+      "tryAgain": "Essayer à nouveau"
+    },
+    "ui_screens_match_report_available_chip_widget": {
+      "reportAvailable": "Rapport disponible",
+      "youCanReportThisMatchResultNow": "Vous pouvez signaler ce résultat de partie maintenant."
+    },
+    "ui_screens_match_initial_loading_state_widget": {
+      "loadingNearbyTables": "Chargement des parties à proximité..."
+    },
+    "ui_screens_match_participant_card_widget": {
+      "favoriteFaction": "Faction préférée"
+    },
+    "ui_screens_match_join_sheet_content_widget": {
+      "confirmJoin": "Confirmer l'adhésion",
+      "subscriptionsClosed": "Inscriptions clôturées",
+      "alreadySubscribed": "Déjà abonné",
+      "cancel": "Annuler",
+      "youCanBeTheFirstPlayerToLockThisTableIn": "Vous pouvez être le premier joueur à verrouiller cette partie.",
+      "theseAreTheCurrentPlayersThatWillParticipate": "Ce sont les joueurs actuels qui participeront.",
+      "noPlayersSubscribedYet": "Aucun joueur abonné pour l'instant.",
+      "playersInThisMatch": "Joueurs dans cette partie",
+      "unknownHost": "Hôte inconnu",
+      "seeTableChat": "Voir le chat en partie",
+      "newPlayersCannotJoinAtThisTime": "Les nouveaux joueurs ne peuvent pas s'inscrire pour le moment.",
+      "theHostHasClosedSubscriptionsForThisTable": "L'hôte a fermé les abonnements pour cette partie.",
+      "confirmTableSubscription": "Confirmer l'abonnement à la partie"
+    },
+    "ui_screens_match_table_card_widget": {
+      "subscribed": "Abonné",
+      "tapCardToOpenChat": "Appuyez sur la carte pour ouvrir le chat",
+      "shareThisMatch": "Partager la partie",
+      "share": "Partager",
+      "subscriptionsClosed": "Inscriptions clôturées",
+      "openFullLocationDetails": "Ouvrir les détails complets de l'emplacement",
+      "places": "places",
+      "place": "place",
+      "s": "s",
+      "joining": "Connexion...",
+      "closed": "Fermée",
+      "tableFull": "Partie complète",
+      "joinTable": "Rejoindre la partie",
+      "unknownLocation": "Lieu non renseigné",
+      "addressUnavailable": "Adresse indisponible",
+      "player": "joueur",
+      "players": "joueurs",
+      "subscriptionTooltip": "{subscribedPlayersCount} {playersWord} inscrits et {remainingSeats} {placesWord} restantes pour fermer la partie."
+    },
+    "ui_sheets_match_share_sheet": {
+      "shareThisMatch": "Partager cette partie",
+      "copyOrShareToInvitePlayers": "Copiez le lien ou partagez-le pour inviter des joueurs.",
+      "copyLink": "Copier le lien",
+      "copied": "Copié",
+      "orDivider": "OU",
+      "shareInWhatsApp": "Partager sur WhatsApp",
+      "shareInMessenger": "Partager sur Messenger",
+      "shareInTelegram": "Partager sur Telegram",
+      "chooseWhereToShare": "Choisir où partager",
+      "copyFailed": "Impossible de copier le lien.",
+      "unableToOpenWhatsApp": "Impossible d'ouvrir WhatsApp pour le moment.",
+      "unableToOpenTelegram": "Impossible d'ouvrir Telegram pour le moment."
+    },
+    "ui_screens_match_location_header_image_widget": {
+      "locationDetails": "Détails de l'emplacement"
+    },
+    "ui_screens_match_create_table_location_no_recent_locations_widget": {
+      "noPreviousLocationsYetSearchAndSelectOneAbove": "Aucun emplacement précédent pour l'instant. Recherchez et sélectionnez-en un ci-dessus."
+    },
+    "ui_screens_match_chat_screen": {
+      "chooseFromGallery": "Choisissez dans la galerie",
+      "takePhoto": "Prendre une photo",
+      "cancel": "Annuler",
+      "chooseFromLibrary": "Choisissez dans la bibliothèque",
+      "takePhoto2": "Prendre une photo",
+      "sendAPhoto": "Envoyer une photo",
+      "compress": "Compresse",
+      "cancel2": "Annuler",
+      "imageIsTooLarge": "L'image est trop grande",
+      "subscribed": "Abonné",
+      "unableToResolveYourAccountInformation": "Impossible de résoudre les informations de votre compte.",
+      "tableInfo": "Infos de la partie",
+      "playedMatchInfo": "Infos de la partie terminée",
+      "editTable": "Modifier la partie"
+    },
+    "ui_dialogs_match_played_match_summary_dialog": {
+      "completedMatchReport": "Rapport de Partie Terminée",
+      "winner": "Vainqueur",
+      "notAvailable": "Non disponible",
+      "startedAtLabel": "Début : {value}",
+      "durationLabel": "Durée : {value}",
+      "scheduledAtLabel": "Planifiée : {value}",
+      "matchProofs": "Preuves de la Partie",
+      "players": "Joueurs",
+      "domination": "Domination",
+      "scoreLabel": "{value} pts",
+      "close": "Fermer",
+      "hoursMinutes": "{hours}h {minutes}m"
+    },
+    "ui_screens_match_create_table_location_loading_recent_widget": {
+      "loadingPreviousLocations": "Chargement des emplacements précédents..."
+    }
+  },
+  "register_match": {
+    "ui_sheets_register_match_wizard_winner_step_section": {
+      "dominance": "Dominance",
+      "totalPoints30": "Total de points (30)",
+      "dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB": "Domination signifie que le vainqueur a atteint un objectif de carte Domination au lieu de gagner par points.",
+      "totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack": "Le total des points signifie que le vainqueur a atteint 30 points de victoire sur la piste de score.",
+      "howDidTheWinnerWon": "Comment le gagnant a-t-il gagné ?",
+      "pickThePlayerWhoWonThisMatch": "Choisissez le joueur qui a gagné ce match."
+    },
+    "ui_sheets_register_match_wizard_timing_step_section": {
+      "estimatedDuration": "Durée estimée",
+      "estimatedDuration2": "Durée estimée",
+      "setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours": "Définissez la durée estimée. Ajustez par étapes de 15 minutes (max 8 heures).",
+      "changeTime": "Changer l'heure",
+      "matchStartedAt": "Le match a commencé à",
+      "setTheTimeTheMatchActuallyStarted": "Réglez l’heure à laquelle le match a réellement commencé."
+    },
+    "ui_sheets_register_match_wizard_participants_step_section": {
+      "addRegisteredPlayerFromPlatform": "Ajouter un joueur enregistré depuis la plateforme",
+      "addAnonymousPlayer": "Ajouter un joueur anonyme",
+      "registeredPlayer": "Joueur inscrit",
+      "anonymousPlayer": "Joueur anonyme",
+      "selectRegisteredPlayersWhoWerePresentYouCanAddAnonymousPlayersOrSearchFo": "Sélectionnez les joueurs inscrits qui étaient présents. Vous pouvez ajouter des joueurs anonymes ou rechercher d'autres joueurs enregistrés.",
+      "value1WhoActuallyPlayed": "1) Qui a réellement joué ?"
+    },
+    "ui_sheets_register_match_picker_error_section": {
+      "retry": "Réessayer"
+    },
+    "ui_sheets_register_match_picker_match_item_card": {
+      "notAvailableYet": "Pas encore disponible",
+      "tapToReport": "Appuyez pour signaler"
+    },
+    "ui_sheets_register_match_wizard_factions_step_section": {
+      "selectFaction": "Sélectionnez une faction",
+      "faction": "Faction",
+      "chooseTheFactionUsedByEachPlayerInThisMatch": "Choisissez la faction utilisée par chaque joueur dans ce match.",
+      "value2SelectFactions": "2) Sélectionnez les factions"
+    },
+    "ui_sheets_register_match_search_registered_player_sheet": {
+      "tapToAdd": "Appuyez pour ajouter",
+      "alreadyAddedToThisReport": "Déjà ajouté à ce rapport",
+      "noRegisteredPlayersWereFound": "Aucun joueur inscrit n'a été trouvé.",
+      "searchByDisplayName": "Rechercher par nom d'affichage",
+      "addRegisteredPlayer": "Ajouter un joueur enregistré"
+    },
+    "ui_sheets_register_match_wizard_points_step_section": {
+      "value0To29": "0 à 29",
+      "points": "Points",
+      "dominanceAttempt": "Tentative de domination",
+      "winnerByDominance": "Gagnant par domination",
+      "winnerByPoints": "Gagnant aux points",
+      "failedDominance": "Domination ratée",
+      "points2": "Points",
+      "winner": "Gagnant",
+      "failedDominanceAlwaysCountsAsNoPoints": "Une domination ratée compte toujours comme aucun point.",
+      "forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt": "Pour chaque non-gagnant, marquez des points ou marquez une tentative de domination ratée."
+    },
+    "ui_sheets_register_match_wizard_bottom_actions_section": {
+      "submitReport": "Soumettre le rapport",
+      "back": "Dos",
+      "cancel": "Annuler",
+      "continueButton": "Continuer"
+    },
+    "ui_sheets_register_match_picker_empty_section": {
+      "youDoNotHaveAnyHostedSubscribedMatchPendingResultRegistration": "Vous n'avez aucun match hébergé/abonné en attente d'enregistrement des résultats.",
+      "noPendingMatches": "Aucun match en attente"
+    },
+    "ui_sheets_register_match_wizard_loading_section": {
+      "loadingMatchDetails": "Chargement des détails du match..."
+    },
+    "ui_sheets_register_match_picker_sheet": {
+      "youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart": "Vous pouvez enregistrer ce match 2 heures avant son début prévu.",
+      "resultRegistrationNotAvailableYet": "L'enregistrement des résultats n'est pas encore disponible"
+    },
+    "ui_sheets_register_match_add_anonymous_player_sheet": {
+      "tapToAdd": "Appuyez pour ajouter",
+      "alreadyAddedToThisReport": "Déjà ajouté à ce rapport",
+      "noAnonymousPlayersYetCreateOneUsingFirstAndLastName": "Pas encore de joueurs anonymes. Créez-en un en utilisant le prénom et le nom.",
+      "createAndAddPlayer": "Créer et ajouter un joueur",
+      "lastName": "Nom de famille",
+      "firstName": "Prénom",
+      "addAnonymousPlayer": "Ajouter un joueur anonyme"
+    },
+    "ui_sheets_register_match_wizard_top_bar_section": {
+      "registerMatchResult": "Enregistrer le résultat du match"
+    },
+    "ui_sheets_register_match_wizard_error_section": {
+      "close": "Fermer",
+      "registerMatch": "S'inscrire"
+    },
+    "ui_sheets_register_match_wizard_sheet": {
+      "gallery": "Galerie",
+      "camera": "Caméra",
+      "cancel": "Annuler",
+      "gallery2": "Galerie",
+      "camera2": "Caméra",
+      "selectSource": "Sélectionnez la source",
+      "selectedImageIsEmptyChooseAnotherImage": "L'image sélectionnée est vide. Choisissez une autre image.",
+      "invalidImage": "Image invalide",
+      "allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain": "Autorisez les autorisations de l'appareil photo et des photos dans les paramètres système et réessayez.",
+      "unableToAccessCameraOrGallery": "Impossible d'accéder à la caméra ou à la galerie",
+      "ok": "D'accord",
+      "takeASelfieWithEveryoneAtTheTableIfPossibleIncludeTheBoardInTheSamePhoto": "Prenez un selfie avec tout le monde à table. Si possible, incluez le tableau sur la même photo.",
+      "groupSelfieProof": "Preuve de selfie de groupe",
+      "completeAllReportStepsBeforeSubmitting": "Terminez toutes les étapes du rapport avant de le soumettre.",
+      "incompleteReport": "Rapport incomplet",
+      "addTheBoardPhotoBeforeContinuing": "Ajoutez la photo du tableau avant de continuer.",
+      "boardPhotoRequired": "Photo du tableau requise",
+      "addTheGroupSelfieBeforeContinuing": "Ajoutez le selfie de groupe avant de continuer.",
+      "groupPhotoRequired": "Photo de groupe obligatoire",
+      "matchDurationMustBeAtMost8Hours": "La durée du match doit être au maximum de 8 heures.",
+      "invalidDuration": "Durée invalide",
+      "matchDurationMustBeGreaterThanZero": "La durée du match doit être supérieure à zéro.",
+      "invalidDuration2": "Durée invalide",
+      "matchStartTimeCannotBeInTheFuture": "L’heure du début du match ne peut pas être postérieure.",
+      "invalidMatchRegistration": "Inscription au match invalide",
+      "selectWhenThisMatchStarted": "Sélectionnez quand ce match a commencé.",
+      "matchStartMissing": "Début de match manquant",
+      "invalidPoints": "Points invalides",
+      "pointsMissing": "Points manquants",
+      "selectHowTheWinnerWonBeforeContinuing": "Sélectionnez comment le gagnant a gagné avant de continuer.",
+      "winnerMethodMissing": "Méthode gagnante manquante",
+      "selectTheWinnerBeforeContinuing": "Sélectionnez le gagnant avant de continuer.",
+      "winnerMissing": "Gagnant manquant",
+      "theSelectedWinnerIsNoLongerInTheParticipantList": "Le gagnant sélectionné ne figure plus dans la liste des participants.",
+      "winnerMissing2": "Gagnant manquant",
+      "selectTheWinnerBeforeContinuing2": "Sélectionnez le gagnant avant de continuer.",
+      "winnerMissing3": "Gagnant manquant",
+      "invalidFactionSetup": "Configuration de faction invalide",
+      "factionMissing": "Faction disparue",
+      "selectAtLeast2ParticipantsRegisteredAndOrAnonymousToContinue": "Sélectionnez au moins 2 participants (inscrits et/ou anonymes) pour continuer.",
+      "notEnoughPlayers": "Pas assez de joueurs",
+      "edit": "Modifier",
+      "youKeptTheDefaultDurationOf1HourDoYouWantToContinueWithIt": "Vous avez conservé la durée par défaut de 1 heure. Voulez-vous continuer?",
+      "keepDefaultDuration": "Conserver la durée par défaut ?",
+      "matchStartTimeCannotBeInTheFuture2": "L’heure du début du match ne peut pas être postérieure.",
+      "invalidMatchRegistration2": "Inscription au match invalide",
+      "matchStartTimeCannotBeInTheFuture3": "L’heure du début du match ne peut pas être postérieure.",
+      "invalidMatchRegistration3": "Inscription au match invalide",
+      "unableToLoadThisMatchReportFlow": "Impossible de charger ce flux de rapport de partie.",
+      "matchNotFound": "Partie introuvable",
+      "unableToLoadThisMatchReportFlow2": "Impossible de charger ce flux de rapport de partie.",
+      "invalidMatch": "Partie invalide",
+      "continueButton": "Continuer",
+      "selectFactionForParticipantBeforeContinuing": "Sélectionnez une faction pour {participantName} avant de continuer.",
+      "factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce": "{factionName} a été sélectionnée plus d’une fois. Chaque faction ne peut être choisie qu’une seule fois."
+    },
+    "ui_sheets_register_match_wizard_review_step_section": {
+      "boardPhoto": "Photo du tableau",
+      "groupPhoto": "Photo de groupe",
+      "socialProof": "Preuve sociale",
+      "ranking": "Classement",
+      "confirmAllDetailsBeforeLoggingThisMatch": "Confirmez tous les détails avant d’enregistrer cette partie."
+    },
+    "ui_sheets_register_match_wizard_review_photo_tile": {
+      "ready": "Prêt",
+      "missing": "Manquant"
+    },
+    "ui_sheets_register_match_wizard_proof_card_section": {
+      "tapToReplace": "Appuyez pour remplacer",
+      "tapToAddPhoto": "Appuyez pour ajouter une photo"
+    },
+    "ui_sheets_register_match_picker_header_section": {
+      "selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu": "Sélectionnez un match auquel vous avez participé. Vous pouvez enregistrer un résultat 2 heures avant le début prévu.",
+      "registerMatchResult": "Enregistrer le résultat du match"
+    },
+    "ui_sheets_register_match_wizard_social_proof_step_section": {
+      "captureTheBoardAndScoreTrackClearly": "Capturez le tableau et marquez clairement la piste.",
+      "boardPhoto": "Photo du tableau",
+      "uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible": "Téléchargez une photo du tableau avec la piste de score clairement visible.",
+      "boardPhotoProof": "Preuve photo du tableau",
+      "selfieWithAllPlayersIncludeTheBoardIfPossible": "Selfie avec tous les joueurs. Incluez le tableau si possible.",
+      "groupPhoto": "Photo de groupe",
+      "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Téléchargez les deux photos pour confirmer que cette partie a eu lieu en personne."
+    }
+  },
+  "shop": {
+    "ui_screens_shop_screen": {
+      "shopHeaderTitle": "Construisez votre collection Root",
+      "shopHeaderDescription": "Achetez le jeu de base et les extensions avec les détails localisés de la boîte et des raccourcis vers les marketplaces.",
+      "whereToBuy": "Où acheter",
+      "buyAt": "Acheter sur {store}",
+      "invalidStoreUrl": "Ce lien de boutique est invalide.",
+      "unableToOpenStoreUrl": "Impossible d’ouvrir ce lien de boutique pour le moment.",
+      "closeGallery": "Fermer la galerie",
+      "noProductsAvailable": "Aucun produit disponible pour cette langue pour le moment."
+    }
+  }
+}

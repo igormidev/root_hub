@@ -12,7 +12,7 @@ class _RegisterMatchWizardErrorSection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
+      padding: EdgeInsets.fromLTRB(16, 14, 16, 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,25 +20,28 @@ class _RegisterMatchWizardErrorSection extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                icon: const Icon(Icons.close_rounded),
+                icon: Icon(Icons.close_rounded),
               ),
-              const SizedBox(width: 2),
+              SizedBox(width: 2),
               Text(
-                'Register Match',
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_error_section
+                    .registerMatch,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           Text(
             error.title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w900,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(
             error.description,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -46,12 +49,17 @@ class _RegisterMatchWizardErrorSection extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const Spacer(),
+          Spacer(),
           SizedBox(
             width: double.infinity,
             child: FilledButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Close'),
+              child: Text(
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_error_section
+                    .close,
+              ),
             ),
           ),
         ],

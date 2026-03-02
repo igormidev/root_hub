@@ -5,6 +5,7 @@ import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart'
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_report_available_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_time_status_chip_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableCardWidget extends StatelessWidget {
   const MatchTableCardWidget({
@@ -18,6 +19,7 @@ class MatchTableCardWidget extends StatelessWidget {
     required this.onOpenLocationInfo,
     required this.onOpenJoinTable,
     required this.onOpenSubscribedChat,
+    required this.onShareTable,
     super.key,
   });
 
@@ -36,6 +38,7 @@ class MatchTableCardWidget extends StatelessWidget {
   })
   onOpenJoinTable;
   final void Function(int tableId, String tableTitle) onOpenSubscribedChat;
+  final Future<void> Function(MatchSchedulePairingAttempt table) onShareTable;
 
   @override
   Widget build(BuildContext context) {
@@ -53,16 +56,18 @@ class MatchTableCardWidget extends StatelessWidget {
     final googlePlace = location?.googlePlaceLocation;
     final manualLocation = location?.manualInputLocation;
     final locationTitle =
-        googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
+        googlePlace?.name ??
+        manualLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
     final locationSubtitle =
         googlePlace?.shortFormattedAddress ??
         googlePlace?.formattedAddress ??
         manualLocation?.cityName ??
-        'Address unavailable';
+        t.match.ui_screens_match_table_card_widget.addressUnavailable;
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
-    final subscriptions = table.subscriptions ?? const <MatchSubscription>[];
+    final subscriptions = table.subscriptions ?? <MatchSubscription>[];
     final subscribedPlayersCount = subscriptions.length;
     final isSubscribed =
         currentPlayer != null &&
@@ -83,14 +88,14 @@ class MatchTableCardWidget extends StatelessWidget {
     final canOpenSubscribedChat = tableId != null && isSubscribed;
 
     final actionLabel = switch ((isSubscribing, isClosed, isFull)) {
-      (true, _, _) => 'Joining...',
-      (_, true, _) => 'Closed',
-      (_, _, true) => 'Table Full',
-      _ => 'Join Table',
+      (true, _, _) => t.match.ui_screens_match_table_card_widget.joining,
+      (_, true, _) => t.match.ui_screens_match_table_card_widget.closed,
+      (_, _, true) => t.match.ui_screens_match_table_card_widget.tableFull,
+      _ => t.match.ui_screens_match_table_card_widget.joinTable,
     };
 
     final cardContent = Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
@@ -113,7 +118,7 @@ class MatchTableCardWidget extends StatelessWidget {
               alpha: isSubscribed ? 0.12 : 0.08,
             ),
             blurRadius: isSubscribed ? 22 : 18,
-            offset: const Offset(0, 10),
+            offset: Offset(0, 10),
           ),
         ],
       ),
@@ -134,7 +139,7 @@ class MatchTableCardWidget extends StatelessWidget {
                       ),
                     ),
                     if (table.description?.trim().isNotEmpty == true) ...[
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         table.description!.trim(),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -147,14 +152,51 @@ class MatchTableCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
+              Tooltip(
+                message:
+                    t.match.ui_screens_match_table_card_widget.shareThisMatch,
+                child: FilledButton.tonalIcon(
+                  onPressed: () async {
+                    await onShareTable(table);
+                  },
+                  style: FilledButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
+                    minimumSize: Size(0, 34),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.share_rounded,
+                    size: 16,
+                  ),
+                  label: Text(
+                    t.match.ui_screens_match_table_card_widget.share,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
               Tooltip(
                 triggerMode: TooltipTriggerMode.tap,
-                message:
-                    '$subscribedPlayersCount player${subscribedPlayersCount == 1 ? '' : 's'} subscribed and '
-                    '$remainingSeats ${remainingSeats == 1 ? 'place' : 'places'} remaining to close the table.',
+                message: t.match.ui_screens_match_table_card_widget
+                    .subscriptionTooltip(
+                      subscribedPlayersCount: subscribedPlayersCount.toString(),
+                      playersWord: subscribedPlayersCount == 1
+                          ? t.match.ui_screens_match_table_card_widget.player
+                          : t.match.ui_screens_match_table_card_widget.players,
+                      remainingSeats: remainingSeats.toString(),
+                      placesWord: remainingSeats == 1
+                          ? t.match.ui_screens_match_table_card_widget.place
+                          : t.match.ui_screens_match_table_card_widget.places,
+                    ),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 6,
                   ),
@@ -173,7 +215,7 @@ class MatchTableCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Row(
             children: [
               Icon(
@@ -181,7 +223,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 size: 18,
                 color: colorScheme.primary,
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6),
               Expanded(
                 child: Text(
                   '$dateLabel • $timeLabel',
@@ -193,7 +235,7 @@ class MatchTableCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               MatchTimeStatusChipWidget(
                 currentTime: currentTime,
                 tableStartAt: dateTime,
@@ -201,7 +243,7 @@ class MatchTableCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -210,7 +252,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 size: 18,
                 color: colorScheme.secondary,
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,23 +273,31 @@ class MatchTableCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Tooltip(
-                message: 'Open full location details',
-                child: IconButton(
-                  visualDensity: VisualDensity.compact,
-                  onPressed: () {
-                    onOpenLocationInfo(location);
-                  },
-                  icon: Icon(
-                    Icons.info_outline_rounded,
-                    color: colorScheme.primary,
-                    size: 20,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Tooltip(
+                    message: t
+                        .match
+                        .ui_screens_match_table_card_widget
+                        .openFullLocationDetails,
+                    child: IconButton(
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () {
+                        onOpenLocationInfo(location);
+                      },
+                      icon: Icon(
+                        Icons.info_outline_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -260,9 +310,12 @@ class MatchTableCardWidget extends StatelessWidget {
                 triggerMode: TooltipTriggerMode.tap,
               ),
               if (isClosed)
-                const MatchInfoChipWidget(
+                MatchInfoChipWidget(
                   icon: Icons.lock_rounded,
-                  text: 'Subscriptions closed',
+                  text: t
+                      .match
+                      .ui_screens_match_table_card_widget
+                      .subscriptionsClosed,
                 ),
               if (distanceLabel != null)
                 MatchInfoChipWidget(
@@ -270,15 +323,18 @@ class MatchTableCardWidget extends StatelessWidget {
                   text: distanceLabel!,
                 ),
               if (isSubscribed)
-                const MatchInfoChipWidget(
+                MatchInfoChipWidget(
                   icon: Icons.chat_bubble_rounded,
-                  text: 'Tap card to open chat',
+                  text: t
+                      .match
+                      .ui_screens_match_table_card_widget
+                      .tapCardToOpenChat,
                 ),
-              if (canReportResultNow) const MatchReportAvailableChipWidget(),
+              if (canReportResultNow) MatchReportAvailableChipWidget(),
             ],
           ),
           if (!isSubscribed) ...[
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
@@ -292,8 +348,8 @@ class MatchTableCardWidget extends StatelessWidget {
                       }
                     : null,
                 style: FilledButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 56),
-                  maximumSize: const Size(double.infinity, 56),
+                  minimumSize: Size(double.infinity, 56),
+                  maximumSize: Size(double.infinity, 56),
                   backgroundColor: colorScheme.primary,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: colorScheme.surfaceContainerHighest,
@@ -337,7 +393,7 @@ class MatchTableCardWidget extends StatelessWidget {
         : cardContent;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 14),
+      padding: EdgeInsets.only(top: 14),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -346,7 +402,7 @@ class MatchTableCardWidget extends StatelessWidget {
             left: 14,
             top: -13,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(999),
                 color: colorScheme.primary,
@@ -354,12 +410,12 @@ class MatchTableCardWidget extends StatelessWidget {
                   BoxShadow(
                     color: colorScheme.shadow.withValues(alpha: 0.2),
                     blurRadius: 12,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
               child: Text(
-                'Subscribed',
+                t.match.ui_screens_match_table_card_widget.subscribed,
                 style: GoogleFonts.getFont(
                   'MedievalSharp',
                   color: Colors.white,

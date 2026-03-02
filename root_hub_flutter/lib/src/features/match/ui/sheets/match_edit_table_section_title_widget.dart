@@ -24,7 +24,7 @@ class MatchEditTableSectionTitleWidget extends StatelessWidget {
             color: colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 3),
+        SizedBox(height: 3),
         Text(
           description,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(

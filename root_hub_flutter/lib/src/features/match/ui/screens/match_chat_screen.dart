@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/match/ui/dialogs/match_played_match_summary_dialog.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_loading_error_state_widget.dart';
@@ -19,6 +20,7 @@ import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchChatScreen extends ConsumerStatefulWidget {
   final int scheduledMatchId;
@@ -78,6 +80,12 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     final isLoadingInitial =
         !isCurrentChat || (chatState.isLoading && !chatState.hasLoadedOnce);
     final loadError = isCurrentChat ? chatState.loadError : null;
+    final playedMatchSummary = isCurrentChat
+        ? chatState.playedMatchSummary
+        : null;
+    final isLoadingPlayedMatchSummary = isCurrentChat
+        ? chatState.isLoadingPlayedMatchSummary
+        : false;
     final title = widget.matchTitle?.trim().isNotEmpty == true
         ? widget.matchTitle!.trim()
         : 'Match #${widget.scheduledMatchId} Chat';
@@ -106,7 +114,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         actions: [
           if (chatState.isSendingMessage || chatState.isUploadingImage)
             Padding(
-              padding: const EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 4),
               child: Center(
                 child: SizedBox(
                   width: 18,
@@ -118,16 +126,42 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 ),
               ),
             ),
-          if (isHost)
+          if (isHost && playedMatchSummary == null)
             IconButton(
-              tooltip: 'Edit table',
-              icon: const Icon(Icons.edit_outlined),
+              tooltip: t.match.ui_screens_match_chat_screen.editTable,
+              icon: Icon(Icons.edit_outlined),
               onPressed: () => _openEditSheet(context),
             ),
+          if (isLoadingPlayedMatchSummary)
+            Padding(
+              padding: EdgeInsets.only(right: 4),
+              child: Center(
+                child: SizedBox(
+                  width: 17,
+                  height: 17,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.1,
+                    color: colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
           IconButton(
-            tooltip: 'Table info',
-            icon: const Icon(Icons.info_outline_rounded),
-            onPressed: _openTableInfoSheet,
+            tooltip: playedMatchSummary != null
+                ? t.match.ui_screens_match_chat_screen.playedMatchInfo
+                : t.match.ui_screens_match_chat_screen.tableInfo,
+            icon: Icon(
+              playedMatchSummary != null
+                  ? Icons.emoji_events_rounded
+                  : Icons.info_outline_rounded,
+            ),
+            onPressed: isLoadingPlayedMatchSummary
+                ? null
+                : playedMatchSummary != null
+                ? () {
+                    _openPlayedMatchSummaryDialog(playedMatchSummary);
+                  }
+                : _openTableInfoSheet,
           ),
         ],
       ),
@@ -137,9 +171,12 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             if (currentUserId == null) {
               return Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
-                    'Unable to resolve your account information.',
+                    t
+                        .match
+                        .ui_screens_match_chat_screen
+                        .unableToResolveYourAccountInformation,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
@@ -178,7 +215,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               onMessageSend: chatNotifier.sendTextMessage,
               onAttachmentTap: () => _pickAndSendImage(chatNotifier),
               builders: Builders(
-                composerBuilder: (context) => const Composer(
+                composerBuilder: (context) => Composer(
                   attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
                 ),
                 chatAnimatedListBuilder: (context, itemBuilder) =>
@@ -215,14 +252,14 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                             .factionIconPathForAuthorId(authorId);
 
                         headerWidget = Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 2, 8, 4),
+                          padding: EdgeInsets.fromLTRB(8, 2, 8, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               MatchChatSenderAvatarWidget(
                                 profileImageUrl,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width: 6),
                               Flexible(
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -245,7 +282,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                       ),
                                     ),
                                     if (factionIconPath != null) ...[
-                                      const SizedBox(width: 6),
+                                      SizedBox(width: 6),
                                       Image.asset(
                                         factionIconPath,
                                         width: 18,
@@ -257,9 +294,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                 ),
                               ),
                               if (isSubscribedSender) ...[
-                                const SizedBox(width: 6),
+                                SizedBox(width: 6),
                                 Container(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                     8,
                                     2,
                                     8,
@@ -270,7 +307,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                                     color: colorScheme.primaryContainer,
                                   ),
                                   child: Text(
-                                    'Subscribed',
+                                    t
+                                        .match
+                                        .ui_screens_match_chat_screen
+                                        .subscribed,
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelSmall
@@ -318,7 +358,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                       index: index,
                     ),
                 loadMoreBuilder: (context) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Center(
                       child: SizedBox(
@@ -377,6 +417,17 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     }
   }
 
+  Future<void> _openPlayedMatchSummaryDialog(
+    MatchChatPlayedMatchSummary summary,
+  ) async {
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return MatchPlayedMatchSummaryDialog(summary: summary);
+      },
+    );
+  }
+
   Future<bool> _showImageCompressionDialog({
     required int imageBytes,
     required int maxBytes,
@@ -392,7 +443,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Image is too large'),
+          title: Text(
+            t.match.ui_screens_match_chat_screen.imageIsTooLarge,
+          ),
           content: Text(
             'This image is ${selectedImageMb}MB, but the limit is '
             '${maxAllowedMb}MB. Compress it automatically before sending?',
@@ -400,11 +453,15 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.cancel2,
+              ),
             ),
             FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Compress'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.compress,
+              ),
             ),
           ],
         );
@@ -465,19 +522,25 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       context: context,
       builder: (dialogContext) {
         return CupertinoActionSheet(
-          title: const Text('Send a photo'),
+          title: Text(
+            t.match.ui_screens_match_chat_screen.sendAPhoto,
+          ),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.camera);
               },
-              child: const Text('Take Photo'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.takePhoto2,
+              ),
             ),
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.gallery);
               },
-              child: const Text('Choose from Library'),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.chooseFromLibrary,
+              ),
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
@@ -485,7 +548,9 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             onPressed: () {
               Navigator.of(dialogContext).pop();
             },
-            child: const Text('Cancel'),
+            child: Text(
+              t.match.ui_screens_match_chat_screen.cancel,
+            ),
           ),
         );
       },
@@ -502,20 +567,24 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_camera_rounded),
-                title: const Text('Take Photo'),
+                leading: Icon(Icons.photo_camera_rounded),
+                title: Text(
+                  t.match.ui_screens_match_chat_screen.takePhoto,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_rounded),
-                title: const Text('Choose from Gallery'),
+                leading: Icon(Icons.photo_library_rounded),
+                title: Text(
+                  t.match.ui_screens_match_chat_screen.chooseFromGallery,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
                 },
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
             ],
           ),
         );

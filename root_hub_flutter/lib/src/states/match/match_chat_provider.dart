@@ -9,6 +9,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_state.dart';
 
@@ -66,6 +67,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       state = MatchChatState(
         scheduledMatchId: scheduledMatchId,
         isLoading: true,
+        isLoadingPlayedMatchSummary: true,
       );
 
       _chatMessages.clear();
@@ -73,10 +75,13 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       _profileImageUrlsByAuthorId.clear();
       await _chatController.setMessages(const <Message>[], animated: false);
 
-      await _loadPage(
-        page: 1,
-        replaceMessages: true,
-      );
+      await Future.wait([
+        _loadPage(
+          page: 1,
+          replaceMessages: true,
+        ),
+        _loadPlayedMatchSummary(scheduledMatchId),
+      ]);
     } finally {
       _isOpeningChat = false;
     }
@@ -136,6 +141,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           .read(clientProvider)
           .sendMatchChatMessage
           .v1(
+            language: ref.read(serverSupportedTranslationProvider),
             scheduledMatchId: scheduledMatchId,
             content: normalizedText,
           )
@@ -360,6 +366,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           .read(clientProvider)
           .sendMatchChatMessage
           .v1(
+            language: ref.read(serverSupportedTranslationProvider),
             scheduledMatchId: scheduledMatchId,
             content: '',
             imageBytes: imageByteData,
@@ -526,6 +533,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         .read(clientProvider)
         .getMatchChatMessage
         .v1(
+          language: ref.read(serverSupportedTranslationProvider),
           scheduledMatchId: scheduledMatchId,
           page: page,
         )
@@ -596,6 +604,38 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     );
   }
 
+  Future<void> _loadPlayedMatchSummary(int scheduledMatchId) async {
+    final result = await ref
+        .read(clientProvider)
+        .getMatchChatPlayedMatchSummary
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          scheduledMatchId: scheduledMatchId,
+        )
+        .toResult;
+
+    if (state.scheduledMatchId != scheduledMatchId) {
+      return;
+    }
+
+    result.fold(
+      (summaryValue) {
+        state = state.copyWith(
+          isLoadingPlayedMatchSummary: false,
+          playedMatchSummaryError: null,
+          playedMatchSummary: summaryValue.value,
+        );
+      },
+      (error) {
+        state = state.copyWith(
+          isLoadingPlayedMatchSummary: false,
+          playedMatchSummaryError: error,
+          playedMatchSummary: null,
+        );
+      },
+    );
+  }
+
   Future<void> _insertMessage(MatchChatMessage serverMessage) async {
     final message = _toUiMessage(serverMessage);
     final alreadyExists = _chatMessages.any(
@@ -627,6 +667,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           .read(clientProvider)
           .removePlayerFromMatch
           .v1(
+            language: ref.read(serverSupportedTranslationProvider),
             scheduledMatchId: scheduledMatchId,
             playerDataId: playerDataId,
           );
@@ -671,7 +712,10 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       await ref
           .read(clientProvider)
           .unsubscribeFromMatch
-          .v1(scheduledMatchId: scheduledMatchId);
+          .v1(
+            language: ref.read(serverSupportedTranslationProvider),
+            scheduledMatchId: scheduledMatchId,
+          );
       return null;
     } on RootHubException catch (error) {
       talker.debug(

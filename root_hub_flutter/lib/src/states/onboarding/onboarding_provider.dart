@@ -1,27 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
-import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
+import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/onboarding/onboarding_state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingState> {
   static const defaultLocationRatioKm = 25.0;
-  static const _selectedFactionKey = 'auth_onboarding_selected_faction_new';
-  static const _displayNameKey = 'auth_onboarding_display_name';
-  static const _locationXKey = 'auth_onboarding_location_x';
-  static const _locationYKey = 'auth_onboarding_location_y';
-  static const _locationRatioKey = 'auth_onboarding_location_ratio';
 
   @override
   OnboardingState build() {
-    final prefs = ref.read(sharedPreferencesProvider);
-    final savedFactionRaw = prefs.getString(_selectedFactionKey);
-
-    return OnboardingState(
-      selectedFaction: _parseFaction(savedFactionRaw),
-      displayName: (prefs.getString(_displayNameKey) ?? '').trim(),
-      currentLocation: _parseLocation(prefs),
-    );
+    return const OnboardingState();
   }
 
   void selectFaction(Faction faction) {
@@ -37,7 +26,12 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   }
 
   void setCurrentLocation(GeoLocation location) {
-    state = state.copyWith(currentLocation: location);
+    state = state.copyWith(
+      currentLocation: location,
+      currentLocationCityName: null,
+      currentLocationShortAddress: null,
+      currentLocationFormattedAddress: null,
+    );
   }
 
   void setCurrentLocationRatio(double ratioKm) {
@@ -53,79 +47,62 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   }
 
   void clearCurrentLocation() {
-    state = state.copyWith(currentLocation: null);
-  }
-
-  Future<void> persistSelectedFaction() async {
-    final faction = state.selectedFaction;
-    if (faction == null) {
-      return;
-    }
-
-    await ref
-        .read(sharedPreferencesProvider)
-        .setString(_selectedFactionKey, faction.toJson());
-  }
-
-  Future<void> persistProfileData() async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    final normalizedDisplayName = state.displayName.trim();
-    if (normalizedDisplayName.isEmpty) {
-      await prefs.remove(_displayNameKey);
-    } else {
-      await prefs.setString(_displayNameKey, normalizedDisplayName);
-    }
-
-    final location = state.currentLocation;
-    if (location == null) {
-      await _removeLocationData(prefs);
-      return;
-    }
-
-    await prefs.setDouble(_locationXKey, location.x);
-    await prefs.setDouble(_locationYKey, location.y);
-    await prefs.setDouble(_locationRatioKey, location.ratio);
-  }
-
-  Future<void> clearSelection() async {
-    state = const OnboardingState();
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.remove(_selectedFactionKey);
-    await prefs.remove(_displayNameKey);
-    await _removeLocationData(prefs);
-  }
-
-  Future<void> _removeLocationData(SharedPreferences prefs) async {
-    await prefs.remove(_locationXKey);
-    await prefs.remove(_locationYKey);
-    await prefs.remove(_locationRatioKey);
-  }
-
-  Faction? _parseFaction(String? raw) {
-    if (raw == null || raw.isEmpty) {
-      return null;
-    }
-
-    try {
-      return Faction.fromJson(raw);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  GeoLocation? _parseLocation(SharedPreferences prefs) {
-    final x = prefs.getDouble(_locationXKey);
-    final y = prefs.getDouble(_locationYKey);
-    if (x == null || y == null) {
-      return null;
-    }
-
-    final ratio = prefs.getDouble(_locationRatioKey) ?? 0;
-    return GeoLocation(
-      x: x,
-      y: y,
-      ratio: ratio <= 0 ? defaultLocationRatioKm : ratio,
+    state = state.copyWith(
+      currentLocation: null,
+      currentLocationCityName: null,
+      currentLocationShortAddress: null,
+      currentLocationFormattedAddress: null,
     );
+  }
+
+  void clearCurrentLocationLabel() {
+    state = state.copyWith(
+      currentLocationCityName: null,
+      currentLocationShortAddress: null,
+      currentLocationFormattedAddress: null,
+    );
+  }
+
+  void setCurrentLocationLabel(ReverseGeocodeCityResult? label) {
+    state = state.copyWith(
+      currentLocationCityName: label?.cityName,
+      currentLocationShortAddress: label?.shortAddress,
+      currentLocationFormattedAddress: label?.formattedAddress,
+    );
+  }
+
+  Future<RootHubException?> resolveCurrentLocationLabel(
+    GeoLocation location,
+  ) async {
+    final result = await ref
+        .read(clientProvider)
+        .reverseGeocodeCity
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          x: location.x,
+          y: location.y,
+        )
+        .toResult;
+
+    return result.fold(
+      (label) {
+        final activeLocation = state.currentLocation;
+        if (activeLocation == null) {
+          return null;
+        }
+        if (activeLocation.x != location.x || activeLocation.y != location.y) {
+          return null;
+        }
+
+        setCurrentLocationLabel(label.value);
+        return null;
+      },
+      (error) => error,
+    );
+  }
+
+  void reset() {
+    state = const OnboardingState();
   }
 }
 

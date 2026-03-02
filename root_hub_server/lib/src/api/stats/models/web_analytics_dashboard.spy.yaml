@@ -1,0 +1,10 @@
+class: WebAnalyticsDashboard
+fields:
+  isAuthorized: bool
+  totalClicks: int
+  uniqueCountries: int
+  uniqueDevices: int
+  countryMetrics: List<WebAnalyticsMetricItem>
+  deviceMetrics: List<WebAnalyticsMetricItem>
+  timeline: List<WebAnalyticsTimelinePoint>
+  clicksPagination: WebAnalyticsClicksPagination

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchInitialLoadingStateWidget extends StatelessWidget {
   const MatchInitialLoadingStateWidget({
@@ -10,7 +11,7 @@ class MatchInitialLoadingStateWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+      padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
       decoration: BoxDecoration(
         color: colorScheme.surface.withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(22),
@@ -26,9 +27,12 @@ class MatchInitialLoadingStateWidget extends StatelessWidget {
               color: colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
-            'Loading nearby tables...',
+            t
+                .match
+                .ui_screens_match_initial_loading_state_widget
+                .loadingNearbyTables,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchReportAvailableChipWidget extends StatelessWidget {
   const MatchReportAvailableChipWidget({
@@ -10,10 +11,13 @@ class MatchReportAvailableChipWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Tooltip(
-      message: 'You can report this match result now.',
+      message: t
+          .match
+          .ui_screens_match_report_available_chip_widget
+          .youCanReportThisMatchResultNow,
       triggerMode: TooltipTriggerMode.tap,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+        padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(999),
           color: colorScheme.errorContainer.withValues(alpha: 0.72),
@@ -26,9 +30,12 @@ class MatchReportAvailableChipWidget extends StatelessWidget {
               size: 15,
               color: colorScheme.onErrorContainer,
             ),
-            const SizedBox(width: 5),
+            SizedBox(width: 5),
             Text(
-              'Report available',
+              t
+                  .match
+                  .ui_screens_match_report_available_chip_widget
+                  .reportAvailable,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: colorScheme.onErrorContainer,
                 fontWeight: FontWeight.w800,

@@ -6,11 +6,14 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:serverpod_auth_idp_server/providers/google.dart';
 import 'package:root_hub_server/src/auth/handlers/on_send_password_reset_verification_email.dart';
 import 'package:root_hub_server/src/auth/handlers/on_send_registration_verification_email.dart';
+import 'package:root_hub_server/src/future_calls/mark_stale_match_schedules_not_played_periodic_call.dart';
 
 import 'src/generated/endpoints.dart';
 import 'src/generated/protocol.dart';
 import 'src/web/routes/app_config_route.dart';
 import 'src/web/routes/root.dart';
+import 'src/web/routes/root_hub_web_portal_route.dart';
+import 'src/web/routes/web_portal_config_route.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
@@ -40,6 +43,33 @@ void run(List<String> args) async {
   // These are used by the default page.
   pod.webServer.addRoute(RootRoute(), '/');
   pod.webServer.addRoute(RootRoute(), '/index.html');
+
+  // Hosts the lightweight Root Hub web portal built with Jaspr.
+  final webPortalDir = Directory(
+    Uri(path: '../root_hub_web_portal/build/jaspr').toFilePath(),
+  );
+  if (webPortalDir.existsSync()) {
+    pod.webServer.addRoute(
+      WebPortalConfigRoute(
+        apiConfig: pod.config.apiServer,
+        runMode: pod.runMode,
+      ),
+      '/join/config.json',
+    );
+
+    pod.webServer.addRoute(
+      RootHubWebPortalRoute(webPortalDir),
+      '/join',
+    );
+  } else {
+    final buildPageRoute = StaticRoute.file(
+      File(
+        Uri(path: 'web/pages/build_web_portal.html').toFilePath(),
+      ),
+    );
+    pod.webServer.addRoute(buildPageRoute, '/join');
+    pod.webServer.addRoute(buildPageRoute, '/join/**');
+  }
 
   // Serve all files in the web/static relative directory under /.
   // These are used by the default web page.
@@ -80,4 +110,16 @@ void run(List<String> args) async {
 
   // Start the server.
   await pod.start();
+
+  await pod.futureCalls.cancel(
+    MarkStaleMatchSchedulesNotPlayedPeriodicCall.recurringIdentifier,
+  );
+  await pod.futureCalls
+      .callWithDelay(
+        Duration(minutes: 1),
+        identifier:
+            MarkStaleMatchSchedulesNotPlayedPeriodicCall.recurringIdentifier,
+      )
+      .markStaleMatchSchedulesNotPlayedPeriodicCall
+      .invoke(null);
 }

@@ -1,0 +1,5 @@
+enum: MatchScheduleStatus
+values:
+  - scheduled
+  - notPlayed
+  - played

@@ -18,7 +18,7 @@ class MatchJoinSheetLoadingWidget extends StatelessWidget {
         Container(
           width: 50,
           height: 5,
-          margin: const EdgeInsets.only(top: 12),
+          margin: EdgeInsets.only(top: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(999),
             color: colorScheme.outlineVariant,
@@ -27,7 +27,7 @@ class MatchJoinSheetLoadingWidget extends StatelessWidget {
         Expanded(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -39,7 +39,7 @@ class MatchJoinSheetLoadingWidget extends StatelessWidget {
                       color: colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14),
                   Text(
                     'Loading table details for "${fallbackTable.title}"...',
                     textAlign: TextAlign.center,

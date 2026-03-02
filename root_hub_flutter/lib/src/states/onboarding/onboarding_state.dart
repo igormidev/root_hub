@@ -9,5 +9,8 @@ abstract class OnboardingState with _$OnboardingState {
     Faction? selectedFaction,
     @Default('') String displayName,
     GeoLocation? currentLocation,
+    String? currentLocationCityName,
+    String? currentLocationShortAddress,
+    String? currentLocationFormattedAddress,
   }) = _OnboardingState;
 }

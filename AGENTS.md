@@ -7,17 +7,24 @@ The app is only available for mobile platforms, and all screens must be adapted 
 2. Read the README of the project you are modifying.
 3. If working on the Flutter client (`root_hub_flutter`), reading `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints/README.md` is mandatory.
 
+## Jaspr Web Portal
+- The Jaspr project (`root_hub_web_portal`) is the lightweight web layer for share redirects and web admin panels (for example analytics dashboards).
+- It is served by `root_hub_server` under `/join` and should stay framework-light (Jaspr only, no Flutter web).
+
 ## Mandatory Validation Workflow (No Exceptions)
+Always execute this full workflow before finalizing, even when a local README does not explicitly repeat these steps.
+
 After finishing any task, run all of the following:
 
 1. `serverpod generate` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
 2. `dart pub get` in `/Users/igor/PersonalProjects/root_hub`
-3. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
-4. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
-5. `flutter analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter`
-6. `dart run root_hub_flutter_lints:check_flutter_feature_lints --flutter-root ../root_hub_flutter` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
+3. `dart run custom_lint` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
+4. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_server`
+5. `dart analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
+6. `flutter analyze` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter`
+7. `dart run root_hub_flutter_lints:check_flutter_feature_lints --flutter-root ../root_hub_flutter` in `/Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints`
 
-Do not finalize while any static analysis error, warning, or custom lint issue remains.
+Do not finalize while any static analysis error, warning, or custom lint issue remains. Zero warnings and zero lint violations are mandatory.
 
 ## Formatting Rule
 If Flutter code was touched, run `dart format` on all changed Flutter Dart files before finalizing.
@@ -27,3 +34,15 @@ If structural/architectural conventions, folder conventions, or workflow convent
 
 ## Serverpod MCP Rule
 If a task requires changing the Serverpod backend and there is any uncertainty about framework-specific behavior, API usage, generation workflow, or best practice, consult the Serverpod MCP/docs before implementing the change.
+
+## Serverpod Cloud Deployment Notes
+- Always target the server package directory for cloud commands: `scloud -d root_hub_server ...`.
+- Keep `root_hub_server/scloud.yaml` configured with pre-deploy hook `serverpod generate`.
+- For entries from `root_hub_server/config/passwords.yaml`, use `scloud password set` (not `scloud secret`) so values are available via `session.passwords[...]`.
+- Root Hub cloud domains:
+  - API: `https://roothub.api.serverpod.space`
+  - Web: `https://roothub.serverpod.space`
+- Flutter runtime URL policy:
+  - Release: always force production API URL.
+  - Debug: allow `SERVER_URL` (or local fallback) for local/testing workflows.
+- Current cloud build compatibility note: keep workspace override `json_annotation: 4.9.0` while Serverpod Cloud build runtime is Dart 3.8.x.

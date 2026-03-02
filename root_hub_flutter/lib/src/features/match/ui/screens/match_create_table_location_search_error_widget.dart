@@ -14,7 +14,7 @@ class MatchCreateTableLocationSearchErrorWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: colorScheme.error.withValues(alpha: 0.5)),
@@ -30,7 +30,7 @@ class MatchCreateTableLocationSearchErrorWidget extends StatelessWidget {
               color: colorScheme.onErrorContainer,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             error.description,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(

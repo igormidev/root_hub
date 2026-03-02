@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -10,8 +11,11 @@ class SearchRegisteredPlayers extends Endpoint {
 
   Future<List<RegisteredPlayerSearchResult>> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required String query,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedQuery = _normalizeQuery(query);
@@ -35,8 +39,8 @@ class SearchRegisteredPlayers extends Endpoint {
             )
             .toList();
       },
-      fallbackDescription:
-          'Unable to search registered players right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToSearchRegisteredPlayers,
     );
   }
 

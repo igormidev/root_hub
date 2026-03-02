@@ -1,0 +1,4 @@
+class: WebAnalyticsClicksPagination
+fields:
+  clicks: List<WebAnalyticsClickItem>
+  paginationMetadata: PaginationMetadata

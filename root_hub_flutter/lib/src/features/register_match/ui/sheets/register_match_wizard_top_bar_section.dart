@@ -19,7 +19,7 @@ class _RegisterMatchWizardTopBarSection extends StatelessWidget {
         '${localizations.formatMediumDate(startAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(startAt))}';
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 10, 14, 10),
+      padding: EdgeInsets.fromLTRB(10, 10, 14, 10),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         border: Border(
@@ -31,20 +31,23 @@ class _RegisterMatchWizardTopBarSection extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).pop(false),
-            icon: const Icon(Icons.close_rounded),
+            icon: Icon(Icons.close_rounded),
           ),
-          const SizedBox(width: 2),
+          SizedBox(width: 2),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Register Match Result',
+                  t
+                      .register_match
+                      .ui_sheets_register_match_wizard_top_bar_section
+                      .registerMatchResult,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   tableInfo.matchSchedule.title,
                   maxLines: 1,
@@ -54,7 +57,7 @@ class _RegisterMatchWizardTopBarSection extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   startLabel,
                   style: theme.textTheme.bodySmall?.copyWith(
@@ -66,7 +69,7 @@ class _RegisterMatchWizardTopBarSection extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(999),
               color: colorScheme.primaryContainer,

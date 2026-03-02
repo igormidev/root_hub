@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_user_avatar_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableInfoParticipantCardWidget extends StatelessWidget {
   final MatchSchedulePlayerSnapshot playerSnapshot;
@@ -30,7 +31,7 @@ class MatchTableInfoParticipantCardWidget extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(14, 14, 108, 12),
+              padding: EdgeInsets.fromLTRB(14, 14, 108, 12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
@@ -52,7 +53,7 @@ class MatchTableInfoParticipantCardWidget extends StatelessWidget {
                   Row(
                     children: [
                       MatchTableInfoUserAvatarWidget(imageUrl: imageUrl),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           playerData.displayName,
@@ -64,15 +65,18 @@ class MatchTableInfoParticipantCardWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
-                    'Favorite Faction',
+                    t
+                        .match
+                        .ui_sheets_match_table_info_participant_card_widget
+                        .favoriteFaction,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     playerData.favoriteFaction.displayName.toUpperCase(),
                     style: GoogleFonts.cinzel(

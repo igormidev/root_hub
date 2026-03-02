@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchNoMatchesStateWidget extends StatelessWidget {
   const MatchNoMatchesStateWidget({
@@ -13,7 +14,7 @@ class MatchNoMatchesStateWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 18),
+      padding: EdgeInsets.fromLTRB(16, 20, 16, 18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: colorScheme.outlineVariant),
@@ -42,27 +43,38 @@ class MatchNoMatchesStateWidget extends StatelessWidget {
               size: 30,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
-            'No tables in your area yet',
+            t
+                .match
+                .ui_screens_match_no_matches_state_widget
+                .noTablesInYourAreaYet,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w900,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(
-            'Be the first to start one. Host a new table so nearby players can subscribe.',
+            t
+                .match
+                .ui_screens_match_no_matches_state_widget
+                .beTheFirstToStartOneHostANewTableSoNearbyPlayersCanSubscribe,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,
               height: 1.35,
             ),
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           FilledButton.icon(
             onPressed: onHostFirstTable,
-            icon: const Icon(Icons.add_rounded),
-            label: const Text('Host the first table'),
+            icon: Icon(Icons.add_rounded),
+            label: Text(
+              t
+                  .match
+                  .ui_screens_match_no_matches_state_widget
+                  .hostTheFirstTable,
+            ),
           ),
         ],
       ),

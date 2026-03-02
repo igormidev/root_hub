@@ -12,12 +12,16 @@ With Root Hub, users can:
 
 ## Main User Flow
 1. App validates session and player profile on startup.
-2. If needed, user completes onboarding (favorite faction + display name + mandatory device location coordinates and match search ratio).
-3. User authenticates (email/password or Google when enabled on server).
-4. User sees the list of available match schedules.
-5. User subscribes to an existing match or creates a new one.
-6. User can interact socially via posts/comments.
-7. After a game, user registers the result and factions.
+2. If user is not authenticated, user signs in (email/password or Google when enabled on server).
+3. After authentication, app calls `getPlayerData.v1()` to check if profile data exists.
+4. If profile data is missing, user completes onboarding (favorite faction + display name + mandatory device location coordinates and match search ratio).
+5. User sees the list of available match schedules.
+6. User subscribes to an existing match or creates a new one.
+7. Shared match links (`/join`) are resolved through app deep links (`roothub://join?matchId=...`) and the app opens the subscribe flow after authentication.
+8. User tracks subscribed tables and chat activity in the Activity tab.
+9. User can interact socially via posts/comments.
+10. After a game, user registers the result and factions.
+11. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
 
 ## Authentication (Serverpod)
 Authentication is handled with **Serverpod auth session management**:
@@ -34,7 +38,7 @@ Required behavior for auth-related features:
 - Startup flow is managed by `auth_flow` state/provider:
   - Checks `client.auth.isAuthenticated`.
   - Calls `getPlayerData.v1()` to verify profile existence.
-  - Routes users through onboarding faction -> onboarding profile -> login -> authenticated area.
+  - Routes users through login first, then onboarding only when `getPlayerData` returns `null`.
 
 ## Architecture
 The app follows feature-first presentation with centralized state management:
@@ -55,9 +59,12 @@ root_hub_flutter/
 │       │   ├── session/
 │       │   ├── account/
 │       │   ├── auth_flow/
+│       │   ├── deep_link/
 │       │   ├── onboarding/
+│       │   ├── activity/
 │       │   └── dashboard/
 │       └── features/              # UI feature modules (screens/widgets/sections/dialogs)
+│           ├── activity/
 │           ├── auth/
 │           ├── dashboard/
 │           ├── home/
@@ -150,6 +157,10 @@ Rules:
   - Scope: all `lib/**` Flutter source files (except generated files).
   - Enforces: helper functions/methods cannot return widgets. Extract each UI block into a dedicated widget class in its own file.
   - Allowed exception: Flutter framework-required `build` overrides.
+- `feature_hardcoded_ui_string`
+  - Scope: `lib/src/features/**`.
+  - Enforces: feature UI code must not keep user-facing strings hard-coded.
+  - Allowed escape hatch for non-translatable values: add `// ignore: feature_hardcoded_ui_string` above that line.
 
 These rules are intentionally strict to force component separation and predictable naming.
 
@@ -161,11 +172,28 @@ These rules are intentionally strict to force component separation and predictab
 - `go_router`: app routing.
 - `google_fonts`: project typography (configured in app theme).
 - `flutter_animate`: onboarding and authentication motion design.
+- `slang` + `slang_flutter`: JSON localization + generated typed translation accessors.
+- `firebase_core` + `firebase_messaging`: push token sync and background push reception.
+- `app_links`: custom deep-link intake (`roothub://join?matchId=...`) for shared match links.
+- `share_plus`: native share dialog support for match invite links.
 
 ## Typography
 The app theme uses Google Fonts to avoid generic defaults:
 - Headings: `Cinzel`
 - Body/UI text: `Nunito Sans`
+
+## Localization (Mandatory)
+- Locale files live in `lib/i18n/*.json`.
+- Generated localization file: `lib/i18n/strings.g.dart`.
+- Server calls must forward locale as `ServerSupportedTranslation` using `serverSupportedTranslationProvider` (`lib/src/global_providers/server_supported_translation_provider.dart`) on every endpoint `vN(...)` call.
+- Supported locales:
+  - `en` (English)
+  - `pt-BR` (Portuguese - Brazil)
+  - `es` (Spanish)
+  - `fr` (French)
+  - `de` (German)
+- Localization key convention in feature UI:
+  - Start keys with the feature name (dot notation), e.g. `auth.login.title`, `match.join.confirmButton`.
 
 ## Faction Assets
 - Board images are stored in `assets/faction_boards/` and exposed via `getFactionBoardImage` in `lib/src/core/extension/faction_ui_extension.dart`.
@@ -178,6 +206,15 @@ The app theme uses Google Fonts to avoid generic defaults:
 - `getFactionImage` should be the default representation when there is enough space (for example, main screen sections and larger surfaces).
 - For compact UI (for example card headers and tight rows), use faction icons with the best size for the context.
 - `factionIcon` returns the default icon path (`256` size), and `getFactionIconPath(size: ...)` allows selecting a specific size.
+
+### Localized Faction Names
+- Faction names must be resolved through `FactionUiExtension.displayName` in `lib/src/core/extension/faction_ui_extension.dart`.
+- Do not derive faction names from enum keys or machine-translate them at runtime.
+- The extension stores locale-specific canonical names for:
+  - `en`, `pt-BR`, `es`, `fr`, `de`.
+- Source policy:
+  - `pt-BR`, `es`, `de`: localized names validated against the corresponding language pages in The Root Database (Law of Root).
+  - `fr`: names follow the French ROOT ecosystem naming used in Matagot/French releases.
 
 ## Daily Commands
 ```bash

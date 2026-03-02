@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchLocationHeaderImageWidget extends StatelessWidget {
   const MatchLocationHeaderImageWidget({
@@ -64,14 +65,17 @@ class MatchLocationHeaderImageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Location Details',
+                  t
+                      .match
+                      .ui_screens_match_location_header_image_widget
+                      .locationDetails,
                   style: GoogleFonts.cinzel(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 24,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   locationTitle,
                   maxLines: 1,

@@ -12,13 +12,16 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../entities/core/match_podium.dart' as _i2;
-import '../../entities/match_making/location.dart' as _i3;
-import '../../entities/core/player_data.dart' as _i4;
-import '../../entities/match_making/match_subscription.dart' as _i5;
-import '../../entities/match_making/chat/match_chat_history.dart' as _i6;
-import '../../entities/match/played_match.dart' as _i7;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i8;
+import '../../entities/match_making/match_schedule_status.dart' as _i2;
+import '../../entities/core/match_podium.dart' as _i3;
+import '../../entities/match_making/match_schedule_not_played_reason.dart'
+    as _i4;
+import '../../entities/core/player_data.dart' as _i5;
+import '../../entities/match_making/location.dart' as _i6;
+import '../../entities/match_making/match_subscription.dart' as _i7;
+import '../../entities/match_making/chat/match_chat_history.dart' as _i8;
+import '../../entities/match/played_match.dart' as _i9;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i10;
 
 abstract class MatchSchedulePairingAttempt
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -30,6 +33,11 @@ abstract class MatchSchedulePairingAttempt
     required this.minAmountOfPlayers,
     required this.maxAmountOfPlayers,
     required this.attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    this.notPlayedReason,
+    this.notPlayedReasonDetails,
+    this.notPlayedMarkedByPlayerDataId,
+    this.notPlayedMarkedBy,
     this.closedForSubscriptions,
     required this.locationId,
     this.location,
@@ -38,24 +46,29 @@ abstract class MatchSchedulePairingAttempt
     this.subscriptions,
     this.chatHistory,
     this.playedMatch,
-  });
+  }) : status = status ?? _i2.MatchScheduleStatus.scheduled;
 
   factory MatchSchedulePairingAttempt({
     int? id,
     required DateTime createdAt,
     required String title,
     String? description,
-    required _i2.MatchPodium minAmountOfPlayers,
-    required _i2.MatchPodium maxAmountOfPlayers,
+    required _i3.MatchPodium minAmountOfPlayers,
+    required _i3.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    _i4.MatchScheduleNotPlayedReason? notPlayedReason,
+    String? notPlayedReasonDetails,
+    int? notPlayedMarkedByPlayerDataId,
+    _i5.PlayerData? notPlayedMarkedBy,
     bool? closedForSubscriptions,
     required int locationId,
-    _i3.Location? location,
+    _i6.Location? location,
     required int playerDataId,
-    _i4.PlayerData? host,
-    List<_i5.MatchSubscription>? subscriptions,
-    _i6.MatchChatHistory? chatHistory,
-    _i7.PlayedMatch? playedMatch,
+    _i5.PlayerData? host,
+    List<_i7.MatchSubscription>? subscriptions,
+    _i8.MatchChatHistory? chatHistory,
+    _i9.PlayedMatch? playedMatch,
   }) = _MatchSchedulePairingAttemptImpl;
 
   factory MatchSchedulePairingAttempt.fromJson(
@@ -68,42 +81,61 @@ abstract class MatchSchedulePairingAttempt
       ),
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String?,
-      minAmountOfPlayers: _i2.MatchPodium.fromJson(
+      minAmountOfPlayers: _i3.MatchPodium.fromJson(
         (jsonSerialization['minAmountOfPlayers'] as String),
       ),
-      maxAmountOfPlayers: _i2.MatchPodium.fromJson(
+      maxAmountOfPlayers: _i3.MatchPodium.fromJson(
         (jsonSerialization['maxAmountOfPlayers'] as String),
       ),
       attemptedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['attemptedAt'],
       ),
+      status: jsonSerialization['status'] == null
+          ? null
+          : _i2.MatchScheduleStatus.fromJson(
+              (jsonSerialization['status'] as String),
+            ),
+      notPlayedReason: jsonSerialization['notPlayedReason'] == null
+          ? null
+          : _i4.MatchScheduleNotPlayedReason.fromJson(
+              (jsonSerialization['notPlayedReason'] as String),
+            ),
+      notPlayedReasonDetails:
+          jsonSerialization['notPlayedReasonDetails'] as String?,
+      notPlayedMarkedByPlayerDataId:
+          jsonSerialization['notPlayedMarkedByPlayerDataId'] as int?,
+      notPlayedMarkedBy: jsonSerialization['notPlayedMarkedBy'] == null
+          ? null
+          : _i10.Protocol().deserialize<_i5.PlayerData>(
+              jsonSerialization['notPlayedMarkedBy'],
+            ),
       closedForSubscriptions:
           jsonSerialization['closedForSubscriptions'] as bool?,
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
-          : _i8.Protocol().deserialize<_i3.Location>(
+          : _i10.Protocol().deserialize<_i6.Location>(
               jsonSerialization['location'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       host: jsonSerialization['host'] == null
           ? null
-          : _i8.Protocol().deserialize<_i4.PlayerData>(
+          : _i10.Protocol().deserialize<_i5.PlayerData>(
               jsonSerialization['host'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i5.MatchSubscription>>(
+          : _i10.Protocol().deserialize<List<_i7.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatHistory: jsonSerialization['chatHistory'] == null
           ? null
-          : _i8.Protocol().deserialize<_i6.MatchChatHistory>(
+          : _i10.Protocol().deserialize<_i8.MatchChatHistory>(
               jsonSerialization['chatHistory'],
             ),
       playedMatch: jsonSerialization['playedMatch'] == null
           ? null
-          : _i8.Protocol().deserialize<_i7.PlayedMatch>(
+          : _i10.Protocol().deserialize<_i9.PlayedMatch>(
               jsonSerialization['playedMatch'],
             ),
     );
@@ -122,27 +154,37 @@ abstract class MatchSchedulePairingAttempt
 
   String? description;
 
-  _i2.MatchPodium minAmountOfPlayers;
+  _i3.MatchPodium minAmountOfPlayers;
 
-  _i2.MatchPodium maxAmountOfPlayers;
+  _i3.MatchPodium maxAmountOfPlayers;
 
   DateTime attemptedAt;
+
+  _i2.MatchScheduleStatus status;
+
+  _i4.MatchScheduleNotPlayedReason? notPlayedReason;
+
+  String? notPlayedReasonDetails;
+
+  int? notPlayedMarkedByPlayerDataId;
+
+  _i5.PlayerData? notPlayedMarkedBy;
 
   bool? closedForSubscriptions;
 
   int locationId;
 
-  _i3.Location? location;
+  _i6.Location? location;
 
   int playerDataId;
 
-  _i4.PlayerData? host;
+  _i5.PlayerData? host;
 
-  List<_i5.MatchSubscription>? subscriptions;
+  List<_i7.MatchSubscription>? subscriptions;
 
-  _i6.MatchChatHistory? chatHistory;
+  _i8.MatchChatHistory? chatHistory;
 
-  _i7.PlayedMatch? playedMatch;
+  _i9.PlayedMatch? playedMatch;
 
   @override
   _i1.Table<int?> get table => t;
@@ -155,17 +197,22 @@ abstract class MatchSchedulePairingAttempt
     DateTime? createdAt,
     String? title,
     String? description,
-    _i2.MatchPodium? minAmountOfPlayers,
-    _i2.MatchPodium? maxAmountOfPlayers,
+    _i3.MatchPodium? minAmountOfPlayers,
+    _i3.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    _i4.MatchScheduleNotPlayedReason? notPlayedReason,
+    String? notPlayedReasonDetails,
+    int? notPlayedMarkedByPlayerDataId,
+    _i5.PlayerData? notPlayedMarkedBy,
     bool? closedForSubscriptions,
     int? locationId,
-    _i3.Location? location,
+    _i6.Location? location,
     int? playerDataId,
-    _i4.PlayerData? host,
-    List<_i5.MatchSubscription>? subscriptions,
-    _i6.MatchChatHistory? chatHistory,
-    _i7.PlayedMatch? playedMatch,
+    _i5.PlayerData? host,
+    List<_i7.MatchSubscription>? subscriptions,
+    _i8.MatchChatHistory? chatHistory,
+    _i9.PlayedMatch? playedMatch,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -178,6 +225,14 @@ abstract class MatchSchedulePairingAttempt
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
+      'status': status.toJson(),
+      if (notPlayedReason != null) 'notPlayedReason': notPlayedReason?.toJson(),
+      if (notPlayedReasonDetails != null)
+        'notPlayedReasonDetails': notPlayedReasonDetails,
+      if (notPlayedMarkedByPlayerDataId != null)
+        'notPlayedMarkedByPlayerDataId': notPlayedMarkedByPlayerDataId,
+      if (notPlayedMarkedBy != null)
+        'notPlayedMarkedBy': notPlayedMarkedBy?.toJson(),
       if (closedForSubscriptions != null)
         'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
@@ -202,6 +257,14 @@ abstract class MatchSchedulePairingAttempt
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
+      'status': status.toJson(),
+      if (notPlayedReason != null) 'notPlayedReason': notPlayedReason?.toJson(),
+      if (notPlayedReasonDetails != null)
+        'notPlayedReasonDetails': notPlayedReasonDetails,
+      if (notPlayedMarkedByPlayerDataId != null)
+        'notPlayedMarkedByPlayerDataId': notPlayedMarkedByPlayerDataId,
+      if (notPlayedMarkedBy != null)
+        'notPlayedMarkedBy': notPlayedMarkedBy?.toJsonForProtocol(),
       if (closedForSubscriptions != null)
         'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
@@ -218,13 +281,15 @@ abstract class MatchSchedulePairingAttempt
   }
 
   static MatchSchedulePairingAttemptInclude include({
-    _i3.LocationInclude? location,
-    _i4.PlayerDataInclude? host,
-    _i5.MatchSubscriptionIncludeList? subscriptions,
-    _i6.MatchChatHistoryInclude? chatHistory,
-    _i7.PlayedMatchInclude? playedMatch,
+    _i5.PlayerDataInclude? notPlayedMarkedBy,
+    _i6.LocationInclude? location,
+    _i5.PlayerDataInclude? host,
+    _i7.MatchSubscriptionIncludeList? subscriptions,
+    _i8.MatchChatHistoryInclude? chatHistory,
+    _i9.PlayedMatchInclude? playedMatch,
   }) {
     return MatchSchedulePairingAttemptInclude._(
+      notPlayedMarkedBy: notPlayedMarkedBy,
       location: location,
       host: host,
       subscriptions: subscriptions,
@@ -267,17 +332,22 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     required DateTime createdAt,
     required String title,
     String? description,
-    required _i2.MatchPodium minAmountOfPlayers,
-    required _i2.MatchPodium maxAmountOfPlayers,
+    required _i3.MatchPodium minAmountOfPlayers,
+    required _i3.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    _i4.MatchScheduleNotPlayedReason? notPlayedReason,
+    String? notPlayedReasonDetails,
+    int? notPlayedMarkedByPlayerDataId,
+    _i5.PlayerData? notPlayedMarkedBy,
     bool? closedForSubscriptions,
     required int locationId,
-    _i3.Location? location,
+    _i6.Location? location,
     required int playerDataId,
-    _i4.PlayerData? host,
-    List<_i5.MatchSubscription>? subscriptions,
-    _i6.MatchChatHistory? chatHistory,
-    _i7.PlayedMatch? playedMatch,
+    _i5.PlayerData? host,
+    List<_i7.MatchSubscription>? subscriptions,
+    _i8.MatchChatHistory? chatHistory,
+    _i9.PlayedMatch? playedMatch,
   }) : super._(
          id: id,
          createdAt: createdAt,
@@ -286,6 +356,11 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          minAmountOfPlayers: minAmountOfPlayers,
          maxAmountOfPlayers: maxAmountOfPlayers,
          attemptedAt: attemptedAt,
+         status: status,
+         notPlayedReason: notPlayedReason,
+         notPlayedReasonDetails: notPlayedReasonDetails,
+         notPlayedMarkedByPlayerDataId: notPlayedMarkedByPlayerDataId,
+         notPlayedMarkedBy: notPlayedMarkedBy,
          closedForSubscriptions: closedForSubscriptions,
          locationId: locationId,
          location: location,
@@ -305,9 +380,14 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     DateTime? createdAt,
     String? title,
     Object? description = _Undefined,
-    _i2.MatchPodium? minAmountOfPlayers,
-    _i2.MatchPodium? maxAmountOfPlayers,
+    _i3.MatchPodium? minAmountOfPlayers,
+    _i3.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    Object? notPlayedReason = _Undefined,
+    Object? notPlayedReasonDetails = _Undefined,
+    Object? notPlayedMarkedByPlayerDataId = _Undefined,
+    Object? notPlayedMarkedBy = _Undefined,
     Object? closedForSubscriptions = _Undefined,
     int? locationId,
     Object? location = _Undefined,
@@ -325,22 +405,35 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       minAmountOfPlayers: minAmountOfPlayers ?? this.minAmountOfPlayers,
       maxAmountOfPlayers: maxAmountOfPlayers ?? this.maxAmountOfPlayers,
       attemptedAt: attemptedAt ?? this.attemptedAt,
+      status: status ?? this.status,
+      notPlayedReason: notPlayedReason is _i4.MatchScheduleNotPlayedReason?
+          ? notPlayedReason
+          : this.notPlayedReason,
+      notPlayedReasonDetails: notPlayedReasonDetails is String?
+          ? notPlayedReasonDetails
+          : this.notPlayedReasonDetails,
+      notPlayedMarkedByPlayerDataId: notPlayedMarkedByPlayerDataId is int?
+          ? notPlayedMarkedByPlayerDataId
+          : this.notPlayedMarkedByPlayerDataId,
+      notPlayedMarkedBy: notPlayedMarkedBy is _i5.PlayerData?
+          ? notPlayedMarkedBy
+          : this.notPlayedMarkedBy?.copyWith(),
       closedForSubscriptions: closedForSubscriptions is bool?
           ? closedForSubscriptions
           : this.closedForSubscriptions,
       locationId: locationId ?? this.locationId,
-      location: location is _i3.Location?
+      location: location is _i6.Location?
           ? location
           : this.location?.copyWith(),
       playerDataId: playerDataId ?? this.playerDataId,
-      host: host is _i4.PlayerData? ? host : this.host?.copyWith(),
-      subscriptions: subscriptions is List<_i5.MatchSubscription>?
+      host: host is _i5.PlayerData? ? host : this.host?.copyWith(),
+      subscriptions: subscriptions is List<_i7.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
-      chatHistory: chatHistory is _i6.MatchChatHistory?
+      chatHistory: chatHistory is _i8.MatchChatHistory?
           ? chatHistory
           : this.chatHistory?.copyWith(),
-      playedMatch: playedMatch is _i7.PlayedMatch?
+      playedMatch: playedMatch is _i9.PlayedMatch?
           ? playedMatch
           : this.playedMatch?.copyWith(),
     );
@@ -367,15 +460,15 @@ class MatchSchedulePairingAttemptUpdateTable
     value,
   );
 
-  _i1.ColumnValue<_i2.MatchPodium, _i2.MatchPodium> minAmountOfPlayers(
-    _i2.MatchPodium value,
+  _i1.ColumnValue<_i3.MatchPodium, _i3.MatchPodium> minAmountOfPlayers(
+    _i3.MatchPodium value,
   ) => _i1.ColumnValue(
     table.minAmountOfPlayers,
     value,
   );
 
-  _i1.ColumnValue<_i2.MatchPodium, _i2.MatchPodium> maxAmountOfPlayers(
-    _i2.MatchPodium value,
+  _i1.ColumnValue<_i3.MatchPodium, _i3.MatchPodium> maxAmountOfPlayers(
+    _i3.MatchPodium value,
   ) => _i1.ColumnValue(
     table.maxAmountOfPlayers,
     value,
@@ -384,6 +477,34 @@ class MatchSchedulePairingAttemptUpdateTable
   _i1.ColumnValue<DateTime, DateTime> attemptedAt(DateTime value) =>
       _i1.ColumnValue(
         table.attemptedAt,
+        value,
+      );
+
+  _i1.ColumnValue<_i2.MatchScheduleStatus, _i2.MatchScheduleStatus> status(
+    _i2.MatchScheduleStatus value,
+  ) => _i1.ColumnValue(
+    table.status,
+    value,
+  );
+
+  _i1.ColumnValue<
+    _i4.MatchScheduleNotPlayedReason,
+    _i4.MatchScheduleNotPlayedReason
+  >
+  notPlayedReason(_i4.MatchScheduleNotPlayedReason? value) => _i1.ColumnValue(
+    table.notPlayedReason,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> notPlayedReasonDetails(String? value) =>
+      _i1.ColumnValue(
+        table.notPlayedReasonDetails,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> notPlayedMarkedByPlayerDataId(int? value) =>
+      _i1.ColumnValue(
+        table.notPlayedMarkedByPlayerDataId,
         value,
       );
 
@@ -434,6 +555,25 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
       'attemptedAt',
       this,
     );
+    status = _i1.ColumnEnum(
+      'status',
+      this,
+      _i1.EnumSerialization.byName,
+      hasDefault: true,
+    );
+    notPlayedReason = _i1.ColumnEnum(
+      'notPlayedReason',
+      this,
+      _i1.EnumSerialization.byName,
+    );
+    notPlayedReasonDetails = _i1.ColumnString(
+      'notPlayedReasonDetails',
+      this,
+    );
+    notPlayedMarkedByPlayerDataId = _i1.ColumnInt(
+      'notPlayedMarkedByPlayerDataId',
+      this,
+    );
     closedForSubscriptions = _i1.ColumnBool(
       'closedForSubscriptions',
       this,
@@ -456,108 +596,131 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 
   late final _i1.ColumnString description;
 
-  late final _i1.ColumnEnum<_i2.MatchPodium> minAmountOfPlayers;
+  late final _i1.ColumnEnum<_i3.MatchPodium> minAmountOfPlayers;
 
-  late final _i1.ColumnEnum<_i2.MatchPodium> maxAmountOfPlayers;
+  late final _i1.ColumnEnum<_i3.MatchPodium> maxAmountOfPlayers;
 
   late final _i1.ColumnDateTime attemptedAt;
+
+  late final _i1.ColumnEnum<_i2.MatchScheduleStatus> status;
+
+  late final _i1.ColumnEnum<_i4.MatchScheduleNotPlayedReason> notPlayedReason;
+
+  late final _i1.ColumnString notPlayedReasonDetails;
+
+  late final _i1.ColumnInt notPlayedMarkedByPlayerDataId;
+
+  _i5.PlayerDataTable? _notPlayedMarkedBy;
 
   late final _i1.ColumnBool closedForSubscriptions;
 
   late final _i1.ColumnInt locationId;
 
-  _i3.LocationTable? _location;
+  _i6.LocationTable? _location;
 
   late final _i1.ColumnInt playerDataId;
 
-  _i4.PlayerDataTable? _host;
+  _i5.PlayerDataTable? _host;
 
-  _i5.MatchSubscriptionTable? ___subscriptions;
+  _i7.MatchSubscriptionTable? ___subscriptions;
 
-  _i1.ManyRelation<_i5.MatchSubscriptionTable>? _subscriptions;
+  _i1.ManyRelation<_i7.MatchSubscriptionTable>? _subscriptions;
 
-  _i6.MatchChatHistoryTable? _chatHistory;
+  _i8.MatchChatHistoryTable? _chatHistory;
 
-  _i7.PlayedMatchTable? _playedMatch;
+  _i9.PlayedMatchTable? _playedMatch;
 
-  _i3.LocationTable get location {
+  _i5.PlayerDataTable get notPlayedMarkedBy {
+    if (_notPlayedMarkedBy != null) return _notPlayedMarkedBy!;
+    _notPlayedMarkedBy = _i1.createRelationTable(
+      relationFieldName: 'notPlayedMarkedBy',
+      field: MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      foreignField: _i5.PlayerData.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i5.PlayerDataTable(tableRelation: foreignTableRelation),
+    );
+    return _notPlayedMarkedBy!;
+  }
+
+  _i6.LocationTable get location {
     if (_location != null) return _location!;
     _location = _i1.createRelationTable(
       relationFieldName: 'location',
       field: MatchSchedulePairingAttempt.t.locationId,
-      foreignField: _i3.Location.t.id,
+      foreignField: _i6.Location.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.LocationTable(tableRelation: foreignTableRelation),
+          _i6.LocationTable(tableRelation: foreignTableRelation),
     );
     return _location!;
   }
 
-  _i4.PlayerDataTable get host {
+  _i5.PlayerDataTable get host {
     if (_host != null) return _host!;
     _host = _i1.createRelationTable(
       relationFieldName: 'host',
       field: MatchSchedulePairingAttempt.t.playerDataId,
-      foreignField: _i4.PlayerData.t.id,
+      foreignField: _i5.PlayerData.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i4.PlayerDataTable(tableRelation: foreignTableRelation),
+          _i5.PlayerDataTable(tableRelation: foreignTableRelation),
     );
     return _host!;
   }
 
-  _i5.MatchSubscriptionTable get __subscriptions {
+  _i7.MatchSubscriptionTable get __subscriptions {
     if (___subscriptions != null) return ___subscriptions!;
     ___subscriptions = _i1.createRelationTable(
       relationFieldName: '__subscriptions',
       field: MatchSchedulePairingAttempt.t.id,
-      foreignField: _i5.MatchSubscription.t.matchSchedulePairingAttemptId,
+      foreignField: _i7.MatchSubscription.t.matchSchedulePairingAttemptId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i5.MatchSubscriptionTable(tableRelation: foreignTableRelation),
+          _i7.MatchSubscriptionTable(tableRelation: foreignTableRelation),
     );
     return ___subscriptions!;
   }
 
-  _i6.MatchChatHistoryTable get chatHistory {
+  _i8.MatchChatHistoryTable get chatHistory {
     if (_chatHistory != null) return _chatHistory!;
     _chatHistory = _i1.createRelationTable(
       relationFieldName: 'chatHistory',
       field: MatchSchedulePairingAttempt.t.id,
-      foreignField: _i6.MatchChatHistory.t.matchSchedulePairingAttemptId,
+      foreignField: _i8.MatchChatHistory.t.matchSchedulePairingAttemptId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i6.MatchChatHistoryTable(tableRelation: foreignTableRelation),
+          _i8.MatchChatHistoryTable(tableRelation: foreignTableRelation),
     );
     return _chatHistory!;
   }
 
-  _i7.PlayedMatchTable get playedMatch {
+  _i9.PlayedMatchTable get playedMatch {
     if (_playedMatch != null) return _playedMatch!;
     _playedMatch = _i1.createRelationTable(
       relationFieldName: 'playedMatch',
       field: MatchSchedulePairingAttempt.t.id,
-      foreignField: _i7.PlayedMatch.t.scheduledPairingAttemptId,
+      foreignField: _i9.PlayedMatch.t.scheduledPairingAttemptId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i7.PlayedMatchTable(tableRelation: foreignTableRelation),
+          _i9.PlayedMatchTable(tableRelation: foreignTableRelation),
     );
     return _playedMatch!;
   }
 
-  _i1.ManyRelation<_i5.MatchSubscriptionTable> get subscriptions {
+  _i1.ManyRelation<_i7.MatchSubscriptionTable> get subscriptions {
     if (_subscriptions != null) return _subscriptions!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'subscriptions',
       field: MatchSchedulePairingAttempt.t.id,
-      foreignField: _i5.MatchSubscription.t.matchSchedulePairingAttemptId,
+      foreignField: _i7.MatchSubscription.t.matchSchedulePairingAttemptId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i5.MatchSubscriptionTable(tableRelation: foreignTableRelation),
+          _i7.MatchSubscriptionTable(tableRelation: foreignTableRelation),
     );
-    _subscriptions = _i1.ManyRelation<_i5.MatchSubscriptionTable>(
+    _subscriptions = _i1.ManyRelation<_i7.MatchSubscriptionTable>(
       tableWithRelations: relationTable,
-      table: _i5.MatchSubscriptionTable(
+      table: _i7.MatchSubscriptionTable(
         tableRelation: relationTable.tableRelation!.lastRelation,
       ),
     );
@@ -573,6 +736,10 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
     minAmountOfPlayers,
     maxAmountOfPlayers,
     attemptedAt,
+    status,
+    notPlayedReason,
+    notPlayedReasonDetails,
+    notPlayedMarkedByPlayerDataId,
     closedForSubscriptions,
     locationId,
     playerDataId,
@@ -580,6 +747,9 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 
   @override
   _i1.Table? getRelationTable(String relationField) {
+    if (relationField == 'notPlayedMarkedBy') {
+      return notPlayedMarkedBy;
+    }
     if (relationField == 'location') {
       return location;
     }
@@ -601,12 +771,14 @@ class MatchSchedulePairingAttemptTable extends _i1.Table<int?> {
 
 class MatchSchedulePairingAttemptInclude extends _i1.IncludeObject {
   MatchSchedulePairingAttemptInclude._({
-    _i3.LocationInclude? location,
-    _i4.PlayerDataInclude? host,
-    _i5.MatchSubscriptionIncludeList? subscriptions,
-    _i6.MatchChatHistoryInclude? chatHistory,
-    _i7.PlayedMatchInclude? playedMatch,
+    _i5.PlayerDataInclude? notPlayedMarkedBy,
+    _i6.LocationInclude? location,
+    _i5.PlayerDataInclude? host,
+    _i7.MatchSubscriptionIncludeList? subscriptions,
+    _i8.MatchChatHistoryInclude? chatHistory,
+    _i9.PlayedMatchInclude? playedMatch,
   }) {
+    _notPlayedMarkedBy = notPlayedMarkedBy;
     _location = location;
     _host = host;
     _subscriptions = subscriptions;
@@ -614,18 +786,21 @@ class MatchSchedulePairingAttemptInclude extends _i1.IncludeObject {
     _playedMatch = playedMatch;
   }
 
-  _i3.LocationInclude? _location;
+  _i5.PlayerDataInclude? _notPlayedMarkedBy;
 
-  _i4.PlayerDataInclude? _host;
+  _i6.LocationInclude? _location;
 
-  _i5.MatchSubscriptionIncludeList? _subscriptions;
+  _i5.PlayerDataInclude? _host;
 
-  _i6.MatchChatHistoryInclude? _chatHistory;
+  _i7.MatchSubscriptionIncludeList? _subscriptions;
 
-  _i7.PlayedMatchInclude? _playedMatch;
+  _i8.MatchChatHistoryInclude? _chatHistory;
+
+  _i9.PlayedMatchInclude? _playedMatch;
 
   @override
   Map<String, _i1.Include?> get includes => {
+    'notPlayedMarkedBy': _notPlayedMarkedBy,
     'location': _location,
     'host': _host,
     'subscriptions': _subscriptions,
@@ -934,7 +1109,7 @@ class MatchSchedulePairingAttemptAttachRepository {
   Future<void> subscriptions(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    List<_i5.MatchSubscription> matchSubscription, {
+    List<_i7.MatchSubscription> matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.any((e) => e.id == null)) {
@@ -951,9 +1126,9 @@ class MatchSchedulePairingAttemptAttachRepository {
           ),
         )
         .toList();
-    await session.db.update<_i5.MatchSubscription>(
+    await session.db.update<_i7.MatchSubscription>(
       $matchSubscription,
-      columns: [_i5.MatchSubscription.t.matchSchedulePairingAttemptId],
+      columns: [_i7.MatchSubscription.t.matchSchedulePairingAttemptId],
       transaction: transaction,
     );
   }
@@ -962,12 +1137,37 @@ class MatchSchedulePairingAttemptAttachRepository {
 class MatchSchedulePairingAttemptAttachRowRepository {
   const MatchSchedulePairingAttemptAttachRowRepository._();
 
+  /// Creates a relation between the given [MatchSchedulePairingAttempt] and [PlayerData]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `notPlayedMarkedByPlayerDataId` to refer to the [PlayerData].
+  Future<void> notPlayedMarkedBy(
+    _i1.Session session,
+    MatchSchedulePairingAttempt matchSchedulePairingAttempt,
+    _i5.PlayerData notPlayedMarkedBy, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+    if (notPlayedMarkedBy.id == null) {
+      throw ArgumentError.notNull('notPlayedMarkedBy.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
+      notPlayedMarkedByPlayerDataId: notPlayedMarkedBy.id,
+    );
+    await session.db.updateRow<MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between the given [MatchSchedulePairingAttempt] and [Location]
   /// by setting the [MatchSchedulePairingAttempt]'s foreign key `locationId` to refer to the [Location].
   Future<void> location(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    _i3.Location location, {
+    _i6.Location location, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -992,7 +1192,7 @@ class MatchSchedulePairingAttemptAttachRowRepository {
   Future<void> host(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    _i4.PlayerData host, {
+    _i5.PlayerData host, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSchedulePairingAttempt.id == null) {
@@ -1017,7 +1217,7 @@ class MatchSchedulePairingAttemptAttachRowRepository {
   Future<void> chatHistory(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    _i6.MatchChatHistory chatHistory, {
+    _i8.MatchChatHistory chatHistory, {
     _i1.Transaction? transaction,
   }) async {
     if (chatHistory.id == null) {
@@ -1030,9 +1230,9 @@ class MatchSchedulePairingAttemptAttachRowRepository {
     var $chatHistory = chatHistory.copyWith(
       matchSchedulePairingAttemptId: matchSchedulePairingAttempt.id,
     );
-    await session.db.updateRow<_i6.MatchChatHistory>(
+    await session.db.updateRow<_i8.MatchChatHistory>(
       $chatHistory,
-      columns: [_i6.MatchChatHistory.t.matchSchedulePairingAttemptId],
+      columns: [_i8.MatchChatHistory.t.matchSchedulePairingAttemptId],
       transaction: transaction,
     );
   }
@@ -1042,7 +1242,7 @@ class MatchSchedulePairingAttemptAttachRowRepository {
   Future<void> playedMatch(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    _i7.PlayedMatch playedMatch, {
+    _i9.PlayedMatch playedMatch, {
     _i1.Transaction? transaction,
   }) async {
     if (playedMatch.id == null) {
@@ -1055,9 +1255,9 @@ class MatchSchedulePairingAttemptAttachRowRepository {
     var $playedMatch = playedMatch.copyWith(
       scheduledPairingAttemptId: matchSchedulePairingAttempt.id,
     );
-    await session.db.updateRow<_i7.PlayedMatch>(
+    await session.db.updateRow<_i9.PlayedMatch>(
       $playedMatch,
-      columns: [_i7.PlayedMatch.t.scheduledPairingAttemptId],
+      columns: [_i9.PlayedMatch.t.scheduledPairingAttemptId],
       transaction: transaction,
     );
   }
@@ -1067,7 +1267,7 @@ class MatchSchedulePairingAttemptAttachRowRepository {
   Future<void> subscriptions(
     _i1.Session session,
     MatchSchedulePairingAttempt matchSchedulePairingAttempt,
-    _i5.MatchSubscription matchSubscription, {
+    _i7.MatchSubscription matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.id == null) {
@@ -1080,9 +1280,9 @@ class MatchSchedulePairingAttemptAttachRowRepository {
     var $matchSubscription = matchSubscription.copyWith(
       matchSchedulePairingAttemptId: matchSchedulePairingAttempt.id,
     );
-    await session.db.updateRow<_i5.MatchSubscription>(
+    await session.db.updateRow<_i7.MatchSubscription>(
       $matchSubscription,
-      columns: [_i5.MatchSubscription.t.matchSchedulePairingAttemptId],
+      columns: [_i7.MatchSubscription.t.matchSchedulePairingAttemptId],
       transaction: transaction,
     );
   }
@@ -1098,7 +1298,7 @@ class MatchSchedulePairingAttemptDetachRepository {
   /// the related record.
   Future<void> subscriptions(
     _i1.Session session,
-    List<_i5.MatchSubscription> matchSubscription, {
+    List<_i7.MatchSubscription> matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.any((e) => e.id == null)) {
@@ -1108,9 +1308,9 @@ class MatchSchedulePairingAttemptDetachRepository {
     var $matchSubscription = matchSubscription
         .map((e) => e.copyWith(matchSchedulePairingAttemptId: null))
         .toList();
-    await session.db.update<_i5.MatchSubscription>(
+    await session.db.update<_i7.MatchSubscription>(
       $matchSubscription,
-      columns: [_i5.MatchSubscription.t.matchSchedulePairingAttemptId],
+      columns: [_i7.MatchSubscription.t.matchSchedulePairingAttemptId],
       transaction: transaction,
     );
   }
@@ -1119,6 +1319,30 @@ class MatchSchedulePairingAttemptDetachRepository {
 class MatchSchedulePairingAttemptDetachRowRepository {
   const MatchSchedulePairingAttemptDetachRowRepository._();
 
+  /// Detaches the relation between this [MatchSchedulePairingAttempt] and the [PlayerData] set in `notPlayedMarkedBy`
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `notPlayedMarkedByPlayerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> notPlayedMarkedBy(
+    _i1.Session session,
+    MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
+      notPlayedMarkedByPlayerDataId: null,
+    );
+    await session.db.updateRow<MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId],
+      transaction: transaction,
+    );
+  }
+
   /// Detaches the relation between this [MatchSchedulePairingAttempt] and the given [MatchSubscription]
   /// by setting the [MatchSubscription]'s foreign key `matchSchedulePairingAttemptId` to `null`.
   ///
@@ -1126,7 +1350,7 @@ class MatchSchedulePairingAttemptDetachRowRepository {
   /// the related record.
   Future<void> subscriptions(
     _i1.Session session,
-    _i5.MatchSubscription matchSubscription, {
+    _i7.MatchSubscription matchSubscription, {
     _i1.Transaction? transaction,
   }) async {
     if (matchSubscription.id == null) {
@@ -1136,9 +1360,9 @@ class MatchSchedulePairingAttemptDetachRowRepository {
     var $matchSubscription = matchSubscription.copyWith(
       matchSchedulePairingAttemptId: null,
     );
-    await session.db.updateRow<_i5.MatchSubscription>(
+    await session.db.updateRow<_i7.MatchSubscription>(
       $matchSubscription,
-      columns: [_i5.MatchSubscription.t.matchSchedulePairingAttemptId],
+      columns: [_i7.MatchSubscription.t.matchSchedulePairingAttemptId],
       transaction: transaction,
     );
   }

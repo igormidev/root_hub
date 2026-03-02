@@ -5,6 +5,7 @@ import 'package:result_dart/result_dart.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/account/account_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
@@ -48,12 +49,8 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
       await _resolveInitialFlow(runId);
     } catch (error, stackTrace) {
       talker.handle(error, stackTrace);
-      _setFallbackUnauthenticatedState(runId);
+      _setStateIfCurrent(runId, const AuthFlowState.requiresLogin());
     }
-  }
-
-  void moveToLoginAfterOnboarding() {
-    state = const AuthFlowState.requiresLogin();
   }
 
   void moveToOnboardingProfile() {
@@ -77,11 +74,91 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     await bootstrap();
   }
 
+  Future<void> completeOnboardingProfile() async {
+    final onboardingState = ref.read(onboardingProvider);
+    final selectedFaction = onboardingState.selectedFaction;
+    if (selectedFaction == null) {
+      state = const AuthFlowState.requiresOnboarding();
+      return;
+    }
+
+    final displayName = onboardingState.displayName.trim();
+    final currentLocation = onboardingState.currentLocation;
+    if (displayName.isEmpty || currentLocation == null) {
+      state = const AuthFlowState.requiresOnboardingProfile();
+      return;
+    }
+
+    final runId = _nextRunId();
+    _setStateIfCurrent(runId, const AuthFlowState.loading());
+    final requestLanguage = ref.read(serverSupportedTranslationProvider);
+
+    final createPlayerResult = await ref
+        .read(clientProvider)
+        .createPlayerData
+        .v1(
+          language: requestLanguage,
+          displayName: displayName,
+          favoriteFaction: selectedFaction,
+          currentLocation: currentLocation,
+          preferredLanguage: requestLanguage.toPreferredLanguage,
+        )
+        .toResult;
+
+    await createPlayerResult.fold(
+      (createdPlayerData) async {
+        if (!_isCurrent(runId)) {
+          return;
+        }
+
+        _setAuthenticated(runId, createdPlayerData);
+      },
+      (createError) async {
+        final fallbackPlayerResult = await _getPlayerData();
+        await fallbackPlayerResult.fold(
+          (fallbackPlayerValue) {
+            if (!_isCurrent(runId)) {
+              return;
+            }
+
+            final fallbackPlayerData = fallbackPlayerValue.value;
+            if (fallbackPlayerData == null) {
+              _setStateIfCurrent(
+                runId,
+                AuthFlowState.error(
+                  message: _extractErrorMessage(
+                    createError,
+                    fallback:
+                        'Unable to finish account setup. Please try again.',
+                  ),
+                ),
+              );
+              return;
+            }
+
+            _setAuthenticated(runId, fallbackPlayerData);
+          },
+          (_) async {
+            _setStateIfCurrent(
+              runId,
+              AuthFlowState.error(
+                message: _extractErrorMessage(
+                  createError,
+                  fallback: 'Unable to finish account setup. Please try again.',
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Future<void> _resolveInitialFlow(int runId) async {
     final hasValidSession = await _hasValidSession();
 
     if (!hasValidSession) {
-      _setFallbackUnauthenticatedState(runId);
+      _setStateIfCurrent(runId, const AuthFlowState.requiresLogin());
       return;
     }
 
@@ -120,82 +197,7 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
           return;
         }
 
-        final onboardingState = ref.read(onboardingProvider);
-        final selectedFaction = onboardingState.selectedFaction;
-        if (selectedFaction == null) {
-          _setStateIfCurrent(runId, const AuthFlowState.requiresOnboarding());
-          return;
-        }
-
-        final displayName = onboardingState.displayName.trim();
-        final currentLocation = onboardingState.currentLocation;
-        if (displayName.isEmpty || currentLocation == null) {
-          _setStateIfCurrent(
-            runId,
-            const AuthFlowState.requiresOnboardingProfile(),
-          );
-          return;
-        }
-
-        final createPlayerResult = await ref
-            .read(clientProvider)
-            .createPlayerData
-            .v1(
-              displayName: displayName,
-              favoriteFaction: selectedFaction,
-              currentLocation: currentLocation,
-            )
-            .toResult;
-
-        await createPlayerResult.fold(
-          (createdPlayerData) async {
-            if (!_isCurrent(runId)) {
-              return;
-            }
-
-            await ref.read(onboardingProvider.notifier).clearSelection();
-            _setAuthenticated(runId, createdPlayerData);
-          },
-          (createError) async {
-            final fallbackPlayerResult = await _getPlayerData();
-            await fallbackPlayerResult.fold(
-              (fallbackPlayerValue) {
-                if (!_isCurrent(runId)) {
-                  return;
-                }
-
-                final fallbackPlayerData = fallbackPlayerValue.value;
-                if (fallbackPlayerData == null) {
-                  _setStateIfCurrent(
-                    runId,
-                    AuthFlowState.error(
-                      message: _extractErrorMessage(
-                        createError,
-                        fallback:
-                            'Unable to finish account setup. Please try again.',
-                      ),
-                    ),
-                  );
-                  return;
-                }
-
-                _setAuthenticated(runId, fallbackPlayerData);
-              },
-              (_) async {
-                _setStateIfCurrent(
-                  runId,
-                  AuthFlowState.error(
-                    message: _extractErrorMessage(
-                      createError,
-                      fallback:
-                          'Unable to finish account setup. Please try again.',
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        );
+        _setStateIfCurrent(runId, const AuthFlowState.requiresOnboarding());
       },
       (error) async {
         _setStateIfCurrent(
@@ -216,7 +218,7 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
     return ref
         .read(clientProvider)
         .getPlayerData
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .timeout(_playerDataTimeout)
         .toResult;
   }
@@ -251,25 +253,11 @@ class AuthFlowNotifier extends Notifier<AuthFlowState> {
   }
 
   void _setAuthenticated(int runId, PlayerData playerData) {
+    ref.read(onboardingProvider.notifier).reset();
     ref.read(accountProvider.notifier).setUser(playerData);
     _setStateIfCurrent(
       runId,
       AuthFlowState.authenticated(playerData: playerData),
-    );
-  }
-
-  void _setFallbackUnauthenticatedState(int runId) {
-    final onboardingState = ref.read(onboardingProvider);
-    final selectedFaction = onboardingState.selectedFaction;
-    final hasDisplayName = onboardingState.displayName.trim().isNotEmpty;
-    final hasCurrentLocation = onboardingState.currentLocation != null;
-    _setStateIfCurrent(
-      runId,
-      selectedFaction == null
-          ? const AuthFlowState.requiresOnboarding()
-          : hasDisplayName && hasCurrentLocation
-          ? const AuthFlowState.requiresLogin()
-          : const AuthFlowState.requiresOnboardingProfile(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart';
@@ -9,13 +10,17 @@ class GetMatchScheduleInfo extends Endpoint {
 
   Future<MatchScheduleInfo> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
@@ -35,6 +40,9 @@ class GetMatchScheduleInfo extends Endpoint {
             host: PlayerData.include(
               authUser: AuthUser.include(),
             ),
+            notPlayedMarkedBy: PlayerData.include(
+              authUser: AuthUser.include(),
+            ),
             subscriptions: MatchSubscription.includeList(
               orderBy: (t) => t.subscribedAt,
               include: MatchSubscription.include(
@@ -48,9 +56,11 @@ class GetMatchScheduleInfo extends Endpoint {
 
         if (matchSchedule == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Scheduled match not found',
-            description:
-                'Scheduled match with id $scheduledMatchId was not found.',
+            language: language,
+            title: t.errors.scheduledMatchNotFoundTitle,
+            description: t.errors.scheduledMatchWithIdNotFound(
+              scheduledMatchId: scheduledMatchId,
+            ),
           );
         }
 
@@ -85,8 +95,8 @@ class GetMatchScheduleInfo extends Endpoint {
               .toList(),
         );
       },
-      fallbackDescription:
-          'Unable to load scheduled match details right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadScheduledMatchDetails,
     );
   }
 }

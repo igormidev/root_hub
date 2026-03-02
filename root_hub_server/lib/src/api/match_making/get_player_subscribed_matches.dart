@@ -1,5 +1,6 @@
 import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -9,13 +10,17 @@ class GetPlayerSubscribedMatches extends Endpoint {
 
   Future<SubscribedMatchesPagination> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int page,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (page < 1) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Page must be greater than or equal to 1.',
+            language: language,
+            description: t.errors.pageMustBeAtLeastOne,
           );
         }
 
@@ -30,8 +35,9 @@ class GetPlayerSubscribedMatches extends Endpoint {
 
         if (playerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
@@ -75,8 +81,8 @@ class GetPlayerSubscribedMatches extends Endpoint {
           ),
         );
       },
-      fallbackDescription:
-          'Unable to load subscribed matches right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadSubscribedMatches,
     );
   }
 }

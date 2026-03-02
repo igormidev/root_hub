@@ -11,13 +11,16 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import '../../entities/core/match_podium.dart' as _i2;
-import '../../entities/match_making/location.dart' as _i3;
-import '../../entities/core/player_data.dart' as _i4;
-import '../../entities/match_making/match_subscription.dart' as _i5;
-import '../../entities/match_making/chat/match_chat_history.dart' as _i6;
-import '../../entities/match/played_match.dart' as _i7;
-import 'package:root_hub_client/src/protocol/protocol.dart' as _i8;
+import '../../entities/match_making/match_schedule_status.dart' as _i2;
+import '../../entities/core/match_podium.dart' as _i3;
+import '../../entities/match_making/match_schedule_not_played_reason.dart'
+    as _i4;
+import '../../entities/core/player_data.dart' as _i5;
+import '../../entities/match_making/location.dart' as _i6;
+import '../../entities/match_making/match_subscription.dart' as _i7;
+import '../../entities/match_making/chat/match_chat_history.dart' as _i8;
+import '../../entities/match/played_match.dart' as _i9;
+import 'package:root_hub_client/src/protocol/protocol.dart' as _i10;
 
 abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
   MatchSchedulePairingAttempt._({
@@ -28,6 +31,11 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     required this.minAmountOfPlayers,
     required this.maxAmountOfPlayers,
     required this.attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    this.notPlayedReason,
+    this.notPlayedReasonDetails,
+    this.notPlayedMarkedByPlayerDataId,
+    this.notPlayedMarkedBy,
     this.closedForSubscriptions,
     required this.locationId,
     this.location,
@@ -36,24 +44,29 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     this.subscriptions,
     this.chatHistory,
     this.playedMatch,
-  });
+  }) : status = status ?? _i2.MatchScheduleStatus.scheduled;
 
   factory MatchSchedulePairingAttempt({
     int? id,
     required DateTime createdAt,
     required String title,
     String? description,
-    required _i2.MatchPodium minAmountOfPlayers,
-    required _i2.MatchPodium maxAmountOfPlayers,
+    required _i3.MatchPodium minAmountOfPlayers,
+    required _i3.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    _i4.MatchScheduleNotPlayedReason? notPlayedReason,
+    String? notPlayedReasonDetails,
+    int? notPlayedMarkedByPlayerDataId,
+    _i5.PlayerData? notPlayedMarkedBy,
     bool? closedForSubscriptions,
     required int locationId,
-    _i3.Location? location,
+    _i6.Location? location,
     required int playerDataId,
-    _i4.PlayerData? host,
-    List<_i5.MatchSubscription>? subscriptions,
-    _i6.MatchChatHistory? chatHistory,
-    _i7.PlayedMatch? playedMatch,
+    _i5.PlayerData? host,
+    List<_i7.MatchSubscription>? subscriptions,
+    _i8.MatchChatHistory? chatHistory,
+    _i9.PlayedMatch? playedMatch,
   }) = _MatchSchedulePairingAttemptImpl;
 
   factory MatchSchedulePairingAttempt.fromJson(
@@ -66,42 +79,61 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
       ),
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String?,
-      minAmountOfPlayers: _i2.MatchPodium.fromJson(
+      minAmountOfPlayers: _i3.MatchPodium.fromJson(
         (jsonSerialization['minAmountOfPlayers'] as String),
       ),
-      maxAmountOfPlayers: _i2.MatchPodium.fromJson(
+      maxAmountOfPlayers: _i3.MatchPodium.fromJson(
         (jsonSerialization['maxAmountOfPlayers'] as String),
       ),
       attemptedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['attemptedAt'],
       ),
+      status: jsonSerialization['status'] == null
+          ? null
+          : _i2.MatchScheduleStatus.fromJson(
+              (jsonSerialization['status'] as String),
+            ),
+      notPlayedReason: jsonSerialization['notPlayedReason'] == null
+          ? null
+          : _i4.MatchScheduleNotPlayedReason.fromJson(
+              (jsonSerialization['notPlayedReason'] as String),
+            ),
+      notPlayedReasonDetails:
+          jsonSerialization['notPlayedReasonDetails'] as String?,
+      notPlayedMarkedByPlayerDataId:
+          jsonSerialization['notPlayedMarkedByPlayerDataId'] as int?,
+      notPlayedMarkedBy: jsonSerialization['notPlayedMarkedBy'] == null
+          ? null
+          : _i10.Protocol().deserialize<_i5.PlayerData>(
+              jsonSerialization['notPlayedMarkedBy'],
+            ),
       closedForSubscriptions:
           jsonSerialization['closedForSubscriptions'] as bool?,
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
-          : _i8.Protocol().deserialize<_i3.Location>(
+          : _i10.Protocol().deserialize<_i6.Location>(
               jsonSerialization['location'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       host: jsonSerialization['host'] == null
           ? null
-          : _i8.Protocol().deserialize<_i4.PlayerData>(
+          : _i10.Protocol().deserialize<_i5.PlayerData>(
               jsonSerialization['host'],
             ),
       subscriptions: jsonSerialization['subscriptions'] == null
           ? null
-          : _i8.Protocol().deserialize<List<_i5.MatchSubscription>>(
+          : _i10.Protocol().deserialize<List<_i7.MatchSubscription>>(
               jsonSerialization['subscriptions'],
             ),
       chatHistory: jsonSerialization['chatHistory'] == null
           ? null
-          : _i8.Protocol().deserialize<_i6.MatchChatHistory>(
+          : _i10.Protocol().deserialize<_i8.MatchChatHistory>(
               jsonSerialization['chatHistory'],
             ),
       playedMatch: jsonSerialization['playedMatch'] == null
           ? null
-          : _i8.Protocol().deserialize<_i7.PlayedMatch>(
+          : _i10.Protocol().deserialize<_i9.PlayedMatch>(
               jsonSerialization['playedMatch'],
             ),
     );
@@ -118,27 +150,37 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
 
   String? description;
 
-  _i2.MatchPodium minAmountOfPlayers;
+  _i3.MatchPodium minAmountOfPlayers;
 
-  _i2.MatchPodium maxAmountOfPlayers;
+  _i3.MatchPodium maxAmountOfPlayers;
 
   DateTime attemptedAt;
+
+  _i2.MatchScheduleStatus status;
+
+  _i4.MatchScheduleNotPlayedReason? notPlayedReason;
+
+  String? notPlayedReasonDetails;
+
+  int? notPlayedMarkedByPlayerDataId;
+
+  _i5.PlayerData? notPlayedMarkedBy;
 
   bool? closedForSubscriptions;
 
   int locationId;
 
-  _i3.Location? location;
+  _i6.Location? location;
 
   int playerDataId;
 
-  _i4.PlayerData? host;
+  _i5.PlayerData? host;
 
-  List<_i5.MatchSubscription>? subscriptions;
+  List<_i7.MatchSubscription>? subscriptions;
 
-  _i6.MatchChatHistory? chatHistory;
+  _i8.MatchChatHistory? chatHistory;
 
-  _i7.PlayedMatch? playedMatch;
+  _i9.PlayedMatch? playedMatch;
 
   /// Returns a shallow copy of this [MatchSchedulePairingAttempt]
   /// with some or all fields replaced by the given arguments.
@@ -148,17 +190,22 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     DateTime? createdAt,
     String? title,
     String? description,
-    _i2.MatchPodium? minAmountOfPlayers,
-    _i2.MatchPodium? maxAmountOfPlayers,
+    _i3.MatchPodium? minAmountOfPlayers,
+    _i3.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    _i4.MatchScheduleNotPlayedReason? notPlayedReason,
+    String? notPlayedReasonDetails,
+    int? notPlayedMarkedByPlayerDataId,
+    _i5.PlayerData? notPlayedMarkedBy,
     bool? closedForSubscriptions,
     int? locationId,
-    _i3.Location? location,
+    _i6.Location? location,
     int? playerDataId,
-    _i4.PlayerData? host,
-    List<_i5.MatchSubscription>? subscriptions,
-    _i6.MatchChatHistory? chatHistory,
-    _i7.PlayedMatch? playedMatch,
+    _i5.PlayerData? host,
+    List<_i7.MatchSubscription>? subscriptions,
+    _i8.MatchChatHistory? chatHistory,
+    _i9.PlayedMatch? playedMatch,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -171,6 +218,14 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
       'minAmountOfPlayers': minAmountOfPlayers.toJson(),
       'maxAmountOfPlayers': maxAmountOfPlayers.toJson(),
       'attemptedAt': attemptedAt.toJson(),
+      'status': status.toJson(),
+      if (notPlayedReason != null) 'notPlayedReason': notPlayedReason?.toJson(),
+      if (notPlayedReasonDetails != null)
+        'notPlayedReasonDetails': notPlayedReasonDetails,
+      if (notPlayedMarkedByPlayerDataId != null)
+        'notPlayedMarkedByPlayerDataId': notPlayedMarkedByPlayerDataId,
+      if (notPlayedMarkedBy != null)
+        'notPlayedMarkedBy': notPlayedMarkedBy?.toJson(),
       if (closedForSubscriptions != null)
         'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
@@ -198,17 +253,22 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     required DateTime createdAt,
     required String title,
     String? description,
-    required _i2.MatchPodium minAmountOfPlayers,
-    required _i2.MatchPodium maxAmountOfPlayers,
+    required _i3.MatchPodium minAmountOfPlayers,
+    required _i3.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    _i4.MatchScheduleNotPlayedReason? notPlayedReason,
+    String? notPlayedReasonDetails,
+    int? notPlayedMarkedByPlayerDataId,
+    _i5.PlayerData? notPlayedMarkedBy,
     bool? closedForSubscriptions,
     required int locationId,
-    _i3.Location? location,
+    _i6.Location? location,
     required int playerDataId,
-    _i4.PlayerData? host,
-    List<_i5.MatchSubscription>? subscriptions,
-    _i6.MatchChatHistory? chatHistory,
-    _i7.PlayedMatch? playedMatch,
+    _i5.PlayerData? host,
+    List<_i7.MatchSubscription>? subscriptions,
+    _i8.MatchChatHistory? chatHistory,
+    _i9.PlayedMatch? playedMatch,
   }) : super._(
          id: id,
          createdAt: createdAt,
@@ -217,6 +277,11 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          minAmountOfPlayers: minAmountOfPlayers,
          maxAmountOfPlayers: maxAmountOfPlayers,
          attemptedAt: attemptedAt,
+         status: status,
+         notPlayedReason: notPlayedReason,
+         notPlayedReasonDetails: notPlayedReasonDetails,
+         notPlayedMarkedByPlayerDataId: notPlayedMarkedByPlayerDataId,
+         notPlayedMarkedBy: notPlayedMarkedBy,
          closedForSubscriptions: closedForSubscriptions,
          locationId: locationId,
          location: location,
@@ -236,9 +301,14 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     DateTime? createdAt,
     String? title,
     Object? description = _Undefined,
-    _i2.MatchPodium? minAmountOfPlayers,
-    _i2.MatchPodium? maxAmountOfPlayers,
+    _i3.MatchPodium? minAmountOfPlayers,
+    _i3.MatchPodium? maxAmountOfPlayers,
     DateTime? attemptedAt,
+    _i2.MatchScheduleStatus? status,
+    Object? notPlayedReason = _Undefined,
+    Object? notPlayedReasonDetails = _Undefined,
+    Object? notPlayedMarkedByPlayerDataId = _Undefined,
+    Object? notPlayedMarkedBy = _Undefined,
     Object? closedForSubscriptions = _Undefined,
     int? locationId,
     Object? location = _Undefined,
@@ -256,22 +326,35 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       minAmountOfPlayers: minAmountOfPlayers ?? this.minAmountOfPlayers,
       maxAmountOfPlayers: maxAmountOfPlayers ?? this.maxAmountOfPlayers,
       attemptedAt: attemptedAt ?? this.attemptedAt,
+      status: status ?? this.status,
+      notPlayedReason: notPlayedReason is _i4.MatchScheduleNotPlayedReason?
+          ? notPlayedReason
+          : this.notPlayedReason,
+      notPlayedReasonDetails: notPlayedReasonDetails is String?
+          ? notPlayedReasonDetails
+          : this.notPlayedReasonDetails,
+      notPlayedMarkedByPlayerDataId: notPlayedMarkedByPlayerDataId is int?
+          ? notPlayedMarkedByPlayerDataId
+          : this.notPlayedMarkedByPlayerDataId,
+      notPlayedMarkedBy: notPlayedMarkedBy is _i5.PlayerData?
+          ? notPlayedMarkedBy
+          : this.notPlayedMarkedBy?.copyWith(),
       closedForSubscriptions: closedForSubscriptions is bool?
           ? closedForSubscriptions
           : this.closedForSubscriptions,
       locationId: locationId ?? this.locationId,
-      location: location is _i3.Location?
+      location: location is _i6.Location?
           ? location
           : this.location?.copyWith(),
       playerDataId: playerDataId ?? this.playerDataId,
-      host: host is _i4.PlayerData? ? host : this.host?.copyWith(),
-      subscriptions: subscriptions is List<_i5.MatchSubscription>?
+      host: host is _i5.PlayerData? ? host : this.host?.copyWith(),
+      subscriptions: subscriptions is List<_i7.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
-      chatHistory: chatHistory is _i6.MatchChatHistory?
+      chatHistory: chatHistory is _i8.MatchChatHistory?
           ? chatHistory
           : this.chatHistory?.copyWith(),
-      playedMatch: playedMatch is _i7.PlayedMatch?
+      playedMatch: playedMatch is _i9.PlayedMatch?
           ? playedMatch
           : this.playedMatch?.copyWith(),
     );

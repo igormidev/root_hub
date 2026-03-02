@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -11,6 +12,7 @@ class EditMatchSchedule extends Endpoint {
 
   Future<void> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String title,
     String? description,
@@ -19,18 +21,22 @@ class EditMatchSchedule extends Endpoint {
     required DateTime attemptedAt,
     bool? closedForSubscriptions,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (scheduledMatchId <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Scheduled match id must be greater than zero.',
+            language: language,
+            description: t.errors.scheduledMatchIdMustBeGreaterThanZero,
           );
         }
 
         final normalizedTitle = title.trim();
         if (normalizedTitle.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Title cannot be empty.',
+            language: language,
+            description: t.errors.titleCannotBeEmpty,
           );
         }
 
@@ -38,9 +44,8 @@ class EditMatchSchedule extends Endpoint {
         final maxPlayers = _podiumToPlayersCount(maxAmountOfPlayers);
         if (minPlayers < 2 || maxPlayers > 6 || minPlayers > maxPlayers) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'Players range must stay between 2 and 6, '
-                'with min not greater than max.',
+            language: language,
+            description: t.errors.playersRangeMustStayBetweenTwoAndSix,
           );
         }
 
@@ -50,9 +55,10 @@ class EditMatchSchedule extends Endpoint {
         );
         if (attemptedAt.isBefore(minAllowedTime)) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'The scheduled time must be at least '
-                '$_minScheduleMinutes minutes in the future.',
+            language: language,
+            description: t.errors.scheduledTimeMustBeAtLeastMinutesInTheFuture(
+              minutes: _minScheduleMinutes,
+            ),
           );
         }
 
@@ -61,9 +67,10 @@ class EditMatchSchedule extends Endpoint {
         );
         if (attemptedAt.isAfter(maxAllowedTime)) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'The scheduled time cannot be more than '
-                '$_maxScheduleDays days in the future.',
+            language: language,
+            description: t.errors.scheduledTimeCannotBeMoreThanDaysInTheFuture(
+              days: _maxScheduleDays,
+            ),
           );
         }
 
@@ -77,8 +84,9 @@ class EditMatchSchedule extends Endpoint {
 
         if (hostPlayerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
@@ -92,24 +100,34 @@ class EditMatchSchedule extends Endpoint {
 
         if (matchSchedule == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Table not found',
-            description: 'The selected table was not found.',
+            language: language,
+            title: t.errors.tableNotFoundTitle,
+            description: t.errors.selectedTableWasNotFound,
           );
         }
 
         if (matchSchedule.playerDataId != hostPlayerData.id) {
           throw RootHubEndpointError.accessDenied(
-            description: 'Only the host of the table can edit its details.',
+            language: language,
+            description: t.errors.onlyHostCanEditTable,
+          );
+        }
+
+        if (matchSchedule.status != MatchScheduleStatus.scheduled) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.onlyScheduledMatchesCanBeEdited,
           );
         }
 
         final currentSubscriberCount = matchSchedule.subscriptions?.length ?? 0;
         if (maxPlayers < currentSubscriberCount) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Too many players',
-            description:
-                'There are already $currentSubscriberCount players subscribed. '
-                'You cannot set the maximum below that number.',
+            language: language,
+            title: t.errors.tooManyPlayersTitle,
+            description: t.errors.tooManyPlayersSubscribed(
+              currentSubscriberCount: currentSubscriberCount,
+            ),
           );
         }
 
@@ -136,8 +154,8 @@ class EditMatchSchedule extends Endpoint {
           level: LogLevel.info,
         );
       },
-      fallbackDescription:
-          'Unable to update this table right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToUpdateTable,
     );
   }
 

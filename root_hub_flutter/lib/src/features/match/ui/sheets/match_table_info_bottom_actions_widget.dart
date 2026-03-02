@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableInfoBottomActionsWidget extends StatelessWidget {
   final MatchSchedulePairingAttempt table;
@@ -37,7 +38,7 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
+        padding: EdgeInsets.fromLTRB(18, 10, 18, 14),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -47,21 +48,26 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: onClose,
                     style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
+                      minimumSize: Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Close'),
+                    child: Text(
+                      t
+                          .match
+                          .ui_sheets_match_table_info_bottom_actions_widget
+                          .close,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: FilledButton.icon(
                     onPressed: isUnsubscribing ? null : onUnsubscribe,
                     style: FilledButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      maximumSize: const Size(double.infinity, 52),
+                      minimumSize: Size(double.infinity, 52),
+                      maximumSize: Size(double.infinity, 52),
                       backgroundColor: colorScheme.error,
                       foregroundColor: colorScheme.onError,
                     ),
@@ -74,22 +80,30 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
                               color: colorScheme.onError,
                             ),
                           )
-                        : const Icon(Icons.person_remove_rounded),
+                        : Icon(Icons.person_remove_rounded),
                     label: Text(
-                      isUnsubscribing ? 'Leaving...' : 'Leave Table',
+                      isUnsubscribing
+                          ? t
+                                .match
+                                .ui_sheets_match_table_info_bottom_actions_widget
+                                .leaving
+                          : t
+                                .match
+                                .ui_sheets_match_table_info_bottom_actions_widget
+                                .leaveTable,
                     ),
                   ),
                 ),
               ],
             ),
             if (isHost && removablePlayers.isNotEmpty) ...[
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               OutlinedButton.icon(
                 onPressed: isRemovingPlayer
                     ? null
                     : () => onShowRemovePlayerDialog(removablePlayers),
                 style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 52),
+                  minimumSize: Size(double.infinity, 52),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -107,9 +121,17 @@ class MatchTableInfoBottomActionsWidget extends StatelessWidget {
                           color: colorScheme.error,
                         ),
                       )
-                    : const Icon(Icons.group_remove_rounded),
+                    : Icon(Icons.group_remove_rounded),
                 label: Text(
-                  isRemovingPlayer ? 'Removing...' : 'Remove Player',
+                  isRemovingPlayer
+                      ? t
+                            .match
+                            .ui_sheets_match_table_info_bottom_actions_widget
+                            .removing
+                      : t
+                            .match
+                            .ui_sheets_match_table_info_bottom_actions_widget
+                            .removePlayer,
                 ),
               ),
             ],

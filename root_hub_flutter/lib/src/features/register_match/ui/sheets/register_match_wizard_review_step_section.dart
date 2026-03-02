@@ -37,25 +37,28 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Confirm all details before logging this match.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_review_step_section
+              .confirmAllDetailsBeforeLoggingThisMatch,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         Text(
           matchTitle,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+          padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             color: colorScheme.surfaceContainerLow,
@@ -70,14 +73,14 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 'Estimated duration: $estimatedDurationLabel',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 'Winner method: $winnerMethodLabel',
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -87,20 +90,23 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         Text(
-          'Ranking',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_review_step_section
+              .ranking,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         for (var index = 0; index < rankedParticipants.length; index++)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.only(bottom: 8),
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+              padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: colorScheme.surfaceContainerLow,
@@ -124,12 +130,12 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   _RegisterMatchWizardFactionAvatarSection(
                     faction: rankedParticipants[index].faction,
                     radius: 14,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       rankedParticipants[index].displayName,
@@ -149,21 +155,30 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
               ),
             ),
           ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         Text(
-          'Social proof',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_review_step_section
+              .socialProof,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         _RegisterMatchWizardReviewPhotoTile(
-          title: 'Group photo',
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_review_step_section
+              .groupPhoto,
           image: groupPhoto,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         _RegisterMatchWizardReviewPhotoTile(
-          title: 'Board photo',
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_review_step_section
+              .boardPhoto,
           image: boardPhoto,
         ),
       ],

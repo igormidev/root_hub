@@ -37,35 +37,35 @@ class RouterNotifier extends Notifier<GoRouter> {
       routes: [
         GoRoute(
           path: loadingPath,
-          builder: (context, state) => const AuthLoadingScreen(),
+          builder: (context, state) => AuthLoadingScreen(),
         ),
         GoRoute(
           path: onboardingPath,
-          builder: (context, state) => const AuthOnboardingScreen(),
+          builder: (context, state) => AuthOnboardingScreen(),
         ),
         GoRoute(
           path: onboardingProfilePath,
-          builder: (context, state) => const AuthOnboardingProfileScreen(),
+          builder: (context, state) => AuthOnboardingProfileScreen(),
         ),
         GoRoute(
           path: loginPath,
-          builder: (context, state) => const AuthLoginScreen(),
+          builder: (context, state) => AuthLoginScreen(),
         ),
         GoRoute(
           path: dashboardPath,
-          builder: (context, state) => const DashboardScreen(),
+          builder: (context, state) => DashboardScreen(),
         ),
         GoRoute(
           path: dashboardFactionPath,
-          builder: (context, state) => const DashboardFactionEditorScreen(),
+          builder: (context, state) => DashboardFactionEditorScreen(),
         ),
         GoRoute(
           path: dashboardMatchCreatePath,
-          builder: (context, state) => const MatchCreateTableScreen(),
+          builder: (context, state) => MatchCreateTableScreen(),
         ),
         GoRoute(
           path: dashboardMatchCreateLocationPath,
-          builder: (context, state) => const MatchCreateTableLocationScreen(),
+          builder: (context, state) => MatchCreateTableLocationScreen(),
         ),
         GoRoute(
           path: dashboardMatchChatPath,
@@ -73,7 +73,7 @@ class RouterNotifier extends Notifier<GoRouter> {
             final matchIdParam = state.pathParameters['matchId'];
             final matchId = int.tryParse(matchIdParam ?? '');
             if (matchId == null || matchId <= 0) {
-              return const DashboardScreen();
+              return DashboardScreen();
             }
 
             final routeExtra = state.extra;

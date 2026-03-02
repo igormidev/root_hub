@@ -29,42 +29,63 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Upload both photos to confirm this match happened in person.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .uploadBothPhotosToConfirmThisMatchHappenedInPerson,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         _RegisterMatchWizardProofCardSection(
-          title: 'Group photo',
-          subtitle: 'Selfie with all players. Include the board if possible.',
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .groupPhoto,
+          subtitle: t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .selfieWithAllPlayersIncludeTheBoardIfPossible,
           image: groupPhoto,
           onTap: onPickGroupPhoto,
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: 18),
         Text(
-          'Board photo proof',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .boardPhotoProof,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
-          'Upload a photo of the board with the score track clearly visible.',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             height: 1.35,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         _RegisterMatchWizardProofCardSection(
-          title: 'Board photo',
-          subtitle: 'Capture the board and score track clearly.',
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .boardPhoto,
+          subtitle: t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .captureTheBoardAndScoreTrackClearly,
           image: boardPhoto,
           onTap: onPickBoardPhoto,
         ),

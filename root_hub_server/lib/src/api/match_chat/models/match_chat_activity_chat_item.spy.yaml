@@ -1,0 +1,15 @@
+class: MatchChatActivityChatItem
+fields:
+  scheduledMatchId: int
+  chatHistoryId: int
+  matchTitle: String
+  attemptedAt: DateTime
+  unreadMessagesCount: int
+  isSubscribed: bool
+  hasPlayedResult: bool
+  locationTitle: String
+  locationSubtitle: String?
+  lastMessageAt: DateTime?
+  lastMessagePreview: String?
+  lastMessageType: MatchChatMessageType?
+  lastMessageSenderDisplayName: String?

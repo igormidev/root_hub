@@ -12,7 +12,14 @@ abstract class DashboardProfileState with _$DashboardProfileState {
     @Default(false) bool isUpdatingProfileImage,
     @Default(false) bool isUpdatingDisplayName,
     @Default(false) bool isUpdatingLocation,
+    @Default(false) bool isResolvingLocationLabel,
     @Default(false) bool isUpdatingFaction,
+    @Default(false) bool isUpdatingPreferredLanguage,
+    String? resolvedLocationLabelKey,
+    String? resolvingLocationLabelKey,
+    String? currentLocationCityName,
+    String? currentLocationShortAddress,
+    String? currentLocationFormattedAddress,
     RootHubException? lastError,
   }) = _DashboardProfileState;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/features/home/ui/sections/home_stats_section.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_provider.dart';
 
@@ -36,33 +37,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         return ref.read(homeStatsProvider.notifier).refresh();
       },
       child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(
+        physics: AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
         ),
-        padding: const EdgeInsets.fromLTRB(0, 4, 0, 28),
+        padding: EdgeInsets.fromLTRB(0, 4, 0, 28),
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Community Dashboard',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'See how the ROOT platform is evolving and compare it with your own progress.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
           if (hasError && homeStatsState.platformStats != null) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Text(
               '${homeStatsState.loadError!.title}: ${homeStatsState.loadError!.description}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -71,14 +52,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ],
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           HomeStatsSection(
-            title: 'Community Stats',
-            description:
-                'Faction performance from all played matches in Root Hub.',
-            emptyTitle: 'No community stats yet',
-            emptyDescription:
-                'As soon as players register completed matches, this section will fill with faction trends.',
+            title: t.home.ui_screens_home_screen.communityStats,
+            description: t
+                .home
+                .ui_screens_home_screen
+                .factionPerformanceFromAllPlayedMatchesInRootHub,
+            emptyTitle: t.home.ui_screens_home_screen.noCommunityStatsYet,
+            emptyDescription: t
+                .home
+                .ui_screens_home_screen
+                .communityStatsWillAppearAfterCompletedMatches,
             onRetry: () {
               ref.read(homeStatsProvider.notifier).loadStats();
             },
@@ -86,13 +71,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             stats: homeStatsState.platformStats,
             error: homeStatsState.loadError,
           ),
-          const SizedBox(height: 26),
+          SizedBox(height: 26),
           HomeStatsSection(
-            title: 'My Stats',
-            description: 'Your personal faction performance and match profile.',
-            emptyTitle: 'No personal stats yet',
-            emptyDescription:
-                'Play and register your first match to start your personal dashboard.',
+            title: t.home.ui_screens_home_screen.myStats,
+            description: t
+                .home
+                .ui_screens_home_screen
+                .yourPersonalFactionPerformanceAndMatchProfile,
+            emptyTitle: t.home.ui_screens_home_screen.noPersonalStatsYet,
+            emptyDescription: t
+                .home
+                .ui_screens_home_screen
+                .registerYourFirstMatchToStartYourDashboard,
             onRetry: () {
               ref.read(homeStatsProvider.notifier).loadStats();
             },
@@ -100,10 +90,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             stats: homeStatsState.playerStats,
             error: homeStatsState.loadError,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           if (homeStatsState.isLoading && homeStatsState.hasLoadedOnce)
             Padding(
-              padding: const EdgeInsets.only(top: 4),
+              padding: EdgeInsets.only(top: 4),
               child: Center(
                 child: SizedBox(
                   width: 22,
@@ -115,6 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
             ),
+          SizedBox(height: 80),
         ],
       ),
     );

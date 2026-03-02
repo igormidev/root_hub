@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -6,10 +7,18 @@ class GetPendingMatchResults extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<List<MatchSchedulePairingAttempt>> v1(Session session) async {
+  Future<List<MatchSchedulePairingAttempt>> v1(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
-        final playerData = await _getAuthenticatedPlayerData(session);
+        final playerData = await _getAuthenticatedPlayerData(
+          session,
+          language: language,
+        );
 
         final hostedSchedules = await MatchSchedulePairingAttempt.db.find(
           session,
@@ -23,8 +32,9 @@ class GetPendingMatchResults extends Endpoint {
           session,
           where: (t) => t.playerDataId.equals(playerData.id!),
         );
-        final subscribedScheduleIds = subscriptions
-            .map((subscription) => subscription.matchSchedulePairingAttemptId);
+        final subscribedScheduleIds = subscriptions.map(
+          (subscription) => subscription.matchSchedulePairingAttemptId,
+        );
 
         final candidateScheduleIds = <int>{
           ...hostedScheduleIds,
@@ -35,26 +45,11 @@ class GetPendingMatchResults extends Endpoint {
           return const <MatchSchedulePairingAttempt>[];
         }
 
-        final playedMatches = await PlayedMatch.db.find(
-          session,
-          where: (t) => t.scheduledPairingAttemptId.inSet(candidateScheduleIds),
-        );
-
-        final promotedScheduleIds = playedMatches
-            .map((playedMatch) => playedMatch.scheduledPairingAttemptId)
-            .toSet();
-
-        final pendingScheduleIds = candidateScheduleIds.difference(
-          promotedScheduleIds,
-        );
-
-        if (pendingScheduleIds.isEmpty) {
-          return const <MatchSchedulePairingAttempt>[];
-        }
-
         final pendingSchedules = await MatchSchedulePairingAttempt.db.find(
           session,
-          where: (t) => t.id.inSet(pendingScheduleIds),
+          where: (t) =>
+              t.id.inSet(candidateScheduleIds) &
+              t.status.equals(MatchScheduleStatus.scheduled),
           orderBy: (t) => t.attemptedAt,
           orderDescending: true,
           include: MatchSchedulePairingAttempt.include(
@@ -69,12 +64,17 @@ class GetPendingMatchResults extends Endpoint {
 
         return pendingSchedules;
       },
-      fallbackDescription:
-          'Unable to load pending match reports right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadPendingMatchReports,
     );
   }
 
-  Future<PlayerData> _getAuthenticatedPlayerData(Session session) async {
+  Future<PlayerData> _getAuthenticatedPlayerData(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     final userIdentifier = session.authenticated!.userIdentifier;
     final authUserId = UuidValue.fromString(userIdentifier);
 
@@ -85,8 +85,9 @@ class GetPendingMatchResults extends Endpoint {
 
     if (playerData == null) {
       throw RootHubEndpointError.notFound(
-        title: 'Player profile missing',
-        description: 'Player profile not found for authenticated user.',
+        language: language,
+        title: t.errors.playerProfileMissingTitle,
+        description: t.errors.playerProfileNotFoundForAuthenticatedUser,
       );
     }
 

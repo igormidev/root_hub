@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DashboardProfileState {
 
- String? get profileImageUrl; bool get hasLoadedProfileImage; bool get isLoadingProfileImage; bool get isUpdatingProfileImage; bool get isUpdatingDisplayName; bool get isUpdatingLocation; bool get isUpdatingFaction; RootHubException? get lastError;
+ String? get profileImageUrl; bool get hasLoadedProfileImage; bool get isLoadingProfileImage; bool get isUpdatingProfileImage; bool get isUpdatingDisplayName; bool get isUpdatingLocation; bool get isResolvingLocationLabel; bool get isUpdatingFaction; bool get isUpdatingPreferredLanguage; String? get resolvedLocationLabelKey; String? get resolvingLocationLabelKey; String? get currentLocationCityName; String? get currentLocationShortAddress; String? get currentLocationFormattedAddress; RootHubException? get lastError;
 /// Create a copy of DashboardProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DashboardProfileStateCopyWith<DashboardProfileState> get copyWith => _$Dashboar
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardProfileState&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.hasLoadedProfileImage, hasLoadedProfileImage) || other.hasLoadedProfileImage == hasLoadedProfileImage)&&(identical(other.isLoadingProfileImage, isLoadingProfileImage) || other.isLoadingProfileImage == isLoadingProfileImage)&&(identical(other.isUpdatingProfileImage, isUpdatingProfileImage) || other.isUpdatingProfileImage == isUpdatingProfileImage)&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.lastError, lastError) || other.lastError == lastError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardProfileState&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.hasLoadedProfileImage, hasLoadedProfileImage) || other.hasLoadedProfileImage == hasLoadedProfileImage)&&(identical(other.isLoadingProfileImage, isLoadingProfileImage) || other.isLoadingProfileImage == isLoadingProfileImage)&&(identical(other.isUpdatingProfileImage, isUpdatingProfileImage) || other.isUpdatingProfileImage == isUpdatingProfileImage)&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isResolvingLocationLabel, isResolvingLocationLabel) || other.isResolvingLocationLabel == isResolvingLocationLabel)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.isUpdatingPreferredLanguage, isUpdatingPreferredLanguage) || other.isUpdatingPreferredLanguage == isUpdatingPreferredLanguage)&&(identical(other.resolvedLocationLabelKey, resolvedLocationLabelKey) || other.resolvedLocationLabelKey == resolvedLocationLabelKey)&&(identical(other.resolvingLocationLabelKey, resolvingLocationLabelKey) || other.resolvingLocationLabelKey == resolvingLocationLabelKey)&&(identical(other.currentLocationCityName, currentLocationCityName) || other.currentLocationCityName == currentLocationCityName)&&(identical(other.currentLocationShortAddress, currentLocationShortAddress) || other.currentLocationShortAddress == currentLocationShortAddress)&&(identical(other.currentLocationFormattedAddress, currentLocationFormattedAddress) || other.currentLocationFormattedAddress == currentLocationFormattedAddress)&&(identical(other.lastError, lastError) || other.lastError == lastError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profileImageUrl,hasLoadedProfileImage,isLoadingProfileImage,isUpdatingProfileImage,isUpdatingDisplayName,isUpdatingLocation,isUpdatingFaction,lastError);
+int get hashCode => Object.hash(runtimeType,profileImageUrl,hasLoadedProfileImage,isLoadingProfileImage,isUpdatingProfileImage,isUpdatingDisplayName,isUpdatingLocation,isResolvingLocationLabel,isUpdatingFaction,isUpdatingPreferredLanguage,resolvedLocationLabelKey,resolvingLocationLabelKey,currentLocationCityName,currentLocationShortAddress,currentLocationFormattedAddress,lastError);
 
 @override
 String toString() {
-  return 'DashboardProfileState(profileImageUrl: $profileImageUrl, hasLoadedProfileImage: $hasLoadedProfileImage, isLoadingProfileImage: $isLoadingProfileImage, isUpdatingProfileImage: $isUpdatingProfileImage, isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isUpdatingFaction: $isUpdatingFaction, lastError: $lastError)';
+  return 'DashboardProfileState(profileImageUrl: $profileImageUrl, hasLoadedProfileImage: $hasLoadedProfileImage, isLoadingProfileImage: $isLoadingProfileImage, isUpdatingProfileImage: $isUpdatingProfileImage, isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isResolvingLocationLabel: $isResolvingLocationLabel, isUpdatingFaction: $isUpdatingFaction, isUpdatingPreferredLanguage: $isUpdatingPreferredLanguage, resolvedLocationLabelKey: $resolvedLocationLabelKey, resolvingLocationLabelKey: $resolvingLocationLabelKey, currentLocationCityName: $currentLocationCityName, currentLocationShortAddress: $currentLocationShortAddress, currentLocationFormattedAddress: $currentLocationFormattedAddress, lastError: $lastError)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DashboardProfileStateCopyWith<$Res>  {
   factory $DashboardProfileStateCopyWith(DashboardProfileState value, $Res Function(DashboardProfileState) _then) = _$DashboardProfileStateCopyWithImpl;
 @useResult
 $Res call({
- String? profileImageUrl, bool hasLoadedProfileImage, bool isLoadingProfileImage, bool isUpdatingProfileImage, bool isUpdatingDisplayName, bool isUpdatingLocation, bool isUpdatingFaction, RootHubException? lastError
+ String? profileImageUrl, bool hasLoadedProfileImage, bool isLoadingProfileImage, bool isUpdatingProfileImage, bool isUpdatingDisplayName, bool isUpdatingLocation, bool isResolvingLocationLabel, bool isUpdatingFaction, bool isUpdatingPreferredLanguage, String? resolvedLocationLabelKey, String? resolvingLocationLabelKey, String? currentLocationCityName, String? currentLocationShortAddress, String? currentLocationFormattedAddress, RootHubException? lastError
 });
 
 
@@ -62,7 +62,7 @@ class _$DashboardProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? profileImageUrl = freezed,Object? hasLoadedProfileImage = null,Object? isLoadingProfileImage = null,Object? isUpdatingProfileImage = null,Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isUpdatingFaction = null,Object? lastError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? profileImageUrl = freezed,Object? hasLoadedProfileImage = null,Object? isLoadingProfileImage = null,Object? isUpdatingProfileImage = null,Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isResolvingLocationLabel = null,Object? isUpdatingFaction = null,Object? isUpdatingPreferredLanguage = null,Object? resolvedLocationLabelKey = freezed,Object? resolvingLocationLabelKey = freezed,Object? currentLocationCityName = freezed,Object? currentLocationShortAddress = freezed,Object? currentLocationFormattedAddress = freezed,Object? lastError = freezed,}) {
   return _then(_self.copyWith(
 profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,hasLoadedProfileImage: null == hasLoadedProfileImage ? _self.hasLoadedProfileImage : hasLoadedProfileImage // ignore: cast_nullable_to_non_nullable
@@ -70,8 +70,15 @@ as bool,isLoadingProfileImage: null == isLoadingProfileImage ? _self.isLoadingPr
 as bool,isUpdatingProfileImage: null == isUpdatingProfileImage ? _self.isUpdatingProfileImage : isUpdatingProfileImage // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingDisplayName: null == isUpdatingDisplayName ? _self.isUpdatingDisplayName : isUpdatingDisplayName // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingLocation: null == isUpdatingLocation ? _self.isUpdatingLocation : isUpdatingLocation // ignore: cast_nullable_to_non_nullable
+as bool,isResolvingLocationLabel: null == isResolvingLocationLabel ? _self.isResolvingLocationLabel : isResolvingLocationLabel // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingFaction: null == isUpdatingFaction ? _self.isUpdatingFaction : isUpdatingFaction // ignore: cast_nullable_to_non_nullable
-as bool,lastError: freezed == lastError ? _self.lastError : lastError // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingPreferredLanguage: null == isUpdatingPreferredLanguage ? _self.isUpdatingPreferredLanguage : isUpdatingPreferredLanguage // ignore: cast_nullable_to_non_nullable
+as bool,resolvedLocationLabelKey: freezed == resolvedLocationLabelKey ? _self.resolvedLocationLabelKey : resolvedLocationLabelKey // ignore: cast_nullable_to_non_nullable
+as String?,resolvingLocationLabelKey: freezed == resolvingLocationLabelKey ? _self.resolvingLocationLabelKey : resolvingLocationLabelKey // ignore: cast_nullable_to_non_nullable
+as String?,currentLocationCityName: freezed == currentLocationCityName ? _self.currentLocationCityName : currentLocationCityName // ignore: cast_nullable_to_non_nullable
+as String?,currentLocationShortAddress: freezed == currentLocationShortAddress ? _self.currentLocationShortAddress : currentLocationShortAddress // ignore: cast_nullable_to_non_nullable
+as String?,currentLocationFormattedAddress: freezed == currentLocationFormattedAddress ? _self.currentLocationFormattedAddress : currentLocationFormattedAddress // ignore: cast_nullable_to_non_nullable
+as String?,lastError: freezed == lastError ? _self.lastError : lastError // ignore: cast_nullable_to_non_nullable
 as RootHubException?,
   ));
 }
@@ -157,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isResolvingLocationLabel,  bool isUpdatingFaction,  bool isUpdatingPreferredLanguage,  String? resolvedLocationLabelKey,  String? resolvingLocationLabelKey,  String? currentLocationCityName,  String? currentLocationShortAddress,  String? currentLocationFormattedAddress,  RootHubException? lastError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardProfileState() when $default != null:
-return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
+return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isResolvingLocationLabel,_that.isUpdatingFaction,_that.isUpdatingPreferredLanguage,_that.resolvedLocationLabelKey,_that.resolvingLocationLabelKey,_that.currentLocationCityName,_that.currentLocationShortAddress,_that.currentLocationFormattedAddress,_that.lastError);case _:
   return orElse();
 
 }
@@ -178,10 +185,10 @@ return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isResolvingLocationLabel,  bool isUpdatingFaction,  bool isUpdatingPreferredLanguage,  String? resolvedLocationLabelKey,  String? resolvingLocationLabelKey,  String? currentLocationCityName,  String? currentLocationShortAddress,  String? currentLocationFormattedAddress,  RootHubException? lastError)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardProfileState():
-return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
+return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isResolvingLocationLabel,_that.isUpdatingFaction,_that.isUpdatingPreferredLanguage,_that.resolvedLocationLabelKey,_that.resolvingLocationLabelKey,_that.currentLocationCityName,_that.currentLocationShortAddress,_that.currentLocationFormattedAddress,_that.lastError);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +205,10 @@ return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isUpdatingFaction,  RootHubException? lastError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? profileImageUrl,  bool hasLoadedProfileImage,  bool isLoadingProfileImage,  bool isUpdatingProfileImage,  bool isUpdatingDisplayName,  bool isUpdatingLocation,  bool isResolvingLocationLabel,  bool isUpdatingFaction,  bool isUpdatingPreferredLanguage,  String? resolvedLocationLabelKey,  String? resolvingLocationLabelKey,  String? currentLocationCityName,  String? currentLocationShortAddress,  String? currentLocationFormattedAddress,  RootHubException? lastError)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardProfileState() when $default != null:
-return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isUpdatingFaction,_that.lastError);case _:
+return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadingProfileImage,_that.isUpdatingProfileImage,_that.isUpdatingDisplayName,_that.isUpdatingLocation,_that.isResolvingLocationLabel,_that.isUpdatingFaction,_that.isUpdatingPreferredLanguage,_that.resolvedLocationLabelKey,_that.resolvingLocationLabelKey,_that.currentLocationCityName,_that.currentLocationShortAddress,_that.currentLocationFormattedAddress,_that.lastError);case _:
   return null;
 
 }
@@ -213,7 +220,7 @@ return $default(_that.profileImageUrl,_that.hasLoadedProfileImage,_that.isLoadin
 
 
 class _DashboardProfileState implements DashboardProfileState {
-  const _DashboardProfileState({this.profileImageUrl, this.hasLoadedProfileImage = false, this.isLoadingProfileImage = false, this.isUpdatingProfileImage = false, this.isUpdatingDisplayName = false, this.isUpdatingLocation = false, this.isUpdatingFaction = false, this.lastError});
+  const _DashboardProfileState({this.profileImageUrl, this.hasLoadedProfileImage = false, this.isLoadingProfileImage = false, this.isUpdatingProfileImage = false, this.isUpdatingDisplayName = false, this.isUpdatingLocation = false, this.isResolvingLocationLabel = false, this.isUpdatingFaction = false, this.isUpdatingPreferredLanguage = false, this.resolvedLocationLabelKey, this.resolvingLocationLabelKey, this.currentLocationCityName, this.currentLocationShortAddress, this.currentLocationFormattedAddress, this.lastError});
   
 
 @override final  String? profileImageUrl;
@@ -222,7 +229,14 @@ class _DashboardProfileState implements DashboardProfileState {
 @override@JsonKey() final  bool isUpdatingProfileImage;
 @override@JsonKey() final  bool isUpdatingDisplayName;
 @override@JsonKey() final  bool isUpdatingLocation;
+@override@JsonKey() final  bool isResolvingLocationLabel;
 @override@JsonKey() final  bool isUpdatingFaction;
+@override@JsonKey() final  bool isUpdatingPreferredLanguage;
+@override final  String? resolvedLocationLabelKey;
+@override final  String? resolvingLocationLabelKey;
+@override final  String? currentLocationCityName;
+@override final  String? currentLocationShortAddress;
+@override final  String? currentLocationFormattedAddress;
 @override final  RootHubException? lastError;
 
 /// Create a copy of DashboardProfileState
@@ -235,16 +249,16 @@ _$DashboardProfileStateCopyWith<_DashboardProfileState> get copyWith => __$Dashb
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardProfileState&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.hasLoadedProfileImage, hasLoadedProfileImage) || other.hasLoadedProfileImage == hasLoadedProfileImage)&&(identical(other.isLoadingProfileImage, isLoadingProfileImage) || other.isLoadingProfileImage == isLoadingProfileImage)&&(identical(other.isUpdatingProfileImage, isUpdatingProfileImage) || other.isUpdatingProfileImage == isUpdatingProfileImage)&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.lastError, lastError) || other.lastError == lastError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardProfileState&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.hasLoadedProfileImage, hasLoadedProfileImage) || other.hasLoadedProfileImage == hasLoadedProfileImage)&&(identical(other.isLoadingProfileImage, isLoadingProfileImage) || other.isLoadingProfileImage == isLoadingProfileImage)&&(identical(other.isUpdatingProfileImage, isUpdatingProfileImage) || other.isUpdatingProfileImage == isUpdatingProfileImage)&&(identical(other.isUpdatingDisplayName, isUpdatingDisplayName) || other.isUpdatingDisplayName == isUpdatingDisplayName)&&(identical(other.isUpdatingLocation, isUpdatingLocation) || other.isUpdatingLocation == isUpdatingLocation)&&(identical(other.isResolvingLocationLabel, isResolvingLocationLabel) || other.isResolvingLocationLabel == isResolvingLocationLabel)&&(identical(other.isUpdatingFaction, isUpdatingFaction) || other.isUpdatingFaction == isUpdatingFaction)&&(identical(other.isUpdatingPreferredLanguage, isUpdatingPreferredLanguage) || other.isUpdatingPreferredLanguage == isUpdatingPreferredLanguage)&&(identical(other.resolvedLocationLabelKey, resolvedLocationLabelKey) || other.resolvedLocationLabelKey == resolvedLocationLabelKey)&&(identical(other.resolvingLocationLabelKey, resolvingLocationLabelKey) || other.resolvingLocationLabelKey == resolvingLocationLabelKey)&&(identical(other.currentLocationCityName, currentLocationCityName) || other.currentLocationCityName == currentLocationCityName)&&(identical(other.currentLocationShortAddress, currentLocationShortAddress) || other.currentLocationShortAddress == currentLocationShortAddress)&&(identical(other.currentLocationFormattedAddress, currentLocationFormattedAddress) || other.currentLocationFormattedAddress == currentLocationFormattedAddress)&&(identical(other.lastError, lastError) || other.lastError == lastError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profileImageUrl,hasLoadedProfileImage,isLoadingProfileImage,isUpdatingProfileImage,isUpdatingDisplayName,isUpdatingLocation,isUpdatingFaction,lastError);
+int get hashCode => Object.hash(runtimeType,profileImageUrl,hasLoadedProfileImage,isLoadingProfileImage,isUpdatingProfileImage,isUpdatingDisplayName,isUpdatingLocation,isResolvingLocationLabel,isUpdatingFaction,isUpdatingPreferredLanguage,resolvedLocationLabelKey,resolvingLocationLabelKey,currentLocationCityName,currentLocationShortAddress,currentLocationFormattedAddress,lastError);
 
 @override
 String toString() {
-  return 'DashboardProfileState(profileImageUrl: $profileImageUrl, hasLoadedProfileImage: $hasLoadedProfileImage, isLoadingProfileImage: $isLoadingProfileImage, isUpdatingProfileImage: $isUpdatingProfileImage, isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isUpdatingFaction: $isUpdatingFaction, lastError: $lastError)';
+  return 'DashboardProfileState(profileImageUrl: $profileImageUrl, hasLoadedProfileImage: $hasLoadedProfileImage, isLoadingProfileImage: $isLoadingProfileImage, isUpdatingProfileImage: $isUpdatingProfileImage, isUpdatingDisplayName: $isUpdatingDisplayName, isUpdatingLocation: $isUpdatingLocation, isResolvingLocationLabel: $isResolvingLocationLabel, isUpdatingFaction: $isUpdatingFaction, isUpdatingPreferredLanguage: $isUpdatingPreferredLanguage, resolvedLocationLabelKey: $resolvedLocationLabelKey, resolvingLocationLabelKey: $resolvingLocationLabelKey, currentLocationCityName: $currentLocationCityName, currentLocationShortAddress: $currentLocationShortAddress, currentLocationFormattedAddress: $currentLocationFormattedAddress, lastError: $lastError)';
 }
 
 
@@ -255,7 +269,7 @@ abstract mixin class _$DashboardProfileStateCopyWith<$Res> implements $Dashboard
   factory _$DashboardProfileStateCopyWith(_DashboardProfileState value, $Res Function(_DashboardProfileState) _then) = __$DashboardProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- String? profileImageUrl, bool hasLoadedProfileImage, bool isLoadingProfileImage, bool isUpdatingProfileImage, bool isUpdatingDisplayName, bool isUpdatingLocation, bool isUpdatingFaction, RootHubException? lastError
+ String? profileImageUrl, bool hasLoadedProfileImage, bool isLoadingProfileImage, bool isUpdatingProfileImage, bool isUpdatingDisplayName, bool isUpdatingLocation, bool isResolvingLocationLabel, bool isUpdatingFaction, bool isUpdatingPreferredLanguage, String? resolvedLocationLabelKey, String? resolvingLocationLabelKey, String? currentLocationCityName, String? currentLocationShortAddress, String? currentLocationFormattedAddress, RootHubException? lastError
 });
 
 
@@ -272,7 +286,7 @@ class __$DashboardProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? profileImageUrl = freezed,Object? hasLoadedProfileImage = null,Object? isLoadingProfileImage = null,Object? isUpdatingProfileImage = null,Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isUpdatingFaction = null,Object? lastError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? profileImageUrl = freezed,Object? hasLoadedProfileImage = null,Object? isLoadingProfileImage = null,Object? isUpdatingProfileImage = null,Object? isUpdatingDisplayName = null,Object? isUpdatingLocation = null,Object? isResolvingLocationLabel = null,Object? isUpdatingFaction = null,Object? isUpdatingPreferredLanguage = null,Object? resolvedLocationLabelKey = freezed,Object? resolvingLocationLabelKey = freezed,Object? currentLocationCityName = freezed,Object? currentLocationShortAddress = freezed,Object? currentLocationFormattedAddress = freezed,Object? lastError = freezed,}) {
   return _then(_DashboardProfileState(
 profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,hasLoadedProfileImage: null == hasLoadedProfileImage ? _self.hasLoadedProfileImage : hasLoadedProfileImage // ignore: cast_nullable_to_non_nullable
@@ -280,8 +294,15 @@ as bool,isLoadingProfileImage: null == isLoadingProfileImage ? _self.isLoadingPr
 as bool,isUpdatingProfileImage: null == isUpdatingProfileImage ? _self.isUpdatingProfileImage : isUpdatingProfileImage // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingDisplayName: null == isUpdatingDisplayName ? _self.isUpdatingDisplayName : isUpdatingDisplayName // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingLocation: null == isUpdatingLocation ? _self.isUpdatingLocation : isUpdatingLocation // ignore: cast_nullable_to_non_nullable
+as bool,isResolvingLocationLabel: null == isResolvingLocationLabel ? _self.isResolvingLocationLabel : isResolvingLocationLabel // ignore: cast_nullable_to_non_nullable
 as bool,isUpdatingFaction: null == isUpdatingFaction ? _self.isUpdatingFaction : isUpdatingFaction // ignore: cast_nullable_to_non_nullable
-as bool,lastError: freezed == lastError ? _self.lastError : lastError // ignore: cast_nullable_to_non_nullable
+as bool,isUpdatingPreferredLanguage: null == isUpdatingPreferredLanguage ? _self.isUpdatingPreferredLanguage : isUpdatingPreferredLanguage // ignore: cast_nullable_to_non_nullable
+as bool,resolvedLocationLabelKey: freezed == resolvedLocationLabelKey ? _self.resolvedLocationLabelKey : resolvedLocationLabelKey // ignore: cast_nullable_to_non_nullable
+as String?,resolvingLocationLabelKey: freezed == resolvingLocationLabelKey ? _self.resolvingLocationLabelKey : resolvingLocationLabelKey // ignore: cast_nullable_to_non_nullable
+as String?,currentLocationCityName: freezed == currentLocationCityName ? _self.currentLocationCityName : currentLocationCityName // ignore: cast_nullable_to_non_nullable
+as String?,currentLocationShortAddress: freezed == currentLocationShortAddress ? _self.currentLocationShortAddress : currentLocationShortAddress // ignore: cast_nullable_to_non_nullable
+as String?,currentLocationFormattedAddress: freezed == currentLocationFormattedAddress ? _self.currentLocationFormattedAddress : currentLocationFormattedAddress // ignore: cast_nullable_to_non_nullable
+as String?,lastError: freezed == lastError ? _self.lastError : lastError // ignore: cast_nullable_to_non_nullable
 as RootHubException?,
   ));
 }

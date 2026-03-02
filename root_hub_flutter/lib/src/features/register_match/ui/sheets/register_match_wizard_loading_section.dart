@@ -19,9 +19,12 @@ class _RegisterMatchWizardLoadingSection extends StatelessWidget {
               color: colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
-            'Loading match details...',
+            t
+                .register_match
+                .ui_sheets_register_match_wizard_loading_section
+                .loadingMatchDetails,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),

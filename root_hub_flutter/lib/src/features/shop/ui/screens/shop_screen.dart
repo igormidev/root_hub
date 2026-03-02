@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
+import 'package:root_hub_flutter/src/core/content/shop_content.dart';
+import 'package:root_hub_flutter/src/features/shop/ui/sections/shop_overview_section.dart';
+import 'package:root_hub_flutter/src/features/shop/ui/sections/shop_product_list_section.dart';
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({
@@ -7,83 +11,31 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final country = _resolveCountry(LocaleSettings.currentLocale);
+    final products =
+        shopContents[country] ?? shopContents[ValidCountry.english] ?? const [];
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 22),
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 130),
       children: [
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: colorScheme.outlineVariant),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                colorScheme.tertiary.withValues(alpha: 0.12),
-                colorScheme.primary.withValues(alpha: 0.1),
-                colorScheme.surface,
-              ],
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.storefront_rounded,
-                color: colorScheme.tertiary,
-                size: 30,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Shop feature placeholder',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'This area will host future digital goods, cosmetics, and '
-                'community-driven bundles for ROOT players.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 14),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: colorScheme.outlineVariant),
-            color: colorScheme.surface.withValues(alpha: 0.9),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Roadmap placeholder',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Planned: themed profile packs, faction cosmetics, and event '
-                'supporter packs linked to community tournaments.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                  height: 1.4,
-                ),
-              ),
-            ],
-          ),
+        ShopOverviewSection(),
+        SizedBox(height: 16),
+        ShopProductListSection(
+          products: products,
+          locale: country,
         ),
       ],
     );
+  }
+
+  ValidCountry _resolveCountry(AppLocale locale) {
+    return switch (locale) {
+      AppLocale.en => ValidCountry.english,
+      AppLocale.ptBr => ValidCountry.portugueseBrazil,
+      AppLocale.es => ValidCountry.spanish,
+      AppLocale.fr => ValidCountry.french,
+      AppLocale.de => ValidCountry.german,
+    };
   }
 }

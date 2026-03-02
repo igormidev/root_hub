@@ -10,7 +10,7 @@ class MatchTableInfoDragHandleWidget extends StatelessWidget {
     return Container(
       width: 50,
       height: 5,
-      margin: const EdgeInsets.only(top: 12, bottom: 8),
+      margin: EdgeInsets.only(top: 12, bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
         color: colorScheme.outlineVariant,

@@ -32,6 +32,17 @@
 	<string>Your location is used to find nearby ROOT match schedules.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your profile image is used to personalize your Root Hub account.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.root_hub_flutter.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>roothub</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -1,0 +1,4 @@
+class: WebAnalyticsTimelinePoint
+fields:
+  bucketStart: DateTime
+  count: int

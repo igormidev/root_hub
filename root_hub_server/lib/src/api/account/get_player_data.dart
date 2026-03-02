@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/core/utils.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
@@ -8,14 +9,19 @@ class GetPlayerData extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<PlayerData?> v1(Session session) async {
+  Future<PlayerData?> v1(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final authUserId = session.authenticated!.authUserId;
         return Utils.findAccountByAuthUserId(session, authUserId);
       },
-      fallbackDescription:
-          'Unable to load account info right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadAccountInfo,
     );
   }
 }

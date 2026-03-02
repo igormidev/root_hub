@@ -6,9 +6,11 @@ Backend for Root Hub. This server provides authentication, match-making APIs, so
 - Authenticates users with Serverpod IDP (email + Google + JWT refresh).
 - Stores player profiles and game metadata.
 - Supports match schedule creation and subscription.
+- Tracks match schedule lifecycle status (`scheduled`, `notPlayed`, `played`) including user-declared cancellation reasons.
 - Supports in-match chat.
 - Supports post/comment social feed.
 - Registers played match results for future rating/ranking logic.
+- Runs a recurring future call to mark stale scheduled matches (`attemptedAt + 24h`) as `notPlayed`.
 - Serves `assets/config.json` for the Flutter app at `/app/assets/assets/config.json`.
 
 ## Structure Map
@@ -35,7 +37,9 @@ root_hub_server/
 │       │   └── match_making/
 │       ├── auth/
 │       ├── core/
+│       ├── notifications/             # Firebase Cloud Messaging module
 │       ├── entities/                  # Source-of-truth .spy.yaml models
+│       ├── future_calls/              # Periodic background jobs (match lifecycle maintenance)
 │       ├── generated/                 # Generated Dart protocol/endpoints/models
 │       └── web/
 │           ├── routes/
@@ -52,6 +56,9 @@ root_hub_server/
 └── pubspec.yaml
 ```
 
+Related project:
+- `../root_hub_web_portal`: Jaspr web app used for shared match links and lightweight admin panels.
+
 ## Runtime Entry Points
 - `bin/main.dart`: boot entrypoint that calls `run(args)` from `lib/server.dart`.
 - `lib/server.dart`:
@@ -59,6 +66,9 @@ root_hub_server/
   - configures auth services (`JwtConfigFromPasswords`, `EmailIdpConfigFromPasswords`).
   - registers web routes:
     - `/` and `/index.html` => built-with-serverpod page.
+    - `/join` => Jaspr web portal app (build output from `../root_hub_web_portal/build/jaspr`).
+      - includes the invite redirect flow and `/join/analytics` admin panel.
+    - `/join/config.json` => runtime config consumed by the Jaspr portal (API base URL based on run mode).
     - `/app/assets/assets/config.json` => app config JSON consumed by Flutter.
     - `/app/**` => Flutter web app (if built) or fallback page.
 
@@ -66,7 +76,8 @@ root_hub_server/
 
 ### `account`
 - `create_player_data.dart`: creates `PlayerData` for authenticated user (display name, favorite faction, mandatory current geolocation coordinates + search ratio; idempotent conflict handling).
-- `get_account.dart`: returns authenticated user profile.
+- `get_player_data.dart`: returns authenticated user profile.
+- `reverse_geocode_city.dart`: resolves city/area labels from latitude/longitude using Google Geocoding API.
 - `update_player_data.dart`: updates authenticated user profile fields (display name, favorite faction, and current geolocation coordinates + search ratio).
 
 ### `community`
@@ -83,12 +94,26 @@ root_hub_server/
 
 ### `match_chat`
 - `get_match_chat_message.dart`: paginated match chat history + subscribed player IDs for sender badges.
+- `get_match_chat_activity_overview.dart`: aggregated activity payload for subscribed active schedules, active chats, and latest ended chats.
+- `get_match_chat_unread_count.dart`: high-performance unread total for current player badge usage.
+- `get_match_chat_played_match_summary.dart`: played-match summary used by completed-chat info UI.
 - `send_match_chat_message.dart`: send text or image messages to a match chat.
   - Image uploads are handled server-side through UploadThing (`/v7/prepareUpload`).
+  - Also dispatches push notifications to subscribed players in that match (excluding sender).
+- `match_chat_participant_state_service.dart`: chat participant lifecycle + unread/read state updates.
 
 ### `match`
 - `register_match_data.dart`: validates and persists played match + participants + performances.
 - `get_my_played_matches.dart`: endpoint declared but intentionally not implemented yet.
+
+### `stats`
+- `get_platform_stats.dart`: global platform stats from played matches.
+- `get_player_stats.dart`: per-player stats snapshot.
+- `get_web_analytics_dashboard.dart`: password-protected analytics payload used by the Jaspr admin panel (`/join/analytics`), including totals, grouped metrics, timeline, and paginated click list.
+
+### `push_notifications`
+- `sync_push_notification_token.dart`: upsert and attach a Firebase token to the authenticated player profile.
+- `deactivate_push_notification_token.dart`: deactivate current device token on logout.
 
 ## Authentication
 - Server auth is enabled in `lib/server.dart`.
@@ -107,12 +132,62 @@ root_hub_server/
 ## Error Handling Pattern
 - Centralized helpers in `lib/src/core/root_hub_endpoint_error.dart`.
 - Endpoints use `guardRootHubEndpointErrors(...)` to convert unexpected exceptions into `RootHubException` payloads.
+- Endpoint error titles / descriptions / fallback messages must come from server translations (no hardcoded response text in endpoint code).
+
+## Endpoint Contract Lints (Mandatory)
+Server endpoint linting is enforced through `root_hub_flutter_lints` + `custom_lint`.
+
+Rules for classes extending `Endpoint` in `lib/src/api/**`:
+- Public endpoint methods must be versioned (`v1`, `v2`, `v3`, ...).
+- Each endpoint version method must include `required ServerSupportedTranslation language` as a named parameter (no default value).
+- Response-facing literals (error title/description/fallback/system chat content) must be translated.
+
+Run:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_server
+dart run custom_lint
+dart analyze
+```
+
+## Server Response Translation (Mandatory)
+Server API responses are localized with `slang` in pure Dart mode.
+
+Source of truth:
+- Locale JSON files: `lib/src/i18n/*.json`
+- Generated translation API: `lib/src/i18n/strings.g.dart`
+- Centralized preloaded registry: `lib/src/core/server_translations.dart`
+- Supported transport enum: `ServerSupportedTranslation` (`lib/src/entities/core/server_supported_translation.spy.yaml`)
+
+Usage pattern in endpoints:
+- Receive `required ServerSupportedTranslation language` in `vN` methods.
+- Resolve locale instance once with `ServerTranslations.of(language)`.
+- Use translated keys for all API response strings.
+
+When translation keys or locale files change, regenerate:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_server
+dart run slang
+```
 
 ## Domain Models
 Source model definitions live in `lib/src/entities/**/*.spy.yaml` and API payload models in `lib/src/api/**/models/*.spy.yaml`.
 Generated equivalents are produced into `lib/src/generated/**`.
 
 Do not manually edit generated files under `lib/src/generated/**`.
+
+Unread architecture for match chat:
+- `match_chat_participant_state` stores per-player, per-chat read cursor and unread counter.
+- rows are created for hosts/subscribers and also when a user opens a chat.
+- sending a message updates unread counters for recipients and clears sender unread when appropriate.
+
+Push notification architecture:
+- `player_push_notification_token` stores per-device FCM tokens attached to `player_data`.
+- token sync endpoints keep token-to-player ownership current and deactivate tokens on logout.
+- `notifications/fcm/` handles credentials, OAuth access-token caching, HTTP v1 FCM transport, and response parsing.
+- `match_chat_push_notification_service.dart` targets only active subscribers for the scheduled match.
+- invalid/unregistered FCM tokens are automatically marked inactive after send failures.
 
 ## Relationship Persistence Rule (Mandatory)
 - Every relationship write in Serverpod **must** use `attachRow` (sometimes referenced as `attatchRow` in team notes).
@@ -130,6 +205,26 @@ Do not manually edit generated files under `lib/src/generated/**`.
   - `GOOGLE_MAPS_API_KEY` environment variable.
 - UploadThing keys used by match chat image uploads:
   - `uploadThingApiKey` and / or `uploadThingToken` in `config/passwords.yaml`.
+- Firebase Cloud Messaging keys:
+  - `firebaseServiceAccountJson` in `config/passwords.yaml` (service account JSON as a string).
+  - `firebaseMessagingProjectId` in `config/passwords.yaml` (optional override for project id).
+
+## Sending Push Notifications to a Player
+Use the reusable dispatch service:
+
+```dart
+await PushNotificationDispatchService.sendToPlayerDataIds(
+  session,
+  playerDataIds: {playerDataId},
+  title: 'Your title',
+  body: 'Your message body',
+  data: {
+    'type': 'custom_event',
+  },
+);
+```
+
+For match chat, this is already wired in `send_match_chat_message.dart` and only notifies current subscribers of that table.
 
 ## Local Infrastructure
 Use Docker for local database services:
@@ -151,9 +246,17 @@ From `/Users/igor/PersonalProjects/root_hub/root_hub_server`:
 
 ```bash
 dart pub get
+dart run custom_lint
 serverpod generate
 dart analyze
 dart bin/main.dart --apply-migrations
+```
+
+Build the shared-link Jaspr app:
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_web_portal
+dart pub global run jaspr_cli:jaspr build
 ```
 
 ## Integration with Other Workspace Packages

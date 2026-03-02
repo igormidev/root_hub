@@ -4,6 +4,7 @@ fields:
   ### The [AuthUser] this profile belongs to
   authUser: module:serverpod_auth_core:AuthUser?, relation(onDelete=Cascade)
   displayName: String
+  preferredLanguage: Language, default=english
   currentLocationId: int?
   currentLocation: GeoLocation?, relation(name=player_current_geo_location, field=currentLocationId)
   favoriteFaction: Faction
@@ -12,7 +13,10 @@ fields:
   comments: List<PostComment>?, relation(name=player_comments)
   currentHosting: List<MatchSchedulePairingAttempt>?, relation(name=hosted_pairing_attempts)
   subscriptions: List<MatchSubscription>?, relation(name=player_subscriptions)
+  notPlayedMarkedSchedules: List<MatchSchedulePairingAttempt>?, relation(name=player_not_played_match_schedules)
   chatMessages: List<MatchChatMessage>?, relation(name=player_chat_messages)
+  chatParticipantStates: List<MatchChatParticipantState>?, relation(name=player_chat_participant_states)
+  pushNotificationTokens: List<PlayerPushNotificationToken>?, relation(name=player_push_notification_tokens)
   manualInputLocations: List<ManualInputLocation>?, relation(name=player_manual_input_locations)
   createdAnonymousPlayers: List<AnonymousPlayer>?, relation(name=created_anonymous_players)
   perfomances: List<PlayerPerfomanceInMatch>?, relation(name=player_data_perfomances)

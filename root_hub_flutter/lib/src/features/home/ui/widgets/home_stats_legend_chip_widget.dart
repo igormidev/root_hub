@@ -15,7 +15,7 @@ class HomeStatsLegendChipWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 7,
       ),
@@ -37,14 +37,14 @@ class HomeStatsLegendChipWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(3),
             ),
           ),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           Image.asset(
             faction.getFactionIconPath(size: FactionIconSize.size80),
             width: 16,
             height: 16,
             fit: BoxFit.contain,
           ),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           Text(
             faction.displayName,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(

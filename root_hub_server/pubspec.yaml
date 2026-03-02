@@ -14,13 +14,20 @@ dependencies:
   serverpod_auth_core_server: 3.3.1
   google_maps_apis: ^5.0.0
   http: ^1.5.0
+  googleapis_auth: ^2.0.0
   blurhash_dart: ^1.2.1
   image: ^4.8.0
+  slang: ^4.12.1
 
 dev_dependencies:
+  custom_lint: ^0.8.1
   lints: '>=3.0.0 <7.0.0'
+  root_hub_flutter_lints:
+    path: ../root_hub_flutter_lints
   serverpod_test: 3.3.1
   test: ^1.25.5
+  build_runner: ^2.11.1
+  slang_build_runner: ^4.12.1
 
 serverpod:
   scripts:
@@ -39,3 +46,12 @@ serverpod:
       posix: |
         cd ../root_hub_flutter
         flutter build web --base-href /app/ --wasm --output ../root_hub_server/web/app
+
+    # Build the lightweight Jaspr web portal used for share redirects and admin pages.
+    web_portal_build:
+      windows: >-
+        cd /D ..\root_hub_web_portal
+        && dart pub global run jaspr_cli:jaspr build
+      posix: |
+        cd ../root_hub_web_portal
+        dart pub global run jaspr_cli:jaspr build

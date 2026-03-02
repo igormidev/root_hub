@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchSearchRegisteredPlayerSheet extends ConsumerStatefulWidget {
   const RegisterMatchSearchRegisteredPlayerSheet({
@@ -65,7 +66,7 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
   void _onSearchChanged() {
     setState(() {});
     _searchDebounce?.cancel();
-    _searchDebounce = Timer(const Duration(milliseconds: 320), () {
+    _searchDebounce = Timer(Duration(milliseconds: 320), () {
       ref
           .read(registerMatchProvider.notifier)
           .searchRegisteredPlayers(_searchController.text);
@@ -93,9 +94,12 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+                padding: EdgeInsets.fromLTRB(16, 6, 16, 8),
                 child: Text(
-                  'Add registered player',
+                  t
+                      .register_match
+                      .ui_sheets_register_match_search_registered_player_sheet
+                      .addRegisteredPlayer,
                   style:
                       Theme.of(
                         context,
@@ -105,31 +109,34 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: TextField(
                   controller: _searchController,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
-                    labelText: 'Search by display name',
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.search_rounded),
+                    labelText: t
+                        .register_match
+                        .ui_sheets_register_match_search_registered_player_sheet
+                        .searchByDisplayName,
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.search_rounded),
                     suffixIcon: query.isEmpty
                         ? null
                         : IconButton(
                             onPressed: () {
                               _searchController.clear();
                             },
-                            icon: const Icon(Icons.close_rounded),
+                            icon: Icon(Icons.close_rounded),
                           ),
                   ),
                 ),
               ),
               if (searchError != null)
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: colorScheme.errorContainer.withValues(alpha: 0.4),
@@ -144,17 +151,20 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                     ),
                   ),
                 ),
-              const Divider(height: 1),
+              Divider(height: 1),
               Expanded(
                 child: isSearching && players.isEmpty
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(child: CircularProgressIndicator())
                     : players.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
                             query.isEmpty
-                                ? 'No registered players were found.'
+                                ? t
+                                      .register_match
+                                      .ui_sheets_register_match_search_registered_player_sheet
+                                      .noRegisteredPlayersWereFound
                                 : 'No players found for "$query".',
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyMedium
@@ -173,12 +183,18 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                               .contains(player.playerDataId);
 
                           return ListTile(
-                            leading: const Icon(Icons.verified_user_rounded),
+                            leading: Icon(Icons.verified_user_rounded),
                             title: Text(player.displayName),
                             subtitle: Text(
                               alreadyAdded
-                                  ? 'Already added to this report'
-                                  : 'Tap to add',
+                                  ? t
+                                        .register_match
+                                        .ui_sheets_register_match_search_registered_player_sheet
+                                        .alreadyAddedToThisReport
+                                  : t
+                                        .register_match
+                                        .ui_sheets_register_match_search_registered_player_sheet
+                                        .tapToAdd,
                             ),
                             enabled: !alreadyAdded,
                             onTap: alreadyAdded
@@ -191,7 +207,7 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                       ),
               ),
               if (isSearching && players.isNotEmpty)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(bottom: 8),
                   child: Center(
                     child: SizedBox(

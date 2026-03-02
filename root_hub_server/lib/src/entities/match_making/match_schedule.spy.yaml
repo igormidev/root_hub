@@ -7,6 +7,11 @@ fields:
   minAmountOfPlayers: MatchPodium
   maxAmountOfPlayers: MatchPodium
   attemptedAt: DateTime
+  status: MatchScheduleStatus, default=scheduled
+  notPlayedReason: MatchScheduleNotPlayedReason?
+  notPlayedReasonDetails: String?
+  notPlayedMarkedByPlayerDataId: int?
+  notPlayedMarkedBy: PlayerData?, relation(name=player_not_played_match_schedules, field=notPlayedMarkedByPlayerDataId)
   closedForSubscriptions: bool?
   locationId: int
   location: Location?, relation(name=pairing_attempt_location, field=locationId)

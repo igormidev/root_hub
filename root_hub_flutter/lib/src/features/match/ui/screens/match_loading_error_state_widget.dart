@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchLoadingErrorStateWidget extends StatelessWidget {
   const MatchLoadingErrorStateWidget({
@@ -16,7 +17,7 @@ class MatchLoadingErrorStateWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
+      padding: EdgeInsets.fromLTRB(16, 18, 16, 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: colorScheme.error.withValues(alpha: 0.5)),
@@ -32,7 +33,7 @@ class MatchLoadingErrorStateWidget extends StatelessWidget {
               color: colorScheme.onErrorContainer,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             error.description,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -41,11 +42,13 @@ class MatchLoadingErrorStateWidget extends StatelessWidget {
               height: 1.35,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           FilledButton.icon(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh_rounded),
-            label: const Text('Try again'),
+            icon: Icon(Icons.refresh_rounded),
+            label: Text(
+              t.match.ui_screens_match_loading_error_state_widget.tryAgain,
+            ),
           ),
         ],
       ),

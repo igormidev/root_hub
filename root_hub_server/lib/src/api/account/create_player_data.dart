@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart';
@@ -9,21 +10,27 @@ class CreatePlayerData extends Endpoint {
 
   Future<PlayerData> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required String displayName,
     required Faction favoriteFaction,
     required GeoLocation currentLocation,
+    required Language preferredLanguage,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final normalizedDisplayName = displayName.trim();
         if (normalizedDisplayName.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Display name cannot be empty.',
+            language: language,
+            description: t.errors.displayNameCannotBeEmpty,
           );
         }
         if (currentLocation.ratio <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Location ratio must be greater than zero.',
+            language: language,
+            description: t.errors.locationRatioMustBeGreaterThanZero,
           );
         }
 
@@ -31,8 +38,9 @@ class CreatePlayerData extends Endpoint {
         final authUser = await AuthUser.db.findById(session, authUserId);
         if (authUser == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Authenticated user missing',
-            description: 'Authenticated user was not found.',
+            language: language,
+            title: t.errors.authenticatedUserMissingTitle,
+            description: t.errors.authenticatedUserNotFound,
           );
         }
 
@@ -42,8 +50,9 @@ class CreatePlayerData extends Endpoint {
         );
         if (existingAccount != null) {
           throw RootHubEndpointError.invalidRequest(
-            title: 'Player profile already exists',
-            description: 'Authenticated user already has a player profile.',
+            language: language,
+            title: t.errors.playerProfileAlreadyExistsTitle,
+            description: t.errors.authenticatedUserAlreadyHasProfile,
           );
         }
 
@@ -66,6 +75,7 @@ class CreatePlayerData extends Endpoint {
               PlayerData(
                 authUserId: authUserId,
                 displayName: normalizedDisplayName,
+                preferredLanguage: preferredLanguage,
                 favoriteFaction: favoriteFaction,
               ),
               transaction: transaction,
@@ -108,8 +118,8 @@ class CreatePlayerData extends Endpoint {
           rethrow;
         }
       },
-      fallbackDescription:
-          'Unable to create account right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToCreateAccount,
     );
   }
 

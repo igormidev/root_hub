@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_bottom_actions_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_drag_handle_widget.dart';
@@ -15,6 +16,8 @@ class MatchTableInfoContentWidget extends StatelessWidget {
   final bool isRemovingPlayer;
   final VoidCallback onClose;
   final VoidCallback onUnsubscribe;
+  final void Function(Location? location) onOpenLocationInfo;
+  final Future<void> Function(MatchSchedulePairingAttempt table) onShareTable;
   final Future<void> Function(List<MatchSchedulePlayerSnapshot>)
   onShowRemovePlayerDialog;
 
@@ -27,6 +30,8 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     required this.isRemovingPlayer,
     required this.onClose,
     required this.onUnsubscribe,
+    required this.onOpenLocationInfo,
+    required this.onShareTable,
     required this.onShowRemovePlayerDialog,
   });
 
@@ -36,6 +41,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     final localizations = MaterialLocalizations.of(context);
 
     final startAt = table.attemptedAt.toLocal();
+    final canShareTable = table.id != null && table.id! > 0;
     final startLabel =
         '${localizations.formatMediumDate(startAt)} • '
         '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(startAt))}';
@@ -57,36 +63,71 @@ class MatchTableInfoContentWidget extends StatelessWidget {
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
-    final subscriptions = table.subscriptions ?? const <MatchSubscription>[];
+    final subscriptions = table.subscriptions ?? <MatchSubscription>[];
     final subscribedPlayersCount = subscriptions.length;
+    final notPlayedReasonDetails = table.notPlayedReasonDetails?.trim();
+    final hasNotPlayedReasonDetails =
+        notPlayedReasonDetails != null && notPlayedReasonDetails.isNotEmpty;
+    final notPlayedMarkedByDisplayName = table.notPlayedMarkedBy?.displayName;
 
     return Column(
       children: [
-        const MatchTableInfoDragHandleWidget(),
+        MatchTableInfoDragHandleWidget(),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 4, 18, 18),
+            padding: EdgeInsets.fromLTRB(18, 16, 18, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Table Details',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  table.title,
-                  style: GoogleFonts.cinzel(
-                    fontSize: 29,
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurface,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        table.title,
+                        style: GoogleFonts.cinzel(
+                          fontSize: 29,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    if (canShareTable) ...[
+                      SizedBox(width: 10),
+                      Tooltip(
+                        message: t
+                            .match
+                            .ui_screens_match_table_card_widget
+                            .shareThisMatch,
+                        child: FilledButton.tonalIcon(
+                          onPressed: () async {
+                            await onShareTable(table);
+                          },
+                          style: FilledButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
+                            minimumSize: Size(0, 42),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: Icon(
+                            Icons.share_rounded,
+                            size: 18,
+                          ),
+                          label: Text(
+                            t.match.ui_screens_match_table_card_widget.share,
+                            style: Theme.of(context).textTheme.labelLarge
+                                ?.copyWith(fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 if (table.description?.trim().isNotEmpty == true) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     table.description!.trim(),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -96,7 +137,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -111,18 +152,100 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.person_outline_rounded,
-                      text: table.host?.displayName ?? 'Unknown host',
+                      text:
+                          table.host?.displayName ??
+                          t
+                              .match
+                              .ui_sheets_match_table_info_content_widget
+                              .unknownHost,
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.social_distance_rounded,
                       text: '$minPlayers-$maxPlayers players',
                     ),
+                    MatchTableInfoInfoChipWidget(
+                      icon: Icons.task_alt_rounded,
+                      text: t.match.ui_sheets_match_table_info_content_widget
+                          .statusValue(
+                            value: _statusLabel(table.status),
+                          ),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 14),
+                if (table.status == MatchScheduleStatus.notPlayed) ...[
+                  SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: colorScheme.errorContainer),
+                      color: colorScheme.errorContainer.withValues(alpha: 0.36),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t
+                              .match
+                              .ui_sheets_match_table_info_content_widget
+                              .thisMatchWasMarkedAsNotPlayed,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: colorScheme.onErrorContainer,
+                              ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          t.match.ui_sheets_match_table_info_content_widget
+                              .reasonValue(
+                                value: _notPlayedReasonLabel(
+                                  table.notPlayedReason,
+                                ),
+                              ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: colorScheme.onErrorContainer,
+                              ),
+                        ),
+                        if (notPlayedMarkedByDisplayName != null) ...[
+                          SizedBox(height: 2),
+                          Text(
+                            t.match.ui_sheets_match_table_info_content_widget
+                                .markedByValue(
+                                  value: notPlayedMarkedByDisplayName,
+                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.onErrorContainer,
+                                ),
+                          ),
+                        ],
+                        if (hasNotPlayedReasonDetails) ...[
+                          SizedBox(height: 4),
+                          Text(
+                            t.match.ui_sheets_match_table_info_content_widget
+                                .detailsValue(
+                                  value: notPlayedReasonDetails,
+                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.onErrorContainer,
+                                ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+                SizedBox(height: 14),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: colorScheme.outlineVariant),
@@ -139,7 +262,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                             Icons.location_on_rounded,
                             color: colorScheme.secondary,
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: 6),
                           Expanded(
                             child: Text(
                               locationTitle,
@@ -147,9 +270,27 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                                   ?.copyWith(fontWeight: FontWeight.w900),
                             ),
                           ),
+                          SizedBox(width: 6),
+                          Tooltip(
+                            message: t
+                                .match
+                                .ui_screens_match_table_card_widget
+                                .openFullLocationDetails,
+                            child: IconButton(
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () {
+                                onOpenLocationInfo(location);
+                              },
+                              icon: Icon(
+                                Icons.info_outline_rounded,
+                                color: colorScheme.primary,
+                                size: 20,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2),
                       Text(
                         locationSubtitle,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -160,28 +301,37 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 Text(
-                  'Players in this match',
+                  t
+                      .match
+                      .ui_sheets_match_table_info_content_widget
+                      .playersInThisMatch,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   participatingPlayers.isEmpty
-                      ? 'No players subscribed yet.'
-                      : 'These are the current players that will participate.',
+                      ? t
+                            .match
+                            .ui_sheets_match_table_info_content_widget
+                            .noPlayersSubscribedYet
+                      : t
+                            .match
+                            .ui_sheets_match_table_info_content_widget
+                            .theseAreTheCurrentPlayersThatWillParticipate,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 if (participatingPlayers.isEmpty)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+                    padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: colorScheme.surfaceContainerHighest.withValues(
@@ -189,7 +339,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'No players have joined this table yet.',
+                      t
+                          .match
+                          .ui_sheets_match_table_info_content_widget
+                          .noPlayersHaveJoinedThisTableYet,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -198,12 +351,12 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                 else
                   for (final participant in participatingPlayers)
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
+                      padding: EdgeInsets.only(bottom: 14),
                       child: MatchTableInfoParticipantCardWidget(
                         playerSnapshot: participant,
                       ),
                     ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   'Created at: $createdLabel',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -227,5 +380,43 @@ class MatchTableInfoContentWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _statusLabel(MatchScheduleStatus status) {
+    final contentT = t.match.ui_sheets_match_table_info_content_widget;
+
+    switch (status) {
+      case MatchScheduleStatus.scheduled:
+        return contentT.statusScheduled;
+      case MatchScheduleStatus.notPlayed:
+        return contentT.statusNotPlayed;
+      case MatchScheduleStatus.played:
+        return contentT.statusPlayed;
+    }
+  }
+
+  String _notPlayedReasonLabel(MatchScheduleNotPlayedReason? reason) {
+    final contentT = t.match.ui_sheets_match_table_info_content_widget;
+
+    switch (reason) {
+      case MatchScheduleNotPlayedReason.notEnoughPlayers:
+        return contentT.reasonNotEnoughPlayers;
+      case MatchScheduleNotPlayedReason.hostUnavailable:
+        return contentT.reasonHostUnavailable;
+      case MatchScheduleNotPlayedReason.noGameCopyAvailable:
+        return contentT.reasonNoGameCopyAvailable;
+      case MatchScheduleNotPlayedReason.venueIssue:
+        return contentT.reasonVenueIssue;
+      case MatchScheduleNotPlayedReason.playerNoShow:
+        return contentT.reasonPlayerNoShow;
+      case MatchScheduleNotPlayedReason.weatherOrEmergency:
+        return contentT.reasonWeatherOrEmergency;
+      case MatchScheduleNotPlayedReason.expiredWithoutResult:
+        return contentT.reasonExpiredWithoutResult;
+      case MatchScheduleNotPlayedReason.other:
+        return contentT.reasonOther;
+      case null:
+        return contentT.reasonNotProvided;
+    }
   }
 }

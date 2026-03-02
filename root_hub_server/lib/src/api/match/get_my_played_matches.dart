@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -7,16 +8,20 @@ class GetMyMatches extends Endpoint {
   bool get requireLogin => true;
 
   Future<List<PlayedMatch>> v1(
-    Session session,
-  ) async {
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         throw RootHubEndpointError.endpointUnavailable(
-          description: 'Get my played matches endpoint is not implemented yet.',
+          language: language,
+          description: t.errors.getMyPlayedMatchesNotImplemented,
         );
       },
-      fallbackDescription:
-          'Unable to load your played matches right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadPlayedMatches,
     );
   }
 }

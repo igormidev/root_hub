@@ -9,6 +9,7 @@ import 'package:root_hub_flutter/src/design_system/faction_selector/faction_sele
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class DashboardFactionEditorScreen extends ConsumerStatefulWidget {
   const DashboardFactionEditorScreen({
@@ -74,7 +75,7 @@ class _DashboardFactionEditorScreenState
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            center: const Alignment(0, -0.8),
+            center: Alignment(0, -0.8),
             radius: 1.25,
             colors: [
               colorScheme.primaryContainer.withValues(alpha: 0.55),
@@ -87,7 +88,7 @@ class _DashboardFactionEditorScreenState
           children: [
             SizedBox(height: viewPadding.top + 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 children: [
                   IconButton(
@@ -96,12 +97,15 @@ class _DashboardFactionEditorScreenState
                         : () {
                             Navigator.of(context).pop(false);
                           },
-                    icon: const Icon(Icons.arrow_back_rounded),
+                    icon: Icon(Icons.arrow_back_rounded),
                   ),
                   Expanded(
                     child:
                         Text(
-                              'Change Favorite Faction',
+                              t
+                                  .dashboard
+                                  .ui_screens_dashboard_faction_editor_screen
+                                  .changeFavoriteFaction,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.cinzel(
                                 fontSize: 28,
@@ -114,15 +118,18 @@ class _DashboardFactionEditorScreenState
                             .fadeIn(duration: 350.ms)
                             .slideY(begin: -0.16, end: 0, duration: 350.ms),
                   ),
-                  const SizedBox(width: 48),
+                  SizedBox(width: 48),
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Choose the faction shown in your profile and used as your default preference.',
+                t
+                    .dashboard
+                    .ui_screens_dashboard_faction_editor_screen
+                    .chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
                   fontSize: 15,
@@ -131,7 +138,7 @@ class _DashboardFactionEditorScreenState
                 ),
               ).animate().fadeIn(delay: 80.ms, duration: 420.ms),
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             Expanded(
               child: Stack(
                 children: [
@@ -158,9 +165,9 @@ class _DashboardFactionEditorScreenState
                     right: 16,
                     bottom: viewPadding.bottom + 10,
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 260),
+                      duration: Duration(milliseconds: 260),
                       child: selectedFaction == null
-                          ? const SizedBox.shrink()
+                          ? SizedBox.shrink()
                           : SizedBox(
                                   key: ValueKey(selectedFaction.toJson()),
                                   height: 58,
@@ -180,7 +187,7 @@ class _DashboardFactionEditorScreenState
                                           : Colors.white,
                                     ),
                                     child: isSaving
-                                        ? const SizedBox(
+                                        ? SizedBox(
                                             width: 20,
                                             height: 20,
                                             child: CircularProgressIndicator(

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_counter_column_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_drag_handle_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_section_title_widget.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchEditTableFormWidget extends StatelessWidget {
   final bool closedForSubscriptions;
@@ -54,32 +55,32 @@ class MatchEditTableFormWidget extends StatelessWidget {
 
     return Column(
       children: [
-        const MatchEditTableDragHandleWidget(),
+        MatchEditTableDragHandleWidget(),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 4, 18, 18),
+            padding: EdgeInsets.fromLTRB(18, 4, 18, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Edit Table',
+                  t.match.ui_sheets_match_edit_table_form_widget.editTable,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
-                  'Edit Details',
+                  t.match.ui_sheets_match_edit_table_form_widget.editDetails,
                   style: GoogleFonts.cinzel(
                     fontSize: 26,
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
+                  padding: EdgeInsets.fromLTRB(14, 6, 6, 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
@@ -104,13 +105,16 @@ class MatchEditTableFormWidget extends StatelessWidget {
                             : colorScheme.onSurfaceVariant,
                         size: 22,
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Close subscriptions',
+                              t
+                                  .match
+                                  .ui_sheets_match_edit_table_form_widget
+                                  .closeSubscriptions,
                               style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(
                                     fontWeight: FontWeight.w900,
@@ -118,8 +122,14 @@ class MatchEditTableFormWidget extends StatelessWidget {
                             ),
                             Text(
                               closedForSubscriptions
-                                  ? 'New players cannot join this table.'
-                                  : 'New players can still join this table.',
+                                  ? t
+                                        .match
+                                        .ui_sheets_match_edit_table_form_widget
+                                        .newPlayersCannotJoinThisTable
+                                  : t
+                                        .match
+                                        .ui_sheets_match_edit_table_form_widget
+                                        .newPlayersCanStillJoinThisTable,
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
@@ -136,18 +146,25 @@ class MatchEditTableFormWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                const MatchEditTableSectionTitleWidget(
-                  title: 'Table title',
-                  description: 'A short name so players can find your table.',
+                SizedBox(height: 16),
+                MatchEditTableSectionTitleWidget(
+                  title:
+                      t.match.ui_sheets_match_edit_table_form_widget.tableTitle,
+                  description: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .aShortNameSoPlayersCanFindYourTable,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextField(
                   controller: titleController,
                   textInputAction: TextInputAction.next,
                   maxLength: 80,
                   decoration: InputDecoration(
-                    hintText: 'Example: Saturday ROOT at Lantern Café',
+                    hintText: t
+                        .match
+                        .ui_sheets_match_edit_table_form_widget
+                        .exampleSaturdayRootAtLanternCaf,
                     filled: true,
                     fillColor: colorScheme.surfaceContainerHighest.withValues(
                       alpha: 0.5,
@@ -157,20 +174,28 @@ class MatchEditTableFormWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                const MatchEditTableSectionTitleWidget(
-                  title: 'Description (optional)',
-                  description:
-                      'Extra details like expansions, parking tips, etc.',
+                SizedBox(height: 10),
+                MatchEditTableSectionTitleWidget(
+                  title: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .descriptionOptional,
+                  description: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .extraDetailsLikeExpansionsParkingTipsEtc,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextField(
                   controller: descriptionController,
                   minLines: 2,
                   maxLines: 5,
                   maxLength: 400,
                   decoration: InputDecoration(
-                    hintText: 'Example: We have Marauder expansion.',
+                    hintText: t
+                        .match
+                        .ui_sheets_match_edit_table_form_widget
+                        .exampleWeHaveMarauderExpansion,
                     filled: true,
                     fillColor: colorScheme.surfaceContainerHighest.withValues(
                       alpha: 0.5,
@@ -180,16 +205,22 @@ class MatchEditTableFormWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 MatchEditTableSectionTitleWidget(
-                  title: 'Players range',
+                  title: t
+                      .match
+                      .ui_sheets_match_edit_table_form_widget
+                      .playersRange,
                   description: currentSubscriberCount > 0
                       ? '$currentSubscriberCount player(s) already subscribed.'
-                      : 'Set between 2 and 6 players.',
+                      : t
+                            .match
+                            .ui_sheets_match_edit_table_form_widget
+                            .setBetween2And6Players,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                  padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: colorScheme.outlineVariant),
@@ -201,7 +232,10 @@ class MatchEditTableFormWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: MatchEditTableCounterColumnWidget(
-                          title: 'Minimum',
+                          title: t
+                              .match
+                              .ui_sheets_match_edit_table_form_widget
+                              .minimum,
                           value: minPlayers,
                           onDecrease: onMinDecrease,
                           onIncrease: onMinIncrease,
@@ -214,7 +248,10 @@ class MatchEditTableFormWidget extends StatelessWidget {
                       ),
                       Expanded(
                         child: MatchEditTableCounterColumnWidget(
-                          title: 'Maximum',
+                          title: t
+                              .match
+                              .ui_sheets_match_edit_table_form_widget
+                              .maximum,
                           value: maxPlayers,
                           onDecrease: onMaxDecrease,
                           onIncrease: onMaxIncrease,
@@ -223,28 +260,28 @@ class MatchEditTableFormWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 MatchEditTableSectionTitleWidget(
-                  title: 'Schedule',
+                  title:
+                      t.match.ui_sheets_match_edit_table_form_widget.schedule,
                   description:
-                      'Must be at least 10 minutes from now, up to '
-                      '$maxScheduleDays days ahead.',
+                      '${t.match.ui_sheets_match_edit_table_form_widget.mustBeAtLeast10MinutesFromNowUpTo}$maxScheduleDays days ahead.',
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
                       child: FilledButton.tonalIcon(
                         onPressed: onPickDate,
-                        icon: const Icon(Icons.calendar_month_rounded),
+                        icon: Icon(Icons.calendar_month_rounded),
                         label: Text(dateLabel),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     Expanded(
                       child: FilledButton.tonalIcon(
                         onPressed: onPickTime,
-                        icon: const Icon(Icons.access_time_rounded),
+                        icon: Icon(Icons.access_time_rounded),
                         label: Text(timeLabel),
                       ),
                     ),
@@ -257,28 +294,30 @@ class MatchEditTableFormWidget extends StatelessWidget {
         SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 10, 18, 14),
+            padding: EdgeInsets.fromLTRB(18, 10, 18, 14),
             child: Row(
               children: [
                 Expanded(
                   child: OutlinedButton(
                     onPressed: onCancel,
                     style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
+                      minimumSize: Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Cancel'),
+                    child: Text(
+                      t.match.ui_sheets_match_edit_table_form_widget.cancel,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: FilledButton.icon(
                     onPressed: isSaving ? null : onSaveChanges,
                     style: FilledButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      maximumSize: const Size(double.infinity, 52),
+                      minimumSize: Size(double.infinity, 52),
+                      maximumSize: Size(double.infinity, 52),
                     ),
                     icon: isSaving
                         ? SizedBox(
@@ -289,8 +328,18 @@ class MatchEditTableFormWidget extends StatelessWidget {
                               color: colorScheme.onPrimary,
                             ),
                           )
-                        : const Icon(Icons.check_rounded),
-                    label: Text(isSaving ? 'Saving...' : 'Save Changes'),
+                        : Icon(Icons.check_rounded),
+                    label: Text(
+                      isSaving
+                          ? t
+                                .match
+                                .ui_sheets_match_edit_table_form_widget
+                                .saving
+                          : t
+                                .match
+                                .ui_sheets_match_edit_table_form_widget
+                                .saveChanges,
+                    ),
                   ),
                 ),
               ],

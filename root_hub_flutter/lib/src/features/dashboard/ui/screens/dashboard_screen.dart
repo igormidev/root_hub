@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_display_name_dialog.dart';
@@ -11,12 +14,18 @@ import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_location
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_bottom_tab_item_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_tab_content_widget.dart';
+import 'package:root_hub_flutter/src/global_providers/push_notifications_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
+import 'package:root_hub_flutter/src/states/activity/activity_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_state.dart';
+import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
+import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -29,10 +38,9 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
-  static const _bottomNavigationHeightOffset = 90.0;
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _imagePicker = ImagePicker();
+  int? _openingPendingMatchChatId;
 
   @override
   void initState() {
@@ -44,6 +52,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       }
 
       ref.read(dashboardProfileProvider.notifier).ensureProfileImageLoaded();
+      ref.read(activityProvider.notifier).ensureUnreadCountLoaded();
+      ref
+          .read(pushNotificationsSyncProvider)
+          .ensureInitializedForAuthenticatedUser();
     });
   }
 
@@ -54,7 +66,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     }
 
     scaffoldState.closeDrawer();
-    await Future<void>.delayed(const Duration(milliseconds: 220));
+    await Future<void>.delayed(Duration(milliseconds: 220));
   }
 
   Future<void> _openDisplayNameDialog(PlayerData playerData) async {
@@ -99,7 +111,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     if (!mounted) {
       return;
     }
-
+    await ref.read(sharedPreferencesProvider).clear();
+    await ref.read(pushNotificationsSyncProvider).deactivateCurrentToken();
     await ref.read(clientProvider).auth.signOutDevice();
   }
 
@@ -125,9 +138,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
       await showErrorDialog(
         context,
-        title: 'Unable to access camera or gallery',
-        description:
-            'Allow camera and photo permissions in system settings and try again.',
+        title: t
+            .dashboard
+            .ui_screens_dashboard_screen
+            .unableToAccessCameraOrGallery,
+        description: t
+            .dashboard
+            .ui_screens_dashboard_screen
+            .allowCameraAndPhotoPermissionsInSystemSettingsAndTryAgain,
       );
       return;
     }
@@ -165,19 +183,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       context: context,
       builder: (dialogContext) {
         return CupertinoActionSheet(
-          title: const Text('Change profile photo'),
+          title: Text(
+            t.dashboard.ui_screens_dashboard_screen.changeProfilePhoto,
+          ),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.camera);
               },
-              child: const Text('Take Photo'),
+              child: Text(
+                t.dashboard.ui_screens_dashboard_screen.takePhoto2,
+              ),
             ),
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.of(dialogContext).pop(ImageSource.gallery);
               },
-              child: const Text('Choose from Library'),
+              child: Text(
+                t.dashboard.ui_screens_dashboard_screen.chooseFromLibrary,
+              ),
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
@@ -185,7 +209,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             onPressed: () {
               Navigator.of(dialogContext).pop();
             },
-            child: const Text('Cancel'),
+            child: Text(
+              t.dashboard.ui_screens_dashboard_screen.cancel,
+            ),
           ),
         );
       },
@@ -202,20 +228,24 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_camera_rounded),
-                title: const Text('Take Photo'),
+                leading: Icon(Icons.photo_camera_rounded),
+                title: Text(
+                  t.dashboard.ui_screens_dashboard_screen.takePhoto,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_rounded),
-                title: const Text('Choose from Gallery'),
+                leading: Icon(Icons.photo_library_rounded),
+                title: Text(
+                  t.dashboard.ui_screens_dashboard_screen.chooseFromGallery,
+                ),
                 onTap: () {
                   Navigator.of(dialogContext).pop(ImageSource.gallery);
                 },
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
             ],
           ),
         );
@@ -227,15 +257,48 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final selectedTab = ref.watch(dashboardProvider).selectedTab;
+    final pendingSharedMatchId = ref.watch(
+      deepLinkProvider.select((value) => value.pendingMatchId),
+    );
+    final pendingMatchChatId = ref.watch(
+      deepLinkProvider.select((value) => value.pendingMatchChatId),
+    );
+    final unreadActivityCount = ref.watch(
+      activityProvider.select((value) => value.unreadMessagesCount),
+    );
     final profileState = ref.watch(dashboardProfileProvider);
+    final serverSupportedTranslation = ref.watch(
+      serverSupportedTranslationProvider,
+    );
     final playerData = ref
         .watch(authFlowProvider)
         .maybeWhen(
           authenticated: (playerData) => playerData,
           orElse: () => null,
         );
-    final displayName = playerData?.displayName ?? 'Root Player';
+    final displayName =
+        playerData?.displayName ??
+        t.dashboard.ui_screens_dashboard_screen.rootPlayer;
     final viewPadding = MediaQuery.viewPaddingOf(context);
+
+    if (pendingSharedMatchId != null && selectedTab != DashboardTab.match) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        ref.read(dashboardProvider.notifier).changeTab(DashboardTab.match);
+      });
+    }
+
+    if (pendingMatchChatId != null &&
+        _openingPendingMatchChatId != pendingMatchChatId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        unawaited(_openPendingMatchChat(pendingMatchChatId));
+      });
+    }
 
     if (playerData != null &&
         !profileState.hasLoadedProfileImage &&
@@ -247,6 +310,55 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
         ref.read(dashboardProfileProvider.notifier).ensureProfileImageLoaded();
       });
+    }
+
+    final currentLocation = playerData?.currentLocation;
+    if (currentLocation == null) {
+      final shouldClearResolvedLocationLabel =
+          profileState.resolvedLocationLabelKey != null ||
+          profileState.resolvingLocationLabelKey != null ||
+          profileState.currentLocationCityName != null ||
+          profileState.currentLocationShortAddress != null ||
+          profileState.currentLocationFormattedAddress != null;
+      if (shouldClearResolvedLocationLabel) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) {
+            return;
+          }
+
+          unawaited(
+            ref
+                .read(dashboardProfileProvider.notifier)
+                .ensureLocationLabelLoaded(null),
+          );
+        });
+      }
+    } else {
+      final expectedLocationLabelKey =
+          DashboardProfileNotifier.buildLocationLabelKey(
+            location: currentLocation,
+            language: serverSupportedTranslation,
+          );
+      final hasResolvedExpectedLocationLabel =
+          profileState.resolvedLocationLabelKey == expectedLocationLabelKey;
+      final isResolvingExpectedLocationLabel =
+          profileState.isResolvingLocationLabel &&
+          profileState.resolvingLocationLabelKey == expectedLocationLabelKey;
+
+      if (!hasResolvedExpectedLocationLabel &&
+          !isResolvingExpectedLocationLabel) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) {
+            return;
+          }
+
+          unawaited(
+            ref
+                .read(dashboardProfileProvider.notifier)
+                .ensureLocationLabelLoaded(currentLocation),
+          );
+        });
+      }
     }
 
     return Scaffold(
@@ -270,6 +382,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               isUpdatingDisplayName: profileState.isUpdatingDisplayName,
               isUpdatingLocation: profileState.isUpdatingLocation,
               isUpdatingFaction: profileState.isUpdatingFaction,
+              isUpdatingPreferredLanguage:
+                  profileState.isUpdatingPreferredLanguage,
             ),
       body: Stack(
         children: [
@@ -291,127 +405,77 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           Positioned.fill(
             child: SafeArea(
               bottom: false,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: viewPadding.bottom + _bottomNavigationHeightOffset,
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/app_logo.png',
-                            width: 42,
-                            height: 42,
-                            fit: BoxFit.contain,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'ROOT HUB',
-                                  style: Theme.of(context).textTheme.titleLarge
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 0.5,
-                                      ),
-                                ),
-                                Text(
-                                  'Welcome back, $displayName',
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          IconButton.filledTonal(
-                            onPressed: playerData == null
-                                ? null
-                                : () {
-                                    _scaffoldKey.currentState?.openDrawer();
-                                  },
-                            icon: const Icon(Icons.menu_rounded),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (selectedTab == DashboardTab.shop)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: colorScheme.outlineVariant,
-                            ),
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                colorScheme.surface.withValues(alpha: 0.95),
-                                colorScheme.surfaceContainerLowest.withValues(
-                                  alpha: 0.92,
-                                ),
-                              ],
-                            ),
-                          ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16, 6, 16, 8),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/app_logo.png',
+                          width: 42,
+                          height: 42,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                _titleFromTab(selectedTab),
+                                t.dashboard.ui_screens_dashboard_screen.rootHub,
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.5,
                                     ),
                               ),
-                              const SizedBox(height: 4),
                               Text(
-                                _subtitleFromTab(selectedTab),
+                                t.dashboard.ui_screens_dashboard_screen
+                                    .welcomeBack(displayName: displayName),
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       color: colorScheme.onSurfaceVariant,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                     ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
                         ),
-                      )
-                    else
-                      const SizedBox(height: 4),
-                    Expanded(
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        child: KeyedSubtree(
-                          key: ValueKey(selectedTab),
-                          child: DashboardTabContentWidget(tab: selectedTab),
+                        SizedBox(width: 14),
+                        IconButton.filledTonal(
+                          onPressed: playerData == null
+                              ? null
+                              : () {
+                                  _scaffoldKey.currentState?.openDrawer();
+                                },
+                          icon: Icon(Icons.menu_rounded),
                         ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      child: KeyedSubtree(
+                        key: ValueKey(selectedTab),
+                        child: DashboardTabContentWidget(tab: selectedTab),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
           Positioned(
             left: 14,
             right: 14,
-            bottom: viewPadding.bottom + 8,
+            bottom: viewPadding.bottom,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(999),
@@ -419,7 +483,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 18,
-                    offset: const Offset(0, 8),
+                    offset: Offset(0, 8),
                     color: colorScheme.shadow.withValues(alpha: 0.12),
                   ),
                 ],
@@ -434,7 +498,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: 'Home',
+                        label: t.dashboard.ui_screens_dashboard_screen.home,
                         icon: Icons.cottage_outlined,
                         selectedIcon: Icons.cottage_rounded,
                         selected: selectedTab == DashboardTab.home,
@@ -448,7 +512,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: 'Match',
+                        label: t.dashboard.ui_screens_dashboard_screen.match,
                         icon: Icons.groups_outlined,
                         selectedIcon: Icons.groups_rounded,
                         selected: selectedTab == DashboardTab.match,
@@ -462,7 +526,22 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: 'Shop',
+                        label: t.dashboard.ui_screens_dashboard_screen.activity,
+                        icon: Icons.forum_outlined,
+                        selectedIcon: Icons.forum_rounded,
+                        selected: selectedTab == DashboardTab.activity,
+                        badgeCount: unreadActivityCount,
+                        onTap: () {
+                          ref
+                              .read(dashboardProvider.notifier)
+                              .changeTab(DashboardTab.activity);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: DashboardBottomTabItemWidget(
+                        colorScheme: colorScheme,
+                        label: t.dashboard.ui_screens_dashboard_screen.shop,
                         icon: Icons.storefront_outlined,
                         selectedIcon: Icons.storefront_rounded,
                         selected: selectedTab == DashboardTab.shop,
@@ -483,25 +562,45 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  String _titleFromTab(DashboardTab tab) {
-    switch (tab) {
-      case DashboardTab.home:
-        return 'Community Dashboard';
-      case DashboardTab.match:
-        return 'Match Finder';
-      case DashboardTab.shop:
-        return 'Shop Preview';
+  Future<void> _openPendingMatchChat(int scheduledMatchId) async {
+    if (scheduledMatchId <= 0 ||
+        _openingPendingMatchChatId == scheduledMatchId) {
+      return;
+    }
+
+    _openingPendingMatchChatId = scheduledMatchId;
+    ref
+        .read(deepLinkProvider.notifier)
+        .consumePendingMatchChatNavigation(matchId: scheduledMatchId);
+    ref.read(dashboardProvider.notifier).changeTab(DashboardTab.match);
+
+    try {
+      await context.push(
+        dashboardMatchChatPathForMatch(scheduledMatchId),
+        extra: _resolveMatchTitleFromLoadedTables(scheduledMatchId),
+      );
+
+      if (!mounted) {
+        return;
+      }
+      await ref.read(activityProvider.notifier).refresh();
+    } catch (_) {
+    } finally {
+      _openingPendingMatchChatId = null;
     }
   }
 
-  String _subtitleFromTab(DashboardTab tab) {
-    switch (tab) {
-      case DashboardTab.home:
-        return 'Discover what is happening around your ROOT community.';
-      case DashboardTab.match:
-        return 'Browse and create match schedules with your local group.';
-      case DashboardTab.shop:
-        return 'Collect future cosmetics, tokens, and community bundles.';
+  String? _resolveMatchTitleFromLoadedTables(int scheduledMatchId) {
+    final table = ref
+        .read(matchTablesProvider)
+        .tables
+        .where((entry) => entry.id == scheduledMatchId)
+        .firstOrNull;
+    final title = table?.title.trim();
+    if (title == null || title.isEmpty) {
+      return null;
     }
+
+    return title;
   }
 }

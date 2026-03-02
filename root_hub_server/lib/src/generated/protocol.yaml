@@ -2,6 +2,8 @@ createPlayerData:
   - v1:
 getPlayerData:
   - v1:
+reverseGeocodeCity:
+  - v1:
 updatePlayerData:
   - v1:
 userProfileEdit:
@@ -18,6 +20,8 @@ getComments:
   - v1:
 getPosts:
   - v1:
+cancelMatchSchedule:
+  - v1:
 createAnonymousPlayer:
   - v1:
 getMyAnonymousPlayers:
@@ -32,7 +36,13 @@ registerMatchData:
   - v1:
 searchRegisteredPlayers:
   - v1:
+getMatchChatActivityOverview:
+  - v1:
 getMatchChatMessage:
+  - v1:
+getMatchChatPlayedMatchSummary:
+  - v1:
+getMatchChatUnreadCount:
   - v1:
 sendMatchChatMessage:
   - v1:
@@ -54,9 +64,15 @@ subscribeToMatch:
   - v1:
 unsubscribeFromMatch:
   - v1:
+deactivatePushNotificationToken:
+  - v1:
+syncPushNotificationToken:
+  - v1:
 getPlatformStats:
   - v1:
 getPlayerStats:
+  - v1:
+getWebAnalyticsDashboard:
   - v1:
 emailIdp:
   - login:

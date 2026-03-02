@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchNearbyHeaderWidget extends StatelessWidget {
   const MatchNearbyHeaderWidget({
@@ -14,11 +15,13 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final ratioKm = playerData?.currentLocation?.ratio;
     final nearbySummary = ratioKm == null
-        ? 'Set profile location'
-        : '${ratioKm.toStringAsFixed(0)} km search area';
+        ? t.match.ui_screens_match_nearby_header_widget.setProfileLocation
+        : t.match.ui_screens_match_nearby_header_widget.searchAreaKm(
+            ratioKm: ratioKm.toStringAsFixed(0),
+          );
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 6, 4, 4),
+      padding: EdgeInsets.fromLTRB(4, 6, 4, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,10 +32,10 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
                 color: colorScheme.secondary,
                 size: 22,
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Match Finder',
+                  t.match.ui_screens_match_nearby_header_widget.matchFinder,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
@@ -40,12 +43,15 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Row(
             children: [
               Flexible(
                 child: Text(
-                  'Nearby Match Tables',
+                  t
+                      .match
+                      .ui_screens_match_nearby_header_widget
+                      .nearbyMatchTables,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -55,7 +61,7 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Container(
                   width: 5,
                   height: 5,
@@ -78,9 +84,12 @@ class MatchNearbyHeaderWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
-            'Only tables that did not start more than 2 hours ago are listed.',
+            t
+                .match
+                .ui_screens_match_nearby_header_widget
+                .onlyTablesThatDidNotStartMoreThan2HoursAgoAreListed,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,

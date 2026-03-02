@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchPickerEmptySection extends StatelessWidget {
   const RegisterMatchPickerEmptySection({
@@ -10,11 +11,11 @@ class RegisterMatchPickerEmptySection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 16),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.fromLTRB(14, 12, 14, 16),
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: colorScheme.outlineVariant),
@@ -24,14 +25,20 @@ class RegisterMatchPickerEmptySection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'No pending matches',
+                t
+                    .register_match
+                    .ui_sheets_register_match_picker_empty_section
+                    .noPendingMatches,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               Text(
-                'You do not have any hosted/subscribed match pending result registration.',
+                t
+                    .register_match
+                    .ui_sheets_register_match_picker_empty_section
+                    .youDoNotHaveAnyHostedSubscribedMatchPendingResultRegistration,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w700,

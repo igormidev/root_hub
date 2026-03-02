@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_snapshot.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_state.dart';
@@ -45,12 +46,12 @@ class HomeStatsNotifier extends Notifier<HomeStatsState> {
     final platformStatsRequest = ref
         .read(clientProvider)
         .getPlatformStats
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
     final playerStatsRequest = ref
         .read(clientProvider)
         .getPlayerStats
-        .v1()
+        .v1(language: ref.read(serverSupportedTranslationProvider))
         .toResult;
 
     final platformResult = await platformStatsRequest;

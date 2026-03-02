@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
+import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
+import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DashboardProfileDrawerWidget extends StatelessWidget {
+const _preferredLocaleKey = 'preferred_locale';
+const _deviceLocalePreferenceValue = 'device';
+
+class DashboardProfileDrawerWidget extends ConsumerWidget {
   const DashboardProfileDrawerWidget({
     required this.playerData,
     required this.profileImageUrl,
@@ -19,6 +29,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
     required this.isUpdatingDisplayName,
     required this.isUpdatingLocation,
     required this.isUpdatingFaction,
+    required this.isUpdatingPreferredLanguage,
     super.key,
   });
 
@@ -34,21 +45,133 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
   final bool isUpdatingDisplayName;
   final bool isUpdatingLocation;
   final bool isUpdatingFaction;
+  final bool isUpdatingPreferredLanguage;
+
+  String _localeLabel(AppLocale locale) {
+    return switch (locale) {
+      AppLocale.en =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.english,
+      AppLocale.ptBr =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.portugueseBrazil,
+      AppLocale.es =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.spanish,
+      AppLocale.fr =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.french,
+      AppLocale.de =>
+        t.dashboard.ui_widgets_dashboard_profile_drawer_widget.german,
+    };
+  }
+
+  String _localeRaw(AppLocale locale) {
+    final localeValue = locale.flutterLocale;
+    final countryCode = localeValue.countryCode;
+    if (countryCode == null || countryCode.isEmpty) {
+      return localeValue.languageCode;
+    }
+    return '${localeValue.languageCode}-$countryCode';
+  }
+
+  Future<void> _applySpecificLocaleSelection(
+    BuildContext context,
+    WidgetRef ref, {
+    required BuildContext sheetContext,
+    required AppLocale locale,
+    required SharedPreferences sharedPreferences,
+  }) async {
+    await sharedPreferences.setString(
+      _preferredLocaleKey,
+      _localeRaw(locale),
+    );
+    await LocaleSettings.setLocale(locale);
+    if (!sheetContext.mounted) {
+      return;
+    }
+    Navigator.of(sheetContext).pop();
+    await _syncPreferredLanguageWithServer(
+      context,
+      ref,
+      locale: locale,
+    );
+  }
+
+  Future<void> _applyDeviceLocaleSelection(
+    BuildContext context,
+    WidgetRef ref, {
+    required BuildContext sheetContext,
+    required SharedPreferences sharedPreferences,
+  }) async {
+    await sharedPreferences.setString(
+      _preferredLocaleKey,
+      _deviceLocalePreferenceValue,
+    );
+    await LocaleSettings.useDeviceLocale();
+    final resolvedLocale = LocaleSettings.currentLocale;
+    if (!sheetContext.mounted) {
+      return;
+    }
+    Navigator.of(sheetContext).pop();
+    await _syncPreferredLanguageWithServer(
+      context,
+      ref,
+      locale: resolvedLocale,
+    );
+  }
+
+  Future<void> _syncPreferredLanguageWithServer(
+    BuildContext context,
+    WidgetRef ref, {
+    required AppLocale locale,
+  }) async {
+    final error = await ref
+        .read(dashboardProfileProvider.notifier)
+        .updatePreferredLanguage(
+          preferredLanguage: locale.toPreferredLanguage,
+          requestLanguage: locale.toServerSupportedTranslation,
+        );
+    if (error == null || !context.mounted) {
+      return;
+    }
+
+    final normalizedDescription = error.description.trim();
+    final message = normalizedDescription.isNotEmpty
+        ? normalizedDescription
+        : error.title;
+    if (message.trim().isEmpty) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final currentLocation = playerData.currentLocation;
+    final sharedPreferences = ref.read(sharedPreferencesProvider);
+    final profileState = ref.watch(dashboardProfileProvider);
+    final serverSupportedTranslation = ref.watch(
+      serverSupportedTranslationProvider,
+    );
+    final currentLocaleLabel = _localeLabel(LocaleSettings.currentLocale);
+    final resolvedAreaLabel = _resolvedAreaLabel(
+      profileState: profileState,
+      currentLocation: currentLocation,
+      serverSupportedTranslation: serverSupportedTranslation,
+    );
 
     return Drawer(
       child: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 18, 16, 10),
+              padding: EdgeInsets.fromLTRB(16, 18, 16, 10),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(14, 16, 14, 16),
+                padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(22),
                   gradient: LinearGradient(
@@ -81,7 +204,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                               boxShadow: [
                                 BoxShadow(
                                   blurRadius: 24,
-                                  offset: const Offset(0, 12),
+                                  offset: Offset(0, 12),
                                   color: colorScheme.primary.withValues(
                                     alpha: 0.26,
                                   ),
@@ -105,16 +228,16 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                             bottom: -2,
                             child: Material(
                               color: colorScheme.primaryContainer,
-                              shape: const CircleBorder(),
+                              shape: CircleBorder(),
                               child: InkWell(
-                                customBorder: const CircleBorder(),
+                                customBorder: CircleBorder(),
                                 onTap:
                                     isLoadingProfileImage ||
                                         isUpdatingProfileImage
                                     ? null
                                     : onProfileImageEditTap,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(8),
                                   child: isUpdatingProfileImage
                                       ? SizedBox(
                                           width: 14,
@@ -136,7 +259,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text(
                       playerData.displayName,
                       textAlign: TextAlign.center,
@@ -152,31 +275,177 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                padding: EdgeInsets.fromLTRB(16, 4, 16, 16),
                 child: Column(
                   children: [
                     DashboardProfileDrawerInfoCardWidget(
                       icon: Icons.badge_rounded,
-                      title: 'Display Name',
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .displayName,
                       value: playerData.displayName,
-                      buttonLabel: 'Edit',
+                      buttonLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .edit,
                       onPressed: onDisplayNameEditTap,
                       isLoading: isUpdatingDisplayName,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     DashboardProfileDrawerInfoCardWidget(
                       icon: Icons.location_on_rounded,
-                      title: 'Location',
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .location,
                       value: currentLocation == null
-                          ? 'No location configured'
-                          : 'x: ${currentLocation.x.toStringAsFixed(6)}\n'
-                                'y: ${currentLocation.y.toStringAsFixed(6)}\n'
-                                'ratio: ${currentLocation.ratio.toStringAsFixed(0)} km',
-                      buttonLabel: 'Edit',
+                          ? t
+                                .dashboard
+                                .ui_widgets_dashboard_profile_drawer_widget
+                                .noLocationConfigured
+                          : _locationSummary(
+                              currentLocation,
+                              areaLabel: resolvedAreaLabel,
+                            ),
+                      buttonLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .edit,
                       onPressed: onLocationEditTap,
                       isLoading: isUpdatingLocation,
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 12),
+                    DashboardProfileDrawerInfoCardWidget(
+                      icon: Icons.language_rounded,
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .language,
+                      value: currentLocaleLabel,
+                      buttonLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .change,
+                      onPressed: () async {
+                        await showModalBottomSheet<void>(
+                          context: context,
+                          builder: (sheetContext) {
+                            return SafeArea(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: Icon(Icons.phone_iphone_rounded),
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .useDeviceLanguage,
+                                    ),
+                                    onTap: () async {
+                                      await _applyDeviceLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        sharedPreferences: sharedPreferences,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .english,
+                                    ),
+                                    onTap: () async {
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.en,
+                                        sharedPreferences: sharedPreferences,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .portugueseBrazil,
+                                    ),
+                                    onTap: () async {
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.ptBr,
+                                        sharedPreferences: sharedPreferences,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .spanish,
+                                    ),
+                                    onTap: () async {
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.es,
+                                        sharedPreferences: sharedPreferences,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .french,
+                                    ),
+                                    onTap: () async {
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.fr,
+                                        sharedPreferences: sharedPreferences,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      t
+                                          .dashboard
+                                          .ui_widgets_dashboard_profile_drawer_widget
+                                          .german,
+                                    ),
+                                    onTap: () async {
+                                      await _applySpecificLocaleSelection(
+                                        context,
+                                        ref,
+                                        sheetContext: sheetContext,
+                                        locale: AppLocale.de,
+                                        sharedPreferences: sharedPreferences,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      isLoading: isUpdatingPreferredLanguage,
+                    ),
+                    SizedBox(height: 2),
                     SizedBox(
                       width: double.infinity,
                       height: 190,
@@ -189,7 +458,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                             top: 22,
                             bottom: 0,
                             child: Container(
-                              padding: const EdgeInsets.fromLTRB(
+                              padding: EdgeInsets.fromLTRB(
                                 14,
                                 14,
                                 110,
@@ -215,14 +484,17 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Favorite Faction',
+                                    t
+                                        .dashboard
+                                        .ui_widgets_dashboard_profile_drawer_widget
+                                        .favoriteFaction,
                                     style: GoogleFonts.nunitoSans(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w800,
                                       color: colorScheme.onSurfaceVariant,
                                     ),
                                   ),
-                                  const SizedBox(height: 3),
+                                  SizedBox(height: 3),
                                   Text(
                                     playerData.favoriteFaction.displayName,
                                     style: GoogleFonts.cinzel(
@@ -233,7 +505,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                           .factionColor,
                                     ),
                                   ),
-                                  const Spacer(),
+                                  Spacer(),
                                 ],
                               ),
                             ),
@@ -243,7 +515,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                             child: SizedBox(
                               width: double.infinity,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: 16,
                                 ),
                                 child: SizedBox(
@@ -253,18 +525,24 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                                         ? null
                                         : onFactionEditTap,
                                     icon: isUpdatingFaction
-                                        ? const SizedBox(
+                                        ? SizedBox(
                                             width: 16,
                                             height: 16,
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2,
                                             ),
                                           )
-                                        : const Icon(Icons.shuffle_rounded),
+                                        : Icon(Icons.shuffle_rounded),
                                     label: Text(
                                       isUpdatingFaction
-                                          ? 'Saving...'
-                                          : 'Change Faction',
+                                          ? t
+                                                .dashboard
+                                                .ui_widgets_dashboard_profile_drawer_widget
+                                                .saving
+                                          : t
+                                                .dashboard
+                                                .ui_widgets_dashboard_profile_drawer_widget
+                                                .changeFaction,
                                       style: GoogleFonts.nunitoSans(
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -299,7 +577,7 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 18),
               child: SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -309,9 +587,12 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
                     backgroundColor: colorScheme.errorContainer,
                     foregroundColor: colorScheme.onErrorContainer,
                   ),
-                  icon: const Icon(Icons.logout_rounded),
+                  icon: Icon(Icons.logout_rounded),
                   label: Text(
-                    'Log out',
+                    t
+                        .dashboard
+                        .ui_widgets_dashboard_profile_drawer_widget
+                        .logOut,
                     style: GoogleFonts.nunitoSans(
                       fontWeight: FontWeight.w800,
                     ),
@@ -323,5 +604,59 @@ class DashboardProfileDrawerWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _locationSummary(
+    GeoLocation currentLocation, {
+    required String? areaLabel,
+  }) {
+    final summaryLines = <String>[];
+    if (areaLabel != null) {
+      summaryLines.add(areaLabel);
+    }
+    summaryLines.addAll([
+      '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.xLabel}: '
+          '${currentLocation.x.toStringAsFixed(6)}',
+      '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.yLabel}: '
+          '${currentLocation.y.toStringAsFixed(6)}',
+      '${t.dashboard.ui_widgets_dashboard_profile_drawer_widget.ratioLabel}: '
+          '${currentLocation.ratio.toStringAsFixed(0)} km',
+    ]);
+    return summaryLines.join('\n');
+  }
+
+  String? _resolvedAreaLabel({
+    required DashboardProfileState profileState,
+    required GeoLocation? currentLocation,
+    required ServerSupportedTranslation serverSupportedTranslation,
+  }) {
+    if (currentLocation == null) {
+      return null;
+    }
+
+    final expectedLabelKey = DashboardProfileNotifier.buildLocationLabelKey(
+      location: currentLocation,
+      language: serverSupportedTranslation,
+    );
+    if (profileState.resolvedLocationLabelKey != expectedLabelKey) {
+      return null;
+    }
+
+    return _firstFilledValue([
+      profileState.currentLocationCityName,
+      profileState.currentLocationShortAddress,
+      profileState.currentLocationFormattedAddress,
+    ]);
+  }
+
+  String? _firstFilledValue(List<String?> values) {
+    for (final value in values) {
+      final normalizedValue = value?.trim();
+      if (normalizedValue == null || normalizedValue.isEmpty) {
+        continue;
+      }
+      return normalizedValue;
+    }
+    return null;
   }
 }

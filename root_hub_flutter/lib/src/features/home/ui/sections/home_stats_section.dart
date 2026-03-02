@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_legend_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_metric_chart_widget.dart';
 import 'package:root_hub_flutter/src/features/home/ui/widgets/home_stats_status_message_widget.dart';
@@ -37,26 +38,38 @@ class HomeStatsSection extends StatefulWidget {
 class _HomeStatsSectionState extends State<HomeStatsSection> {
   static const _carouselInterval = Duration(minutes: 2);
   static const _carouselAnimationDuration = Duration(milliseconds: 420);
-  static const _metricConfigs = <_StatsMetricConfig>[
+  static final _metricConfigs = <_StatsMetricConfig>[
     _StatsMetricConfig(
       type: _StatsMetricType.winRate,
-      title: 'Faction Win Rate',
-      description: 'Who is winning the most often right now.',
+      title: t.home.ui_sections_home_stats_section.factionWinRate,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .whoIsWinningTheMostOftenRightNow,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.playedGames,
-      title: 'Played Games',
-      description: 'How often each faction appears in completed games.',
+      title: t.home.ui_sections_home_stats_section.playedGames,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .howOftenEachFactionAppearsInCompletedGames,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.avgPoints,
-      title: 'Average Points',
-      description: 'Average score per faction when points were tracked.',
+      title: t.home.ui_sections_home_stats_section.averagePoints,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .averageScorePerFactionWhenPointsWereTracked,
     ),
     _StatsMetricConfig(
       type: _StatsMetricType.totalWins,
-      title: 'Total Wins',
-      description: 'Absolute number of wins for each faction.',
+      title: t.home.ui_sections_home_stats_section.totalWins,
+      description: t
+          .home
+          .ui_sections_home_stats_section
+          .absoluteNumberOfWinsForEachFaction,
     ),
   ];
 
@@ -182,7 +195,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             widget.title,
             style: textTheme.titleLarge?.copyWith(
@@ -190,9 +203,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             widget.description,
             style: textTheme.bodyMedium?.copyWith(
@@ -201,7 +214,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 10),
         if (widget.isLoading && widget.stats == null)
           SizedBox(
             height: 360,
@@ -212,20 +225,26 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             ),
           )
         else if (widget.stats == null && widget.error != null)
-          HomeStatsStatusMessageWidget(
-            icon: Icons.error_outline_rounded,
-            title: widget.error!.title,
-            description: widget.error!.description,
-            actionLabel: 'Retry',
-            onActionTap: widget.onRetry,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: HomeStatsStatusMessageWidget(
+              icon: Icons.error_outline_rounded,
+              title: widget.error!.title,
+              description: widget.error!.description,
+              actionLabel: 'Retry',
+              onActionTap: widget.onRetry,
+            ),
           )
         else if (widget.stats == null)
-          HomeStatsStatusMessageWidget(
-            icon: Icons.insights_rounded,
-            title: widget.emptyTitle,
-            description: widget.emptyDescription,
-            actionLabel: null,
-            onActionTap: null,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: HomeStatsStatusMessageWidget(
+              icon: Icons.insights_rounded,
+              title: widget.emptyTitle,
+              description: widget.emptyDescription,
+              actionLabel: null,
+              onActionTap: null,
+            ),
           )
         else ...[
           MouseRegion(
@@ -245,7 +264,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: _metricConfigs.length,
-                      physics: const BouncingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       onPageChanged: (index) {
                         setState(() {
                           _activePage = index;
@@ -276,7 +295,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                           child: Opacity(
                             opacity: opacity,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 vertical: 6,
                               ),
                               child: Column(
@@ -298,14 +317,14 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                                       },
                                     ),
                                   ),
-                                  const SizedBox(height: 12),
+                                  SizedBox(height: 12),
                                   Text(
                                     metricConfig.title,
                                     style: textTheme.titleMedium?.copyWith(
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: 4),
                                   Text(
                                     metricConfig.description,
                                     style: textTheme.bodyMedium?.copyWith(
@@ -321,9 +340,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
@@ -334,13 +353,13 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                             onTap: () {
                               _pageController.animateToPage(
                                 index,
-                                duration: const Duration(milliseconds: 260),
+                                duration: Duration(milliseconds: 260),
                                 curve: Curves.easeOutCubic,
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 220),
-                              margin: const EdgeInsets.symmetric(
+                              duration: Duration(milliseconds: 220),
+                              margin: EdgeInsets.symmetric(
                                 horizontal: 4,
                                 vertical: 8,
                               ),
@@ -358,9 +377,9 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -400,7 +419,7 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
         value: _formatPercentValue(
           _averageNonZeroValue(valuesByFaction.values),
         ),
-        label: 'All factions avg',
+        label: t.home.ui_sections_home_stats_section.allFactionsAvg2,
       ),
       _StatsMetricType.playedGames => _MetricCenterValue(
         value: _formatGroupedInt(
@@ -409,15 +428,15 @@ class _HomeStatsSectionState extends State<HomeStatsSection> {
             (sum, value) => sum + value.round(),
           ),
         ),
-        label: 'All factions total',
+        label: t.home.ui_sections_home_stats_section.allFactionsTotal2,
       ),
       _StatsMetricType.avgPoints => _MetricCenterValue(
         value: _formatDecimalValue(stats.avgPoints),
-        label: 'All factions avg',
+        label: t.home.ui_sections_home_stats_section.allFactionsAvg,
       ),
       _StatsMetricType.totalWins => _MetricCenterValue(
         value: _formatGroupedInt(stats.totalWins),
-        label: 'All factions total',
+        label: t.home.ui_sections_home_stats_section.allFactionsTotal,
       ),
     };
   }
@@ -495,7 +514,7 @@ enum _StatsMetricType {
 }
 
 class _StatsMetricConfig {
-  const _StatsMetricConfig({
+  _StatsMetricConfig({
     required this.type,
     required this.title,
     required this.description,
@@ -507,7 +526,7 @@ class _StatsMetricConfig {
 }
 
 class _MetricCenterValue {
-  const _MetricCenterValue({
+  _MetricCenterValue({
     required this.value,
     required this.label,
   });

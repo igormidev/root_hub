@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/design_system/profile_editor/profile_display_name_editor_card.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class EditDisplayNameDialog extends ConsumerStatefulWidget {
   const EditDisplayNameDialog({
@@ -63,34 +64,37 @@ class _EditDisplayNameDialogState extends ConsumerState<EditDisplayNameDialog> {
     );
 
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 14),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Edit Display Name',
+              t.dashboard.ui_dialogs_edit_display_name_dialog.editDisplayName,
               style: GoogleFonts.cinzel(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
-              'This is how players will see you across Root Hub.',
+              t
+                  .dashboard
+                  .ui_dialogs_edit_display_name_dialog
+                  .thisIsHowPlayersWillSeeYouAcrossRootHub,
               textAlign: TextAlign.center,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w700,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             ProfileDisplayNameEditorCard(
               controller: _displayNameController,
               enabled: !isLoading,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             Row(
               children: [
                 Expanded(
@@ -101,25 +105,28 @@ class _EditDisplayNameDialogState extends ConsumerState<EditDisplayNameDialog> {
                             Navigator.of(context).pop(false);
                           },
                     child: Text(
-                      'Cancel',
+                      t.dashboard.ui_dialogs_edit_display_name_dialog.cancel,
                       style: GoogleFonts.nunitoSans(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: FilledButton(
                     onPressed: isLoading ? null : _saveDisplayName,
                     child: isLoading
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 18,
                             height: 18,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Save',
+                            t
+                                .dashboard
+                                .ui_dialogs_edit_display_name_dialog
+                                .save,
                             style: GoogleFonts.nunitoSans(
                               fontWeight: FontWeight.w800,
                             ),

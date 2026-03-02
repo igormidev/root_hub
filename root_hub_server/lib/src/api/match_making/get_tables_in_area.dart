@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -8,7 +9,12 @@ class GetTablesInArea extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<List<MatchSchedulePairingAttempt>> v1(Session session) async {
+  Future<List<MatchSchedulePairingAttempt>> v1(
+    Session session, {
+    required ServerSupportedTranslation language,
+  }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final userIdentifier = session.authenticated!.userIdentifier;
@@ -24,22 +30,24 @@ class GetTablesInArea extends Endpoint {
 
         if (playerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
         final currentLocation = playerData.currentLocation;
         if (currentLocation == null) {
           throw RootHubEndpointError.invalidRequest(
-            description:
-                'Current location is required to fetch nearby match schedules.',
+            language: language,
+            description: t.errors.currentLocationRequiredToFetchNearby,
           );
         }
 
         if (currentLocation.ratio <= 0) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Location ratio must be greater than zero.',
+            language: language,
+            description: t.errors.locationRatioMustBeGreaterThanZero,
           );
         }
 
@@ -87,6 +95,7 @@ class GetTablesInArea extends Endpoint {
           session,
           where: (t) =>
               t.locationId.inSet(locationIds) &
+              t.status.equals(MatchScheduleStatus.scheduled) &
               (t.attemptedAt >= oldestAllowedScheduleStart),
           orderBy: (t) => t.attemptedAt,
           include: MatchSchedulePairingAttempt.include(
@@ -103,26 +112,10 @@ class GetTablesInArea extends Endpoint {
           return const <MatchSchedulePairingAttempt>[];
         }
 
-        final candidateScheduleIds = candidateSchedules
-            .map((schedule) => schedule.id)
-            .whereType<int>()
-            .toSet();
-        final playedMatches = await PlayedMatch.db.find(
-          session,
-          where: (t) => t.scheduledPairingAttemptId.inSet(candidateScheduleIds),
-        );
-        final promotedScheduleIds = playedMatches
-            .map((playedMatch) => playedMatch.scheduledPairingAttemptId)
-            .toSet();
-
-        return candidateSchedules
-            .where(
-              (schedule) => !promotedScheduleIds.contains(schedule.id),
-            )
-            .toList();
+        return candidateSchedules;
       },
-      fallbackDescription:
-          'Unable to load nearby match schedules right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadNearbyMatchSchedules,
     );
   }
 }

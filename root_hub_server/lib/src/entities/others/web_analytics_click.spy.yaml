@@ -1,0 +1,24 @@
+class: WebAnalyticsClick
+table: web_analytics_click
+fields:
+  createdAt: DateTime
+  requestPath: String
+  requestQuery: String?
+  matchId: int?
+  ipAddress: String?
+  countryCode: String?
+  countryName: String?
+  city: String?
+  deviceType: WebAnalyticsDeviceType
+  osName: String?
+  browserName: String?
+  userAgent: String?
+indexes:
+  web_analytics_click_created_at_idx:
+    fields: createdAt
+  web_analytics_click_match_id_idx:
+    fields: matchId
+  web_analytics_click_country_code_idx:
+    fields: countryCode
+  web_analytics_click_device_type_idx:
+    fields: deviceType

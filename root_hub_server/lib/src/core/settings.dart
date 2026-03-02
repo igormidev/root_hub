@@ -4,4 +4,5 @@ class RootHubSettings {
   static const int pageSizeSubscribedMatches = 20;
   static const int pageSizeLocations = 20;
   static const int pageSizeMatchChatMessages = 40;
+  static const int pageSizeWebAnalyticsClicks = 30;
 }

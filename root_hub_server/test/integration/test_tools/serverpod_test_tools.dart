@@ -16,51 +16,66 @@ import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
 import 'package:root_hub_server/src/generated/entities/core/player_data.dart'
     as _i4;
-import 'package:root_hub_server/src/generated/entities/core/faction.dart'
+import 'package:root_hub_server/src/generated/entities/core/server_supported_translation.dart'
     as _i5;
-import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
+import 'package:root_hub_server/src/generated/entities/core/faction.dart'
     as _i6;
-import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
+import 'package:root_hub_server/src/generated/entities/core/geo_location.dart'
     as _i7;
-import 'dart:typed_data' as _i8;
-import 'package:root_hub_server/src/generated/entities/community/post_comment.dart'
-    as _i9;
 import 'package:root_hub_server/src/generated/entities/core/language.dart'
+    as _i8;
+import 'package:root_hub_server/src/generated/api/account/models/reverse_geocode_city_result.dart'
+    as _i9;
+import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _i10;
-import 'package:root_hub_server/src/generated/entities/community/post.dart'
-    as _i11;
-import 'package:root_hub_server/src/generated/api/community/models/comments_pagination.dart'
+import 'dart:typed_data' as _i11;
+import 'package:root_hub_server/src/generated/entities/community/post_comment.dart'
     as _i12;
-import 'package:root_hub_server/src/generated/api/community/models/post_pagination.dart'
+import 'package:root_hub_server/src/generated/entities/community/post.dart'
     as _i13;
-import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
+import 'package:root_hub_server/src/generated/api/community/models/comments_pagination.dart'
     as _i14;
-import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
+import 'package:root_hub_server/src/generated/api/community/models/post_pagination.dart'
     as _i15;
 import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i16;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule_not_played_reason.dart'
     as _i17;
-import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
     as _i18;
-import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_messages_pagination.dart'
+import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i19;
-import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i20;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
     as _i21;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_activity_overview.dart'
     as _i22;
-import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_messages_pagination.dart'
     as _i23;
-import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_played_match_summary.dart'
     as _i24;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
     as _i25;
-import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i26;
-import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i27;
+import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
+    as _i28;
+import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
+    as _i29;
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+    as _i30;
+import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
+    as _i31;
+import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
+    as _i32;
+import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+    as _i33;
+import 'package:root_hub_server/src/generated/api/stats/models/web_analytics_dashboard.dart'
+    as _i34;
+import 'package:root_hub_server/src/generated/future_calls.dart' as _i35;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -168,9 +183,13 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final futureCalls = _FutureCalls();
+
   late final _CreatePlayerData createPlayerData;
 
   late final _GetPlayerData getPlayerData;
+
+  late final _ReverseGeocodeCity reverseGeocodeCity;
 
   late final _UpdatePlayerData updatePlayerData;
 
@@ -183,6 +202,8 @@ class TestEndpoints {
   late final _GetCommentsEndpoint getComments;
 
   late final _GetPostsEndpoint getPosts;
+
+  late final _CancelMatchSchedule cancelMatchSchedule;
 
   late final _CreateAnonymousPlayer createAnonymousPlayer;
 
@@ -198,7 +219,13 @@ class TestEndpoints {
 
   late final _SearchRegisteredPlayers searchRegisteredPlayers;
 
+  late final _GetMatchChatActivityOverview getMatchChatActivityOverview;
+
   late final _GetMatchChatMessage getMatchChatMessage;
+
+  late final _GetMatchChatPlayedMatchSummary getMatchChatPlayedMatchSummary;
+
+  late final _GetMatchChatUnreadCount getMatchChatUnreadCount;
 
   late final _SendMatchChatMessage sendMatchChatMessage;
 
@@ -220,9 +247,15 @@ class TestEndpoints {
 
   late final _UnsubscribeFromMatch unsubscribeFromMatch;
 
+  late final _DeactivatePushNotificationToken deactivatePushNotificationToken;
+
+  late final _SyncPushNotificationToken syncPushNotificationToken;
+
   late final _GetPlatformStats getPlatformStats;
 
   late final _GetPlayerStats getPlayerStats;
+
+  late final _GetWebAnalyticsDashboard getWebAnalyticsDashboard;
 
   late final _EmailIdpEndpoint emailIdp;
 
@@ -243,6 +276,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPlayerData = _GetPlayerData(
+      endpoints,
+      serializationManager,
+    );
+    reverseGeocodeCity = _ReverseGeocodeCity(
       endpoints,
       serializationManager,
     );
@@ -267,6 +304,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPosts = _GetPostsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    cancelMatchSchedule = _CancelMatchSchedule(
       endpoints,
       serializationManager,
     );
@@ -298,7 +339,19 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
+    getMatchChatActivityOverview = _GetMatchChatActivityOverview(
+      endpoints,
+      serializationManager,
+    );
     getMatchChatMessage = _GetMatchChatMessage(
+      endpoints,
+      serializationManager,
+    );
+    getMatchChatPlayedMatchSummary = _GetMatchChatPlayedMatchSummary(
+      endpoints,
+      serializationManager,
+    );
+    getMatchChatUnreadCount = _GetMatchChatUnreadCount(
       endpoints,
       serializationManager,
     );
@@ -342,11 +395,23 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
+    deactivatePushNotificationToken = _DeactivatePushNotificationToken(
+      endpoints,
+      serializationManager,
+    );
+    syncPushNotificationToken = _SyncPushNotificationToken(
+      endpoints,
+      serializationManager,
+    );
     getPlatformStats = _GetPlatformStats(
       endpoints,
       serializationManager,
     );
     getPlayerStats = _GetPlayerStats(
+      endpoints,
+      serializationManager,
+    );
+    getWebAnalyticsDashboard = _GetWebAnalyticsDashboard(
       endpoints,
       serializationManager,
     );
@@ -365,6 +430,11 @@ class _InternalTestEndpoints extends TestEndpoints
   }
 }
 
+class _FutureCalls {
+  late final markStaleMatchSchedulesNotPlayedPeriodicCall =
+      _MarkStaleMatchSchedulesNotPlayedPeriodicCallFutureCall();
+}
+
 class _CreatePlayerData {
   _CreatePlayerData(
     this._endpointDispatch,
@@ -377,9 +447,11 @@ class _CreatePlayerData {
 
   _i3.Future<_i4.PlayerData> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required String displayName,
-    required _i5.Faction favoriteFaction,
-    required _i6.GeoLocation currentLocation,
+    required _i6.Faction favoriteFaction,
+    required _i7.GeoLocation currentLocation,
+    required _i8.Language preferredLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -393,9 +465,11 @@ class _CreatePlayerData {
           endpointPath: 'createPlayerData',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'displayName': displayName,
             'favoriteFaction': favoriteFaction,
             'currentLocation': currentLocation,
+            'preferredLanguage': preferredLanguage,
           }),
           serializationManager: _serializationManager,
         );
@@ -423,7 +497,10 @@ class _GetPlayerData {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i4.PlayerData?> v1(_i1.TestSessionBuilder sessionBuilder) async {
+  _i3.Future<_i4.PlayerData?> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -435,7 +512,7 @@ class _GetPlayerData {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getPlayerData',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -444,6 +521,54 @@ class _GetPlayerData {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i4.PlayerData?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _ReverseGeocodeCity {
+  _ReverseGeocodeCity(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i9.ReverseGeocodeCityResult?> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required double x,
+    required double y,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'reverseGeocodeCity',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'reverseGeocodeCity',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'x': x,
+            'y': y,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i9.ReverseGeocodeCityResult?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -464,9 +589,11 @@ class _UpdatePlayerData {
 
   _i3.Future<_i4.PlayerData> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     String? displayName,
-    _i5.Faction? favoriteFaction,
-    _i6.GeoLocation? currentLocation,
+    _i6.Faction? favoriteFaction,
+    _i7.GeoLocation? currentLocation,
+    _i8.Language? preferredLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -480,9 +607,11 @@ class _UpdatePlayerData {
           endpointPath: 'updatePlayerData',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'displayName': displayName,
             'favoriteFaction': favoriteFaction,
             'currentLocation': currentLocation,
+            'preferredLanguage': preferredLanguage,
           }),
           serializationManager: _serializationManager,
         );
@@ -510,7 +639,7 @@ class _UserProfileEdit {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.UserProfileModel> removeUserImage(
+  _i3.Future<_i10.UserProfileModel> removeUserImage(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -532,7 +661,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -540,9 +669,9 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i7.UserProfileModel> setUserImage(
+  _i3.Future<_i10.UserProfileModel> setUserImage(
     _i1.TestSessionBuilder sessionBuilder,
-    _i8.ByteData image,
+    _i11.ByteData image,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -563,7 +692,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -571,7 +700,7 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i7.UserProfileModel> changeUserName(
+  _i3.Future<_i10.UserProfileModel> changeUserName(
     _i1.TestSessionBuilder sessionBuilder,
     String? userName,
   ) async {
@@ -594,7 +723,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -602,7 +731,7 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i7.UserProfileModel> changeFullName(
+  _i3.Future<_i10.UserProfileModel> changeFullName(
     _i1.TestSessionBuilder sessionBuilder,
     String? fullName,
   ) async {
@@ -625,7 +754,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -633,7 +762,7 @@ class _UserProfileEdit {
     });
   }
 
-  _i3.Future<_i7.UserProfileModel> get(
+  _i3.Future<_i10.UserProfileModel> get(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -655,7 +784,7 @@ class _UserProfileEdit {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.UserProfileModel>);
+                as _i3.Future<_i10.UserProfileModel>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -674,11 +803,12 @@ class _CreateCommentEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.PostComment> v1(
+  _i3.Future<_i12.PostComment> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int postId,
     required String content,
-    required _i10.Language language,
+    required _i8.Language commentLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -692,9 +822,10 @@ class _CreateCommentEndpoint {
           endpointPath: 'createComment',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'postId': postId,
             'content': content,
-            'language': language,
+            'commentLanguage': commentLanguage,
           }),
           serializationManager: _serializationManager,
         );
@@ -703,7 +834,7 @@ class _CreateCommentEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.PostComment>);
+                as _i3.Future<_i12.PostComment>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -722,11 +853,12 @@ class _CreatePostEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i11.Post> v1(
+  _i3.Future<_i13.Post> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required String title,
     required String content,
-    required _i10.Language language,
+    required _i8.Language postLanguage,
     int? attachedMatchId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -741,9 +873,10 @@ class _CreatePostEndpoint {
           endpointPath: 'createPost',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'title': title,
             'content': content,
-            'language': language,
+            'postLanguage': postLanguage,
             'attachedMatchId': attachedMatchId,
           }),
           serializationManager: _serializationManager,
@@ -753,7 +886,7 @@ class _CreatePostEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i11.Post>);
+                as _i3.Future<_i13.Post>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -772,8 +905,9 @@ class _GetCommentsEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i12.CommentsPagination> v1(
+  _i3.Future<_i14.CommentsPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int postId,
     required int page,
   }) async {
@@ -789,6 +923,7 @@ class _GetCommentsEndpoint {
           endpointPath: 'getComments',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'postId': postId,
             'page': page,
           }),
@@ -799,7 +934,7 @@ class _GetCommentsEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i12.CommentsPagination>);
+                as _i3.Future<_i14.CommentsPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -818,10 +953,11 @@ class _GetPostsEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i13.PostPagination> v1(
+  _i3.Future<_i15.PostPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int page,
-    _i10.Language? language,
+    _i8.Language? postLanguage,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -835,8 +971,9 @@ class _GetPostsEndpoint {
           endpointPath: 'getPosts',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
-            'page': page,
             'language': language,
+            'page': page,
+            'postLanguage': postLanguage,
           }),
           serializationManager: _serializationManager,
         );
@@ -845,7 +982,57 @@ class _GetPostsEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i13.PostPagination>);
+                as _i3.Future<_i15.PostPagination>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _CancelMatchSchedule {
+  _CancelMatchSchedule(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i16.MatchSchedulePairingAttempt> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required _i17.MatchScheduleNotPlayedReason notPlayedReason,
+    String? notPlayedReasonDetails,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'cancelMatchSchedule',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cancelMatchSchedule',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'scheduledMatchId': scheduledMatchId,
+            'notPlayedReason': notPlayedReason,
+            'notPlayedReasonDetails': notPlayedReasonDetails,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i16.MatchSchedulePairingAttempt>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -864,8 +1051,9 @@ class _CreateAnonymousPlayer {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i14.AnonymousPlayer> v1(
+  _i3.Future<_i18.AnonymousPlayer> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required String firstName,
     required String lastName,
   }) async {
@@ -881,6 +1069,7 @@ class _CreateAnonymousPlayer {
           endpointPath: 'createAnonymousPlayer',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'firstName': firstName,
             'lastName': lastName,
           }),
@@ -891,7 +1080,7 @@ class _CreateAnonymousPlayer {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i14.AnonymousPlayer>);
+                as _i3.Future<_i18.AnonymousPlayer>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -910,9 +1099,10 @@ class _GetMyAnonymousPlayers {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i14.AnonymousPlayer>> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+  _i3.Future<List<_i18.AnonymousPlayer>> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -924,7 +1114,7 @@ class _GetMyAnonymousPlayers {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getMyAnonymousPlayers',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -932,7 +1122,7 @@ class _GetMyAnonymousPlayers {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i14.AnonymousPlayer>>);
+                as _i3.Future<List<_i18.AnonymousPlayer>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -951,9 +1141,10 @@ class _GetMyMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i15.PlayedMatch>> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+  _i3.Future<List<_i19.PlayedMatch>> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -965,7 +1156,7 @@ class _GetMyMatches {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getMyMatches',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -973,7 +1164,7 @@ class _GetMyMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i15.PlayedMatch>>);
+                as _i3.Future<List<_i19.PlayedMatch>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -993,8 +1184,9 @@ class _GetPendingMatchResults {
   final _i2.SerializationManager _serializationManager;
 
   _i3.Future<List<_i16.MatchSchedulePairingAttempt>> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -1006,7 +1198,7 @@ class _GetPendingMatchResults {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getPendingMatchResults',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1033,7 +1225,10 @@ class _GetPendingMatchResultsCount {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<int> v1(_i1.TestSessionBuilder sessionBuilder) async {
+  _i3.Future<int> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -1045,7 +1240,7 @@ class _GetPendingMatchResultsCount {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getPendingMatchResultsCount',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1072,17 +1267,18 @@ class _RegisterMatchData {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i15.PlayedMatch> v1(
+  _i3.Future<_i19.PlayedMatch> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required DateTime matchStartedAt,
     required Duration matchEstimatedDuration,
     required int locationId,
     required int scheduledPairingAttemptId,
-    required List<_i17.PlayerMatchResultInput> players,
-    required _i8.ByteData groupPhotoBytes,
+    required List<_i20.PlayerMatchResultInput> players,
+    required _i11.ByteData groupPhotoBytes,
     String? groupPhotoFileName,
     String? groupPhotoContentType,
-    required _i8.ByteData boardPhotoBytes,
+    required _i11.ByteData boardPhotoBytes,
     String? boardPhotoFileName,
     String? boardPhotoContentType,
   }) async {
@@ -1098,6 +1294,7 @@ class _RegisterMatchData {
           endpointPath: 'registerMatchData',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'matchStartedAt': matchStartedAt,
             'matchEstimatedDuration': matchEstimatedDuration,
             'locationId': locationId,
@@ -1117,7 +1314,7 @@ class _RegisterMatchData {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.PlayedMatch>);
+                as _i3.Future<_i19.PlayedMatch>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1136,8 +1333,9 @@ class _SearchRegisteredPlayers {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i18.RegisteredPlayerSearchResult>> v1(
+  _i3.Future<List<_i21.RegisteredPlayerSearchResult>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required String query,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1151,7 +1349,10 @@ class _SearchRegisteredPlayers {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'searchRegisteredPlayers',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({'query': query}),
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'query': query,
+          }),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1159,7 +1360,49 @@ class _SearchRegisteredPlayers {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i18.RegisteredPlayerSearchResult>>);
+                as _i3.Future<List<_i21.RegisteredPlayerSearchResult>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetMatchChatActivityOverview {
+  _GetMatchChatActivityOverview(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i22.MatchChatActivityOverview> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getMatchChatActivityOverview',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getMatchChatActivityOverview',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({'language': language}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i22.MatchChatActivityOverview>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1178,8 +1421,9 @@ class _GetMatchChatMessage {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i19.MatchChatMessagesPagination> v1(
+  _i3.Future<_i23.MatchChatMessagesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required int page,
   }) async {
@@ -1195,6 +1439,7 @@ class _GetMatchChatMessage {
           endpointPath: 'getMatchChatMessage',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
             'page': page,
           }),
@@ -1205,7 +1450,95 @@ class _GetMatchChatMessage {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i19.MatchChatMessagesPagination>);
+                as _i3.Future<_i23.MatchChatMessagesPagination>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetMatchChatPlayedMatchSummary {
+  _GetMatchChatPlayedMatchSummary(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i24.MatchChatPlayedMatchSummary?> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getMatchChatPlayedMatchSummary',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getMatchChatPlayedMatchSummary',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'scheduledMatchId': scheduledMatchId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i24.MatchChatPlayedMatchSummary?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetMatchChatUnreadCount {
+  _GetMatchChatUnreadCount(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<int> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getMatchChatUnreadCount',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getMatchChatUnreadCount',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({'language': language}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<int>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1224,11 +1557,12 @@ class _SendMatchChatMessage {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i20.MatchChatMessage> v1(
+  _i3.Future<_i25.MatchChatMessage> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String content,
-    _i8.ByteData? imageBytes,
+    _i11.ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
   }) async {
@@ -1244,6 +1578,7 @@ class _SendMatchChatMessage {
           endpointPath: 'sendMatchChatMessage',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
             'content': content,
             'imageBytes': imageBytes,
@@ -1257,7 +1592,7 @@ class _SendMatchChatMessage {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i20.MatchChatMessage>);
+                as _i3.Future<_i25.MatchChatMessage>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1278,10 +1613,11 @@ class _CreateMatchSchedule {
 
   _i3.Future<_i16.MatchSchedulePairingAttempt> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required String title,
     String? description,
-    required _i21.MatchPodium minAmountOfPlayers,
-    required _i21.MatchPodium maxAmountOfPlayers,
+    required _i26.MatchPodium minAmountOfPlayers,
+    required _i26.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     required bool hostWillPlay,
@@ -1298,6 +1634,7 @@ class _CreateMatchSchedule {
           endpointPath: 'createMatchSchedule',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'title': title,
             'description': description,
             'minAmountOfPlayers': minAmountOfPlayers,
@@ -1334,11 +1671,12 @@ class _EditMatchSchedule {
 
   _i3.Future<void> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String title,
     String? description,
-    required _i21.MatchPodium minAmountOfPlayers,
-    required _i21.MatchPodium maxAmountOfPlayers,
+    required _i26.MatchPodium minAmountOfPlayers,
+    required _i26.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     bool? closedForSubscriptions,
   }) async {
@@ -1354,6 +1692,7 @@ class _EditMatchSchedule {
           endpointPath: 'editMatchSchedule',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
             'title': title,
             'description': description,
@@ -1388,8 +1727,9 @@ class _GetMatchLocation {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i22.Location>> v1(
+  _i3.Future<List<_i27.Location>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required String query,
     required int page,
   }) async {
@@ -1405,6 +1745,7 @@ class _GetMatchLocation {
           endpointPath: 'getMatchLocation',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'query': query,
             'page': page,
           }),
@@ -1415,7 +1756,7 @@ class _GetMatchLocation {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i22.Location>>);
+                as _i3.Future<List<_i27.Location>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1434,8 +1775,9 @@ class _GetMatchScheduleInfo {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i23.MatchScheduleInfo> v1(
+  _i3.Future<_i28.MatchScheduleInfo> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1450,6 +1792,7 @@ class _GetMatchScheduleInfo {
           endpointPath: 'getMatchScheduleInfo',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
           }),
           serializationManager: _serializationManager,
@@ -1459,7 +1802,7 @@ class _GetMatchScheduleInfo {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i23.MatchScheduleInfo>);
+                as _i3.Future<_i28.MatchScheduleInfo>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1478,8 +1821,9 @@ class _GetPlayerSubscribedMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i24.SubscribedMatchesPagination> v1(
+  _i3.Future<_i29.SubscribedMatchesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int page,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1493,7 +1837,10 @@ class _GetPlayerSubscribedMatches {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getPlayerSubscribedMatches',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({'page': page}),
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'page': page,
+          }),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1501,7 +1848,7 @@ class _GetPlayerSubscribedMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i24.SubscribedMatchesPagination>);
+                as _i3.Future<_i29.SubscribedMatchesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1521,8 +1868,9 @@ class _GetTablesInArea {
   final _i2.SerializationManager _serializationManager;
 
   _i3.Future<List<_i16.MatchSchedulePairingAttempt>> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -1534,7 +1882,7 @@ class _GetTablesInArea {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getTablesInArea',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1563,6 +1911,7 @@ class _RemovePlayerFromMatch {
 
   _i3.Future<void> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required int playerDataId,
   }) async {
@@ -1578,6 +1927,7 @@ class _RemovePlayerFromMatch {
           endpointPath: 'removePlayerFromMatch',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
             'playerDataId': playerDataId,
           }),
@@ -1607,8 +1957,9 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i25.MatchSubscription> v1(
+  _i3.Future<_i30.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1623,6 +1974,7 @@ class _SubscribeToMatch {
           endpointPath: 'subscribeToMatch',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
           }),
           serializationManager: _serializationManager,
@@ -1632,7 +1984,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i25.MatchSubscription>);
+                as _i3.Future<_i30.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1653,6 +2005,7 @@ class _UnsubscribeFromMatch {
 
   _i3.Future<void> v1(
     _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1667,7 +2020,102 @@ class _UnsubscribeFromMatch {
           endpointPath: 'unsubscribeFromMatch',
           methodName: 'v1',
           parameters: _i1.testObjectToJson({
+            'language': language,
             'scheduledMatchId': scheduledMatchId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _DeactivatePushNotificationToken {
+  _DeactivatePushNotificationToken(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required String token,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'deactivatePushNotificationToken',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'deactivatePushNotificationToken',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'token': token,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _SyncPushNotificationToken {
+  _SyncPushNotificationToken(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required String token,
+    required _i31.PushNotificationPlatform platform,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'syncPushNotificationToken',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'syncPushNotificationToken',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'token': token,
+            'platform': platform,
           }),
           serializationManager: _serializationManager,
         );
@@ -1695,9 +2143,10 @@ class _GetPlatformStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i26.PlatformStats?> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+  _i3.Future<_i32.PlatformStats?> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -1709,7 +2158,7 @@ class _GetPlatformStats {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getPlatformStats',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1717,7 +2166,7 @@ class _GetPlatformStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i26.PlatformStats?>);
+                as _i3.Future<_i32.PlatformStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1736,9 +2185,10 @@ class _GetPlayerStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i27.PlayerStats?> v1(
-    _i1.TestSessionBuilder sessionBuilder,
-  ) async {
+  _i3.Future<_i33.PlayerStats?> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
@@ -1750,7 +2200,7 @@ class _GetPlayerStats {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'getPlayerStats',
           methodName: 'v1',
-          parameters: _i1.testObjectToJson({}),
+          parameters: _i1.testObjectToJson({'language': language}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -1758,7 +2208,55 @@ class _GetPlayerStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i27.PlayerStats?>);
+                as _i3.Future<_i33.PlayerStats?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetWebAnalyticsDashboard {
+  _GetWebAnalyticsDashboard(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i34.WebAnalyticsDashboard> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required String password,
+    required int page,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getWebAnalyticsDashboard',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getWebAnalyticsDashboard',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'password': password,
+            'page': page,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i34.WebAnalyticsDashboard>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1777,7 +2275,7 @@ class _EmailIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.AuthSuccess> login(
+  _i3.Future<_i10.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String email,
     required String password,
@@ -1804,7 +2302,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1878,7 +2376,7 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<_i7.AuthSuccess> finishRegistration(
+  _i3.Future<_i10.AuthSuccess> finishRegistration(
     _i1.TestSessionBuilder sessionBuilder, {
     required String registrationToken,
     required String password,
@@ -1905,7 +2403,7 @@ class _EmailIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2053,7 +2551,7 @@ class _GoogleIdpEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.AuthSuccess> login(
+  _i3.Future<_i10.AuthSuccess> login(
     _i1.TestSessionBuilder sessionBuilder, {
     required String idToken,
     required String? accessToken,
@@ -2080,7 +2578,7 @@ class _GoogleIdpEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2127,7 +2625,7 @@ class _JwtRefreshEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.AuthSuccess> refreshAccessToken(
+  _i3.Future<_i10.AuthSuccess> refreshAccessToken(
     _i1.TestSessionBuilder sessionBuilder, {
     required String refreshToken,
   }) async {
@@ -2150,11 +2648,30 @@ class _JwtRefreshEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.AuthSuccess>);
+                as _i3.Future<_i10.AuthSuccess>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _MarkStaleMatchSchedulesNotPlayedPeriodicCallFutureCall {
+  Future<void> invoke(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i2.SerializableModel? object,
+  ) async {
+    var _localUniqueSession = (sessionBuilder as _i1.InternalTestSessionBuilder)
+        .internalBuild();
+    try {
+      await _i35.MarkStaleMatchSchedulesNotPlayedPeriodicCallInvokeFutureCall()
+          .invoke(
+            _localUniqueSession,
+            object,
+          );
+    } finally {
+      await _localUniqueSession.close();
+    }
   }
 }

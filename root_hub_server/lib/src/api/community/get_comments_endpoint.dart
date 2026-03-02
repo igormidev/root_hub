@@ -1,27 +1,33 @@
 import 'package:root_hub_server/src/core/settings.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GetCommentsEndpoint extends Endpoint {
   Future<CommentsPagination> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int postId,
     required int page,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         if (page < 1) {
           throw RootHubEndpointError.invalidRequest(
-            description: 'Page must be greater than or equal to 1.',
+            language: language,
+            description: t.errors.pageMustBeAtLeastOne,
           );
         }
 
         final post = await Post.db.findById(session, postId);
         if (post == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Post not found',
-            description: 'Post with id $postId not found.',
+            language: language,
+            title: t.errors.postNotFoundTitle,
+            description: t.errors.postWithIdNotFound(postId: postId),
           );
         }
 
@@ -58,8 +64,8 @@ class GetCommentsEndpoint extends Endpoint {
           ),
         );
       },
-      fallbackDescription:
-          'Unable to load comments right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToLoadComments,
     );
   }
 }

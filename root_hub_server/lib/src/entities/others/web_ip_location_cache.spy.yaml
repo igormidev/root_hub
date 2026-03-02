@@ -1,0 +1,14 @@
+class: WebIpLocationCache
+table: web_ip_location_cache
+fields:
+  ipAddress: String
+  updatedAt: DateTime
+  countryCode: String?
+  countryName: String?
+  city: String?
+indexes:
+  web_ip_location_cache_ip_unique_idx:
+    fields: ipAddress
+    unique: true
+  web_ip_location_cache_updated_at_idx:
+    fields: updatedAt

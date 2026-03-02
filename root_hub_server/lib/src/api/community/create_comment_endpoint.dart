@@ -1,4 +1,5 @@
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
+import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -8,10 +9,13 @@ class CreateCommentEndpoint extends Endpoint {
 
   Future<PostComment> v1(
     Session session, {
+    required ServerSupportedTranslation language,
     required int postId,
     required String content,
-    required Language language,
+    required Language commentLanguage,
   }) async {
+    final t = ServerTranslations.of(language);
+
     return guardRootHubEndpointErrors(
       () async {
         final userIdentifier = session.authenticated!.userIdentifier;
@@ -24,22 +28,24 @@ class CreateCommentEndpoint extends Endpoint {
 
         if (playerData == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Player profile missing',
-            description: 'Player profile not found for authenticated user.',
+            language: language,
+            title: t.errors.playerProfileMissingTitle,
+            description: t.errors.playerProfileNotFoundForAuthenticatedUser,
           );
         }
 
         final post = await Post.db.findById(session, postId);
         if (post == null) {
           throw RootHubEndpointError.notFound(
-            title: 'Post not found',
-            description: 'Post with id $postId not found.',
+            language: language,
+            title: t.errors.postNotFoundTitle,
+            description: t.errors.postWithIdNotFound(postId: postId),
           );
         }
 
         final comment = PostComment(
           content: content,
-          language: language,
+          language: commentLanguage,
           postId: post.id!,
           ownerId: playerData.id!,
         );
@@ -58,8 +64,8 @@ class CreateCommentEndpoint extends Endpoint {
 
         return insertedComment;
       },
-      fallbackDescription:
-          'Unable to create the comment right now. Please try again.',
+      language: language,
+      fallbackDescription: t.fallback.unableToCreateComment,
     );
   }
 }

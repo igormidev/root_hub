@@ -24,12 +24,12 @@ class _RegisterMatchWizardReviewPhotoTile extends StatelessWidget {
           ],
         ),
       ),
-      padding: const EdgeInsets.all(1.5),
+      padding: EdgeInsets.all(1.5),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(14),
         child: Container(
           color: colorScheme.surface,
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Row(
             children: [
               ClipRRect(
@@ -53,7 +53,7 @@ class _RegisterMatchWizardReviewPhotoTile extends StatelessWidget {
                         ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Expanded(
                 child: Text(
                   title,
@@ -63,7 +63,15 @@ class _RegisterMatchWizardReviewPhotoTile extends StatelessWidget {
                 ),
               ),
               Text(
-                image == null ? 'Missing' : 'Ready',
+                image == null
+                    ? t
+                          .register_match
+                          .ui_sheets_register_match_wizard_review_photo_tile
+                          .missing
+                    : t
+                          .register_match
+                          .ui_sheets_register_match_wizard_review_photo_tile
+                          .ready,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w900,
                   color: image == null

@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
+import 'package:root_hub_flutter/src/core/match_share/match_share_link_builder.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_actionable_info_row_widget.dart';
@@ -21,9 +23,12 @@ import 'package:root_hub_flutter/src/features/match/ui/screens/match_location_me
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_nearby_header_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_no_matches_state_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_card_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_share_sheet.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_sheet.dart';
+import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
+import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
@@ -41,13 +46,14 @@ class MatchScreen extends ConsumerStatefulWidget {
 class _MatchScreenState extends ConsumerState<MatchScreen> {
   late DateTime _currentTime;
   Timer? _countdownTimer;
+  int? _openingDeepLinkedMatchId;
 
   @override
   void initState() {
     super.initState();
     _currentTime = DateTime.now();
     _countdownTimer = Timer.periodic(
-      const Duration(seconds: 1),
+      Duration(seconds: 1),
       (_) {
         if (!mounted) {
           return;
@@ -95,25 +101,39 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       registerMatchState.pendingMatches,
       currentPlayerId: currentPlayer?.id,
     );
+    final pendingDeepLinkedMatchId = ref.watch(
+      deepLinkProvider.select((value) => value.pendingMatchId),
+    );
     final reportablePendingMatchesCount = reportablePendingMatchIds.length;
     final hasPendingMatches = pendingSubscribedMatchIds.isNotEmpty;
+
+    if (pendingDeepLinkedMatchId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        unawaited(
+          _handlePendingDeepLinkedMatch(pendingDeepLinkedMatchId),
+        );
+      });
+    }
 
     return Stack(
       children: [
         RefreshIndicator(
           onRefresh: _refreshMatchScreenData,
           child: ListView(
-            physics: const AlwaysScrollableScrollPhysics(
+            physics: AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
             ),
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 130),
+            padding: EdgeInsets.fromLTRB(16, 4, 16, 180),
             children: [
               MatchNearbyHeaderWidget(
                 playerData: currentPlayer,
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               if (matchState.isLoading && !matchState.hasLoadedOnce)
-                const MatchInitialLoadingStateWidget()
+                MatchInitialLoadingStateWidget()
               else if (matchState.loadError != null &&
                   matchState.tables.isEmpty)
                 MatchLoadingErrorStateWidget(
@@ -132,7 +152,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
               else ...[
                 for (final table in matchState.tables)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(bottom: 12),
                     child: MatchTableCardWidget(
                       table: table,
                       currentPlayer: currentPlayer,
@@ -170,6 +190,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           extra: tableTitle,
                         );
                       },
+                      onShareTable: (tableToShare) async {
+                        await _openShareSheet(tableToShare);
+                      },
                     ),
                   ),
               ],
@@ -179,16 +202,16 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         if (hasPendingMatches)
           Positioned(
             left: 16,
-            bottom: 18,
+            bottom: 124,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 FloatingActionButton.extended(
                   heroTag: 'register-match-fab',
                   onPressed: _openRegisterMatchFlow,
-                  icon: const Icon(Icons.emoji_events_rounded),
+                  icon: Icon(Icons.emoji_events_rounded),
                   label: Text(
-                    'Report Result',
+                    t.match.ui_screens_match_screen.reportResult,
                     style: GoogleFonts.nunitoSans(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.2,
@@ -203,7 +226,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                     right: -6,
                     top: -6,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 6,
                         vertical: 3,
                       ),
@@ -211,7 +234,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                         color: colorScheme.error,
                         borderRadius: BorderRadius.circular(999),
                       ),
-                      constraints: const BoxConstraints(minWidth: 22),
+                      constraints: BoxConstraints(minWidth: 22),
                       child: Text(
                         '$reportablePendingMatchesCount',
                         textAlign: TextAlign.center,
@@ -227,16 +250,16 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
           ),
         Positioned(
           right: 16,
-          bottom: 18,
+          bottom: 124,
           child: FloatingActionButton.extended(
             heroTag: 'host-match-fab',
             onPressed: () {
               ref.read(matchCreateTableProvider.notifier).startNewFlow();
               context.push(dashboardMatchCreatePath);
             },
-            icon: const Icon(Icons.campaign_rounded),
+            icon: Icon(Icons.campaign_rounded),
             label: Text(
-              'Host Table',
+              t.match.ui_screens_match_screen.hostTable,
               style: GoogleFonts.nunitoSans(
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.2,
@@ -259,7 +282,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
       submitted = await showCupertinoModalPopup<bool>(
         context: context,
         builder: (sheetContext) {
-          return const RegisterMatchPickerSheet();
+          return RegisterMatchPickerSheet();
         },
       );
     } else {
@@ -269,7 +292,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         useSafeArea: true,
         backgroundColor: Colors.transparent,
         builder: (sheetContext) {
-          return const RegisterMatchPickerSheet();
+          return RegisterMatchPickerSheet();
         },
       );
     }
@@ -296,12 +319,136 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     ]);
   }
 
+  Future<void> _handlePendingDeepLinkedMatch(int matchId) async {
+    if (_openingDeepLinkedMatchId == matchId) {
+      return;
+    }
+
+    final currentPlayer = ref
+        .read(authFlowProvider)
+        .maybeWhen(
+          authenticated: (playerData) => playerData,
+          orElse: () => null,
+        );
+    if (currentPlayer == null || matchId <= 0) {
+      return;
+    }
+
+    _openingDeepLinkedMatchId = matchId;
+
+    try {
+      final tableInfo = await ref
+          .read(matchTablesProvider.notifier)
+          .getTableDetails(matchId);
+      if (!mounted) {
+        return;
+      }
+
+      await _openJoinTableBottomSheet(
+        context,
+        tableId: matchId,
+        fallbackTable: tableInfo.matchSchedule,
+        currentPlayer: currentPlayer,
+      );
+
+      if (!mounted) {
+        return;
+      }
+      ref.read(deepLinkProvider.notifier).consumePendingMatchId(matchId);
+    } on RootHubException catch (error) {
+      if (!mounted) {
+        return;
+      }
+      await showErrorDialog(
+        context,
+        title: error.title,
+        description: error.description,
+      );
+      if (!mounted) {
+        return;
+      }
+      ref.read(deepLinkProvider.notifier).consumePendingMatchId(matchId);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.match.ui_screens_match_screen.unableToOpenSharedMatch,
+          ),
+        ),
+      );
+      ref.read(deepLinkProvider.notifier).consumePendingMatchId(matchId);
+    } finally {
+      _openingDeepLinkedMatchId = null;
+    }
+  }
+
+  Future<void> _openShareSheet(MatchSchedulePairingAttempt table) async {
+    final tableId = table.id;
+    if (tableId == null || tableId <= 0) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            t.match.ui_screens_match_screen.unableToShareThisMatch,
+          ),
+        ),
+      );
+      return;
+    }
+
+    final localizations = MaterialLocalizations.of(context);
+    final attemptedAtLocal = table.attemptedAt.toLocal();
+    final dayLabel = localizations.formatMediumDate(attemptedAtLocal);
+    final hourLabel = localizations.formatTimeOfDay(
+      TimeOfDay.fromDateTime(attemptedAtLocal),
+    );
+
+    final location = table.location;
+    final locationName =
+        location?.googlePlaceLocation?.name ??
+        location?.manualInputLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
+
+    final shareLink = MatchShareLinkBuilder.buildLandingUri(
+      serverHost: ref.read(clientProvider).host,
+      matchId: tableId,
+      location: locationName,
+      day: dayLabel,
+      hour: hourLabel,
+    );
+
+    final shareMessage = t.match.ui_screens_match_screen.shareMessage(
+      location: locationName,
+      hour: hourLabel,
+      day: dayLabel,
+      link: shareLink.toString(),
+    );
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: false,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return MatchShareSheet(
+          rawLink: shareLink,
+          shareMessage: shareMessage,
+        );
+      },
+    );
+  }
+
   Set<int> _buildReportablePendingMatchIds(
     List<MatchSchedulePairingAttempt> pendingMatches, {
     required int? currentPlayerId,
   }) {
     if (currentPlayerId == null) {
-      return const <int>{};
+      return <int>{};
     }
 
     final now = DateTime.now();
@@ -325,7 +472,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     required int? currentPlayerId,
   }) {
     if (currentPlayerId == null) {
-      return const <int>{};
+      return <int>{};
     }
 
     return pendingMatches
@@ -345,7 +492,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     required DateTime now,
   }) {
     final earliestAllowedRegistrationTime = match.attemptedAt.subtract(
-      const Duration(hours: 2),
+      Duration(hours: 2),
     );
 
     return !now.isBefore(earliestAllowedRegistrationTime);
@@ -355,7 +502,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     MatchSchedulePairingAttempt match, {
     required int currentPlayerId,
   }) {
-    final subscriptions = match.subscriptions ?? const <MatchSubscription>[];
+    final subscriptions = match.subscriptions ?? <MatchSubscription>[];
 
     return subscriptions.any((entry) => entry.playerDataId == currentPlayerId);
   }
@@ -387,7 +534,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
               return Container(
                 decoration: BoxDecoration(
                   color: Theme.of(sheetContext).colorScheme.surface,
-                  borderRadius: const BorderRadius.vertical(
+                  borderRadius: BorderRadius.vertical(
                     top: Radius.circular(28),
                   ),
                 ),
@@ -486,7 +633,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         manual?.cityName ??
         'Address unavailable';
     final playedMatchesCount = location?.playedMatches?.length ?? 0;
-    final types = google?.types ?? const <String>[];
+    final types = google?.types ?? <String>[];
 
     await showDialog<void>(
       context: context,
@@ -495,7 +642,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         final maxDialogHeight = MediaQuery.of(dialogContext).size.height * 0.86;
 
         return Dialog(
-          insetPadding: const EdgeInsets.symmetric(
+          insetPadding: EdgeInsets.symmetric(
             horizontal: 12,
             vertical: 16,
           ),
@@ -519,14 +666,14 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                   fit: FlexFit.loose,
                   child: ListView(
                     shrinkWrap: true,
-                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
+                    padding: EdgeInsets.fromLTRB(14, 14, 14, 10),
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Container(
-                              padding: const EdgeInsets.fromLTRB(
+                              padding: EdgeInsets.fromLTRB(
                                 12,
                                 10,
                                 12,
@@ -544,7 +691,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                                     Icons.sports_esports_rounded,
                                     color: colorScheme.primary,
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -560,8 +707,14 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                                       ),
                                       Text(
                                         playedMatchesCount == 1
-                                            ? 'match played here'
-                                            : 'matches played here',
+                                            ? t
+                                                  .match
+                                                  .ui_screens_match_screen
+                                                  .matchPlayedHere
+                                            : t
+                                                  .match
+                                                  .ui_screens_match_screen
+                                                  .matchesPlayedHere,
                                         style: Theme.of(dialogContext)
                                             .textTheme
                                             .labelLarge
@@ -577,9 +730,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: 10,
                               vertical: 10,
                             ),
@@ -600,11 +753,11 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                                       ? colorScheme.onTertiaryContainer
                                       : colorScheme.onSecondaryContainer,
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   google?.isPublicPlace == false
-                                      ? 'Private'
-                                      : 'Public',
+                                      ? t.match.ui_screens_match_screen.private
+                                      : t.match.ui_screens_match_screen.public,
                                   style: Theme.of(dialogContext)
                                       .textTheme
                                       .labelMedium
@@ -620,7 +773,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Wrap(
                         spacing: 6,
                         runSpacing: 6,
@@ -649,16 +802,16 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                             ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       if (google?.url != null && google!.url!.trim().isNotEmpty)
                         MatchActionableInfoRowWidget(
                           icon: Icons.map_rounded,
-                          label: 'Map link',
+                          label: t.match.ui_screens_match_screen.mapLink2,
                           value: google.url!.trim(),
                           onCopyTap: () {
                             _copyValue(
                               value: google.url!.trim(),
-                              label: 'Map link',
+                              label: t.match.ui_screens_match_screen.mapLink,
                             );
                           },
                           onActionTap: () {
@@ -669,12 +822,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           google!.websiteUri!.trim().isNotEmpty)
                         MatchActionableInfoRowWidget(
                           icon: Icons.language_rounded,
-                          label: 'Website',
+                          label: t.match.ui_screens_match_screen.website2,
                           value: google.websiteUri!.trim(),
                           onCopyTap: () {
                             _copyValue(
                               value: google.websiteUri!.trim(),
-                              label: 'Website',
+                              label: t.match.ui_screens_match_screen.website,
                             );
                           },
                           onActionTap: () {
@@ -685,12 +838,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           google!.phoneNumber!.trim().isNotEmpty)
                         MatchActionableInfoRowWidget(
                           icon: Icons.phone_rounded,
-                          label: 'Phone',
+                          label: t.match.ui_screens_match_screen.phone2,
                           value: google.phoneNumber!.trim(),
                           onCopyTap: () {
                             _copyValue(
                               value: google.phoneNumber!.trim(),
-                              label: 'Phone',
+                              label: t.match.ui_screens_match_screen.phone,
                             );
                           },
                           onActionTap: () {
@@ -698,10 +851,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           },
                         ),
                       if (manual != null) ...[
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                          padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             color: colorScheme.surfaceContainerHighest
@@ -713,7 +866,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Manual location notes',
+                                t
+                                    .match
+                                    .ui_screens_match_screen
+                                    .manualLocationNotes,
                                 style: Theme.of(dialogContext)
                                     .textTheme
                                     .titleSmall
@@ -721,7 +877,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                                       fontWeight: FontWeight.w900,
                                     ),
                               ),
-                              const SizedBox(height: 3),
+                              SizedBox(height: 3),
                               Text(
                                 '${manual.title} • ${manual.cityName}, ${manual.country.toJson()}',
                                 style: Theme.of(dialogContext)
@@ -734,7 +890,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                               ),
                               if (manual.description?.trim().isNotEmpty == true)
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 4),
+                                  padding: EdgeInsets.only(top: 4),
                                   child: Text(
                                     manual.description!.trim(),
                                     style: Theme.of(dialogContext)
@@ -755,12 +911,14 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                 SafeArea(
                   top: false,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                    padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
                     child: SizedBox(
                       width: double.infinity,
                       child: FilledButton.tonal(
                         onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: const Text('Close'),
+                        child: Text(
+                          t.match.ui_screens_match_screen.close,
+                        ),
                       ),
                     ),
                   ),
@@ -796,8 +954,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid URL format.'),
+        SnackBar(
+          content: Text(
+            t.match.ui_screens_match_screen.invalidUrlFormat,
+          ),
         ),
       );
       return;
@@ -812,8 +972,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Unable to open the link right now.'),
+      SnackBar(
+        content: Text(
+          t.match.ui_screens_match_screen.unableToOpenTheLinkRightNow,
+        ),
       ),
     );
   }
@@ -825,8 +987,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid phone number format.'),
+        SnackBar(
+          content: Text(
+            t.match.ui_screens_match_screen.invalidPhoneNumberFormat,
+          ),
         ),
       );
       return;
@@ -845,8 +1009,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Unable to open the dialer right now.'),
+      SnackBar(
+        content: Text(
+          t.match.ui_screens_match_screen.unableToOpenTheDialerRightNow,
+        ),
       ),
     );
   }
@@ -869,11 +1035,19 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
   String _formatDurationToClock(Duration duration) {
     final clampedDuration = duration.inSeconds <= 0 ? Duration.zero : duration;
     final totalSeconds = clampedDuration.inSeconds;
-    final hours = totalSeconds ~/ 3600;
+    final days = totalSeconds ~/ Duration.secondsPerDay;
+    final hours = (totalSeconds % Duration.secondsPerDay) ~/ 3600;
     final minutes = (totalSeconds % 3600) ~/ 60;
     final seconds = totalSeconds % 60;
 
-    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    final timeLabel =
+        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+
+    if (days > 0) {
+      return '${days}d, $timeLabel';
+    }
+
+    return timeLabel;
   }
 
   String? _distanceLabel(
@@ -911,7 +1085,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     required double latitudeB,
     required double longitudeB,
   }) {
-    const earthRadiusKm = 6371.0;
+    final earthRadiusKm = 6371.0;
 
     final latitudeDelta = _degreesToRadians(latitudeB - latitudeA);
     final longitudeDelta = _degreesToRadians(longitudeB - longitudeA);

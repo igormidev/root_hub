@@ -12,6 +12,10 @@ class _RootHubFlutterLintsPlugin extends PluginBase {
       _FeatureSingleWidgetPerFileRule(),
       _FeatureWidgetNameMatchesFileSuffixRule(),
       _NoWidgetReturningFunctionRule(),
+      _FeatureHardcodedUiStringRule(),
+      _ServerEndpointMethodVersionRule(),
+      _ServerEndpointLanguageParameterRule(),
+      _ServerHardcodedResponseStringRule(),
     ];
   }
 }
@@ -144,6 +148,159 @@ class _NoWidgetReturningFunctionRule extends DartLintRule {
   }
 }
 
+class _FeatureHardcodedUiStringRule extends DartLintRule {
+  _FeatureHardcodedUiStringRule()
+    : super(
+        code: const LintCode(
+          name: 'feature_hardcoded_ui_string',
+          problemMessage: 'Hard-coded string literal found in feature UI code.',
+          correctionMessage:
+              'Move user-facing text to localization keys. Use // ignore: feature_hardcoded_ui_string above non-translatable strings.',
+        ),
+      );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    DiagnosticReporter reporter,
+    CustomLintContext context,
+  ) {
+    final filePath = resolver.source.fullName;
+    if (!_isLintableFeatureFile(filePath)) {
+      return;
+    }
+
+    context.registry.addSimpleStringLiteral((literal) {
+      if (!_shouldReportFeatureStringLiteral(literal)) {
+        return;
+      }
+
+      reporter.atNode(literal, code);
+    });
+  }
+}
+
+class _ServerEndpointMethodVersionRule extends DartLintRule {
+  _ServerEndpointMethodVersionRule()
+    : super(
+        code: const LintCode(
+          name: 'server_endpoint_method_version_rule',
+          problemMessage:
+              'Public endpoint methods must use version naming (`v1`, `v2`, `v3`, ...).',
+          correctionMessage:
+              'Rename this method to a versioned name like `v1` and keep non-version helpers private.',
+        ),
+      );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    DiagnosticReporter reporter,
+    CustomLintContext context,
+  ) {
+    final filePath = resolver.source.fullName;
+    if (!_isLintableServerApiFile(filePath)) {
+      return;
+    }
+
+    context.registry.addMethodDeclaration((declaration) {
+      if (!_isPublicInstanceMethod(declaration)) {
+        return;
+      }
+
+      final enclosingClass = _enclosingClassDeclaration(declaration);
+      if (enclosingClass == null || !_isEndpointClass(enclosingClass)) {
+        return;
+      }
+
+      final methodName = declaration.name.lexeme;
+      if (_versionedMethodNamePattern.hasMatch(methodName)) {
+        return;
+      }
+
+      reporter.atNode(declaration, code);
+    });
+  }
+}
+
+class _ServerEndpointLanguageParameterRule extends DartLintRule {
+  _ServerEndpointLanguageParameterRule()
+    : super(
+        code: const LintCode(
+          name: 'server_endpoint_language_parameter_rule',
+          problemMessage:
+              'Endpoint version methods must declare a required named `language` parameter of type `ServerSupportedTranslation` with no default value.',
+          correctionMessage:
+              'Add `{ required ServerSupportedTranslation language }` to the endpoint method signature.',
+        ),
+      );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    DiagnosticReporter reporter,
+    CustomLintContext context,
+  ) {
+    final filePath = resolver.source.fullName;
+    if (!_isLintableServerApiFile(filePath)) {
+      return;
+    }
+
+    context.registry.addMethodDeclaration((declaration) {
+      if (!_isPublicInstanceMethod(declaration)) {
+        return;
+      }
+
+      if (!_versionedMethodNamePattern.hasMatch(declaration.name.lexeme)) {
+        return;
+      }
+
+      final enclosingClass = _enclosingClassDeclaration(declaration);
+      if (enclosingClass == null || !_isEndpointClass(enclosingClass)) {
+        return;
+      }
+
+      if (_hasRequiredNamedLanguageParameter(declaration)) {
+        return;
+      }
+
+      reporter.atNode(declaration, code);
+    });
+  }
+}
+
+class _ServerHardcodedResponseStringRule extends DartLintRule {
+  _ServerHardcodedResponseStringRule()
+    : super(
+        code: const LintCode(
+          name: 'server_hardcoded_response_string',
+          problemMessage: 'Hard-coded response string found in endpoint code.',
+          correctionMessage:
+              'Move this response text to server translations. Use `// ignore: server_hardcoded_response_string` only for non-translatable values.',
+        ),
+      );
+
+  @override
+  void run(
+    CustomLintResolver resolver,
+    DiagnosticReporter reporter,
+    CustomLintContext context,
+  ) {
+    final filePath = resolver.source.fullName;
+    if (!_isLintableServerApiFile(filePath)) {
+      return;
+    }
+
+    context.registry.addSimpleStringLiteral((literal) {
+      if (!_shouldReportServerResponseLiteral(literal)) {
+        return;
+      }
+
+      reporter.atNode(literal, code);
+    });
+  }
+}
+
 const _widgetTypeNames = <String>{
   'Widget',
   'StatelessWidget',
@@ -169,6 +326,56 @@ const _widgetFileSuffixToClassSuffix = <String, String>{
   '_view.dart': 'View',
 };
 
+const _uiTextNamedArgumentNames = <String>{
+  'buttonText',
+  'cancelButtonText',
+  'confirmButtonText',
+  'content',
+  'counterText',
+  'description',
+  'errorText',
+  'helperText',
+  'hint',
+  'hintText',
+  'label',
+  'labelText',
+  'message',
+  'placeholder',
+  'prefixText',
+  'semanticLabel',
+  'subtitle',
+  'suffixText',
+  'text',
+  'title',
+  'tooltip',
+};
+
+const _uiTextPositionalInvocationNames = <String>{
+  'BabelText',
+  'SelectableText',
+  'Text',
+};
+
+const _serverResponseArgumentNames = <String>{
+  'title',
+  'description',
+  'fallbackDescription',
+  'content',
+};
+
+const _serverResponseInvocationNames = <String>{
+  'accessDenied',
+  'configuration',
+  'endpointUnavailable',
+  'guardRootHubEndpointErrors',
+  'invalidRequest',
+  'notFound',
+  'sendSystemChatMessage',
+  'unexpected',
+};
+
+final _versionedMethodNamePattern = RegExp(r'^v\d+$');
+
 bool _isLintableFeatureFile(String path) {
   final normalizedPath = path.replaceAll('\\', '/');
 
@@ -182,6 +389,15 @@ bool _isLintableFlutterLibFile(String path) {
   final normalizedPath = path.replaceAll('\\', '/');
 
   return normalizedPath.contains('/lib/') &&
+      normalizedPath.endsWith('.dart') &&
+      !normalizedPath.endsWith('.g.dart') &&
+      !normalizedPath.endsWith('.freezed.dart');
+}
+
+bool _isLintableServerApiFile(String path) {
+  final normalizedPath = path.replaceAll('\\', '/');
+
+  return normalizedPath.contains('/root_hub_server/lib/src/api/') &&
       normalizedPath.endsWith('.dart') &&
       !normalizedPath.endsWith('.g.dart') &&
       !normalizedPath.endsWith('.freezed.dart');
@@ -205,7 +421,7 @@ bool _isWidgetClass(ClassDeclaration declaration) {
 }
 
 String _normalizeTypeName(String typeName) {
-  return typeName.split('<').first.split('.').last;
+  return typeName.split('<').first.split('.').last.replaceAll('?', '').trim();
 }
 
 bool _returnsWidgetType(TypeAnnotation? returnType) {
@@ -300,12 +516,223 @@ String _formalParameterTypeSource(FormalParameter parameter) {
   return '';
 }
 
+bool _isPublicInstanceMethod(MethodDeclaration declaration) {
+  if (declaration.isGetter || declaration.isSetter) {
+    return false;
+  }
+
+  if (declaration.isStatic) {
+    return false;
+  }
+
+  final name = declaration.name.lexeme;
+  return !name.startsWith('_');
+}
+
+ClassDeclaration? _enclosingClassDeclaration(AstNode node) {
+  AstNode? current = node.parent;
+  while (current != null) {
+    if (current is ClassDeclaration) {
+      return current;
+    }
+    current = current.parent;
+  }
+
+  return null;
+}
+
+bool _isEndpointClass(ClassDeclaration declaration) {
+  final typeNames = <String>{
+    if (declaration.extendsClause != null)
+      _normalizeTypeName(declaration.extendsClause!.superclass.toSource()),
+    ...declaration.implementsClause?.interfaces.map(
+          (type) => _normalizeTypeName(type.toSource()),
+        ) ??
+        const <String>[],
+    ...declaration.withClause?.mixinTypes.map(
+          (type) => _normalizeTypeName(type.toSource()),
+        ) ??
+        const <String>[],
+  };
+
+  return typeNames.contains('Endpoint');
+}
+
+bool _hasRequiredNamedLanguageParameter(MethodDeclaration declaration) {
+  final parameters = declaration.parameters?.parameters;
+  if (parameters == null || parameters.isEmpty) {
+    return false;
+  }
+
+  for (final parameter in parameters) {
+    if (parameter is! DefaultFormalParameter) {
+      continue;
+    }
+
+    if (!parameter.isNamed) {
+      continue;
+    }
+
+    if (!parameter.isRequiredNamed) {
+      continue;
+    }
+
+    if (parameter.defaultValue != null) {
+      continue;
+    }
+
+    final innerParameter = parameter.parameter;
+    final parameterName = innerParameter.name?.lexeme;
+    if (parameterName != 'language') {
+      continue;
+    }
+
+    final parameterType = _normalizeTypeName(
+      _formalParameterTypeSource(innerParameter),
+    );
+
+    return parameterType == 'ServerSupportedTranslation';
+  }
+
+  return false;
+}
+
 String? _expectedWidgetClassSuffix(String path) {
   final normalizedPath = path.replaceAll('\\', '/');
 
   for (final entry in _widgetFileSuffixToClassSuffix.entries) {
     if (normalizedPath.endsWith(entry.key)) {
       return entry.value;
+    }
+  }
+
+  return null;
+}
+
+bool _shouldReportFeatureStringLiteral(SimpleStringLiteral literal) {
+  final value = literal.value;
+  if (value.trim().isEmpty) {
+    return false;
+  }
+
+  if (_isStringLiteralInSkippableNode(literal)) {
+    return false;
+  }
+
+  return _isLikelyUiTextLiteral(literal);
+}
+
+bool _shouldReportServerResponseLiteral(SimpleStringLiteral literal) {
+  final value = literal.value;
+  if (value.trim().isEmpty) {
+    return false;
+  }
+
+  if (_isStringLiteralInSkippableNode(literal)) {
+    return false;
+  }
+
+  final enclosingClass = _enclosingClassDeclaration(literal);
+  if (enclosingClass == null || !_isEndpointClass(enclosingClass)) {
+    return false;
+  }
+
+  final argumentExpression = _argumentExpressionForNode(literal);
+  if (argumentExpression == null) {
+    return false;
+  }
+
+  if (argumentExpression is! NamedExpression) {
+    return false;
+  }
+
+  final argumentName = argumentExpression.name.label.name;
+  if (!_serverResponseArgumentNames.contains(argumentName)) {
+    return false;
+  }
+
+  final invocationName = _invocationName(argumentExpression.parent?.parent);
+  if (invocationName == null) {
+    return false;
+  }
+
+  return _serverResponseInvocationNames.contains(invocationName);
+}
+
+bool _isStringLiteralInSkippableNode(AstNode node) {
+  final parent = node.parent;
+  return parent is Directive || parent is Annotation;
+}
+
+bool _isLikelyUiTextLiteral(AstNode node) {
+  final argumentExpression = _argumentExpressionForNode(node);
+  if (argumentExpression == null) {
+    return false;
+  }
+
+  if (argumentExpression is NamedExpression) {
+    final argumentName = argumentExpression.name.label.name;
+    return _isLikelyUiTextArgumentName(argumentName);
+  }
+
+  final argumentList = argumentExpression.parent;
+  if (argumentList is! ArgumentList) {
+    return false;
+  }
+
+  final index = argumentList.arguments.indexOf(argumentExpression);
+  if (index != 0) {
+    return false;
+  }
+
+  final invocationName = _invocationName(argumentList.parent);
+  if (invocationName == null) {
+    return false;
+  }
+
+  return _uiTextPositionalInvocationNames.contains(invocationName);
+}
+
+bool _isLikelyUiTextArgumentName(String argumentName) {
+  if (_uiTextNamedArgumentNames.contains(argumentName)) {
+    return true;
+  }
+
+  final normalized = argumentName.toLowerCase();
+  return normalized.endsWith('title') || normalized.endsWith('description');
+}
+
+Expression? _argumentExpressionForNode(AstNode node) {
+  AstNode? current = node;
+  while (current != null) {
+    final parent = current.parent;
+    if (parent is NamedExpression && parent.expression == current) {
+      return parent;
+    }
+
+    if (parent is ArgumentList && current is Expression) {
+      return current;
+    }
+
+    current = parent;
+  }
+
+  return null;
+}
+
+String? _invocationName(AstNode? node) {
+  if (node is InstanceCreationExpression) {
+    return _normalizeTypeName(node.constructorName.type.toSource());
+  }
+
+  if (node is MethodInvocation) {
+    return node.methodName.name;
+  }
+
+  if (node is FunctionExpressionInvocation) {
+    final function = node.function;
+    if (function is Identifier) {
+      return function.name;
     }
   }
 
