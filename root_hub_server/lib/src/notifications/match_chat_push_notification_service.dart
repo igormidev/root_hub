@@ -37,6 +37,16 @@ class MatchChatPushNotificationService {
       return;
     }
 
+    final notificationData = <String, String>{
+      'type': 'match_chat_message',
+      'scheduledMatchId': '$scheduledMatchId',
+      'chatHistoryId': '$chatHistoryId',
+    };
+    final messageId = message.id;
+    if (messageId != null) {
+      notificationData['messageId'] = '$messageId';
+    }
+
     final dispatchStats =
         await PushNotificationDispatchService.sendToPlayerDataIds(
           session,
@@ -46,11 +56,7 @@ class MatchChatPushNotificationService {
             senderDisplayName: senderPlayerData.displayName,
             message: message,
           ),
-          data: <String, String>{
-            'type': 'match_chat_message',
-            'scheduledMatchId': '$scheduledMatchId',
-            'chatHistoryId': '$chatHistoryId',
-          },
+          data: notificationData,
         );
 
     if (dispatchStats.attemptedCount == 0) {

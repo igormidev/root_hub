@@ -9,6 +9,7 @@ import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
+import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 final pushNotificationsSyncProvider = Provider<PushNotificationsSyncService>((
@@ -25,6 +26,7 @@ class PushNotificationsSyncService {
   final Ref _ref;
 
   StreamSubscription<String>? _tokenRefreshSubscription;
+  StreamSubscription<RemoteMessage>? _messageOpenedAppSubscription;
   String? _currentToken;
   bool _isInitializing = false;
   bool _didInitialize = false;
@@ -85,7 +87,9 @@ class PushNotificationsSyncService {
 
   void dispose() {
     unawaited(_tokenRefreshSubscription?.cancel() ?? Future<void>.value());
+    unawaited(_messageOpenedAppSubscription?.cancel() ?? Future<void>.value());
     _tokenRefreshSubscription = null;
+    _messageOpenedAppSubscription = null;
   }
 
   Future<void> _initializeInternal() async {
@@ -113,6 +117,19 @@ class PushNotificationsSyncService {
       provisional: false,
     );
 
+    _messageOpenedAppSubscription ??= FirebaseMessaging.onMessageOpenedApp
+        .listen(
+          _handleNotificationTap,
+          onError: (Object error, StackTrace stackTrace) {
+            talker.handle(
+              error,
+              stackTrace,
+              '[PushNotifications] Failed while handling notification tap.',
+            );
+          },
+        );
+    await _consumeInitialNotificationTap();
+
     _tokenRefreshSubscription ??= FirebaseMessaging.instance.onTokenRefresh
         .listen((nextToken) {
           unawaited(_syncToken(nextToken));
@@ -127,6 +144,53 @@ class PushNotificationsSyncService {
   Future<void> _syncCurrentDeviceToken() async {
     final token = await FirebaseMessaging.instance.getToken();
     await _syncToken(token);
+  }
+
+  Future<void> _consumeInitialNotificationTap() async {
+    try {
+      final initialMessage = await FirebaseMessaging.instance
+          .getInitialMessage();
+      if (initialMessage == null) {
+        return;
+      }
+
+      _handleNotificationTap(initialMessage);
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[PushNotifications] Failed to resolve initial notification tap.',
+      );
+    }
+  }
+
+  void _handleNotificationTap(RemoteMessage message) {
+    final data = message.data;
+    if (data.isEmpty) {
+      return;
+    }
+
+    final scheduledMatchId = _parsePositiveInt(
+      data['scheduledMatchId'] ?? data['matchId'],
+    );
+    if (scheduledMatchId == null) {
+      return;
+    }
+
+    final type = (data['type']?.toString() ?? '').trim();
+    final deepLinkNotifier = _ref.read(deepLinkProvider.notifier);
+    if (type == 'match_chat_message' || data.containsKey('chatHistoryId')) {
+      deepLinkNotifier.setPendingMatchChatNavigation(
+        matchId: scheduledMatchId,
+        messageId: _parsePositiveInt(data['messageId']),
+      );
+      return;
+    }
+
+    if (type == 'nearby_match_schedule_created' ||
+        type == 'nearby_match_created') {
+      deepLinkNotifier.setPendingMatchForJoinFlow(scheduledMatchId);
+    }
   }
 
   Future<void> _syncToken(String? tokenCandidate) async {
@@ -213,5 +277,19 @@ class PushNotificationsSyncService {
       return null;
     }
     return normalized;
+  }
+
+  int? _parsePositiveInt(Object? value) {
+    final raw = value?.toString().trim();
+    if (raw == null || raw.isEmpty) {
+      return null;
+    }
+
+    final parsed = int.tryParse(raw);
+    if (parsed == null || parsed <= 0) {
+      return null;
+    }
+
+    return parsed;
   }
 }

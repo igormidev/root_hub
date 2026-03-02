@@ -25,6 +25,7 @@ import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_state.dart';
 import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
+import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -39,6 +40,7 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _imagePicker = ImagePicker();
+  int? _openingPendingMatchChatId;
 
   @override
   void initState() {
@@ -258,6 +260,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final pendingSharedMatchId = ref.watch(
       deepLinkProvider.select((value) => value.pendingMatchId),
     );
+    final pendingMatchChatId = ref.watch(
+      deepLinkProvider.select((value) => value.pendingMatchChatId),
+    );
     final unreadActivityCount = ref.watch(
       activityProvider.select((value) => value.unreadMessagesCount),
     );
@@ -282,6 +287,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           return;
         }
         ref.read(dashboardProvider.notifier).changeTab(DashboardTab.match);
+      });
+    }
+
+    if (pendingMatchChatId != null &&
+        _openingPendingMatchChatId != pendingMatchChatId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        unawaited(_openPendingMatchChat(pendingMatchChatId));
       });
     }
 
@@ -543,5 +558,47 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _openPendingMatchChat(int scheduledMatchId) async {
+    if (scheduledMatchId <= 0 ||
+        _openingPendingMatchChatId == scheduledMatchId) {
+      return;
+    }
+
+    _openingPendingMatchChatId = scheduledMatchId;
+    ref
+        .read(deepLinkProvider.notifier)
+        .consumePendingMatchChatNavigation(matchId: scheduledMatchId);
+    ref.read(dashboardProvider.notifier).changeTab(DashboardTab.match);
+
+    try {
+      await context.push(
+        dashboardMatchChatPathForMatch(scheduledMatchId),
+        extra: _resolveMatchTitleFromLoadedTables(scheduledMatchId),
+      );
+
+      if (!mounted) {
+        return;
+      }
+      await ref.read(activityProvider.notifier).refresh();
+    } catch (_) {
+    } finally {
+      _openingPendingMatchChatId = null;
+    }
+  }
+
+  String? _resolveMatchTitleFromLoadedTables(int scheduledMatchId) {
+    final table = ref
+        .read(matchTablesProvider)
+        .tables
+        .where((entry) => entry.id == scheduledMatchId)
+        .firstOrNull;
+    final title = table?.title.trim();
+    if (title == null || title.isEmpty) {
+      return null;
+    }
+
+    return title;
   }
 }

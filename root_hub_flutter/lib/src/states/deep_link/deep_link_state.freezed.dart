@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DeepLinkState {
 
- bool get isInitialized; int? get pendingMatchId; Uri? get lastReceivedUri;
+ bool get isInitialized; int? get pendingMatchId; int? get pendingMatchChatId; int? get pendingMatchChatMessageId; Uri? get lastReceivedUri;
 /// Create a copy of DeepLinkState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DeepLinkStateCopyWith<DeepLinkState> get copyWith => _$DeepLinkStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DeepLinkState&&(identical(other.isInitialized, isInitialized) || other.isInitialized == isInitialized)&&(identical(other.pendingMatchId, pendingMatchId) || other.pendingMatchId == pendingMatchId)&&(identical(other.lastReceivedUri, lastReceivedUri) || other.lastReceivedUri == lastReceivedUri));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DeepLinkState&&(identical(other.isInitialized, isInitialized) || other.isInitialized == isInitialized)&&(identical(other.pendingMatchId, pendingMatchId) || other.pendingMatchId == pendingMatchId)&&(identical(other.pendingMatchChatId, pendingMatchChatId) || other.pendingMatchChatId == pendingMatchChatId)&&(identical(other.pendingMatchChatMessageId, pendingMatchChatMessageId) || other.pendingMatchChatMessageId == pendingMatchChatMessageId)&&(identical(other.lastReceivedUri, lastReceivedUri) || other.lastReceivedUri == lastReceivedUri));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isInitialized,pendingMatchId,lastReceivedUri);
+int get hashCode => Object.hash(runtimeType,isInitialized,pendingMatchId,pendingMatchChatId,pendingMatchChatMessageId,lastReceivedUri);
 
 @override
 String toString() {
-  return 'DeepLinkState(isInitialized: $isInitialized, pendingMatchId: $pendingMatchId, lastReceivedUri: $lastReceivedUri)';
+  return 'DeepLinkState(isInitialized: $isInitialized, pendingMatchId: $pendingMatchId, pendingMatchChatId: $pendingMatchChatId, pendingMatchChatMessageId: $pendingMatchChatMessageId, lastReceivedUri: $lastReceivedUri)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DeepLinkStateCopyWith<$Res>  {
   factory $DeepLinkStateCopyWith(DeepLinkState value, $Res Function(DeepLinkState) _then) = _$DeepLinkStateCopyWithImpl;
 @useResult
 $Res call({
- bool isInitialized, int? pendingMatchId, Uri? lastReceivedUri
+ bool isInitialized, int? pendingMatchId, int? pendingMatchChatId, int? pendingMatchChatMessageId, Uri? lastReceivedUri
 });
 
 
@@ -62,10 +62,12 @@ class _$DeepLinkStateCopyWithImpl<$Res>
 
 /// Create a copy of DeepLinkState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isInitialized = null,Object? pendingMatchId = freezed,Object? lastReceivedUri = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isInitialized = null,Object? pendingMatchId = freezed,Object? pendingMatchChatId = freezed,Object? pendingMatchChatMessageId = freezed,Object? lastReceivedUri = freezed,}) {
   return _then(_self.copyWith(
 isInitialized: null == isInitialized ? _self.isInitialized : isInitialized // ignore: cast_nullable_to_non_nullable
 as bool,pendingMatchId: freezed == pendingMatchId ? _self.pendingMatchId : pendingMatchId // ignore: cast_nullable_to_non_nullable
+as int?,pendingMatchChatId: freezed == pendingMatchChatId ? _self.pendingMatchChatId : pendingMatchChatId // ignore: cast_nullable_to_non_nullable
+as int?,pendingMatchChatMessageId: freezed == pendingMatchChatMessageId ? _self.pendingMatchChatMessageId : pendingMatchChatMessageId // ignore: cast_nullable_to_non_nullable
 as int?,lastReceivedUri: freezed == lastReceivedUri ? _self.lastReceivedUri : lastReceivedUri // ignore: cast_nullable_to_non_nullable
 as Uri?,
   ));
@@ -152,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isInitialized,  int? pendingMatchId,  Uri? lastReceivedUri)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isInitialized,  int? pendingMatchId,  int? pendingMatchChatId,  int? pendingMatchChatMessageId,  Uri? lastReceivedUri)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DeepLinkState() when $default != null:
-return $default(_that.isInitialized,_that.pendingMatchId,_that.lastReceivedUri);case _:
+return $default(_that.isInitialized,_that.pendingMatchId,_that.pendingMatchChatId,_that.pendingMatchChatMessageId,_that.lastReceivedUri);case _:
   return orElse();
 
 }
@@ -173,10 +175,10 @@ return $default(_that.isInitialized,_that.pendingMatchId,_that.lastReceivedUri);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isInitialized,  int? pendingMatchId,  Uri? lastReceivedUri)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isInitialized,  int? pendingMatchId,  int? pendingMatchChatId,  int? pendingMatchChatMessageId,  Uri? lastReceivedUri)  $default,) {final _that = this;
 switch (_that) {
 case _DeepLinkState():
-return $default(_that.isInitialized,_that.pendingMatchId,_that.lastReceivedUri);case _:
+return $default(_that.isInitialized,_that.pendingMatchId,_that.pendingMatchChatId,_that.pendingMatchChatMessageId,_that.lastReceivedUri);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +195,10 @@ return $default(_that.isInitialized,_that.pendingMatchId,_that.lastReceivedUri);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isInitialized,  int? pendingMatchId,  Uri? lastReceivedUri)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isInitialized,  int? pendingMatchId,  int? pendingMatchChatId,  int? pendingMatchChatMessageId,  Uri? lastReceivedUri)?  $default,) {final _that = this;
 switch (_that) {
 case _DeepLinkState() when $default != null:
-return $default(_that.isInitialized,_that.pendingMatchId,_that.lastReceivedUri);case _:
+return $default(_that.isInitialized,_that.pendingMatchId,_that.pendingMatchChatId,_that.pendingMatchChatMessageId,_that.lastReceivedUri);case _:
   return null;
 
 }
@@ -208,11 +210,13 @@ return $default(_that.isInitialized,_that.pendingMatchId,_that.lastReceivedUri);
 
 
 class _DeepLinkState implements DeepLinkState {
-  const _DeepLinkState({this.isInitialized = false, this.pendingMatchId, this.lastReceivedUri});
+  const _DeepLinkState({this.isInitialized = false, this.pendingMatchId, this.pendingMatchChatId, this.pendingMatchChatMessageId, this.lastReceivedUri});
   
 
 @override@JsonKey() final  bool isInitialized;
 @override final  int? pendingMatchId;
+@override final  int? pendingMatchChatId;
+@override final  int? pendingMatchChatMessageId;
 @override final  Uri? lastReceivedUri;
 
 /// Create a copy of DeepLinkState
@@ -225,16 +229,16 @@ _$DeepLinkStateCopyWith<_DeepLinkState> get copyWith => __$DeepLinkStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeepLinkState&&(identical(other.isInitialized, isInitialized) || other.isInitialized == isInitialized)&&(identical(other.pendingMatchId, pendingMatchId) || other.pendingMatchId == pendingMatchId)&&(identical(other.lastReceivedUri, lastReceivedUri) || other.lastReceivedUri == lastReceivedUri));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeepLinkState&&(identical(other.isInitialized, isInitialized) || other.isInitialized == isInitialized)&&(identical(other.pendingMatchId, pendingMatchId) || other.pendingMatchId == pendingMatchId)&&(identical(other.pendingMatchChatId, pendingMatchChatId) || other.pendingMatchChatId == pendingMatchChatId)&&(identical(other.pendingMatchChatMessageId, pendingMatchChatMessageId) || other.pendingMatchChatMessageId == pendingMatchChatMessageId)&&(identical(other.lastReceivedUri, lastReceivedUri) || other.lastReceivedUri == lastReceivedUri));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isInitialized,pendingMatchId,lastReceivedUri);
+int get hashCode => Object.hash(runtimeType,isInitialized,pendingMatchId,pendingMatchChatId,pendingMatchChatMessageId,lastReceivedUri);
 
 @override
 String toString() {
-  return 'DeepLinkState(isInitialized: $isInitialized, pendingMatchId: $pendingMatchId, lastReceivedUri: $lastReceivedUri)';
+  return 'DeepLinkState(isInitialized: $isInitialized, pendingMatchId: $pendingMatchId, pendingMatchChatId: $pendingMatchChatId, pendingMatchChatMessageId: $pendingMatchChatMessageId, lastReceivedUri: $lastReceivedUri)';
 }
 
 
@@ -245,7 +249,7 @@ abstract mixin class _$DeepLinkStateCopyWith<$Res> implements $DeepLinkStateCopy
   factory _$DeepLinkStateCopyWith(_DeepLinkState value, $Res Function(_DeepLinkState) _then) = __$DeepLinkStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isInitialized, int? pendingMatchId, Uri? lastReceivedUri
+ bool isInitialized, int? pendingMatchId, int? pendingMatchChatId, int? pendingMatchChatMessageId, Uri? lastReceivedUri
 });
 
 
@@ -262,10 +266,12 @@ class __$DeepLinkStateCopyWithImpl<$Res>
 
 /// Create a copy of DeepLinkState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isInitialized = null,Object? pendingMatchId = freezed,Object? lastReceivedUri = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isInitialized = null,Object? pendingMatchId = freezed,Object? pendingMatchChatId = freezed,Object? pendingMatchChatMessageId = freezed,Object? lastReceivedUri = freezed,}) {
   return _then(_DeepLinkState(
 isInitialized: null == isInitialized ? _self.isInitialized : isInitialized // ignore: cast_nullable_to_non_nullable
 as bool,pendingMatchId: freezed == pendingMatchId ? _self.pendingMatchId : pendingMatchId // ignore: cast_nullable_to_non_nullable
+as int?,pendingMatchChatId: freezed == pendingMatchChatId ? _self.pendingMatchChatId : pendingMatchChatId // ignore: cast_nullable_to_non_nullable
+as int?,pendingMatchChatMessageId: freezed == pendingMatchChatMessageId ? _self.pendingMatchChatMessageId : pendingMatchChatMessageId // ignore: cast_nullable_to_non_nullable
 as int?,lastReceivedUri: freezed == lastReceivedUri ? _self.lastReceivedUri : lastReceivedUri // ignore: cast_nullable_to_non_nullable
 as Uri?,
   ));

@@ -56,15 +56,63 @@ class DeepLinkNotifier extends Notifier<DeepLinkState> {
     state = state.copyWith(pendingMatchId: null);
   }
 
+  void setPendingMatchForJoinFlow(
+    int matchId, {
+    Uri? sourceUri,
+  }) {
+    if (matchId <= 0) {
+      return;
+    }
+
+    state = state.copyWith(
+      pendingMatchId: matchId,
+      pendingMatchChatId: null,
+      pendingMatchChatMessageId: null,
+      lastReceivedUri: sourceUri ?? state.lastReceivedUri,
+    );
+  }
+
+  void setPendingMatchChatNavigation({
+    required int matchId,
+    int? messageId,
+  }) {
+    if (matchId <= 0) {
+      return;
+    }
+
+    final normalizedMessageId = messageId != null && messageId > 0
+        ? messageId
+        : null;
+
+    state = state.copyWith(
+      pendingMatchId: null,
+      pendingMatchChatId: matchId,
+      pendingMatchChatMessageId: normalizedMessageId,
+    );
+  }
+
+  void consumePendingMatchChatNavigation({
+    required int matchId,
+  }) {
+    if (state.pendingMatchChatId != matchId) {
+      return;
+    }
+
+    state = state.copyWith(
+      pendingMatchChatId: null,
+      pendingMatchChatMessageId: null,
+    );
+  }
+
   void _processDeepLinkUri(Uri uri) {
     final matchId = _extractMatchId(uri);
     if (matchId == null || matchId <= 0) {
       return;
     }
 
-    state = state.copyWith(
-      pendingMatchId: matchId,
-      lastReceivedUri: uri,
+    setPendingMatchForJoinFlow(
+      matchId,
+      sourceUri: uri,
     );
   }
 

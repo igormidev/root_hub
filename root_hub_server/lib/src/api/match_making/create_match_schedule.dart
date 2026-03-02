@@ -2,6 +2,7 @@ import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/generated/protocol.dart';
+import 'package:root_hub_server/src/notifications/nearby_match_push_notification_service.dart';
 import 'package:serverpod/serverpod.dart';
 
 class CreateMatchSchedule extends Endpoint {
@@ -85,16 +86,25 @@ class CreateMatchSchedule extends Endpoint {
           );
         }
 
-        final location = await Location.db.findById(session, locationId);
+        final location = await Location.db.findById(
+          session,
+          locationId,
+          include: Location.include(
+            googlePlaceLocation: GooglePlaceLocation.include(),
+            manualInputLocation: ManualInputLocation.include(),
+          ),
+        );
         if (location == null) {
           throw RootHubEndpointError.notFound(
             language: language,
             title: t.errors.locationNotFoundTitle,
-            description: t.errors.locationWithIdNotFound(locationId: locationId),
+            description: t.errors.locationWithIdNotFound(
+              locationId: locationId,
+            ),
           );
         }
 
-        return await session.db.transaction((transaction) async {
+        final createdMatch = await session.db.transaction((transaction) async {
           final match = await MatchSchedulePairingAttempt.db.insertRow(
             session,
             MatchSchedulePairingAttempt(
@@ -178,6 +188,26 @@ class CreateMatchSchedule extends Endpoint {
 
           return match;
         });
+
+        try {
+          await NearbyMatchPushNotificationService.notifyPlayersForNewMatch(
+            session,
+            matchSchedule: createdMatch,
+            location: location,
+            hostPlayerData: playerData,
+          );
+        } catch (error, stackTrace) {
+          session.log(
+            '[PushNotifications] Failed to dispatch nearby match '
+            'notification. scheduledMatchId=${createdMatch.id} '
+            'hostPlayerDataId=${playerData.id}',
+            level: LogLevel.error,
+            exception: error,
+            stackTrace: stackTrace,
+          );
+        }
+
+        return createdMatch;
       },
       language: language,
       fallbackDescription: t.fallback.unableToCreateMatchSchedule,
