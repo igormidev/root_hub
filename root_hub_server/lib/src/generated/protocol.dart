@@ -58,21 +58,23 @@ import 'entities/match_making/google_place_location.dart' as _i43;
 import 'entities/match_making/location.dart' as _i44;
 import 'entities/match_making/manual_input_location.dart' as _i45;
 import 'entities/match_making/match_schedule.dart' as _i46;
-import 'entities/match_making/match_subscription.dart' as _i47;
-import 'entities/others/pagination_metadata.dart' as _i48;
-import 'entities/others/root_hub_exception.dart' as _i49;
+import 'entities/match_making/match_schedule_not_played_reason.dart' as _i47;
+import 'entities/match_making/match_schedule_status.dart' as _i48;
+import 'entities/match_making/match_subscription.dart' as _i49;
+import 'entities/others/pagination_metadata.dart' as _i50;
+import 'entities/others/root_hub_exception.dart' as _i51;
 import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
-    as _i50;
-import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
-    as _i51;
-import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i52;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i53;
-import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i54;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i55;
+import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+    as _i56;
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+    as _i57;
 export 'api/account/models/reverse_geocode_city_result.dart';
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
@@ -115,6 +117,8 @@ export 'entities/match_making/google_place_location.dart';
 export 'entities/match_making/location.dart';
 export 'entities/match_making/manual_input_location.dart';
 export 'entities/match_making/match_schedule.dart';
+export 'entities/match_making/match_schedule_not_played_reason.dart';
+export 'entities/match_making/match_schedule_status.dart';
 export 'entities/match_making/match_subscription.dart';
 export 'entities/others/pagination_metadata.dart';
 export 'entities/others/root_hub_exception.dart';
@@ -1074,6 +1078,31 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'DateTime',
         ),
         _i2.ColumnDefinition(
+          name: 'status',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:MatchScheduleStatus',
+          columnDefault: '\'scheduled\'::text',
+        ),
+        _i2.ColumnDefinition(
+          name: 'notPlayedReason',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'protocol:MatchScheduleNotPlayedReason?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'notPlayedReasonDetails',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'notPlayedMarkedByPlayerDataId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
           name: 'closedForSubscriptions',
           columnType: _i2.ColumnType.boolean,
           isNullable: true,
@@ -1095,6 +1124,16 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'match_schedule_pairing_attempt_fk_0',
+          columns: ['notPlayedMarkedByPlayerDataId'],
+          referenceTable: 'player_data',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'match_schedule_pairing_attempt_fk_1',
           columns: ['locationId'],
           referenceTable: 'locations',
           referenceTableSchema: 'public',
@@ -1104,7 +1143,7 @@ class Protocol extends _i1.SerializationManagerServer {
           matchType: null,
         ),
         _i2.ForeignKeyDefinition(
-          constraintName: 'match_schedule_pairing_attempt_fk_1',
+          constraintName: 'match_schedule_pairing_attempt_fk_2',
           columns: ['playerDataId'],
           referenceTable: 'player_data',
           referenceTableSchema: 'public',
@@ -2090,14 +2129,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i46.MatchSchedulePairingAttempt) {
       return _i46.MatchSchedulePairingAttempt.fromJson(data) as T;
     }
-    if (t == _i47.MatchSubscription) {
-      return _i47.MatchSubscription.fromJson(data) as T;
+    if (t == _i47.MatchScheduleNotPlayedReason) {
+      return _i47.MatchScheduleNotPlayedReason.fromJson(data) as T;
     }
-    if (t == _i48.PaginationMetadata) {
-      return _i48.PaginationMetadata.fromJson(data) as T;
+    if (t == _i48.MatchScheduleStatus) {
+      return _i48.MatchScheduleStatus.fromJson(data) as T;
     }
-    if (t == _i49.RootHubException) {
-      return _i49.RootHubException.fromJson(data) as T;
+    if (t == _i49.MatchSubscription) {
+      return _i49.MatchSubscription.fromJson(data) as T;
+    }
+    if (t == _i50.PaginationMetadata) {
+      return _i50.PaginationMetadata.fromJson(data) as T;
+    }
+    if (t == _i51.RootHubException) {
+      return _i51.RootHubException.fromJson(data) as T;
     }
     if (t == _i1.getType<_i5.ReverseGeocodeCityResult?>()) {
       return (data != null ? _i5.ReverseGeocodeCityResult.fromJson(data) : null)
@@ -2274,15 +2319,25 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == _i1.getType<_i47.MatchSubscription?>()) {
-      return (data != null ? _i47.MatchSubscription.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i48.PaginationMetadata?>()) {
-      return (data != null ? _i48.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i47.MatchScheduleNotPlayedReason?>()) {
+      return (data != null
+              ? _i47.MatchScheduleNotPlayedReason.fromJson(data)
+              : null)
           as T;
     }
-    if (t == _i1.getType<_i49.RootHubException?>()) {
-      return (data != null ? _i49.RootHubException.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i48.MatchScheduleStatus?>()) {
+      return (data != null ? _i48.MatchScheduleStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i49.MatchSubscription?>()) {
+      return (data != null ? _i49.MatchSubscription.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i50.PaginationMetadata?>()) {
+      return (data != null ? _i50.PaginationMetadata.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i51.RootHubException?>()) {
+      return (data != null ? _i51.RootHubException.fromJson(data) : null) as T;
     }
     if (t == List<_i24.PostComment>) {
       return (data as List)
@@ -2293,9 +2348,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == List<_i23.Post>) {
       return (data as List).map((e) => deserialize<_i23.Post>(e)).toList() as T;
     }
-    if (t == List<_i47.MatchSubscription>) {
+    if (t == List<_i49.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i47.MatchSubscription>(e))
+              .map((e) => deserialize<_i49.MatchSubscription>(e))
               .toList()
           as T;
     }
@@ -2394,10 +2449,10 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == _i1.getType<List<_i47.MatchSubscription>?>()) {
+    if (t == _i1.getType<List<_i49.MatchSubscription>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i47.MatchSubscription>(e))
+                    .map((e) => deserialize<_i49.MatchSubscription>(e))
                     .toList()
               : null)
           as T;
@@ -2491,38 +2546,38 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i50.AnonymousPlayer>) {
+    if (t == List<_i52.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i50.AnonymousPlayer>(e))
+              .map((e) => deserialize<_i52.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i51.PlayedMatch>) {
+    if (t == List<_i53.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i51.PlayedMatch>(e))
+              .map((e) => deserialize<_i53.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i52.MatchSchedulePairingAttempt>) {
+    if (t == List<_i54.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i52.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i54.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == List<_i53.PlayerMatchResultInput>) {
+    if (t == List<_i55.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i53.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i55.PlayerMatchResultInput>(e))
               .toList()
           as T;
     }
-    if (t == List<_i54.RegisteredPlayerSearchResult>) {
+    if (t == List<_i56.RegisteredPlayerSearchResult>) {
       return (data as List)
-              .map((e) => deserialize<_i54.RegisteredPlayerSearchResult>(e))
+              .map((e) => deserialize<_i56.RegisteredPlayerSearchResult>(e))
               .toList()
           as T;
     }
-    if (t == List<_i55.Location>) {
-      return (data as List).map((e) => deserialize<_i55.Location>(e)).toList()
+    if (t == List<_i57.Location>) {
+      return (data as List).map((e) => deserialize<_i57.Location>(e)).toList()
           as T;
     }
     try {
@@ -2581,9 +2636,11 @@ class Protocol extends _i1.SerializationManagerServer {
       _i44.Location => 'Location',
       _i45.ManualInputLocation => 'ManualInputLocation',
       _i46.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
-      _i47.MatchSubscription => 'MatchSubscription',
-      _i48.PaginationMetadata => 'PaginationMetadata',
-      _i49.RootHubException => 'RootHubException',
+      _i47.MatchScheduleNotPlayedReason => 'MatchScheduleNotPlayedReason',
+      _i48.MatchScheduleStatus => 'MatchScheduleStatus',
+      _i49.MatchSubscription => 'MatchSubscription',
+      _i50.PaginationMetadata => 'PaginationMetadata',
+      _i51.RootHubException => 'RootHubException',
       _ => null,
     };
   }
@@ -2682,11 +2739,15 @@ class Protocol extends _i1.SerializationManagerServer {
         return 'ManualInputLocation';
       case _i46.MatchSchedulePairingAttempt():
         return 'MatchSchedulePairingAttempt';
-      case _i47.MatchSubscription():
+      case _i47.MatchScheduleNotPlayedReason():
+        return 'MatchScheduleNotPlayedReason';
+      case _i48.MatchScheduleStatus():
+        return 'MatchScheduleStatus';
+      case _i49.MatchSubscription():
         return 'MatchSubscription';
-      case _i48.PaginationMetadata():
+      case _i50.PaginationMetadata():
         return 'PaginationMetadata';
-      case _i49.RootHubException():
+      case _i51.RootHubException():
         return 'RootHubException';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -2836,14 +2897,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'MatchSchedulePairingAttempt') {
       return deserialize<_i46.MatchSchedulePairingAttempt>(data['data']);
     }
+    if (dataClassName == 'MatchScheduleNotPlayedReason') {
+      return deserialize<_i47.MatchScheduleNotPlayedReason>(data['data']);
+    }
+    if (dataClassName == 'MatchScheduleStatus') {
+      return deserialize<_i48.MatchScheduleStatus>(data['data']);
+    }
     if (dataClassName == 'MatchSubscription') {
-      return deserialize<_i47.MatchSubscription>(data['data']);
+      return deserialize<_i49.MatchSubscription>(data['data']);
     }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i48.PaginationMetadata>(data['data']);
+      return deserialize<_i50.PaginationMetadata>(data['data']);
     }
     if (dataClassName == 'RootHubException') {
-      return deserialize<_i49.RootHubException>(data['data']);
+      return deserialize<_i51.RootHubException>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -2915,8 +2982,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i45.ManualInputLocation.t;
       case _i46.MatchSchedulePairingAttempt:
         return _i46.MatchSchedulePairingAttempt.t;
-      case _i47.MatchSubscription:
-        return _i47.MatchSubscription.t;
+      case _i49.MatchSubscription:
+        return _i49.MatchSubscription.t;
     }
     return null;
   }

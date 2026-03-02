@@ -161,6 +161,7 @@ class TranslationsRegisterMatchEn {
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchWizardParticipantsStepSectionEn ui_sheets_register_match_wizard_participants_step_section = TranslationsRegisterMatchUiSheetsRegisterMatchWizardParticipantsStepSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchPickerErrorSectionEn ui_sheets_register_match_picker_error_section = TranslationsRegisterMatchUiSheetsRegisterMatchPickerErrorSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchPickerMatchItemCardEn ui_sheets_register_match_picker_match_item_card = TranslationsRegisterMatchUiSheetsRegisterMatchPickerMatchItemCardEn.internal(_root);
+	late final TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogEn ui_dialogs_register_match_cancel_match_dialog = TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionEn ui_sheets_register_match_wizard_factions_step_section = TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchSearchRegisteredPlayerSheetEn ui_sheets_register_match_search_registered_player_sheet = TranslationsRegisterMatchUiSheetsRegisterMatchSearchRegisteredPlayerSheetEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionEn ui_sheets_register_match_wizard_points_step_section = TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionEn.internal(_root);
@@ -837,6 +838,18 @@ class TranslationsHomeUiScreensHomeScreenEn {
 
 	/// en: 'Community Stats'
 	String get communityStats => 'Community Stats';
+
+	/// en: 'No community stats yet'
+	String get noCommunityStatsYet => 'No community stats yet';
+
+	/// en: 'As soon as players register completed matches, this section will fill with faction trends.'
+	String get communityStatsWillAppearAfterCompletedMatches => 'As soon as players register completed matches, this section will fill with faction trends.';
+
+	/// en: 'No personal stats yet'
+	String get noPersonalStatsYet => 'No personal stats yet';
+
+	/// en: 'Play and register your first match to start your personal dashboard.'
+	String get registerYourFirstMatchToStartYourDashboard => 'Play and register your first match to start your personal dashboard.';
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget
@@ -948,6 +961,57 @@ class TranslationsMatchUiSheetsMatchTableInfoContentWidgetEn {
 
 	/// en: 'Table Details'
 	String get tableDetails => 'Table Details';
+
+	/// en: 'Status: {value}'
+	String statusValue({required Object value}) => 'Status: ${value}';
+
+	/// en: 'Scheduled'
+	String get statusScheduled => 'Scheduled';
+
+	/// en: 'Not played'
+	String get statusNotPlayed => 'Not played';
+
+	/// en: 'Played'
+	String get statusPlayed => 'Played';
+
+	/// en: 'This match was marked as not played.'
+	String get thisMatchWasMarkedAsNotPlayed => 'This match was marked as not played.';
+
+	/// en: 'Reason: {value}'
+	String reasonValue({required Object value}) => 'Reason: ${value}';
+
+	/// en: 'Marked by: {value}'
+	String markedByValue({required Object value}) => 'Marked by: ${value}';
+
+	/// en: 'Details: {value}'
+	String detailsValue({required Object value}) => 'Details: ${value}';
+
+	/// en: 'Not enough players'
+	String get reasonNotEnoughPlayers => 'Not enough players';
+
+	/// en: 'Host unavailable'
+	String get reasonHostUnavailable => 'Host unavailable';
+
+	/// en: 'No game copy available'
+	String get reasonNoGameCopyAvailable => 'No game copy available';
+
+	/// en: 'Venue issue'
+	String get reasonVenueIssue => 'Venue issue';
+
+	/// en: 'Player no-show'
+	String get reasonPlayerNoShow => 'Player no-show';
+
+	/// en: 'Weather or emergency'
+	String get reasonWeatherOrEmergency => 'Weather or emergency';
+
+	/// en: 'Expired without result after 24 hours'
+	String get reasonExpiredWithoutResult => 'Expired without result after 24 hours';
+
+	/// en: 'Other'
+	String get reasonOther => 'Other';
+
+	/// en: 'Not provided'
+	String get reasonNotProvided => 'Not provided';
 }
 
 // Path: match.ui_sheets_match_table_info_error_widget
@@ -1824,6 +1888,69 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerMatchItemCardEn {
 
 	/// en: 'Tap to report'
 	String get tapToReport => 'Tap to report';
+
+	/// en: 'Cancel match'
+	String get cancelMatch => 'Cancel match';
+
+	/// en: 'Register match result'
+	String get registerMatchResult => 'Register match result';
+}
+
+// Path: register_match.ui_dialogs_register_match_cancel_match_dialog
+class TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogEn {
+	TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Cancel match'
+	String get cancelMatchTitle => 'Cancel match';
+
+	/// en: 'Mark this scheduled match as not played and share the reason with participants.'
+	String get cancelMatchDescription => 'Mark this scheduled match as not played and share the reason with participants.';
+
+	/// en: 'Reason'
+	String get reasonLabel => 'Reason';
+
+	/// en: 'Optional details'
+	String get optionalReasonDetailsLabel => 'Optional details';
+
+	/// en: 'Share any context for the players.'
+	String get optionalReasonDetailsHint => 'Share any context for the players.';
+
+	/// en: 'Please add details when selecting "Other".'
+	String get detailsRequiredForOtherReason => 'Please add details when selecting "Other".';
+
+	/// en: 'Keep match'
+	String get keepMatch => 'Keep match';
+
+	/// en: 'Confirm cancellation'
+	String get confirmCancelMatch => 'Confirm cancellation';
+
+	/// en: 'Not enough players'
+	String get reasonNotEnoughPlayers => 'Not enough players';
+
+	/// en: 'Host unavailable'
+	String get reasonHostUnavailable => 'Host unavailable';
+
+	/// en: 'No game copy available'
+	String get reasonNoGameCopyAvailable => 'No game copy available';
+
+	/// en: 'Venue issue'
+	String get reasonVenueIssue => 'Venue issue';
+
+	/// en: 'Player no-show'
+	String get reasonPlayerNoShow => 'Player no-show';
+
+	/// en: 'Weather or emergency'
+	String get reasonWeatherOrEmergency => 'Weather or emergency';
+
+	/// en: 'Expired without result after 24 hours'
+	String get reasonExpiredWithoutResult => 'Expired without result after 24 hours';
+
+	/// en: 'Other'
+	String get reasonOther => 'Other';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_factions_step_section

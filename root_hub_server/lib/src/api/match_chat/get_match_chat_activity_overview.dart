@@ -140,7 +140,7 @@ class GetMatchChatActivityOverview extends Endpoint {
               attemptedAt: schedule.attemptedAt,
               unreadMessagesCount: participantState.unreadMessagesCount,
               isSubscribed: isSubscribed,
-              hasPlayedResult: schedule.playedMatch != null,
+              hasPlayedResult: schedule.status != MatchScheduleStatus.scheduled,
               locationTitle: locationTitle,
               locationSubtitle: locationSubtitle,
               lastMessageAt: lastMessage?.sentAt,
@@ -244,7 +244,7 @@ class GetMatchChatActivityOverview extends Endpoint {
     MatchSchedulePairingAttempt schedule, {
     required DateTime activeThreshold,
   }) {
-    return schedule.playedMatch == null &&
+    return schedule.status == MatchScheduleStatus.scheduled &&
         !schedule.attemptedAt.isBefore(activeThreshold);
   }
 

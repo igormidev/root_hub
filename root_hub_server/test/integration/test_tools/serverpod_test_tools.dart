@@ -37,40 +37,43 @@ import 'package:root_hub_server/src/generated/api/community/models/comments_pagi
     as _i14;
 import 'package:root_hub_server/src/generated/api/community/models/post_pagination.dart'
     as _i15;
-import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
-    as _i16;
-import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
-    as _i17;
 import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
+    as _i16;
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule_not_played_reason.dart'
+    as _i17;
+import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
     as _i18;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i19;
-import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i20;
-import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_activity_overview.dart'
+import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
     as _i21;
-import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_messages_pagination.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_activity_overview.dart'
     as _i22;
-import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_played_match_summary.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_messages_pagination.dart'
     as _i23;
-import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_played_match_summary.dart'
     as _i24;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
     as _i25;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i26;
-import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i27;
-import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
     as _i28;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
     as _i29;
-import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i30;
-import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
+import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
     as _i31;
-import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
     as _i32;
+import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+    as _i33;
+import 'package:root_hub_server/src/generated/future_calls.dart' as _i34;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -178,6 +181,8 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final futureCalls = _FutureCalls();
+
   late final _CreatePlayerData createPlayerData;
 
   late final _GetPlayerData getPlayerData;
@@ -195,6 +200,8 @@ class TestEndpoints {
   late final _GetCommentsEndpoint getComments;
 
   late final _GetPostsEndpoint getPosts;
+
+  late final _CancelMatchSchedule cancelMatchSchedule;
 
   late final _CreateAnonymousPlayer createAnonymousPlayer;
 
@@ -293,6 +300,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPosts = _GetPostsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    cancelMatchSchedule = _CancelMatchSchedule(
       endpoints,
       serializationManager,
     );
@@ -409,6 +420,11 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
   }
+}
+
+class _FutureCalls {
+  late final markStaleMatchSchedulesNotPlayedPeriodicCall =
+      _MarkStaleMatchSchedulesNotPlayedPeriodicCallFutureCall();
 }
 
 class _CreatePlayerData {
@@ -963,6 +979,56 @@ class _GetPostsEndpoint {
   }
 }
 
+class _CancelMatchSchedule {
+  _CancelMatchSchedule(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i16.MatchSchedulePairingAttempt> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required _i17.MatchScheduleNotPlayedReason notPlayedReason,
+    String? notPlayedReasonDetails,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'cancelMatchSchedule',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cancelMatchSchedule',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'scheduledMatchId': scheduledMatchId,
+            'notPlayedReason': notPlayedReason,
+            'notPlayedReasonDetails': notPlayedReasonDetails,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i16.MatchSchedulePairingAttempt>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _CreateAnonymousPlayer {
   _CreateAnonymousPlayer(
     this._endpointDispatch,
@@ -973,7 +1039,7 @@ class _CreateAnonymousPlayer {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i16.AnonymousPlayer> v1(
+  _i3.Future<_i18.AnonymousPlayer> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String firstName,
@@ -1002,7 +1068,7 @@ class _CreateAnonymousPlayer {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i16.AnonymousPlayer>);
+                as _i3.Future<_i18.AnonymousPlayer>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1021,7 +1087,7 @@ class _GetMyAnonymousPlayers {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i16.AnonymousPlayer>> v1(
+  _i3.Future<List<_i18.AnonymousPlayer>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -1044,7 +1110,7 @@ class _GetMyAnonymousPlayers {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i16.AnonymousPlayer>>);
+                as _i3.Future<List<_i18.AnonymousPlayer>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1063,7 +1129,7 @@ class _GetMyMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i17.PlayedMatch>> v1(
+  _i3.Future<List<_i19.PlayedMatch>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -1086,7 +1152,7 @@ class _GetMyMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i17.PlayedMatch>>);
+                as _i3.Future<List<_i19.PlayedMatch>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1105,7 +1171,7 @@ class _GetPendingMatchResults {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i18.MatchSchedulePairingAttempt>> v1(
+  _i3.Future<List<_i16.MatchSchedulePairingAttempt>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -1128,7 +1194,7 @@ class _GetPendingMatchResults {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i18.MatchSchedulePairingAttempt>>);
+                as _i3.Future<List<_i16.MatchSchedulePairingAttempt>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1189,14 +1255,14 @@ class _RegisterMatchData {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i17.PlayedMatch> v1(
+  _i3.Future<_i19.PlayedMatch> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required DateTime matchStartedAt,
     required Duration matchEstimatedDuration,
     required int locationId,
     required int scheduledPairingAttemptId,
-    required List<_i19.PlayerMatchResultInput> players,
+    required List<_i20.PlayerMatchResultInput> players,
     required _i10.ByteData groupPhotoBytes,
     String? groupPhotoFileName,
     String? groupPhotoContentType,
@@ -1236,7 +1302,7 @@ class _RegisterMatchData {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i17.PlayedMatch>);
+                as _i3.Future<_i19.PlayedMatch>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1255,7 +1321,7 @@ class _SearchRegisteredPlayers {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i20.RegisteredPlayerSearchResult>> v1(
+  _i3.Future<List<_i21.RegisteredPlayerSearchResult>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String query,
@@ -1282,7 +1348,7 @@ class _SearchRegisteredPlayers {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i20.RegisteredPlayerSearchResult>>);
+                as _i3.Future<List<_i21.RegisteredPlayerSearchResult>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1301,7 +1367,7 @@ class _GetMatchChatActivityOverview {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i21.MatchChatActivityOverview> v1(
+  _i3.Future<_i22.MatchChatActivityOverview> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -1324,7 +1390,7 @@ class _GetMatchChatActivityOverview {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i21.MatchChatActivityOverview>);
+                as _i3.Future<_i22.MatchChatActivityOverview>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1343,7 +1409,7 @@ class _GetMatchChatMessage {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i22.MatchChatMessagesPagination> v1(
+  _i3.Future<_i23.MatchChatMessagesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1372,7 +1438,7 @@ class _GetMatchChatMessage {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i22.MatchChatMessagesPagination>);
+                as _i3.Future<_i23.MatchChatMessagesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1391,7 +1457,7 @@ class _GetMatchChatPlayedMatchSummary {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i23.MatchChatPlayedMatchSummary?> v1(
+  _i3.Future<_i24.MatchChatPlayedMatchSummary?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1418,7 +1484,7 @@ class _GetMatchChatPlayedMatchSummary {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i23.MatchChatPlayedMatchSummary?>);
+                as _i3.Future<_i24.MatchChatPlayedMatchSummary?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1479,7 +1545,7 @@ class _SendMatchChatMessage {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i24.MatchChatMessage> v1(
+  _i3.Future<_i25.MatchChatMessage> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1514,7 +1580,7 @@ class _SendMatchChatMessage {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i24.MatchChatMessage>);
+                as _i3.Future<_i25.MatchChatMessage>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1533,13 +1599,13 @@ class _CreateMatchSchedule {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i18.MatchSchedulePairingAttempt> v1(
+  _i3.Future<_i16.MatchSchedulePairingAttempt> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String title,
     String? description,
-    required _i25.MatchPodium minAmountOfPlayers,
-    required _i25.MatchPodium maxAmountOfPlayers,
+    required _i26.MatchPodium minAmountOfPlayers,
+    required _i26.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     required bool hostWillPlay,
@@ -1572,7 +1638,7 @@ class _CreateMatchSchedule {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i18.MatchSchedulePairingAttempt>);
+                as _i3.Future<_i16.MatchSchedulePairingAttempt>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1597,8 +1663,8 @@ class _EditMatchSchedule {
     required int scheduledMatchId,
     required String title,
     String? description,
-    required _i25.MatchPodium minAmountOfPlayers,
-    required _i25.MatchPodium maxAmountOfPlayers,
+    required _i26.MatchPodium minAmountOfPlayers,
+    required _i26.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     bool? closedForSubscriptions,
   }) async {
@@ -1649,7 +1715,7 @@ class _GetMatchLocation {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i26.Location>> v1(
+  _i3.Future<List<_i27.Location>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String query,
@@ -1678,7 +1744,7 @@ class _GetMatchLocation {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i26.Location>>);
+                as _i3.Future<List<_i27.Location>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1697,7 +1763,7 @@ class _GetMatchScheduleInfo {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i27.MatchScheduleInfo> v1(
+  _i3.Future<_i28.MatchScheduleInfo> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1724,7 +1790,7 @@ class _GetMatchScheduleInfo {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i27.MatchScheduleInfo>);
+                as _i3.Future<_i28.MatchScheduleInfo>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1743,7 +1809,7 @@ class _GetPlayerSubscribedMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i28.SubscribedMatchesPagination> v1(
+  _i3.Future<_i29.SubscribedMatchesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int page,
@@ -1770,7 +1836,7 @@ class _GetPlayerSubscribedMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i28.SubscribedMatchesPagination>);
+                as _i3.Future<_i29.SubscribedMatchesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1789,7 +1855,7 @@ class _GetTablesInArea {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i18.MatchSchedulePairingAttempt>> v1(
+  _i3.Future<List<_i16.MatchSchedulePairingAttempt>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -1812,7 +1878,7 @@ class _GetTablesInArea {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i18.MatchSchedulePairingAttempt>>);
+                as _i3.Future<List<_i16.MatchSchedulePairingAttempt>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1879,7 +1945,7 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i29.MatchSubscription> v1(
+  _i3.Future<_i30.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1906,7 +1972,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i29.MatchSubscription>);
+                as _i3.Future<_i30.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2021,7 +2087,7 @@ class _SyncPushNotificationToken {
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String token,
-    required _i30.PushNotificationPlatform platform,
+    required _i31.PushNotificationPlatform platform,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -2065,7 +2131,7 @@ class _GetPlatformStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i31.PlatformStats?> v1(
+  _i3.Future<_i32.PlatformStats?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -2088,7 +2154,7 @@ class _GetPlatformStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i31.PlatformStats?>);
+                as _i3.Future<_i32.PlatformStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2107,7 +2173,7 @@ class _GetPlayerStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i32.PlayerStats?> v1(
+  _i3.Future<_i33.PlayerStats?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -2130,7 +2196,7 @@ class _GetPlayerStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i32.PlayerStats?>);
+                as _i3.Future<_i33.PlayerStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2528,5 +2594,24 @@ class _JwtRefreshEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _MarkStaleMatchSchedulesNotPlayedPeriodicCallFutureCall {
+  Future<void> invoke(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i2.SerializableModel? object,
+  ) async {
+    var _localUniqueSession = (sessionBuilder as _i1.InternalTestSessionBuilder)
+        .internalBuild();
+    try {
+      await _i34.MarkStaleMatchSchedulesNotPlayedPeriodicCallInvokeFutureCall()
+          .invoke(
+            _localUniqueSession,
+            object,
+          );
+    } finally {
+      await _localUniqueSession.close();
+    }
   }
 }

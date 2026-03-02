@@ -68,6 +68,13 @@ class RemovePlayerFromMatch extends Endpoint {
           );
         }
 
+        if (matchSchedule.status != MatchScheduleStatus.scheduled) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.onlyScheduledMatchesCanManagePlayers,
+          );
+        }
+
         if (playerDataId == hostPlayerData.id) {
           throw RootHubEndpointError.invalidRequest(
             language: language,

@@ -6,6 +6,7 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:serverpod_auth_idp_server/providers/google.dart';
 import 'package:root_hub_server/src/auth/handlers/on_send_password_reset_verification_email.dart';
 import 'package:root_hub_server/src/auth/handlers/on_send_registration_verification_email.dart';
+import 'package:root_hub_server/src/future_calls/mark_stale_match_schedules_not_played_periodic_call.dart';
 
 import 'src/generated/endpoints.dart';
 import 'src/generated/protocol.dart';
@@ -80,4 +81,16 @@ void run(List<String> args) async {
 
   // Start the server.
   await pod.start();
+
+  await pod.futureCalls.cancel(
+    MarkStaleMatchSchedulesNotPlayedPeriodicCall.recurringIdentifier,
+  );
+  await pod.futureCalls
+      .callWithDelay(
+        Duration(minutes: 1),
+        identifier:
+            MarkStaleMatchSchedulesNotPlayedPeriodicCall.recurringIdentifier,
+      )
+      .markStaleMatchSchedulesNotPlayedPeriodicCall
+      .invoke(null);
 }

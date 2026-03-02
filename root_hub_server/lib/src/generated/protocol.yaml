@@ -20,6 +20,8 @@ getComments:
   - v1:
 getPosts:
   - v1:
+cancelMatchSchedule:
+  - v1:
 createAnonymousPlayer:
   - v1:
 getMyAnonymousPlayers:

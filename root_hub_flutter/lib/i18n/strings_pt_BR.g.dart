@@ -490,6 +490,10 @@ class _TranslationsHomeUiScreensHomeScreenPtBr extends TranslationsHomeUiScreens
 	@override String get myStats => 'Minhas estatísticas';
 	@override String get factionPerformanceFromAllPlayedMatchesInRootHub => 'Desempenho das facções em todas as partidas jogadas no Root Hub.';
 	@override String get communityStats => 'Estatísticas da comunidade';
+	@override String get noCommunityStatsYet => 'Ainda não há estatísticas da comunidade';
+	@override String get communityStatsWillAppearAfterCompletedMatches => 'Assim que os jogadores registrarem partidas concluídas, esta seção será preenchida com tendências das facções.';
+	@override String get noPersonalStatsYet => 'Ainda não há estatísticas pessoais';
+	@override String get registerYourFirstMatchToStartYourDashboard => 'Jogue e registre sua primeira partida para começar seu painel pessoal.';
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget

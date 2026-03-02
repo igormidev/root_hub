@@ -223,7 +223,11 @@
       "yourPersonalFactionPerformanceAndMatchProfile": "Your personal faction stats based only on factions you have played.",
       "myStats": "My Stats",
       "factionPerformanceFromAllPlayedMatchesInRootHub": "Faction performance from all played matches in Root Hub.",
-      "communityStats": "Community Stats"
+      "communityStats": "Community Stats",
+      "noCommunityStatsYet": "No community stats yet",
+      "communityStatsWillAppearAfterCompletedMatches": "As soon as players register completed matches, this section will fill with faction trends.",
+      "noPersonalStatsYet": "No personal stats yet",
+      "registerYourFirstMatchToStartYourDashboard": "Play and register your first match to start your personal dashboard."
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "No values for this metric yet."
@@ -257,7 +261,24 @@
       "noPlayersSubscribedYet": "No players subscribed yet.",
       "playersInThisMatch": "Players in this match",
       "unknownHost": "Unknown host",
-      "tableDetails": "Table Details"
+      "tableDetails": "Table Details",
+      "statusValue": "Status: {value}",
+      "statusScheduled": "Scheduled",
+      "statusNotPlayed": "Not played",
+      "statusPlayed": "Played",
+      "thisMatchWasMarkedAsNotPlayed": "This match was marked as not played.",
+      "reasonValue": "Reason: {value}",
+      "markedByValue": "Marked by: {value}",
+      "detailsValue": "Details: {value}",
+      "reasonNotEnoughPlayers": "Not enough players",
+      "reasonHostUnavailable": "Host unavailable",
+      "reasonNoGameCopyAvailable": "No game copy available",
+      "reasonVenueIssue": "Venue issue",
+      "reasonPlayerNoShow": "Player no-show",
+      "reasonWeatherOrEmergency": "Weather or emergency",
+      "reasonExpiredWithoutResult": "Expired without result after 24 hours",
+      "reasonOther": "Other",
+      "reasonNotProvided": "Not provided"
     },
     "ui_sheets_match_table_info_error_widget": {
       "retry": "Retry",
@@ -519,7 +540,27 @@
     },
     "ui_sheets_register_match_picker_match_item_card": {
       "notAvailableYet": "Not available yet",
-      "tapToReport": "Tap to report"
+      "tapToReport": "Tap to report",
+      "cancelMatch": "Cancel match",
+      "registerMatchResult": "Register match result"
+    },
+    "ui_dialogs_register_match_cancel_match_dialog": {
+      "cancelMatchTitle": "Cancel match",
+      "cancelMatchDescription": "Mark this scheduled match as not played and share the reason with participants.",
+      "reasonLabel": "Reason",
+      "optionalReasonDetailsLabel": "Optional details",
+      "optionalReasonDetailsHint": "Share any context for the players.",
+      "detailsRequiredForOtherReason": "Please add details when selecting \"Other\".",
+      "keepMatch": "Keep match",
+      "confirmCancelMatch": "Confirm cancellation",
+      "reasonNotEnoughPlayers": "Not enough players",
+      "reasonHostUnavailable": "Host unavailable",
+      "reasonNoGameCopyAvailable": "No game copy available",
+      "reasonVenueIssue": "Venue issue",
+      "reasonPlayerNoShow": "Player no-show",
+      "reasonWeatherOrEmergency": "Weather or emergency",
+      "reasonExpiredWithoutResult": "Expired without result after 24 hours",
+      "reasonOther": "Other"
     },
     "ui_sheets_register_match_wizard_factions_step_section": {
       "selectFaction": "Select faction",

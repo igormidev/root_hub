@@ -43,6 +43,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     this.comments,
     this.currentHosting,
     this.subscriptions,
+    this.notPlayedMarkedSchedules,
     this.chatMessages,
     this.chatParticipantStates,
     this.pushNotificationTokens,
@@ -64,6 +65,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
     List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
@@ -117,6 +119,12 @@ abstract class PlayerData implements _i1.SerializableModel {
           ? null
           : _i16.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
+            ),
+      notPlayedMarkedSchedules:
+          jsonSerialization['notPlayedMarkedSchedules'] == null
+          ? null
+          : _i16.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+              jsonSerialization['notPlayedMarkedSchedules'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
@@ -181,6 +189,8 @@ abstract class PlayerData implements _i1.SerializableModel {
 
   List<_i9.MatchSubscription>? subscriptions;
 
+  List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules;
+
   List<_i10.MatchChatMessage>? chatMessages;
 
   List<_i11.MatchChatParticipantState>? chatParticipantStates;
@@ -209,6 +219,7 @@ abstract class PlayerData implements _i1.SerializableModel {
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
     List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
@@ -238,6 +249,10 @@ abstract class PlayerData implements _i1.SerializableModel {
         ),
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
+      if (notPlayedMarkedSchedules != null)
+        'notPlayedMarkedSchedules': notPlayedMarkedSchedules?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
       if (chatMessages != null)
         'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
       if (chatParticipantStates != null)
@@ -283,6 +298,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
     List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
@@ -302,6 +318,7 @@ class _PlayerDataImpl extends PlayerData {
          comments: comments,
          currentHosting: currentHosting,
          subscriptions: subscriptions,
+         notPlayedMarkedSchedules: notPlayedMarkedSchedules,
          chatMessages: chatMessages,
          chatParticipantStates: chatParticipantStates,
          pushNotificationTokens: pushNotificationTokens,
@@ -327,6 +344,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? comments = _Undefined,
     Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
+    Object? notPlayedMarkedSchedules = _Undefined,
     Object? chatMessages = _Undefined,
     Object? chatParticipantStates = _Undefined,
     Object? pushNotificationTokens = _Undefined,
@@ -363,6 +381,10 @@ class _PlayerDataImpl extends PlayerData {
       subscriptions: subscriptions is List<_i9.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
+      notPlayedMarkedSchedules:
+          notPlayedMarkedSchedules is List<_i8.MatchSchedulePairingAttempt>?
+          ? notPlayedMarkedSchedules
+          : this.notPlayedMarkedSchedules?.map((e0) => e0.copyWith()).toList(),
       chatMessages: chatMessages is List<_i10.MatchChatMessage>?
           ? chatMessages
           : this.chatMessages?.map((e0) => e0.copyWith()).toList(),

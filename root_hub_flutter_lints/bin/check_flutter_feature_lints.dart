@@ -288,7 +288,7 @@ bool _isWidgetClass(ClassDeclaration declaration) {
 }
 
 String _normalizeTypeName(String typeName) {
-  return typeName.split('<').first.split('.').last;
+  return typeName.split('<').first.split('.').last.replaceAll('?', '').trim();
 }
 
 bool _returnsWidgetType(TypeAnnotation? returnType) {
@@ -369,19 +369,19 @@ String? _expectedWidgetClassSuffix(String filePath) {
 }
 
 bool _shouldReportFeatureStringNode(AstNode node) {
+  if (node is! SimpleStringLiteral) {
+    return false;
+  }
+
   if (_isStringNodeInSkippableParent(node)) {
     return false;
   }
 
-  if (node is SimpleStringLiteral) {
-    if (node.value.trim().isEmpty) {
-      return false;
-    }
-
-    return _isLikelyUiTextLiteral(node);
+  if (node.value.trim().isEmpty) {
+    return false;
   }
 
-  return false;
+  return _isLikelyUiTextLiteral(node);
 }
 
 bool _isStringNodeInSkippableParent(AstNode node) {
@@ -463,7 +463,7 @@ bool _isLikelyUiTextLiteral(AstNode node) {
 
   if (argumentExpression is NamedExpression) {
     final argumentName = argumentExpression.name.label.name;
-    return _uiTextNamedArgumentNames.contains(argumentName);
+    return _isLikelyUiTextArgumentName(argumentName);
   }
 
   final argumentList = argumentExpression.parent;
@@ -482,6 +482,15 @@ bool _isLikelyUiTextLiteral(AstNode node) {
   }
 
   return _uiTextPositionalInvocationNames.contains(invocationName);
+}
+
+bool _isLikelyUiTextArgumentName(String argumentName) {
+  if (_uiTextNamedArgumentNames.contains(argumentName)) {
+    return true;
+  }
+
+  final normalized = argumentName.toLowerCase();
+  return normalized.endsWith('title') || normalized.endsWith('description');
 }
 
 Expression? _argumentExpressionForNode(AstNode node) {

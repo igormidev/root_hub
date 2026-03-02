@@ -59,9 +59,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 .home
                 .ui_screens_home_screen
                 .factionPerformanceFromAllPlayedMatchesInRootHub,
-            emptyTitle: 'No community stats yet',
-            emptyDescription:
-                'As soon as players register completed matches, this section will fill with faction trends.',
+            emptyTitle: t.home.ui_screens_home_screen.noCommunityStatsYet,
+            emptyDescription: t
+                .home
+                .ui_screens_home_screen
+                .communityStatsWillAppearAfterCompletedMatches,
             onRetry: () {
               ref.read(homeStatsProvider.notifier).loadStats();
             },
@@ -76,9 +78,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 .home
                 .ui_screens_home_screen
                 .yourPersonalFactionPerformanceAndMatchProfile,
-            emptyTitle: 'No personal stats yet',
-            emptyDescription:
-                'Play and register your first match to start your personal dashboard.',
+            emptyTitle: t.home.ui_screens_home_screen.noPersonalStatsYet,
+            emptyDescription: t
+                .home
+                .ui_screens_home_screen
+                .registerYourFirstMatchToStartYourDashboard,
             onRetry: () {
               ref.read(homeStatsProvider.notifier).loadStats();
             },

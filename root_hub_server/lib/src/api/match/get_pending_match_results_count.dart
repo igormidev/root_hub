@@ -32,8 +32,9 @@ class GetPendingMatchResultsCount extends Endpoint {
           session,
           where: (t) => t.playerDataId.equals(playerData.id!),
         );
-        final subscribedScheduleIds = subscriptions
-            .map((subscription) => subscription.matchSchedulePairingAttemptId);
+        final subscribedScheduleIds = subscriptions.map(
+          (subscription) => subscription.matchSchedulePairingAttemptId,
+        );
 
         final candidateScheduleIds = <int>{
           ...hostedScheduleIds,
@@ -44,20 +45,15 @@ class GetPendingMatchResultsCount extends Endpoint {
           return 0;
         }
 
-        final playedMatches = await PlayedMatch.db.find(
-          session,
-          where: (t) => t.scheduledPairingAttemptId.inSet(candidateScheduleIds),
-        );
+        final pendingSchedulesCount = await MatchSchedulePairingAttempt.db
+            .count(
+              session,
+              where: (t) =>
+                  t.id.inSet(candidateScheduleIds) &
+                  t.status.equals(MatchScheduleStatus.scheduled),
+            );
 
-        final promotedScheduleIds = playedMatches
-            .map((playedMatch) => playedMatch.scheduledPairingAttemptId)
-            .toSet();
-
-        final pendingScheduleIds = candidateScheduleIds.difference(
-          promotedScheduleIds,
-        );
-
-        return pendingScheduleIds.length;
+        return pendingSchedulesCount;
       },
       language: language,
       fallbackDescription: t.fallback.unableToLoadPendingMatchReports,

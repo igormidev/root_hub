@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/register_match/ui/dialogs/register_match_cancel_match_dialog.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_body_section.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_header_section.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_wizard_sheet.dart';
@@ -21,6 +22,8 @@ class RegisterMatchPickerSheet extends ConsumerStatefulWidget {
 
 class _RegisterMatchPickerSheetState
     extends ConsumerState<RegisterMatchPickerSheet> {
+  int? _processingMatchId;
+
   @override
   void initState() {
     super.initState();
@@ -73,8 +76,10 @@ class _RegisterMatchPickerSheetState
                         .read(registerMatchProvider.notifier)
                         .loadPendingMatches();
                   },
-                  onMatchSelected: _onMatchSelected,
+                  onRegisterMatchTap: _onRegisterMatchTap,
+                  onCancelMatchTap: _onCancelMatchTap,
                   isTooEarlyToRegister: _isTooEarlyToRegister,
+                  processingMatchId: _processingMatchId,
                 ),
               ),
             ),
@@ -91,7 +96,7 @@ class _RegisterMatchPickerSheetState
     return DateTime.now().isBefore(earliestAllowedRegistrationTime);
   }
 
-  Future<void> _onMatchSelected(MatchSchedulePairingAttempt match) async {
+  Future<void> _onRegisterMatchTap(MatchSchedulePairingAttempt match) async {
     if (_isTooEarlyToRegister(match)) {
       final localizations = MaterialLocalizations.of(context);
       final earliestAllowedRegistrationTime = match.attemptedAt
@@ -126,6 +131,56 @@ class _RegisterMatchPickerSheetState
     }
 
     Navigator.of(context).pop(true);
+  }
+
+  Future<void> _onCancelMatchTap(MatchSchedulePairingAttempt match) async {
+    final matchId = match.id;
+    if (matchId == null || _processingMatchId != null) {
+      return;
+    }
+
+    final cancelPayload =
+        await showDialog<RegisterMatchCancelMatchDialogResult>(
+          context: context,
+          builder: (dialogContext) {
+            return RegisterMatchCancelMatchDialog();
+          },
+        );
+
+    if (cancelPayload == null || !mounted) {
+      return;
+    }
+
+    setState(() {
+      _processingMatchId = matchId;
+    });
+
+    final cancelError = await ref
+        .read(registerMatchProvider.notifier)
+        .cancelScheduledMatch(
+          scheduledMatch: match,
+          notPlayedReason: cancelPayload.notPlayedReason,
+          notPlayedReasonDetails: cancelPayload.notPlayedReasonDetails,
+        );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _processingMatchId = null;
+    });
+
+    if (cancelError != null) {
+      await showErrorDialog(
+        context,
+        title: cancelError.title,
+        description: cancelError.description,
+      );
+      return;
+    }
+
+    await ref.read(registerMatchProvider.notifier).refreshPendingMatchesCount();
   }
 
   Future<bool?> _openMatchWizard(MatchSchedulePairingAttempt match) {

@@ -223,7 +223,11 @@
       "yourPersonalFactionPerformanceAndMatchProfile": "Vos statistiques personnelles de faction basées uniquement sur les factions que vous avez jouées.",
       "myStats": "Mes statistiques",
       "factionPerformanceFromAllPlayedMatchesInRootHub": "Performance des factions sur toutes les parties jouées dans Root Hub.",
-      "communityStats": "Statistiques de la communauté"
+      "communityStats": "Statistiques de la communauté",
+      "noCommunityStatsYet": "Aucune statistique de la communauté pour le moment",
+      "communityStatsWillAppearAfterCompletedMatches": "Dès que les joueurs enregistreront des parties terminées, cette section affichera les tendances des factions.",
+      "noPersonalStatsYet": "Aucune statistique personnelle pour le moment",
+      "registerYourFirstMatchToStartYourDashboard": "Jouez et enregistrez votre première partie pour démarrer votre tableau de bord personnel."
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Aucune valeur pour cette métrique pour l'instant."

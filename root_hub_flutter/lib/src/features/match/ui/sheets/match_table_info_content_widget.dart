@@ -60,6 +60,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
     final subscriptions = table.subscriptions ?? <MatchSubscription>[];
     final subscribedPlayersCount = subscriptions.length;
+    final notPlayedReasonDetails = table.notPlayedReasonDetails?.trim();
+    final hasNotPlayedReasonDetails =
+        notPlayedReasonDetails != null && notPlayedReasonDetails.isNotEmpty;
+    final notPlayedMarkedByDisplayName = table.notPlayedMarkedBy?.displayName;
 
     return Column(
       children: [
@@ -126,8 +130,85 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                       icon: Icons.social_distance_rounded,
                       text: '$minPlayers-$maxPlayers players',
                     ),
+                    MatchTableInfoInfoChipWidget(
+                      icon: Icons.task_alt_rounded,
+                      text: t.match.ui_sheets_match_table_info_content_widget
+                          .statusValue(
+                            value: _statusLabel(table.status),
+                          ),
+                    ),
                   ],
                 ),
+                if (table.status == MatchScheduleStatus.notPlayed) ...[
+                  SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: colorScheme.errorContainer),
+                      color: colorScheme.errorContainer.withValues(alpha: 0.36),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t
+                              .match
+                              .ui_sheets_match_table_info_content_widget
+                              .thisMatchWasMarkedAsNotPlayed,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: colorScheme.onErrorContainer,
+                              ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          t.match.ui_sheets_match_table_info_content_widget
+                              .reasonValue(
+                                value: _notPlayedReasonLabel(
+                                  table.notPlayedReason,
+                                ),
+                              ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: colorScheme.onErrorContainer,
+                              ),
+                        ),
+                        if (notPlayedMarkedByDisplayName != null) ...[
+                          SizedBox(height: 2),
+                          Text(
+                            t.match.ui_sheets_match_table_info_content_widget
+                                .markedByValue(
+                                  value: notPlayedMarkedByDisplayName,
+                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.onErrorContainer,
+                                ),
+                          ),
+                        ],
+                        if (hasNotPlayedReasonDetails) ...[
+                          SizedBox(height: 4),
+                          Text(
+                            t.match.ui_sheets_match_table_info_content_widget
+                                .detailsValue(
+                                  value: notPlayedReasonDetails,
+                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.onErrorContainer,
+                                ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
                 SizedBox(height: 14),
                 Container(
                   width: double.infinity,
@@ -248,5 +329,43 @@ class MatchTableInfoContentWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _statusLabel(MatchScheduleStatus status) {
+    final contentT = t.match.ui_sheets_match_table_info_content_widget;
+
+    switch (status) {
+      case MatchScheduleStatus.scheduled:
+        return contentT.statusScheduled;
+      case MatchScheduleStatus.notPlayed:
+        return contentT.statusNotPlayed;
+      case MatchScheduleStatus.played:
+        return contentT.statusPlayed;
+    }
+  }
+
+  String _notPlayedReasonLabel(MatchScheduleNotPlayedReason? reason) {
+    final contentT = t.match.ui_sheets_match_table_info_content_widget;
+
+    switch (reason) {
+      case MatchScheduleNotPlayedReason.notEnoughPlayers:
+        return contentT.reasonNotEnoughPlayers;
+      case MatchScheduleNotPlayedReason.hostUnavailable:
+        return contentT.reasonHostUnavailable;
+      case MatchScheduleNotPlayedReason.noGameCopyAvailable:
+        return contentT.reasonNoGameCopyAvailable;
+      case MatchScheduleNotPlayedReason.venueIssue:
+        return contentT.reasonVenueIssue;
+      case MatchScheduleNotPlayedReason.playerNoShow:
+        return contentT.reasonPlayerNoShow;
+      case MatchScheduleNotPlayedReason.weatherOrEmergency:
+        return contentT.reasonWeatherOrEmergency;
+      case MatchScheduleNotPlayedReason.expiredWithoutResult:
+        return contentT.reasonExpiredWithoutResult;
+      case MatchScheduleNotPlayedReason.other:
+        return contentT.reasonOther;
+      case null:
+        return contentT.reasonNotProvided;
+    }
   }
 }

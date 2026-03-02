@@ -424,6 +424,58 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     return submitError;
   }
 
+  Future<RootHubException?> cancelScheduledMatch({
+    required MatchSchedulePairingAttempt scheduledMatch,
+    required MatchScheduleNotPlayedReason notPlayedReason,
+    String? notPlayedReasonDetails,
+  }) async {
+    final scheduledMatchId = scheduledMatch.id;
+    if (scheduledMatchId == null || scheduledMatchId <= 0) {
+      return RootHubException(
+        title: 'Invalid match',
+        description: 'The selected match schedule is invalid.',
+      );
+    }
+
+    final result = await ref
+        .read(clientProvider)
+        .cancelMatchSchedule
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          scheduledMatchId: scheduledMatchId,
+          notPlayedReason: notPlayedReason,
+          notPlayedReasonDetails: notPlayedReasonDetails?.trim(),
+        )
+        .toResult;
+
+    RootHubException? cancelError;
+    await result.fold(
+      (_) async {
+        final remainingMatches = state.pendingMatches
+            .where((match) => match.id != scheduledMatchId)
+            .toList();
+
+        state = state.copyWith(
+          pendingMatches: remainingMatches,
+          pendingMatchesCount: remainingMatches.length,
+          hasLoadedPendingMatches: true,
+          hasLoadedPendingMatchesCount: true,
+          pendingMatchesError: null,
+          pendingMatchesCountError: null,
+        );
+
+        await ref
+            .read(matchTablesProvider.notifier)
+            .loadTablesInArea(showLoadingIndicator: false);
+      },
+      (error) async {
+        cancelError = error;
+      },
+    );
+
+    return cancelError;
+  }
+
   void clearErrors() {
     state = state.copyWith(
       pendingMatchesError: null,

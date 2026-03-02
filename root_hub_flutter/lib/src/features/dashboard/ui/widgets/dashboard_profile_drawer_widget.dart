@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
-import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
-import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
+import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
+import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_state.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 const _preferredLocaleKey = 'preferred_locale';
 const _deviceLocalePreferenceValue = 'device';
@@ -389,7 +389,7 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                       },
                       isLoading: false,
                     ),
-                    SizedBox(height: 18),
+                    SizedBox(height: 2),
                     SizedBox(
                       width: double.infinity,
                       height: 190,

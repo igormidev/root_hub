@@ -72,6 +72,20 @@ class RegisterMatchData extends Endpoint {
           );
         }
 
+        if (scheduledPairingAttempt.status == MatchScheduleStatus.notPlayed) {
+          _throwInvalidRequest(
+            language: language,
+            description: t.errors.scheduledMatchAlreadyMarkedAsNotPlayed,
+          );
+        }
+
+        if (scheduledPairingAttempt.status == MatchScheduleStatus.played) {
+          _throwInvalidRequest(
+            language: language,
+            description: t.errors.scheduledMatchAlreadyHasResult,
+          );
+        }
+
         if (scheduledPairingAttempt.playedMatch != null) {
           _throwInvalidRequest(
             language: language,
@@ -173,6 +187,18 @@ class RegisterMatchData extends Endpoint {
           await PlayedMatch.db.attachRow.scheduledPairingAttempt(
             session,
             playedMatch,
+            scheduledPairingAttempt,
+            transaction: transaction,
+          );
+
+          scheduledPairingAttempt
+            ..status = MatchScheduleStatus.played
+            ..notPlayedReason = null
+            ..notPlayedReasonDetails = null
+            ..notPlayedMarkedByPlayerDataId = null;
+
+          await MatchSchedulePairingAttempt.db.updateRow(
+            session,
             scheduledPairingAttempt,
             transaction: transaction,
           );

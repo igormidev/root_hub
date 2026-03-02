@@ -32,8 +32,9 @@ class GetPendingMatchResults extends Endpoint {
           session,
           where: (t) => t.playerDataId.equals(playerData.id!),
         );
-        final subscribedScheduleIds = subscriptions
-            .map((subscription) => subscription.matchSchedulePairingAttemptId);
+        final subscribedScheduleIds = subscriptions.map(
+          (subscription) => subscription.matchSchedulePairingAttemptId,
+        );
 
         final candidateScheduleIds = <int>{
           ...hostedScheduleIds,
@@ -44,26 +45,11 @@ class GetPendingMatchResults extends Endpoint {
           return const <MatchSchedulePairingAttempt>[];
         }
 
-        final playedMatches = await PlayedMatch.db.find(
-          session,
-          where: (t) => t.scheduledPairingAttemptId.inSet(candidateScheduleIds),
-        );
-
-        final promotedScheduleIds = playedMatches
-            .map((playedMatch) => playedMatch.scheduledPairingAttemptId)
-            .toSet();
-
-        final pendingScheduleIds = candidateScheduleIds.difference(
-          promotedScheduleIds,
-        );
-
-        if (pendingScheduleIds.isEmpty) {
-          return const <MatchSchedulePairingAttempt>[];
-        }
-
         final pendingSchedules = await MatchSchedulePairingAttempt.db.find(
           session,
-          where: (t) => t.id.inSet(pendingScheduleIds),
+          where: (t) =>
+              t.id.inSet(candidateScheduleIds) &
+              t.status.equals(MatchScheduleStatus.scheduled),
           orderBy: (t) => t.attemptedAt,
           orderDescending: true,
           include: MatchSchedulePairingAttempt.include(

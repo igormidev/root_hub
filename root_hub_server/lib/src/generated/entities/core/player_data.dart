@@ -45,6 +45,7 @@ abstract class PlayerData
     this.comments,
     this.currentHosting,
     this.subscriptions,
+    this.notPlayedMarkedSchedules,
     this.chatMessages,
     this.chatParticipantStates,
     this.pushNotificationTokens,
@@ -66,6 +67,7 @@ abstract class PlayerData
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
     List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
@@ -119,6 +121,12 @@ abstract class PlayerData
           ? null
           : _i16.Protocol().deserialize<List<_i9.MatchSubscription>>(
               jsonSerialization['subscriptions'],
+            ),
+      notPlayedMarkedSchedules:
+          jsonSerialization['notPlayedMarkedSchedules'] == null
+          ? null
+          : _i16.Protocol().deserialize<List<_i8.MatchSchedulePairingAttempt>>(
+              jsonSerialization['notPlayedMarkedSchedules'],
             ),
       chatMessages: jsonSerialization['chatMessages'] == null
           ? null
@@ -185,6 +193,8 @@ abstract class PlayerData
 
   List<_i9.MatchSubscription>? subscriptions;
 
+  List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules;
+
   List<_i10.MatchChatMessage>? chatMessages;
 
   List<_i11.MatchChatParticipantState>? chatParticipantStates;
@@ -216,6 +226,7 @@ abstract class PlayerData
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
     List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
@@ -245,6 +256,10 @@ abstract class PlayerData
         ),
       if (subscriptions != null)
         'subscriptions': subscriptions?.toJson(valueToJson: (v) => v.toJson()),
+      if (notPlayedMarkedSchedules != null)
+        'notPlayedMarkedSchedules': notPlayedMarkedSchedules?.toJson(
+          valueToJson: (v) => v.toJson(),
+        ),
       if (chatMessages != null)
         'chatMessages': chatMessages?.toJson(valueToJson: (v) => v.toJson()),
       if (chatParticipantStates != null)
@@ -296,6 +311,10 @@ abstract class PlayerData
         'subscriptions': subscriptions?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
         ),
+      if (notPlayedMarkedSchedules != null)
+        'notPlayedMarkedSchedules': notPlayedMarkedSchedules?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
       if (chatMessages != null)
         'chatMessages': chatMessages?.toJson(
           valueToJson: (v) => v.toJsonForProtocol(),
@@ -331,6 +350,7 @@ abstract class PlayerData
     _i7.PostCommentIncludeList? comments,
     _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
+    _i8.MatchSchedulePairingAttemptIncludeList? notPlayedMarkedSchedules,
     _i10.MatchChatMessageIncludeList? chatMessages,
     _i11.MatchChatParticipantStateIncludeList? chatParticipantStates,
     _i12.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
@@ -346,6 +366,7 @@ abstract class PlayerData
       comments: comments,
       currentHosting: currentHosting,
       subscriptions: subscriptions,
+      notPlayedMarkedSchedules: notPlayedMarkedSchedules,
       chatMessages: chatMessages,
       chatParticipantStates: chatParticipantStates,
       pushNotificationTokens: pushNotificationTokens,
@@ -397,6 +418,7 @@ class _PlayerDataImpl extends PlayerData {
     List<_i7.PostComment>? comments,
     List<_i8.MatchSchedulePairingAttempt>? currentHosting,
     List<_i9.MatchSubscription>? subscriptions,
+    List<_i8.MatchSchedulePairingAttempt>? notPlayedMarkedSchedules,
     List<_i10.MatchChatMessage>? chatMessages,
     List<_i11.MatchChatParticipantState>? chatParticipantStates,
     List<_i12.PlayerPushNotificationToken>? pushNotificationTokens,
@@ -416,6 +438,7 @@ class _PlayerDataImpl extends PlayerData {
          comments: comments,
          currentHosting: currentHosting,
          subscriptions: subscriptions,
+         notPlayedMarkedSchedules: notPlayedMarkedSchedules,
          chatMessages: chatMessages,
          chatParticipantStates: chatParticipantStates,
          pushNotificationTokens: pushNotificationTokens,
@@ -441,6 +464,7 @@ class _PlayerDataImpl extends PlayerData {
     Object? comments = _Undefined,
     Object? currentHosting = _Undefined,
     Object? subscriptions = _Undefined,
+    Object? notPlayedMarkedSchedules = _Undefined,
     Object? chatMessages = _Undefined,
     Object? chatParticipantStates = _Undefined,
     Object? pushNotificationTokens = _Undefined,
@@ -477,6 +501,10 @@ class _PlayerDataImpl extends PlayerData {
       subscriptions: subscriptions is List<_i9.MatchSubscription>?
           ? subscriptions
           : this.subscriptions?.map((e0) => e0.copyWith()).toList(),
+      notPlayedMarkedSchedules:
+          notPlayedMarkedSchedules is List<_i8.MatchSchedulePairingAttempt>?
+          ? notPlayedMarkedSchedules
+          : this.notPlayedMarkedSchedules?.map((e0) => e0.copyWith()).toList(),
       chatMessages: chatMessages is List<_i10.MatchChatMessage>?
           ? chatMessages
           : this.chatMessages?.map((e0) => e0.copyWith()).toList(),
@@ -587,6 +615,11 @@ class PlayerDataTable extends _i1.Table<int?> {
   _i9.MatchSubscriptionTable? ___subscriptions;
 
   _i1.ManyRelation<_i9.MatchSubscriptionTable>? _subscriptions;
+
+  _i8.MatchSchedulePairingAttemptTable? ___notPlayedMarkedSchedules;
+
+  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>?
+  _notPlayedMarkedSchedules;
 
   _i10.MatchChatMessageTable? ___chatMessages;
 
@@ -704,6 +737,23 @@ class PlayerDataTable extends _i1.Table<int?> {
           _i9.MatchSubscriptionTable(tableRelation: foreignTableRelation),
     );
     return ___subscriptions!;
+  }
+
+  _i8.MatchSchedulePairingAttemptTable get __notPlayedMarkedSchedules {
+    if (___notPlayedMarkedSchedules != null)
+      return ___notPlayedMarkedSchedules!;
+    ___notPlayedMarkedSchedules = _i1.createRelationTable(
+      relationFieldName: '__notPlayedMarkedSchedules',
+      field: PlayerData.t.id,
+      foreignField:
+          _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i8.MatchSchedulePairingAttemptTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    return ___notPlayedMarkedSchedules!;
   }
 
   _i10.MatchChatMessageTable get __chatMessages {
@@ -886,6 +936,30 @@ class PlayerDataTable extends _i1.Table<int?> {
     return _subscriptions!;
   }
 
+  _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>
+  get notPlayedMarkedSchedules {
+    if (_notPlayedMarkedSchedules != null) return _notPlayedMarkedSchedules!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'notPlayedMarkedSchedules',
+      field: PlayerData.t.id,
+      foreignField:
+          _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i8.MatchSchedulePairingAttemptTable(
+            tableRelation: foreignTableRelation,
+          ),
+    );
+    _notPlayedMarkedSchedules =
+        _i1.ManyRelation<_i8.MatchSchedulePairingAttemptTable>(
+          tableWithRelations: relationTable,
+          table: _i8.MatchSchedulePairingAttemptTable(
+            tableRelation: relationTable.tableRelation!.lastRelation,
+          ),
+        );
+    return _notPlayedMarkedSchedules!;
+  }
+
   _i1.ManyRelation<_i10.MatchChatMessageTable> get chatMessages {
     if (_chatMessages != null) return _chatMessages!;
     var relationTable = _i1.createRelationTable(
@@ -1041,6 +1115,9 @@ class PlayerDataTable extends _i1.Table<int?> {
     if (relationField == 'subscriptions') {
       return __subscriptions;
     }
+    if (relationField == 'notPlayedMarkedSchedules') {
+      return __notPlayedMarkedSchedules;
+    }
     if (relationField == 'chatMessages') {
       return __chatMessages;
     }
@@ -1072,6 +1149,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _i7.PostCommentIncludeList? comments,
     _i8.MatchSchedulePairingAttemptIncludeList? currentHosting,
     _i9.MatchSubscriptionIncludeList? subscriptions,
+    _i8.MatchSchedulePairingAttemptIncludeList? notPlayedMarkedSchedules,
     _i10.MatchChatMessageIncludeList? chatMessages,
     _i11.MatchChatParticipantStateIncludeList? chatParticipantStates,
     _i12.PlayerPushNotificationTokenIncludeList? pushNotificationTokens,
@@ -1086,6 +1164,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     _comments = comments;
     _currentHosting = currentHosting;
     _subscriptions = subscriptions;
+    _notPlayedMarkedSchedules = notPlayedMarkedSchedules;
     _chatMessages = chatMessages;
     _chatParticipantStates = chatParticipantStates;
     _pushNotificationTokens = pushNotificationTokens;
@@ -1108,6 +1187,8 @@ class PlayerDataInclude extends _i1.IncludeObject {
 
   _i9.MatchSubscriptionIncludeList? _subscriptions;
 
+  _i8.MatchSchedulePairingAttemptIncludeList? _notPlayedMarkedSchedules;
+
   _i10.MatchChatMessageIncludeList? _chatMessages;
 
   _i11.MatchChatParticipantStateIncludeList? _chatParticipantStates;
@@ -1129,6 +1210,7 @@ class PlayerDataInclude extends _i1.IncludeObject {
     'comments': _comments,
     'currentHosting': _currentHosting,
     'subscriptions': _subscriptions,
+    'notPlayedMarkedSchedules': _notPlayedMarkedSchedules,
     'chatMessages': _chatMessages,
     'chatParticipantStates': _chatParticipantStates,
     'pushNotificationTokens': _pushNotificationTokens,
@@ -1554,6 +1636,33 @@ class PlayerDataAttachRepository {
     );
   }
 
+  /// Creates a relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]s
+  /// by setting each [MatchSchedulePairingAttempt]'s foreign key `notPlayedMarkedByPlayerDataId` to refer to this [PlayerData].
+  Future<void> notPlayedMarkedSchedules(
+    _i1.Session session,
+    PlayerData playerData,
+    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
+        .map((e) => e.copyWith(notPlayedMarkedByPlayerDataId: playerData.id))
+        .toList();
+    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [
+        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      ],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between this [PlayerData] and the given [MatchChatMessage]s
   /// by setting each [MatchChatMessage]'s foreign key `playerDataId` to refer to this [PlayerData].
   Future<void> chatMessages(
@@ -1875,6 +1984,33 @@ class PlayerDataAttachRowRepository {
     );
   }
 
+  /// Creates a relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `notPlayedMarkedByPlayerDataId` to refer to this [PlayerData].
+  Future<void> notPlayedMarkedSchedules(
+    _i1.Session session,
+    PlayerData playerData,
+    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+    if (playerData.id == null) {
+      throw ArgumentError.notNull('playerData.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
+      notPlayedMarkedByPlayerDataId: playerData.id,
+    );
+    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [
+        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      ],
+      transaction: transaction,
+    );
+  }
+
   /// Creates a relation between this [PlayerData] and the given [MatchChatMessage]
   /// by setting the [MatchChatMessage]'s foreign key `playerDataId` to refer to this [PlayerData].
   Future<void> chatMessages(
@@ -2123,6 +2259,32 @@ class PlayerDataDetachRepository {
     );
   }
 
+  /// Detaches the relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `notPlayedMarkedByPlayerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> notPlayedMarkedSchedules(
+    _i1.Session session,
+    List<_i8.MatchSchedulePairingAttempt> matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt
+        .map((e) => e.copyWith(notPlayedMarkedByPlayerDataId: null))
+        .toList();
+    await session.db.update<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [
+        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      ],
+      transaction: transaction,
+    );
+  }
+
   /// Detaches the relation between this [PlayerData] and the given [MatchChatMessage]
   /// by setting the [MatchChatMessage]'s foreign key `playerDataId` to `null`.
   ///
@@ -2355,6 +2517,32 @@ class PlayerDataDetachRowRepository {
     await session.db.updateRow<_i9.MatchSubscription>(
       $matchSubscription,
       columns: [_i9.MatchSubscription.t.playerDataId],
+      transaction: transaction,
+    );
+  }
+
+  /// Detaches the relation between this [PlayerData] and the given [MatchSchedulePairingAttempt]
+  /// by setting the [MatchSchedulePairingAttempt]'s foreign key `notPlayedMarkedByPlayerDataId` to `null`.
+  ///
+  /// This removes the association between the two models without deleting
+  /// the related record.
+  Future<void> notPlayedMarkedSchedules(
+    _i1.Session session,
+    _i8.MatchSchedulePairingAttempt matchSchedulePairingAttempt, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (matchSchedulePairingAttempt.id == null) {
+      throw ArgumentError.notNull('matchSchedulePairingAttempt.id');
+    }
+
+    var $matchSchedulePairingAttempt = matchSchedulePairingAttempt.copyWith(
+      notPlayedMarkedByPlayerDataId: null,
+    );
+    await session.db.updateRow<_i8.MatchSchedulePairingAttempt>(
+      $matchSchedulePairingAttempt,
+      columns: [
+        _i8.MatchSchedulePairingAttempt.t.notPlayedMarkedByPlayerDataId,
+      ],
       transaction: transaction,
     );
   }

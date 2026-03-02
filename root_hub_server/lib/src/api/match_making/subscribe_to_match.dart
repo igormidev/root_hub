@@ -53,6 +53,13 @@ class SubscribeToMatch extends Endpoint {
           );
         }
 
+        if (match.status != MatchScheduleStatus.scheduled) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.onlyScheduledMatchesCanReceiveSubscriptions,
+          );
+        }
+
         if (match.closedForSubscriptions == true) {
           throw RootHubEndpointError.invalidRequest(
             language: language,

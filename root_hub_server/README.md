@@ -6,9 +6,11 @@ Backend for Root Hub. This server provides authentication, match-making APIs, so
 - Authenticates users with Serverpod IDP (email + Google + JWT refresh).
 - Stores player profiles and game metadata.
 - Supports match schedule creation and subscription.
+- Tracks match schedule lifecycle status (`scheduled`, `notPlayed`, `played`) including user-declared cancellation reasons.
 - Supports in-match chat.
 - Supports post/comment social feed.
 - Registers played match results for future rating/ranking logic.
+- Runs a recurring future call to mark stale scheduled matches (`attemptedAt + 24h`) as `notPlayed`.
 - Serves `assets/config.json` for the Flutter app at `/app/assets/assets/config.json`.
 
 ## Structure Map
@@ -37,6 +39,7 @@ root_hub_server/
 │       ├── core/
 │       ├── notifications/             # Firebase Cloud Messaging module
 │       ├── entities/                  # Source-of-truth .spy.yaml models
+│       ├── future_calls/              # Periodic background jobs (match lifecycle maintenance)
 │       ├── generated/                 # Generated Dart protocol/endpoints/models
 │       └── web/
 │           ├── routes/

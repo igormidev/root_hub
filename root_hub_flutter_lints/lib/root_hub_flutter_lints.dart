@@ -274,8 +274,7 @@ class _ServerHardcodedResponseStringRule extends DartLintRule {
     : super(
         code: const LintCode(
           name: 'server_hardcoded_response_string',
-          problemMessage:
-              'Hard-coded response string found in endpoint code.',
+          problemMessage: 'Hard-coded response string found in endpoint code.',
           correctionMessage:
               'Move this response text to server translations. Use `// ignore: server_hardcoded_response_string` only for non-translatable values.',
         ),
@@ -422,7 +421,7 @@ bool _isWidgetClass(ClassDeclaration declaration) {
 }
 
 String _normalizeTypeName(String typeName) {
-  return typeName.split('<').first.split('.').last;
+  return typeName.split('<').first.split('.').last.replaceAll('?', '').trim();
 }
 
 bool _returnsWidgetType(TypeAnnotation? returnType) {
@@ -673,7 +672,7 @@ bool _isLikelyUiTextLiteral(AstNode node) {
 
   if (argumentExpression is NamedExpression) {
     final argumentName = argumentExpression.name.label.name;
-    return _uiTextNamedArgumentNames.contains(argumentName);
+    return _isLikelyUiTextArgumentName(argumentName);
   }
 
   final argumentList = argumentExpression.parent;
@@ -692,6 +691,15 @@ bool _isLikelyUiTextLiteral(AstNode node) {
   }
 
   return _uiTextPositionalInvocationNames.contains(invocationName);
+}
+
+bool _isLikelyUiTextArgumentName(String argumentName) {
+  if (_uiTextNamedArgumentNames.contains(argumentName)) {
+    return true;
+  }
+
+  final normalized = argumentName.toLowerCase();
+  return normalized.endsWith('title') || normalized.endsWith('description');
 }
 
 Expression? _argumentExpressionForNode(AstNode node) {

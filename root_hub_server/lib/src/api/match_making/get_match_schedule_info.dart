@@ -40,6 +40,9 @@ class GetMatchScheduleInfo extends Endpoint {
             host: PlayerData.include(
               authUser: AuthUser.include(),
             ),
+            notPlayedMarkedBy: PlayerData.include(
+              authUser: AuthUser.include(),
+            ),
             subscriptions: MatchSubscription.includeList(
               orderBy: (t) => t.subscribedAt,
               include: MatchSubscription.include(

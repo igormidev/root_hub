@@ -275,6 +275,9 @@ class TranslationsErrorsEn {
 	/// en: 'This scheduled match already has a registered result.'
 	String get scheduledMatchAlreadyHasResult => 'This scheduled match already has a registered result.';
 
+	/// en: 'This scheduled match is already marked as not played.'
+	String get scheduledMatchAlreadyMarkedAsNotPlayed => 'This scheduled match is already marked as not played.';
+
 	/// en: 'Provided location does not match the scheduled pairing attempt location.'
 	String get providedLocationDoesNotMatchScheduledPairing => 'Provided location does not match the scheduled pairing attempt location.';
 
@@ -337,6 +340,21 @@ class TranslationsErrorsEn {
 
 	/// en: 'Only host or subscribed players can register this match result.'
 	String get onlyHostOrSubscribedCanRegister => 'Only host or subscribed players can register this match result.';
+
+	/// en: 'Only host or subscribed players can mark this match as not played.'
+	String get onlyHostOrSubscribedCanCancelMatch => 'Only host or subscribed players can mark this match as not played.';
+
+	/// en: 'Please provide a reason description when selecting "other".'
+	String get cancellationDetailsRequiredForOtherReason => 'Please provide a reason description when selecting "other".';
+
+	/// en: 'Only scheduled matches can receive new subscriptions.'
+	String get onlyScheduledMatchesCanReceiveSubscriptions => 'Only scheduled matches can receive new subscriptions.';
+
+	/// en: 'Only scheduled matches can be edited.'
+	String get onlyScheduledMatchesCanBeEdited => 'Only scheduled matches can be edited.';
+
+	/// en: 'Only scheduled matches can manage player subscriptions.'
+	String get onlyScheduledMatchesCanManagePlayers => 'Only scheduled matches can manage player subscriptions.';
 
 	/// en: '{imageDescription} is required.'
 	String imageRequired({required Object imageDescription}) => '${imageDescription} is required.';
@@ -496,6 +514,9 @@ class TranslationsFallbackEn {
 
 	/// en: 'Unable to register this match result right now. Please try again.'
 	String get unableToRegisterMatchResult => 'Unable to register this match result right now. Please try again.';
+
+	/// en: 'Unable to mark this scheduled match as not played right now. Please try again.'
+	String get unableToCancelScheduledMatch => 'Unable to mark this scheduled match as not played right now. Please try again.';
 
 	/// en: 'Unable to load pending match reports right now. Please try again.'
 	String get unableToLoadPendingMatchReports => 'Unable to load pending match reports right now. Please try again.';

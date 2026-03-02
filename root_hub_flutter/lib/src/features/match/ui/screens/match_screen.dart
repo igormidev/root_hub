@@ -107,7 +107,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
             physics: AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
             ),
-            padding: EdgeInsets.fromLTRB(16, 4, 16, 130),
+            padding: EdgeInsets.fromLTRB(16, 4, 16, 180),
             children: [
               MatchNearbyHeaderWidget(
                 playerData: currentPlayer,

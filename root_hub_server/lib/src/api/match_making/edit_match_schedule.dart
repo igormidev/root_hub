@@ -113,6 +113,13 @@ class EditMatchSchedule extends Endpoint {
           );
         }
 
+        if (matchSchedule.status != MatchScheduleStatus.scheduled) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.onlyScheduledMatchesCanBeEdited,
+          );
+        }
+
         final currentSubscriberCount = matchSchedule.subscriptions?.length ?? 0;
         if (maxPlayers < currentSubscriberCount) {
           throw RootHubEndpointError.invalidRequest(

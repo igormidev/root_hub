@@ -95,6 +95,7 @@ class GetTablesInArea extends Endpoint {
           session,
           where: (t) =>
               t.locationId.inSet(locationIds) &
+              t.status.equals(MatchScheduleStatus.scheduled) &
               (t.attemptedAt >= oldestAllowedScheduleStart),
           orderBy: (t) => t.attemptedAt,
           include: MatchSchedulePairingAttempt.include(
@@ -111,23 +112,7 @@ class GetTablesInArea extends Endpoint {
           return const <MatchSchedulePairingAttempt>[];
         }
 
-        final candidateScheduleIds = candidateSchedules
-            .map((schedule) => schedule.id)
-            .whereType<int>()
-            .toSet();
-        final playedMatches = await PlayedMatch.db.find(
-          session,
-          where: (t) => t.scheduledPairingAttemptId.inSet(candidateScheduleIds),
-        );
-        final promotedScheduleIds = playedMatches
-            .map((playedMatch) => playedMatch.scheduledPairingAttemptId)
-            .toSet();
-
-        return candidateSchedules
-            .where(
-              (schedule) => !promotedScheduleIds.contains(schedule.id),
-            )
-            .toList();
+        return candidateSchedules;
       },
       language: language,
       fallbackDescription: t.fallback.unableToLoadNearbyMatchSchedules,
