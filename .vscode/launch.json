@@ -7,8 +7,17 @@
       "request": "launch",
       "program": "root_hub_flutter/lib/main.dart",
       "args": [
-        "--dart-define=API_URL=http://localhost:8080",
-      ],
+        "--dart-define=SERVER_URL=http://localhost:8080/",
+      ]
     },
+    {
+      "name": "Flutter (DEBUG-SCLOUD)",
+      "type": "dart",
+      "request": "launch",
+      "program": "root_hub_flutter/lib/main.dart",
+      "args": [
+        "--dart-define=SERVER_URL=https://roothub.api.serverpod.space/",
+      ]
+    }
   ]
 }

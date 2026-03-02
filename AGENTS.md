@@ -34,3 +34,15 @@ If structural/architectural conventions, folder conventions, or workflow convent
 
 ## Serverpod MCP Rule
 If a task requires changing the Serverpod backend and there is any uncertainty about framework-specific behavior, API usage, generation workflow, or best practice, consult the Serverpod MCP/docs before implementing the change.
+
+## Serverpod Cloud Deployment Notes
+- Always target the server package directory for cloud commands: `scloud -d root_hub_server ...`.
+- Keep `root_hub_server/scloud.yaml` configured with pre-deploy hook `serverpod generate`.
+- For entries from `root_hub_server/config/passwords.yaml`, use `scloud password set` (not `scloud secret`) so values are available via `session.passwords[...]`.
+- Root Hub cloud domains:
+  - API: `https://roothub.api.serverpod.space`
+  - Web: `https://roothub.serverpod.space`
+- Flutter runtime URL policy:
+  - Release: always force production API URL.
+  - Debug: allow `SERVER_URL` (or local fallback) for local/testing workflows.
+- Current cloud build compatibility note: keep workspace override `json_annotation: 4.9.0` while Serverpod Cloud build runtime is Dart 3.8.x.

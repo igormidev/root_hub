@@ -17,7 +17,8 @@ import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-late String serverUrl;
+const _defaultLocalServerUrl = 'http://localhost:8080/';
+const _productionServerUrl = 'https://roothub.api.serverpod.space/';
 const _preferredLocaleKey = 'preferred_locale';
 const _deviceLocalePreferenceValue = 'device';
 
@@ -26,9 +27,10 @@ void main() async {
 
   const serverUrlFromEnv = String.fromEnvironment('SERVER_URL');
   final config = await AppConfig.loadConfig();
-  final serverUrl = serverUrlFromEnv.isEmpty
-      ? config.apiUrl ?? 'http://localhost:8080/'
-      : serverUrlFromEnv;
+  final serverUrl = _resolveServerUrl(
+    serverUrlFromEnv: serverUrlFromEnv,
+    serverUrlFromConfig: config.apiUrl,
+  );
 
   final Client client =
       Client(
@@ -60,6 +62,28 @@ void main() async {
       ),
     ),
   );
+}
+
+String _resolveServerUrl({
+  required String serverUrlFromEnv,
+  required String? serverUrlFromConfig,
+}) {
+  if (kReleaseMode) {
+    return _productionServerUrl;
+  }
+
+  final normalizedServerUrlFromEnv = serverUrlFromEnv.trim();
+  if (normalizedServerUrlFromEnv.isNotEmpty) {
+    return normalizedServerUrlFromEnv;
+  }
+
+  final normalizedServerUrlFromConfig = serverUrlFromConfig?.trim();
+  if (normalizedServerUrlFromConfig != null &&
+      normalizedServerUrlFromConfig.isNotEmpty) {
+    return normalizedServerUrlFromConfig;
+  }
+
+  return _defaultLocalServerUrl;
 }
 
 class MyApp extends StatelessWidget {
