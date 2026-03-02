@@ -1620,6 +1620,9 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 	/// en: 'Share this match'
 	String get shareThisMatch => 'Share this match';
 
+	/// en: 'Share'
+	String get share => 'Share';
+
 	/// en: 'Subscriptions closed'
 	String get subscriptionsClosed => 'Subscriptions closed';
 
@@ -1683,20 +1686,29 @@ class TranslationsMatchUiSheetsMatchShareSheetEn {
 	/// en: 'Copied'
 	String get copied => 'Copied';
 
-	/// en: 'WhatsApp'
-	String get whatsApp => 'WhatsApp';
+	/// en: 'OR'
+	String get orDivider => 'OR';
 
-	/// en: 'Messenger'
-	String get messenger => 'Messenger';
+	/// en: 'Share in WhatsApp'
+	String get shareInWhatsApp => 'Share in WhatsApp';
 
-	/// en: 'Share'
-	String get share => 'Share';
+	/// en: 'Share in Messenger'
+	String get shareInMessenger => 'Share in Messenger';
+
+	/// en: 'Share in Telegram'
+	String get shareInTelegram => 'Share in Telegram';
+
+	/// en: 'Choose where to share'
+	String get chooseWhereToShare => 'Choose where to share';
 
 	/// en: 'Unable to copy the link.'
 	String get copyFailed => 'Unable to copy the link.';
 
 	/// en: 'Unable to open WhatsApp right now.'
 	String get unableToOpenWhatsApp => 'Unable to open WhatsApp right now.';
+
+	/// en: 'Unable to open Telegram right now.'
+	String get unableToOpenTelegram => 'Unable to open Telegram right now.';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget

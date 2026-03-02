@@ -26,12 +26,13 @@ class MatchShareChannelButtonWidget extends StatelessWidget {
         colorScheme.surfaceContainerHighest.withValues(alpha: 0.65);
     final resolvedForegroundColor = foregroundColor ?? colorScheme.onSurface;
 
-    return Expanded(
+    return SizedBox(
+      width: double.infinity,
       child: FilledButton.tonal(
         onPressed: isLoading ? null : onPressed,
         style: FilledButton.styleFrom(
-          minimumSize: Size(double.infinity, 50),
-          maximumSize: Size(double.infinity, 50),
+          minimumSize: Size(double.infinity, 56),
+          maximumSize: Size(double.infinity, 56),
           backgroundColor: resolvedBackgroundColor,
           foregroundColor: resolvedForegroundColor,
           shape: RoundedRectangleBorder(
@@ -54,16 +55,18 @@ class MatchShareChannelButtonWidget extends StatelessWidget {
                   key: ValueKey('label-$label'),
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(icon, size: 19),
-                    SizedBox(width: 7),
+                    Icon(icon, size: 22),
+                    SizedBox(width: 10),
                     Flexible(
                       child: Text(
                         label,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w900,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: resolvedForegroundColor,
+                            ),
                       ),
                     ),
                   ],

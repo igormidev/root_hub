@@ -442,6 +442,7 @@
       "subscribed": "Inscrito",
       "tapCardToOpenChat": "Toque no cartão para abrir o bate-papo",
       "shareThisMatch": "Compartilhar partida",
+      "share": "Compartilhar",
       "subscriptionsClosed": "Assinaturas encerradas",
       "openFullLocationDetails": "Abra detalhes completos do local",
       "places": "vagas",
@@ -462,11 +463,14 @@
       "copyOrShareToInvitePlayers": "Copie o link ou compartilhe direto para convidar jogadores.",
       "copyLink": "Copiar link",
       "copied": "Copiado",
-      "whatsApp": "WhatsApp",
-      "messenger": "Messenger",
-      "share": "Compartilhar",
+      "orDivider": "OU",
+      "shareInWhatsApp": "Compartilhar no WhatsApp",
+      "shareInMessenger": "Compartilhar no Messenger",
+      "shareInTelegram": "Compartilhar no Telegram",
+      "chooseWhereToShare": "Escolher onde compartilhar",
       "copyFailed": "Não foi possível copiar o link.",
-      "unableToOpenWhatsApp": "Não foi possível abrir o WhatsApp agora."
+      "unableToOpenWhatsApp": "Não foi possível abrir o WhatsApp agora.",
+      "unableToOpenTelegram": "Não foi possível abrir o Telegram agora."
     },
     "ui_screens_match_location_header_image_widget": {
       "locationDetails": "Detalhes do local"

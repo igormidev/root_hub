@@ -154,6 +154,35 @@ class MatchTableCardWidget extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Tooltip(
+                message:
+                    t.match.ui_screens_match_table_card_widget.shareThisMatch,
+                child: FilledButton.tonalIcon(
+                  onPressed: () async {
+                    await onShareTable(table);
+                  },
+                  style: FilledButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
+                    minimumSize: Size(0, 34),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.share_rounded,
+                    size: 16,
+                  ),
+                  label: Text(
+                    t.match.ui_screens_match_table_card_widget.share,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
+              Tooltip(
                 triggerMode: TooltipTriggerMode.tap,
                 message: t.match.ui_screens_match_table_card_widget
                     .subscriptionTooltip(
@@ -247,23 +276,6 @@ class MatchTableCardWidget extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Tooltip(
-                    message: t
-                        .match
-                        .ui_screens_match_table_card_widget
-                        .shareThisMatch,
-                    child: IconButton(
-                      visualDensity: VisualDensity.compact,
-                      onPressed: () async {
-                        await onShareTable(table);
-                      },
-                      icon: Icon(
-                        Icons.share_rounded,
-                        color: colorScheme.primary,
-                        size: 20,
-                      ),
-                    ),
-                  ),
                   Tooltip(
                     message: t
                         .match

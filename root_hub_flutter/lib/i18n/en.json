@@ -459,6 +459,7 @@
       "subscribed": "Subscribed",
       "tapCardToOpenChat": "Tap card to open chat",
       "shareThisMatch": "Share this match",
+      "share": "Share",
       "subscriptionsClosed": "Subscriptions closed",
       "openFullLocationDetails": "Open full location details",
       "places": "places",
@@ -479,11 +480,14 @@
       "copyOrShareToInvitePlayers": "Copy the link or share directly to invite players.",
       "copyLink": "Copy link",
       "copied": "Copied",
-      "whatsApp": "WhatsApp",
-      "messenger": "Messenger",
-      "share": "Share",
+      "orDivider": "OR",
+      "shareInWhatsApp": "Share in WhatsApp",
+      "shareInMessenger": "Share in Messenger",
+      "shareInTelegram": "Share in Telegram",
+      "chooseWhereToShare": "Choose where to share",
       "copyFailed": "Unable to copy the link.",
-      "unableToOpenWhatsApp": "Unable to open WhatsApp right now."
+      "unableToOpenWhatsApp": "Unable to open WhatsApp right now.",
+      "unableToOpenTelegram": "Unable to open Telegram right now."
     },
     "ui_screens_match_location_header_image_widget": {
       "locationDetails": "Location Details"

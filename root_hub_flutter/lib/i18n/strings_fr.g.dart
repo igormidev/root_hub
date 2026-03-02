@@ -896,6 +896,7 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetFr extends TranslationsMatc
 	@override String get subscribed => 'Abonné';
 	@override String get tapCardToOpenChat => 'Appuyez sur la carte pour ouvrir le chat';
 	@override String get shareThisMatch => 'Partager la partie';
+	@override String get share => 'Partager';
 	@override String get subscriptionsClosed => 'Inscriptions clôturées';
 	@override String get openFullLocationDetails => 'Ouvrir les détails complets de l\'emplacement';
 	@override String get places => 'places';
@@ -923,11 +924,14 @@ class _TranslationsMatchUiSheetsMatchShareSheetFr extends TranslationsMatchUiShe
 	@override String get copyOrShareToInvitePlayers => 'Copiez le lien ou partagez-le pour inviter des joueurs.';
 	@override String get copyLink => 'Copier le lien';
 	@override String get copied => 'Copié';
-	@override String get whatsApp => 'WhatsApp';
-	@override String get messenger => 'Messenger';
-	@override String get share => 'Partager';
+	@override String get orDivider => 'OU';
+	@override String get shareInWhatsApp => 'Partager sur WhatsApp';
+	@override String get shareInMessenger => 'Partager sur Messenger';
+	@override String get shareInTelegram => 'Partager sur Telegram';
+	@override String get chooseWhereToShare => 'Choisir où partager';
 	@override String get copyFailed => 'Impossible de copier le lien.';
 	@override String get unableToOpenWhatsApp => 'Impossible d\'ouvrir WhatsApp pour le moment.';
+	@override String get unableToOpenTelegram => 'Impossible d\'ouvrir Telegram pour le moment.';
 }
 
 // Path: match.ui_screens_match_location_header_image_widget

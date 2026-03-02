@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_bottom_actions_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_drag_handle_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_participant_card_widget.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableInfoContentWidget extends StatelessWidget {
   final MatchSchedulePairingAttempt table;
@@ -16,6 +16,8 @@ class MatchTableInfoContentWidget extends StatelessWidget {
   final bool isRemovingPlayer;
   final VoidCallback onClose;
   final VoidCallback onUnsubscribe;
+  final void Function(Location? location) onOpenLocationInfo;
+  final Future<void> Function(MatchSchedulePairingAttempt table) onShareTable;
   final Future<void> Function(List<MatchSchedulePlayerSnapshot>)
   onShowRemovePlayerDialog;
 
@@ -28,6 +30,8 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     required this.isRemovingPlayer,
     required this.onClose,
     required this.onUnsubscribe,
+    required this.onOpenLocationInfo,
+    required this.onShareTable,
     required this.onShowRemovePlayerDialog,
   });
 
@@ -37,6 +41,7 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     final localizations = MaterialLocalizations.of(context);
 
     final startAt = table.attemptedAt.toLocal();
+    final canShareTable = table.id != null && table.id! > 0;
     final startLabel =
         '${localizations.formatMediumDate(startAt)} • '
         '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(startAt))}';
@@ -70,28 +75,58 @@ class MatchTableInfoContentWidget extends StatelessWidget {
         MatchTableInfoDragHandleWidget(),
         Expanded(
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(18, 4, 18, 18),
+            padding: EdgeInsets.fromLTRB(18, 16, 18, 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  t
-                      .match
-                      .ui_sheets_match_table_info_content_widget
-                      .tableDetails,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  table.title,
-                  style: GoogleFonts.cinzel(
-                    fontSize: 29,
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurface,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        table.title,
+                        style: GoogleFonts.cinzel(
+                          fontSize: 29,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    if (canShareTable) ...[
+                      SizedBox(width: 10),
+                      Tooltip(
+                        message: t
+                            .match
+                            .ui_screens_match_table_card_widget
+                            .shareThisMatch,
+                        child: FilledButton.tonalIcon(
+                          onPressed: () async {
+                            await onShareTable(table);
+                          },
+                          style: FilledButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            padding: EdgeInsets.fromLTRB(10, 6, 10, 6),
+                            minimumSize: Size(0, 42),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: Icon(
+                            Icons.share_rounded,
+                            size: 18,
+                          ),
+                          label: Text(
+                            t.match.ui_screens_match_table_card_widget.share,
+                            style: Theme.of(context).textTheme.labelLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 if (table.description?.trim().isNotEmpty == true) ...[
                   SizedBox(height: 4),
@@ -235,6 +270,24 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                               locationTitle,
                               style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                          SizedBox(width: 6),
+                          Tooltip(
+                            message: t
+                                .match
+                                .ui_screens_match_table_card_widget
+                                .openFullLocationDetails,
+                            child: IconButton(
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () {
+                                onOpenLocationInfo(location);
+                              },
+                              icon: Icon(
+                                Icons.info_outline_rounded,
+                                color: colorScheme.primary,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ],

@@ -442,6 +442,7 @@
       "subscribed": "Abonné",
       "tapCardToOpenChat": "Appuyez sur la carte pour ouvrir le chat",
       "shareThisMatch": "Partager la partie",
+      "share": "Partager",
       "subscriptionsClosed": "Inscriptions clôturées",
       "openFullLocationDetails": "Ouvrir les détails complets de l'emplacement",
       "places": "places",
@@ -462,11 +463,14 @@
       "copyOrShareToInvitePlayers": "Copiez le lien ou partagez-le pour inviter des joueurs.",
       "copyLink": "Copier le lien",
       "copied": "Copié",
-      "whatsApp": "WhatsApp",
-      "messenger": "Messenger",
-      "share": "Partager",
+      "orDivider": "OU",
+      "shareInWhatsApp": "Partager sur WhatsApp",
+      "shareInMessenger": "Partager sur Messenger",
+      "shareInTelegram": "Partager sur Telegram",
+      "chooseWhereToShare": "Choisir où partager",
       "copyFailed": "Impossible de copier le lien.",
-      "unableToOpenWhatsApp": "Impossible d'ouvrir WhatsApp pour le moment."
+      "unableToOpenWhatsApp": "Impossible d'ouvrir WhatsApp pour le moment.",
+      "unableToOpenTelegram": "Impossible d'ouvrir Telegram pour le moment."
     },
     "ui_screens_match_location_header_image_widget": {
       "locationDetails": "Détails de l'emplacement"
