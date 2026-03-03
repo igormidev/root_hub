@@ -39,3 +39,14 @@ serverpod generate
 ```
 
 Always rerun `serverpod generate` after changing endpoint signatures, protocol enums, or `.spy.yaml` entities.
+
+## Local Release Automation
+If you use local deployment automation, keep release scripts under `scripts/deploy/`.
+
+- Keep credentials in `scripts/deploy/deploy.env` (this file is gitignored).
+- Typical split:
+  - deploy server only
+  - deploy mobile only
+  - deploy iOS only
+  - deploy Android only
+  - deploy everything (server + mobile)
