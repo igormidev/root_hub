@@ -36,6 +36,7 @@ require_cmd fastlane
 
 FLUTTER_PROJECT_DIR="${FLUTTER_PROJECT_DIR:-${REPO_ROOT}/root_hub_flutter}"
 ANDROID_GRADLE_FILE="${FLUTTER_PROJECT_DIR}/android/app/build.gradle.kts"
+PUBSPEC_FILE="${FLUTTER_PROJECT_DIR}/pubspec.yaml"
 ANDROID_AAB_PATH="${ANDROID_AAB_PATH:-}"
 ANDROID_PACKAGE_NAME="${ANDROID_PACKAGE_NAME:-com.root_hub_flutter}"
 ANDROID_BUILD_NAME="${ANDROID_BUILD_NAME:-}"
@@ -44,9 +45,12 @@ PLAY_TRACK="${PLAY_TRACK:-internal}"
 PLAY_RELEASE_STATUS="${PLAY_RELEASE_STATUS:-draft}"
 PLAY_SKIP_UPLOAD="${PLAY_SKIP_UPLOAD:-0}"
 GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH="${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH:-REPLACE_ME}"
+AUTO_BUMP_VERSION="${AUTO_BUMP_VERSION:-1}"
+VERSION_BUMP_PART="${VERSION_BUMP_PART:-patch}"
 
 [[ -d "${FLUTTER_PROJECT_DIR}" ]] || fail "Flutter project directory not found: ${FLUTTER_PROJECT_DIR}"
 [[ -f "${ANDROID_GRADLE_FILE}" ]] || fail "Android Gradle file not found: ${ANDROID_GRADLE_FILE}"
+[[ -f "${PUBSPEC_FILE}" ]] || fail "Flutter pubspec file not found: ${PUBSPEC_FILE}"
 
 if grep -q 'signingConfig = signingConfigs.getByName("debug")' "${ANDROID_GRADLE_FILE}"; then
   fail "Android release still uses debug signing in ${ANDROID_GRADLE_FILE}. Configure release keystore signing before Play Store upload."
@@ -66,14 +70,103 @@ if [[ "${project_package_name}" != "${ANDROID_PACKAGE_NAME}" ]]; then
   fail "ANDROID_PACKAGE_NAME (${ANDROID_PACKAGE_NAME}) does not match project applicationId (${project_package_name})."
 fi
 
+read_pubspec_version() {
+  local version_value
+  version_value="$(awk '/^version:[[:space:]]*/ { print $2; exit }' "${PUBSPEC_FILE}")"
+  [[ -n "${version_value}" ]] || fail "Could not read version from ${PUBSPEC_FILE}."
+
+  local build_name="${version_value%%+*}"
+  local build_number="${version_value##*+}"
+  if [[ "${build_name}" == "${version_value}" ]]; then
+    build_number="1"
+  fi
+
+  [[ "${build_number}" =~ ^[0-9]+$ ]] || fail "Invalid build number in ${PUBSPEC_FILE}: ${build_number}"
+  printf '%s %s\n' "${build_name}" "${build_number}"
+}
+
+bump_build_name() {
+  local current="$1"
+  local part="$2"
+  local major minor patch
+  IFS='.' read -r major minor patch <<< "${current}"
+  [[ "${major}" =~ ^[0-9]+$ && "${minor}" =~ ^[0-9]+$ && "${patch}" =~ ^[0-9]+$ ]] || fail "Build name '${current}' is not in x.y.z format."
+
+  case "${part}" in
+    major)
+      major=$((major + 1))
+      minor=0
+      patch=0
+      ;;
+    minor)
+      minor=$((minor + 1))
+      patch=0
+      ;;
+    patch)
+      patch=$((patch + 1))
+      ;;
+    *)
+      fail "VERSION_BUMP_PART must be one of: major, minor, patch."
+      ;;
+  esac
+
+  printf '%s.%s.%s\n' "${major}" "${minor}" "${patch}"
+}
+
+write_pubspec_version() {
+  local build_name="$1"
+  local build_number="$2"
+  local temp_file
+  temp_file="$(mktemp)"
+
+  awk -v line="version: ${build_name}+${build_number}" '
+    BEGIN { updated = 0 }
+    /^version:[[:space:]]*/ && updated == 0 {
+      print line
+      updated = 1
+      next
+    }
+    { print }
+    END {
+      if (updated == 0) {
+        exit 1
+      }
+    }
+  ' "${PUBSPEC_FILE}" > "${temp_file}" || fail "Failed to update version in ${PUBSPEC_FILE}."
+
+  mv "${temp_file}" "${PUBSPEC_FILE}"
+}
+
+read -r current_build_name current_build_number < <(read_pubspec_version)
+target_build_name="${ANDROID_BUILD_NAME:-${current_build_name}}"
+target_build_number="${ANDROID_BUILD_NUMBER:-${current_build_number}}"
+
+if [[ "${AUTO_BUMP_VERSION}" == "1" ]]; then
+  if [[ -z "${ANDROID_BUILD_NAME}" ]]; then
+    target_build_name="$(bump_build_name "${current_build_name}" "${VERSION_BUMP_PART}")"
+  fi
+
+  if [[ -z "${ANDROID_BUILD_NUMBER}" ]]; then
+    target_build_number="$((current_build_number + 1))"
+  fi
+fi
+
+[[ "${target_build_number}" =~ ^[0-9]+$ ]] || fail "Target build number must be numeric, got '${target_build_number}'."
+
+write_pubspec_version "${target_build_name}" "${target_build_number}"
+log "Using app version ${target_build_name}+${target_build_number}"
+
 log "Building Android App Bundle"
-build_cmd=(flutter build appbundle --release)
-if [[ -n "${ANDROID_BUILD_NAME}" ]]; then
-  build_cmd+=(--build-name "${ANDROID_BUILD_NAME}")
-fi
-if [[ -n "${ANDROID_BUILD_NUMBER}" ]]; then
-  build_cmd+=(--build-number "${ANDROID_BUILD_NUMBER}")
-fi
+build_cmd=(
+  flutter
+  build
+  appbundle
+  --release
+  --build-name
+  "${target_build_name}"
+  --build-number
+  "${target_build_number}"
+)
 
 (
   cd "${FLUTTER_PROJECT_DIR}"

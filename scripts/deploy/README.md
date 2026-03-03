@@ -6,6 +6,55 @@ This file lists what is still missing so `scripts/deploy/*.sh` can run end-to-en
 
 `deploy.env` uses `VAR=${VAR:-...}` style assignments, so shell-exported variables still override file defaults.
 
+## What scripts do now
+- iOS deploy script:
+  - auto bumps `root_hub_flutter/pubspec.yaml` version/build by default
+  - runs `flutter pub get`
+  - runs `pod install` (`IOS_POD_REPO_UPDATE=1` to force repo update)
+  - builds IPA and uploads
+- Android deploy script:
+  - auto bumps `root_hub_flutter/pubspec.yaml` version/build by default
+  - runs `flutter pub get`
+  - builds AAB and uploads
+- `deploy_mobile.sh` bumps once (in iOS step) and reuses that version for Android.
+
+## How to run
+From repo root:
+
+```bash
+scripts/deploy/deploy_everything.sh
+```
+
+Only server:
+
+```bash
+scripts/deploy/deploy_server.sh
+```
+
+Only mobile (iOS then Android):
+
+```bash
+scripts/deploy/deploy_mobile.sh
+```
+
+Only iOS upload:
+
+```bash
+scripts/deploy/deploy_appstore.sh
+```
+
+Only Android upload:
+
+```bash
+scripts/deploy/deploy_playstore.sh
+```
+
+Disable auto bump for one run:
+
+```bash
+AUTO_BUMP_VERSION=0 scripts/deploy/deploy_appstore.sh
+```
+
 ## Already known (pre-filled in `deploy.env`)
 - `SCLOUD_PROJECT_ID=roothub`
 - `IOS_BUNDLE_ID=com.rootHubFlutter`

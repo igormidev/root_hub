@@ -38,9 +38,11 @@ is_configured() {
 
 require_cmd flutter
 require_cmd xcrun
+require_cmd pod
 
 FLUTTER_PROJECT_DIR="${FLUTTER_PROJECT_DIR:-${REPO_ROOT}/root_hub_flutter}"
 IOS_PROJECT_FILE="${FLUTTER_PROJECT_DIR}/ios/Runner.xcodeproj/project.pbxproj"
+PUBSPEC_FILE="${FLUTTER_PROJECT_DIR}/pubspec.yaml"
 IOS_EXPORT_OPTIONS_PLIST="${IOS_EXPORT_OPTIONS_PLIST:-REPLACE_ME}"
 IOS_BUNDLE_ID="${IOS_BUNDLE_ID:-com.rootHubFlutter}"
 IOS_BUILD_NAME="${IOS_BUILD_NAME:-}"
@@ -48,6 +50,9 @@ IOS_BUILD_NUMBER="${IOS_BUILD_NUMBER:-}"
 IOS_IPA_PATH="${IOS_IPA_PATH:-}"
 APPSTORE_SKIP_UPLOAD="${APPSTORE_SKIP_UPLOAD:-0}"
 APPSTORE_VERIFY_APP_LINK="${APPSTORE_VERIFY_APP_LINK:-0}"
+AUTO_BUMP_VERSION="${AUTO_BUMP_VERSION:-1}"
+VERSION_BUMP_PART="${VERSION_BUMP_PART:-patch}"
+IOS_POD_REPO_UPDATE="${IOS_POD_REPO_UPDATE:-0}"
 
 APP_STORE_CONNECT_PROVIDER_PUBLIC_ID="${APP_STORE_CONNECT_PROVIDER_PUBLIC_ID:-}"
 APP_STORE_CONNECT_API_KEY_ID="${APP_STORE_CONNECT_API_KEY_ID:-}"
@@ -56,9 +61,100 @@ APP_STORE_CONNECT_API_KEY_PATH="${APP_STORE_CONNECT_API_KEY_PATH:-}"
 
 [[ -d "${FLUTTER_PROJECT_DIR}" ]] || fail "Flutter project directory not found: ${FLUTTER_PROJECT_DIR}"
 [[ -f "${IOS_PROJECT_FILE}" ]] || fail "iOS project file not found: ${IOS_PROJECT_FILE}"
+[[ -f "${PUBSPEC_FILE}" ]] || fail "Flutter pubspec file not found: ${PUBSPEC_FILE}"
 
-if [[ "${IOS_EXPORT_OPTIONS_PLIST}" == "REPLACE_ME" || ! -f "${IOS_EXPORT_OPTIONS_PLIST}" ]]; then
-  fail "Set IOS_EXPORT_OPTIONS_PLIST to a valid ExportOptions.plist path for App Store export."
+read_pubspec_version() {
+  local version_value
+  version_value="$(awk '/^version:[[:space:]]*/ { print $2; exit }' "${PUBSPEC_FILE}")"
+  [[ -n "${version_value}" ]] || fail "Could not read version from ${PUBSPEC_FILE}."
+
+  local build_name="${version_value%%+*}"
+  local build_number="${version_value##*+}"
+  if [[ "${build_name}" == "${version_value}" ]]; then
+    build_number="1"
+  fi
+
+  [[ "${build_number}" =~ ^[0-9]+$ ]] || fail "Invalid build number in ${PUBSPEC_FILE}: ${build_number}"
+  printf '%s %s\n' "${build_name}" "${build_number}"
+}
+
+bump_build_name() {
+  local current="$1"
+  local part="$2"
+  local major minor patch
+  IFS='.' read -r major minor patch <<< "${current}"
+  [[ "${major}" =~ ^[0-9]+$ && "${minor}" =~ ^[0-9]+$ && "${patch}" =~ ^[0-9]+$ ]] || fail "Build name '${current}' is not in x.y.z format."
+
+  case "${part}" in
+    major)
+      major=$((major + 1))
+      minor=0
+      patch=0
+      ;;
+    minor)
+      minor=$((minor + 1))
+      patch=0
+      ;;
+    patch)
+      patch=$((patch + 1))
+      ;;
+    *)
+      fail "VERSION_BUMP_PART must be one of: major, minor, patch."
+      ;;
+  esac
+
+  printf '%s.%s.%s\n' "${major}" "${minor}" "${patch}"
+}
+
+write_pubspec_version() {
+  local build_name="$1"
+  local build_number="$2"
+  local temp_file
+  temp_file="$(mktemp)"
+
+  awk -v line="version: ${build_name}+${build_number}" '
+    BEGIN { updated = 0 }
+    /^version:[[:space:]]*/ && updated == 0 {
+      print line
+      updated = 1
+      next
+    }
+    { print }
+    END {
+      if (updated == 0) {
+        exit 1
+      }
+    }
+  ' "${PUBSPEC_FILE}" > "${temp_file}" || fail "Failed to update version in ${PUBSPEC_FILE}."
+
+  mv "${temp_file}" "${PUBSPEC_FILE}"
+}
+
+read -r current_build_name current_build_number < <(read_pubspec_version)
+target_build_name="${IOS_BUILD_NAME:-${current_build_name}}"
+target_build_number="${IOS_BUILD_NUMBER:-${current_build_number}}"
+
+if [[ "${AUTO_BUMP_VERSION}" == "1" ]]; then
+  if [[ -z "${IOS_BUILD_NAME}" ]]; then
+    target_build_name="$(bump_build_name "${current_build_name}" "${VERSION_BUMP_PART}")"
+  fi
+
+  if [[ -z "${IOS_BUILD_NUMBER}" ]]; then
+    target_build_number="$((current_build_number + 1))"
+  fi
+fi
+
+[[ "${target_build_number}" =~ ^[0-9]+$ ]] || fail "Target build number must be numeric, got '${target_build_number}'."
+
+write_pubspec_version "${target_build_name}" "${target_build_number}"
+log "Using app version ${target_build_name}+${target_build_number}"
+
+build_export_args=()
+if is_configured "${IOS_EXPORT_OPTIONS_PLIST}"; then
+  [[ -f "${IOS_EXPORT_OPTIONS_PLIST}" ]] || fail "IOS_EXPORT_OPTIONS_PLIST does not exist: ${IOS_EXPORT_OPTIONS_PLIST}"
+  build_export_args=(--export-options-plist "${IOS_EXPORT_OPTIONS_PLIST}")
+else
+  log "IOS_EXPORT_OPTIONS_PLIST is not set; using Flutter default export options."
 fi
 
 project_bundle_id="$({
@@ -121,17 +217,29 @@ if [[ "${APPSTORE_VERIFY_APP_LINK}" == "1" ]]; then
 fi
 
 log "Building iOS IPA"
-build_cmd=(flutter build ipa --release --export-options-plist "${IOS_EXPORT_OPTIONS_PLIST}")
-if [[ -n "${IOS_BUILD_NAME}" ]]; then
-  build_cmd+=(--build-name "${IOS_BUILD_NAME}")
-fi
-if [[ -n "${IOS_BUILD_NUMBER}" ]]; then
-  build_cmd+=(--build-number "${IOS_BUILD_NUMBER}")
+build_cmd=(
+  flutter
+  build
+  ipa
+  --release
+  --build-name
+  "${target_build_name}"
+  --build-number
+  "${target_build_number}"
+)
+if [[ "${#build_export_args[@]}" -gt 0 ]]; then
+  build_cmd+=("${build_export_args[@]}")
 fi
 
 (
   cd "${FLUTTER_PROJECT_DIR}"
   flutter pub get
+  cd ios
+  if [[ "${IOS_POD_REPO_UPDATE}" == "1" ]]; then
+    pod repo update
+  fi
+  pod install
+  cd ..
   "${build_cmd[@]}"
 )
 
@@ -162,6 +270,7 @@ if is_configured "${APP_STORE_CONNECT_API_KEY_ID}" && is_configured "${APP_STORE
     --apiKey "${APP_STORE_CONNECT_API_KEY_ID}" \
     --apiIssuer "${APP_STORE_CONNECT_API_ISSUER_ID}"
 else
+  require_env APP_STORE_CONNECT_PROVIDER_PUBLIC_ID
   require_env APP_STORE_CONNECT_USERNAME
   require_env APP_STORE_CONNECT_APP_SPECIFIC_PASSWORD
 
@@ -170,6 +279,7 @@ else
     --upload-app \
     --type ios \
     --file "${IOS_IPA_PATH}" \
+    --provider-public-id "${APP_STORE_CONNECT_PROVIDER_PUBLIC_ID}" \
     --username "${APP_STORE_CONNECT_USERNAME}" \
     --password "${APP_STORE_CONNECT_APP_SPECIFIC_PASSWORD}"
 fi
