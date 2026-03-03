@@ -648,6 +648,21 @@ class TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEn {
 	/// en: 'ratio'
 	String get ratioLabel => 'ratio';
 
+	/// en: 'Theme'
+	String get theme => 'Theme';
+
+	/// en: 'Light mode is active'
+	String get themeDescriptionLight => 'Light mode is active';
+
+	/// en: 'Dark mode is active'
+	String get themeDescriptionDark => 'Dark mode is active';
+
+	/// en: 'Light'
+	String get lightMode => 'Light';
+
+	/// en: 'Dark'
+	String get darkMode => 'Dark';
+
 	/// en: 'Language'
 	String get language => 'Language';
 

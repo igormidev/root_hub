@@ -397,6 +397,11 @@ class _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetDe extends Tran
 	@override String get xLabel => 'X';
 	@override String get yLabel => 'j';
 	@override String get ratioLabel => 'Radius';
+	@override String get theme => 'Thema';
+	@override String get themeDescriptionLight => 'Hellmodus ist aktiv';
+	@override String get themeDescriptionDark => 'Dunkelmodus ist aktiv';
+	@override String get lightMode => 'Hell';
+	@override String get darkMode => 'Dunkel';
 	@override String get language => 'Sprache';
 	@override String get useDeviceLanguage => 'Verwenden Sie die Gerätesprache';
 	@override String get english => 'Englisch';

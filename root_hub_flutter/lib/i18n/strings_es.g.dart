@@ -397,6 +397,11 @@ class _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetEs extends Tran
 	@override String get xLabel => 'incógnita';
 	@override String get yLabel => 'y';
 	@override String get ratioLabel => 'radio';
+	@override String get theme => 'Tema';
+	@override String get themeDescriptionLight => 'El modo claro está activo';
+	@override String get themeDescriptionDark => 'El modo oscuro está activo';
+	@override String get lightMode => 'Claro';
+	@override String get darkMode => 'Oscuro';
 	@override String get language => 'Idioma';
 	@override String get useDeviceLanguage => 'Usar el idioma del dispositivo';
 	@override String get english => 'Inglés';

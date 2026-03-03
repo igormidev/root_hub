@@ -12,6 +12,7 @@ import 'package:root_hub_flutter/src/global_providers/go_router_providers.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
+import 'package:root_hub_flutter/src/states/theme_mode/theme_mode_provider.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -142,6 +143,9 @@ class _RouterAppState extends ConsumerState<_RouterApp> {
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
+    final themeMode = ref.watch(
+      themeModeProvider.select((state) => state.themeMode),
+    );
 
     return MaterialApp.router(
       title: context.t.app.rootHub,
@@ -153,7 +157,7 @@ class _RouterAppState extends ConsumerState<_RouterApp> {
         seedColor: const Color(0xFF6A3D1F),
         brightness: Brightness.dark,
       ),
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,

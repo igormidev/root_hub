@@ -6,10 +6,12 @@ import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_info_card_widget.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_profile_drawer_profile_image_widget.dart';
+import 'package:root_hub_flutter/src/features/dashboard/ui/widgets/dashboard_theme_mode_toggle_widget.dart';
 import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/shared_preferences_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_provider.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_profile_state.dart';
+import 'package:root_hub_flutter/src/states/theme_mode/theme_mode_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _preferredLocaleKey = 'preferred_locale';
@@ -157,6 +159,9 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
       serverSupportedTranslationProvider,
     );
     final currentLocaleLabel = _localeLabel(LocaleSettings.currentLocale);
+    final isDarkModeEnabled = ref.watch(
+      themeModeProvider.select((state) => state.themeMode == ThemeMode.dark),
+    );
     final resolvedAreaLabel = _resolvedAreaLabel(
       profileState: profileState,
       currentLocation: currentLocation,
@@ -444,6 +449,36 @@ class DashboardProfileDrawerWidget extends ConsumerWidget {
                         );
                       },
                       isLoading: isUpdatingPreferredLanguage,
+                    ),
+                    SizedBox(height: 12),
+                    DashboardThemeModeToggleWidget(
+                      isDarkModeEnabled: isDarkModeEnabled,
+                      onDarkModeChanged: (value) {
+                        ref
+                            .read(themeModeProvider.notifier)
+                            .setDarkModeEnabled(value);
+                      },
+                      title: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .theme,
+                      subtitle: isDarkModeEnabled
+                          ? t
+                                .dashboard
+                                .ui_widgets_dashboard_profile_drawer_widget
+                                .themeDescriptionDark
+                          : t
+                                .dashboard
+                                .ui_widgets_dashboard_profile_drawer_widget
+                                .themeDescriptionLight,
+                      lightLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .lightMode,
+                      darkLabel: t
+                          .dashboard
+                          .ui_widgets_dashboard_profile_drawer_widget
+                          .darkMode,
                     ),
                     SizedBox(height: 2),
                     SizedBox(

@@ -397,6 +397,11 @@ class _TranslationsDashboardUiWidgetsDashboardProfileDrawerWidgetPtBr extends Tr
 	@override String get xLabel => 'x';
 	@override String get yLabel => 'y';
 	@override String get ratioLabel => 'raio';
+	@override String get theme => 'Tema';
+	@override String get themeDescriptionLight => 'O modo claro está ativo';
+	@override String get themeDescriptionDark => 'O modo escuro está ativo';
+	@override String get lightMode => 'Claro';
+	@override String get darkMode => 'Escuro';
 	@override String get language => 'Idioma';
 	@override String get useDeviceLanguage => 'Usar o idioma do dispositivo';
 	@override String get english => 'Inglês';
