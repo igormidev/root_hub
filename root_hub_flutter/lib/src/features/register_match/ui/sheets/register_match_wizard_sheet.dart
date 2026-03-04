@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
@@ -59,6 +62,8 @@ class RegisterMatchWizardSheet extends ConsumerStatefulWidget {
 
 class _RegisterMatchWizardSheetState
     extends ConsumerState<RegisterMatchWizardSheet> {
+  static const int _maxProofImageBytes = 6 * 1024 * 1024;
+
   final ImagePicker _imagePicker = ImagePicker();
 
   late final Future<MatchScheduleInfo> _tableDetailsFuture;
@@ -1137,7 +1142,7 @@ class _RegisterMatchWizardSheetState
       return;
     }
 
-    final bytes = await pickedImage.readAsBytes();
+    final bytes = await _readImageBytesByStreaming(pickedImage);
     if (!mounted) {
       return;
     }
@@ -1155,12 +1160,53 @@ class _RegisterMatchWizardSheetState
       return;
     }
 
+    var bytesToSubmit = bytes;
+    var fileName = pickedImage.name;
+    var contentType = pickedImage.mimeType;
+
+    if (bytesToSubmit.length > _maxProofImageBytes) {
+      final shouldCompress = await _showImageCompressionDialog(
+        imageBytes: bytesToSubmit.length,
+        maxBytes: _maxProofImageBytes,
+      );
+      if (!mounted || !shouldCompress) {
+        return;
+      }
+
+      final compressedImageBytes = _compressImageToAllowedSize(
+        bytesToSubmit,
+        maxBytes: _maxProofImageBytes,
+      );
+      if (compressedImageBytes == null) {
+        await showErrorDialog(
+          context,
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .invalidImage,
+          description: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .selectedImageIsEmptyChooseAnotherImage,
+        );
+        return;
+      }
+
+      bytesToSubmit = compressedImageBytes;
+      fileName = _resolveCompressedImageFileName(
+        originalFileName: pickedImage.name,
+        isGroupPhoto: isGroupPhoto,
+      );
+      contentType = 'image/jpeg';
+    }
+
     final selectedImage = _ProofImageSelection(
-      bytes: bytes,
-      fileName: pickedImage.name.isEmpty
-          ? (isGroupPhoto ? 'group-photo.jpg' : 'board-photo.jpg')
-          : pickedImage.name,
-      contentType: pickedImage.mimeType,
+      bytes: bytesToSubmit,
+      fileName: _resolveProofImageFileName(
+        originalFileName: fileName,
+        isGroupPhoto: isGroupPhoto,
+      ),
+      contentType: contentType,
     );
 
     setState(() {
@@ -1170,6 +1216,127 @@ class _RegisterMatchWizardSheetState
         _boardPhoto = selectedImage;
       }
     });
+  }
+
+  Future<Uint8List> _readImageBytesByStreaming(XFile pickedImage) async {
+    final bytesBuilder = BytesBuilder(copy: false);
+    await for (final chunk in pickedImage.openRead()) {
+      bytesBuilder.add(chunk);
+    }
+    return bytesBuilder.takeBytes();
+  }
+
+  Future<bool> _showImageCompressionDialog({
+    required int imageBytes,
+    required int maxBytes,
+  }) async {
+    final selectedImageMb = _formatMegabytes(imageBytes);
+    final maxAllowedMb = _formatMegabytes(maxBytes);
+
+    final shouldCompress = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(
+            t.match.ui_screens_match_chat_screen.imageIsTooLarge,
+          ),
+          content: Text(
+            t.match.ui_screens_match_chat_screen.imageCompressionPrompt(
+              selectedImageMb: selectedImageMb,
+              maxAllowedMb: maxAllowedMb,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.cancel2,
+              ),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.compress,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    return shouldCompress ?? false;
+  }
+
+  Uint8List? _compressImageToAllowedSize(
+    Uint8List sourceBytes, {
+    required int maxBytes,
+  }) {
+    final decodedImage = img.decodeImage(sourceBytes);
+    if (decodedImage == null) {
+      return null;
+    }
+
+    var workingImage = decodedImage;
+    const qualityCandidates = <int>[82, 74, 66, 58, 50, 42, 34, 26, 18];
+
+    for (var resizeIteration = 0; resizeIteration < 7; resizeIteration++) {
+      for (final quality in qualityCandidates) {
+        final compressed = Uint8List.fromList(
+          img.encodeJpg(workingImage, quality: quality),
+        );
+        if (compressed.length <= maxBytes) {
+          return compressed;
+        }
+      }
+
+      final nextWidth = (workingImage.width * 0.85).round();
+      final nextHeight = (workingImage.height * 0.85).round();
+      if (nextWidth < 320 || nextHeight < 320) {
+        break;
+      }
+
+      workingImage = img.copyResize(
+        workingImage,
+        width: nextWidth,
+        height: nextHeight,
+        interpolation: img.Interpolation.average,
+      );
+    }
+
+    return null;
+  }
+
+  String _resolveProofImageFileName({
+    required String originalFileName,
+    required bool isGroupPhoto,
+  }) {
+    final normalizedOriginalFileName = originalFileName.trim();
+    if (normalizedOriginalFileName.isNotEmpty) {
+      return normalizedOriginalFileName;
+    }
+
+    return isGroupPhoto ? 'group-photo.jpg' : 'board-photo.jpg';
+  }
+
+  String _resolveCompressedImageFileName({
+    required String originalFileName,
+    required bool isGroupPhoto,
+  }) {
+    final fallbackName = isGroupPhoto ? 'group-photo' : 'board-photo';
+    final normalizedOriginalFileName = originalFileName.trim();
+    if (normalizedOriginalFileName.isEmpty) {
+      return '$fallbackName.jpg';
+    }
+
+    final fileNameWithoutExtension = normalizedOriginalFileName.replaceFirst(
+      RegExp(r'\.[^./\\]+$'),
+      '',
+    );
+    return '$fileNameWithoutExtension.jpg';
+  }
+
+  String _formatMegabytes(int bytes) {
+    return (bytes / (1024 * 1024)).toStringAsFixed(1);
   }
 
   Future<ImageSource?> _pickImageSource() async {
