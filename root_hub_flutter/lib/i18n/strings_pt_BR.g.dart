@@ -942,6 +942,7 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetPtBr extends TranslationsMa
 	@override String get tapCardToOpenChat => 'Toque no cartão para abrir o bate-papo';
 	@override String get shareThisMatch => 'Compartilhar partida';
 	@override String get share => 'Compartilhar';
+	@override String get showMore => 'Ver mais';
 	@override String get subscriptionsClosed => 'Assinaturas encerradas';
 	@override String get openFullLocationDetails => 'Abra detalhes completos do local';
 	@override String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} jogadores';

@@ -11,6 +11,7 @@ class CreateMatchSchedule extends Endpoint {
 
   static const _maxScheduleDays = 15;
   static const _minScheduleMinutes = 10;
+  static const _maxDescriptionLength = 1000;
 
   Future<MatchSchedulePairingAttempt> v1(
     Session session, {
@@ -33,6 +34,16 @@ class CreateMatchSchedule extends Endpoint {
           throw RootHubEndpointError.invalidRequest(
             language: language,
             description: t.errors.titleCannotBeEmpty,
+          );
+        }
+        if (normalizedDescription != null &&
+            normalizedDescription.length > _maxDescriptionLength) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.nameCannotExceedCharacters(
+              label: t.labels.matchDescription,
+              maxLength: _maxDescriptionLength,
+            ),
           );
         }
 

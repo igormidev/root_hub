@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
+import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_description_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_report_available_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_time_status_chip_widget.dart';
@@ -140,13 +141,8 @@ class MatchTableCardWidget extends StatelessWidget {
                     ),
                     if (table.description?.trim().isNotEmpty == true) ...[
                       SizedBox(height: 4),
-                      Text(
-                        table.description!.trim(),
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w700,
-                          height: 1.32,
-                        ),
+                      MatchTableDescriptionWidget(
+                        description: table.description!.trim(),
                       ),
                     ],
                   ],

@@ -1700,6 +1700,9 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 	/// en: 'Share'
 	String get share => 'Share';
 
+	/// en: 'Show more'
+	String get showMore => 'Show more';
+
 	/// en: 'Subscriptions closed'
 	String get subscriptionsClosed => 'Subscriptions closed';
 

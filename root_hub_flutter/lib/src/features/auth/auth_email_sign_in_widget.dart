@@ -75,15 +75,17 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
       if (error != null && !identical(error, _lastHandledError)) {
         _lastHandledError = error;
         widget.onError?.call(error);
-        final errorMessage = _resolveErrorMessage(error);
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) {
-            return;
-          }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMessage)),
-          );
-        });
+        if (_shouldShowSnackbarForError(error)) {
+          final errorMessage = _resolveErrorMessage(error);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) {
+              return;
+            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(errorMessage)),
+            );
+          });
+        }
       }
     } else {
       _lastHandledError = null;
@@ -148,6 +150,10 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
         _passwordHasUppercase(password) &&
         _passwordHasLowercase(password) &&
         _passwordHasNumber(password);
+  }
+
+  bool _shouldShowSnackbarForError(Object error) {
+    return error is! InvalidEmailException;
   }
 
   String _formatResendTime(int totalSeconds) {

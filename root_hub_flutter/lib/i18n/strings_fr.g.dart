@@ -942,6 +942,7 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetFr extends TranslationsMatc
 	@override String get tapCardToOpenChat => 'Appuyez sur la carte pour ouvrir le chat';
 	@override String get shareThisMatch => 'Partager la partie';
 	@override String get share => 'Partager';
+	@override String get showMore => 'Voir plus';
 	@override String get subscriptionsClosed => 'Inscriptions clôturées';
 	@override String get openFullLocationDetails => 'Ouvrir les détails complets de l\'emplacement';
 	@override String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} joueurs';

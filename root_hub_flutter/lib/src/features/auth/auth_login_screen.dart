@@ -356,16 +356,6 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                                         client: client,
                                         onAuthenticated:
                                             _requestLoginCompletion,
-                                        onError: (error) {
-                                          if (!mounted) {
-                                            return;
-                                          }
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(content: Text('$error')),
-                                          );
-                                        },
                                       ),
                                     ),
                                   ),

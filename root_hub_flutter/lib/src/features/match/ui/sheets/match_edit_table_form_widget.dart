@@ -190,7 +190,7 @@ class MatchEditTableFormWidget extends StatelessWidget {
                   controller: descriptionController,
                   minLines: 2,
                   maxLines: 5,
-                  maxLength: 400,
+                  maxLength: 1000,
                   decoration: InputDecoration(
                     hintText: t
                         .match

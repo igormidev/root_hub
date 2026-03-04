@@ -9,6 +9,7 @@ class EditMatchSchedule extends Endpoint {
 
   static const _maxScheduleDays = 15;
   static const _minScheduleMinutes = 10;
+  static const _maxDescriptionLength = 1000;
 
   Future<void> v1(
     Session session, {
@@ -132,6 +133,17 @@ class EditMatchSchedule extends Endpoint {
         }
 
         final normalizedDescription = description?.trim();
+        if (normalizedDescription != null &&
+            normalizedDescription.length > _maxDescriptionLength) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.nameCannotExceedCharacters(
+              label: t.labels.matchDescription,
+              maxLength: _maxDescriptionLength,
+            ),
+          );
+        }
+
         matchSchedule
           ..title = normalizedTitle
           ..description = normalizedDescription?.isEmpty == true

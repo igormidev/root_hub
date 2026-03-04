@@ -189,6 +189,7 @@
     "firstName": "First name",
     "lastName": "Last name",
     "groupPhoto": "Group photo",
-    "boardPhoto": "Board photo"
+    "boardPhoto": "Board photo",
+    "matchDescription": "Description"
   }
 }

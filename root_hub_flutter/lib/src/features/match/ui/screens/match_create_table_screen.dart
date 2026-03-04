@@ -297,7 +297,7 @@ class _MatchCreateTableScreenState
                     controller: _descriptionController,
                     minLines: 3,
                     maxLines: 6,
-                    maxLength: 400,
+                    maxLength: 1000,
                     decoration: InputDecoration(
                       hintText: t
                           .match

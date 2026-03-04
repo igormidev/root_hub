@@ -581,6 +581,9 @@ class TranslationsLabelsEn {
 
 	/// en: 'Board photo'
 	String get boardPhoto => 'Board photo';
+
+	/// en: 'Description'
+	String get matchDescription => 'Description';
 }
 
 // Path: pushNotifications.common

@@ -3,6 +3,7 @@ table: match_schedule_pairing_attempt
 fields:
   createdAt: DateTime
   title: String
+  # Max 1000 characters (validated at API boundary).
   description: String?
   minAmountOfPlayers: MatchPodium
   maxAmountOfPlayers: MatchPodium
