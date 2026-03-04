@@ -176,6 +176,7 @@ class _TranslationsRegisterMatchFr extends TranslationsRegisterMatchEn {
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionFr ui_sheets_register_match_wizard_proof_card_section = _TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionFr._(_root);
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionFr ui_sheets_register_match_picker_header_section = _TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionFr._(_root);
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionFr ui_sheets_register_match_wizard_social_proof_step_section = _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionFr._(_root);
+	@override late final _TranslationsRegisterMatchUiStatesRegisterMatchProviderFr ui_states_register_match_provider = _TranslationsRegisterMatchUiStatesRegisterMatchProviderFr._(_root);
 	@override late final _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr ui_dialogs_register_match_cancel_match_dialog = _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr._(_root);
 }
 
@@ -1420,6 +1421,25 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectio
 	@override String get selfieWithAllPlayersIncludeTheBoardIfPossible => 'Selfie avec tous les joueurs. Incluez le tableau si possible.';
 	@override String get groupPhoto => 'Photo de groupe';
 	@override String get uploadBothPhotosToConfirmThisMatchHappenedInPerson => 'Téléchargez les deux photos pour confirmer que cette partie a eu lieu en personne.';
+}
+
+// Path: register_match.ui_states_register_match_provider
+class _TranslationsRegisterMatchUiStatesRegisterMatchProviderFr extends TranslationsRegisterMatchUiStatesRegisterMatchProviderEn {
+	_TranslationsRegisterMatchUiStatesRegisterMatchProviderFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get invalidMatchTitle => 'Partie invalide';
+	@override String get invalidMatchDescription => 'La partie sélectionnée est invalide.';
+	@override String get unableToPrepareGroupPhotoTitle => 'Impossible de préparer la photo de groupe';
+	@override String get unableToPrepareGroupPhotoDescription => 'La photo de groupe sélectionnée n’a pas pu être préparée pour l’envoi.';
+	@override String get unableToPrepareBoardPhotoTitle => 'Impossible de préparer la photo du plateau';
+	@override String get unableToPrepareBoardPhotoDescription => 'La photo du plateau sélectionnée n’a pas pu être préparée pour l’envoi.';
+	@override String get unableToUploadProofImageTitle => 'Impossible d’envoyer la preuve photo';
+	@override String get unableToUploadProofImageReadDescription => 'Le fichier image sélectionné n’a pas pu être lu pour l’envoi.';
+	@override String get unableToUploadProofImageNetworkDescription => 'L’envoi de l’image a échoué avant d’atteindre le stockage.';
+	@override String get unableToUploadProofImageStorageDescription => 'Le service de stockage a rejeté l’image sélectionnée.';
 }
 
 // Path: register_match.ui_dialogs_register_match_cancel_match_dialog

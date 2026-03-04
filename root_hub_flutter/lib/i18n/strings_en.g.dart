@@ -181,6 +181,7 @@ class TranslationsRegisterMatchEn {
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionEn ui_sheets_register_match_wizard_proof_card_section = TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionEn ui_sheets_register_match_picker_header_section = TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionEn ui_sheets_register_match_wizard_social_proof_step_section = TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionEn.internal(_root);
+	late final TranslationsRegisterMatchUiStatesRegisterMatchProviderEn ui_states_register_match_provider = TranslationsRegisterMatchUiStatesRegisterMatchProviderEn.internal(_root);
 }
 
 // Path: shop
@@ -2668,6 +2669,45 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSection
 
 	/// en: 'Upload both photos to confirm this match happened in person.'
 	String get uploadBothPhotosToConfirmThisMatchHappenedInPerson => 'Upload both photos to confirm this match happened in person.';
+}
+
+// Path: register_match.ui_states_register_match_provider
+class TranslationsRegisterMatchUiStatesRegisterMatchProviderEn {
+	TranslationsRegisterMatchUiStatesRegisterMatchProviderEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Invalid match'
+	String get invalidMatchTitle => 'Invalid match';
+
+	/// en: 'The selected match schedule is invalid.'
+	String get invalidMatchDescription => 'The selected match schedule is invalid.';
+
+	/// en: 'Unable to prepare group photo'
+	String get unableToPrepareGroupPhotoTitle => 'Unable to prepare group photo';
+
+	/// en: 'The selected group photo could not be prepared for upload.'
+	String get unableToPrepareGroupPhotoDescription => 'The selected group photo could not be prepared for upload.';
+
+	/// en: 'Unable to prepare board photo'
+	String get unableToPrepareBoardPhotoTitle => 'Unable to prepare board photo';
+
+	/// en: 'The selected board photo could not be prepared for upload.'
+	String get unableToPrepareBoardPhotoDescription => 'The selected board photo could not be prepared for upload.';
+
+	/// en: 'Unable to upload proof image'
+	String get unableToUploadProofImageTitle => 'Unable to upload proof image';
+
+	/// en: 'The selected image file could not be read for upload.'
+	String get unableToUploadProofImageReadDescription => 'The selected image file could not be read for upload.';
+
+	/// en: 'The image upload failed before reaching storage.'
+	String get unableToUploadProofImageNetworkDescription => 'The image upload failed before reaching storage.';
+
+	/// en: 'The storage provider rejected the selected image.'
+	String get unableToUploadProofImageStorageDescription => 'The storage provider rejected the selected image.';
 }
 
 // Path: shop.ui_screens_shop_screen

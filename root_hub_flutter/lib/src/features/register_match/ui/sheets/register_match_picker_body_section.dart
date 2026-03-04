@@ -12,7 +12,6 @@ class RegisterMatchPickerBodySection extends StatelessWidget {
     required this.onRetry,
     required this.onRegisterMatchTap,
     required this.onCancelMatchTap,
-    required this.isTooEarlyToRegister,
     required this.processingMatchId,
   });
 
@@ -22,7 +21,6 @@ class RegisterMatchPickerBodySection extends StatelessWidget {
   onRegisterMatchTap;
   final Future<void> Function(MatchSchedulePairingAttempt match)
   onCancelMatchTap;
-  final bool Function(MatchSchedulePairingAttempt match) isTooEarlyToRegister;
   final int? processingMatchId;
 
   @override
@@ -58,7 +56,6 @@ class RegisterMatchPickerBodySection extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 10),
           child: RegisterMatchPickerMatchItemCard(
             match: match,
-            canRegisterNow: !isTooEarlyToRegister(match),
             isProcessing:
                 processingMatchId != null && processingMatchId == match.id,
             onRegisterTap: () => onRegisterMatchTap(match),

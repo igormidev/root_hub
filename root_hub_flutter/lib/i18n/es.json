@@ -763,6 +763,18 @@
       "groupPhoto": "Foto de grupo",
       "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Sube ambas fotos para confirmar que esta partida ocurrió en persona."
     },
+    "ui_states_register_match_provider": {
+      "invalidMatchTitle": "Partida inválida",
+      "invalidMatchDescription": "La partida seleccionada no es válida.",
+      "unableToPrepareGroupPhotoTitle": "No se pudo preparar la foto grupal",
+      "unableToPrepareGroupPhotoDescription": "La foto grupal seleccionada no pudo prepararse para la subida.",
+      "unableToPrepareBoardPhotoTitle": "No se pudo preparar la foto del tablero",
+      "unableToPrepareBoardPhotoDescription": "La foto del tablero seleccionada no pudo prepararse para la subida.",
+      "unableToUploadProofImageTitle": "No se pudo subir la imagen de prueba",
+      "unableToUploadProofImageReadDescription": "No se pudo leer la imagen seleccionada para la subida.",
+      "unableToUploadProofImageNetworkDescription": "La subida de la imagen falló antes de llegar al almacenamiento.",
+      "unableToUploadProofImageStorageDescription": "El proveedor de almacenamiento rechazó la imagen seleccionada."
+    },
     "ui_dialogs_register_match_cancel_match_dialog": {
       "cancelMatchTitle": "Cancelar partida",
       "cancelMatchDescription": "Marca esta partida programada como no jugada y comparte el motivo con los participantes.",

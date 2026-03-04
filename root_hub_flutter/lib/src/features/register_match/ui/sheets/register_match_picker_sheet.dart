@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/dialogs/register_match_cancel_match_dialog.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_body_section.dart';
@@ -78,7 +77,6 @@ class _RegisterMatchPickerSheetState
                   },
                   onRegisterMatchTap: _onRegisterMatchTap,
                   onCancelMatchTap: _onCancelMatchTap,
-                  isTooEarlyToRegister: _isTooEarlyToRegister,
                   processingMatchId: _processingMatchId,
                 ),
               ),
@@ -89,36 +87,7 @@ class _RegisterMatchPickerSheetState
     );
   }
 
-  bool _isTooEarlyToRegister(MatchSchedulePairingAttempt match) {
-    final earliestAllowedRegistrationTime = match.attemptedAt.subtract(
-      Duration(hours: 2),
-    );
-    return DateTime.now().isBefore(earliestAllowedRegistrationTime);
-  }
-
   Future<void> _onRegisterMatchTap(MatchSchedulePairingAttempt match) async {
-    if (_isTooEarlyToRegister(match)) {
-      final localizations = MaterialLocalizations.of(context);
-      final earliestAllowedRegistrationTime = match.attemptedAt
-          .subtract(Duration(hours: 2))
-          .toLocal();
-      final earliestAllowedRegistrationTimeLabel =
-          '${localizations.formatMediumDate(earliestAllowedRegistrationTime)} • '
-          '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(earliestAllowedRegistrationTime))}';
-
-      await showErrorDialog(
-        context,
-        title: t
-            .register_match
-            .ui_sheets_register_match_picker_sheet
-            .resultRegistrationNotAvailableYet,
-        description:
-            '${t.register_match.ui_sheets_register_match_picker_sheet.youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart} '
-            '${t.register_match.ui_sheets_register_match_picker_sheet.tryAgainAfter(dateTimeLabel: earliestAllowedRegistrationTimeLabel)}',
-      );
-      return;
-    }
-
     final submitted = await _openMatchWizard(match);
     if (submitted != true || !mounted) {
       return;

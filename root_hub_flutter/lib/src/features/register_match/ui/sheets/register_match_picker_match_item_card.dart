@@ -6,14 +6,12 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
   const RegisterMatchPickerMatchItemCard({
     super.key,
     required this.match,
-    required this.canRegisterNow,
     required this.isProcessing,
     required this.onRegisterTap,
     required this.onCancelTap,
   });
 
   final MatchSchedulePairingAttempt match;
-  final bool canRegisterNow;
   final bool isProcessing;
   final VoidCallback onRegisterTap;
   final VoidCallback onCancelTap;
@@ -31,12 +29,14 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
     final googlePlace = location?.googlePlaceLocation;
     final manualLocation = location?.manualInputLocation;
     final locationTitle =
-        googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
+        googlePlace?.name ??
+        manualLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
     final locationSubtitle =
         googlePlace?.shortFormattedAddress ??
         googlePlace?.formattedAddress ??
         manualLocation?.cityName ??
-        'Address unavailable';
+        t.match.ui_screens_match_table_card_widget.addressUnavailable;
 
     final actionBorderRadius = BorderRadius.circular(14);
     return Container(
@@ -122,19 +122,6 @@ class RegisterMatchPickerMatchItemCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10),
-          if (!canRegisterNow) ...[
-            Text(
-              t
-                  .register_match
-                  .ui_sheets_register_match_picker_match_item_card
-                  .notAvailableYet,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            SizedBox(height: 8),
-          ],
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(

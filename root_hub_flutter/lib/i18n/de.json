@@ -763,6 +763,18 @@
       "groupPhoto": "Gruppenfoto",
       "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Lade beide Fotos hoch, um zu bestätigen, dass diese Partie persönlich stattgefunden hat."
     },
+    "ui_states_register_match_provider": {
+      "invalidMatchTitle": "Ungültige Partie",
+      "invalidMatchDescription": "Die ausgewählte Partie ist ungültig.",
+      "unableToPrepareGroupPhotoTitle": "Gruppenfoto konnte nicht vorbereitet werden",
+      "unableToPrepareGroupPhotoDescription": "Das ausgewählte Gruppenfoto konnte nicht für den Upload vorbereitet werden.",
+      "unableToPrepareBoardPhotoTitle": "Brettfoto konnte nicht vorbereitet werden",
+      "unableToPrepareBoardPhotoDescription": "Das ausgewählte Brettfoto konnte nicht für den Upload vorbereitet werden.",
+      "unableToUploadProofImageTitle": "Beweisbild konnte nicht hochgeladen werden",
+      "unableToUploadProofImageReadDescription": "Die ausgewählte Bilddatei konnte für den Upload nicht gelesen werden.",
+      "unableToUploadProofImageNetworkDescription": "Der Bild-Upload ist fehlgeschlagen, bevor der Speicher erreicht wurde.",
+      "unableToUploadProofImageStorageDescription": "Der Speicherdienst hat das ausgewählte Bild abgelehnt."
+    },
     "ui_dialogs_register_match_cancel_match_dialog": {
       "cancelMatchTitle": "Spiel absagen",
       "cancelMatchDescription": "Markiere dieses geplante Spiel als nicht gespielt und teile den Grund mit den Teilnehmern.",

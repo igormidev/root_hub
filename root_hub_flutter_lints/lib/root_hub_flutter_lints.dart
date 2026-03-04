@@ -153,7 +153,8 @@ class _FeatureHardcodedUiStringRule extends DartLintRule {
     : super(
         code: const LintCode(
           name: 'feature_hardcoded_ui_string',
-          problemMessage: 'Hard-coded string literal found in feature UI code.',
+          problemMessage:
+              'Hard-coded string literal found in feature/state code.',
           correctionMessage:
               'Move user-facing text to localization keys. Use // ignore: feature_hardcoded_ui_string above non-translatable strings.',
         ),
@@ -387,7 +388,8 @@ final _versionedMethodNamePattern = RegExp(r'^v\d+$');
 bool _isLintableFeatureFile(String path) {
   final normalizedPath = path.replaceAll('\\', '/');
 
-  return normalizedPath.contains('/lib/src/features/') &&
+  return (normalizedPath.contains('/lib/src/features/') ||
+          normalizedPath.contains('/lib/src/states/register_match/')) &&
       normalizedPath.endsWith('.dart') &&
       !normalizedPath.endsWith('.g.dart') &&
       !normalizedPath.endsWith('.freezed.dart');

@@ -68,6 +68,13 @@ void main(List<String> args) {
   final serverRoot = _resolveServerRoot(args);
   final libDir = Directory(p.join(flutterRoot.path, 'lib'));
   final featuresDirPath = p.join(flutterRoot.path, 'lib', 'src', 'features');
+  final registerMatchStateDirPath = p.join(
+    flutterRoot.path,
+    'lib',
+    'src',
+    'states',
+    'register_match',
+  );
 
   if (!libDir.existsSync()) {
     stdout.writeln('No Flutter lib directory found at ${libDir.path}.');
@@ -137,7 +144,11 @@ void main(List<String> args) {
       }
     }
 
-    if (!_isFeatureFile(file.path, featuresDirPath)) {
+    if (!_isFeatureOrStateFile(
+      file.path,
+      featuresDirPath: featuresDirPath,
+      registerMatchStateDirPath: registerMatchStateDirPath,
+    )) {
       continue;
     }
 
@@ -208,7 +219,7 @@ void main(List<String> args) {
           line: location.lineNumber,
           column: location.columnNumber,
           message:
-              'Hard-coded string literal found in feature UI code. Move user-facing text to localization keys, or add // ignore: feature_hardcoded_ui_string above non-translatable strings.',
+              'Hard-coded string literal found in feature/state code. Move user-facing text to localization keys, or add // ignore: feature_hardcoded_ui_string above non-translatable strings.',
         ),
       );
     }
@@ -289,10 +300,18 @@ Iterable<File> _flutterLibDartFiles(Directory libDir) sync* {
   }
 }
 
-bool _isFeatureFile(String filePath, String featuresDirPath) {
+bool _isFeatureOrStateFile(
+  String filePath, {
+  required String featuresDirPath,
+  required String registerMatchStateDirPath,
+}) {
   final normalizedFilePath = p.normalize(filePath);
   final normalizedFeaturesDirPath = p.normalize(featuresDirPath);
-  return p.isWithin(normalizedFeaturesDirPath, normalizedFilePath);
+  final normalizedRegisterMatchStateDirPath = p.normalize(
+    registerMatchStateDirPath,
+  );
+  return p.isWithin(normalizedFeaturesDirPath, normalizedFilePath) ||
+      p.isWithin(normalizedRegisterMatchStateDirPath, normalizedFilePath);
 }
 
 bool _isWidgetClass(ClassDeclaration declaration) {

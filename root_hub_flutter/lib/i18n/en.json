@@ -780,6 +780,18 @@
       "selfieWithAllPlayersIncludeTheBoardIfPossible": "Selfie with all players. Include the board if possible.",
       "groupPhoto": "Group photo",
       "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Upload both photos to confirm this match happened in person."
+    },
+    "ui_states_register_match_provider": {
+      "invalidMatchTitle": "Invalid match",
+      "invalidMatchDescription": "The selected match schedule is invalid.",
+      "unableToPrepareGroupPhotoTitle": "Unable to prepare group photo",
+      "unableToPrepareGroupPhotoDescription": "The selected group photo could not be prepared for upload.",
+      "unableToPrepareBoardPhotoTitle": "Unable to prepare board photo",
+      "unableToPrepareBoardPhotoDescription": "The selected board photo could not be prepared for upload.",
+      "unableToUploadProofImageTitle": "Unable to upload proof image",
+      "unableToUploadProofImageReadDescription": "The selected image file could not be read for upload.",
+      "unableToUploadProofImageNetworkDescription": "The image upload failed before reaching storage.",
+      "unableToUploadProofImageStorageDescription": "The storage provider rejected the selected image."
     }
   },
   "shop": {

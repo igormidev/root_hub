@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
@@ -28,9 +29,6 @@ class RegisterMatchPlayerReportInput {
 }
 
 class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
-  static const _minAnonymousNameLength = 3;
-  static const _maxProofImageBytes = 3 * 1024 * 1024;
-
   bool _hasRequestedInitialCount = false;
   bool _hasRequestedInitialPendingMatches = false;
   int _registeredPlayerSearchRunId = 0;
@@ -198,17 +196,6 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
   }) async {
     final normalizedFirstName = firstName.trim();
     final normalizedLastName = lastName.trim();
-    if (normalizedFirstName.length < _minAnonymousNameLength ||
-        normalizedLastName.length < _minAnonymousNameLength) {
-      state = state.copyWith(
-        anonymousPlayersError: RootHubException(
-          title: 'Invalid player',
-          description:
-              'First name and last name must have at least $_minAnonymousNameLength characters.',
-        ),
-      );
-      return null;
-    }
 
     final result = await ref
         .read(clientProvider)
@@ -320,51 +307,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final locationId = scheduledMatch.locationId;
     if (scheduledMatchId == null || scheduledMatchId <= 0 || locationId <= 0) {
       return RootHubException(
-        title: 'Invalid match',
-        description: 'The selected match schedule is invalid.',
-      );
-    }
-
-    if (players.length < 2) {
-      return RootHubException(
-        title: 'Not enough players',
-        description:
-            'Select at least two participants before submitting the report.',
-      );
-    }
-
-    if (groupPhotoBytes.isEmpty || boardPhotoBytes.isEmpty) {
-      return RootHubException(
-        title: 'Missing proof photos',
-        description:
-            'Both group and board photos are required to register this match.',
-      );
-    }
-    if (groupPhotoBytes.length > _maxProofImageBytes ||
-        boardPhotoBytes.length > _maxProofImageBytes) {
-      return RootHubException(
-        title: 'Image is too large',
-        description: 'Each proof image must be at most 3 MB before upload.',
-      );
-    }
-
-    if (matchEstimatedDuration <= Duration.zero) {
-      return RootHubException(
-        title: 'Invalid duration',
-        description: 'Match estimated duration must be greater than zero.',
-      );
-    }
-    if (matchEstimatedDuration > const Duration(hours: 8)) {
-      return RootHubException(
-        title: 'Invalid duration',
-        description: 'Match estimated duration must be at most 8 hours.',
-      );
-    }
-
-    if (matchStartedAt.isAfter(DateTime.now())) {
-      return RootHubException(
-        title: 'Invalid match registration',
-        description: 'Match start time cannot be in the future.',
+        title: t
+            .register_match
+            .ui_states_register_match_provider
+            .invalidMatchTitle,
+        description: t
+            .register_match
+            .ui_states_register_match_provider
+            .invalidMatchDescription,
       );
     }
 
@@ -381,8 +331,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     if (resolvedGroupPhotoFilePath == null) {
       return _setSubmitErrorAndReturn(
         RootHubException(
-          title: 'Unable to upload group photo',
-          description: 'The selected group photo could not be prepared.',
+          title: t
+              .register_match
+              .ui_states_register_match_provider
+              .unableToPrepareGroupPhotoTitle,
+          description: t
+              .register_match
+              .ui_states_register_match_provider
+              .unableToPrepareGroupPhotoDescription,
         ),
       );
     }
@@ -395,8 +351,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     if (resolvedBoardPhotoFilePath == null) {
       return _setSubmitErrorAndReturn(
         RootHubException(
-          title: 'Unable to upload board photo',
-          description: 'The selected board photo could not be prepared.',
+          title: t
+              .register_match
+              .ui_states_register_match_provider
+              .unableToPrepareBoardPhotoTitle,
+          description: t
+              .register_match
+              .ui_states_register_match_provider
+              .unableToPrepareBoardPhotoDescription,
         ),
       );
     }
@@ -425,8 +387,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       return _setSubmitErrorAndReturn(
         groupPhotoPrepareError ??
             RootHubException(
-              title: 'Unable to prepare group photo upload',
-              description: 'Try selecting the group photo again.',
+              title: t
+                  .register_match
+                  .ui_states_register_match_provider
+                  .unableToPrepareGroupPhotoTitle,
+              description: t
+                  .register_match
+                  .ui_states_register_match_provider
+                  .unableToPrepareGroupPhotoDescription,
             ),
       );
     }
@@ -443,8 +411,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       return _setSubmitErrorAndReturn(
         boardPhotoPrepareError ??
             RootHubException(
-              title: 'Unable to prepare board photo upload',
-              description: 'Try selecting the board photo again.',
+              title: t
+                  .register_match
+                  .ui_states_register_match_provider
+                  .unableToPrepareBoardPhotoTitle,
+              description: t
+                  .register_match
+                  .ui_states_register_match_provider
+                  .unableToPrepareBoardPhotoDescription,
             ),
       );
     }
@@ -611,8 +585,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       );
     } catch (_) {
       return RootHubException(
-        title: 'Unable to upload proof image',
-        description: 'The selected image file could not be read for upload.',
+        title: t
+            .register_match
+            .ui_states_register_match_provider
+            .unableToUploadProofImageTitle,
+        description: t
+            .register_match
+            .ui_states_register_match_provider
+            .unableToUploadProofImageReadDescription,
       );
     }
 
@@ -621,17 +601,28 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       streamedResponse = await request.send();
     } catch (_) {
       return RootHubException(
-        title: 'Unable to upload proof image',
-        description:
-            'The image upload failed before reaching the storage provider.',
+        title: t
+            .register_match
+            .ui_states_register_match_provider
+            .unableToUploadProofImageTitle,
+        description: t
+            .register_match
+            .ui_states_register_match_provider
+            .unableToUploadProofImageNetworkDescription,
       );
     }
 
     final response = await http.Response.fromStream(streamedResponse);
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return RootHubException(
-        title: 'Unable to upload proof image',
-        description: 'The storage provider rejected the selected image.',
+        title: t
+            .register_match
+            .ui_states_register_match_provider
+            .unableToUploadProofImageTitle,
+        description: t
+            .register_match
+            .ui_states_register_match_provider
+            .unableToUploadProofImageStorageDescription,
       );
     }
 
@@ -646,8 +637,14 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     final scheduledMatchId = scheduledMatch.id;
     if (scheduledMatchId == null || scheduledMatchId <= 0) {
       return RootHubException(
-        title: 'Invalid match',
-        description: 'The selected match schedule is invalid.',
+        title: t
+            .register_match
+            .ui_states_register_match_provider
+            .invalidMatchTitle,
+        description: t
+            .register_match
+            .ui_states_register_match_provider
+            .invalidMatchDescription,
       );
     }
 

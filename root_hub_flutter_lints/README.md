@@ -10,7 +10,8 @@ This package enforces:
 - strict endpoint contract conventions in Serverpod endpoint classes.
 
 Scope:
-- `feature_*` rules: only files under `lib/src/features/**` in the Flutter app.
+- `feature_*` rules: files under `lib/src/features/**` in the Flutter app.
+  - Exception: `feature_hardcoded_ui_string` also scans `lib/src/states/register_match/**`.
 - `no_widget_returning_function`: all files under `lib/**` in the Flutter app (excluding generated files).
 - `server_*` rules: only files under `root_hub_server/lib/src/api/**` (excluding generated files).
 - checker locale-parity rules:
@@ -46,7 +47,7 @@ Scope:
 - Allowed exception: Flutter framework-required `build` overrides.
 
 ### `feature_hardcoded_ui_string`
-- Scope: `lib/src/features/**` (excluding generated files)
+- Scope: `lib/src/features/**` and `lib/src/states/register_match/**` (excluding generated files)
 - Enforces: hard-coded strings in feature UI code must be moved to localization.
 - Allowed escape hatch: add `// ignore: feature_hardcoded_ui_string` above non-translatable values (for example keys, IDs, routes, or asset paths).
 

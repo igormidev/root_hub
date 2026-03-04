@@ -158,7 +158,7 @@ Rules:
   - Enforces: helper functions/methods cannot return widgets. Extract each UI block into a dedicated widget class in its own file.
   - Allowed exception: Flutter framework-required `build` overrides.
 - `feature_hardcoded_ui_string`
-  - Scope: `lib/src/features/**`.
+  - Scope: `lib/src/features/**` and `lib/src/states/register_match/**`.
   - Enforces: feature UI code must not keep user-facing strings hard-coded.
   - Allowed escape hatch for non-translatable values: add `// ignore: feature_hardcoded_ui_string` above that line.
 

@@ -763,6 +763,18 @@
       "groupPhoto": "Photo de groupe",
       "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Téléchargez les deux photos pour confirmer que cette partie a eu lieu en personne."
     },
+    "ui_states_register_match_provider": {
+      "invalidMatchTitle": "Partie invalide",
+      "invalidMatchDescription": "La partie sélectionnée est invalide.",
+      "unableToPrepareGroupPhotoTitle": "Impossible de préparer la photo de groupe",
+      "unableToPrepareGroupPhotoDescription": "La photo de groupe sélectionnée n’a pas pu être préparée pour l’envoi.",
+      "unableToPrepareBoardPhotoTitle": "Impossible de préparer la photo du plateau",
+      "unableToPrepareBoardPhotoDescription": "La photo du plateau sélectionnée n’a pas pu être préparée pour l’envoi.",
+      "unableToUploadProofImageTitle": "Impossible d’envoyer la preuve photo",
+      "unableToUploadProofImageReadDescription": "Le fichier image sélectionné n’a pas pu être lu pour l’envoi.",
+      "unableToUploadProofImageNetworkDescription": "L’envoi de l’image a échoué avant d’atteindre le stockage.",
+      "unableToUploadProofImageStorageDescription": "Le service de stockage a rejeté l’image sélectionnée."
+    },
     "ui_dialogs_register_match_cancel_match_dialog": {
       "cancelMatchTitle": "Annuler le match",
       "cancelMatchDescription": "Marquez ce match planifié comme non joué et partagez la raison avec les participants.",
