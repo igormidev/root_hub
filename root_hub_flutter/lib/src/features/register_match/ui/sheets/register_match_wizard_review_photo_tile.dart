@@ -57,26 +57,14 @@ class _RegisterMatchWizardReviewPhotoTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.getFont(
+                    'MedievalSharp',
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.4,
                   ),
-                ),
-              ),
-              Text(
-                image == null
-                    ? t
-                          .register_match
-                          .ui_sheets_register_match_wizard_review_photo_tile
-                          .missing
-                    : t
-                          .register_match
-                          .ui_sheets_register_match_wizard_review_photo_tile
-                          .ready,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: image == null
-                      ? colorScheme.error
-                      : colorScheme.primary,
                 ),
               ),
             ],

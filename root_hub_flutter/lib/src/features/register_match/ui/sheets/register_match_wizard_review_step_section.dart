@@ -171,8 +171,12 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
               .register_match
               .ui_sheets_register_match_wizard_review_step_section
               .socialProof,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w900,
+          style: GoogleFonts.getFont(
+            'MedievalSharp',
+            fontSize: 34,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
+            color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8),
