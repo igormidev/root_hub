@@ -590,13 +590,6 @@ class RegisterMatchData extends Endpoint {
       );
     }
 
-    if (matchStartedAt.isBefore(earliestAllowedRegistrationTime)) {
-      _throwInvalidRequest(
-        language: language,
-        description: t.errors.matchStartCannotBeEarlierThanTwoHoursBefore,
-      );
-    }
-
     if (matchStartedAt.isAfter(now.add(const Duration(minutes: 5)))) {
       _throwInvalidRequest(
         language: language,

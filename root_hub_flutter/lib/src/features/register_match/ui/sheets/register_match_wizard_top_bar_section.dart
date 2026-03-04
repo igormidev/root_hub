@@ -3,10 +3,12 @@ part of 'register_match_wizard_sheet.dart';
 class _RegisterMatchWizardTopBarSection extends StatelessWidget {
   const _RegisterMatchWizardTopBarSection({
     required this.tableInfo,
+    required this.matchStartedAt,
     required this.stepBadgeLabel,
   });
 
   final MatchScheduleInfo tableInfo;
+  final DateTime matchStartedAt;
   final String stepBadgeLabel;
 
   @override
@@ -14,9 +16,8 @@ class _RegisterMatchWizardTopBarSection extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final localizations = MaterialLocalizations.of(context);
-    final startAt = tableInfo.matchSchedule.attemptedAt.toLocal();
     final startLabel =
-        '${localizations.formatMediumDate(startAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(startAt))}';
+        '${localizations.formatMediumDate(matchStartedAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(matchStartedAt))}';
 
     return Container(
       padding: EdgeInsets.fromLTRB(10, 10, 14, 10),

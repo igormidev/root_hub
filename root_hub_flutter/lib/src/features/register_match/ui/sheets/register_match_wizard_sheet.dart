@@ -165,11 +165,11 @@ class _RegisterMatchWizardSheetState
             _ensureParticipantsInitialized(tableInfo);
             final selectedParticipants = _selectedParticipants;
             final localizations = MaterialLocalizations.of(context);
-            final reviewMatchStartedAt =
+            final currentMatchStartedAt =
                 _matchStartedAt ??
                 tableInfo.matchSchedule.attemptedAt.toLocal();
             final reviewMatchStartedLabel =
-                '${localizations.formatMediumDate(reviewMatchStartedAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(reviewMatchStartedAt))}';
+                '${localizations.formatMediumDate(currentMatchStartedAt)} • ${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(currentMatchStartedAt))}';
 
             final currentStepContent = switch (_currentStep) {
               _RegisterMatchStep.participants =>
@@ -212,9 +212,7 @@ class _RegisterMatchWizardSheetState
                   ),
                   durationStepNumber:
                       _stepNumber(_RegisterMatchStep.matchStartedAt) + 1,
-                  matchStartedAt:
-                      _matchStartedAt ??
-                      tableInfo.matchSchedule.attemptedAt.toLocal(),
+                  matchStartedAt: currentMatchStartedAt,
                   matchEstimatedDuration: _matchEstimatedDuration,
                   durationLabel: _durationLabel(_matchEstimatedDuration),
                   onPickMatchStartedDate: () {
@@ -270,6 +268,7 @@ class _RegisterMatchWizardSheetState
               children: [
                 _RegisterMatchWizardTopBarSection(
                   tableInfo: tableInfo,
+                  matchStartedAt: currentMatchStartedAt,
                   stepBadgeLabel: _stepBadgeLabel(),
                 ),
                 _RegisterMatchWizardStepDotsSection(
