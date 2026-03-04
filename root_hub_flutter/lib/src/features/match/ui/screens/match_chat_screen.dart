@@ -9,19 +9,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/match/ui/dialogs/match_played_match_summary_dialog.dart';
-import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
-import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_loading_error_state_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_sender_avatar_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_system_event_message_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_image_widget.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchChatScreen extends ConsumerStatefulWidget {
   final int scheduledMatchId;
@@ -168,229 +168,224 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Builder(
-          builder: (context) {
-            if (currentUserId == null) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    t
-                        .match
-                        .ui_screens_match_chat_screen
-                        .unableToResolveYourAccountInformation,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+      body: Builder(
+        builder: (context) {
+          if (currentUserId == null) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Text(
+                  t
+                      .match
+                      .ui_screens_match_chat_screen
+                      .unableToResolveYourAccountInformation,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-              );
-            }
-
-            if (isLoadingInitial) {
-              return Center(
-                child: SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    color: colorScheme.primary,
-                  ),
-                ),
-              );
-            }
-
-            if (loadError != null) {
-              return MatchChatLoadingErrorStateWidget(
-                error: loadError,
-                onRetry: () {
-                  ref.read(matchChatProvider.notifier).refresh();
-                },
-              );
-            }
-
-            return Chat(
-              currentUserId: currentUserId,
-              theme: ChatTheme.fromThemeData(Theme.of(context)),
-              resolveUser: chatNotifier.resolveUser,
-              chatController: chatNotifier.chatController,
-              onMessageSend: (text) async {
-                if (isMessageActionInProgress) {
-                  return;
-                }
-                await chatNotifier.sendTextMessage(text);
-              },
-              onAttachmentTap: isMessageActionInProgress
-                  ? null
-                  : () => _pickAndSendImage(
-                      chatNotifier,
-                      currentUserId: currentUserId,
-                    ),
-              builders: Builders(
-                composerBuilder: (context) => Composer(
-                  attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
-                  hintText: t.match.ui_screens_match_chat_screen.typeAMessage,
-                ),
-                emptyChatListBuilder: (context) => EmptyChatList(
-                  text: t.match.ui_screens_match_chat_screen.noMessagesYet,
-                ),
-                chatAnimatedListBuilder: (context, itemBuilder) =>
-                    ChatAnimatedList(
-                      itemBuilder: itemBuilder,
-                      onEndReached: chatState.hasNextPage
-                          ? chatNotifier.loadOlderMessages
-                          : null,
-                    ),
-                chatMessageBuilder:
-                    (
-                      context,
-                      message,
-                      index,
-                      animation,
-                      child, {
-                      bool? isRemoved,
-                      required bool isSentByMe,
-                      MessageGroupStatus? groupStatus,
-                    }) {
-                      final shouldShowSenderHeader =
-                          !isSentByMe && (groupStatus?.isFirst ?? true);
-
-                      Widget? headerWidget;
-                      if (shouldShowSenderHeader) {
-                        final authorId = message.authorId;
-                        final isSubscribedSender = chatNotifier
-                            .isAuthorSubscribed(
-                              authorId,
-                            );
-                        final profileImageUrl = chatNotifier
-                            .profileImageUrlForAuthorId(authorId);
-                        final factionIconPath = chatNotifier
-                            .factionIconPathForAuthorId(authorId);
-
-                        headerWidget = Padding(
-                          padding: EdgeInsets.fromLTRB(8, 2, 8, 4),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              MatchChatSenderAvatarWidget(
-                                profileImageUrl,
-                              ),
-                              SizedBox(width: 6),
-                              Flexible(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        chatNotifier.displayNameForAuthorId(
-                                          authorId,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.copyWith(
-                                              color:
-                                                  colorScheme.onSurfaceVariant,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                      ),
-                                    ),
-                                    if (factionIconPath != null) ...[
-                                      SizedBox(width: 6),
-                                      Image.asset(
-                                        factionIconPath,
-                                        width: 18,
-                                        height: 18,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                              if (isSubscribedSender) ...[
-                                SizedBox(width: 6),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(
-                                    8,
-                                    2,
-                                    8,
-                                    2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(999),
-                                    color: colorScheme.primaryContainer,
-                                  ),
-                                  child: Text(
-                                    t
-                                        .match
-                                        .ui_screens_match_chat_screen
-                                        .subscribed,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          color: colorScheme.onPrimaryContainer,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        );
-                      }
-
-                      return ChatMessage(
-                        message: message,
-                        index: index,
-                        animation: animation,
-                        isRemoved: isRemoved,
-                        groupStatus: groupStatus,
-                        headerWidget: headerWidget,
-                        child: child,
-                      );
-                    },
-                customMessageBuilder:
-                    (
-                      context,
-                      message,
-                      index, {
-                      required bool isSentByMe,
-                      MessageGroupStatus? groupStatus,
-                    }) => MatchChatSystemEventMessageWidget(
-                      message: message,
-                    ),
-                imageMessageBuilder:
-                    (
-                      context,
-                      message,
-                      index, {
-                      required bool isSentByMe,
-                      MessageGroupStatus? groupStatus,
-                    }) => MatchChatImageWidget(
-                      message: message,
-                      index: index,
-                    ),
-                loadMoreBuilder: (context) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                  );
-                },
               ),
             );
-          },
-        ),
+          }
+
+          if (isLoadingInitial) {
+            return Center(
+              child: SizedBox(
+                width: 32,
+                height: 32,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: colorScheme.primary,
+                ),
+              ),
+            );
+          }
+
+          if (loadError != null) {
+            return MatchChatLoadingErrorStateWidget(
+              error: loadError,
+              onRetry: () {
+                ref.read(matchChatProvider.notifier).refresh();
+              },
+            );
+          }
+
+          return Chat(
+            currentUserId: currentUserId,
+            theme: ChatTheme.fromThemeData(Theme.of(context)),
+            resolveUser: chatNotifier.resolveUser,
+            chatController: chatNotifier.chatController,
+            onMessageSend: (text) async {
+              if (isMessageActionInProgress) {
+                return;
+              }
+              await chatNotifier.sendTextMessage(text);
+            },
+            onAttachmentTap: isMessageActionInProgress
+                ? null
+                : () => _pickAndSendImage(
+                    chatNotifier,
+                    currentUserId: currentUserId,
+                  ),
+            builders: Builders(
+              composerBuilder: (context) => Composer(
+                attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
+                hintText: t.match.ui_screens_match_chat_screen.typeAMessage,
+              ),
+              emptyChatListBuilder: (context) => EmptyChatList(
+                text: t.match.ui_screens_match_chat_screen.noMessagesYet,
+              ),
+              chatAnimatedListBuilder: (context, itemBuilder) =>
+                  ChatAnimatedList(
+                    itemBuilder: itemBuilder,
+                    onEndReached: chatState.hasNextPage
+                        ? chatNotifier.loadOlderMessages
+                        : null,
+                  ),
+              chatMessageBuilder:
+                  (
+                    context,
+                    message,
+                    index,
+                    animation,
+                    child, {
+                    bool? isRemoved,
+                    required bool isSentByMe,
+                    MessageGroupStatus? groupStatus,
+                  }) {
+                    final shouldShowSenderHeader =
+                        !isSentByMe && (groupStatus?.isFirst ?? true);
+
+                    Widget? headerWidget;
+                    if (shouldShowSenderHeader) {
+                      final authorId = message.authorId;
+                      final isSubscribedSender = chatNotifier
+                          .isAuthorSubscribed(
+                            authorId,
+                          );
+                      final profileImageUrl = chatNotifier
+                          .profileImageUrlForAuthorId(authorId);
+                      final factionIconPath = chatNotifier
+                          .factionIconPathForAuthorId(authorId);
+
+                      headerWidget = Padding(
+                        padding: EdgeInsets.fromLTRB(8, 2, 8, 4),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MatchChatSenderAvatarWidget(
+                              profileImageUrl,
+                            ),
+                            SizedBox(width: 6),
+                            Flexible(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      chatNotifier.displayNameForAuthorId(
+                                        authorId,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge
+                                          ?.copyWith(
+                                            color: colorScheme.onSurfaceVariant,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                    ),
+                                  ),
+                                  if (factionIconPath != null) ...[
+                                    SizedBox(width: 6),
+                                    Image.asset(
+                                      factionIconPath,
+                                      width: 18,
+                                      height: 18,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                            if (isSubscribedSender) ...[
+                              SizedBox(width: 6),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(
+                                  8,
+                                  2,
+                                  8,
+                                  2,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(999),
+                                  color: colorScheme.primaryContainer,
+                                ),
+                                child: Text(
+                                  t
+                                      .match
+                                      .ui_screens_match_chat_screen
+                                      .subscribed,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: colorScheme.onPrimaryContainer,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    }
+
+                    return ChatMessage(
+                      message: message,
+                      index: index,
+                      animation: animation,
+                      isRemoved: isRemoved,
+                      groupStatus: groupStatus,
+                      headerWidget: headerWidget,
+                      child: child,
+                    );
+                  },
+              customMessageBuilder:
+                  (
+                    context,
+                    message,
+                    index, {
+                    required bool isSentByMe,
+                    MessageGroupStatus? groupStatus,
+                  }) => MatchChatSystemEventMessageWidget(
+                    message: message,
+                  ),
+              imageMessageBuilder:
+                  (
+                    context,
+                    message,
+                    index, {
+                    required bool isSentByMe,
+                    MessageGroupStatus? groupStatus,
+                  }) => MatchChatImageWidget(
+                    message: message,
+                    index: index,
+                  ),
+              loadMoreBuilder: (context) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -545,7 +540,14 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       final message = await showDialog<String>(
         context: context,
         builder: (dialogContext) {
+          final colorScheme = Theme.of(dialogContext).colorScheme;
           return AlertDialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 24,
+            ),
+            titlePadding: EdgeInsets.fromLTRB(12, 14, 12, 8),
+            contentPadding: EdgeInsets.fromLTRB(12, 0, 12, 12),
             title: Text(
               t.match.ui_screens_match_chat_screen.confirmPhoto,
             ),
@@ -570,39 +572,87 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                   TextField(
                     controller: messageController,
                     autofocus: true,
-                    minLines: 1,
-                    maxLines: 4,
+                    minLines: 3,
+                    maxLines: 6,
                     textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      filled: true,
+                      fillColor: colorScheme.surfaceContainerLow,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
                       labelText: t
                           .match
                           .ui_screens_match_chat_screen
                           .addAMessageOptional,
                       hintText:
                           t.match.ui_screens_match_chat_screen.typeAMessage,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: colorScheme.outlineVariant,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: colorScheme.outlineVariant,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: colorScheme.primary,
+                          width: 1.8,
+                        ),
+                      ),
                     ),
+                  ),
+                  SizedBox(height: 14),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () =>
+                              Navigator.of(dialogContext).pop(null),
+                          style: TextButton.styleFrom(
+                            minimumSize: Size.fromHeight(50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            t.match.ui_screens_match_chat_screen.cancel2,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 2,
+                        child: FilledButton(
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop(
+                              messageController.text,
+                            );
+                          },
+                          style: FilledButton.styleFrom(
+                            minimumSize: Size.fromHeight(50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            t.match.ui_screens_match_chat_screen.sendPhoto,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(null),
-                child: Text(
-                  t.match.ui_screens_match_chat_screen.cancel2,
-                ),
-              ),
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop(
-                    messageController.text,
-                  );
-                },
-                child: Text(
-                  t.match.ui_screens_match_chat_screen.sendPhoto,
-                ),
-              ),
-            ],
           );
         },
       );

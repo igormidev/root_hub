@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
@@ -441,9 +442,11 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       final normalizedMessageContent = messageContent.trim();
 
       final previewDecodedImage = img.decodeImage(imageBytesToUpload);
+      final pendingMessageBlurhash = _encodeBlurhash(previewDecodedImage);
       final pendingImageMessage = _buildPendingImageMessage(
         authorId: normalizedAuthorId,
         previewBytes: imageBytesToUpload,
+        blurhash: pendingMessageBlurhash,
         text: normalizedMessageContent.isEmpty
             ? null
             : normalizedMessageContent,
@@ -544,6 +547,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
   Message _buildPendingImageMessage({
     required String authorId,
     required Uint8List previewBytes,
+    required String? blurhash,
     required String? text,
     required int? width,
     required int? height,
@@ -561,6 +565,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       status: MessageStatus.sending,
       source: 'local-preview://$localMessageId',
       text: text,
+      blurhash: blurhash,
       width: width?.toDouble(),
       height: height?.toDouble(),
       size: previewBytes.length,
@@ -568,6 +573,47 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         'localPreviewBytes': previewBytes,
       },
     );
+  }
+
+  String? _encodeBlurhash(img.Image? sourceImage) {
+    if (sourceImage == null) {
+      return null;
+    }
+
+    try {
+      const maxDimension = 180;
+      final shouldDownsample =
+          sourceImage.width > maxDimension || sourceImage.height > maxDimension;
+      final imageForHash = shouldDownsample
+          ? img.copyResize(
+              sourceImage,
+              width: sourceImage.width >= sourceImage.height
+                  ? maxDimension
+                  : (sourceImage.width * maxDimension / sourceImage.height)
+                        .round()
+                        .clamp(1, maxDimension),
+              height: sourceImage.height > sourceImage.width
+                  ? maxDimension
+                  : (sourceImage.height * maxDimension / sourceImage.width)
+                        .round()
+                        .clamp(1, maxDimension),
+              interpolation: img.Interpolation.average,
+            )
+          : sourceImage;
+
+      return BlurHash.encode(
+        imageForHash,
+        numCompX: 4,
+        numCompY: 3,
+      ).hash;
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchChat] Failed to generate blurhash for pending image preview.',
+      );
+      return null;
+    }
   }
 
   Future<Uint8List?> _readImageBytesByStreaming(

@@ -73,11 +73,41 @@ class _MatchChatImageWidgetState extends State<MatchChatImageWidget> {
         : 1.0;
     final metadata = widget.message.metadata;
     final localPreviewBytes = metadata?['localPreviewBytes'];
+    final normalizedCaption = widget.message.text?.trim();
+    final hasCaption =
+        normalizedCaption != null && normalizedCaption.isNotEmpty;
     final imageContent = localPreviewBytes is Uint8List
-        ? Image.memory(
-            localPreviewBytes,
-            fit: BoxFit.cover,
-          )
+        ? _blurhashImage == null
+              ? Image.memory(
+                  localPreviewBytes,
+                  fit: BoxFit.cover,
+                )
+              : Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image(
+                      image: _blurhashImage!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween<double>(begin: 0, end: 1),
+                      duration: Duration(milliseconds: 320),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, opacity, child) {
+                        return Opacity(
+                          opacity: opacity,
+                          child: child,
+                        );
+                      },
+                      child: Image.memory(
+                        localPreviewBytes,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                )
         : CachedNetworkImage(
             imageUrl: widget.message.source,
             cacheManager: _chatImageCacheManager,
@@ -112,7 +142,41 @@ class _MatchChatImageWidgetState extends State<MatchChatImageWidget> {
         borderRadius: BorderRadius.circular(12),
         child: AspectRatio(
           aspectRatio: aspectRatio,
-          child: imageContent,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              imageContent,
+              if (hasCaption)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(10, 18, 10, 10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withValues(alpha: 0.28),
+                          Colors.black.withValues(alpha: 0.62),
+                        ],
+                      ),
+                    ),
+                    child: Text(
+                      normalizedCaption,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
