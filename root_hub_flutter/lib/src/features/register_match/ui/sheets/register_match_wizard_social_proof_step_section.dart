@@ -24,7 +24,10 @@ class _RegisterMatchWizardSocialProofStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$stepNumber) Social proof',
+          t
+              .register_match
+              .ui_sheets_register_match_wizard_social_proof_step_section
+              .stepSocialProof(stepNumber: stepNumber),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),

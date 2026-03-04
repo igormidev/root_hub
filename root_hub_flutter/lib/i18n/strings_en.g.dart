@@ -142,6 +142,8 @@ class TranslationsMatchEn {
 	late final TranslationsMatchUiScreensMatchParticipantCardWidgetEn ui_screens_match_participant_card_widget = TranslationsMatchUiScreensMatchParticipantCardWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn ui_screens_match_join_sheet_content_widget = TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchTableCardWidgetEn ui_screens_match_table_card_widget = TranslationsMatchUiScreensMatchTableCardWidgetEn.internal(_root);
+	late final TranslationsMatchUiScreensMatchActionableInfoRowWidgetEn ui_screens_match_actionable_info_row_widget = TranslationsMatchUiScreensMatchActionableInfoRowWidgetEn.internal(_root);
+	late final TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetEn ui_screens_match_join_sheet_loading_widget = TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetEn.internal(_root);
 	late final TranslationsMatchUiSheetsMatchShareSheetEn ui_sheets_match_share_sheet = TranslationsMatchUiSheetsMatchShareSheetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn ui_screens_match_location_header_image_widget = TranslationsMatchUiScreensMatchLocationHeaderImageWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEn ui_screens_match_create_table_location_no_recent_locations_widget = TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetEn.internal(_root);
@@ -560,6 +562,9 @@ class TranslationsDashboardUiScreensDashboardFactionEditorScreenEn {
 
 	/// en: 'Change Favorite Faction'
 	String get changeFavoriteFaction => 'Change Favorite Faction';
+
+	/// en: 'Save {factionName}'
+	String saveFactionButtonLabel({required Object factionName}) => 'Save ${factionName}';
 }
 
 // Path: dashboard.ui_dialogs_edit_location_dialog
@@ -921,6 +926,12 @@ class TranslationsMatchUiSheetsMatchTableInfoSheetEn {
 	/// en: 'rejoin if seats are still available.'
 	String get rejoinIfSeatsAreStillAvailable => 'rejoin if seats are still available.';
 
+	/// en: '{playerName} will be removed from the table and will need to {rejoinInstruction}'
+	String removePlayerDescription({required Object playerName, required Object rejoinInstruction}) => '${playerName} will be removed from the table and will need to ${rejoinInstruction}';
+
+	/// en: 'Remove {playerName}?'
+	String removePlayerTitle({required Object playerName}) => 'Remove ${playerName}?';
+
 	/// en: 'Cancel'
 	String get cancel2 => 'Cancel';
 
@@ -941,6 +952,15 @@ class TranslationsMatchUiSheetsMatchTableInfoSheetEn {
 
 	/// en: 'You will be unsubscribed from this match and removed from the '
 	String get youWillBeUnsubscribedFromThisMatchAndRemovedFromThe => 'You will be unsubscribed from this match and removed from the ';
+
+	/// en: '{label} copied'
+	String copiedLabel({required Object label}) => '${label} copied';
+
+	/// en: '{count} ratings'
+	String ratingsCount({required Object count}) => '${count} ratings';
+
+	/// en: 'Rating {value}'
+	String ratingValue({required Object value}) => 'Rating ${value}';
 
 	/// en: 'Leave this table?'
 	String get leaveThisTable => 'Leave this table?';
@@ -969,8 +989,17 @@ class TranslationsMatchUiSheetsMatchTableInfoContentWidgetEn {
 	/// en: 'No players subscribed yet.'
 	String get noPlayersSubscribedYet => 'No players subscribed yet.';
 
+	/// en: 'Created at: {value}'
+	String createdAtValue({required Object value}) => 'Created at: ${value}';
+
 	/// en: 'Players in this match'
 	String get playersInThisMatch => 'Players in this match';
+
+	/// en: '{minPlayers}-{maxPlayers} players'
+	String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} players';
+
+	/// en: '{subscribedPlayersCount}/{maxPlayers} seats'
+	String seatsCount({required Object subscribedPlayersCount, required Object maxPlayers}) => '${subscribedPlayersCount}/${maxPlayers} seats';
 
 	/// en: 'Unknown host'
 	String get unknownHost => 'Unknown host';
@@ -1065,11 +1094,17 @@ class TranslationsMatchUiSheetsMatchEditTableSheetEn {
 
 	// Translations
 
+	/// en: 'The scheduled time cannot be more than {maxScheduleDays} days in the future.'
+	String dateIsTooFarDescription({required Object maxScheduleDays}) => 'The scheduled time cannot be more than ${maxScheduleDays} days in the future.';
+
 	/// en: 'The scheduled time cannot be more than '
 	String get theScheduledTimeCannotBeMoreThan => 'The scheduled time cannot be more than ';
 
 	/// en: 'Date is too far'
 	String get dateIsTooFar => 'Date is too far';
+
+	/// en: 'The scheduled time must be at least {minScheduleMinutes} minutes in the future.'
+	String timeIsTooSoonDescription({required Object minScheduleMinutes}) => 'The scheduled time must be at least ${minScheduleMinutes} minutes in the future.';
 
 	/// en: 'The scheduled time must be at least '
 	String get theScheduledTimeMustBeAtLeast => 'The scheduled time must be at least ';
@@ -1079,6 +1114,9 @@ class TranslationsMatchUiSheetsMatchEditTableSheetEn {
 
 	/// en: 'You cannot set the maximum below that number.'
 	String get youCannotSetTheMaximumBelowThatNumber => 'You cannot set the maximum below that number.';
+
+	/// en: 'There are already {currentSubscriberCount} players subscribed. You cannot set the maximum below that number.'
+	String tooManyPlayersSubscribedDescription({required Object currentSubscriberCount}) => 'There are already ${currentSubscriberCount} players subscribed. You cannot set the maximum below that number.';
 
 	/// en: 'Too many players subscribed'
 	String get tooManyPlayersSubscribed => 'Too many players subscribed';
@@ -1134,6 +1172,9 @@ class TranslationsMatchUiSheetsMatchEditTableFormWidgetEn {
 	/// en: 'Cancel'
 	String get cancel => 'Cancel';
 
+	/// en: 'Must be at least 10 minutes from now, up to {maxScheduleDays} days ahead.'
+	String scheduleDescription({required Object maxScheduleDays}) => 'Must be at least 10 minutes from now, up to ${maxScheduleDays} days ahead.';
+
 	/// en: 'Must be at least 10 minutes from now, up to '
 	String get mustBeAtLeast10MinutesFromNowUpTo => 'Must be at least 10 minutes from now, up to ';
 
@@ -1145,6 +1186,9 @@ class TranslationsMatchUiSheetsMatchEditTableFormWidgetEn {
 
 	/// en: 'Minimum'
 	String get minimum => 'Minimum';
+
+	/// en: '{count} player(s) already subscribed.'
+	String playersAlreadySubscribedCount({required Object count}) => '${count} player(s) already subscribed.';
 
 	/// en: 'Set between 2 and 6 players.'
 	String get setBetween2And6Players => 'Set between 2 and 6 players.';
@@ -1287,6 +1331,9 @@ class TranslationsMatchUiScreensMatchScreenEn {
 	/// en: 'Unable to open the link right now.'
 	String get unableToOpenTheLinkRightNow => 'Unable to open the link right now.';
 
+	/// en: '{label} copied'
+	String copiedLabel({required Object label}) => '${label} copied';
+
 	/// en: 'Invalid URL format.'
 	String get invalidUrlFormat => 'Invalid URL format.';
 
@@ -1295,6 +1342,12 @@ class TranslationsMatchUiScreensMatchScreenEn {
 
 	/// en: 'Unable to share this match right now.'
 	String get unableToShareThisMatch => 'Unable to share this match right now.';
+
+	/// en: '{count} ratings'
+	String ratingsCount({required Object count}) => '${count} ratings';
+
+	/// en: 'Rating {value}'
+	String ratingValue({required Object value}) => 'Rating ${value}';
 
 	/// en: 'Root Hub connects players to play ROOT in person at public places. Join this match at {location} at {hour} on {day}: {link}'
 	String shareMessage({required Object location, required Object hour, required Object day, required Object link}) => 'Root Hub connects players to play ROOT in person at public places. Join this match at ${location} at ${hour} on ${day}: ${link}';
@@ -1590,6 +1643,9 @@ class TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn {
 	/// en: 'Cancel'
 	String get cancel => 'Cancel';
 
+	/// en: 'Created at: {value}'
+	String createdAtValue({required Object value}) => 'Created at: ${value}';
+
 	/// en: 'You can be the first player to lock this table in.'
 	String get youCanBeTheFirstPlayerToLockThisTableIn => 'You can be the first player to lock this table in.';
 
@@ -1601,6 +1657,12 @@ class TranslationsMatchUiScreensMatchJoinSheetContentWidgetEn {
 
 	/// en: 'Players in this match'
 	String get playersInThisMatch => 'Players in this match';
+
+	/// en: '{minPlayers}-{maxPlayers} players'
+	String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} players';
+
+	/// en: '{subscribedPlayersCount}/{maxPlayers} seats'
+	String seatsCount({required Object subscribedPlayersCount, required Object maxPlayers}) => '${subscribedPlayersCount}/${maxPlayers} seats';
 
 	/// en: 'Unknown host'
 	String get unknownHost => 'Unknown host';
@@ -1644,6 +1706,12 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 	/// en: 'Open full location details'
 	String get openFullLocationDetails => 'Open full location details';
 
+	/// en: '{minPlayers}-{maxPlayers} players'
+	String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} players';
+
+	/// en: 'This table can start with a minimum of {minPlayers} players and accepts up to {maxPlayers} players.'
+	String playersRangeTooltip({required Object minPlayers, required Object maxPlayers}) => 'This table can start with a minimum of ${minPlayers} players and accepts up to ${maxPlayers} players.';
+
 	/// en: 'places'
 	String get places => 'places';
 
@@ -1679,6 +1747,33 @@ class TranslationsMatchUiScreensMatchTableCardWidgetEn {
 
 	/// en: '{subscribedPlayersCount} {playersWord} subscribed and {remainingSeats} {placesWord} remaining to close the table.'
 	String subscriptionTooltip({required Object subscribedPlayersCount, required Object playersWord, required Object remainingSeats, required Object placesWord}) => '${subscribedPlayersCount} ${playersWord} subscribed and ${remainingSeats} ${placesWord} remaining to close the table.';
+}
+
+// Path: match.ui_screens_match_actionable_info_row_widget
+class TranslationsMatchUiScreensMatchActionableInfoRowWidgetEn {
+	TranslationsMatchUiScreensMatchActionableInfoRowWidgetEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Copy {label}'
+	String copyLabel({required Object label}) => 'Copy ${label}';
+
+	/// en: 'Open {label}'
+	String openLabel({required Object label}) => 'Open ${label}';
+}
+
+// Path: match.ui_screens_match_join_sheet_loading_widget
+class TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetEn {
+	TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Loading table details for "{tableTitle}"...'
+	String loadingTableDetailsForTitle({required Object tableTitle}) => 'Loading table details for "${tableTitle}"...';
 }
 
 // Path: match.ui_sheets_match_share_sheet
@@ -1775,6 +1870,9 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 
 	/// en: 'Send a photo'
 	String get sendAPhoto => 'Send a photo';
+
+	/// en: 'This image is {selectedImageMb}MB, but the limit is {maxAllowedMb}MB. Compress it automatically before sending?'
+	String imageCompressionPrompt({required Object selectedImageMb, required Object maxAllowedMb}) => 'This image is ${selectedImageMb}MB, but the limit is ${maxAllowedMb}MB. Compress it automatically before sending?';
 
 	/// en: 'Compress'
 	String get compress => 'Compress';
@@ -1878,6 +1976,9 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionEn {
 	/// en: 'Total points (30)'
 	String get totalPoints30 => 'Total points (30)';
 
+	/// en: '{stepNumber}) Select the winner'
+	String stepSelectTheWinner({required Object stepNumber}) => '${stepNumber}) Select the winner';
+
 	/// en: 'Dominance means the winner completed a Dominance card objective instead of winning by points.'
 	String get dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB => 'Dominance means the winner completed a Dominance card objective instead of winning by points.';
 
@@ -1905,11 +2006,17 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardTimingStepSectionEn {
 	/// en: 'Estimated duration'
 	String get estimatedDuration2 => 'Estimated duration';
 
+	/// en: '{stepNumber}) Estimated match duration'
+	String stepEstimatedMatchDuration({required Object stepNumber}) => '${stepNumber}) Estimated match duration';
+
 	/// en: 'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).'
 	String get setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours => 'Set the estimated duration. Adjust in 15-minute steps (max 8 hours).';
 
 	/// en: 'Change time'
 	String get changeTime => 'Change time';
+
+	/// en: '{stepNumber}) Match started at'
+	String stepMatchStartedAt({required Object stepNumber}) => '${stepNumber}) Match started at';
 
 	/// en: 'Match started at'
 	String get matchStartedAt => 'Match started at';
@@ -2070,6 +2177,9 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchSearchRegisteredPlayerSheetE
 	/// en: 'Already added to this report'
 	String get alreadyAddedToThisReport => 'Already added to this report';
 
+	/// en: 'No players found for "{query}".'
+	String noPlayersFoundForQuery({required Object query}) => 'No players found for "${query}".';
+
 	/// en: 'No registered players were found.'
 	String get noRegisteredPlayersWereFound => 'No registered players were found.';
 
@@ -2097,6 +2207,9 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionEn {
 	/// en: 'Dominance attempt'
 	String get dominanceAttempt => 'Dominance attempt';
 
+	/// en: 'Failed (no points)'
+	String get failedNoPoints => 'Failed (no points)';
+
 	/// en: 'Winner by dominance'
 	String get winnerByDominance => 'Winner by dominance';
 
@@ -2106,8 +2219,14 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionEn {
 	/// en: 'Failed dominance'
 	String get failedDominance => 'Failed dominance';
 
+	/// en: '{stepNumber}) Points by player'
+	String stepPointsByPlayer({required Object stepNumber}) => '${stepNumber}) Points by player';
+
 	/// en: 'Points'
 	String get points2 => 'Points';
+
+	/// en: 'No points'
+	String get noPoints => 'No points';
 
 	/// en: 'Winner'
 	String get winner => 'Winner';
@@ -2175,11 +2294,14 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerSheetEn {
 
 	// Translations
 
-	/// en: 'You can register this match from 2 hours before its scheduled start. '
-	String get youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart => 'You can register this match from 2 hours before its scheduled start. ';
+	/// en: 'You can register this match from 2 hours before its scheduled start.'
+	String get youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart => 'You can register this match from 2 hours before its scheduled start.';
 
 	/// en: 'Result registration not available yet'
 	String get resultRegistrationNotAvailableYet => 'Result registration not available yet';
+
+	/// en: 'Try again after {dateTimeLabel}.'
+	String tryAgainAfter({required Object dateTimeLabel}) => 'Try again after ${dateTimeLabel}.';
 }
 
 // Path: register_match.ui_sheets_register_match_add_anonymous_player_sheet
@@ -2406,6 +2528,12 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEn {
 	/// en: 'Continue'
 	String get continueButton => 'Continue';
 
+	/// en: '{participantName} must have points between 0 and 29.'
+	String participantMustHavePointsBetween0And29({required Object participantName}) => '${participantName} must have points between 0 and 29.';
+
+	/// en: 'Enter valid points for {participantName}, or mark failed dominance.'
+	String enterValidPointsForParticipantOrMarkFailedDominance({required Object participantName}) => 'Enter valid points for ${participantName}, or mark failed dominance.';
+
 	/// en: 'Select a faction for {participantName} before continuing.'
 	String selectFactionForParticipantBeforeContinuing({required Object participantName}) => 'Select a faction for ${participantName} before continuing.';
 
@@ -2424,14 +2552,26 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardReviewStepSectionEn {
 	/// en: 'Board photo'
 	String get boardPhoto => 'Board photo';
 
+	/// en: 'Estimated duration: {value}'
+	String estimatedDurationValue({required Object value}) => 'Estimated duration: ${value}';
+
 	/// en: 'Group photo'
 	String get groupPhoto => 'Group photo';
+
+	/// en: 'Match started: {value}'
+	String matchStartedValue({required Object value}) => 'Match started: ${value}';
 
 	/// en: 'Social proof'
 	String get socialProof => 'Social proof';
 
 	/// en: 'Ranking'
 	String get ranking => 'Ranking';
+
+	/// en: '{stepNumber}) Review and submit'
+	String stepReviewAndSubmit({required Object stepNumber}) => '${stepNumber}) Review and submit';
+
+	/// en: 'Winner method: {value}'
+	String winnerMethodValue({required Object value}) => 'Winner method: ${value}';
 
 	/// en: 'Confirm all details before logging this match.'
 	String get confirmAllDetailsBeforeLoggingThisMatch => 'Confirm all details before logging this match.';
@@ -2478,6 +2618,9 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionEn {
 	/// en: 'Select a match you participated in. You can register a result from 2 hours before scheduled start.'
 	String get selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu => 'Select a match you participated in. You can register a result from 2 hours before scheduled start.';
 
+	/// en: '{count} pending'
+	String pendingMatchesCount({required Object count}) => '${count} pending';
+
 	/// en: 'Register Match Result'
 	String get registerMatchResult => 'Register Match Result';
 }
@@ -2501,6 +2644,9 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSection
 
 	/// en: 'Board photo proof'
 	String get boardPhotoProof => 'Board photo proof';
+
+	/// en: '{stepNumber}) Social proof'
+	String stepSocialProof({required Object stepNumber}) => '${stepNumber}) Social proof';
 
 	/// en: 'Selfie with all players. Include the board if possible.'
 	String get selfieWithAllPlayersIncludeTheBoardIfPossible => 'Selfie with all players. Include the board if possible.';

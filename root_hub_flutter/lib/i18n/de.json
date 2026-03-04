@@ -134,7 +134,8 @@
     },
     "ui_screens_dashboard_faction_editor_screen": {
       "chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference": "Wählen Sie die Fraktion aus, die in Ihrem Profil angezeigt und als Standardeinstellung verwendet wird.",
-      "changeFavoriteFaction": "Lieblingsfraktion ändern"
+      "changeFavoriteFaction": "Lieblingsfraktion ändern",
+      "saveFactionButtonLabel": "{factionName} speichern"
     },
     "ui_dialogs_edit_location_dialog": {
       "save": "Speichern",
@@ -249,6 +250,8 @@
       "remove": "Entfernen",
       "cancel": "Stornieren",
       "rejoinIfSeatsAreStillAvailable": "Melden Sie sich erneut an, wenn noch Plätze frei sind.",
+      "removePlayerDescription": "{playerName} wird vom Tisch entfernt und muss {rejoinInstruction}",
+      "removePlayerTitle": "{playerName} entfernen?",
       "cancel2": "Stornieren",
       "selectAPlayerToRemoveFromTheTable": "Wählen Sie einen Spieler aus, den Sie vom Partie entfernen möchten.",
       "removeAPlayer": "Entferne einen Spieler",
@@ -256,6 +259,9 @@
       "cancel3": "Stornieren",
       "playersListYouCanRejoinLaterIfSeatsAreStillAvailable": "Spielerliste. Sie können später wieder einsteigen, wenn noch Plätze frei sind.",
       "youWillBeUnsubscribedFromThisMatchAndRemovedFromThe": "Du wirst von diesem Match abgemeldet und aus dem entfernt",
+      "copiedLabel": "{label} kopiert",
+      "ratingsCount": "{count} Bewertungen",
+      "ratingValue": "Bewertung {value}",
       "leaveThisTable": "Diesen Partie verlassen?",
       "unableToLoadTableDetails": "Partiedetails können nicht geladen werden.",
       "tableNotFound": "Partie nicht gefunden"
@@ -264,9 +270,29 @@
       "noPlayersHaveJoinedThisTableYet": "Es sind noch keine Spieler diesem Partie beigetreten.",
       "theseAreTheCurrentPlayersThatWillParticipate": "Dies sind die aktuellen Spieler, die teilnehmen werden.",
       "noPlayersSubscribedYet": "Noch kein Spieler angemeldet.",
+      "createdAtValue": "Erstellt am: {value}",
       "playersInThisMatch": "Spieler in diesem Spiel",
+      "playersRange": "{minPlayers}-{maxPlayers} Spieler",
+      "seatsCount": "{subscribedPlayersCount}/{maxPlayers} Plätze",
       "unknownHost": "Unbekannter Host",
-      "tableDetails": "Partiedetails"
+      "tableDetails": "Partiedetails",
+      "statusValue": "Status: {value}",
+      "statusScheduled": "Geplant",
+      "statusNotPlayed": "Nicht gespielt",
+      "statusPlayed": "Gespielt",
+      "thisMatchWasMarkedAsNotPlayed": "Dieses Spiel wurde als nicht gespielt markiert.",
+      "reasonValue": "Grund: {value}",
+      "markedByValue": "Markiert von: {value}",
+      "detailsValue": "Details: {value}",
+      "reasonNotEnoughPlayers": "Nicht genug Spieler",
+      "reasonHostUnavailable": "Host nicht verfügbar",
+      "reasonNoGameCopyAvailable": "Keine Spielkopie verfügbar",
+      "reasonVenueIssue": "Problem mit dem Veranstaltungsort",
+      "reasonPlayerNoShow": "Spieler nicht erschienen",
+      "reasonWeatherOrEmergency": "Wetter oder Notfall",
+      "reasonExpiredWithoutResult": "Nach 24 Stunden ohne Ergebnis abgelaufen",
+      "reasonOther": "Sonstiges",
+      "reasonNotProvided": "Nicht angegeben"
     },
     "ui_sheets_match_table_info_error_widget": {
       "retry": "Wiederholen",
@@ -276,11 +302,14 @@
       "favoriteFaction": "Lieblingsfraktion"
     },
     "ui_sheets_match_edit_table_sheet": {
+      "dateIsTooFarDescription": "Die geplante Zeit darf nicht mehr als {maxScheduleDays} Tage in der Zukunft liegen.",
       "theScheduledTimeCannotBeMoreThan": "Die geplante Zeit darf nicht länger als sein",
       "dateIsTooFar": "Das Datum ist zu weit entfernt",
+      "timeIsTooSoonDescription": "Die geplante Zeit muss mindestens {minScheduleMinutes} Minuten in der Zukunft liegen.",
       "theScheduledTimeMustBeAtLeast": "Die geplante Zeit muss mindestens sein",
       "timeIsTooSoon": "Die Zeit ist zu früh",
       "youCannotSetTheMaximumBelowThatNumber": "Sie können den Höchstwert nicht unter diesem Wert festlegen.",
+      "tooManyPlayersSubscribedDescription": "Es sind bereits {currentSubscriberCount} Spieler angemeldet. Sie können das Maximum nicht unter diese Zahl setzen.",
       "tooManyPlayersSubscribed": "Zu viele Spieler haben sich angemeldet",
       "withMinimumNotGreaterThanMaximum": "wobei das Minimum nicht größer als das Maximum ist.",
       "playersRangeMustBeBetween2And6": "Die Spielerreichweite muss zwischen 2 und 6 liegen,",
@@ -297,10 +326,12 @@
       "saveChanges": "Änderungen speichern",
       "saving": "Sparen...",
       "cancel": "Stornieren",
+      "scheduleDescription": "Muss mindestens 10 Minuten ab jetzt und höchstens {maxScheduleDays} Tage im Voraus sein.",
       "mustBeAtLeast10MinutesFromNowUpTo": "Muss in mindestens 10 Minuten liegen",
       "schedule": "Zeitplan",
       "maximum": "Maximal",
       "minimum": "Minimum",
+      "playersAlreadySubscribedCount": "{count} Spieler bereits angemeldet.",
       "setBetween2And6Players": "Stellen Sie zwischen 2 und 6 Spielern ein.",
       "playersRange": "Reichweite der Spieler",
       "exampleWeHaveMarauderExpansion": "Beispiel: Wir haben die Marauder-Erweiterung.",
@@ -343,9 +374,12 @@
       "unableToOpenTheDialerRightNow": "Der Dialer kann derzeit nicht geöffnet werden.",
       "invalidPhoneNumberFormat": "Ungültiges Telefonnummernformat.",
       "unableToOpenTheLinkRightNow": "Der Link kann derzeit nicht geöffnet werden.",
+      "copiedLabel": "{label} kopiert",
       "invalidUrlFormat": "Ungültiges URL-Format.",
       "unableToOpenSharedMatch": "Dieses geteilte Spiel kann gerade nicht geöffnet werden.",
       "unableToShareThisMatch": "Dieses Spiel kann gerade nicht geteilt werden.",
+      "ratingsCount": "{count} Bewertungen",
+      "ratingValue": "Bewertung {value}",
       "shareMessage": "Root Hub verbindet Menschen, um ROOT persönlich an öffentlichen Orten zu spielen. Tritt diesem Spiel in {location} um {hour} am {day} bei: {link}",
       "close": "Schließen",
       "manualLocationNotes": "Manuelle Standortnotizen",
@@ -433,10 +467,13 @@
       "subscriptionsClosed": "Abonnements geschlossen",
       "alreadySubscribed": "Bereits abonniert",
       "cancel": "Stornieren",
+      "createdAtValue": "Erstellt am: {value}",
       "youCanBeTheFirstPlayerToLockThisTableIn": "Sie können der erste Spieler sein, der diesen Partie sperrt.",
       "theseAreTheCurrentPlayersThatWillParticipate": "Dies sind die aktuellen Spieler, die teilnehmen werden.",
       "noPlayersSubscribedYet": "Noch kein Spieler angemeldet.",
       "playersInThisMatch": "Spieler in diesem Spiel",
+      "playersRange": "{minPlayers}-{maxPlayers} Spieler",
+      "seatsCount": "{subscribedPlayersCount}/{maxPlayers} Plätze",
       "unknownHost": "Unbekannter Host",
       "seeTableChat": "Siehe Partiechat",
       "newPlayersCannotJoinAtThisTime": "Neue Spieler können derzeit nicht beitreten.",
@@ -450,6 +487,8 @@
       "share": "Teilen",
       "subscriptionsClosed": "Abonnements geschlossen",
       "openFullLocationDetails": "Vollständige Standortdetails öffnen",
+      "playersRange": "{minPlayers}-{maxPlayers} Spieler",
+      "playersRangeTooltip": "Dieser Tisch kann mit mindestens {minPlayers} Spielern starten und bis zu {maxPlayers} Spieler aufnehmen.",
       "places": "Plätze",
       "place": "Platz",
       "s": "S",
@@ -462,6 +501,13 @@
       "player": "Spieler",
       "players": "Spieler",
       "subscriptionTooltip": "{subscribedPlayersCount} {playersWord} angemeldet und {remainingSeats} {placesWord} frei, um die Partie zu schließen."
+    },
+    "ui_screens_match_actionable_info_row_widget": {
+      "copyLabel": "{label} kopieren",
+      "openLabel": "{label} öffnen"
+    },
+    "ui_screens_match_join_sheet_loading_widget": {
+      "loadingTableDetailsForTitle": "Partiedetails für \"{tableTitle}\" werden geladen..."
     },
     "ui_sheets_match_share_sheet": {
       "shareThisMatch": "Dieses Spiel teilen",
@@ -490,6 +536,7 @@
       "chooseFromLibrary": "Wählen Sie aus der Bibliothek",
       "takePhoto2": "Machen Sie ein Foto",
       "sendAPhoto": "Schicken Sie ein Foto",
+      "imageCompressionPrompt": "Dieses Bild ist {selectedImageMb}MB groß, das Limit liegt bei {maxAllowedMb}MB. Vor dem Senden automatisch komprimieren?",
       "compress": "Kompresse",
       "cancel2": "Stornieren",
       "imageIsTooLarge": "Bild ist zu groß",
@@ -523,6 +570,7 @@
     "ui_sheets_register_match_wizard_winner_step_section": {
       "dominance": "Dominanz",
       "totalPoints30": "Gesamtpunktzahl (30)",
+      "stepSelectTheWinner": "{stepNumber}) Gewinner auswählen",
       "dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB": "Dominanz bedeutet, dass der Gewinner ein Dominanzkartenziel erreicht hat, anstatt nach Punkten zu gewinnen.",
       "totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack": "Die Gesamtpunktzahl bedeutet, dass der Gewinner 30 Siegpunkte auf der Punkteleiste erreicht hat.",
       "howDidTheWinnerWon": "Wie hat der Gewinner gewonnen?",
@@ -531,8 +579,10 @@
     "ui_sheets_register_match_wizard_timing_step_section": {
       "estimatedDuration": "Geschätzte Dauer",
       "estimatedDuration2": "Geschätzte Dauer",
+      "stepEstimatedMatchDuration": "{stepNumber}) Geschätzte Spieldauer",
       "setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours": "Legen Sie die geschätzte Dauer fest. Passen Sie die Einstellung in 15-Minuten-Schritten an (maximal 8 Stunden).",
       "changeTime": "Zeit ändern",
+      "stepMatchStartedAt": "{stepNumber}) Spielbeginn",
       "matchStartedAt": "Das Spiel begann um",
       "setTheTimeTheMatchActuallyStarted": "Legen Sie die Uhrzeit fest, zu der das Spiel tatsächlich begonnen hat."
     },
@@ -549,7 +599,9 @@
     },
     "ui_sheets_register_match_picker_match_item_card": {
       "notAvailableYet": "Noch nicht verfügbar",
-      "tapToReport": "Zum Melden tippen"
+      "tapToReport": "Zum Melden tippen",
+      "cancelMatch": "Spiel absagen",
+      "registerMatchResult": "Spielergebnis eintragen"
     },
     "ui_sheets_register_match_wizard_factions_step_section": {
       "selectFaction": "Fraktion auswählen",
@@ -560,6 +612,7 @@
     "ui_sheets_register_match_search_registered_player_sheet": {
       "tapToAdd": "Zum Hinzufügen tippen",
       "alreadyAddedToThisReport": "Bereits zu diesem Bericht hinzugefügt",
+      "noPlayersFoundForQuery": "Keine Spieler für \"{query}\" gefunden.",
       "noRegisteredPlayersWereFound": "Es wurden keine registrierten Spieler gefunden.",
       "searchByDisplayName": "Suche nach Anzeigename",
       "addRegisteredPlayer": "Registrierten Spieler hinzufügen"
@@ -568,10 +621,13 @@
       "value0To29": "0 bis 29",
       "points": "Punkte",
       "dominanceAttempt": "Dominanzversuch",
+      "failedNoPoints": "Gescheitert (keine Punkte)",
       "winnerByDominance": "Sieger durch Dominanz",
       "winnerByPoints": "Sieger nach Punkten",
       "failedDominance": "Fehlgeschlagene Dominanz",
+      "stepPointsByPlayer": "{stepNumber}) Punkte pro Spieler",
       "points2": "Punkte",
+      "noPoints": "Keine Punkte",
       "winner": "Gewinner",
       "failedDominanceAlwaysCountsAsNoPoints": "Eine misslungene Dominanz zählt immer als keine Punkte.",
       "forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt": "Für jeden Nichtsieger werden Punkte vergeben oder ein gescheiterter Dominanzversuch markiert."
@@ -591,7 +647,8 @@
     },
     "ui_sheets_register_match_picker_sheet": {
       "youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart": "Sie können dieses Spiel ab 2 Stunden vor dem geplanten Beginn anmelden.",
-      "resultRegistrationNotAvailableYet": "Ergebnisregistrierung noch nicht verfügbar"
+      "resultRegistrationNotAvailableYet": "Ergebnisregistrierung noch nicht verfügbar",
+      "tryAgainAfter": "Versuche es nach {dateTimeLabel} erneut."
     },
     "ui_sheets_register_match_add_anonymous_player_sheet": {
       "tapToAdd": "Zum Hinzufügen tippen",
@@ -663,14 +720,20 @@
       "unableToLoadThisMatchReportFlow2": "Dieser Match-Berichtsfluss kann nicht geladen werden.",
       "invalidMatch": "Ungültige Partie",
       "continueButton": "Weitermachen",
+      "participantMustHavePointsBetween0And29": "{participantName} muss zwischen 0 und 29 Punkte haben.",
+      "enterValidPointsForParticipantOrMarkFailedDominance": "Gib gültige Punkte für {participantName} ein oder markiere fehlgeschlagene Dominanz.",
       "selectFactionForParticipantBeforeContinuing": "Wähle vor dem Fortfahren eine Fraktion für {participantName} aus.",
       "factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce": "{factionName} wurde mehr als einmal ausgewählt. Jede Fraktion darf nur einmal gewählt werden."
     },
     "ui_sheets_register_match_wizard_review_step_section": {
       "boardPhoto": "Brettfoto",
+      "estimatedDurationValue": "Geschätzte Dauer: {value}",
       "groupPhoto": "Gruppenfoto",
+      "matchStartedValue": "Spielbeginn: {value}",
       "socialProof": "Sozialer Beweis",
       "ranking": "Rang",
+      "stepReviewAndSubmit": "{stepNumber}) Prüfen und absenden",
+      "winnerMethodValue": "Siegart: {value}",
       "confirmAllDetailsBeforeLoggingThisMatch": "Bestätigen Sie alle Details, bevor Sie dieses Spiel protokollieren."
     },
     "ui_sheets_register_match_wizard_review_photo_tile": {
@@ -683,6 +746,7 @@
     },
     "ui_sheets_register_match_picker_header_section": {
       "selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu": "Wählen Sie ein Spiel aus, an dem Sie teilgenommen haben. Sie können ein Ergebnis ab 2 Stunden vor dem geplanten Beginn registrieren.",
+      "pendingMatchesCount": "{count} ausstehend",
       "registerMatchResult": "Spielergebnis registrieren"
     },
     "ui_sheets_register_match_wizard_social_proof_step_section": {
@@ -690,9 +754,28 @@
       "boardPhoto": "Brettfoto",
       "uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible": "Laden Sie ein Foto der Tafel hoch, auf dem die Punkteleiste deutlich sichtbar ist.",
       "boardPhotoProof": "Fotobeweis der Platine",
+      "stepSocialProof": "{stepNumber}) Sozialer Nachweis",
       "selfieWithAllPlayersIncludeTheBoardIfPossible": "Selfie mit allen Spielern. Beziehen Sie nach Möglichkeit die Tafel mit ein.",
       "groupPhoto": "Gruppenfoto",
       "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Lade beide Fotos hoch, um zu bestätigen, dass diese Partie persönlich stattgefunden hat."
+    },
+    "ui_dialogs_register_match_cancel_match_dialog": {
+      "cancelMatchTitle": "Spiel absagen",
+      "cancelMatchDescription": "Markiere dieses geplante Spiel als nicht gespielt und teile den Grund mit den Teilnehmern.",
+      "reasonLabel": "Grund",
+      "optionalReasonDetailsLabel": "Optionale Details",
+      "optionalReasonDetailsHint": "Teile zusätzlichen Kontext für die Spieler.",
+      "detailsRequiredForOtherReason": "Bitte füge Details hinzu, wenn du \"Sonstiges\" auswählst.",
+      "keepMatch": "Spiel behalten",
+      "confirmCancelMatch": "Absage bestätigen",
+      "reasonNotEnoughPlayers": "Nicht genug Spieler",
+      "reasonHostUnavailable": "Host nicht verfügbar",
+      "reasonNoGameCopyAvailable": "Keine Spielkopie verfügbar",
+      "reasonVenueIssue": "Problem mit dem Veranstaltungsort",
+      "reasonPlayerNoShow": "Spieler nicht erschienen",
+      "reasonWeatherOrEmergency": "Wetter oder Notfall",
+      "reasonExpiredWithoutResult": "Nach 24 Stunden ohne Ergebnis abgelaufen",
+      "reasonOther": "Sonstiges"
     }
   },
   "shop": {

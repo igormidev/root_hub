@@ -781,13 +781,18 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           if (google?.rating != null)
                             MatchLocationMetaChipWidget(
                               icon: Icons.star_rounded,
-                              label:
-                                  'Rating ${google!.rating!.toStringAsFixed(1)}',
+                              label: t.match.ui_screens_match_screen
+                                  .ratingValue(
+                                    value: google!.rating!.toStringAsFixed(1),
+                                  ),
                             ),
                           if (google?.userRatingCount != null)
                             MatchLocationMetaChipWidget(
                               icon: Icons.groups_2_rounded,
-                              label: '${google!.userRatingCount} ratings',
+                              label: t.match.ui_screens_match_screen
+                                  .ratingsCount(
+                                    count: google!.userRatingCount!,
+                                  ),
                             ),
                           if (google?.timezone != null &&
                               google!.timezone!.trim().isNotEmpty)
@@ -942,7 +947,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$label copied'),
+        content: Text(
+          t.match.ui_screens_match_screen.copiedLabel(label: label),
+        ),
       ),
     );
   }

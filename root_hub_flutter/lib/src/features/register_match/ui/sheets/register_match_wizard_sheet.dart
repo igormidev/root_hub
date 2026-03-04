@@ -781,8 +781,12 @@ class _RegisterMatchWizardSheetState
                     .register_match
                     .ui_sheets_register_match_wizard_sheet
                     .pointsMissing,
-                description:
-                    'Enter valid points for ${participant.displayName}, or mark failed dominance.',
+                description: t
+                    .register_match
+                    .ui_sheets_register_match_wizard_sheet
+                    .enterValidPointsForParticipantOrMarkFailedDominance(
+                      participantName: participant.displayName,
+                    ),
               );
             }
 
@@ -792,8 +796,12 @@ class _RegisterMatchWizardSheetState
                     .register_match
                     .ui_sheets_register_match_wizard_sheet
                     .invalidPoints,
-                description:
-                    '${participant.displayName} must have points between 0 and 29.',
+                description: t
+                    .register_match
+                    .ui_sheets_register_match_wizard_sheet
+                    .participantMustHavePointsBetween0And29(
+                      participantName: participant.displayName,
+                    ),
               );
             }
           }

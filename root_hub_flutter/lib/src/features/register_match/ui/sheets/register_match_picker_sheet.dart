@@ -113,7 +113,8 @@ class _RegisterMatchPickerSheetState
             .ui_sheets_register_match_picker_sheet
             .resultRegistrationNotAvailableYet,
         description:
-            '${t.register_match.ui_sheets_register_match_picker_sheet.youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart}. Try again after $earliestAllowedRegistrationTimeLabel.',
+            '${t.register_match.ui_sheets_register_match_picker_sheet.youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart} '
+            '${t.register_match.ui_sheets_register_match_picker_sheet.tryAgainAfter(dateTimeLabel: earliestAllowedRegistrationTimeLabel)}',
       );
       return;
     }

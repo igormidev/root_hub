@@ -171,6 +171,12 @@ class _TranslationsErrorsFr extends TranslationsErrorsEn {
 	@override String get uploadThingAppInfoLookupFailed => 'UploadThing app info lookup failed.';
 	@override String get uploadThingInvalidAppInfoFormat => 'UploadThing returned an invalid app info format.';
 	@override String get uploadThingAppIdMissing => 'UploadThing app id is missing in app info response.';
+	@override String get onlyHostOrSubscribedCanCancelMatch => 'Seul l\'hôte ou les joueurs abonnés peuvent marquer ce match comme non joué.';
+	@override String get cancellationDetailsRequiredForOtherReason => 'Veuillez fournir une description du motif en sélectionnant « autre ».';
+	@override String get onlyScheduledMatchesCanReceiveSubscriptions => 'Seuls les matchs planifiés peuvent recevoir de nouveaux abonnements.';
+	@override String get onlyScheduledMatchesCanBeEdited => 'Seuls les matchs planifiés peuvent être modifiés.';
+	@override String get onlyScheduledMatchesCanManagePlayers => 'Seuls les matchs planifiés peuvent gérer les abonnements des joueurs.';
+	@override String get scheduledMatchAlreadyMarkedAsNotPlayed => 'Ce match planifié est déjà marqué comme non joué.';
 }
 
 // Path: fallback
@@ -214,6 +220,7 @@ class _TranslationsFallbackFr extends TranslationsFallbackEn {
 	@override String get unableToSearchRegisteredPlayers => 'Unable to search registered players right now. Please try again.';
 	@override String get unableToUploadImage => 'Unable to upload image right now. Please try again.';
 	@override String get unexpected => 'Unable to process this request right now. Please try again later.';
+	@override String get unableToCancelScheduledMatch => 'Impossible de marquer ce match planifié comme non joué pour le moment. Veuillez réessayer.';
 }
 
 // Path: systemMessages

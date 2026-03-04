@@ -54,12 +54,14 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     final googlePlace = location?.googlePlaceLocation;
     final manualLocation = location?.manualInputLocation;
     final locationTitle =
-        googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
+        googlePlace?.name ??
+        manualLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
     final locationSubtitle =
         googlePlace?.shortFormattedAddress ??
         googlePlace?.formattedAddress ??
         manualLocation?.cityName ??
-        'Address unavailable';
+        t.match.ui_screens_match_table_card_widget.addressUnavailable;
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
@@ -148,7 +150,11 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.groups_2_rounded,
-                      text: '$subscribedPlayersCount/$maxPlayers seats',
+                      text: t.match.ui_sheets_match_table_info_content_widget
+                          .seatsCount(
+                            subscribedPlayersCount: subscribedPlayersCount,
+                            maxPlayers: maxPlayers,
+                          ),
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.person_outline_rounded,
@@ -161,7 +167,11 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.social_distance_rounded,
-                      text: '$minPlayers-$maxPlayers players',
+                      text: t.match.ui_sheets_match_table_info_content_widget
+                          .playersRange(
+                            minPlayers: minPlayers,
+                            maxPlayers: maxPlayers,
+                          ),
                     ),
                     MatchTableInfoInfoChipWidget(
                       icon: Icons.task_alt_rounded,
@@ -358,7 +368,8 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                     ),
                 SizedBox(height: 2),
                 Text(
-                  'Created at: $createdLabel',
+                  t.match.ui_sheets_match_table_info_content_widget
+                      .createdAtValue(value: createdLabel),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,

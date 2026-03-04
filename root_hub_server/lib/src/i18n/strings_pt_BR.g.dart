@@ -171,6 +171,12 @@ class _TranslationsErrorsPtBr extends TranslationsErrorsEn {
 	@override String get uploadThingAppInfoLookupFailed => 'UploadThing app info lookup failed.';
 	@override String get uploadThingInvalidAppInfoFormat => 'UploadThing returned an invalid app info format.';
 	@override String get uploadThingAppIdMissing => 'UploadThing app id is missing in app info response.';
+	@override String get onlyHostOrSubscribedCanCancelMatch => 'Apenas o anfitrião ou jogadores inscritos podem marcar esta partida como não jogada.';
+	@override String get cancellationDetailsRequiredForOtherReason => 'Adicione uma descrição do motivo ao selecionar "outro".';
+	@override String get onlyScheduledMatchesCanReceiveSubscriptions => 'Apenas partidas agendadas podem receber novas inscrições.';
+	@override String get onlyScheduledMatchesCanBeEdited => 'Apenas partidas agendadas podem ser editadas.';
+	@override String get onlyScheduledMatchesCanManagePlayers => 'Apenas partidas agendadas podem gerenciar inscrições de jogadores.';
+	@override String get scheduledMatchAlreadyMarkedAsNotPlayed => 'Esta partida agendada já está marcada como não jogada.';
 }
 
 // Path: fallback
@@ -214,6 +220,7 @@ class _TranslationsFallbackPtBr extends TranslationsFallbackEn {
 	@override String get unableToSearchRegisteredPlayers => 'Unable to search registered players right now. Please try again.';
 	@override String get unableToUploadImage => 'Unable to upload image right now. Please try again.';
 	@override String get unexpected => 'Unable to process this request right now. Please try again later.';
+	@override String get unableToCancelScheduledMatch => 'Não foi possível marcar esta partida agendada como não jogada agora. Tente novamente.';
 }
 
 // Path: systemMessages

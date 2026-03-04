@@ -134,7 +134,8 @@
     },
     "ui_screens_dashboard_faction_editor_screen": {
       "chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference": "Choose the faction shown in your profile and used as your default preference.",
-      "changeFavoriteFaction": "Change Favorite Faction"
+      "changeFavoriteFaction": "Change Favorite Faction",
+      "saveFactionButtonLabel": "Save {factionName}"
     },
     "ui_dialogs_edit_location_dialog": {
       "save": "Save",
@@ -249,6 +250,8 @@
       "remove": "Remove",
       "cancel": "Cancel",
       "rejoinIfSeatsAreStillAvailable": "rejoin if seats are still available.",
+      "removePlayerDescription": "{playerName} will be removed from the table and will need to {rejoinInstruction}",
+      "removePlayerTitle": "Remove {playerName}?",
       "cancel2": "Cancel",
       "selectAPlayerToRemoveFromTheTable": "Select a player to remove from the table.",
       "removeAPlayer": "Remove a Player",
@@ -256,6 +259,9 @@
       "cancel3": "Cancel",
       "playersListYouCanRejoinLaterIfSeatsAreStillAvailable": "players list. You can rejoin later if seats are still available.",
       "youWillBeUnsubscribedFromThisMatchAndRemovedFromThe": "You will be unsubscribed from this match and removed from the ",
+      "copiedLabel": "{label} copied",
+      "ratingsCount": "{count} ratings",
+      "ratingValue": "Rating {value}",
       "leaveThisTable": "Leave this table?",
       "unableToLoadTableDetails": "Unable to load table details.",
       "tableNotFound": "Table not found"
@@ -264,7 +270,10 @@
       "noPlayersHaveJoinedThisTableYet": "No players have joined this table yet.",
       "theseAreTheCurrentPlayersThatWillParticipate": "These are the current players that will participate.",
       "noPlayersSubscribedYet": "No players subscribed yet.",
+      "createdAtValue": "Created at: {value}",
       "playersInThisMatch": "Players in this match",
+      "playersRange": "{minPlayers}-{maxPlayers} players",
+      "seatsCount": "{subscribedPlayersCount}/{maxPlayers} seats",
       "unknownHost": "Unknown host",
       "tableDetails": "Table Details",
       "statusValue": "Status: {value}",
@@ -293,11 +302,14 @@
       "favoriteFaction": "Favorite Faction"
     },
     "ui_sheets_match_edit_table_sheet": {
+      "dateIsTooFarDescription": "The scheduled time cannot be more than {maxScheduleDays} days in the future.",
       "theScheduledTimeCannotBeMoreThan": "The scheduled time cannot be more than ",
       "dateIsTooFar": "Date is too far",
+      "timeIsTooSoonDescription": "The scheduled time must be at least {minScheduleMinutes} minutes in the future.",
       "theScheduledTimeMustBeAtLeast": "The scheduled time must be at least ",
       "timeIsTooSoon": "Time is too soon",
       "youCannotSetTheMaximumBelowThatNumber": "You cannot set the maximum below that number.",
+      "tooManyPlayersSubscribedDescription": "There are already {currentSubscriberCount} players subscribed. You cannot set the maximum below that number.",
       "tooManyPlayersSubscribed": "Too many players subscribed",
       "withMinimumNotGreaterThanMaximum": "with minimum not greater than maximum.",
       "playersRangeMustBeBetween2And6": "Players range must be between 2 and 6, ",
@@ -314,10 +326,12 @@
       "saveChanges": "Save Changes",
       "saving": "Saving...",
       "cancel": "Cancel",
+      "scheduleDescription": "Must be at least 10 minutes from now, up to {maxScheduleDays} days ahead.",
       "mustBeAtLeast10MinutesFromNowUpTo": "Must be at least 10 minutes from now, up to ",
       "schedule": "Schedule",
       "maximum": "Maximum",
       "minimum": "Minimum",
+      "playersAlreadySubscribedCount": "{count} player(s) already subscribed.",
       "setBetween2And6Players": "Set between 2 and 6 players.",
       "playersRange": "Players range",
       "exampleWeHaveMarauderExpansion": "Example: We have Marauder expansion.",
@@ -360,9 +374,12 @@
       "unableToOpenTheDialerRightNow": "Unable to open the dialer right now.",
       "invalidPhoneNumberFormat": "Invalid phone number format.",
       "unableToOpenTheLinkRightNow": "Unable to open the link right now.",
+      "copiedLabel": "{label} copied",
       "invalidUrlFormat": "Invalid URL format.",
       "unableToOpenSharedMatch": "Unable to open this shared match right now.",
       "unableToShareThisMatch": "Unable to share this match right now.",
+      "ratingsCount": "{count} ratings",
+      "ratingValue": "Rating {value}",
       "shareMessage": "Root Hub connects players to play ROOT in person at public places. Join this match at {location} at {hour} on {day}: {link}",
       "close": "Close",
       "manualLocationNotes": "Manual location notes",
@@ -450,10 +467,13 @@
       "subscriptionsClosed": "Subscriptions closed",
       "alreadySubscribed": "Already subscribed",
       "cancel": "Cancel",
+      "createdAtValue": "Created at: {value}",
       "youCanBeTheFirstPlayerToLockThisTableIn": "You can be the first player to lock this table in.",
       "theseAreTheCurrentPlayersThatWillParticipate": "These are the current players that will participate.",
       "noPlayersSubscribedYet": "No players subscribed yet.",
       "playersInThisMatch": "Players in this match",
+      "playersRange": "{minPlayers}-{maxPlayers} players",
+      "seatsCount": "{subscribedPlayersCount}/{maxPlayers} seats",
       "unknownHost": "Unknown host",
       "seeTableChat": "See table chat",
       "newPlayersCannotJoinAtThisTime": "New players cannot join at this time.",
@@ -467,6 +487,8 @@
       "share": "Share",
       "subscriptionsClosed": "Subscriptions closed",
       "openFullLocationDetails": "Open full location details",
+      "playersRange": "{minPlayers}-{maxPlayers} players",
+      "playersRangeTooltip": "This table can start with a minimum of {minPlayers} players and accepts up to {maxPlayers} players.",
       "places": "places",
       "place": "place",
       "s": "s",
@@ -479,6 +501,13 @@
       "player": "player",
       "players": "players",
       "subscriptionTooltip": "{subscribedPlayersCount} {playersWord} subscribed and {remainingSeats} {placesWord} remaining to close the table."
+    },
+    "ui_screens_match_actionable_info_row_widget": {
+      "copyLabel": "Copy {label}",
+      "openLabel": "Open {label}"
+    },
+    "ui_screens_match_join_sheet_loading_widget": {
+      "loadingTableDetailsForTitle": "Loading table details for \"{tableTitle}\"..."
     },
     "ui_sheets_match_share_sheet": {
       "shareThisMatch": "Share this match",
@@ -507,6 +536,7 @@
       "chooseFromLibrary": "Choose from Library",
       "takePhoto2": "Take Photo",
       "sendAPhoto": "Send a photo",
+      "imageCompressionPrompt": "This image is {selectedImageMb}MB, but the limit is {maxAllowedMb}MB. Compress it automatically before sending?",
       "compress": "Compress",
       "cancel2": "Cancel",
       "imageIsTooLarge": "Image is too large",
@@ -540,6 +570,7 @@
     "ui_sheets_register_match_wizard_winner_step_section": {
       "dominance": "Dominance",
       "totalPoints30": "Total points (30)",
+      "stepSelectTheWinner": "{stepNumber}) Select the winner",
       "dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB": "Dominance means the winner completed a Dominance card objective instead of winning by points.",
       "totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack": "Total points means the winner reached 30 victory points on the score track. ",
       "howDidTheWinnerWon": "How did the winner won?",
@@ -548,8 +579,10 @@
     "ui_sheets_register_match_wizard_timing_step_section": {
       "estimatedDuration": "Estimated duration",
       "estimatedDuration2": "Estimated duration",
+      "stepEstimatedMatchDuration": "{stepNumber}) Estimated match duration",
       "setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours": "Set the estimated duration. Adjust in 15-minute steps (max 8 hours).",
       "changeTime": "Change time",
+      "stepMatchStartedAt": "{stepNumber}) Match started at",
       "matchStartedAt": "Match started at",
       "setTheTimeTheMatchActuallyStarted": "Set the time the match actually started."
     },
@@ -597,6 +630,7 @@
     "ui_sheets_register_match_search_registered_player_sheet": {
       "tapToAdd": "Tap to add",
       "alreadyAddedToThisReport": "Already added to this report",
+      "noPlayersFoundForQuery": "No players found for \"{query}\".",
       "noRegisteredPlayersWereFound": "No registered players were found.",
       "searchByDisplayName": "Search by display name",
       "addRegisteredPlayer": "Add registered player"
@@ -605,10 +639,13 @@
       "value0To29": "0 to 29",
       "points": "Points",
       "dominanceAttempt": "Dominance attempt",
+      "failedNoPoints": "Failed (no points)",
       "winnerByDominance": "Winner by dominance",
       "winnerByPoints": "Winner by points",
       "failedDominance": "Failed dominance",
+      "stepPointsByPlayer": "{stepNumber}) Points by player",
       "points2": "Points",
+      "noPoints": "No points",
       "winner": "Winner",
       "failedDominanceAlwaysCountsAsNoPoints": "Failed dominance always counts as no points.",
       "forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt": "For each non-winner, set points or mark failed dominance attempt. "
@@ -627,8 +664,9 @@
       "loadingMatchDetails": "Loading match details..."
     },
     "ui_sheets_register_match_picker_sheet": {
-      "youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart": "You can register this match from 2 hours before its scheduled start. ",
-      "resultRegistrationNotAvailableYet": "Result registration not available yet"
+      "youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart": "You can register this match from 2 hours before its scheduled start.",
+      "resultRegistrationNotAvailableYet": "Result registration not available yet",
+      "tryAgainAfter": "Try again after {dateTimeLabel}."
     },
     "ui_sheets_register_match_add_anonymous_player_sheet": {
       "tapToAdd": "Tap to add",
@@ -700,14 +738,20 @@
       "unableToLoadThisMatchReportFlow2": "Unable to load this match report flow.",
       "invalidMatch": "Invalid match",
       "continueButton": "Continue",
+      "participantMustHavePointsBetween0And29": "{participantName} must have points between 0 and 29.",
+      "enterValidPointsForParticipantOrMarkFailedDominance": "Enter valid points for {participantName}, or mark failed dominance.",
       "selectFactionForParticipantBeforeContinuing": "Select a faction for {participantName} before continuing.",
       "factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce": "{factionName} was selected more than once. Each faction can only be selected once."
     },
     "ui_sheets_register_match_wizard_review_step_section": {
       "boardPhoto": "Board photo",
+      "estimatedDurationValue": "Estimated duration: {value}",
       "groupPhoto": "Group photo",
+      "matchStartedValue": "Match started: {value}",
       "socialProof": "Social proof",
       "ranking": "Ranking",
+      "stepReviewAndSubmit": "{stepNumber}) Review and submit",
+      "winnerMethodValue": "Winner method: {value}",
       "confirmAllDetailsBeforeLoggingThisMatch": "Confirm all details before logging this match."
     },
     "ui_sheets_register_match_wizard_review_photo_tile": {
@@ -720,6 +764,7 @@
     },
     "ui_sheets_register_match_picker_header_section": {
       "selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu": "Select a match you participated in. You can register a result from 2 hours before scheduled start.",
+      "pendingMatchesCount": "{count} pending",
       "registerMatchResult": "Register Match Result"
     },
     "ui_sheets_register_match_wizard_social_proof_step_section": {
@@ -727,6 +772,7 @@
       "boardPhoto": "Board photo",
       "uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible": "Upload a photo of the board with the score track clearly visible.",
       "boardPhotoProof": "Board photo proof",
+      "stepSocialProof": "{stepNumber}) Social proof",
       "selfieWithAllPlayersIncludeTheBoardIfPossible": "Selfie with all players. Include the board if possible.",
       "groupPhoto": "Group photo",
       "uploadBothPhotosToConfirmThisMatchHappenedInPerson": "Upload both photos to confirm this match happened in person."

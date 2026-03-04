@@ -452,8 +452,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             t.match.ui_screens_match_chat_screen.imageIsTooLarge,
           ),
           content: Text(
-            'This image is ${selectedImageMb}MB, but the limit is '
-            '${maxAllowedMb}MB. Compress it automatically before sending?',
+            t.match.ui_screens_match_chat_screen.imageCompressionPrompt(
+              selectedImageMb: selectedImageMb,
+              maxAllowedMb: maxAllowedMb,
+            ),
           ),
           actions: [
             TextButton(

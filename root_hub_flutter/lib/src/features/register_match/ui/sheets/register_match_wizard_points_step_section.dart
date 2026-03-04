@@ -29,7 +29,8 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$stepNumber) Points by player',
+          t.register_match.ui_sheets_register_match_wizard_points_step_section
+              .stepPointsByPlayer(stepNumber: stepNumber),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -156,7 +157,10 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                           .register_match
                           .ui_sheets_register_match_wizard_points_step_section
                           .winnerByDominance,
-                      value: 'No points',
+                      value: t
+                          .register_match
+                          .ui_sheets_register_match_wizard_points_step_section
+                          .noPoints,
                     )
                   else if (participant.scoreMode ==
                       _ParticipantScoreMode.failedDominance)
@@ -165,7 +169,10 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                           .register_match
                           .ui_sheets_register_match_wizard_points_step_section
                           .dominanceAttempt,
-                      value: 'Failed (no points)',
+                      value: t
+                          .register_match
+                          .ui_sheets_register_match_wizard_points_step_section
+                          .failedNoPoints,
                     )
                   else
                     TextField(

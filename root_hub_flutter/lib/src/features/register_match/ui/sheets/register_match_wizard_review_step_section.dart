@@ -32,7 +32,8 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$stepNumber) Review and submit',
+          t.register_match.ui_sheets_register_match_wizard_review_step_section
+              .stepReviewAndSubmit(stepNumber: stepNumber),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -68,21 +69,30 @@ class _RegisterMatchWizardReviewStepSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Match started: $matchStartedLabel',
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_review_step_section
+                    .matchStartedValue(value: matchStartedLabel),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               SizedBox(height: 4),
               Text(
-                'Estimated duration: $estimatedDurationLabel',
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_review_step_section
+                    .estimatedDurationValue(value: estimatedDurationLabel),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               SizedBox(height: 4),
               Text(
-                'Winner method: $winnerMethodLabel',
+                t
+                    .register_match
+                    .ui_sheets_register_match_wizard_review_step_section
+                    .winnerMethodValue(value: winnerMethodLabel),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),

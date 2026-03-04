@@ -249,8 +249,10 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
         context,
         title:
             t.match.ui_sheets_match_edit_table_sheet.tooManyPlayersSubscribed,
-        description:
-            'There are already $_currentSubscriberCount players subscribed. ${t.match.ui_sheets_match_edit_table_sheet.youCannotSetTheMaximumBelowThatNumber}',
+        description: t.match.ui_sheets_match_edit_table_sheet
+            .tooManyPlayersSubscribedDescription(
+              currentSubscriberCount: _currentSubscriberCount,
+            ),
       );
       return;
     }
@@ -274,8 +276,8 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       await showErrorDialog(
         context,
         title: t.match.ui_sheets_match_edit_table_sheet.timeIsTooSoon,
-        description:
-            '${t.match.ui_sheets_match_edit_table_sheet.theScheduledTimeMustBeAtLeast}$_minScheduleMinutes minutes in the future.',
+        description: t.match.ui_sheets_match_edit_table_sheet
+            .timeIsTooSoonDescription(minScheduleMinutes: _minScheduleMinutes),
       );
       return;
     }
@@ -290,8 +292,8 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       await showErrorDialog(
         context,
         title: t.match.ui_sheets_match_edit_table_sheet.dateIsTooFar,
-        description:
-            '${t.match.ui_sheets_match_edit_table_sheet.theScheduledTimeCannotBeMoreThan}$_maxScheduleDays days in the future.',
+        description: t.match.ui_sheets_match_edit_table_sheet
+            .dateIsTooFarDescription(maxScheduleDays: _maxScheduleDays),
       );
       return;
     }

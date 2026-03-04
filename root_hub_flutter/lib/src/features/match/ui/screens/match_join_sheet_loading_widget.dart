@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchJoinSheetLoadingWidget extends StatelessWidget {
   const MatchJoinSheetLoadingWidget({
@@ -41,7 +42,10 @@ class MatchJoinSheetLoadingWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 14),
                   Text(
-                    'Loading table details for "${fallbackTable.title}"...',
+                    t.match.ui_screens_match_join_sheet_loading_widget
+                        .loadingTableDetailsForTitle(
+                          tableTitle: fallbackTable.title,
+                        ),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,

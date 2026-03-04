@@ -212,7 +212,10 @@ class MatchEditTableFormWidget extends StatelessWidget {
                       .ui_sheets_match_edit_table_form_widget
                       .playersRange,
                   description: currentSubscriberCount > 0
-                      ? '$currentSubscriberCount player(s) already subscribed.'
+                      ? t.match.ui_sheets_match_edit_table_form_widget
+                            .playersAlreadySubscribedCount(
+                              count: currentSubscriberCount,
+                            )
                       : t
                             .match
                             .ui_sheets_match_edit_table_form_widget
@@ -264,8 +267,8 @@ class MatchEditTableFormWidget extends StatelessWidget {
                 MatchEditTableSectionTitleWidget(
                   title:
                       t.match.ui_sheets_match_edit_table_form_widget.schedule,
-                  description:
-                      '${t.match.ui_sheets_match_edit_table_form_widget.mustBeAtLeast10MinutesFromNowUpTo}$maxScheduleDays days ahead.',
+                  description: t.match.ui_sheets_match_edit_table_form_widget
+                      .scheduleDescription(maxScheduleDays: maxScheduleDays),
                 ),
                 SizedBox(height: 8),
                 Row(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:analyzer/dart/analysis/utilities.dart';
@@ -60,8 +61,11 @@ const _uiTextPositionalInvocationNames = <String>{
   'Text',
 };
 
+const _supportedLocales = <String>['en', 'pt-BR', 'es', 'fr', 'de'];
+
 void main(List<String> args) {
   final flutterRoot = _resolveFlutterRoot(args);
+  final serverRoot = _resolveServerRoot(args);
   final libDir = Directory(p.join(flutterRoot.path, 'lib'));
   final featuresDirPath = p.join(flutterRoot.path, 'lib', 'src', 'features');
 
@@ -210,8 +214,19 @@ void main(List<String> args) {
     }
   }
 
+  _collectLocaleParityIssues(
+    issues: issues,
+    i18nDir: Directory(p.join(flutterRoot.path, 'lib', 'i18n')),
+    sourceLabel: 'flutter',
+  );
+  _collectLocaleParityIssues(
+    issues: issues,
+    i18nDir: Directory(p.join(serverRoot.path, 'lib', 'src', 'i18n')),
+    sourceLabel: 'server',
+  );
+
   if (issues.isEmpty) {
-    stdout.writeln('No feature lint violations found.');
+    stdout.writeln('No lint violations found.');
     exitCode = 0;
     return;
   }
@@ -233,18 +248,28 @@ void main(List<String> args) {
 
 Directory _resolveFlutterRoot(List<String> args) {
   const defaultRelativePath = '../root_hub_flutter';
-
-  String? value;
-  for (var i = 0; i < args.length; i++) {
-    if (args[i] == '--flutter-root' && i + 1 < args.length) {
-      value = args[i + 1];
-      break;
-    }
-  }
-
+  final value = _argumentValue(args, '--flutter-root');
   final rawPath = value ?? defaultRelativePath;
   final resolvedPath = p.normalize(p.absolute(rawPath));
   return Directory(resolvedPath);
+}
+
+Directory _resolveServerRoot(List<String> args) {
+  const defaultRelativePath = '../root_hub_server';
+  final value = _argumentValue(args, '--server-root');
+  final rawPath = value ?? defaultRelativePath;
+  final resolvedPath = p.normalize(p.absolute(rawPath));
+  return Directory(resolvedPath);
+}
+
+String? _argumentValue(List<String> args, String name) {
+  for (var i = 0; i < args.length; i++) {
+    if (args[i] == name && i + 1 < args.length) {
+      return args[i + 1];
+    }
+  }
+
+  return null;
 }
 
 Iterable<File> _flutterLibDartFiles(Directory libDir) sync* {
@@ -369,15 +394,27 @@ String? _expectedWidgetClassSuffix(String filePath) {
 }
 
 bool _shouldReportFeatureStringNode(AstNode node) {
-  if (node is! SimpleStringLiteral) {
+  if (node is SimpleStringLiteral) {
+    if (node.value.trim().isEmpty) {
+      return false;
+    }
+
+    if (_isStringNodeInSkippableParent(node)) {
+      return false;
+    }
+
+    return _isLikelyUiTextLiteral(node);
+  }
+
+  if (node is! StringInterpolation) {
+    return false;
+  }
+
+  if (!_nodeContainsAlphabeticLiteralText(node)) {
     return false;
   }
 
   if (_isStringNodeInSkippableParent(node)) {
-    return false;
-  }
-
-  if (node.value.trim().isEmpty) {
     return false;
   }
 
@@ -493,6 +530,31 @@ bool _isLikelyUiTextArgumentName(String argumentName) {
   return normalized.endsWith('title') || normalized.endsWith('description');
 }
 
+bool _nodeContainsAlphabeticLiteralText(StringInterpolation interpolation) {
+  for (final element in interpolation.elements) {
+    if (element is InterpolationString &&
+        _containsAlphabeticCharacter(element.value)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool _containsAlphabeticCharacter(String value) {
+  for (final codePoint in value.runes) {
+    if ((codePoint >= 65 && codePoint <= 90) ||
+        (codePoint >= 97 && codePoint <= 122) ||
+        (codePoint >= 192 && codePoint <= 214) ||
+        (codePoint >= 216 && codePoint <= 246) ||
+        (codePoint >= 248 && codePoint <= 255)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 Expression? _argumentExpressionForNode(AstNode node) {
   AstNode? current = node;
   while (current != null) {
@@ -530,6 +592,143 @@ String? _invocationName(AstNode? node) {
   return null;
 }
 
+void _collectLocaleParityIssues({
+  required List<_LintIssue> issues,
+  required Directory i18nDir,
+  required String sourceLabel,
+}) {
+  if (!i18nDir.existsSync()) {
+    return;
+  }
+
+  final englishFile = File(p.join(i18nDir.path, 'en.json'));
+  if (!englishFile.existsSync()) {
+    issues.add(
+      _LintIssue(
+        code: '${sourceLabel}_i18n_missing_english_locale',
+        filePath: englishFile.path,
+        line: 1,
+        column: 1,
+        message:
+            'Missing locale file "en.json" in ${i18nDir.path}. Cannot validate locale key parity.',
+      ),
+    );
+    return;
+  }
+
+  final englishKeys = _readFlattenedLocaleKeys(
+    file: englishFile,
+    sourceLabel: sourceLabel,
+    issues: issues,
+  );
+  if (englishKeys == null) {
+    return;
+  }
+
+  for (final locale in _supportedLocales.where((value) => value != 'en')) {
+    final localeFile = File(p.join(i18nDir.path, '$locale.json'));
+    if (!localeFile.existsSync()) {
+      issues.add(
+        _LintIssue(
+          code: '${sourceLabel}_i18n_missing_locale_file',
+          filePath: localeFile.path,
+          line: 1,
+          column: 1,
+          message: 'Missing locale file "$locale.json" in ${i18nDir.path}.',
+        ),
+      );
+      continue;
+    }
+
+    final localeKeys = _readFlattenedLocaleKeys(
+      file: localeFile,
+      sourceLabel: sourceLabel,
+      issues: issues,
+    );
+    if (localeKeys == null) {
+      continue;
+    }
+
+    final missingKeys =
+        englishKeys.difference(localeKeys).toList(growable: false)..sort();
+    for (final missingKey in missingKeys) {
+      issues.add(
+        _LintIssue(
+          code: '${sourceLabel}_i18n_missing_key',
+          filePath: localeFile.path,
+          line: 1,
+          column: 1,
+          message:
+              'Locale "$locale" is missing key "$missingKey" compared to "en".',
+        ),
+      );
+    }
+
+    final extraKeys = localeKeys.difference(englishKeys).toList(growable: false)
+      ..sort();
+    for (final extraKey in extraKeys) {
+      issues.add(
+        _LintIssue(
+          code: '${sourceLabel}_i18n_extra_key',
+          filePath: localeFile.path,
+          line: 1,
+          column: 1,
+          message:
+              'Locale "$locale" has extra key "$extraKey" that does not exist in "en".',
+        ),
+      );
+    }
+  }
+}
+
+Set<String>? _readFlattenedLocaleKeys({
+  required File file,
+  required String sourceLabel,
+  required List<_LintIssue> issues,
+}) {
+  try {
+    final decoded = jsonDecode(file.readAsStringSync());
+    return _flattenJsonScalarKeys(decoded);
+  } on Object catch (error) {
+    issues.add(
+      _LintIssue(
+        code: '${sourceLabel}_i18n_invalid_json',
+        filePath: file.path,
+        line: 1,
+        column: 1,
+        message: 'Invalid JSON in locale file: $error',
+      ),
+    );
+    return null;
+  }
+}
+
+Set<String> _flattenJsonScalarKeys(Object? node, {String prefix = ''}) {
+  final keys = <String>{};
+
+  if (node is Map<String, dynamic>) {
+    for (final entry in node.entries) {
+      final childPrefix = prefix.isEmpty ? entry.key : '$prefix.${entry.key}';
+      keys.addAll(_flattenJsonScalarKeys(entry.value, prefix: childPrefix));
+    }
+    return keys;
+  }
+
+  if (node is List<dynamic>) {
+    for (var i = 0; i < node.length; i++) {
+      final childPrefix = prefix.isEmpty ? '$i' : '$prefix.$i';
+      keys.addAll(_flattenJsonScalarKeys(node[i], prefix: childPrefix));
+    }
+    return keys;
+  }
+
+  if (prefix.isNotEmpty) {
+    keys.add(prefix);
+  }
+
+  return keys;
+}
+
 class _FeatureStringLiteralCollector extends RecursiveAstVisitor<void> {
   final nodes = <AstNode>[];
 
@@ -537,6 +736,12 @@ class _FeatureStringLiteralCollector extends RecursiveAstVisitor<void> {
   void visitSimpleStringLiteral(SimpleStringLiteral node) {
     nodes.add(node);
     super.visitSimpleStringLiteral(node);
+  }
+
+  @override
+  void visitStringInterpolation(StringInterpolation node) {
+    nodes.add(node);
+    super.visitStringInterpolation(node);
   }
 }
 

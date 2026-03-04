@@ -116,7 +116,13 @@
     "uploadThingRejectedImageBytes": "UploadThing rejected the uploaded image bytes.",
     "uploadThingAppInfoLookupFailed": "UploadThing app info lookup failed.",
     "uploadThingInvalidAppInfoFormat": "UploadThing returned an invalid app info format.",
-    "uploadThingAppIdMissing": "UploadThing app id is missing in app info response."
+    "uploadThingAppIdMissing": "UploadThing app id is missing in app info response.",
+    "onlyHostOrSubscribedCanCancelMatch": "Solo el anfitrión o los jugadores suscritos pueden marcar este partido como no jugado.",
+    "cancellationDetailsRequiredForOtherReason": "Por favor, proporciona una descripción del motivo al seleccionar \"otro\".",
+    "onlyScheduledMatchesCanReceiveSubscriptions": "Solo los partidos programados pueden recibir nuevas suscripciones.",
+    "onlyScheduledMatchesCanBeEdited": "Solo los partidos programados se pueden editar.",
+    "onlyScheduledMatchesCanManagePlayers": "Solo los partidos programados pueden gestionar suscripciones de jugadores.",
+    "scheduledMatchAlreadyMarkedAsNotPlayed": "Este partido programado ya está marcado como no jugado."
   },
   "fallback": {
     "unableToLoadYourStats": "Unable to load your stats right now. Please try again.",
@@ -152,7 +158,8 @@
     "unableToLoadPendingMatchReports": "Unable to load pending match reports right now. Please try again.",
     "unableToSearchRegisteredPlayers": "Unable to search registered players right now. Please try again.",
     "unableToUploadImage": "Unable to upload image right now. Please try again.",
-    "unexpected": "Unable to process this request right now. Please try again later."
+    "unexpected": "Unable to process this request right now. Please try again later.",
+    "unableToCancelScheduledMatch": "No se pudo marcar este partido programado como no jugado en este momento. Inténtalo de nuevo."
   },
   "systemMessages": {
     "joinedTheTable": "{displayName} joined the table",

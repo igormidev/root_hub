@@ -13,6 +13,10 @@ Scope:
 - `feature_*` rules: only files under `lib/src/features/**` in the Flutter app.
 - `no_widget_returning_function`: all files under `lib/**` in the Flutter app (excluding generated files).
 - `server_*` rules: only files under `root_hub_server/lib/src/api/**` (excluding generated files).
+- checker locale-parity rules:
+  - Flutter locale files: `root_hub_flutter/lib/i18n/*.json`
+  - Server locale files: `root_hub_server/lib/src/i18n/*.json`
+  - Every non-English locale must match the English key set exactly (missing or extra keys fail).
 
 ## Enforced Rules
 
@@ -69,6 +73,13 @@ Run deterministic checker (recommended and mandatory in this workspace):
 ```bash
 cd /Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints
 dart run root_hub_flutter_lints:check_flutter_feature_lints --flutter-root ../root_hub_flutter
+```
+
+Optional explicit server root (recommended when running from custom paths):
+
+```bash
+cd /Users/igor/PersonalProjects/root_hub/root_hub_flutter_lints
+dart run root_hub_flutter_lints:check_flutter_feature_lints --flutter-root ../root_hub_flutter --server-root ../root_hub_server
 ```
 
 Also run:

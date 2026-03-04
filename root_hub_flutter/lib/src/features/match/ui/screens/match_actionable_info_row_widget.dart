@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchActionableInfoRowWidget extends StatelessWidget {
   const MatchActionableInfoRowWidget({
@@ -65,7 +66,8 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Tooltip(
-                  message: 'Copy $label',
+                  message: t.match.ui_screens_match_actionable_info_row_widget
+                      .copyLabel(label: label),
                   child: IconButton(
                     visualDensity: VisualDensity.compact,
                     onPressed: onCopyTap,
@@ -73,7 +75,8 @@ class MatchActionableInfoRowWidget extends StatelessWidget {
                   ),
                 ),
                 Tooltip(
-                  message: 'Open $label',
+                  message: t.match.ui_screens_match_actionable_info_row_widget
+                      .openLabel(label: label),
                   child: IconButton(
                     visualDensity: VisualDensity.compact,
                     onPressed: onActionTap,

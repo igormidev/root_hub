@@ -26,7 +26,8 @@ class _RegisterMatchWizardWinnerStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$stepNumber) Select the winner',
+          t.register_match.ui_sheets_register_match_wizard_winner_step_section
+              .stepSelectTheWinner(stepNumber: stepNumber),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),

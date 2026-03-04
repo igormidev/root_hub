@@ -42,12 +42,14 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
     final googlePlace = location?.googlePlaceLocation;
     final manualLocation = location?.manualInputLocation;
     final locationTitle =
-        googlePlace?.name ?? manualLocation?.title ?? 'Unknown location';
+        googlePlace?.name ??
+        manualLocation?.title ??
+        t.match.ui_screens_match_table_card_widget.unknownLocation;
     final locationSubtitle =
         googlePlace?.shortFormattedAddress ??
         googlePlace?.formattedAddress ??
         manualLocation?.cityName ??
-        'Address unavailable';
+        t.match.ui_screens_match_table_card_widget.addressUnavailable;
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
@@ -183,7 +185,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ),
                     MatchInfoChipWidget(
                       icon: Icons.groups_2_rounded,
-                      text: '$subscribedPlayersCount/$maxPlayers seats',
+                      text: t.match.ui_screens_match_join_sheet_content_widget
+                          .seatsCount(
+                            subscribedPlayersCount: subscribedPlayersCount,
+                            maxPlayers: maxPlayers,
+                          ),
                     ),
                     MatchInfoChipWidget(
                       icon: Icons.person_outline_rounded,
@@ -196,7 +202,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ),
                     MatchInfoChipWidget(
                       icon: Icons.social_distance_rounded,
-                      text: '$minPlayers-$maxPlayers players',
+                      text: t.match.ui_screens_match_join_sheet_content_widget
+                          .playersRange(
+                            minPlayers: minPlayers,
+                            maxPlayers: maxPlayers,
+                          ),
                     ),
                   ],
                 ),
@@ -307,7 +317,8 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                     ),
                 SizedBox(height: 2),
                 Text(
-                  'Created at: $createdLabel',
+                  t.match.ui_screens_match_join_sheet_content_widget
+                      .createdAtValue(value: createdLabel),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,

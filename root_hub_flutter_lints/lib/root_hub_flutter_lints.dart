@@ -171,11 +171,19 @@ class _FeatureHardcodedUiStringRule extends DartLintRule {
     }
 
     context.registry.addSimpleStringLiteral((literal) {
-      if (!_shouldReportFeatureStringLiteral(literal)) {
+      if (!_shouldReportFeatureStringNode(literal)) {
         return;
       }
 
       reporter.atNode(literal, code);
+    });
+
+    context.registry.addStringInterpolation((interpolation) {
+      if (!_shouldReportFeatureStringNode(interpolation)) {
+        return;
+      }
+
+      reporter.atNode(interpolation, code);
     });
   }
 }
@@ -610,8 +618,7 @@ String? _expectedWidgetClassSuffix(String path) {
 }
 
 bool _shouldReportFeatureStringLiteral(SimpleStringLiteral literal) {
-  final value = literal.value;
-  if (value.trim().isEmpty) {
+  if (!_nodeContainsAlphabeticLiteralText(literal)) {
     return false;
   }
 
@@ -620,6 +627,26 @@ bool _shouldReportFeatureStringLiteral(SimpleStringLiteral literal) {
   }
 
   return _isLikelyUiTextLiteral(literal);
+}
+
+bool _shouldReportFeatureStringNode(AstNode node) {
+  if (node is SimpleStringLiteral) {
+    return _shouldReportFeatureStringLiteral(node);
+  }
+
+  if (node is! StringInterpolation) {
+    return false;
+  }
+
+  if (!_nodeContainsAlphabeticLiteralText(node)) {
+    return false;
+  }
+
+  if (_isStringLiteralInSkippableNode(node)) {
+    return false;
+  }
+
+  return _isLikelyUiTextLiteral(node);
 }
 
 bool _shouldReportServerResponseLiteral(SimpleStringLiteral literal) {
@@ -700,6 +727,37 @@ bool _isLikelyUiTextArgumentName(String argumentName) {
 
   final normalized = argumentName.toLowerCase();
   return normalized.endsWith('title') || normalized.endsWith('description');
+}
+
+bool _nodeContainsAlphabeticLiteralText(AstNode node) {
+  if (node is SimpleStringLiteral) {
+    return _containsAlphabeticCharacter(node.value);
+  }
+
+  if (node is StringInterpolation) {
+    for (final element in node.elements) {
+      if (element is InterpolationString &&
+          _containsAlphabeticCharacter(element.value)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool _containsAlphabeticCharacter(String value) {
+  for (final codePoint in value.runes) {
+    if ((codePoint >= 65 && codePoint <= 90) ||
+        (codePoint >= 97 && codePoint <= 122) ||
+        (codePoint >= 192 && codePoint <= 214) ||
+        (codePoint >= 216 && codePoint <= 246) ||
+        (codePoint >= 248 && codePoint <= 255)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 Expression? _argumentExpressionForNode(AstNode node) {

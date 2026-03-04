@@ -195,7 +195,13 @@ class _DashboardFactionEditorScreenState
                                             ),
                                           )
                                         : Text(
-                                            'Save ${selectedFaction.displayName}',
+                                            t
+                                                .dashboard
+                                                .ui_screens_dashboard_faction_editor_screen
+                                                .saveFactionButtonLabel(
+                                                  factionName: selectedFaction
+                                                      .displayName,
+                                                ),
                                             style: GoogleFonts.getFont(
                                               'MedievalSharp',
                                               fontSize: 21,

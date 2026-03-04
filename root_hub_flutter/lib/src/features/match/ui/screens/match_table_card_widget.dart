@@ -304,9 +304,15 @@ class MatchTableCardWidget extends StatelessWidget {
             children: [
               MatchInfoChipWidget(
                 icon: Icons.groups_2_rounded,
-                text: '$minPlayers-$maxPlayers players',
-                tooltipMessage:
-                    'This table can start with a minimum of $minPlayers players and accepts up to $maxPlayers players.',
+                text: t.match.ui_screens_match_table_card_widget.playersRange(
+                  minPlayers: minPlayers,
+                  maxPlayers: maxPlayers,
+                ),
+                tooltipMessage: t.match.ui_screens_match_table_card_widget
+                    .playersRangeTooltip(
+                      minPlayers: minPlayers,
+                      maxPlayers: maxPlayers,
+                    ),
                 triggerMode: TooltipTriggerMode.tap,
               ),
               if (isClosed)

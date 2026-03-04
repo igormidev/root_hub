@@ -165,7 +165,10 @@ class _RegisterMatchSearchRegisteredPlayerSheetState
                                       .register_match
                                       .ui_sheets_register_match_search_registered_player_sheet
                                       .noRegisteredPlayersWereFound
-                                : 'No players found for "$query".',
+                                : t
+                                      .register_match
+                                      .ui_sheets_register_match_search_registered_player_sheet
+                                      .noPlayersFoundForQuery(query: query),
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(

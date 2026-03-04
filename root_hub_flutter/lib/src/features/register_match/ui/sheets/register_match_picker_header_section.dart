@@ -52,7 +52,10 @@ class RegisterMatchPickerHeaderSection extends StatelessWidget {
                   color: colorScheme.primaryContainer,
                 ),
                 child: Text(
-                  '$pendingMatchesCount pending',
+                  t
+                      .register_match
+                      .ui_sheets_register_match_picker_header_section
+                      .pendingMatchesCount(count: pendingMatchesCount),
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w900,
                     color: colorScheme.onPrimaryContainer,

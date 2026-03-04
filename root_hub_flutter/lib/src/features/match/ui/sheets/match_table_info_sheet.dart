@@ -354,13 +354,18 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
                           if (google?.rating != null)
                             MatchLocationMetaChipWidget(
                               icon: Icons.star_rounded,
-                              label:
-                                  'Rating ${google!.rating!.toStringAsFixed(1)}',
+                              label: t.match.ui_sheets_match_table_info_sheet
+                                  .ratingValue(
+                                    value: google!.rating!.toStringAsFixed(1),
+                                  ),
                             ),
                           if (google?.userRatingCount != null)
                             MatchLocationMetaChipWidget(
                               icon: Icons.groups_2_rounded,
-                              label: '${google!.userRatingCount} ratings',
+                              label: t.match.ui_sheets_match_table_info_sheet
+                                  .ratingsCount(
+                                    count: google!.userRatingCount!,
+                                  ),
                             ),
                           if (google?.timezone != null &&
                               google!.timezone!.trim().isNotEmpty)
@@ -515,7 +520,9 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$label copied'),
+        content: Text(
+          t.match.ui_sheets_match_table_info_sheet.copiedLabel(label: label),
+        ),
       ),
     );
   }
@@ -737,9 +744,19 @@ class _MatchTableInfoSheetState extends ConsumerState<MatchTableInfoSheet> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text('Remove $playerName?'),
+          title: Text(
+            t.match.ui_sheets_match_table_info_sheet.removePlayerTitle(
+              playerName: playerName,
+            ),
+          ),
           content: Text(
-            '$playerName will be removed from the table and will need to ${t.match.ui_sheets_match_table_info_sheet.rejoinIfSeatsAreStillAvailable}',
+            t.match.ui_sheets_match_table_info_sheet.removePlayerDescription(
+              playerName: playerName,
+              rejoinInstruction: t
+                  .match
+                  .ui_sheets_match_table_info_sheet
+                  .rejoinIfSeatsAreStillAvailable,
+            ),
           ),
           actions: [
             TextButton(

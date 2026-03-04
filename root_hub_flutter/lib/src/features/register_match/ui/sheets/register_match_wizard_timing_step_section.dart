@@ -38,7 +38,8 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$startedStepNumber) Match started at',
+          t.register_match.ui_sheets_register_match_wizard_timing_step_section
+              .stepMatchStartedAt(stepNumber: startedStepNumber),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -104,7 +105,8 @@ class _RegisterMatchWizardTimingStepSection extends StatelessWidget {
         ),
         SizedBox(height: 14),
         Text(
-          '$durationStepNumber) Estimated match duration',
+          t.register_match.ui_sheets_register_match_wizard_timing_step_section
+              .stepEstimatedMatchDuration(stepNumber: durationStepNumber),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),

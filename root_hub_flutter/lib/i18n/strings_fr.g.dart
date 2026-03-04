@@ -138,6 +138,8 @@ class _TranslationsMatchFr extends TranslationsMatchEn {
 	@override late final _TranslationsMatchUiScreensMatchParticipantCardWidgetFr ui_screens_match_participant_card_widget = _TranslationsMatchUiScreensMatchParticipantCardWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchJoinSheetContentWidgetFr ui_screens_match_join_sheet_content_widget = _TranslationsMatchUiScreensMatchJoinSheetContentWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchTableCardWidgetFr ui_screens_match_table_card_widget = _TranslationsMatchUiScreensMatchTableCardWidgetFr._(_root);
+	@override late final _TranslationsMatchUiScreensMatchActionableInfoRowWidgetFr ui_screens_match_actionable_info_row_widget = _TranslationsMatchUiScreensMatchActionableInfoRowWidgetFr._(_root);
+	@override late final _TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetFr ui_screens_match_join_sheet_loading_widget = _TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetFr._(_root);
 	@override late final _TranslationsMatchUiSheetsMatchShareSheetFr ui_sheets_match_share_sheet = _TranslationsMatchUiSheetsMatchShareSheetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetFr ui_screens_match_location_header_image_widget = _TranslationsMatchUiScreensMatchLocationHeaderImageWidgetFr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetFr ui_screens_match_create_table_location_no_recent_locations_widget = _TranslationsMatchUiScreensMatchCreateTableLocationNoRecentLocationsWidgetFr._(_root);
@@ -174,6 +176,7 @@ class _TranslationsRegisterMatchFr extends TranslationsRegisterMatchEn {
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionFr ui_sheets_register_match_wizard_proof_card_section = _TranslationsRegisterMatchUiSheetsRegisterMatchWizardProofCardSectionFr._(_root);
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionFr ui_sheets_register_match_picker_header_section = _TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionFr._(_root);
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionFr ui_sheets_register_match_wizard_social_proof_step_section = _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionFr._(_root);
+	@override late final _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr ui_dialogs_register_match_cancel_match_dialog = _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr._(_root);
 }
 
 // Path: shop
@@ -350,6 +353,7 @@ class _TranslationsDashboardUiScreensDashboardFactionEditorScreenFr extends Tran
 	// Translations
 	@override String get chooseTheFactionShownInYourProfileAndUsedAsYourDefaultPreference => 'Choisissez la faction affichée dans votre profil et utilisée comme préférence par défaut.';
 	@override String get changeFavoriteFaction => 'Changer de faction préférée';
+	@override String saveFactionButtonLabel({required Object factionName}) => 'Enregistrer ${factionName}';
 }
 
 // Path: dashboard.ui_dialogs_edit_location_dialog
@@ -542,6 +546,8 @@ class _TranslationsMatchUiSheetsMatchTableInfoSheetFr extends TranslationsMatchU
 	@override String get remove => 'Retirer';
 	@override String get cancel => 'Annuler';
 	@override String get rejoinIfSeatsAreStillAvailable => 'rejoignez-nous si des places sont encore disponibles.';
+	@override String removePlayerDescription({required Object playerName, required Object rejoinInstruction}) => '${playerName} sera retiré de la table et devra ${rejoinInstruction}';
+	@override String removePlayerTitle({required Object playerName}) => 'Retirer ${playerName} ?';
 	@override String get cancel2 => 'Annuler';
 	@override String get selectAPlayerToRemoveFromTheTable => 'Sélectionnez un joueur à retirer de la partie.';
 	@override String get removeAPlayer => 'Supprimer un joueur';
@@ -549,6 +555,9 @@ class _TranslationsMatchUiSheetsMatchTableInfoSheetFr extends TranslationsMatchU
 	@override String get cancel3 => 'Annuler';
 	@override String get playersListYouCanRejoinLaterIfSeatsAreStillAvailable => 'liste des joueurs. Vous pourrez revenir plus tard si des places sont encore disponibles.';
 	@override String get youWillBeUnsubscribedFromThisMatchAndRemovedFromThe => 'Vous serez désabonné de cette partie et supprimé du';
+	@override String copiedLabel({required Object label}) => '${label} copié';
+	@override String ratingsCount({required Object count}) => '${count} avis';
+	@override String ratingValue({required Object value}) => 'Note ${value}';
 	@override String get leaveThisTable => 'Quitter cette partie ?';
 	@override String get unableToLoadTableDetails => 'Impossible de charger les détails de la partie.';
 	@override String get tableNotFound => 'Partie introuvable';
@@ -564,9 +573,29 @@ class _TranslationsMatchUiSheetsMatchTableInfoContentWidgetFr extends Translatio
 	@override String get noPlayersHaveJoinedThisTableYet => 'Aucun joueur n\'a encore rejoint cette partie.';
 	@override String get theseAreTheCurrentPlayersThatWillParticipate => 'Ce sont les joueurs actuels qui participeront.';
 	@override String get noPlayersSubscribedYet => 'Aucun joueur abonné pour l\'instant.';
+	@override String createdAtValue({required Object value}) => 'Créée le : ${value}';
 	@override String get playersInThisMatch => 'Joueurs dans cette partie';
+	@override String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} joueurs';
+	@override String seatsCount({required Object subscribedPlayersCount, required Object maxPlayers}) => '${subscribedPlayersCount}/${maxPlayers} places';
 	@override String get unknownHost => 'Hôte inconnu';
 	@override String get tableDetails => 'Détails de la partie';
+	@override String statusValue({required Object value}) => 'Statut : ${value}';
+	@override String get statusScheduled => 'Planifié';
+	@override String get statusNotPlayed => 'Non joué';
+	@override String get statusPlayed => 'Joué';
+	@override String get thisMatchWasMarkedAsNotPlayed => 'Ce match a été marqué comme non joué.';
+	@override String reasonValue({required Object value}) => 'Motif : ${value}';
+	@override String markedByValue({required Object value}) => 'Marqué par : ${value}';
+	@override String detailsValue({required Object value}) => 'Détails : ${value}';
+	@override String get reasonNotEnoughPlayers => 'Pas assez de joueurs';
+	@override String get reasonHostUnavailable => 'Hôte indisponible';
+	@override String get reasonNoGameCopyAvailable => 'Aucune copie du jeu disponible';
+	@override String get reasonVenueIssue => 'Problème du lieu';
+	@override String get reasonPlayerNoShow => 'Joueur absent';
+	@override String get reasonWeatherOrEmergency => 'Météo ou urgence';
+	@override String get reasonExpiredWithoutResult => 'Expiré sans résultat après 24 heures';
+	@override String get reasonOther => 'Autre';
+	@override String get reasonNotProvided => 'Non renseigné';
 }
 
 // Path: match.ui_sheets_match_table_info_error_widget
@@ -597,11 +626,14 @@ class _TranslationsMatchUiSheetsMatchEditTableSheetFr extends TranslationsMatchU
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
+	@override String dateIsTooFarDescription({required Object maxScheduleDays}) => 'L\'heure prévue ne peut pas être à plus de ${maxScheduleDays} jours dans le futur.';
 	@override String get theScheduledTimeCannotBeMoreThan => 'L\'heure prévue ne peut pas être supérieure à';
 	@override String get dateIsTooFar => 'La date est trop loin';
+	@override String timeIsTooSoonDescription({required Object minScheduleMinutes}) => 'L\'heure prévue doit être au moins à ${minScheduleMinutes} minutes dans le futur.';
 	@override String get theScheduledTimeMustBeAtLeast => 'L\'heure prévue doit être au moins';
 	@override String get timeIsTooSoon => 'Le temps est trop tôt';
 	@override String get youCannotSetTheMaximumBelowThatNumber => 'Vous ne pouvez pas définir le maximum en dessous de ce nombre.';
+	@override String tooManyPlayersSubscribedDescription({required Object currentSubscriberCount}) => 'Il y a déjà ${currentSubscriberCount} joueurs inscrits. Vous ne pouvez pas définir le maximum en dessous de ce nombre.';
 	@override String get tooManyPlayersSubscribed => 'Trop de joueurs abonnés';
 	@override String get withMinimumNotGreaterThanMaximum => 'avec un minimum pas supérieur au maximum.';
 	@override String get playersRangeMustBeBetween2And6 => 'La gamme de joueurs doit être comprise entre 2 et 6,';
@@ -632,10 +664,12 @@ class _TranslationsMatchUiSheetsMatchEditTableFormWidgetFr extends TranslationsM
 	@override String get saveChanges => 'Enregistrer les modifications';
 	@override String get saving => 'Économie...';
 	@override String get cancel => 'Annuler';
+	@override String scheduleDescription({required Object maxScheduleDays}) => 'Doit être au moins à 10 minutes de maintenant, jusqu\'à ${maxScheduleDays} jours à l\'avance.';
 	@override String get mustBeAtLeast10MinutesFromNowUpTo => 'Cela doit être dans au moins 10 minutes, jusqu\'à';
 	@override String get schedule => 'Calendrier';
 	@override String get maximum => 'Maximum';
 	@override String get minimum => 'Minimum';
+	@override String playersAlreadySubscribedCount({required Object count}) => '${count} joueur(s) déjà inscrit(s).';
 	@override String get setBetween2And6Players => 'Se déroule entre 2 et 6 joueurs.';
 	@override String get playersRange => 'Gamme de joueurs';
 	@override String get exampleWeHaveMarauderExpansion => 'Exemple : nous avons l’extension Marauder.';
@@ -713,9 +747,12 @@ class _TranslationsMatchUiScreensMatchScreenFr extends TranslationsMatchUiScreen
 	@override String get unableToOpenTheDialerRightNow => 'Impossible d\'ouvrir le composeur pour le moment.';
 	@override String get invalidPhoneNumberFormat => 'Format de numéro de téléphone invalide.';
 	@override String get unableToOpenTheLinkRightNow => 'Impossible d\'ouvrir le lien pour le moment.';
+	@override String copiedLabel({required Object label}) => '${label} copié';
 	@override String get invalidUrlFormat => 'Format d\'URL invalide.';
 	@override String get unableToOpenSharedMatch => 'Impossible d\'ouvrir cette partie partagée pour le moment.';
 	@override String get unableToShareThisMatch => 'Impossible de partager cette partie pour le moment.';
+	@override String ratingsCount({required Object count}) => '${count} avis';
+	@override String ratingValue({required Object value}) => 'Note ${value}';
 	@override String shareMessage({required Object location, required Object hour, required Object day, required Object link}) => 'Root Hub connecte des joueurs pour jouer à ROOT en présentiel dans des lieux publics. Rejoignez cette partie à ${location}, à ${hour}, le ${day} : ${link}';
 	@override String get close => 'Fermer';
 	@override String get manualLocationNotes => 'Notes de localisation manuelles';
@@ -880,10 +917,13 @@ class _TranslationsMatchUiScreensMatchJoinSheetContentWidgetFr extends Translati
 	@override String get subscriptionsClosed => 'Inscriptions clôturées';
 	@override String get alreadySubscribed => 'Déjà abonné';
 	@override String get cancel => 'Annuler';
+	@override String createdAtValue({required Object value}) => 'Créée le : ${value}';
 	@override String get youCanBeTheFirstPlayerToLockThisTableIn => 'Vous pouvez être le premier joueur à verrouiller cette partie.';
 	@override String get theseAreTheCurrentPlayersThatWillParticipate => 'Ce sont les joueurs actuels qui participeront.';
 	@override String get noPlayersSubscribedYet => 'Aucun joueur abonné pour l\'instant.';
 	@override String get playersInThisMatch => 'Joueurs dans cette partie';
+	@override String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} joueurs';
+	@override String seatsCount({required Object subscribedPlayersCount, required Object maxPlayers}) => '${subscribedPlayersCount}/${maxPlayers} places';
 	@override String get unknownHost => 'Hôte inconnu';
 	@override String get seeTableChat => 'Voir le chat en partie';
 	@override String get newPlayersCannotJoinAtThisTime => 'Les nouveaux joueurs ne peuvent pas s\'inscrire pour le moment.';
@@ -904,6 +944,8 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetFr extends TranslationsMatc
 	@override String get share => 'Partager';
 	@override String get subscriptionsClosed => 'Inscriptions clôturées';
 	@override String get openFullLocationDetails => 'Ouvrir les détails complets de l\'emplacement';
+	@override String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} joueurs';
+	@override String playersRangeTooltip({required Object minPlayers, required Object maxPlayers}) => 'Cette table peut commencer avec un minimum de ${minPlayers} joueurs et accepte jusqu\'à ${maxPlayers} joueurs.';
 	@override String get places => 'places';
 	@override String get place => 'place';
 	@override String get s => 's';
@@ -916,6 +958,27 @@ class _TranslationsMatchUiScreensMatchTableCardWidgetFr extends TranslationsMatc
 	@override String get player => 'joueur';
 	@override String get players => 'joueurs';
 	@override String subscriptionTooltip({required Object subscribedPlayersCount, required Object playersWord, required Object remainingSeats, required Object placesWord}) => '${subscribedPlayersCount} ${playersWord} inscrits et ${remainingSeats} ${placesWord} restantes pour fermer la partie.';
+}
+
+// Path: match.ui_screens_match_actionable_info_row_widget
+class _TranslationsMatchUiScreensMatchActionableInfoRowWidgetFr extends TranslationsMatchUiScreensMatchActionableInfoRowWidgetEn {
+	_TranslationsMatchUiScreensMatchActionableInfoRowWidgetFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String copyLabel({required Object label}) => 'Copier ${label}';
+	@override String openLabel({required Object label}) => 'Ouvrir ${label}';
+}
+
+// Path: match.ui_screens_match_join_sheet_loading_widget
+class _TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetFr extends TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetEn {
+	_TranslationsMatchUiScreensMatchJoinSheetLoadingWidgetFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String loadingTableDetailsForTitle({required Object tableTitle}) => 'Chargement des détails de la table "${tableTitle}"...';
 }
 
 // Path: match.ui_sheets_match_share_sheet
@@ -972,6 +1035,7 @@ class _TranslationsMatchUiScreensMatchChatScreenFr extends TranslationsMatchUiSc
 	@override String get chooseFromLibrary => 'Choisissez dans la bibliothèque';
 	@override String get takePhoto2 => 'Prendre une photo';
 	@override String get sendAPhoto => 'Envoyer une photo';
+	@override String imageCompressionPrompt({required Object selectedImageMb, required Object maxAllowedMb}) => 'Cette image fait ${selectedImageMb}MB, mais la limite est de ${maxAllowedMb}MB. La compresser automatiquement avant l\'envoi ?';
 	@override String get compress => 'Compresse';
 	@override String get cancel2 => 'Annuler';
 	@override String get imageIsTooLarge => 'L\'image est trop grande';
@@ -1024,6 +1088,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionFr e
 	// Translations
 	@override String get dominance => 'Dominance';
 	@override String get totalPoints30 => 'Total de points (30)';
+	@override String stepSelectTheWinner({required Object stepNumber}) => '${stepNumber}) Sélectionnez le gagnant';
 	@override String get dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB => 'Domination signifie que le vainqueur a atteint un objectif de carte Domination au lieu de gagner par points.';
 	@override String get totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack => 'Le total des points signifie que le vainqueur a atteint 30 points de victoire sur la piste de score.';
 	@override String get howDidTheWinnerWon => 'Comment le gagnant a-t-il gagné ?';
@@ -1039,8 +1104,10 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardTimingStepSectionFr e
 	// Translations
 	@override String get estimatedDuration => 'Durée estimée';
 	@override String get estimatedDuration2 => 'Durée estimée';
+	@override String stepEstimatedMatchDuration({required Object stepNumber}) => '${stepNumber}) Durée estimée de la partie';
 	@override String get setTheEstimatedDurationAdjustIn15MinuteStepsMax8Hours => 'Définissez la durée estimée. Ajustez par étapes de 15 minutes (max 8 heures).';
 	@override String get changeTime => 'Changer l\'heure';
+	@override String stepMatchStartedAt({required Object stepNumber}) => '${stepNumber}) La partie a commencé à';
 	@override String get matchStartedAt => 'Le match a commencé à';
 	@override String get setTheTimeTheMatchActuallyStarted => 'Réglez l’heure à laquelle le match a réellement commencé.';
 }
@@ -1079,6 +1146,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerMatchItemCardFr exten
 	// Translations
 	@override String get notAvailableYet => 'Pas encore disponible';
 	@override String get tapToReport => 'Appuyez pour signaler';
+	@override String get cancelMatch => 'Annuler le match';
+	@override String get registerMatchResult => 'Enregistrer le résultat du match';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_factions_step_section
@@ -1103,6 +1172,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchSearchRegisteredPlayerSheet
 	// Translations
 	@override String get tapToAdd => 'Appuyez pour ajouter';
 	@override String get alreadyAddedToThisReport => 'Déjà ajouté à ce rapport';
+	@override String noPlayersFoundForQuery({required Object query}) => 'Aucun joueur trouvé pour "${query}".';
 	@override String get noRegisteredPlayersWereFound => 'Aucun joueur inscrit n\'a été trouvé.';
 	@override String get searchByDisplayName => 'Rechercher par nom d\'affichage';
 	@override String get addRegisteredPlayer => 'Ajouter un joueur enregistré';
@@ -1118,10 +1188,13 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardPointsStepSectionFr e
 	@override String get value0To29 => '0 à 29';
 	@override String get points => 'Points';
 	@override String get dominanceAttempt => 'Tentative de domination';
+	@override String get failedNoPoints => 'Échec (aucun point)';
 	@override String get winnerByDominance => 'Gagnant par domination';
 	@override String get winnerByPoints => 'Gagnant aux points';
 	@override String get failedDominance => 'Domination ratée';
+	@override String stepPointsByPlayer({required Object stepNumber}) => '${stepNumber}) Points par joueur';
 	@override String get points2 => 'Points';
+	@override String get noPoints => 'Aucun point';
 	@override String get winner => 'Gagnant';
 	@override String get failedDominanceAlwaysCountsAsNoPoints => 'Une domination ratée compte toujours comme aucun point.';
 	@override String get forEachNonWinnerSetPointsOrMarkFailedDominanceAttempt => 'Pour chaque non-gagnant, marquez des points ou marquez une tentative de domination ratée.';
@@ -1170,6 +1243,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerSheetFr extends Trans
 	// Translations
 	@override String get youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart => 'Vous pouvez enregistrer ce match 2 heures avant son début prévu.';
 	@override String get resultRegistrationNotAvailableYet => 'L\'enregistrement des résultats n\'est pas encore disponible';
+	@override String tryAgainAfter({required Object dateTimeLabel}) => 'Réessayez après ${dateTimeLabel}.';
 }
 
 // Path: register_match.ui_sheets_register_match_add_anonymous_player_sheet
@@ -1269,6 +1343,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetFr extends Trans
 	@override String get unableToLoadThisMatchReportFlow2 => 'Impossible de charger ce flux de rapport de partie.';
 	@override String get invalidMatch => 'Partie invalide';
 	@override String get continueButton => 'Continuer';
+	@override String participantMustHavePointsBetween0And29({required Object participantName}) => '${participantName} doit avoir entre 0 et 29 points.';
+	@override String enterValidPointsForParticipantOrMarkFailedDominance({required Object participantName}) => 'Saisissez des points valides pour ${participantName} ou marquez une domination ratée.';
 	@override String selectFactionForParticipantBeforeContinuing({required Object participantName}) => 'Sélectionnez une faction pour ${participantName} avant de continuer.';
 	@override String factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce({required Object factionName}) => '${factionName} a été sélectionnée plus d’une fois. Chaque faction ne peut être choisie qu’une seule fois.';
 }
@@ -1281,9 +1357,13 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardReviewStepSectionFr e
 
 	// Translations
 	@override String get boardPhoto => 'Photo du tableau';
+	@override String estimatedDurationValue({required Object value}) => 'Durée estimée : ${value}';
 	@override String get groupPhoto => 'Photo de groupe';
+	@override String matchStartedValue({required Object value}) => 'Partie commencée : ${value}';
 	@override String get socialProof => 'Preuve sociale';
 	@override String get ranking => 'Classement';
+	@override String stepReviewAndSubmit({required Object stepNumber}) => '${stepNumber}) Vérifier et envoyer';
+	@override String winnerMethodValue({required Object value}) => 'Méthode de victoire : ${value}';
 	@override String get confirmAllDetailsBeforeLoggingThisMatch => 'Confirmez tous les détails avant d’enregistrer cette partie.';
 }
 
@@ -1317,6 +1397,7 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionFr exten
 
 	// Translations
 	@override String get selectAMatchYouParticipatedInYouCanRegisterAResultFrom2HoursBeforeSchedu => 'Sélectionnez un match auquel vous avez participé. Vous pouvez enregistrer un résultat 2 heures avant le début prévu.';
+	@override String pendingMatchesCount({required Object count}) => '${count} en attente';
 	@override String get registerMatchResult => 'Enregistrer le résultat du match';
 }
 
@@ -1331,9 +1412,35 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectio
 	@override String get boardPhoto => 'Photo du tableau';
 	@override String get uploadAPhotoOfTheBoardWithTheScoreTrackClearlyVisible => 'Téléchargez une photo du tableau avec la piste de score clairement visible.';
 	@override String get boardPhotoProof => 'Preuve photo du tableau';
+	@override String stepSocialProof({required Object stepNumber}) => '${stepNumber}) Preuve sociale';
 	@override String get selfieWithAllPlayersIncludeTheBoardIfPossible => 'Selfie avec tous les joueurs. Incluez le tableau si possible.';
 	@override String get groupPhoto => 'Photo de groupe';
 	@override String get uploadBothPhotosToConfirmThisMatchHappenedInPerson => 'Téléchargez les deux photos pour confirmer que cette partie a eu lieu en personne.';
+}
+
+// Path: register_match.ui_dialogs_register_match_cancel_match_dialog
+class _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr extends TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogEn {
+	_TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get cancelMatchTitle => 'Annuler le match';
+	@override String get cancelMatchDescription => 'Marquez ce match planifié comme non joué et partagez la raison avec les participants.';
+	@override String get reasonLabel => 'Motif';
+	@override String get optionalReasonDetailsLabel => 'Détails facultatifs';
+	@override String get optionalReasonDetailsHint => 'Partagez tout contexte utile pour les joueurs.';
+	@override String get detailsRequiredForOtherReason => 'Veuillez ajouter des détails en sélectionnant « Autre ».';
+	@override String get keepMatch => 'Conserver le match';
+	@override String get confirmCancelMatch => 'Confirmer l\'annulation';
+	@override String get reasonNotEnoughPlayers => 'Pas assez de joueurs';
+	@override String get reasonHostUnavailable => 'Hôte indisponible';
+	@override String get reasonNoGameCopyAvailable => 'Aucune copie du jeu disponible';
+	@override String get reasonVenueIssue => 'Problème du lieu';
+	@override String get reasonPlayerNoShow => 'Joueur absent';
+	@override String get reasonWeatherOrEmergency => 'Météo ou urgence';
+	@override String get reasonExpiredWithoutResult => 'Expiré sans résultat après 24 heures';
+	@override String get reasonOther => 'Autre';
 }
 
 // Path: shop.ui_screens_shop_screen
