@@ -20,11 +20,16 @@ class MatchShareChannelButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     final resolvedBackgroundColor =
         backgroundColor ??
         colorScheme.surfaceContainerHighest.withValues(alpha: 0.65);
     final resolvedForegroundColor = foregroundColor ?? colorScheme.onSurface;
+    final resolvedBorderColor = isDarkMode
+        ? resolvedForegroundColor.withValues(alpha: 0.32)
+        : resolvedForegroundColor.withValues(alpha: 0.16);
 
     return SizedBox(
       width: double.infinity,
@@ -35,6 +40,13 @@ class MatchShareChannelButtonWidget extends StatelessWidget {
           maximumSize: Size(double.infinity, 56),
           backgroundColor: resolvedBackgroundColor,
           foregroundColor: resolvedForegroundColor,
+          disabledBackgroundColor: resolvedBackgroundColor.withValues(
+            alpha: isDarkMode ? 0.72 : 0.58,
+          ),
+          disabledForegroundColor: resolvedForegroundColor.withValues(
+            alpha: 0.55,
+          ),
+          side: BorderSide(color: resolvedBorderColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

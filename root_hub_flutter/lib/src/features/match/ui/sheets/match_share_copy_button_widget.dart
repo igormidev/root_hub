@@ -67,8 +67,11 @@ class _MatchShareCopyButtonWidgetState
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final backgroundColor = _isCopied
-        ? Colors.green.shade600
+        ? colorScheme.tertiaryContainer
         : colorScheme.primary;
+    final foregroundColor = _isCopied
+        ? colorScheme.onTertiaryContainer
+        : colorScheme.onPrimary;
 
     return FilledButton(
       onPressed: _isCopying ? null : _handleCopyTap,
@@ -76,7 +79,7 @@ class _MatchShareCopyButtonWidgetState
         minimumSize: Size(double.infinity, 50),
         maximumSize: Size(double.infinity, 50),
         backgroundColor: backgroundColor,
-        foregroundColor: Colors.white,
+        foregroundColor: foregroundColor,
         disabledBackgroundColor: backgroundColor.withValues(alpha: 0.72),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
@@ -91,7 +94,7 @@ class _MatchShareCopyButtonWidgetState
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.1,
-                  color: Colors.white,
+                  color: foregroundColor,
                 ),
               )
             : Row(
@@ -106,7 +109,7 @@ class _MatchShareCopyButtonWidgetState
                   Text(
                     _isCopied ? widget.copiedLabel : widget.idleLabel,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
+                      color: foregroundColor,
                       fontWeight: FontWeight.w900,
                     ),
                   ),

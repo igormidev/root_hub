@@ -186,7 +186,9 @@ class _MatchShareSheetState extends State<MatchShareSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     final safeAreaBottom = MediaQuery.viewPaddingOf(context).bottom;
 
     return Container(
@@ -261,8 +263,8 @@ class _MatchShareSheetState extends State<MatchShareSheet> {
             label: t.match.ui_sheets_match_share_sheet.shareInWhatsApp,
             isLoading: _isSharingWhatsApp,
             onPressed: _shareToWhatsApp,
-            backgroundColor: Color(0xFFE6FAEC),
-            foregroundColor: Color(0xFF0F7A35),
+            backgroundColor: isDarkMode ? Color(0xFF1B2B22) : Color(0xFFE6FAEC),
+            foregroundColor: isDarkMode ? Color(0xFF6FD68F) : Color(0xFF0F7A35),
           ),
           SizedBox(height: 8),
           MatchShareChannelButtonWidget(
@@ -270,8 +272,8 @@ class _MatchShareSheetState extends State<MatchShareSheet> {
             label: t.match.ui_sheets_match_share_sheet.shareInMessenger,
             isLoading: _isSharingMessenger,
             onPressed: _shareToMessenger,
-            backgroundColor: Color(0xFFE9EEFF),
-            foregroundColor: Color(0xFF2D4CB8),
+            backgroundColor: isDarkMode ? Color(0xFF1C2336) : Color(0xFFE9EEFF),
+            foregroundColor: isDarkMode ? Color(0xFF7E9BFF) : Color(0xFF2D4CB8),
           ),
           SizedBox(height: 8),
           MatchShareChannelButtonWidget(
@@ -279,8 +281,8 @@ class _MatchShareSheetState extends State<MatchShareSheet> {
             label: t.match.ui_sheets_match_share_sheet.shareInTelegram,
             isLoading: _isSharingTelegram,
             onPressed: _shareToTelegram,
-            backgroundColor: Color(0xFFE6F4FF),
-            foregroundColor: Color(0xFF0F66A0),
+            backgroundColor: isDarkMode ? Color(0xFF172833) : Color(0xFFE6F4FF),
+            foregroundColor: isDarkMode ? Color(0xFF72C2F5) : Color(0xFF0F66A0),
           ),
           SizedBox(height: 8),
           MatchShareChannelButtonWidget(

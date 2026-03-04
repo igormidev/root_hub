@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/dialogs/register_match_cancel_match_dialog.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_body_section.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_picker_header_section.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_wizard_sheet.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class RegisterMatchPickerSheet extends ConsumerStatefulWidget {
   const RegisterMatchPickerSheet({
@@ -113,7 +113,7 @@ class _RegisterMatchPickerSheetState
             .ui_sheets_register_match_picker_sheet
             .resultRegistrationNotAvailableYet,
         description:
-            '${t.register_match.ui_sheets_register_match_picker_sheet.youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart}Try again after $earliestAllowedRegistrationTimeLabel.',
+            '${t.register_match.ui_sheets_register_match_picker_sheet.youCanRegisterThisMatchFrom2HoursBeforeItsScheduledStart}. Try again after $earliestAllowedRegistrationTimeLabel.',
       );
       return;
     }
