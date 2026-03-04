@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/app_config.dart';
+import 'package:root_hub_flutter/src/core/navigation/mobile_keyboard_dismiss_scope.dart';
 import 'package:root_hub_flutter/src/core/theme/app_theme.dart';
 import 'package:root_hub_flutter/src/core/utils/custom_talker_riverpod_observer.dart';
 import 'package:root_hub_flutter/src/core/utils/talker.dart';
@@ -162,6 +163,9 @@ class _RouterAppState extends ConsumerState<_RouterApp> {
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       routerConfig: router,
+      builder: (context, child) => MobileKeyboardDismissScope(
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }

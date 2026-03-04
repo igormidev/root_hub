@@ -224,6 +224,18 @@ cd ../root_hub_flutter_lints && dart run root_hub_flutter_lints:check_flutter_fe
 flutter analyze
 ```
 
+## Xcode Cloud (iOS)
+If Xcode Cloud fails with missing CocoaPods file lists (for example `Pods-Runner-frameworks-Release-*.xcfilelist`), ensure the post-clone script exists and is executable:
+
+- `ios/ci_scripts/ci_post_clone.sh`
+
+This script runs:
+- `flutter precache --ios`
+- `flutter pub get`
+- `pod install` in `ios/`
+
+It ensures cloud archives can resolve Pod-generated file lists before the Xcode archive step.
+
 ## Notes
 - Keep feature modules isolated and composable.
 - Keep API and error handling in providers.
