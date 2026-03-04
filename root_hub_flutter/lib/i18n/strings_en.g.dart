@@ -1791,6 +1791,12 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 	/// en: 'Unable to resolve your account information.'
 	String get unableToResolveYourAccountInformation => 'Unable to resolve your account information.';
 
+	/// en: 'No messages yet'
+	String get noMessagesYet => 'No messages yet';
+
+	/// en: 'Type a message'
+	String get typeAMessage => 'Type a message';
+
 	/// en: 'Table info'
 	String get tableInfo => 'Table info';
 

@@ -360,7 +360,7 @@
       "matchesPlayedHere": "parties joués ici",
       "matchPlayedHere": "partie joué ici",
       "hostTable": "Créer une partie",
-      "reportResult": "Enregistrer le résultat"
+      "reportResult": "Noter partie"
     },
     "ui_screens_match_loading_error_state_widget": {
       "tryAgain": "Essayer à nouveau"
@@ -495,6 +495,8 @@
       "imageIsTooLarge": "L'image est trop grande",
       "subscribed": "Abonné",
       "unableToResolveYourAccountInformation": "Impossible de résoudre les informations de votre compte.",
+      "noMessagesYet": "Pas encore de messages",
+      "typeAMessage": "Tapez un message",
       "tableInfo": "Infos de la partie",
       "playedMatchInfo": "Infos de la partie terminée",
       "editTable": "Modifier la partie"

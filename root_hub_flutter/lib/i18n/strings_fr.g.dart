@@ -730,7 +730,7 @@ class _TranslationsMatchUiScreensMatchScreenFr extends TranslationsMatchUiScreen
 	@override String get matchesPlayedHere => 'parties joués ici';
 	@override String get matchPlayedHere => 'partie joué ici';
 	@override String get hostTable => 'Créer une partie';
-	@override String get reportResult => 'Enregistrer le résultat';
+	@override String get reportResult => 'Noter partie';
 }
 
 // Path: match.ui_screens_match_loading_error_state_widget
@@ -977,6 +977,8 @@ class _TranslationsMatchUiScreensMatchChatScreenFr extends TranslationsMatchUiSc
 	@override String get imageIsTooLarge => 'L\'image est trop grande';
 	@override String get subscribed => 'Abonné';
 	@override String get unableToResolveYourAccountInformation => 'Impossible de résoudre les informations de votre compte.';
+	@override String get noMessagesYet => 'Pas encore de messages';
+	@override String get typeAMessage => 'Tapez un message';
 	@override String get tableInfo => 'Infos de la partie';
 	@override String get playedMatchInfo => 'Infos de la partie terminée';
 	@override String get editTable => 'Modifier la partie';

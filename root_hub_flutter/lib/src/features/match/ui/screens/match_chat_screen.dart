@@ -210,6 +210,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
 
             return Chat(
               currentUserId: currentUserId,
+              theme: ChatTheme.fromThemeData(Theme.of(context)),
               resolveUser: chatNotifier.resolveUser,
               chatController: chatNotifier.chatController,
               onMessageSend: chatNotifier.sendTextMessage,
@@ -217,6 +218,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               builders: Builders(
                 composerBuilder: (context) => Composer(
                   attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
+                  hintText: t.match.ui_screens_match_chat_screen.typeAMessage,
+                ),
+                emptyChatListBuilder: (context) => EmptyChatList(
+                  text: t.match.ui_screens_match_chat_screen.noMessagesYet,
                 ),
                 chatAnimatedListBuilder: (context, itemBuilder) =>
                     ChatAnimatedList(

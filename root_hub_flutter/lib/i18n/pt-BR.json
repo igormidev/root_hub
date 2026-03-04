@@ -360,7 +360,7 @@
       "matchesPlayedHere": "partidas disputadas aqui",
       "matchPlayedHere": "partida disputada aqui",
       "hostTable": "Marcar Partida",
-      "reportResult": "Registrar Resultado"
+      "reportResult": "Registrar jogo"
     },
     "ui_screens_match_loading_error_state_widget": {
       "tryAgain": "Tente novamente"
@@ -495,6 +495,8 @@
       "imageIsTooLarge": "A imagem é muito grande",
       "subscribed": "Inscrito",
       "unableToResolveYourAccountInformation": "Não foi possível resolver as informações da sua conta.",
+      "noMessagesYet": "Sem mensagens ainda",
+      "typeAMessage": "Digite uma mensagem",
       "tableInfo": "Informações da partida",
       "playedMatchInfo": "Informações da partida finalizada",
       "editTable": "Editar partida"

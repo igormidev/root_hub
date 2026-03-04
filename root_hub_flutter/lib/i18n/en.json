@@ -512,6 +512,8 @@
       "imageIsTooLarge": "Image is too large",
       "subscribed": "Subscribed",
       "unableToResolveYourAccountInformation": "Unable to resolve your account information.",
+      "noMessagesYet": "No messages yet",
+      "typeAMessage": "Type a message",
       "tableInfo": "Table info",
       "playedMatchInfo": "Played match info",
       "editTable": "Edit table"
