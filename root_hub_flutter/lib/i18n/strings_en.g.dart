@@ -1874,6 +1874,15 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 	/// en: 'Send a photo'
 	String get sendAPhoto => 'Send a photo';
 
+	/// en: 'Confirm photo'
+	String get confirmPhoto => 'Confirm photo';
+
+	/// en: 'Add a message (optional)'
+	String get addAMessageOptional => 'Add a message (optional)';
+
+	/// en: 'Send photo'
+	String get sendPhoto => 'Send photo';
+
 	/// en: 'This image is {selectedImageMb}MB, but the limit is {maxAllowedMb}MB. Compress it automatically before sending?'
 	String imageCompressionPrompt({required Object selectedImageMb, required Object maxAllowedMb}) => 'This image is ${selectedImageMb}MB, but the limit is ${maxAllowedMb}MB. Compress it automatically before sending?';
 

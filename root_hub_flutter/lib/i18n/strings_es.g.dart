@@ -1036,6 +1036,9 @@ class _TranslationsMatchUiScreensMatchChatScreenEs extends TranslationsMatchUiSc
 	@override String get chooseFromLibrary => 'Elija de la biblioteca';
 	@override String get takePhoto2 => 'tomar foto';
 	@override String get sendAPhoto => 'enviar una foto';
+	@override String get confirmPhoto => 'Confirmar foto';
+	@override String get addAMessageOptional => 'Agregar un mensaje (opcional)';
+	@override String get sendPhoto => 'Enviar foto';
 	@override String imageCompressionPrompt({required Object selectedImageMb, required Object maxAllowedMb}) => 'Esta imagen tiene ${selectedImageMb}MB, pero el límite es ${maxAllowedMb}MB. ¿Comprimirla automáticamente antes de enviar?';
 	@override String get compress => 'Comprimir';
 	@override String get cancel2 => 'Cancelar';

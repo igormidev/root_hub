@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -223,7 +224,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               },
               onAttachmentTap: isMessageActionInProgress
                   ? null
-                  : () => _pickAndSendImage(chatNotifier),
+                  : () => _pickAndSendImage(
+                      chatNotifier,
+                      currentUserId: currentUserId,
+                    ),
               builders: Builders(
                 composerBuilder: (context) => Composer(
                   attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
@@ -512,7 +516,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     }
   }
 
-  Future<void> _pickAndSendImage(MatchChatNotifier chatNotifier) async {
+  Future<void> _pickAndSendImage(
+    MatchChatNotifier chatNotifier, {
+    required String currentUserId,
+  }) async {
     final source = await _pickImageSource();
     if (!mounted || source == null) {
       return;
@@ -520,8 +527,90 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
 
     await chatNotifier.pickAndSendImage(
       source: source,
+      authorId: currentUserId,
       onConfirmImageCompression: _showImageCompressionDialog,
+      onConfirmImageMessage: _showImageMessageDialog,
     );
+  }
+
+  Future<String?> _showImageMessageDialog({
+    required Uint8List previewBytes,
+  }) async {
+    if (!mounted) {
+      return null;
+    }
+
+    final messageController = TextEditingController();
+    try {
+      final message = await showDialog<String>(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            title: Text(
+              t.match.ui_screens_match_chat_screen.confirmPhoto,
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: 260,
+                      ),
+                      child: Image.memory(
+                        previewBytes,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  TextField(
+                    controller: messageController,
+                    autofocus: true,
+                    minLines: 1,
+                    maxLines: 4,
+                    textCapitalization: TextCapitalization.sentences,
+                    decoration: InputDecoration(
+                      labelText: t
+                          .match
+                          .ui_screens_match_chat_screen
+                          .addAMessageOptional,
+                      hintText:
+                          t.match.ui_screens_match_chat_screen.typeAMessage,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(null),
+                child: Text(
+                  t.match.ui_screens_match_chat_screen.cancel2,
+                ),
+              ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop(
+                    messageController.text,
+                  );
+                },
+                child: Text(
+                  t.match.ui_screens_match_chat_screen.sendPhoto,
+                ),
+              ),
+            ],
+          );
+        },
+      );
+
+      return message;
+    } finally {
+      messageController.dispose();
+    }
   }
 
   Future<ImageSource?> _pickImageSource() async {

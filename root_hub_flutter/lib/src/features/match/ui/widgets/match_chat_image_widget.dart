@@ -71,14 +71,14 @@ class _MatchChatImageWidgetState extends State<MatchChatImageWidget> {
     final aspectRatio = (width != null && height != null && height > 0)
         ? width / height
         : 1.0;
-
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 300, maxHeight: 400),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: AspectRatio(
-          aspectRatio: aspectRatio,
-          child: CachedNetworkImage(
+    final metadata = widget.message.metadata;
+    final localPreviewBytes = metadata?['localPreviewBytes'];
+    final imageContent = localPreviewBytes is Uint8List
+        ? Image.memory(
+            localPreviewBytes,
+            fit: BoxFit.cover,
+          )
+        : CachedNetworkImage(
             imageUrl: widget.message.source,
             cacheManager: _chatImageCacheManager,
             fit: BoxFit.cover,
@@ -104,7 +104,15 @@ class _MatchChatImageWidgetState extends State<MatchChatImageWidget> {
                 ),
               ),
             ),
-          ),
+          );
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 300, maxHeight: 400),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: AspectRatio(
+          aspectRatio: aspectRatio,
+          child: imageContent,
         ),
       ),
     );

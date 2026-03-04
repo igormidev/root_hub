@@ -20,6 +20,11 @@ typedef ConfirmImageCompressionCallback =
       required int maxBytes,
     });
 
+typedef ConfirmImageMessageCallback =
+    Future<String?> Function({
+      required Uint8List previewBytes,
+    });
+
 class MatchChatNotifier extends Notifier<MatchChatState> {
   static const int _maxImageBytes = 6 * 1024 * 1024;
   static const int _maxReadableImageBytes = 20 * 1024 * 1024;
@@ -33,6 +38,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
   final Map<String, String> _profileImageUrlsByAuthorId = <String, String>{};
 
   bool _isOpeningChat = false;
+  int _optimisticMessageCounter = 0;
 
   @override
   MatchChatState build() {
@@ -207,7 +213,9 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
   Future<void> pickAndSendImage({
     required ImageSource source,
+    required String authorId,
     required ConfirmImageCompressionCallback onConfirmImageCompression,
+    required ConfirmImageMessageCallback onConfirmImageMessage,
   }) async {
     final scheduledMatchId = state.scheduledMatchId;
     if (scheduledMatchId == null) {
@@ -265,11 +273,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         'name=${pickedImage.name} mimeType=${pickedImage.mimeType ?? 'unknown'}',
       );
 
-      state = state.copyWith(
-        isUploadingImage: true,
-        actionError: null,
-      );
-
       Uint8List imageBytes;
       try {
         final streamedImageBytes = await _readImageBytesByStreaming(
@@ -280,7 +283,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           final maxReadableMb = (_maxReadableImageBytes / (1024 * 1024))
               .toStringAsFixed(0);
           state = state.copyWith(
-            isUploadingImage: false,
             actionError: RootHubException(
               title: 'Image is too large',
               description:
@@ -299,7 +301,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
         );
         state = state.copyWith(
-          isUploadingImage: false,
           actionError: RootHubException(
             title: 'Unable to read image',
             description:
@@ -315,7 +316,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
         );
         state = state.copyWith(
-          isUploadingImage: false,
           actionError: RootHubException(
             title: 'Invalid image',
             description:
@@ -350,7 +350,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
           );
           state = state.copyWith(
-            isUploadingImage: false,
             actionError: RootHubException(
               title: 'Unable to send image',
               description:
@@ -366,7 +365,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
           );
           state = state.copyWith(
-            isUploadingImage: false,
             actionError: null,
           );
           return;
@@ -379,7 +377,6 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
         if (compressedImageBytes == null) {
           state = state.copyWith(
-            isUploadingImage: false,
             actionError: RootHubException(
               title: 'Unable to compress image',
               description:
@@ -401,6 +398,65 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         );
       }
 
+      final normalizedAuthorId = authorId.trim();
+      if (normalizedAuthorId.isEmpty) {
+        state = state.copyWith(
+          actionError: RootHubException(
+            title: 'Unable to send image',
+            description: 'Unable to resolve your account information.',
+          ),
+        );
+        return;
+      }
+
+      String? messageContent;
+      try {
+        messageContent = await onConfirmImageMessage(
+          previewBytes: imageBytesToUpload,
+        );
+      } catch (error, stackTrace) {
+        talker.handle(
+          error,
+          stackTrace,
+          '[MatchChat] Failed while confirming selected image message content. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+        );
+        state = state.copyWith(
+          actionError: RootHubException(
+            title: 'Unable to send image',
+            description:
+                'An unexpected error occurred while confirming your selected image.',
+          ),
+        );
+        return;
+      }
+
+      if (messageContent == null) {
+        talker.debug(
+          '[MatchChat] User canceled image send confirmation. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+        );
+        return;
+      }
+      final normalizedMessageContent = messageContent.trim();
+
+      final previewDecodedImage = img.decodeImage(imageBytesToUpload);
+      final pendingImageMessage = _buildPendingImageMessage(
+        authorId: normalizedAuthorId,
+        previewBytes: imageBytesToUpload,
+        text: normalizedMessageContent.isEmpty
+            ? null
+            : normalizedMessageContent,
+        width: previewDecodedImage?.width,
+        height: previewDecodedImage?.height,
+      );
+
+      state = state.copyWith(
+        isUploadingImage: true,
+        actionError: null,
+      );
+      await _insertUiMessage(pendingImageMessage);
+
       talker.debug(
         '[MatchChat] Uploading image message. scheduledMatchId=$scheduledMatchId '
         'name=$imageFileName bytes=${imageBytesToUpload.length}',
@@ -414,7 +470,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             .v1(
               language: ref.read(serverSupportedTranslationProvider),
               scheduledMatchId: scheduledMatchId,
-              content: '',
+              content: normalizedMessageContent,
               imageBytes: imageByteData,
               imageFileName: imageFileName,
               imageContentType: imageContentType,
@@ -428,7 +484,11 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
               'scheduledMatchId=$scheduledMatchId messageId=${serverMessage.id} '
               'imageUrl=${serverMessage.imageUrl}',
             );
-            await _insertMessage(serverMessage);
+            final confirmedUiMessage = _toUiMessage(serverMessage);
+            await _replaceUiMessage(
+              oldMessage: pendingImageMessage,
+              newMessage: confirmedUiMessage,
+            );
             state = state.copyWith(
               isUploadingImage: false,
               actionError: null,
@@ -439,6 +499,14 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
               '[MatchChat] Failed to send image message. '
               'scheduledMatchId=$scheduledMatchId title=${error.title} '
               'description=${error.description}',
+            );
+            final failedPendingImageMessage = pendingImageMessage.copyWith(
+              status: MessageStatus.error,
+              failedAt: DateTime.now(),
+            );
+            await _replaceUiMessage(
+              oldMessage: pendingImageMessage,
+              newMessage: failedPendingImageMessage,
             );
             state = state.copyWith(
               isUploadingImage: false,
@@ -453,6 +521,14 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           '[MatchChat] Unexpected image message failure. '
           'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
         );
+        final failedPendingImageMessage = pendingImageMessage.copyWith(
+          status: MessageStatus.error,
+          failedAt: DateTime.now(),
+        );
+        await _replaceUiMessage(
+          oldMessage: pendingImageMessage,
+          newMessage: failedPendingImageMessage,
+        );
         state = state.copyWith(
           isUploadingImage: false,
           actionError: RootHubException(
@@ -463,6 +539,35 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         );
       }
     });
+  }
+
+  Message _buildPendingImageMessage({
+    required String authorId,
+    required Uint8List previewBytes,
+    required String? text,
+    required int? width,
+    required int? height,
+  }) {
+    _optimisticMessageCounter += 1;
+    final localMessageId =
+        'local-image-${DateTime.now().microsecondsSinceEpoch}-$_optimisticMessageCounter';
+    final now = DateTime.now();
+
+    return Message.image(
+      id: localMessageId,
+      authorId: authorId,
+      createdAt: now,
+      sentAt: now,
+      status: MessageStatus.sending,
+      source: 'local-preview://$localMessageId',
+      text: text,
+      width: width?.toDouble(),
+      height: height?.toDouble(),
+      size: previewBytes.length,
+      metadata: <String, dynamic>{
+        'localPreviewBytes': previewBytes,
+      },
+    );
   }
 
   Future<Uint8List?> _readImageBytesByStreaming(
@@ -715,6 +820,10 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
   Future<void> _insertMessage(MatchChatMessage serverMessage) async {
     final message = _toUiMessage(serverMessage);
+    await _insertUiMessage(message);
+  }
+
+  Future<void> _insertUiMessage(Message message) async {
     final alreadyExists = _chatMessages.any(
       (existingMessage) => existingMessage.id == message.id,
     );
@@ -724,6 +833,22 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
     _chatMessages.add(message);
     await _chatController.insertMessage(message);
+  }
+
+  Future<void> _replaceUiMessage({
+    required Message oldMessage,
+    required Message newMessage,
+  }) async {
+    final existingMessageIndex = _chatMessages.indexWhere(
+      (message) => message.id == oldMessage.id,
+    );
+    if (existingMessageIndex < 0) {
+      await _insertUiMessage(newMessage);
+      return;
+    }
+
+    _chatMessages[existingMessageIndex] = newMessage;
+    await _chatController.updateMessage(oldMessage, newMessage);
   }
 
   Future<RootHubException?> removePlayerFromTable({
