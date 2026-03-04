@@ -317,7 +317,9 @@
       "pleaseAddATitleForYourTable": "Bitte fügen Sie einen Titel für Ihre Partie hinzu.",
       "titleRequired": "Titel erforderlich",
       "unableToLoadTableDetails": "Partiedetails können nicht geladen werden.",
-      "tableNotFound": "Partie nicht gefunden"
+      "tableNotFound": "Partie nicht gefunden",
+      "selectGameDay": "Wähle den Spieltag",
+      "selectStartHour": "Wähle die Startzeit"
     },
     "ui_sheets_match_table_info_loading_widget": {
       "loadingTableDetails": "Partiedetails werden geladen..."
@@ -723,6 +725,8 @@
       "invalidMatchRegistration2": "Ungültige Spielregistrierung",
       "matchStartTimeCannotBeInTheFuture3": "Die Startzeit des Spiels darf nicht in der Zukunft liegen.",
       "invalidMatchRegistration3": "Ungültige Spielregistrierung",
+      "whenDidTheMatchStart": "Wann hat das Spiel begonnen?",
+      "selectStartTime": "Wähle die Startzeit",
       "unableToLoadThisMatchReportFlow": "Dieser Match-Berichtsfluss kann nicht geladen werden.",
       "matchNotFound": "Partie nicht gefunden",
       "unableToLoadThisMatchReportFlow2": "Dieser Match-Berichtsfluss kann nicht geladen werden.",

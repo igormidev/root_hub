@@ -467,7 +467,10 @@ class _RegisterMatchWizardSheetState
       initialDate: initialDate,
       firstDate: firstDate,
       lastDate: lastDate,
-      helpText: 'When did the match start?',
+      helpText: t
+          .register_match
+          .ui_sheets_register_match_wizard_sheet
+          .whenDidTheMatchStart,
     );
 
     if (!mounted || selectedDate == null) {
@@ -507,7 +510,10 @@ class _RegisterMatchWizardSheetState
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(current),
-      helpText: 'Select start time',
+      helpText: t
+          .register_match
+          .ui_sheets_register_match_wizard_sheet
+          .selectStartTime,
     );
 
     if (!mounted || selectedTime == null) {

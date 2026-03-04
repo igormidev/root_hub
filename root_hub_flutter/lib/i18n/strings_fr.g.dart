@@ -643,6 +643,8 @@ class _TranslationsMatchUiSheetsMatchEditTableSheetFr extends TranslationsMatchU
 	@override String get titleRequired => 'Titre requis';
 	@override String get unableToLoadTableDetails => 'Impossible de charger les détails de la partie.';
 	@override String get tableNotFound => 'Partie introuvable';
+	@override String get selectGameDay => 'Sélectionnez le jour de la partie';
+	@override String get selectStartHour => 'Sélectionnez l\'heure de début';
 }
 
 // Path: match.ui_sheets_match_table_info_loading_widget
@@ -1347,6 +1349,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetFr extends Trans
 	@override String get invalidMatchRegistration2 => 'Inscription au match invalide';
 	@override String get matchStartTimeCannotBeInTheFuture3 => 'L’heure du début du match ne peut pas être postérieure.';
 	@override String get invalidMatchRegistration3 => 'Inscription au match invalide';
+	@override String get whenDidTheMatchStart => 'Quand la partie a-t-elle commencé ?';
+	@override String get selectStartTime => 'Sélectionnez l\'heure de début';
 	@override String get unableToLoadThisMatchReportFlow => 'Impossible de charger ce flux de rapport de partie.';
 	@override String get matchNotFound => 'Partie introuvable';
 	@override String get unableToLoadThisMatchReportFlow2 => 'Impossible de charger ce flux de rapport de partie.';

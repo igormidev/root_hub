@@ -317,7 +317,9 @@
       "pleaseAddATitleForYourTable": "Please add a title for your table.",
       "titleRequired": "Title required",
       "unableToLoadTableDetails": "Unable to load table details.",
-      "tableNotFound": "Table not found"
+      "tableNotFound": "Table not found",
+      "selectGameDay": "Select game day",
+      "selectStartHour": "Select start hour"
     },
     "ui_sheets_match_table_info_loading_widget": {
       "loadingTableDetails": "Loading table details..."
@@ -741,6 +743,8 @@
       "invalidMatchRegistration2": "Invalid match registration",
       "matchStartTimeCannotBeInTheFuture3": "Match start time cannot be in the future.",
       "invalidMatchRegistration3": "Invalid match registration",
+      "whenDidTheMatchStart": "When did the match start?",
+      "selectStartTime": "Select start time",
       "unableToLoadThisMatchReportFlow": "Unable to load this match report flow.",
       "matchNotFound": "Match not found",
       "unableToLoadThisMatchReportFlow2": "Unable to load this match report flow.",

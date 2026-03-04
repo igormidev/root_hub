@@ -317,7 +317,9 @@
       "pleaseAddATitleForYourTable": "Veuillez ajouter un titre pour votre partie.",
       "titleRequired": "Titre requis",
       "unableToLoadTableDetails": "Impossible de charger les détails de la partie.",
-      "tableNotFound": "Partie introuvable"
+      "tableNotFound": "Partie introuvable",
+      "selectGameDay": "Sélectionnez le jour de la partie",
+      "selectStartHour": "Sélectionnez l'heure de début"
     },
     "ui_sheets_match_table_info_loading_widget": {
       "loadingTableDetails": "Chargement des détails de la partie..."
@@ -723,6 +725,8 @@
       "invalidMatchRegistration2": "Inscription au match invalide",
       "matchStartTimeCannotBeInTheFuture3": "L’heure du début du match ne peut pas être postérieure.",
       "invalidMatchRegistration3": "Inscription au match invalide",
+      "whenDidTheMatchStart": "Quand la partie a-t-elle commencé ?",
+      "selectStartTime": "Sélectionnez l'heure de début",
       "unableToLoadThisMatchReportFlow": "Impossible de charger ce flux de rapport de partie.",
       "matchNotFound": "Partie introuvable",
       "unableToLoadThisMatchReportFlow2": "Impossible de charger ce flux de rapport de partie.",

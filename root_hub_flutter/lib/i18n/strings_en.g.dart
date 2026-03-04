@@ -1142,6 +1142,12 @@ class TranslationsMatchUiSheetsMatchEditTableSheetEn {
 
 	/// en: 'Table not found'
 	String get tableNotFound => 'Table not found';
+
+	/// en: 'Select game day'
+	String get selectGameDay => 'Select game day';
+
+	/// en: 'Select start hour'
+	String get selectStartHour => 'Select start hour';
 }
 
 // Path: match.ui_sheets_match_table_info_loading_widget
@@ -2537,6 +2543,12 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEn {
 
 	/// en: 'Invalid match registration'
 	String get invalidMatchRegistration3 => 'Invalid match registration';
+
+	/// en: 'When did the match start?'
+	String get whenDidTheMatchStart => 'When did the match start?';
+
+	/// en: 'Select start time'
+	String get selectStartTime => 'Select start time';
 
 	/// en: 'Unable to load this match report flow.'
 	String get unableToLoadThisMatchReportFlow => 'Unable to load this match report flow.';

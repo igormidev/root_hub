@@ -643,6 +643,8 @@ class _TranslationsMatchUiSheetsMatchEditTableSheetEs extends TranslationsMatchU
 	@override String get titleRequired => 'Título requerido';
 	@override String get unableToLoadTableDetails => 'No se pueden cargar los detalles de la partida.';
 	@override String get tableNotFound => 'Partida no encontrada';
+	@override String get selectGameDay => 'Selecciona el día de la partida';
+	@override String get selectStartHour => 'Selecciona la hora de inicio';
 }
 
 // Path: match.ui_sheets_match_table_info_loading_widget
@@ -1347,6 +1349,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEs extends Trans
 	@override String get invalidMatchRegistration2 => 'Registro de partido no válido';
 	@override String get matchStartTimeCannotBeInTheFuture3 => 'La hora de inicio del partido no puede ser en el futuro.';
 	@override String get invalidMatchRegistration3 => 'Registro de partido no válido';
+	@override String get whenDidTheMatchStart => '¿Cuándo empezó la partida?';
+	@override String get selectStartTime => 'Selecciona la hora de inicio';
 	@override String get unableToLoadThisMatchReportFlow => 'No se puede cargar este flujo de informe de partido.';
 	@override String get matchNotFound => 'Partida no encontrada';
 	@override String get unableToLoadThisMatchReportFlow2 => 'No se puede cargar este flujo de informe de partido.';

@@ -178,7 +178,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
       initialDate: _scheduledDate.isBefore(today) ? today : _scheduledDate,
       firstDate: today,
       lastDate: maxDate,
-      helpText: 'Select game day',
+      helpText: t.match.ui_sheets_match_edit_table_sheet.selectGameDay,
     );
 
     if (!mounted || selectedDate == null) {
@@ -198,7 +198,7 @@ class _MatchEditTableSheetState extends ConsumerState<MatchEditTableSheet> {
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: _scheduledTime,
-      helpText: 'Select start hour',
+      helpText: t.match.ui_sheets_match_edit_table_sheet.selectStartHour,
     );
 
     if (!mounted || selectedTime == null) {

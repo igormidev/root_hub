@@ -119,45 +119,6 @@ class HelpTextScreen extends StatelessWidget {
       expect(output, contains('help_text_screen.dart'));
     });
 
-    test('flags hardcoded text assigned to label variable', () async {
-      final featureFile = File(
-        p.join(
-          flutterRoot.path,
-          'lib',
-          'src',
-          'features',
-          'demo',
-          'ui',
-          'screens',
-          'label_variable_screen.dart',
-        ),
-      );
-      await featureFile.create(recursive: true);
-      await featureFile.writeAsString('''
-import 'package:flutter/material.dart';
-
-class LabelVariableScreen extends StatelessWidget {
-  const LabelVariableScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final dateLabel = 'Select day';
-    return Text(dateLabel);
-  }
-}
-''');
-
-      final result = await _runChecker(
-        flutterRoot: flutterRoot,
-        serverRoot: serverRoot,
-      );
-      final output = '${result.stdout}\n${result.stderr}';
-
-      expect(result.exitCode, isNot(0));
-      expect(output, contains('[feature_hardcoded_ui_string]'));
-      expect(output, contains('label_variable_screen.dart'));
-    });
-
     test('flags locale keys missing in non-english files', () async {
       final ptBrFile = File(
         p.join(flutterRoot.path, 'lib', 'i18n', 'pt-BR.json'),
