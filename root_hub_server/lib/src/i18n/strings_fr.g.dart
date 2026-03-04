@@ -119,7 +119,7 @@ class _TranslationsErrorsFr extends TranslationsErrorsEn {
 	@override String get chatHistoryAndPlayerMustBePersisted => 'Chat history and player must be persisted.';
 	@override String get messageMustIncludeTextOrImage => 'Message must include text content or an image.';
 	@override String get imageBytesCannotBeEmpty => 'Image bytes cannot be empty.';
-	@override String get imageTooLargeSixMb => 'Image is too large. Please send an image smaller than 6 MB.';
+	@override String get imageTooLargeSixMb => 'Image is too large. Please send an image smaller than 3 MB.';
 	@override String chatHistoryForScheduledMatchNotFound({required Object scheduledMatchId}) => 'Chat history for scheduled match ${scheduledMatchId} was not found.';
 	@override String get selectedTableWasNotFound => 'The selected table was not found.';
 	@override String get unknownPlayer => 'Unknown player';
@@ -152,7 +152,9 @@ class _TranslationsErrorsFr extends TranslationsErrorsEn {
 	@override String get matchStartCannotBeInFuture => 'Match start time cannot be in the future.';
 	@override String get onlyHostOrSubscribedCanRegister => 'Only host or subscribed players can register this match result.';
 	@override String imageRequired({required Object imageDescription}) => '${imageDescription} is required.';
-	@override String imageTooLargeWithDescription({required Object imageDescription}) => '${imageDescription} is too large. Please upload an image smaller than 6 MB.';
+	@override String imageTooLargeWithDescription({required Object imageDescription}) => '${imageDescription} is too large. Please upload an image smaller than 3 MB.';
+	@override String imageContentTypeMustBeImage({required Object imageDescription}) => '${imageDescription} content type must be an image.';
+	@override String imageUploadKeyInvalid({required Object imageDescription}) => '${imageDescription} upload reference is invalid.';
 	@override String get latitudeMustBeBetween => 'Latitude (x) must be between -90 and 90.';
 	@override String get longitudeMustBeBetween => 'Longitude (y) must be between -180 and 180.';
 	@override String get failedToResolveCityFromCoordinates => 'Failed to resolve city from coordinates.';
@@ -255,6 +257,7 @@ class _TranslationsLabelsFr extends TranslationsLabelsEn {
 
 	// Translations
 	@override String get firstName => 'First name';
+	@override String get image => 'Image';
 	@override String get lastName => 'Last name';
 	@override String get groupPhoto => 'Group photo';
 	@override String get boardPhoto => 'Board photo';

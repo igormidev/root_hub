@@ -14,6 +14,84 @@ class UploadThingStorageClient {
       'https://api.uploadthing.com/v7/prepareUpload';
   static const _getAppInfoEndpoint =
       'https://api.uploadthing.com/v7/getAppInfo';
+  static final _uploadKeyPattern = RegExp(r'^[A-Za-z0-9._/-]+$');
+
+  Future<UploadThingPreparedUpload> preparePublicImageUpload(
+    Session session, {
+    required ServerSupportedTranslation language,
+    required String fileName,
+    required int fileSize,
+    String? contentType,
+  }) async {
+    final credentials = _resolveCredentials(
+      session,
+      language: language,
+    );
+    final normalizedFileName = _resolveFileName(fileName);
+    final normalizedContentType = _resolveContentType(contentType);
+
+    final preparedUpload = await _prepareUpload(
+      session: session,
+      language: language,
+      apiKey: credentials.apiKey,
+      fileName: normalizedFileName,
+      fileSize: fileSize,
+      fileType: normalizedContentType,
+    );
+
+    final appId = await _resolveAppId(
+      session,
+      language: language,
+      credentials: credentials,
+    );
+    final publicUrl = buildPublicImageUrl(
+      appId: appId,
+      uploadKey: preparedUpload.key,
+    );
+
+    return UploadThingPreparedUpload(
+      uploadKey: preparedUpload.key,
+      uploadUrl: preparedUpload.uploadUrl,
+      publicUrl: publicUrl,
+    );
+  }
+
+  Future<String> buildPublicImageUrlFromUploadKey(
+    Session session, {
+    required ServerSupportedTranslation language,
+    required String uploadKey,
+  }) async {
+    final credentials = _resolveCredentials(
+      session,
+      language: language,
+    );
+    final appId = await _resolveAppId(
+      session,
+      language: language,
+      credentials: credentials,
+    );
+    return buildPublicImageUrl(
+      appId: appId,
+      uploadKey: uploadKey,
+    );
+  }
+
+  String buildPublicImageUrl({
+    required String appId,
+    required String uploadKey,
+  }) {
+    return 'https://$appId.ufs.sh/f/$uploadKey';
+  }
+
+  String normalizeUploadKey(String uploadKey) => uploadKey.trim();
+
+  bool isUploadKeyFormatValid(String uploadKey) {
+    if (uploadKey.isEmpty) {
+      return false;
+    }
+
+    return _uploadKeyPattern.hasMatch(uploadKey);
+  }
 
   Future<String> uploadPublicImage(
     Session session, {
@@ -23,10 +101,6 @@ class UploadThingStorageClient {
     String? contentType,
   }) async {
     final t = ServerTranslations.of(language);
-    final credentials = _resolveCredentials(
-      session,
-      language: language,
-    );
     final normalizedFileName = _resolveFileName(fileName);
     final normalizedContentType = _resolveContentType(contentType);
     session.log(
@@ -37,36 +111,26 @@ class UploadThingStorageClient {
     );
 
     try {
-      final preparedUpload = await _prepareUpload(
-        session: session,
+      final preparedUpload = await preparePublicImageUpload(
+        session,
         language: language,
-        apiKey: credentials.apiKey,
         fileName: normalizedFileName,
         fileSize: imageBytes.length,
-        fileType: normalizedContentType,
+        contentType: normalizedContentType,
       );
 
       await _performUpload(
         session: session,
         language: language,
         uploadUrl: preparedUpload.uploadUrl,
-        uploadKey: preparedUpload.key,
+        uploadKey: preparedUpload.uploadKey,
         imageBytes: imageBytes,
       );
-
-      final appId =
-          credentials.appId ??
-          await _fetchAppId(
-            session,
-            credentials.apiKey,
-            language: language,
-          );
-      final publicUrl = 'https://$appId.ufs.sh/f/${preparedUpload.key}';
       session.log(
-        '[MatchChat][UploadThing] Upload completed. url=$publicUrl',
+        '[MatchChat][UploadThing] Upload completed. url=${preparedUpload.publicUrl}',
         level: LogLevel.info,
       );
-      return publicUrl;
+      return preparedUpload.publicUrl;
     } on RootHubException catch (error) {
       session.log(
         '[MatchChat][UploadThing] Upload failed with RootHubException. '
@@ -86,6 +150,23 @@ class UploadThingStorageClient {
         description: t.fallback.unableToUploadImage,
       );
     }
+  }
+
+  Future<String> _resolveAppId(
+    Session session, {
+    required ServerSupportedTranslation language,
+    required _UploadThingCredentials credentials,
+  }) async {
+    final appIdFromToken = credentials.appId?.trim();
+    if (appIdFromToken != null && appIdFromToken.isNotEmpty) {
+      return appIdFromToken;
+    }
+
+    return _fetchAppId(
+      session,
+      credentials.apiKey,
+      language: language,
+    );
   }
 
   _UploadThingCredentials _resolveCredentials(
@@ -353,11 +434,9 @@ class UploadThingStorageClient {
 
   Future<String> _fetchAppId(
     Session session,
-    String apiKey,
-    {
+    String apiKey, {
     required ServerSupportedTranslation language,
-  }
-  ) async {
+  }) async {
     final t = ServerTranslations.of(language);
 
     final response = await http.post(
@@ -467,6 +546,18 @@ class _PreparedUpload {
 
   final String key;
   final String uploadUrl;
+}
+
+class UploadThingPreparedUpload {
+  UploadThingPreparedUpload({
+    required this.uploadKey,
+    required this.uploadUrl,
+    required this.publicUrl,
+  });
+
+  final String uploadKey;
+  final String uploadUrl;
+  final String publicUrl;
 }
 
 class _UploadThingCredentials {

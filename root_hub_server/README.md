@@ -103,7 +103,8 @@ Related project:
 - `match_chat_participant_state_service.dart`: chat participant lifecycle + unread/read state updates.
 
 ### `match`
-- `register_match_data.dart`: validates and persists played match + participants + performances.
+- `prepare_match_proof_upload.dart`: prepares signed UploadThing targets for match proof image uploads (group + board) with server-side validation.
+- `register_match_data.dart`: validates and persists played match + participants + performances using previously uploaded proof image keys.
 - `get_my_played_matches.dart`: endpoint declared but intentionally not implemented yet.
 
 ### `stats`

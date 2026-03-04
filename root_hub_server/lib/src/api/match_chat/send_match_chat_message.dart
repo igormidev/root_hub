@@ -12,7 +12,7 @@ import 'package:serverpod/serverpod.dart';
 
 class SendMatchChatMessage extends Endpoint {
   static const _uploadThingStorageClient = UploadThingStorageClient();
-  static const _maxImageBytes = 6 * 1024 * 1024;
+  static const _maxImageBytes = 3 * 1024 * 1024;
 
   @override
   bool get requireLogin => true;

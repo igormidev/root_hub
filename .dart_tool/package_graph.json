@@ -65,6 +65,7 @@
         "flutter_cache_manager",
         "flutter_chat_core",
         "flutter_chat_ui",
+        "flutter_image_compress",
         "flutter_localizations",
         "flutter_riverpod",
         "flyer_chat_image_message",
@@ -72,6 +73,7 @@
         "geolocator",
         "go_router",
         "google_fonts",
+        "http",
         "image",
         "image_picker",
         "intl",
@@ -516,12 +518,34 @@
       ]
     },
     {
+      "name": "http",
+      "version": "1.6.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "image",
       "version": "4.8.0",
       "dependencies": [
         "archive",
         "meta",
         "xml"
+      ]
+    },
+    {
+      "name": "flutter_image_compress",
+      "version": "2.4.0",
+      "dependencies": [
+        "flutter",
+        "flutter_image_compress_common",
+        "flutter_image_compress_macos",
+        "flutter_image_compress_ohos",
+        "flutter_image_compress_platform_interface",
+        "flutter_image_compress_web"
       ]
     },
     {
@@ -823,16 +847,6 @@
         "google_identity_services_web",
         "http",
         "http_parser"
-      ]
-    },
-    {
-      "name": "http",
-      "version": "1.6.0",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta",
-        "web"
       ]
     },
     {
@@ -1815,12 +1829,65 @@
       ]
     },
     {
+      "name": "http_parser",
+      "version": "4.1.2",
+      "dependencies": [
+        "collection",
+        "source_span",
+        "string_scanner",
+        "typed_data"
+      ]
+    },
+    {
       "name": "xml",
       "version": "6.6.1",
       "dependencies": [
         "collection",
         "meta",
         "petitparser"
+      ]
+    },
+    {
+      "name": "flutter_image_compress_ohos",
+      "version": "0.0.3",
+      "dependencies": [
+        "flutter",
+        "flutter_image_compress_platform_interface"
+      ]
+    },
+    {
+      "name": "flutter_image_compress_macos",
+      "version": "1.0.3",
+      "dependencies": [
+        "flutter",
+        "flutter_image_compress_platform_interface"
+      ]
+    },
+    {
+      "name": "flutter_image_compress_web",
+      "version": "0.1.5",
+      "dependencies": [
+        "flutter",
+        "flutter_image_compress_platform_interface",
+        "flutter_web_plugins",
+        "web"
+      ]
+    },
+    {
+      "name": "flutter_image_compress_common",
+      "version": "1.0.6",
+      "dependencies": [
+        "flutter",
+        "flutter_image_compress_platform_interface"
+      ]
+    },
+    {
+      "name": "flutter_image_compress_platform_interface",
+      "version": "1.0.5",
+      "dependencies": [
+        "cross_file",
+        "flutter",
+        "plugin_platform_interface"
       ]
     },
     {
@@ -2206,16 +2273,6 @@
       "name": "ci",
       "version": "0.1.0",
       "dependencies": []
-    },
-    {
-      "name": "http_parser",
-      "version": "4.1.2",
-      "dependencies": [
-        "collection",
-        "source_span",
-        "string_scanner",
-        "typed_data"
-      ]
     },
     {
       "name": "google_identity_services_web",

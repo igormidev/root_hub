@@ -32,6 +32,8 @@ getPendingMatchResults:
   - v1:
 getPendingMatchResultsCount:
   - v1:
+prepareMatchProofUpload:
+  - v1:
 registerMatchData:
   - v1:
 searchRegisteredPlayers:

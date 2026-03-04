@@ -1,0 +1,4 @@
+class: MatchProofUploadPreparation
+fields:
+  uploadUrl: String
+  uploadKey: String

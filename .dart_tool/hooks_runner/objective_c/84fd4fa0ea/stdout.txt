@@ -1,52 +1,55 @@
 Running `(cd /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/; TMPDIR=/var/folders/_8/nmgh3s5j1gncsykp5dm7vdc40000gn/T/ PATH=/Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle/Contents/Frameworks/SWBUniversalPlatform.framework/Resources:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Users/igor/.local/bin:/opt/homebrew/opt/libpq/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/Users/igor/Installations/flutter/bin:/Users/igor/.pub-cache/bin HOME=/Users/igor /Users/igor/Installations/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/igor/PersonalProjects/root_hub/.dart_tool/package_config.json /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/objective_c/84fd4fa0ea/hook.dill --config=/Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/objective_c/84fd4fa0ea/input.json )`.
-INFO: 2026-03-03 17:29:08.385688: Running `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang --version`.
+INFO: 2026-03-04 13:08:19.656050: Running `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang --version`.
 
-INFO: 2026-03-03 17:29:08.398739: Running `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang --version`.
+INFO: 2026-03-04 13:08:19.677928: Running `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang --version`.
 
-INFO: 2026-03-03 17:29:08.412477: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/include/dart_api_dl.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/include/dart_api_dl.c.o
+INFO: 2026-03-04 13:08:19.696812: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.c.o
 
-INFO: 2026-03-03 17:29:08.412822: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.c.o
+art_api_dl.c.o
 
-INFO: 2026-03-03 17:29:08.413026: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.m.o
+INFO: 2026-03-04 13:08:19.696929: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/input_stream_adapter.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/input_stream_adapter.m.o
+INFO: 2026-03-04 13:08:19.697009: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.m.o
+INFO: 2026-03-04 13:08:19.697088: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/observer.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/observer.m.o
+INFO: 2026-03-04 13:08:19.697167: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/ns_number.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/ns_number.m.o
+INFO: 2026-03-04 13:08:19.697240: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/protocol.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/protocol.m.o
+INFO: 2026-03-04 13:08:19.697315: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c_bindings_generated.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c_bindings_generated.m.o
 
-ream_adapter.m.o
+INFO: 2026-03-04 13:08:19.825847: 
+INFO: 2026-03-04 13:08:19.826131: 
+INFO: 2026-03-04 13:08:19.826187: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.c.o
 
-INFO: 2026-03-03 17:29:08.413356: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c_bindings_generated.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c_bindings_generated.m.o
+INFO: 2026-03-04 13:08:19.827447: 
+INFO: 2026-03-04 13:08:19.827474: 
+INFO: 2026-03-04 13:08:19.827486: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/include/dart_api_dl.c.o
 
-pplications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/ns_number.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/ns_number.m.o
+INFO: 2026-03-04 13:08:19.904987: 
+INFO: 2026-03-04 13:08:19.905030: 
+INFO: 2026-03-04 13:08:19.905053: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/observer.m.o
 
-INFO: 2026-03-03 17:29:08.459514: 
-INFO: 2026-03-03 17:29:08.459526: 
-INFO: 2026-03-03 17:29:08.459535: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/include/dart_api_dl.c.o
+INFO: 2026-03-04 13:08:19.932028: 
+INFO: 2026-03-04 13:08:19.933811: 
+INFO: 2026-03-04 13:08:19.934122: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/protocol.m.o
 
-INFO: 2026-03-03 17:29:08.478133: 
-INFO: 2026-03-03 17:29:08.478202: 
-INFO: 2026-03-03 17:29:08.478247: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/observer.m.o
+INFO: 2026-03-04 13:08:20.018028: 
+INFO: 2026-03-04 13:08:20.018069: 
+INFO: 2026-03-04 13:08:20.018085: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/input_stream_adapter.m.o
 
-INFO: 2026-03-03 17:29:08.482074: 
-INFO: 2026-03-03 17:29:08.482117: 
-INFO: 2026-03-03 17:29:08.482130: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/protocol.m.o
+INFO: 2026-03-04 13:08:20.021140: 
+INFO: 2026-03-04 13:08:20.021179: 
+INFO: 2026-03-04 13:08:20.021190: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.m.o
 
-INFO: 2026-03-03 17:29:08.549249: 
-INFO: 2026-03-03 17:29:08.549284: 
-INFO: 2026-03-03 17:29:08.549294: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/ns_number.m.o
+INFO: 2026-03-04 13:08:20.034265: 
+INFO: 2026-03-04 13:08:20.034302: 
+INFO: 2026-03-04 13:08:20.034313: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/ns_number.m.o
 
-INFO: 2026-03-03 17:29:08.552770: 
-INFO: 2026-03-03 17:29:08.552804: 
-INFO: 2026-03-03 17:29:08.552814: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.m.o
+INFO: 2026-03-04 13:08:20.075917: 
+INFO: 2026-03-04 13:08:20.075957: 
+INFO: 2026-03-04 13:08:20.075967: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c_bindings_generated.m.o
 
-INFO: 2026-03-03 17:29:08.553132: 
-INFO: 2026-03-03 17:29:08.553157: 
-INFO: 2026-03-03 17:29:08.553168: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/input_stream_adapter.m.o
+INFO: 2026-03-04 13:08:20.076314: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/include/dart_api_dl.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/input_stream_adapter.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/observer.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/ns_number.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/protocol.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c_bindings_generated.m.o -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/objective_c.dylib
 
-INFO: 2026-03-03 17:29:08.578532: 
-INFO: 2026-03-03 17:29:08.578559: 
-INFO: 2026-03-03 17:29:08.578567: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c_bindings_generated.m.o
+INFO: 2026-03-04 13:08:20.109122: 
+INFO: 2026-03-04 13:08:20.109257: ld: warning: -undefined dynamic_lookup is deprecated on iOS-simulator
 
-INFO: 2026-03-03 17:29:08.578823: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios-simulator -mios-version-min=13 /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/include/dart_api_dl.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/input_stream_adapter.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/observer.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/ns_number.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/protocol.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/obj/src/objective_c_bindings_generated.m.o -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/objective_c.dylib
-
-INFO: 2026-03-03 17:29:08.616099: 
-INFO: 2026-03-03 17:29:08.616164: ld: warning: -undefined dynamic_lookup is deprecated on iOS-simulator
-
-INFO: 2026-03-03 17:29:08.616176: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/objective_c.dylib
+INFO: 2026-03-04 13:08:20.109269: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/84fd4fa0ea/objective_c.dylib
 

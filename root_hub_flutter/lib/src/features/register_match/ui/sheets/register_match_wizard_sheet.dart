@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
@@ -62,7 +63,7 @@ class RegisterMatchWizardSheet extends ConsumerStatefulWidget {
 
 class _RegisterMatchWizardSheetState
     extends ConsumerState<RegisterMatchWizardSheet> {
-  static const int _maxProofImageBytes = 6 * 1024 * 1024;
+  static const int _maxProofImageBytes = 3 * 1024 * 1024;
 
   final ImagePicker _imagePicker = ImagePicker();
 
@@ -954,9 +955,11 @@ class _RegisterMatchWizardSheetState
           matchStartedAt: matchStartedAt,
           matchEstimatedDuration: _matchEstimatedDuration,
           groupPhotoBytes: groupPhoto.bytes,
+          groupPhotoFilePath: groupPhoto.filePath,
           groupPhotoFileName: groupPhoto.fileName,
           groupPhotoContentType: groupPhoto.contentType,
           boardPhotoBytes: boardPhoto.bytes,
+          boardPhotoFilePath: boardPhoto.filePath,
           boardPhotoFileName: boardPhoto.fileName,
           boardPhotoContentType: boardPhoto.contentType,
         );
@@ -1163,6 +1166,7 @@ class _RegisterMatchWizardSheetState
     var bytesToSubmit = bytes;
     var fileName = pickedImage.name;
     var contentType = pickedImage.mimeType;
+    var filePathToUpload = pickedImage.path.trim();
 
     if (bytesToSubmit.length > _maxProofImageBytes) {
       final shouldCompress = await _showImageCompressionDialog(
@@ -1173,11 +1177,16 @@ class _RegisterMatchWizardSheetState
         return;
       }
 
-      final compressedImageBytes = _compressImageToAllowedSize(
-        bytesToSubmit,
+      final compressedImage = await _compressImageToAllowedSize(
+        sourceImage: pickedImage,
         maxBytes: _maxProofImageBytes,
+        isGroupPhoto: isGroupPhoto,
       );
-      if (compressedImageBytes == null) {
+      if (!mounted) {
+        return;
+      }
+
+      if (compressedImage == null) {
         await showErrorDialog(
           context,
           title: t
@@ -1192,16 +1201,42 @@ class _RegisterMatchWizardSheetState
         return;
       }
 
-      bytesToSubmit = compressedImageBytes;
-      fileName = _resolveCompressedImageFileName(
-        originalFileName: pickedImage.name,
-        isGroupPhoto: isGroupPhoto,
-      );
-      contentType = 'image/jpeg';
+      bytesToSubmit = compressedImage.bytes;
+      fileName = compressedImage.fileName;
+      contentType = compressedImage.contentType;
+      filePathToUpload = compressedImage.filePath;
+    }
+
+    if (filePathToUpload.isEmpty) {
+      try {
+        filePathToUpload = await _persistProofImageBytesToTemporaryFile(
+          bytes: bytesToSubmit,
+          fileName: fileName,
+          isGroupPhoto: isGroupPhoto,
+        );
+      } catch (_) {
+        if (!mounted) {
+          return;
+        }
+
+        await showErrorDialog(
+          context,
+          title: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .invalidImage,
+          description: t
+              .register_match
+              .ui_sheets_register_match_wizard_sheet
+              .selectedImageIsEmptyChooseAnotherImage,
+        );
+        return;
+      }
     }
 
     final selectedImage = _ProofImageSelection(
       bytes: bytesToSubmit,
+      filePath: filePathToUpload,
       fileName: _resolveProofImageFileName(
         originalFileName: fileName,
         isGroupPhoto: isGroupPhoto,
@@ -1267,43 +1302,107 @@ class _RegisterMatchWizardSheetState
     return shouldCompress ?? false;
   }
 
-  Uint8List? _compressImageToAllowedSize(
-    Uint8List sourceBytes, {
+  Future<_CompressedProofImageSelection?> _compressImageToAllowedSize({
+    required XFile sourceImage,
     required int maxBytes,
-  }) {
-    final decodedImage = img.decodeImage(sourceBytes);
-    if (decodedImage == null) {
+    required bool isGroupPhoto,
+  }) async {
+    final sourcePath = sourceImage.path.trim();
+    if (sourcePath.isEmpty) {
       return null;
     }
 
-    var workingImage = decodedImage;
-    const qualityCandidates = <int>[82, 74, 66, 58, 50, 42, 34, 26, 18];
+    final compressedFileName = _resolveCompressedImageFileName(
+      originalFileName: sourceImage.name,
+      isGroupPhoto: isGroupPhoto,
+    );
+    const minDimensionCandidates = <int>[
+      2200,
+      1900,
+      1600,
+      1300,
+      1000,
+      800,
+      600,
+      480,
+      360,
+    ];
+    const qualityCandidates = <int>[84, 76, 68, 60, 52, 44, 36, 28, 20];
 
-    for (var resizeIteration = 0; resizeIteration < 7; resizeIteration++) {
+    for (final minDimension in minDimensionCandidates) {
       for (final quality in qualityCandidates) {
-        final compressed = Uint8List.fromList(
-          img.encodeJpg(workingImage, quality: quality),
+        final targetPath = _buildTemporaryCompressedImagePath(
+          fileName: compressedFileName,
+          minDimension: minDimension,
+          quality: quality,
         );
-        if (compressed.length <= maxBytes) {
-          return compressed;
+        final compressedFile = await FlutterImageCompress.compressAndGetFile(
+          sourcePath,
+          targetPath,
+          format: CompressFormat.jpeg,
+          quality: quality,
+          minWidth: minDimension,
+          minHeight: minDimension,
+          keepExif: false,
+        );
+        if (compressedFile == null) {
+          continue;
+        }
+
+        final compressedBytes = await compressedFile.readAsBytes();
+        if (compressedBytes.isEmpty) {
+          continue;
+        }
+
+        if (compressedBytes.length <= maxBytes) {
+          return _CompressedProofImageSelection(
+            bytes: compressedBytes,
+            filePath: compressedFile.path,
+            fileName: compressedFileName,
+            contentType: 'image/jpeg',
+          );
         }
       }
-
-      final nextWidth = (workingImage.width * 0.85).round();
-      final nextHeight = (workingImage.height * 0.85).round();
-      if (nextWidth < 320 || nextHeight < 320) {
-        break;
-      }
-
-      workingImage = img.copyResize(
-        workingImage,
-        width: nextWidth,
-        height: nextHeight,
-        interpolation: img.Interpolation.average,
-      );
     }
 
     return null;
+  }
+
+  Future<String> _persistProofImageBytesToTemporaryFile({
+    required Uint8List bytes,
+    required String fileName,
+    required bool isGroupPhoto,
+  }) async {
+    final normalizedFileName = _resolveProofImageFileName(
+      originalFileName: fileName,
+      isGroupPhoto: isGroupPhoto,
+    );
+    final safeFileName = normalizedFileName.replaceAll(
+      RegExp(r'[^A-Za-z0-9._-]'),
+      '_',
+    );
+    final tempFilePath =
+        '${Directory.systemTemp.path}/${DateTime.now().microsecondsSinceEpoch}-$safeFileName';
+    final tempFile = File(tempFilePath);
+    await tempFile.writeAsBytes(bytes, flush: true);
+    return tempFile.path;
+  }
+
+  String _buildTemporaryCompressedImagePath({
+    required String fileName,
+    required int minDimension,
+    required int quality,
+  }) {
+    final fileNameWithoutExtension = fileName.replaceFirst(
+      RegExp(r'\.[^./\\]+$'),
+      '',
+    );
+    final safeName = fileNameWithoutExtension.replaceAll(
+      RegExp(r'[^A-Za-z0-9._-]'),
+      '_',
+    );
+    return '${Directory.systemTemp.path}/$safeName-'
+        '${DateTime.now().microsecondsSinceEpoch}-w$minDimension-q$quality.jpg';
   }
 
   String _resolveProofImageFileName({
@@ -1594,11 +1693,27 @@ enum _ParticipantScoreMode {
 class _ProofImageSelection {
   _ProofImageSelection({
     required this.bytes,
+    required this.filePath,
     required this.fileName,
     required this.contentType,
   });
 
   final Uint8List bytes;
+  final String filePath;
   final String fileName;
   final String? contentType;
+}
+
+class _CompressedProofImageSelection {
+  _CompressedProofImageSelection({
+    required this.bytes,
+    required this.filePath,
+    required this.fileName,
+    required this.contentType,
+  });
+
+  final Uint8List bytes;
+  final String filePath;
+  final String fileName;
+  final String contentType;
 }

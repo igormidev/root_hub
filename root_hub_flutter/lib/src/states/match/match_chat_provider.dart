@@ -27,7 +27,7 @@ typedef ConfirmImageMessageCallback =
     });
 
 class MatchChatNotifier extends Notifier<MatchChatState> {
-  static const int _maxImageBytes = 6 * 1024 * 1024;
+  static const int _maxImageBytes = 3 * 1024 * 1024;
   static const int _maxReadableImageBytes = 20 * 1024 * 1024;
 
   final InMemoryChatController _chatController = InMemoryChatController();

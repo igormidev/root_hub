@@ -243,8 +243,8 @@ class TranslationsErrorsEn {
 	/// en: 'Image bytes cannot be empty.'
 	String get imageBytesCannotBeEmpty => 'Image bytes cannot be empty.';
 
-	/// en: 'Image is too large. Please send an image smaller than 6 MB.'
-	String get imageTooLargeSixMb => 'Image is too large. Please send an image smaller than 6 MB.';
+	/// en: 'Image is too large. Please send an image smaller than 3 MB.'
+	String get imageTooLargeSixMb => 'Image is too large. Please send an image smaller than 3 MB.';
 
 	/// en: 'Chat history for scheduled match {scheduledMatchId} was not found.'
 	String chatHistoryForScheduledMatchNotFound({required Object scheduledMatchId}) => 'Chat history for scheduled match ${scheduledMatchId} was not found.';
@@ -360,8 +360,14 @@ class TranslationsErrorsEn {
 	/// en: '{imageDescription} is required.'
 	String imageRequired({required Object imageDescription}) => '${imageDescription} is required.';
 
-	/// en: '{imageDescription} is too large. Please upload an image smaller than 6 MB.'
-	String imageTooLargeWithDescription({required Object imageDescription}) => '${imageDescription} is too large. Please upload an image smaller than 6 MB.';
+	/// en: '{imageDescription} is too large. Please upload an image smaller than 3 MB.'
+	String imageTooLargeWithDescription({required Object imageDescription}) => '${imageDescription} is too large. Please upload an image smaller than 3 MB.';
+
+	/// en: '{imageDescription} content type must be an image.'
+	String imageContentTypeMustBeImage({required Object imageDescription}) => '${imageDescription} content type must be an image.';
+
+	/// en: '{imageDescription} upload reference is invalid.'
+	String imageUploadKeyInvalid({required Object imageDescription}) => '${imageDescription} upload reference is invalid.';
 
 	/// en: 'Latitude (x) must be between -90 and 90.'
 	String get latitudeMustBeBetween => 'Latitude (x) must be between -90 and 90.';
@@ -572,6 +578,9 @@ class TranslationsLabelsEn {
 
 	/// en: 'First name'
 	String get firstName => 'First name';
+
+	/// en: 'Image'
+	String get image => 'Image';
 
 	/// en: 'Last name'
 	String get lastName => 'Last name';

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/serverpod_to_result.dart';
 import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
@@ -27,6 +29,7 @@ class RegisterMatchPlayerReportInput {
 
 class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
   static const _minAnonymousNameLength = 3;
+  static const _maxProofImageBytes = 3 * 1024 * 1024;
 
   bool _hasRequestedInitialCount = false;
   bool _hasRequestedInitialPendingMatches = false;
@@ -305,9 +308,11 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     required DateTime matchStartedAt,
     required Duration matchEstimatedDuration,
     required Uint8List groupPhotoBytes,
+    required String groupPhotoFilePath,
     required String groupPhotoFileName,
     String? groupPhotoContentType,
     required Uint8List boardPhotoBytes,
+    required String boardPhotoFilePath,
     required String boardPhotoFileName,
     String? boardPhotoContentType,
   }) async {
@@ -333,6 +338,13 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         title: 'Missing proof photos',
         description:
             'Both group and board photos are required to register this match.',
+      );
+    }
+    if (groupPhotoBytes.length > _maxProofImageBytes ||
+        boardPhotoBytes.length > _maxProofImageBytes) {
+      return RootHubException(
+        title: 'Image is too large',
+        description: 'Each proof image must be at most 3 MB before upload.',
       );
     }
 
@@ -361,6 +373,34 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
       submitError: null,
     );
 
+    final resolvedGroupPhotoFilePath = await _resolveUploadFilePath(
+      preferredFilePath: groupPhotoFilePath,
+      fallbackBytes: groupPhotoBytes,
+      fallbackFileName: groupPhotoFileName,
+    );
+    if (resolvedGroupPhotoFilePath == null) {
+      return _setSubmitErrorAndReturn(
+        RootHubException(
+          title: 'Unable to upload group photo',
+          description: 'The selected group photo could not be prepared.',
+        ),
+      );
+    }
+
+    final resolvedBoardPhotoFilePath = await _resolveUploadFilePath(
+      preferredFilePath: boardPhotoFilePath,
+      fallbackBytes: boardPhotoBytes,
+      fallbackFileName: boardPhotoFileName,
+    );
+    if (resolvedBoardPhotoFilePath == null) {
+      return _setSubmitErrorAndReturn(
+        RootHubException(
+          title: 'Unable to upload board photo',
+          description: 'The selected board photo could not be prepared.',
+        ),
+      );
+    }
+
     final reportPlayers = players
         .map(
           (player) => PlayerMatchResultInput(
@@ -373,6 +413,60 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
         )
         .toList();
 
+    final (
+      groupPhotoPreparation,
+      groupPhotoPrepareError,
+    ) = await _prepareMatchProofUpload(
+      fileName: groupPhotoFileName,
+      contentType: groupPhotoContentType,
+      fileSizeBytes: groupPhotoBytes.length,
+    );
+    if (groupPhotoPrepareError != null || groupPhotoPreparation == null) {
+      return _setSubmitErrorAndReturn(
+        groupPhotoPrepareError ??
+            RootHubException(
+              title: 'Unable to prepare group photo upload',
+              description: 'Try selecting the group photo again.',
+            ),
+      );
+    }
+
+    final (
+      boardPhotoPreparation,
+      boardPhotoPrepareError,
+    ) = await _prepareMatchProofUpload(
+      fileName: boardPhotoFileName,
+      contentType: boardPhotoContentType,
+      fileSizeBytes: boardPhotoBytes.length,
+    );
+    if (boardPhotoPrepareError != null || boardPhotoPreparation == null) {
+      return _setSubmitErrorAndReturn(
+        boardPhotoPrepareError ??
+            RootHubException(
+              title: 'Unable to prepare board photo upload',
+              description: 'Try selecting the board photo again.',
+            ),
+      );
+    }
+
+    final groupUploadError = await _uploadProofImageToSignedUrl(
+      uploadUrl: groupPhotoPreparation.uploadUrl,
+      uploadKey: groupPhotoPreparation.uploadKey,
+      filePath: resolvedGroupPhotoFilePath,
+    );
+    if (groupUploadError != null) {
+      return _setSubmitErrorAndReturn(groupUploadError);
+    }
+
+    final boardUploadError = await _uploadProofImageToSignedUrl(
+      uploadUrl: boardPhotoPreparation.uploadUrl,
+      uploadKey: boardPhotoPreparation.uploadKey,
+      filePath: resolvedBoardPhotoFilePath,
+    );
+    if (boardUploadError != null) {
+      return _setSubmitErrorAndReturn(boardUploadError);
+    }
+
     final result = await ref
         .read(clientProvider)
         .registerMatchData
@@ -383,12 +477,8 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
           locationId: locationId,
           scheduledPairingAttemptId: scheduledMatchId,
           players: reportPlayers,
-          groupPhotoBytes: ByteData.sublistView(groupPhotoBytes),
-          groupPhotoFileName: groupPhotoFileName,
-          groupPhotoContentType: groupPhotoContentType,
-          boardPhotoBytes: ByteData.sublistView(boardPhotoBytes),
-          boardPhotoFileName: boardPhotoFileName,
-          boardPhotoContentType: boardPhotoContentType,
+          groupPhotoUploadKey: groupPhotoPreparation.uploadKey,
+          boardPhotoUploadKey: boardPhotoPreparation.uploadKey,
         )
         .toResult;
 
@@ -422,6 +512,130 @@ class RegisterMatchNotifier extends Notifier<RegisterMatchState> {
     );
 
     return submitError;
+  }
+
+  RootHubException _setSubmitErrorAndReturn(RootHubException error) {
+    state = state.copyWith(
+      isSubmitting: false,
+      submitError: error,
+    );
+    return error;
+  }
+
+  Future<String?> _resolveUploadFilePath({
+    required String preferredFilePath,
+    required Uint8List fallbackBytes,
+    required String fallbackFileName,
+  }) async {
+    final normalizedPreferredPath = preferredFilePath.trim();
+    if (normalizedPreferredPath.isNotEmpty) {
+      final preferredFile = File(normalizedPreferredPath);
+      if (await preferredFile.exists()) {
+        return preferredFile.path;
+      }
+    }
+
+    final safeFileName = _normalizeFileNameForTempPath(fallbackFileName);
+    final tempFilePath =
+        '${Directory.systemTemp.path}/${DateTime.now().microsecondsSinceEpoch}-$safeFileName';
+    try {
+      final tempFile = File(tempFilePath);
+      await tempFile.writeAsBytes(fallbackBytes, flush: true);
+      if (!await tempFile.exists()) {
+        return null;
+      }
+
+      return tempFile.path;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  String _normalizeFileNameForTempPath(String fileName) {
+    final normalizedFileName = fileName.trim();
+    if (normalizedFileName.isEmpty) {
+      return 'match-proof.jpg';
+    }
+
+    return normalizedFileName.replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_');
+  }
+
+  Future<(MatchProofUploadPreparation?, RootHubException?)>
+  _prepareMatchProofUpload({
+    required String fileName,
+    required String? contentType,
+    required int fileSizeBytes,
+  }) async {
+    final result = await ref
+        .read(clientProvider)
+        .prepareMatchProofUpload
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          fileName: fileName,
+          contentType: _normalizeProofContentType(contentType),
+          fileSizeBytes: fileSizeBytes,
+        )
+        .toResult;
+
+    return result.fold(
+      (preparation) => (preparation, null),
+      (error) => (null, error),
+    );
+  }
+
+  String _normalizeProofContentType(String? contentType) {
+    final normalizedContentType = contentType?.trim();
+    if (normalizedContentType != null && normalizedContentType.isNotEmpty) {
+      return normalizedContentType;
+    }
+
+    return 'image/jpeg';
+  }
+
+  Future<RootHubException?> _uploadProofImageToSignedUrl({
+    required String uploadUrl,
+    required String uploadKey,
+    required String filePath,
+  }) async {
+    final request = http.MultipartRequest(
+      'PUT',
+      Uri.parse(uploadUrl),
+    );
+    try {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          filePath,
+          filename: uploadKey,
+        ),
+      );
+    } catch (_) {
+      return RootHubException(
+        title: 'Unable to upload proof image',
+        description: 'The selected image file could not be read for upload.',
+      );
+    }
+
+    http.StreamedResponse streamedResponse;
+    try {
+      streamedResponse = await request.send();
+    } catch (_) {
+      return RootHubException(
+        title: 'Unable to upload proof image',
+        description:
+            'The image upload failed before reaching the storage provider.',
+      );
+    }
+
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      return RootHubException(
+        title: 'Unable to upload proof image',
+        description: 'The storage provider rejected the selected image.',
+      );
+    }
+
+    return null;
   }
 
   Future<RootHubException?> cancelScheduledMatch({

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
 import 'package:root_hub_server/src/core/server_translations.dart';
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
@@ -9,7 +7,6 @@ import 'package:serverpod/serverpod.dart';
 class RegisterMatchData extends Endpoint {
   static const _uploadThingStorageClient = UploadThingStorageClient();
   static const _registerBeforeScheduledStartAllowance = Duration(hours: 2);
-  static const _maxProofImageBytes = 6 * 1024 * 1024;
 
   @override
   bool get requireLogin => true;
@@ -22,12 +19,8 @@ class RegisterMatchData extends Endpoint {
     required int locationId,
     required int scheduledPairingAttemptId,
     required List<PlayerMatchResultInput> players,
-    required ByteData groupPhotoBytes,
-    String? groupPhotoFileName,
-    String? groupPhotoContentType,
-    required ByteData boardPhotoBytes,
-    String? boardPhotoFileName,
-    String? boardPhotoContentType,
+    required String groupPhotoUploadKey,
+    required String boardPhotoUploadKey,
   }) async {
     final t = ServerTranslations.of(language);
 
@@ -40,14 +33,14 @@ class RegisterMatchData extends Endpoint {
           );
         }
 
-        _validateProofImage(
+        final normalizedGroupPhotoUploadKey = _requireValidProofUploadKey(
           language: language,
-          imageBytes: groupPhotoBytes,
+          uploadKey: groupPhotoUploadKey,
           imageDescription: t.labels.groupPhoto,
         );
-        _validateProofImage(
+        final normalizedBoardPhotoUploadKey = _requireValidProofUploadKey(
           language: language,
-          imageBytes: boardPhotoBytes,
+          uploadKey: boardPhotoUploadKey,
           imageDescription: t.labels.boardPhoto,
         );
 
@@ -151,20 +144,18 @@ class RegisterMatchData extends Endpoint {
           scheduledPairingAttempt: scheduledPairingAttempt,
         );
 
-        final groupPhotoUrl = await _uploadProofImage(
-          session,
-          language: language,
-          imageBytes: groupPhotoBytes,
-          fileName: groupPhotoFileName ?? 'match-group-photo.jpg',
-          contentType: groupPhotoContentType,
-        );
-        final boardPhotoUrl = await _uploadProofImage(
-          session,
-          language: language,
-          imageBytes: boardPhotoBytes,
-          fileName: boardPhotoFileName ?? 'match-board-photo.jpg',
-          contentType: boardPhotoContentType,
-        );
+        final groupPhotoUrl = await _uploadThingStorageClient
+            .buildPublicImageUrlFromUploadKey(
+              session,
+              language: language,
+              uploadKey: normalizedGroupPhotoUploadKey,
+            );
+        final boardPhotoUrl = await _uploadThingStorageClient
+            .buildPublicImageUrlFromUploadKey(
+              session,
+              language: language,
+              uploadKey: normalizedBoardPhotoUploadKey,
+            );
 
         return await session.db.transaction((transaction) async {
           final playedMatch = await PlayedMatch.db.insertRow(
@@ -641,49 +632,35 @@ class RegisterMatchData extends Endpoint {
     }
   }
 
-  void _validateProofImage({
+  String _requireValidProofUploadKey({
     required ServerSupportedTranslation language,
-    required ByteData imageBytes,
+    required String uploadKey,
     required String imageDescription,
   }) {
     final t = ServerTranslations.of(language);
+    final normalizedUploadKey = _uploadThingStorageClient.normalizeUploadKey(
+      uploadKey,
+    );
 
-    if (imageBytes.lengthInBytes <= 0) {
+    if (normalizedUploadKey.isEmpty) {
       _throwInvalidRequest(
         language: language,
         description: t.errors.imageRequired(imageDescription: imageDescription),
       );
     }
 
-    if (imageBytes.lengthInBytes > _maxProofImageBytes) {
+    if (!_uploadThingStorageClient.isUploadKeyFormatValid(
+      normalizedUploadKey,
+    )) {
       _throwInvalidRequest(
         language: language,
-        description: t.errors.imageTooLargeWithDescription(
+        description: t.errors.imageUploadKeyInvalid(
           imageDescription: imageDescription,
         ),
       );
     }
-  }
 
-  Future<String> _uploadProofImage(
-    Session session, {
-    required ServerSupportedTranslation language,
-    required ByteData imageBytes,
-    required String fileName,
-    required String? contentType,
-  }) async {
-    final imageBytesList = imageBytes.buffer.asUint8List(
-      imageBytes.offsetInBytes,
-      imageBytes.lengthInBytes,
-    );
-
-    return _uploadThingStorageClient.uploadPublicImage(
-      session,
-      language: language,
-      imageBytes: imageBytesList,
-      fileName: fileName,
-      contentType: contentType,
-    );
+    return normalizedUploadKey;
   }
 
   Never _throwInvalidRequest({
