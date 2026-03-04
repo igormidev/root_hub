@@ -16,6 +16,7 @@ import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_loadin
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_sender_avatar_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_system_event_message_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_chat_image_message_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_image_widget.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
@@ -535,132 +536,17 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       return null;
     }
 
-    final messageController = TextEditingController();
-    try {
-      final message = await showDialog<String>(
-        context: context,
-        builder: (dialogContext) {
-          final colorScheme = Theme.of(dialogContext).colorScheme;
-          return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 24,
-            ),
-            titlePadding: EdgeInsets.fromLTRB(12, 14, 12, 8),
-            contentPadding: EdgeInsets.fromLTRB(12, 0, 12, 12),
-            title: Text(
-              t.match.ui_screens_match_chat_screen.confirmPhoto,
-            ),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: 260,
-                      ),
-                      child: Image.memory(
-                        previewBytes,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  TextField(
-                    controller: messageController,
-                    autofocus: true,
-                    minLines: 3,
-                    maxLines: 6,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: InputDecoration(
-                      alignLabelWithHint: true,
-                      filled: true,
-                      fillColor: colorScheme.surfaceContainerLow,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 14,
-                      ),
-                      labelText: t
-                          .match
-                          .ui_screens_match_chat_screen
-                          .addAMessageOptional,
-                      hintText:
-                          t.match.ui_screens_match_chat_screen.typeAMessage,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: colorScheme.outlineVariant,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: colorScheme.outlineVariant,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: colorScheme.primary,
-                          width: 1.8,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 14),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () =>
-                              Navigator.of(dialogContext).pop(null),
-                          style: TextButton.styleFrom(
-                            minimumSize: Size.fromHeight(50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            t.match.ui_screens_match_chat_screen.cancel2,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        flex: 2,
-                        child: FilledButton(
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop(
-                              messageController.text,
-                            );
-                          },
-                          style: FilledButton.styleFrom(
-                            minimumSize: Size.fromHeight(50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            t.match.ui_screens_match_chat_screen.sendPhoto,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-
-      return message;
-    } finally {
-      messageController.dispose();
-    }
+    return showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return MatchChatImageMessageSheet(
+          previewBytes: previewBytes,
+        );
+      },
+    );
   }
 
   Future<ImageSource?> _pickImageSource() async {
