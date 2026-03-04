@@ -39,6 +39,7 @@ const _uiTextNamedArgumentNames = <String>{
   'counterText',
   'description',
   'errorText',
+  'helpText',
   'helperText',
   'hint',
   'hintText',
@@ -50,6 +51,19 @@ const _uiTextNamedArgumentNames = <String>{
   'semanticLabel',
   'subtitle',
   'suffixText',
+  'text',
+  'title',
+  'tooltip',
+};
+
+const _uiTextVariableNameTokens = <String>{
+  'caption',
+  'description',
+  'hint',
+  'label',
+  'message',
+  'placeholder',
+  'subtitle',
   'text',
   'title',
   'tooltip',
@@ -422,7 +436,8 @@ bool _shouldReportFeatureStringNode(AstNode node) {
       return false;
     }
 
-    return _isLikelyUiTextLiteral(node);
+    return _isLikelyUiTextLiteral(node) ||
+        _isLikelyUiTextVariableInitializer(node);
   }
 
   if (node is! StringInterpolation) {
@@ -437,7 +452,8 @@ bool _shouldReportFeatureStringNode(AstNode node) {
     return false;
   }
 
-  return _isLikelyUiTextLiteral(node);
+  return _isLikelyUiTextLiteral(node) ||
+      _isLikelyUiTextVariableInitializer(node);
 }
 
 bool _isStringNodeInSkippableParent(AstNode node) {
@@ -547,6 +563,31 @@ bool _isLikelyUiTextArgumentName(String argumentName) {
 
   final normalized = argumentName.toLowerCase();
   return normalized.endsWith('title') || normalized.endsWith('description');
+}
+
+bool _isLikelyUiTextVariableInitializer(AstNode node) {
+  AstNode? current = node;
+  while (current != null) {
+    final parent = current.parent;
+    if (parent is VariableDeclaration &&
+        identical(parent.initializer, current)) {
+      return _isLikelyUiTextVariableName(parent.name.lexeme);
+    }
+    current = parent;
+  }
+
+  return false;
+}
+
+bool _isLikelyUiTextVariableName(String variableName) {
+  final normalized = variableName.toLowerCase();
+  for (final token in _uiTextVariableNameTokens) {
+    if (normalized.contains(token)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 bool _nodeContainsAlphabeticLiteralText(StringInterpolation interpolation) {

@@ -79,7 +79,7 @@ class _MatchCreateTableScreenState
           : today,
       firstDate: today,
       lastDate: maxDate,
-      helpText: 'Select game day',
+      helpText: t.match.ui_screens_match_create_table_screen.selectGameDay,
     );
 
     if (!mounted || selectedDate == null) {
@@ -109,7 +109,7 @@ class _MatchCreateTableScreenState
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: currentScheduledTime ?? now,
-      helpText: 'Select start hour',
+      helpText: t.match.ui_screens_match_create_table_screen.selectStartHour,
     );
 
     if (!mounted || selectedTime == null) {
@@ -187,10 +187,10 @@ class _MatchCreateTableScreenState
     final viewPadding = MediaQuery.viewPaddingOf(context);
 
     final dateLabel = state.scheduledDate == null
-        ? 'Select day'
+        ? t.match.ui_screens_match_create_table_screen.selectDay
         : localizations.formatMediumDate(state.scheduledDate!);
     final timeLabel = state.scheduledTime == null
-        ? 'Select hour'
+        ? t.match.ui_screens_match_create_table_screen.selectHour
         : localizations.formatTimeOfDay(state.scheduledTime!);
 
     return Scaffold(

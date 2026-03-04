@@ -447,6 +447,10 @@
       "titleRequired": "Título obrigatório",
       "youCannotSelectADayInThePast2": "Você não pode selecionar um dia no passado.",
       "invalidDate2": "Data inválida",
+      "selectGameDay": "Selecione o dia da partida",
+      "selectStartHour": "Selecione o horário de início",
+      "selectDay": "Selecionar dia",
+      "selectHour": "Selecionar horário",
       "continueButton": "Continuar"
     },
     "ui_screens_match_chat_loading_error_state_widget": {

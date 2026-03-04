@@ -863,6 +863,10 @@ class _TranslationsMatchUiScreensMatchCreateTableScreenFr extends TranslationsMa
 	@override String get titleRequired => 'Titre requis';
 	@override String get youCannotSelectADayInThePast2 => 'Vous ne pouvez pas sélectionner un jour dans le passé.';
 	@override String get invalidDate2 => 'Date invalide';
+	@override String get selectGameDay => 'Sélectionnez le jour de la partie';
+	@override String get selectStartHour => 'Sélectionnez l\'heure de début';
+	@override String get selectDay => 'Sélectionner le jour';
+	@override String get selectHour => 'Sélectionner l\'heure';
 	@override String get continueButton => 'Continuer';
 }
 

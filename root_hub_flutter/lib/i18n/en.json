@@ -447,6 +447,10 @@
       "titleRequired": "Title required",
       "youCannotSelectADayInThePast2": "You cannot select a day in the past.",
       "invalidDate2": "Invalid date",
+      "selectGameDay": "Select game day",
+      "selectStartHour": "Select start hour",
+      "selectDay": "Select day",
+      "selectHour": "Select hour",
       "continueButton": "Continue"
     },
     "ui_screens_match_chat_loading_error_state_widget": {

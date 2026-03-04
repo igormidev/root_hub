@@ -1569,6 +1569,18 @@ class TranslationsMatchUiScreensMatchCreateTableScreenEn {
 	/// en: 'Invalid date'
 	String get invalidDate2 => 'Invalid date';
 
+	/// en: 'Select game day'
+	String get selectGameDay => 'Select game day';
+
+	/// en: 'Select start hour'
+	String get selectStartHour => 'Select start hour';
+
+	/// en: 'Select day'
+	String get selectDay => 'Select day';
+
+	/// en: 'Select hour'
+	String get selectHour => 'Select hour';
+
 	/// en: 'Continue'
 	String get continueButton => 'Continue';
 }
