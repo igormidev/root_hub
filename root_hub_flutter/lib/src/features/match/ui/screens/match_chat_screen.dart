@@ -77,6 +77,8 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
 
     final currentUserId = authenticatedPlayer?.id?.toString();
     final isCurrentChat = chatState.scheduledMatchId == widget.scheduledMatchId;
+    final isMessageActionInProgress =
+        chatState.isSendingMessage || chatState.isUploadingImage;
     final isLoadingInitial =
         !isCurrentChat || (chatState.isLoading && !chatState.hasLoadedOnce);
     final loadError = isCurrentChat ? chatState.loadError : null;
@@ -112,7 +114,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
-          if (chatState.isSendingMessage || chatState.isUploadingImage)
+          if (isMessageActionInProgress)
             Padding(
               padding: EdgeInsets.only(right: 4),
               child: Center(
@@ -213,8 +215,15 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               theme: ChatTheme.fromThemeData(Theme.of(context)),
               resolveUser: chatNotifier.resolveUser,
               chatController: chatNotifier.chatController,
-              onMessageSend: chatNotifier.sendTextMessage,
-              onAttachmentTap: () => _pickAndSendImage(chatNotifier),
+              onMessageSend: (text) async {
+                if (isMessageActionInProgress) {
+                  return;
+                }
+                await chatNotifier.sendTextMessage(text);
+              },
+              onAttachmentTap: isMessageActionInProgress
+                  ? null
+                  : () => _pickAndSendImage(chatNotifier),
               builders: Builders(
                 composerBuilder: (context) => Composer(
                   attachmentIcon: Icon(Icons.add_photo_alternate_rounded),

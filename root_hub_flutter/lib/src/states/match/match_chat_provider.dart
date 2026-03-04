@@ -12,6 +12,7 @@ import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_state.dart';
+import 'package:synchronized/synchronized.dart';
 
 typedef ConfirmImageCompressionCallback =
     Future<bool> Function({
@@ -21,9 +22,11 @@ typedef ConfirmImageCompressionCallback =
 
 class MatchChatNotifier extends Notifier<MatchChatState> {
   static const int _maxImageBytes = 6 * 1024 * 1024;
+  static const int _maxReadableImageBytes = 20 * 1024 * 1024;
 
   final InMemoryChatController _chatController = InMemoryChatController();
   final ImagePicker _imagePicker = ImagePicker();
+  final Lock _sendOperationLock = Lock();
 
   final List<Message> _chatMessages = <Message>[];
   final Map<String, PlayerData> _playersByAuthorId = <String, PlayerData>{};
@@ -125,68 +128,81 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     if (normalizedText.isEmpty) {
       return;
     }
-
-    state = state.copyWith(
-      isSendingMessage: true,
-      actionError: null,
-    );
-
-    talker.debug(
-      '[MatchChat] Sending text message. '
-      'scheduledMatchId=$scheduledMatchId chars=${normalizedText.length}',
-    );
-
-    try {
-      final result = await ref
-          .read(clientProvider)
-          .sendMatchChatMessage
-          .v1(
-            language: ref.read(serverSupportedTranslationProvider),
-            scheduledMatchId: scheduledMatchId,
-            content: normalizedText,
-          )
-          .toResult;
-
-      await result.fold(
-        (serverMessage) async {
-          talker.debug(
-            '[MatchChat] Text message sent. '
-            'scheduledMatchId=$scheduledMatchId messageId=${serverMessage.id}',
-          );
-          await _insertMessage(serverMessage);
-          state = state.copyWith(
-            isSendingMessage: false,
-            actionError: null,
-          );
-        },
-        (error) async {
-          talker.debug(
-            '[MatchChat] Failed to send text message. '
-            'scheduledMatchId=$scheduledMatchId title=${error.title} '
-            'description=${error.description}',
-          );
-          state = state.copyWith(
-            isSendingMessage: false,
-            actionError: error,
-          );
-        },
-      );
-    } catch (error, stackTrace) {
-      talker.handle(
-        error,
-        stackTrace,
-        '[MatchChat] Unexpected text message failure. '
+    if (_sendOperationLock.locked) {
+      talker.debug(
+        '[MatchChat] Ignoring text message while another send operation is in progress. '
         'scheduledMatchId=$scheduledMatchId',
       );
-      state = state.copyWith(
-        isSendingMessage: false,
-        actionError: RootHubException(
-          title: 'Unable to send message',
-          description:
-              'An unexpected error occurred while sending your message.',
-        ),
-      );
+      return;
     }
+
+    await _sendOperationLock.synchronized(() async {
+      if (state.scheduledMatchId != scheduledMatchId) {
+        return;
+      }
+
+      state = state.copyWith(
+        isSendingMessage: true,
+        actionError: null,
+      );
+
+      talker.debug(
+        '[MatchChat] Sending text message. '
+        'scheduledMatchId=$scheduledMatchId chars=${normalizedText.length}',
+      );
+
+      try {
+        final result = await ref
+            .read(clientProvider)
+            .sendMatchChatMessage
+            .v1(
+              language: ref.read(serverSupportedTranslationProvider),
+              scheduledMatchId: scheduledMatchId,
+              content: normalizedText,
+            )
+            .toResult;
+
+        await result.fold(
+          (serverMessage) async {
+            talker.debug(
+              '[MatchChat] Text message sent. '
+              'scheduledMatchId=$scheduledMatchId messageId=${serverMessage.id}',
+            );
+            await _insertMessage(serverMessage);
+            state = state.copyWith(
+              isSendingMessage: false,
+              actionError: null,
+            );
+          },
+          (error) async {
+            talker.debug(
+              '[MatchChat] Failed to send text message. '
+              'scheduledMatchId=$scheduledMatchId title=${error.title} '
+              'description=${error.description}',
+            );
+            state = state.copyWith(
+              isSendingMessage: false,
+              actionError: error,
+            );
+          },
+        );
+      } catch (error, stackTrace) {
+        talker.handle(
+          error,
+          stackTrace,
+          '[MatchChat] Unexpected text message failure. '
+          'scheduledMatchId=$scheduledMatchId',
+        );
+        state = state.copyWith(
+          isSendingMessage: false,
+          actionError: RootHubException(
+            title: 'Unable to send message',
+            description:
+                'An unexpected error occurred while sending your message.',
+          ),
+        );
+      }
+    });
   }
 
   Future<void> pickAndSendImage({
@@ -194,113 +210,247 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     required ConfirmImageCompressionCallback onConfirmImageCompression,
   }) async {
     final scheduledMatchId = state.scheduledMatchId;
-    if (scheduledMatchId == null || state.isUploadingImage) {
+    if (scheduledMatchId == null) {
       return;
     }
-
-    XFile? pickedImage;
-    try {
-      pickedImage = await _imagePicker.pickImage(
-        source: source,
-        maxWidth: 1800,
-        maxHeight: 1800,
-        imageQuality: 88,
-        requestFullMetadata: false,
-      );
-    } catch (error, stackTrace) {
-      talker.handle(
-        error,
-        stackTrace,
-        '[MatchChat] Failed to open image source. '
-        'scheduledMatchId=$scheduledMatchId source=$source',
-      );
-      state = state.copyWith(
-        actionError: RootHubException(
-          title: 'Unable to access camera or gallery',
-          description:
-              'Allow camera and photo permissions in system settings and try again.',
-        ),
-      );
-      return;
-    }
-
-    if (pickedImage == null) {
+    if (_sendOperationLock.locked) {
       talker.debug(
-        '[MatchChat] Image pick canceled by user. '
+        '[MatchChat] Ignoring image send while another send operation is in progress. '
         'scheduledMatchId=$scheduledMatchId',
       );
       return;
     }
 
-    talker.debug(
-      '[MatchChat] Image picked. scheduledMatchId=$scheduledMatchId '
-      'name=${pickedImage.name} mimeType=${pickedImage.mimeType ?? 'unknown'}',
-    );
+    await _sendOperationLock.synchronized(() async {
+      if (state.scheduledMatchId != scheduledMatchId) {
+        return;
+      }
 
-    state = state.copyWith(
-      isUploadingImage: true,
-      actionError: null,
-    );
-
-    Uint8List imageBytes;
-    try {
-      imageBytes = await pickedImage.readAsBytes();
-    } catch (error, stackTrace) {
-      talker.handle(
-        error,
-        stackTrace,
-        '[MatchChat] Failed to read selected image bytes. '
-        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
-      );
-      state = state.copyWith(
-        isUploadingImage: false,
-        actionError: RootHubException(
-          title: 'Unable to read image',
-          description:
-              'The selected image could not be read. Try another file.',
-        ),
-      );
-      return;
-    }
-
-    if (imageBytes.isEmpty) {
-      talker.debug(
-        '[MatchChat] Picked image has no bytes. '
-        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
-      );
-      state = state.copyWith(
-        isUploadingImage: false,
-        actionError: RootHubException(
-          title: 'Invalid image',
-          description:
-              'The selected image is empty. Please choose another one.',
-        ),
-      );
-      return;
-    }
-
-    var imageBytesToUpload = imageBytes;
-    var imageFileName = pickedImage.name;
-    var imageContentType = pickedImage.mimeType;
-
-    if (imageBytes.length > _maxImageBytes) {
-      talker.debug(
-        '[MatchChat] Picked image exceeds allowed size. '
-        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
-        'bytes=${imageBytes.length} maxBytes=$_maxImageBytes',
-      );
-
-      bool shouldCompressImage;
+      XFile? pickedImage;
       try {
-        shouldCompressImage = await onConfirmImageCompression(
-          imageBytes: imageBytes.length,
-          maxBytes: _maxImageBytes,
+        pickedImage = await _imagePicker.pickImage(
+          source: source,
+          maxWidth: 1800,
+          maxHeight: 1800,
+          imageQuality: 88,
+          requestFullMetadata: false,
         );
       } catch (error, stackTrace) {
         talker.handle(
           error,
           stackTrace,
-          '[MatchChat] Failed to confirm image compression with user. '
+          '[MatchChat] Failed to open image source. '
+          'scheduledMatchId=$scheduledMatchId source=$source',
+        );
+        state = state.copyWith(
+          actionError: RootHubException(
+            title: 'Unable to access camera or gallery',
+            description:
+                'Allow camera and photo permissions in system settings and try again.',
+          ),
+        );
+        return;
+      }
+
+      if (pickedImage == null) {
+        talker.debug(
+          '[MatchChat] Image pick canceled by user. '
+          'scheduledMatchId=$scheduledMatchId',
+        );
+        return;
+      }
+
+      talker.debug(
+        '[MatchChat] Image picked. scheduledMatchId=$scheduledMatchId '
+        'name=${pickedImage.name} mimeType=${pickedImage.mimeType ?? 'unknown'}',
+      );
+
+      state = state.copyWith(
+        isUploadingImage: true,
+        actionError: null,
+      );
+
+      Uint8List imageBytes;
+      try {
+        final streamedImageBytes = await _readImageBytesByStreaming(
+          pickedImage,
+          maxReadableBytes: _maxReadableImageBytes,
+        );
+        if (streamedImageBytes == null) {
+          final maxReadableMb = (_maxReadableImageBytes / (1024 * 1024))
+              .toStringAsFixed(0);
+          state = state.copyWith(
+            isUploadingImage: false,
+            actionError: RootHubException(
+              title: 'Image is too large',
+              description:
+                  'The selected image exceeds the $maxReadableMb MB processing limit. '
+                  'Choose a smaller image and try again.',
+            ),
+          );
+          return;
+        }
+        imageBytes = streamedImageBytes;
+      } catch (error, stackTrace) {
+        talker.handle(
+          error,
+          stackTrace,
+          '[MatchChat] Failed to stream selected image bytes. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+        );
+        state = state.copyWith(
+          isUploadingImage: false,
+          actionError: RootHubException(
+            title: 'Unable to read image',
+            description:
+                'The selected image could not be read. Try another file.',
+          ),
+        );
+        return;
+      }
+
+      if (imageBytes.isEmpty) {
+        talker.debug(
+          '[MatchChat] Picked image has no bytes. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+        );
+        state = state.copyWith(
+          isUploadingImage: false,
+          actionError: RootHubException(
+            title: 'Invalid image',
+            description:
+                'The selected image is empty. Please choose another one.',
+          ),
+        );
+        return;
+      }
+
+      var imageBytesToUpload = imageBytes;
+      var imageFileName = pickedImage.name;
+      var imageContentType = pickedImage.mimeType;
+
+      if (imageBytes.length > _maxImageBytes) {
+        talker.debug(
+          '[MatchChat] Picked image exceeds allowed size. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
+          'bytes=${imageBytes.length} maxBytes=$_maxImageBytes',
+        );
+
+        bool shouldCompressImage;
+        try {
+          shouldCompressImage = await onConfirmImageCompression(
+            imageBytes: imageBytes.length,
+            maxBytes: _maxImageBytes,
+          );
+        } catch (error, stackTrace) {
+          talker.handle(
+            error,
+            stackTrace,
+            '[MatchChat] Failed to confirm image compression with user. '
+            'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+          );
+          state = state.copyWith(
+            isUploadingImage: false,
+            actionError: RootHubException(
+              title: 'Unable to send image',
+              description:
+                  'An unexpected error occurred while confirming image compression.',
+            ),
+          );
+          return;
+        }
+
+        if (!shouldCompressImage) {
+          talker.debug(
+            '[MatchChat] User canceled image compression. '
+            'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+          );
+          state = state.copyWith(
+            isUploadingImage: false,
+            actionError: null,
+          );
+          return;
+        }
+
+        final compressedImageBytes = _compressImageToAllowedSize(
+          imageBytes,
+          maxBytes: _maxImageBytes,
+        );
+
+        if (compressedImageBytes == null) {
+          state = state.copyWith(
+            isUploadingImage: false,
+            actionError: RootHubException(
+              title: 'Unable to compress image',
+              description:
+                  'Try selecting a different image or crop it before sending.',
+            ),
+          );
+          return;
+        }
+
+        imageBytesToUpload = compressedImageBytes;
+        imageFileName = _resolveCompressedImageFileName(
+          originalFileName: pickedImage.name,
+        );
+        imageContentType = 'image/jpeg';
+        talker.debug(
+          '[MatchChat] Image compressed before upload. '
+          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
+          'sourceBytes=${imageBytes.length} compressedBytes=${compressedImageBytes.length}',
+        );
+      }
+
+      talker.debug(
+        '[MatchChat] Uploading image message. scheduledMatchId=$scheduledMatchId '
+        'name=$imageFileName bytes=${imageBytesToUpload.length}',
+      );
+
+      final imageByteData = ByteData.sublistView(imageBytesToUpload);
+      try {
+        final sendResult = await ref
+            .read(clientProvider)
+            .sendMatchChatMessage
+            .v1(
+              language: ref.read(serverSupportedTranslationProvider),
+              scheduledMatchId: scheduledMatchId,
+              content: '',
+              imageBytes: imageByteData,
+              imageFileName: imageFileName,
+              imageContentType: imageContentType,
+            )
+            .toResult;
+
+        await sendResult.fold(
+          (serverMessage) async {
+            talker.debug(
+              '[MatchChat] Image message sent. '
+              'scheduledMatchId=$scheduledMatchId messageId=${serverMessage.id} '
+              'imageUrl=${serverMessage.imageUrl}',
+            );
+            await _insertMessage(serverMessage);
+            state = state.copyWith(
+              isUploadingImage: false,
+              actionError: null,
+            );
+          },
+          (error) async {
+            talker.debug(
+              '[MatchChat] Failed to send image message. '
+              'scheduledMatchId=$scheduledMatchId title=${error.title} '
+              'description=${error.description}',
+            );
+            state = state.copyWith(
+              isUploadingImage: false,
+              actionError: error,
+            );
+          },
+        );
+      } catch (error, stackTrace) {
+        talker.handle(
+          error,
+          stackTrace,
+          '[MatchChat] Unexpected image message failure. '
           'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
         );
         state = state.copyWith(
@@ -308,113 +458,40 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           actionError: RootHubException(
             title: 'Unable to send image',
             description:
-                'An unexpected error occurred while confirming image compression.',
+                'An unexpected error occurred while sending your image.',
           ),
         );
-        return;
       }
+    });
+  }
 
-      if (!shouldCompressImage) {
+  Future<Uint8List?> _readImageBytesByStreaming(
+    XFile pickedImage, {
+    required int maxReadableBytes,
+  }) async {
+    final bytesBuilder = BytesBuilder(copy: false);
+    var totalBytes = 0;
+
+    await for (final chunk in pickedImage.openRead()) {
+      totalBytes += chunk.length;
+      if (totalBytes > maxReadableBytes) {
         talker.debug(
-          '[MatchChat] User canceled image compression. '
-          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+          '[MatchChat] Streamed image read exceeded allowed processing size. '
+          'name=${pickedImage.name} streamedBytes=$totalBytes '
+          'maxReadableBytes=$maxReadableBytes',
         );
-        state = state.copyWith(
-          isUploadingImage: false,
-          actionError: null,
-        );
-        return;
+        return null;
       }
 
-      final compressedImageBytes = _compressImageToAllowedSize(
-        imageBytes,
-        maxBytes: _maxImageBytes,
-      );
-
-      if (compressedImageBytes == null) {
-        state = state.copyWith(
-          isUploadingImage: false,
-          actionError: RootHubException(
-            title: 'Unable to compress image',
-            description:
-                'Try selecting a different image or crop it before sending.',
-          ),
-        );
-        return;
-      }
-
-      imageBytesToUpload = compressedImageBytes;
-      imageFileName = _resolveCompressedImageFileName(
-        originalFileName: pickedImage.name,
-      );
-      imageContentType = 'image/jpeg';
-      talker.debug(
-        '[MatchChat] Image compressed before upload. '
-        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name} '
-        'sourceBytes=${imageBytes.length} compressedBytes=${compressedImageBytes.length}',
-      );
+      bytesBuilder.add(chunk);
     }
 
+    final streamedBytes = bytesBuilder.takeBytes();
     talker.debug(
-      '[MatchChat] Uploading image message. scheduledMatchId=$scheduledMatchId '
-      'name=$imageFileName bytes=${imageBytesToUpload.length}',
+      '[MatchChat] Streamed image read completed. '
+      'name=${pickedImage.name} bytes=${streamedBytes.length}',
     );
-
-    final imageByteData = ByteData.sublistView(imageBytesToUpload);
-    try {
-      final sendResult = await ref
-          .read(clientProvider)
-          .sendMatchChatMessage
-          .v1(
-            language: ref.read(serverSupportedTranslationProvider),
-            scheduledMatchId: scheduledMatchId,
-            content: '',
-            imageBytes: imageByteData,
-            imageFileName: imageFileName,
-            imageContentType: imageContentType,
-          )
-          .toResult;
-
-      await sendResult.fold(
-        (serverMessage) async {
-          talker.debug(
-            '[MatchChat] Image message sent. '
-            'scheduledMatchId=$scheduledMatchId messageId=${serverMessage.id} '
-            'imageUrl=${serverMessage.imageUrl}',
-          );
-          await _insertMessage(serverMessage);
-          state = state.copyWith(
-            isUploadingImage: false,
-            actionError: null,
-          );
-        },
-        (error) async {
-          talker.debug(
-            '[MatchChat] Failed to send image message. '
-            'scheduledMatchId=$scheduledMatchId title=${error.title} '
-            'description=${error.description}',
-          );
-          state = state.copyWith(
-            isUploadingImage: false,
-            actionError: error,
-          );
-        },
-      );
-    } catch (error, stackTrace) {
-      talker.handle(
-        error,
-        stackTrace,
-        '[MatchChat] Unexpected image message failure. '
-        'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
-      );
-      state = state.copyWith(
-        isUploadingImage: false,
-        actionError: RootHubException(
-          title: 'Unable to send image',
-          description: 'An unexpected error occurred while sending your image.',
-        ),
-      );
-    }
+    return streamedBytes;
   }
 
   Uint8List? _compressImageToAllowedSize(
