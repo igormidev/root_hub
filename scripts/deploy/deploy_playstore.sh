@@ -31,6 +31,31 @@ require_env() {
   fi
 }
 
+ensure_java_runtime() {
+  if command -v java >/dev/null 2>&1 && java -version >/dev/null 2>&1; then
+    return
+  fi
+
+  local jdk_home=""
+  for candidate in \
+    "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home" \
+    "/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"; do
+    if [[ -x "${candidate}/bin/java" ]]; then
+      jdk_home="${candidate}"
+      break
+    fi
+  done
+
+  if [[ -n "${jdk_home}" ]]; then
+    export JAVA_HOME="${jdk_home}"
+    export PATH="${JAVA_HOME}/bin:${PATH}"
+  fi
+
+  command -v java >/dev/null 2>&1 || fail "Java runtime not found. Install OpenJDK 17 and/or set JAVA_HOME."
+  java -version >/dev/null 2>&1 || fail "Java runtime is not usable. Set JAVA_HOME to a working JDK installation."
+}
+
+ensure_java_runtime
 require_cmd flutter
 require_cmd fastlane
 
