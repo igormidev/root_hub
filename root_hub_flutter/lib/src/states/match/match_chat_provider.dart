@@ -13,6 +13,7 @@ import 'package:root_hub_flutter/src/core/utils/talker.dart';
 import 'package:root_hub_flutter/src/global_providers/server_supported_translation_provider.dart';
 import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_state.dart';
+import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:synchronized/synchronized.dart';
 
 typedef ConfirmImageCompressionCallback =
@@ -964,6 +965,9 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             language: ref.read(serverSupportedTranslationProvider),
             scheduledMatchId: scheduledMatchId,
           );
+      ref
+          .read(matchTablesProvider.notifier)
+          .invalidateTableInfoCache(scheduledMatchId);
       return null;
     } on RootHubException catch (error) {
       talker.debug(

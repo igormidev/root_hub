@@ -136,6 +136,13 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
     state = state.copyWith(actionError: null);
   }
 
+  void invalidateTableInfoCache(int tableId) {
+    if (tableId <= 0) {
+      return;
+    }
+    _tableInfoCache.remove(tableId);
+  }
+
   Future<RootHubException?> editMatchSchedule({
     required int scheduledMatchId,
     required String title,

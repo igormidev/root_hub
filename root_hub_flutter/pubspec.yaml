@@ -2,7 +2,7 @@ name: root_hub_flutter
 description: A new Flutter project with Serverpod.
 
 publish_to: "none"
-version: 1.0.2+5
+version: 1.0.3+6
 
 environment:
   sdk: "^3.8.0"
