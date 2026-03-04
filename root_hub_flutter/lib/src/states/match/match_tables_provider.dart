@@ -12,6 +12,7 @@ import 'package:root_hub_flutter/src/states/match/match_tables_state.dart';
 class MatchTablesNotifier extends Notifier<MatchTablesState> {
   bool _hasRequestedInitialLoad = false;
   final _tableInfoCache = <int, MatchScheduleInfo>{};
+  final _locationPhotoUrlCache = <String, String?>{};
 
   @override
   MatchTablesState build() {
@@ -228,6 +229,44 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
         throw error;
       },
     );
+  }
+
+  Future<String?> resolveLocationHeaderPhotoUrl({
+    required String providerPlaceId,
+  }) async {
+    final normalizedPlaceId = providerPlaceId.trim();
+    if (normalizedPlaceId.isEmpty) {
+      return null;
+    }
+
+    if (_locationPhotoUrlCache.containsKey(normalizedPlaceId)) {
+      return _locationPhotoUrlCache[normalizedPlaceId];
+    }
+
+    final result = await ref
+        .read(clientProvider)
+        .getMatchLocationPhoto
+        .v1(
+          language: ref.read(serverSupportedTranslationProvider),
+          providerPlaceId: normalizedPlaceId,
+          maxWidthPx: 1200,
+          maxHeightPx: 420,
+        )
+        .toResult;
+
+    final resolvedPhotoUrl = result.fold(
+      (photoUrl) {
+        final normalizedUrl = photoUrl.value?.trim();
+        if (normalizedUrl == null || normalizedUrl.isEmpty) {
+          return null;
+        }
+        return normalizedUrl;
+      },
+      (_) => null,
+    );
+
+    _locationPhotoUrlCache[normalizedPlaceId] = resolvedPhotoUrl;
+    return resolvedPhotoUrl;
   }
 }
 

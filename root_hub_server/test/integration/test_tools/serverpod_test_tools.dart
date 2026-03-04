@@ -235,6 +235,8 @@ class TestEndpoints {
 
   late final _GetMatchLocation getMatchLocation;
 
+  late final _GetMatchLocationPhoto getMatchLocationPhoto;
+
   late final _GetMatchScheduleInfo getMatchScheduleInfo;
 
   late final _GetPlayerSubscribedMatches getPlayerSubscribedMatches;
@@ -368,6 +370,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getMatchLocation = _GetMatchLocation(
+      endpoints,
+      serializationManager,
+    );
+    getMatchLocationPhoto = _GetMatchLocationPhoto(
       endpoints,
       serializationManager,
     );
@@ -1757,6 +1763,56 @@ class _GetMatchLocation {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<List<_i27.Location>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetMatchLocationPhoto {
+  _GetMatchLocationPhoto(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<String?> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required String providerPlaceId,
+    required int maxWidthPx,
+    required int maxHeightPx,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getMatchLocationPhoto',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getMatchLocationPhoto',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'providerPlaceId': providerPlaceId,
+            'maxWidthPx': maxWidthPx,
+            'maxHeightPx': maxHeightPx,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<String?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

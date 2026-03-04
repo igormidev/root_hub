@@ -675,6 +675,30 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointGetMatchLocationPhoto extends _i1.EndpointRef {
+  EndpointGetMatchLocationPhoto(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getMatchLocationPhoto';
+
+  _i2.Future<String?> v1({
+    required _i4.ServerSupportedTranslation language,
+    required String providerPlaceId,
+    required int maxWidthPx,
+    required int maxHeightPx,
+  }) => caller.callServerEndpoint<String?>(
+    'getMatchLocationPhoto',
+    'v1',
+    {
+      'language': language,
+      'providerPlaceId': providerPlaceId,
+      'maxWidthPx': maxWidthPx,
+      'maxHeightPx': maxHeightPx,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointGetMatchScheduleInfo extends _i1.EndpointRef {
   EndpointGetMatchScheduleInfo(_i1.EndpointCaller caller) : super(caller);
 
@@ -1211,6 +1235,7 @@ class Client extends _i1.ServerpodClientShared {
     createMatchSchedule = EndpointCreateMatchSchedule(this);
     editMatchSchedule = EndpointEditMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
+    getMatchLocationPhoto = EndpointGetMatchLocationPhoto(this);
     getMatchScheduleInfo = EndpointGetMatchScheduleInfo(this);
     getPlayerSubscribedMatches = EndpointGetPlayerSubscribedMatches(this);
     getTablesInArea = EndpointGetTablesInArea(this);
@@ -1281,6 +1306,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetMatchLocation getMatchLocation;
 
+  late final EndpointGetMatchLocationPhoto getMatchLocationPhoto;
+
   late final EndpointGetMatchScheduleInfo getMatchScheduleInfo;
 
   late final EndpointGetPlayerSubscribedMatches getPlayerSubscribedMatches;
@@ -1339,6 +1366,7 @@ class Client extends _i1.ServerpodClientShared {
     'createMatchSchedule': createMatchSchedule,
     'editMatchSchedule': editMatchSchedule,
     'getMatchLocation': getMatchLocation,
+    'getMatchLocationPhoto': getMatchLocationPhoto,
     'getMatchScheduleInfo': getMatchScheduleInfo,
     'getPlayerSubscribedMatches': getPlayerSubscribedMatches,
     'getTablesInArea': getTablesInArea,

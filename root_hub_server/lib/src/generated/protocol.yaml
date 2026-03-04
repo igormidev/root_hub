@@ -52,6 +52,8 @@ editMatchSchedule:
   - v1:
 getMatchLocation:
   - v1:
+getMatchLocationPhoto:
+  - v1:
 getMatchScheduleInfo:
   - v1:
 getPlayerSubscribedMatches:
