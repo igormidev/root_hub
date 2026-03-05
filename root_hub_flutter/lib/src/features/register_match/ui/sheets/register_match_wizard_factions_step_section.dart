@@ -99,7 +99,12 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
                                 SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    faction.displayName,
+                                    _displayNameForFactionOption(
+                                      faction: faction,
+                                      participant: participant,
+                                      selectedParticipants:
+                                          selectedParticipants,
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -118,5 +123,59 @@ class _RegisterMatchWizardFactionsStepSection extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  String _displayNameForFactionOption({
+    required Faction faction,
+    required _ParticipantDraft participant,
+    required List<_ParticipantDraft> selectedParticipants,
+  }) {
+    if (faction != Faction.vagabond) {
+      return faction.displayName;
+    }
+
+    final selectedVagabonds = selectedParticipants
+        .where((entry) => entry.faction == Faction.vagabond)
+        .toList();
+
+    if (participant.faction == Faction.vagabond) {
+      if (selectedVagabonds.length < 2) {
+        return faction.displayName;
+      }
+
+      final selectedVagabondIndex = selectedVagabonds.indexWhere(
+        (entry) => entry.key == participant.key,
+      );
+      if (selectedVagabondIndex == 0) {
+        return t
+            .register_match
+            .ui_sheets_register_match_wizard_factions_step_section
+            .firstVagabond;
+      }
+      if (selectedVagabondIndex == 1) {
+        return t
+            .register_match
+            .ui_sheets_register_match_wizard_factions_step_section
+            .secondVagabond;
+      }
+
+      return faction.displayName;
+    }
+
+    final selectedVagabondsByOtherParticipants = selectedParticipants
+        .where(
+          (entry) =>
+              entry.key != participant.key && entry.faction == Faction.vagabond,
+        )
+        .length;
+
+    if (selectedVagabondsByOtherParticipants >= 1) {
+      return t
+          .register_match
+          .ui_sheets_register_match_wizard_factions_step_section
+          .secondVagabond;
+    }
+
+    return faction.displayName;
   }
 }

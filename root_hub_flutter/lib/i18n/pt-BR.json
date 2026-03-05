@@ -579,12 +579,16 @@
   "register_match": {
     "ui_sheets_register_match_wizard_winner_step_section": {
       "dominance": "Dominância",
+      "dominanceCoalition": "Dominância (coalizão)",
       "totalPoints30": "Total de pontos (30)",
       "stepSelectTheWinner": "{stepNumber}) Selecione o vencedor",
       "dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB": "Dominância significa que o vencedor completou um objetivo da carta de Dominância em vez de vencer por pontos.",
       "totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack": "O total de pontos significa que o vencedor alcançou 30 pontos de vitória na trilha de pontuação.",
       "howDidTheWinnerWon": "Como o vencedor venceu?",
-      "pickThePlayerWhoWonThisMatch": "Escolha o jogador que venceu esta partida."
+      "pickThePlayerWhoWonThisMatch": "Escolha o jogador que venceu esta partida.",
+      "vagabondCoalitionWin": "Vitória em coalizão com Malandro",
+      "ifWinnerWonByDominanceSelectOneVagabondToWinToo": "Se o vencedor venceu por dominância em coalizão, selecione um Malandro que também venceu.",
+      "selectingVagabondForcesDominance": "Selecionar um Malandro aqui obriga o método de vitória por dominância."
     },
     "ui_sheets_register_match_wizard_timing_step_section": {
       "estimatedDuration": "Duração estimada",
@@ -617,7 +621,9 @@
       "selectFaction": "Selecione a facção",
       "faction": "Facção",
       "chooseTheFactionUsedByEachPlayerInThisMatch": "Escolha a facção usada por cada jogador nesta partida.",
-      "value2SelectFactions": "2) Selecione facções"
+      "value2SelectFactions": "2) Selecione facções",
+      "firstVagabond": "Primeiro Malandro",
+      "secondVagabond": "Segundo Malandro"
     },
     "ui_sheets_register_match_search_registered_player_sheet": {
       "tapToAdd": "Toque para adicionar",
@@ -735,7 +741,13 @@
       "participantMustHavePointsBetween0And29": "{participantName} deve ter entre 0 e 29 pontos.",
       "enterValidPointsForParticipantOrMarkFailedDominance": "Insira pontos válidos para {participantName} ou marque dominância falhada.",
       "selectFactionForParticipantBeforeContinuing": "Selecione uma facção para {participantName} antes de continuar.",
-      "factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce": "{factionName} foi selecionada mais de uma vez. Cada facção só pode ser selecionada uma vez."
+      "factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce": "{factionName} foi selecionada mais de uma vez. Cada facção só pode ser selecionada uma vez.",
+      "onlyVagabondCanBeSelectedMoreThanOnce": "{factionName} não pode se repetir. Apenas Malandro pode ser selecionado mais de uma vez.",
+      "youCanSelectAtMostTwoVagabonds": "Você pode selecionar no máximo dois Malandros.",
+      "coalitionWinnerMustBeInTheParticipantList": "O vencedor por coalizão selecionado não está mais na lista de participantes.",
+      "coalitionWinnerMustBeDifferentFromTheMainWinner": "O vencedor por coalizão deve ser um participante diferente do vencedor principal.",
+      "coalitionWinnerMustBeAVagabond": "Apenas um Malandro pode ser selecionado como vencedor por coalizão.",
+      "coalitionWinRequiresDominance": "Vitória em coalizão exige dominância como método de vitória."
     },
     "ui_sheets_register_match_wizard_review_step_section": {
       "boardPhoto": "Foto do quadro",

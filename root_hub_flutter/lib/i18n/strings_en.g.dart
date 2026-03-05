@@ -2004,6 +2004,9 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionEn {
 	/// en: 'Dominance'
 	String get dominance => 'Dominance';
 
+	/// en: 'Dominance (coalition)'
+	String get dominanceCoalition => 'Dominance (coalition)';
+
 	/// en: 'Total points (30)'
 	String get totalPoints30 => 'Total points (30)';
 
@@ -2021,6 +2024,15 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionEn {
 
 	/// en: 'Pick the player who won this match.'
 	String get pickThePlayerWhoWonThisMatch => 'Pick the player who won this match.';
+
+	/// en: 'Vagabond coalition win'
+	String get vagabondCoalitionWin => 'Vagabond coalition win';
+
+	/// en: 'If the winner won by dominance and had a coalition, select one Vagabond that also won.'
+	String get ifWinnerWonByDominanceSelectOneVagabondToWinToo => 'If the winner won by dominance and had a coalition, select one Vagabond that also won.';
+
+	/// en: 'Selecting a Vagabond here forces dominance as the winner method.'
+	String get selectingVagabondForcesDominance => 'Selecting a Vagabond here forces dominance as the winner method.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_timing_step_section
@@ -2192,6 +2204,12 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionEn 
 
 	/// en: '2) Select factions'
 	String get value2SelectFactions => '2) Select factions';
+
+	/// en: 'First Vagabond'
+	String get firstVagabond => 'First Vagabond';
+
+	/// en: 'Second Vagabond'
+	String get secondVagabond => 'Second Vagabond';
 }
 
 // Path: register_match.ui_sheets_register_match_search_registered_player_sheet
@@ -2576,6 +2594,24 @@ class TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetEn {
 
 	/// en: '{factionName} was selected more than once. Each faction can only be selected once.'
 	String factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce({required Object factionName}) => '${factionName} was selected more than once. Each faction can only be selected once.';
+
+	/// en: '{factionName} cannot repeat. Only Vagabond can be selected more than once.'
+	String onlyVagabondCanBeSelectedMoreThanOnce({required Object factionName}) => '${factionName} cannot repeat. Only Vagabond can be selected more than once.';
+
+	/// en: 'You can select at most two Vagabonds.'
+	String get youCanSelectAtMostTwoVagabonds => 'You can select at most two Vagabonds.';
+
+	/// en: 'The selected coalition winner is no longer in the participant list.'
+	String get coalitionWinnerMustBeInTheParticipantList => 'The selected coalition winner is no longer in the participant list.';
+
+	/// en: 'The coalition winner must be a different participant than the main winner.'
+	String get coalitionWinnerMustBeDifferentFromTheMainWinner => 'The coalition winner must be a different participant than the main winner.';
+
+	/// en: 'Only a Vagabond can be selected as coalition winner.'
+	String get coalitionWinnerMustBeAVagabond => 'Only a Vagabond can be selected as coalition winner.';
+
+	/// en: 'A coalition win requires dominance as the winner method.'
+	String get coalitionWinRequiresDominance => 'A coalition win requires dominance as the winner method.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section

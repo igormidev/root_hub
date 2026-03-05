@@ -133,12 +133,18 @@ class _TranslationsErrorsEs extends TranslationsErrorsEn {
 	@override String get providedLocationDoesNotMatchScheduledPairing => 'Provided location does not match the scheduled pairing attempt location.';
 	@override String get atLeastTwoPlayersRequiredToRegister => 'At least 2 players are required to register a match.';
 	@override String get rootMatchesMustHaveBetweenTwoAndSixPlayers => 'Root matches must have between 2 and 6 players.';
+	@override String get atLeastOneWinnerRequired => 'A match must have at least one winner.';
+	@override String winnerCountMustBeOneOrTwo({required Object winnerCount}) => 'A match must have one or two winners, but ${winnerCount} winners were provided.';
 	@override String get exactlyOneWinnerRequiredNoneProvided => 'A match must have exactly one winner, but none was provided.';
 	@override String exactlyOneWinnerRequiredCountProvided({required Object winnerCount}) => 'A match must have exactly one winner, but ${winnerCount} winners were provided.';
 	@override String get eachPlayerMustProvideExactlyOneIdentifier => 'Each player must provide exactly one identifier: anonymousPlayerId or playerDataId.';
 	@override String duplicatePlayerDataId({required Object playerDataId}) => 'Duplicate playerDataId found in players list: ${playerDataId}.';
 	@override String duplicateAnonymousPlayerId({required Object anonymousPlayerId}) => 'Duplicate anonymousPlayerId found in players list: ${anonymousPlayerId}.';
 	@override String get scoreMustBeBetweenZeroAndThirty => 'scoreInMatch must be between 0 and 30 when provided.';
+	@override String onlyVagabondCanRepeatFaction({required Object factionName}) => 'Faction ${factionName} is duplicated. Only Vagabond can be repeated.';
+	@override String get atMostTwoVagabondsAllowed => 'A match can include at most two Vagabonds.';
+	@override String get coalitionRequiresExactlyOneVagabondWinner => 'When two winners are provided, exactly one of them must be Vagabond.';
+	@override String get coalitionWinnersMustUseDominance => 'When two winners are provided, both winners must have scoreInMatch=null (dominance).';
 	@override String factionDuplicated({required Object factionName}) => 'Faction ${factionName} is duplicated. Each faction can be used by only one player.';
 	@override String get winnerScoreValidation => 'Winner must have (didWin=true and scoreInMatch=30) or (didWin=true and scoreInMatch=null).';
 	@override String get onlyWinnerCanHaveThirtyPoints => 'Only the winner can have scoreInMatch equal to 30.';

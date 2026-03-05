@@ -1098,12 +1098,16 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionPtBr
 
 	// Translations
 	@override String get dominance => 'Dominância';
+	@override String get dominanceCoalition => 'Dominância (coalizão)';
 	@override String get totalPoints30 => 'Total de pontos (30)';
 	@override String stepSelectTheWinner({required Object stepNumber}) => '${stepNumber}) Selecione o vencedor';
 	@override String get dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB => 'Dominância significa que o vencedor completou um objetivo da carta de Dominância em vez de vencer por pontos.';
 	@override String get totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack => 'O total de pontos significa que o vencedor alcançou 30 pontos de vitória na trilha de pontuação.';
 	@override String get howDidTheWinnerWon => 'Como o vencedor venceu?';
 	@override String get pickThePlayerWhoWonThisMatch => 'Escolha o jogador que venceu esta partida.';
+	@override String get vagabondCoalitionWin => 'Vitória em coalizão com Malandro';
+	@override String get ifWinnerWonByDominanceSelectOneVagabondToWinToo => 'Se o vencedor venceu por dominância em coalizão, selecione um Malandro que também venceu.';
+	@override String get selectingVagabondForcesDominance => 'Selecionar um Malandro aqui obriga o método de vitória por dominância.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_timing_step_section
@@ -1172,6 +1176,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionPt
 	@override String get faction => 'Facção';
 	@override String get chooseTheFactionUsedByEachPlayerInThisMatch => 'Escolha a facção usada por cada jogador nesta partida.';
 	@override String get value2SelectFactions => '2) Selecione facções';
+	@override String get firstVagabond => 'Primeiro Malandro';
+	@override String get secondVagabond => 'Segundo Malandro';
 }
 
 // Path: register_match.ui_sheets_register_match_search_registered_player_sheet
@@ -1360,6 +1366,12 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetPtBr extends Tra
 	@override String enterValidPointsForParticipantOrMarkFailedDominance({required Object participantName}) => 'Insira pontos válidos para ${participantName} ou marque dominância falhada.';
 	@override String selectFactionForParticipantBeforeContinuing({required Object participantName}) => 'Selecione uma facção para ${participantName} antes de continuar.';
 	@override String factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce({required Object factionName}) => '${factionName} foi selecionada mais de uma vez. Cada facção só pode ser selecionada uma vez.';
+	@override String onlyVagabondCanBeSelectedMoreThanOnce({required Object factionName}) => '${factionName} não pode se repetir. Apenas Malandro pode ser selecionado mais de uma vez.';
+	@override String get youCanSelectAtMostTwoVagabonds => 'Você pode selecionar no máximo dois Malandros.';
+	@override String get coalitionWinnerMustBeInTheParticipantList => 'O vencedor por coalizão selecionado não está mais na lista de participantes.';
+	@override String get coalitionWinnerMustBeDifferentFromTheMainWinner => 'O vencedor por coalizão deve ser um participante diferente do vencedor principal.';
+	@override String get coalitionWinnerMustBeAVagabond => 'Apenas um Malandro pode ser selecionado como vencedor por coalizão.';
+	@override String get coalitionWinRequiresDominance => 'Vitória em coalizão exige dominância como método de vitória.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section

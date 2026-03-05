@@ -4,7 +4,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
   const _RegisterMatchWizardPointsStepSection({
     required this.stepNumber,
     required this.selectedParticipants,
-    required this.winnerParticipantKey,
+    required this.winnerParticipantKeys,
     required this.winnerType,
     required this.controllerFor,
     required this.onParticipantScoreModeChanged,
@@ -13,7 +13,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
 
   final int stepNumber;
   final List<_ParticipantDraft> selectedParticipants;
-  final String? winnerParticipantKey;
+  final Set<String> winnerParticipantKeys;
   final _WinnerType? winnerType;
   final TextEditingController Function(String key) controllerFor;
   final void Function(_ParticipantDraft participant, _ParticipantScoreMode mode)
@@ -80,7 +80,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (participant.key == winnerParticipantKey)
+                      if (winnerParticipantKeys.contains(participant.key))
                         Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 8,
@@ -103,7 +103,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                         ),
                     ],
                   ),
-                  if (participant.key != winnerParticipantKey) ...[
+                  if (!winnerParticipantKeys.contains(participant.key)) ...[
                     SizedBox(height: 10),
                     SegmentedButton<_ParticipantScoreMode>(
                       segments: [
@@ -141,7 +141,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                     ),
                   ],
                   SizedBox(height: 10),
-                  if (participant.key == winnerParticipantKey &&
+                  if (winnerParticipantKeys.contains(participant.key) &&
                       winnerType == _WinnerType.points)
                     _RegisterMatchWizardScoreSummarySection(
                       label: t
@@ -150,7 +150,7 @@ class _RegisterMatchWizardPointsStepSection extends StatelessWidget {
                           .winnerByPoints,
                       value: '30',
                     )
-                  else if (participant.key == winnerParticipantKey &&
+                  else if (winnerParticipantKeys.contains(participant.key) &&
                       winnerType == _WinnerType.dominance)
                     _RegisterMatchWizardScoreSummarySection(
                       label: t

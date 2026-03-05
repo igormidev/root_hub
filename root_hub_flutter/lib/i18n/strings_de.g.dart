@@ -1098,12 +1098,16 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardWinnerStepSectionDe e
 
 	// Translations
 	@override String get dominance => 'Dominanz';
+	@override String get dominanceCoalition => 'Dominanz (Koalition)';
 	@override String get totalPoints30 => 'Gesamtpunktzahl (30)';
 	@override String stepSelectTheWinner({required Object stepNumber}) => '${stepNumber}) Gewinner auswählen';
 	@override String get dominanceMeansTheWinnerCompletedADominanceCardObjectiveInsteadOfWinningB => 'Dominanz bedeutet, dass der Gewinner ein Dominanzkartenziel erreicht hat, anstatt nach Punkten zu gewinnen.';
 	@override String get totalPointsMeansTheWinnerReached30VictoryPointsOnTheScoreTrack => 'Die Gesamtpunktzahl bedeutet, dass der Gewinner 30 Siegpunkte auf der Punkteleiste erreicht hat.';
 	@override String get howDidTheWinnerWon => 'Wie hat der Gewinner gewonnen?';
 	@override String get pickThePlayerWhoWonThisMatch => 'Wählen Sie den Spieler aus, der dieses Spiel gewonnen hat.';
+	@override String get vagabondCoalitionWin => 'Koalitionssieg mit Vagabund';
+	@override String get ifWinnerWonByDominanceSelectOneVagabondToWinToo => 'Wenn der Gewinner per Dominanz in einer Koalition gewonnen hat, wählen Sie einen Vagabund, der ebenfalls gewonnen hat.';
+	@override String get selectingVagabondForcesDominance => 'Wenn hier ein Vagabund ausgewählt wird, ist Dominanz als Siegart zwingend.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_timing_step_section
@@ -1172,6 +1176,8 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardFactionsStepSectionDe
 	@override String get faction => 'Fraktion';
 	@override String get chooseTheFactionUsedByEachPlayerInThisMatch => 'Wählen Sie die Fraktion, die jeder Spieler in diesem Spiel verwendet.';
 	@override String get value2SelectFactions => '2) Fraktionen auswählen';
+	@override String get firstVagabond => 'Erster Vagabund';
+	@override String get secondVagabond => 'Zweiter Vagabund';
 }
 
 // Path: register_match.ui_sheets_register_match_search_registered_player_sheet
@@ -1360,6 +1366,12 @@ class _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSheetDe extends Trans
 	@override String enterValidPointsForParticipantOrMarkFailedDominance({required Object participantName}) => 'Gib gültige Punkte für ${participantName} ein oder markiere fehlgeschlagene Dominanz.';
 	@override String selectFactionForParticipantBeforeContinuing({required Object participantName}) => 'Wähle vor dem Fortfahren eine Fraktion für ${participantName} aus.';
 	@override String factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce({required Object factionName}) => '${factionName} wurde mehr als einmal ausgewählt. Jede Fraktion darf nur einmal gewählt werden.';
+	@override String onlyVagabondCanBeSelectedMoreThanOnce({required Object factionName}) => '${factionName} darf nicht mehrfach gewählt werden. Nur Vagabund darf mehr als einmal ausgewählt werden.';
+	@override String get youCanSelectAtMostTwoVagabonds => 'Du kannst höchstens zwei Vagabunde auswählen.';
+	@override String get coalitionWinnerMustBeInTheParticipantList => 'Der ausgewählte Koalitionssieger ist nicht mehr in der Teilnehmerliste.';
+	@override String get coalitionWinnerMustBeDifferentFromTheMainWinner => 'Der Koalitionssieger muss ein anderer Teilnehmer als der Hauptsieger sein.';
+	@override String get coalitionWinnerMustBeAVagabond => 'Nur ein Vagabund kann als Koalitionssieger ausgewählt werden.';
+	@override String get coalitionWinRequiresDominance => 'Ein Koalitionssieg erfordert Dominanz als Siegart.';
 }
 
 // Path: register_match.ui_sheets_register_match_wizard_review_step_section

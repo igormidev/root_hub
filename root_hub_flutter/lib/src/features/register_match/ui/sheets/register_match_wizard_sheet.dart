@@ -76,6 +76,7 @@ class _RegisterMatchWizardSheetState
   bool _didInitializeParticipants = false;
   _RegisterMatchStep _currentStep = _RegisterMatchStep.participants;
   String? _winnerParticipantKey;
+  String? _coalitionVagabondWinnerKey;
   _WinnerType? _winnerType;
   DateTime? _matchStartedAt;
   Duration _matchEstimatedDuration = Duration(hours: 1);
@@ -192,15 +193,19 @@ class _RegisterMatchWizardSheetState
                   stepNumber: _stepNumber(_RegisterMatchStep.winner),
                   selectedParticipants: selectedParticipants,
                   winnerParticipantKey: _winnerParticipantKey,
+                  coalitionVagabondWinnerKey: _coalitionVagabondWinnerKey,
+                  coalitionEligibleVagabonds: _coalitionEligibleVagabonds,
                   winnerType: _winnerType,
                   onWinnerSelected: _onWinnerSelected,
                   onWinnerTypeChanged: _onWinnerTypeChanged,
+                  onCoalitionVagabondWinnerChanged:
+                      _onCoalitionVagabondWinnerChanged,
                 ),
               _RegisterMatchStep.points =>
                 _RegisterMatchWizardPointsStepSection(
                   stepNumber: _stepNumber(_RegisterMatchStep.points),
                   selectedParticipants: selectedParticipants,
-                  winnerParticipantKey: _winnerParticipantKey,
+                  winnerParticipantKeys: _winnerParticipantKeys,
                   winnerType: _winnerType,
                   controllerFor: _controllerFor,
                   onParticipantScoreModeChanged: _onParticipantScoreModeChanged,
@@ -255,9 +260,7 @@ class _RegisterMatchWizardSheetState
                   estimatedDurationLabel: _durationLabel(
                     _matchEstimatedDuration,
                   ),
-                  winnerMethodLabel: _winnerType == _WinnerType.points
-                      ? 'Total points (30)'
-                      : 'Dominance',
+                  winnerMethodLabel: _winnerMethodLabel,
                   rankedParticipants: _rankedParticipantsForReview(),
                   scoreLabelForParticipant: _scoreLabelForParticipant,
                   groupPhoto: _groupPhoto,
@@ -359,8 +362,13 @@ class _RegisterMatchWizardSheetState
       participant.isPresent = isPresent;
       if (!participant.isPresent && _winnerParticipantKey == participant.key) {
         _winnerParticipantKey = null;
+        _coalitionVagabondWinnerKey = null;
         _winnerType = null;
         _controllerFor(participant.key).clear();
+      }
+      if (!participant.isPresent &&
+          _coalitionVagabondWinnerKey == participant.key) {
+        _coalitionVagabondWinnerKey = null;
       }
     });
   }
@@ -371,6 +379,14 @@ class _RegisterMatchWizardSheetState
   ) {
     setState(() {
       participant.faction = faction;
+      if (_winnerParticipantKey == participant.key &&
+          participant.faction == Faction.vagabond) {
+        _coalitionVagabondWinnerKey = null;
+      }
+      if (_coalitionVagabondWinnerKey == participant.key &&
+          participant.faction != Faction.vagabond) {
+        _coalitionVagabondWinnerKey = null;
+      }
     });
   }
 
@@ -579,14 +595,78 @@ class _RegisterMatchWizardSheetState
     return _participants.where((participant) => participant.isPresent).toList();
   }
 
+  List<_ParticipantDraft> get _coalitionEligibleVagabonds {
+    final winnerKey = _winnerParticipantKey;
+    if (winnerKey == null) {
+      return const <_ParticipantDraft>[];
+    }
+
+    final winner = _selectedParticipantByKey(winnerKey);
+    if (winner == null || winner.faction == Faction.vagabond) {
+      return const <_ParticipantDraft>[];
+    }
+
+    return _selectedParticipants
+        .where((participant) => participant.faction == Faction.vagabond)
+        .toList();
+  }
+
+  Set<String> get _winnerParticipantKeys {
+    final keys = <String>{};
+    if (_winnerParticipantKey case final winnerKey?) {
+      keys.add(winnerKey);
+    }
+    if (_coalitionVagabondWinnerKey case final coalitionKey?) {
+      keys.add(coalitionKey);
+    }
+    return keys;
+  }
+
+  _ParticipantDraft? _selectedParticipantByKey(String key) {
+    for (final participant in _selectedParticipants) {
+      if (participant.key == key) {
+        return participant;
+      }
+    }
+    return null;
+  }
+
+  String get _winnerMethodLabel {
+    if (_coalitionVagabondWinnerKey != null) {
+      return t
+          .register_match
+          .ui_sheets_register_match_wizard_winner_step_section
+          .dominanceCoalition;
+    }
+    if (_winnerType == _WinnerType.points) {
+      return t
+          .register_match
+          .ui_sheets_register_match_wizard_winner_step_section
+          .totalPoints30;
+    }
+    return t
+        .register_match
+        .ui_sheets_register_match_wizard_winner_step_section
+        .dominance;
+  }
+
   List<Faction> _availableFactionsForParticipant(
     _ParticipantDraft participant,
     List<_ParticipantDraft> selectedParticipants,
   ) {
     final usedByOtherParticipants = selectedParticipants
         .where((otherParticipant) => otherParticipant.key != participant.key)
+        .toList();
+
+    final usedVagabondCount = usedByOtherParticipants
+        .where(
+          (otherParticipant) => otherParticipant.faction == Faction.vagabond,
+        )
+        .length;
+    final usedNonVagabondFactions = usedByOtherParticipants
         .map((otherParticipant) => otherParticipant.faction)
         .whereType<Faction>()
+        .where((faction) => faction != Faction.vagabond)
         .toSet();
 
     return Faction.values.where((faction) {
@@ -594,7 +674,11 @@ class _RegisterMatchWizardSheetState
         return true;
       }
 
-      return !usedByOtherParticipants.contains(faction);
+      if (faction == Faction.vagabond) {
+        return usedVagabondCount < 2;
+      }
+
+      return !usedNonVagabondFactions.contains(faction);
     }).toList();
   }
 
@@ -694,10 +778,13 @@ class _RegisterMatchWizardSheetState
           }
         }
 
-        final uniqueFactions = <Faction>{};
+        final factionSelectionCount = <Faction, int>{};
         for (final participant in selectedParticipants) {
           final faction = participant.faction!;
-          if (!uniqueFactions.add(faction)) {
+          final nextCount = (factionSelectionCount[faction] ?? 0) + 1;
+          factionSelectionCount[faction] = nextCount;
+
+          if (faction == Faction.vagabond && nextCount > 2) {
             return RootHubException(
               title: t
                   .register_match
@@ -706,7 +793,20 @@ class _RegisterMatchWizardSheetState
               description: t
                   .register_match
                   .ui_sheets_register_match_wizard_sheet
-                  .factionWasSelectedMoreThanOnceEachFactionCanOnlyBeSelectedOnce(
+                  .youCanSelectAtMostTwoVagabonds,
+            );
+          }
+
+          if (faction != Faction.vagabond && nextCount > 1) {
+            return RootHubException(
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .invalidFactionSetup,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .onlyVagabondCanBeSelectedMoreThanOnce(
                     factionName: faction.displayName,
                   ),
             );
@@ -727,9 +827,10 @@ class _RegisterMatchWizardSheetState
                 .selectTheWinnerBeforeContinuing2,
           );
         }
+        final winnerKey = _winnerParticipantKey!;
 
         final winnerStillSelected = _selectedParticipants.any(
-          (participant) => participant.key == _winnerParticipantKey,
+          (participant) => participant.key == winnerKey,
         );
         if (!winnerStillSelected) {
           return RootHubException(
@@ -742,6 +843,61 @@ class _RegisterMatchWizardSheetState
                 .ui_sheets_register_match_wizard_sheet
                 .theSelectedWinnerIsNoLongerInTheParticipantList,
           );
+        }
+
+        if (_coalitionVagabondWinnerKey case final coalitionWinnerKey?) {
+          final coalitionWinner = _selectedParticipantByKey(
+            coalitionWinnerKey,
+          );
+          if (coalitionWinner == null) {
+            return RootHubException(
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .winnerMissing3,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .coalitionWinnerMustBeInTheParticipantList,
+            );
+          }
+          if (coalitionWinner.key == winnerKey) {
+            return RootHubException(
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .winnerMissing3,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .coalitionWinnerMustBeDifferentFromTheMainWinner,
+            );
+          }
+          if (coalitionWinner.faction != Faction.vagabond) {
+            return RootHubException(
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .winnerMissing3,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .coalitionWinnerMustBeAVagabond,
+            );
+          }
+          final winnerParticipant = _selectedParticipantByKey(winnerKey);
+          if (winnerParticipant?.faction == Faction.vagabond) {
+            return RootHubException(
+              title: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .winnerMissing3,
+              description: t
+                  .register_match
+                  .ui_sheets_register_match_wizard_sheet
+                  .coalitionWinnerMustBeDifferentFromTheMainWinner,
+            );
+          }
         }
         return null;
       case _RegisterMatchStep.points:
@@ -772,8 +928,22 @@ class _RegisterMatchWizardSheetState
           );
         }
 
+        if (_coalitionVagabondWinnerKey != null &&
+            winnerType != _WinnerType.dominance) {
+          return RootHubException(
+            title: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .winnerMethodMissing,
+            description: t
+                .register_match
+                .ui_sheets_register_match_wizard_sheet
+                .coalitionWinRequiresDominance,
+          );
+        }
+
         for (final participant in _selectedParticipants) {
-          final isWinner = participant.key == winnerKey;
+          final isWinner = _winnerParticipantKeys.contains(participant.key);
           if (isWinner) {
             if (winnerType == _WinnerType.points) {
               continue;
@@ -940,7 +1110,7 @@ class _RegisterMatchWizardSheetState
 
     final players = _selectedParticipants.map(
       (participant) {
-        final isWinner = participant.key == winnerKey;
+        final isWinner = _winnerParticipantKeys.contains(participant.key);
         final points = _scoreValueForParticipant(participant);
 
         return RegisterMatchPlayerReportInput(
@@ -992,11 +1162,18 @@ class _RegisterMatchWizardSheetState
 
     setState(() {
       _winnerParticipantKey = winnerKey;
+      final selectedWinner = _selectedParticipantByKey(winnerKey);
+      if (selectedWinner?.faction == Faction.vagabond) {
+        _coalitionVagabondWinnerKey = null;
+      } else if (_coalitionVagabondWinnerKey == winnerKey) {
+        _coalitionVagabondWinnerKey = null;
+      }
       if (!hasWinnerChanged) {
         return;
       }
 
       _winnerType = null;
+      _coalitionVagabondWinnerKey = null;
       if (previousWinnerKey != null) {
         _controllerFor(previousWinnerKey).clear();
       }
@@ -1006,6 +1183,10 @@ class _RegisterMatchWizardSheetState
 
   void _onWinnerTypeChanged(_WinnerType winnerType) {
     setState(() {
+      if (winnerType == _WinnerType.points &&
+          _coalitionVagabondWinnerKey != null) {
+        return;
+      }
       _winnerType = winnerType;
       if (_winnerParticipantKey case final winnerKey?) {
         if (winnerType == _WinnerType.dominance) {
@@ -1017,8 +1198,20 @@ class _RegisterMatchWizardSheetState
     });
   }
 
+  void _onCoalitionVagabondWinnerChanged(String? participantKey) {
+    setState(() {
+      _coalitionVagabondWinnerKey = participantKey;
+      if (participantKey != null) {
+        _winnerType = _WinnerType.dominance;
+        if (_winnerParticipantKey case final winnerKey?) {
+          _controllerFor(winnerKey).clear();
+        }
+      }
+    });
+  }
+
   bool _isWinner(_ParticipantDraft participant) {
-    return participant.key == _winnerParticipantKey;
+    return _winnerParticipantKeys.contains(participant.key);
   }
 
   int? _scoreValueForParticipant(_ParticipantDraft participant) {

@@ -288,6 +288,12 @@ class TranslationsErrorsEn {
 	/// en: 'Root matches must have between 2 and 6 players.'
 	String get rootMatchesMustHaveBetweenTwoAndSixPlayers => 'Root matches must have between 2 and 6 players.';
 
+	/// en: 'A match must have at least one winner.'
+	String get atLeastOneWinnerRequired => 'A match must have at least one winner.';
+
+	/// en: 'A match must have one or two winners, but {winnerCount} winners were provided.'
+	String winnerCountMustBeOneOrTwo({required Object winnerCount}) => 'A match must have one or two winners, but ${winnerCount} winners were provided.';
+
 	/// en: 'A match must have exactly one winner, but none was provided.'
 	String get exactlyOneWinnerRequiredNoneProvided => 'A match must have exactly one winner, but none was provided.';
 
@@ -305,6 +311,18 @@ class TranslationsErrorsEn {
 
 	/// en: 'scoreInMatch must be between 0 and 30 when provided.'
 	String get scoreMustBeBetweenZeroAndThirty => 'scoreInMatch must be between 0 and 30 when provided.';
+
+	/// en: 'Faction {factionName} is duplicated. Only Vagabond can be repeated.'
+	String onlyVagabondCanRepeatFaction({required Object factionName}) => 'Faction ${factionName} is duplicated. Only Vagabond can be repeated.';
+
+	/// en: 'A match can include at most two Vagabonds.'
+	String get atMostTwoVagabondsAllowed => 'A match can include at most two Vagabonds.';
+
+	/// en: 'When two winners are provided, exactly one of them must be Vagabond.'
+	String get coalitionRequiresExactlyOneVagabondWinner => 'When two winners are provided, exactly one of them must be Vagabond.';
+
+	/// en: 'When two winners are provided, both winners must have scoreInMatch=null (dominance).'
+	String get coalitionWinnersMustUseDominance => 'When two winners are provided, both winners must have scoreInMatch=null (dominance).';
 
 	/// en: 'Faction {factionName} is duplicated. Each faction can be used by only one player.'
 	String factionDuplicated({required Object factionName}) => 'Faction ${factionName} is duplicated. Each faction can be used by only one player.';

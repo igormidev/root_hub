@@ -359,17 +359,18 @@ class RegisterMatchData extends Endpoint {
       );
     }
 
-    final winnerCount = players.where((player) => player.didWin).length;
+    final winners = players.where((player) => player.didWin).toList();
+    final winnerCount = winners.length;
     if (winnerCount == 0) {
       _throwInvalidRequest(
         language: language,
-        description: t.errors.exactlyOneWinnerRequiredNoneProvided,
+        description: t.errors.atLeastOneWinnerRequired,
       );
     }
-    if (winnerCount > 1) {
+    if (winnerCount > 2) {
       _throwInvalidRequest(
         language: language,
-        description: t.errors.exactlyOneWinnerRequiredCountProvided(
+        description: t.errors.winnerCountMustBeOneOrTwo(
           winnerCount: winnerCount,
         ),
       );
@@ -377,7 +378,7 @@ class RegisterMatchData extends Endpoint {
 
     final seenPlayerDataIds = <int>{};
     final seenAnonymousPlayerIds = <int>{};
-    final uniqueFactions = <Faction>{};
+    final factionSelections = <Faction, int>{};
 
     for (final player in players) {
       final hasAnonymousPlayer = player.anonymousPlayerId != null;
@@ -420,25 +421,57 @@ class RegisterMatchData extends Endpoint {
         }
       }
 
-      if (!uniqueFactions.add(player.factionUsedInMatch)) {
+      final factionSelectionCount =
+          (factionSelections[player.factionUsedInMatch] ?? 0) + 1;
+      factionSelections[player.factionUsedInMatch] = factionSelectionCount;
+      if (player.factionUsedInMatch == Faction.vagabond) {
+        if (factionSelectionCount > 2) {
+          _throwInvalidRequest(
+            language: language,
+            description: t.errors.atMostTwoVagabondsAllowed,
+          );
+        }
+      } else if (factionSelectionCount > 1) {
         _throwInvalidRequest(
           language: language,
-          description: t.errors.factionDuplicated(
+          description: t.errors.onlyVagabondCanRepeatFaction(
             factionName: player.factionUsedInMatch.name,
           ),
         );
       }
     }
 
-    final winner = players.firstWhere((player) => player.didWin);
-    final winnerByPoints = winner.scoreInMatch == 30;
-    final winnerByDominance = winner.scoreInMatch == null;
+    if (winnerCount == 1) {
+      final winner = winners.first;
+      final winnerByPoints = winner.scoreInMatch == 30;
+      final winnerByDominance = winner.scoreInMatch == null;
 
-    if (!winnerByPoints && !winnerByDominance) {
-      _throwInvalidRequest(
-        language: language,
-        description: t.errors.winnerScoreValidation,
+      if (!winnerByPoints && !winnerByDominance) {
+        _throwInvalidRequest(
+          language: language,
+          description: t.errors.winnerScoreValidation,
+        );
+      }
+    } else if (winnerCount == 2) {
+      final winnersWithVagabondFaction = winners
+          .where((winner) => winner.factionUsedInMatch == Faction.vagabond)
+          .length;
+      if (winnersWithVagabondFaction != 1) {
+        _throwInvalidRequest(
+          language: language,
+          description: t.errors.coalitionRequiresExactlyOneVagabondWinner,
+        );
+      }
+
+      final coalitionWinnerHasPoints = winners.any(
+        (winner) => winner.scoreInMatch != null,
       );
+      if (coalitionWinnerHasPoints) {
+        _throwInvalidRequest(
+          language: language,
+          description: t.errors.coalitionWinnersMustUseDominance,
+        );
+      }
     }
 
     final invalidNonWinners = players.where(
