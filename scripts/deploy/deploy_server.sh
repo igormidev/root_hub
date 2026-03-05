@@ -59,14 +59,10 @@ else
   log "Skipping migration creation because CREATE_MIGRATION=${CREATE_MIGRATION}"
 fi
 
-log "Building Jaspr web portal"
+log "Building Jaspr web portal into root_hub_server/web/join"
 (
-  cd "${WEB_PORTAL_DIR}"
-  dart pub get
-  if ! dart pub global run jaspr_cli:jaspr --version >/dev/null 2>&1; then
-    dart pub global activate jaspr_cli
-  fi
-  dart pub global run jaspr_cli:jaspr build
+  cd "${SERVER_PACKAGE_DIR}"
+  serverpod run web_portal_build
 )
 
 log "Deploying to Serverpod Cloud project '${SCLOUD_PROJECT_ID}'"

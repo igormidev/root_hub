@@ -226,6 +226,29 @@ class _MatchRedirectPageState extends State<MatchRedirectPage> {
           p(classes: 'footer-note', [
             Component.text(_copy.footerNote),
           ]),
+          div(classes: 'legal-link-row', [
+            a(
+              href: '/join/privacy',
+              classes: 'inline-link',
+              [Component.text(_copy.privacyLinkLabel)],
+            ),
+            span(classes: 'legal-link-separator', [
+              Component.text('•'),
+            ]),
+            a(
+              href: '/join/terms',
+              classes: 'inline-link',
+              [Component.text(_copy.termsLinkLabel)],
+            ),
+            span(classes: 'legal-link-separator', [
+              Component.text('•'),
+            ]),
+            a(
+              href: '/join/account-deletion',
+              classes: 'inline-link',
+              [Component.text(_copy.accountDeletionLinkLabel)],
+            ),
+          ]),
         ]),
       ]),
     ]);
@@ -247,6 +270,9 @@ _LandingCopy _copyForLanguage(String languageTag) {
       openPlayStoreButton: 'Abrir no Google Play',
       footerNote: 'Depois de entrar na conta, voce sera levado para a partida automaticamente.',
       matchDetailsLabel: 'Partida',
+      privacyLinkLabel: 'Politica de Privacidade',
+      termsLinkLabel: 'Termos de Uso',
+      accountDeletionLinkLabel: 'Excluir conta',
     ),
     'es' => _LandingCopy(
       pageTitle: 'Root Hub | Unirse a la partida',
@@ -261,6 +287,9 @@ _LandingCopy _copyForLanguage(String languageTag) {
       openPlayStoreButton: 'Abrir en Google Play',
       footerNote: 'Despues de iniciar sesion, veras esta partida automaticamente.',
       matchDetailsLabel: 'Partida',
+      privacyLinkLabel: 'Privacy Policy',
+      termsLinkLabel: 'Terms of Service',
+      accountDeletionLinkLabel: 'Delete Account',
     ),
     'fr' => _LandingCopy(
       pageTitle: 'Root Hub | Rejoindre la partie',
@@ -275,6 +304,9 @@ _LandingCopy _copyForLanguage(String languageTag) {
       openPlayStoreButton: 'Ouvrir sur Google Play',
       footerNote: 'Apres authentification, cette partie sera ouverte automatiquement.',
       matchDetailsLabel: 'Partie',
+      privacyLinkLabel: 'Privacy Policy',
+      termsLinkLabel: 'Terms of Service',
+      accountDeletionLinkLabel: 'Delete Account',
     ),
     'de' => _LandingCopy(
       pageTitle: 'Root Hub | Spiel beitreten',
@@ -289,6 +321,9 @@ _LandingCopy _copyForLanguage(String languageTag) {
       openPlayStoreButton: 'Bei Google Play oeffnen',
       footerNote: 'Nach der Anmeldung wird dieses Spiel automatisch angezeigt.',
       matchDetailsLabel: 'Spiel',
+      privacyLinkLabel: 'Privacy Policy',
+      termsLinkLabel: 'Terms of Service',
+      accountDeletionLinkLabel: 'Delete Account',
     ),
     _ => _LandingCopy(
       pageTitle: 'Root Hub | Join Match',
@@ -303,6 +338,9 @@ _LandingCopy _copyForLanguage(String languageTag) {
       openPlayStoreButton: 'Open in Google Play',
       footerNote: 'After authentication, this match will open automatically.',
       matchDetailsLabel: 'Match',
+      privacyLinkLabel: 'Privacy Policy',
+      termsLinkLabel: 'Terms of Service',
+      accountDeletionLinkLabel: 'Delete Account',
     ),
   };
 }
@@ -320,6 +358,9 @@ class _LandingCopy {
     required this.openPlayStoreButton,
     required this.footerNote,
     required this.matchDetailsLabel,
+    required this.privacyLinkLabel,
+    required this.termsLinkLabel,
+    required this.accountDeletionLinkLabel,
   });
 
   final String pageTitle;
@@ -333,4 +374,7 @@ class _LandingCopy {
   final String openPlayStoreButton;
   final String footerNote;
   final String matchDetailsLabel;
+  final String privacyLinkLabel;
+  final String termsLinkLabel;
+  final String accountDeletionLinkLabel;
 }

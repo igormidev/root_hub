@@ -9,6 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
+  email_validator: ^3.0.0
   jaspr: ^0.22.3
   root_hub_client:
     path: ../root_hub_client

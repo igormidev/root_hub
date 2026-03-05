@@ -121,6 +121,26 @@ class EndpointGetPlayerData extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointRequestAccountDeletion extends _i1.EndpointRef {
+  EndpointRequestAccountDeletion(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'requestAccountDeletion';
+
+  _i2.Future<void> v1({
+    required _i4.ServerSupportedTranslation language,
+    required String email,
+  }) => caller.callServerEndpoint<void>(
+    'requestAccountDeletion',
+    'v1',
+    {
+      'language': language,
+      'email': email,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointReverseGeocodeCity extends _i1.EndpointRef {
   EndpointReverseGeocodeCity(_i1.EndpointCaller caller) : super(caller);
 
@@ -1228,6 +1248,7 @@ class Client extends _i1.ServerpodClientShared {
        ) {
     createPlayerData = EndpointCreatePlayerData(this);
     getPlayerData = EndpointGetPlayerData(this);
+    requestAccountDeletion = EndpointRequestAccountDeletion(this);
     reverseGeocodeCity = EndpointReverseGeocodeCity(this);
     updatePlayerData = EndpointUpdatePlayerData(this);
     userProfileEdit = EndpointUserProfileEdit(this);
@@ -1277,6 +1298,8 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointCreatePlayerData createPlayerData;
 
   late final EndpointGetPlayerData getPlayerData;
+
+  late final EndpointRequestAccountDeletion requestAccountDeletion;
 
   late final EndpointReverseGeocodeCity reverseGeocodeCity;
 
@@ -1364,6 +1387,7 @@ class Client extends _i1.ServerpodClientShared {
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
     'createPlayerData': createPlayerData,
     'getPlayerData': getPlayerData,
+    'requestAccountDeletion': requestAccountDeletion,
     'reverseGeocodeCity': reverseGeocodeCity,
     'updatePlayerData': updatePlayerData,
     'userProfileEdit': userProfileEdit,

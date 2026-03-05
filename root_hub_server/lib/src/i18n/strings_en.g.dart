@@ -129,6 +129,9 @@ class TranslationsErrorsEn {
 	/// en: 'Location provider error'
 	String get locationProviderErrorTitle => 'Location provider error';
 
+	/// en: 'Please enter a valid email address.'
+	String get accountDeletionEmailInvalid => 'Please enter a valid email address.';
+
 	/// en: 'Too many players'
 	String get tooManyPlayersTitle => 'Too many players';
 
@@ -476,6 +479,9 @@ class TranslationsFallbackEn {
 
 	/// en: 'Unable to update account info right now. Please try again.'
 	String get unableToUpdateAccountInfo => 'Unable to update account info right now. Please try again.';
+
+	/// en: 'Unable to register the account deletion request right now. Please try again later.'
+	String get unableToRegisterAccountDeletionRequest => 'Unable to register the account deletion request right now. Please try again later.';
 
 	/// en: 'Unable to resolve location details right now. Please try again later.'
 	String get unableToResolveLocationDetails => 'Unable to resolve location details right now. Please try again later.';

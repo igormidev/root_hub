@@ -12,6 +12,7 @@ dependencies:
   serverpod: 3.3.1
   serverpod_auth_idp_server: 3.3.1
   serverpod_auth_core_server: 3.3.1
+  email_validator: ^3.0.0
   google_maps_apis: ^5.0.0
   http: ^1.5.0
   googleapis_auth: ^2.0.0
@@ -50,8 +51,17 @@ serverpod:
     # Build the lightweight Jaspr web portal used for share redirects and admin pages.
     web_portal_build:
       windows: >-
-        cd /D ..\root_hub_web_portal
+        (if exist web\join rmdir /S /Q web\join)
+        & cd /D ..\root_hub_web_portal
+        && (dart pub global run jaspr_cli:jaspr --version >nul 2>&1 || dart pub global activate jaspr_cli)
         && dart pub global run jaspr_cli:jaspr build
+        && xcopy /E /I /Y build\jaspr ..\root_hub_server\web\join
       posix: |
         cd ../root_hub_web_portal
+        if ! dart pub global run jaspr_cli:jaspr --version >/dev/null 2>&1; then
+          dart pub global activate jaspr_cli
+        fi
         dart pub global run jaspr_cli:jaspr build
+        rm -rf ../root_hub_server/web/join
+        mkdir -p ../root_hub_server/web/join
+        cp -R build/jaspr/. ../root_hub_server/web/join/

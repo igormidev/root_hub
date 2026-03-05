@@ -62,27 +62,28 @@ import 'entities/match_making/match_schedule.dart' as _i49;
 import 'entities/match_making/match_schedule_not_played_reason.dart' as _i50;
 import 'entities/match_making/match_schedule_status.dart' as _i51;
 import 'entities/match_making/match_subscription.dart' as _i52;
-import 'entities/others/pagination_metadata.dart' as _i53;
-import 'entities/others/root_hub_exception.dart' as _i54;
-import 'entities/others/web_analytics_click.dart' as _i55;
-import 'entities/others/web_analytics_device_type.dart' as _i56;
-import 'entities/others/web_ip_location_cache.dart' as _i57;
+import 'entities/others/account_deletion_request.dart' as _i53;
+import 'entities/others/pagination_metadata.dart' as _i54;
+import 'entities/others/root_hub_exception.dart' as _i55;
+import 'entities/others/web_analytics_click.dart' as _i56;
+import 'entities/others/web_analytics_device_type.dart' as _i57;
+import 'entities/others/web_ip_location_cache.dart' as _i58;
 import 'package:root_hub_client/src/protocol/entities/core/anonymous_player.dart'
-    as _i58;
-import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
     as _i59;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
+import 'package:root_hub_client/src/protocol/entities/match/played_match.dart'
     as _i60;
-import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_schedule.dart'
     as _i61;
-import 'package:root_hub_client/src/protocol/api/match/models/registered_player_search_result.dart'
+import 'package:root_hub_client/src/protocol/api/match/models/player_match_result_input.dart'
     as _i62;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
+import 'package:root_hub_client/src/protocol/api/match/models/registered_player_search_result.dart'
     as _i63;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i64;
-import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _i65;
+import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
+    as _i66;
 export 'api/account/models/reverse_geocode_city_result.dart';
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
@@ -134,6 +135,7 @@ export 'entities/match_making/match_schedule.dart';
 export 'entities/match_making/match_schedule_not_played_reason.dart';
 export 'entities/match_making/match_schedule_status.dart';
 export 'entities/match_making/match_subscription.dart';
+export 'entities/others/account_deletion_request.dart';
 export 'entities/others/pagination_metadata.dart';
 export 'entities/others/root_hub_exception.dart';
 export 'entities/others/web_analytics_click.dart';
@@ -328,20 +330,23 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i52.MatchSubscription) {
       return _i52.MatchSubscription.fromJson(data) as T;
     }
-    if (t == _i53.PaginationMetadata) {
-      return _i53.PaginationMetadata.fromJson(data) as T;
+    if (t == _i53.AccountDeletionRequest) {
+      return _i53.AccountDeletionRequest.fromJson(data) as T;
     }
-    if (t == _i54.RootHubException) {
-      return _i54.RootHubException.fromJson(data) as T;
+    if (t == _i54.PaginationMetadata) {
+      return _i54.PaginationMetadata.fromJson(data) as T;
     }
-    if (t == _i55.WebAnalyticsClick) {
-      return _i55.WebAnalyticsClick.fromJson(data) as T;
+    if (t == _i55.RootHubException) {
+      return _i55.RootHubException.fromJson(data) as T;
     }
-    if (t == _i56.WebAnalyticsDeviceType) {
-      return _i56.WebAnalyticsDeviceType.fromJson(data) as T;
+    if (t == _i56.WebAnalyticsClick) {
+      return _i56.WebAnalyticsClick.fromJson(data) as T;
     }
-    if (t == _i57.WebIpLocationCache) {
-      return _i57.WebIpLocationCache.fromJson(data) as T;
+    if (t == _i57.WebAnalyticsDeviceType) {
+      return _i57.WebAnalyticsDeviceType.fromJson(data) as T;
+    }
+    if (t == _i58.WebIpLocationCache) {
+      return _i58.WebIpLocationCache.fromJson(data) as T;
     }
     if (t == _i1.getType<_i2.ReverseGeocodeCityResult?>()) {
       return (data != null ? _i2.ReverseGeocodeCityResult.fromJson(data) : null)
@@ -561,22 +566,26 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i52.MatchSubscription?>()) {
       return (data != null ? _i52.MatchSubscription.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i53.PaginationMetadata?>()) {
-      return (data != null ? _i53.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i53.AccountDeletionRequest?>()) {
+      return (data != null ? _i53.AccountDeletionRequest.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i54.RootHubException?>()) {
-      return (data != null ? _i54.RootHubException.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i55.WebAnalyticsClick?>()) {
-      return (data != null ? _i55.WebAnalyticsClick.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i56.WebAnalyticsDeviceType?>()) {
-      return (data != null ? _i56.WebAnalyticsDeviceType.fromJson(data) : null)
+    if (t == _i1.getType<_i54.PaginationMetadata?>()) {
+      return (data != null ? _i54.PaginationMetadata.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i57.WebIpLocationCache?>()) {
-      return (data != null ? _i57.WebIpLocationCache.fromJson(data) : null)
+    if (t == _i1.getType<_i55.RootHubException?>()) {
+      return (data != null ? _i55.RootHubException.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i56.WebAnalyticsClick?>()) {
+      return (data != null ? _i56.WebAnalyticsClick.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i57.WebAnalyticsDeviceType?>()) {
+      return (data != null ? _i57.WebAnalyticsDeviceType.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i58.WebIpLocationCache?>()) {
+      return (data != null ? _i58.WebIpLocationCache.fromJson(data) : null)
           as T;
     }
     if (t == List<_i27.PostComment>) {
@@ -804,45 +813,45 @@ class Protocol extends _i1.SerializationManager {
               : null)
           as T;
     }
-    if (t == List<_i58.AnonymousPlayer>) {
+    if (t == List<_i59.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i58.AnonymousPlayer>(e))
+              .map((e) => deserialize<_i59.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i59.PlayedMatch>) {
+    if (t == List<_i60.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i59.PlayedMatch>(e))
+              .map((e) => deserialize<_i60.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i60.MatchSchedulePairingAttempt>) {
+    if (t == List<_i61.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i60.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i61.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == List<_i61.PlayerMatchResultInput>) {
+    if (t == List<_i62.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i61.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i62.PlayerMatchResultInput>(e))
               .toList()
           as T;
     }
-    if (t == List<_i62.RegisteredPlayerSearchResult>) {
+    if (t == List<_i63.RegisteredPlayerSearchResult>) {
       return (data as List)
-              .map((e) => deserialize<_i62.RegisteredPlayerSearchResult>(e))
+              .map((e) => deserialize<_i63.RegisteredPlayerSearchResult>(e))
               .toList()
           as T;
     }
-    if (t == List<_i63.Location>) {
-      return (data as List).map((e) => deserialize<_i63.Location>(e)).toList()
+    if (t == List<_i64.Location>) {
+      return (data as List).map((e) => deserialize<_i64.Location>(e)).toList()
           as T;
     }
-    try {
-      return _i64.Protocol().deserialize<T>(data, t);
-    } on _i1.DeserializationTypeNotFoundException catch (_) {}
     try {
       return _i65.Protocol().deserialize<T>(data, t);
+    } on _i1.DeserializationTypeNotFoundException catch (_) {}
+    try {
+      return _i66.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -900,11 +909,12 @@ class Protocol extends _i1.SerializationManager {
       _i50.MatchScheduleNotPlayedReason => 'MatchScheduleNotPlayedReason',
       _i51.MatchScheduleStatus => 'MatchScheduleStatus',
       _i52.MatchSubscription => 'MatchSubscription',
-      _i53.PaginationMetadata => 'PaginationMetadata',
-      _i54.RootHubException => 'RootHubException',
-      _i55.WebAnalyticsClick => 'WebAnalyticsClick',
-      _i56.WebAnalyticsDeviceType => 'WebAnalyticsDeviceType',
-      _i57.WebIpLocationCache => 'WebIpLocationCache',
+      _i53.AccountDeletionRequest => 'AccountDeletionRequest',
+      _i54.PaginationMetadata => 'PaginationMetadata',
+      _i55.RootHubException => 'RootHubException',
+      _i56.WebAnalyticsClick => 'WebAnalyticsClick',
+      _i57.WebAnalyticsDeviceType => 'WebAnalyticsDeviceType',
+      _i58.WebIpLocationCache => 'WebIpLocationCache',
       _ => null,
     };
   }
@@ -1021,22 +1031,24 @@ class Protocol extends _i1.SerializationManager {
         return 'MatchScheduleStatus';
       case _i52.MatchSubscription():
         return 'MatchSubscription';
-      case _i53.PaginationMetadata():
+      case _i53.AccountDeletionRequest():
+        return 'AccountDeletionRequest';
+      case _i54.PaginationMetadata():
         return 'PaginationMetadata';
-      case _i54.RootHubException():
+      case _i55.RootHubException():
         return 'RootHubException';
-      case _i55.WebAnalyticsClick():
+      case _i56.WebAnalyticsClick():
         return 'WebAnalyticsClick';
-      case _i56.WebAnalyticsDeviceType():
+      case _i57.WebAnalyticsDeviceType():
         return 'WebAnalyticsDeviceType';
-      case _i57.WebIpLocationCache():
+      case _i58.WebIpLocationCache():
         return 'WebIpLocationCache';
     }
-    className = _i64.Protocol().getClassNameForObject(data);
+    className = _i65.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_idp.$className';
     }
-    className = _i65.Protocol().getClassNameForObject(data);
+    className = _i66.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth_core.$className';
     }
@@ -1202,28 +1214,31 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName == 'MatchSubscription') {
       return deserialize<_i52.MatchSubscription>(data['data']);
     }
+    if (dataClassName == 'AccountDeletionRequest') {
+      return deserialize<_i53.AccountDeletionRequest>(data['data']);
+    }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i53.PaginationMetadata>(data['data']);
+      return deserialize<_i54.PaginationMetadata>(data['data']);
     }
     if (dataClassName == 'RootHubException') {
-      return deserialize<_i54.RootHubException>(data['data']);
+      return deserialize<_i55.RootHubException>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsClick') {
-      return deserialize<_i55.WebAnalyticsClick>(data['data']);
+      return deserialize<_i56.WebAnalyticsClick>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsDeviceType') {
-      return deserialize<_i56.WebAnalyticsDeviceType>(data['data']);
+      return deserialize<_i57.WebAnalyticsDeviceType>(data['data']);
     }
     if (dataClassName == 'WebIpLocationCache') {
-      return deserialize<_i57.WebIpLocationCache>(data['data']);
+      return deserialize<_i58.WebIpLocationCache>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
-      return _i64.Protocol().deserializeByClassName(data);
+      return _i65.Protocol().deserializeByClassName(data);
     }
     if (dataClassName.startsWith('serverpod_auth_core.')) {
       data['className'] = dataClassName.substring(20);
-      return _i65.Protocol().deserializeByClassName(data);
+      return _i66.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }
@@ -1238,10 +1253,10 @@ class Protocol extends _i1.SerializationManager {
       return null;
     }
     try {
-      return _i64.Protocol().mapRecordToJson(record);
+      return _i65.Protocol().mapRecordToJson(record);
     } catch (_) {}
     try {
-      return _i65.Protocol().mapRecordToJson(record);
+      return _i66.Protocol().mapRecordToJson(record);
     } catch (_) {}
     throw Exception('Unsupported record type ${record.runtimeType}');
   }

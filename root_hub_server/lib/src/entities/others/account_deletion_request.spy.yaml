@@ -1,0 +1,13 @@
+class: AccountDeletionRequest
+table: account_deletion_request
+fields:
+  createdAt: DateTime
+  email: String
+  notificationTargetEmail: String?
+  notificationAttemptedAt: DateTime?
+  notificationSentAt: DateTime?
+indexes:
+  account_deletion_request_created_at_idx:
+    fields: createdAt
+  account_deletion_request_email_idx:
+    fields: email

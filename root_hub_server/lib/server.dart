@@ -46,7 +46,7 @@ void run(List<String> args) async {
 
   // Hosts the lightweight Root Hub web portal built with Jaspr.
   final webPortalDir = Directory(
-    Uri(path: '../root_hub_web_portal/build/jaspr').toFilePath(),
+    Uri(path: 'web/join').toFilePath(),
   );
   if (webPortalDir.existsSync()) {
     pod.webServer.addRoute(

@@ -81,6 +81,7 @@ class _TranslationsErrorsPtBr extends TranslationsErrorsEn {
 	@override String get invalidMatchRegistrationTitle => 'Invalid match registration';
 	@override String get registrationNotAllowedTitle => 'Registration not allowed';
 	@override String get locationProviderErrorTitle => 'Location provider error';
+	@override String get accountDeletionEmailInvalid => 'Digite um endereco de e-mail valido.';
 	@override String get tooManyPlayersTitle => 'Too many players';
 	@override String get displayNameCannotBeEmpty => 'Display name cannot be empty.';
 	@override String get locationRatioMustBeGreaterThanZero => 'Location ratio must be greater than zero.';
@@ -203,6 +204,7 @@ class _TranslationsFallbackPtBr extends TranslationsFallbackEn {
 	@override String get unableToCreateAccount => 'Unable to create account right now. Please try again.';
 	@override String get unableToLoadAccountInfo => 'Unable to load account info right now. Please try again.';
 	@override String get unableToUpdateAccountInfo => 'Unable to update account info right now. Please try again.';
+	@override String get unableToRegisterAccountDeletionRequest => 'Nao foi possivel registrar a solicitacao de exclusao da conta agora. Tente novamente mais tarde.';
 	@override String get unableToResolveLocationDetails => 'Unable to resolve location details right now. Please try again later.';
 	@override String get unableToSyncPushNotifications => 'Unable to sync push notifications for this device right now.';
 	@override String get unableToDisablePushNotifications => 'Unable to disable push notifications for this device right now.';

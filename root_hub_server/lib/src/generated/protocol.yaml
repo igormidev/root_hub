@@ -2,6 +2,8 @@ createPlayerData:
   - v1:
 getPlayerData:
   - v1:
+requestAccountDeletion:
+  - v1:
 reverseGeocodeCity:
   - v1:
 updatePlayerData:

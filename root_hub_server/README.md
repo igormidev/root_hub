@@ -58,6 +58,7 @@ root_hub_server/
 
 Related project:
 - `../root_hub_web_portal`: Jaspr web app used for shared match links and lightweight admin panels.
+  - build and stage it into `web/join` with `serverpod run web_portal_build`.
 
 ## Runtime Entry Points
 - `bin/main.dart`: boot entrypoint that calls `run(args)` from `lib/server.dart`.
@@ -66,8 +67,8 @@ Related project:
   - configures auth services (`JwtConfigFromPasswords`, `EmailIdpConfigFromPasswords`).
   - registers web routes:
     - `/` and `/index.html` => built-with-serverpod page.
-    - `/join` => Jaspr web portal app (build output from `../root_hub_web_portal/build/jaspr`).
-      - includes the invite redirect flow and `/join/analytics` admin panel.
+    - `/join` => Jaspr web portal app (staged static output from `web/join`).
+      - includes the invite redirect flow, `/join/privacy`, `/join/terms`, `/join/account-deletion`, `/join/account-deletion/success`, and the `/join/analytics` admin panel.
     - `/join/config.json` => runtime config consumed by the Jaspr portal (API base URL based on run mode).
     - `/app/assets/assets/config.json` => app config JSON consumed by Flutter.
     - `/app/**` => Flutter web app (if built) or fallback page.
@@ -77,6 +78,7 @@ Related project:
 ### `account`
 - `create_player_data.dart`: creates `PlayerData` for authenticated user (display name, favorite faction, mandatory current geolocation coordinates + search ratio; idempotent conflict handling).
 - `get_player_data.dart`: returns authenticated user profile.
+- `request_account_deletion.dart`: public endpoint that validates an email, stores an `account_deletion_request` row, and notifies the configured admin email when possible.
 - `reverse_geocode_city.dart`: resolves city/area labels from latitude/longitude using Google Geocoding API.
 - `update_player_data.dart`: updates authenticated user profile fields (display name, favorite faction, and current geolocation coordinates + search ratio).
 
@@ -201,6 +203,8 @@ Push notification architecture:
 - Auth email secrets:
   - `resendApiKey` for verification / password reset emails.
   - `googleClientSecret` for Google IDP sign-in.
+  - `accountDeletionNotificationEmail` for account deletion request notifications from `/join/account-deletion`.
+    - For Serverpod Cloud, set it with `scloud -d /Users/igor/PersonalProjects/root_hub/root_hub_server password set accountDeletionNotificationEmail you@example.com`.
 - Google Places key used by `get_match_location.dart`:
   - `googleMapsApiKey` in `config/passwords.yaml`, or
   - `GOOGLE_MAPS_API_KEY` environment variable.
@@ -256,8 +260,8 @@ dart bin/main.dart --apply-migrations
 Build the shared-link Jaspr app:
 
 ```bash
-cd /Users/igor/PersonalProjects/root_hub/root_hub_web_portal
-dart pub global run jaspr_cli:jaspr build
+cd /Users/igor/PersonalProjects/root_hub/root_hub_server
+serverpod run web_portal_build
 ```
 
 ## Integration with Other Workspace Packages

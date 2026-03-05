@@ -67,23 +67,24 @@ import 'entities/match_making/match_schedule.dart' as _i52;
 import 'entities/match_making/match_schedule_not_played_reason.dart' as _i53;
 import 'entities/match_making/match_schedule_status.dart' as _i54;
 import 'entities/match_making/match_subscription.dart' as _i55;
-import 'entities/others/pagination_metadata.dart' as _i56;
-import 'entities/others/root_hub_exception.dart' as _i57;
-import 'entities/others/web_analytics_click.dart' as _i58;
-import 'entities/others/web_analytics_device_type.dart' as _i59;
-import 'entities/others/web_ip_location_cache.dart' as _i60;
+import 'entities/others/account_deletion_request.dart' as _i56;
+import 'entities/others/pagination_metadata.dart' as _i57;
+import 'entities/others/root_hub_exception.dart' as _i58;
+import 'entities/others/web_analytics_click.dart' as _i59;
+import 'entities/others/web_analytics_device_type.dart' as _i60;
+import 'entities/others/web_ip_location_cache.dart' as _i61;
 import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
-    as _i61;
-import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i62;
-import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
+import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i63;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i64;
-import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i65;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
     as _i66;
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+    as _i67;
 export 'api/account/models/reverse_geocode_city_result.dart';
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
@@ -135,6 +136,7 @@ export 'entities/match_making/match_schedule.dart';
 export 'entities/match_making/match_schedule_not_played_reason.dart';
 export 'entities/match_making/match_schedule_status.dart';
 export 'entities/match_making/match_subscription.dart';
+export 'entities/others/account_deletion_request.dart';
 export 'entities/others/pagination_metadata.dart';
 export 'entities/others/root_hub_exception.dart';
 export 'entities/others/web_analytics_click.dart';
@@ -149,6 +151,95 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'account_deletion_request',
+      dartName: 'AccountDeletionRequest',
+      schema: 'public',
+      module: 'root_hub',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault:
+              'nextval(\'account_deletion_request_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'email',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'notificationTargetEmail',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'notificationAttemptedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'notificationSentAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'account_deletion_request_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'account_deletion_request_created_at_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'createdAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'account_deletion_request_email_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'email',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'anonymous_player',
       dartName: 'AnonymousPlayer',
@@ -2425,20 +2516,23 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i55.MatchSubscription) {
       return _i55.MatchSubscription.fromJson(data) as T;
     }
-    if (t == _i56.PaginationMetadata) {
-      return _i56.PaginationMetadata.fromJson(data) as T;
+    if (t == _i56.AccountDeletionRequest) {
+      return _i56.AccountDeletionRequest.fromJson(data) as T;
     }
-    if (t == _i57.RootHubException) {
-      return _i57.RootHubException.fromJson(data) as T;
+    if (t == _i57.PaginationMetadata) {
+      return _i57.PaginationMetadata.fromJson(data) as T;
     }
-    if (t == _i58.WebAnalyticsClick) {
-      return _i58.WebAnalyticsClick.fromJson(data) as T;
+    if (t == _i58.RootHubException) {
+      return _i58.RootHubException.fromJson(data) as T;
     }
-    if (t == _i59.WebAnalyticsDeviceType) {
-      return _i59.WebAnalyticsDeviceType.fromJson(data) as T;
+    if (t == _i59.WebAnalyticsClick) {
+      return _i59.WebAnalyticsClick.fromJson(data) as T;
     }
-    if (t == _i60.WebIpLocationCache) {
-      return _i60.WebIpLocationCache.fromJson(data) as T;
+    if (t == _i60.WebAnalyticsDeviceType) {
+      return _i60.WebAnalyticsDeviceType.fromJson(data) as T;
+    }
+    if (t == _i61.WebIpLocationCache) {
+      return _i61.WebIpLocationCache.fromJson(data) as T;
     }
     if (t == _i1.getType<_i5.ReverseGeocodeCityResult?>()) {
       return (data != null ? _i5.ReverseGeocodeCityResult.fromJson(data) : null)
@@ -2658,22 +2752,26 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i55.MatchSubscription?>()) {
       return (data != null ? _i55.MatchSubscription.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i56.PaginationMetadata?>()) {
-      return (data != null ? _i56.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i56.AccountDeletionRequest?>()) {
+      return (data != null ? _i56.AccountDeletionRequest.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i57.RootHubException?>()) {
-      return (data != null ? _i57.RootHubException.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i58.WebAnalyticsClick?>()) {
-      return (data != null ? _i58.WebAnalyticsClick.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i59.WebAnalyticsDeviceType?>()) {
-      return (data != null ? _i59.WebAnalyticsDeviceType.fromJson(data) : null)
+    if (t == _i1.getType<_i57.PaginationMetadata?>()) {
+      return (data != null ? _i57.PaginationMetadata.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i60.WebIpLocationCache?>()) {
-      return (data != null ? _i60.WebIpLocationCache.fromJson(data) : null)
+    if (t == _i1.getType<_i58.RootHubException?>()) {
+      return (data != null ? _i58.RootHubException.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i59.WebAnalyticsClick?>()) {
+      return (data != null ? _i59.WebAnalyticsClick.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i60.WebAnalyticsDeviceType?>()) {
+      return (data != null ? _i60.WebAnalyticsDeviceType.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i61.WebIpLocationCache?>()) {
+      return (data != null ? _i61.WebIpLocationCache.fromJson(data) : null)
           as T;
     }
     if (t == List<_i30.PostComment>) {
@@ -2901,38 +2999,38 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i61.AnonymousPlayer>) {
+    if (t == List<_i62.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i61.AnonymousPlayer>(e))
+              .map((e) => deserialize<_i62.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i62.PlayedMatch>) {
+    if (t == List<_i63.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i62.PlayedMatch>(e))
+              .map((e) => deserialize<_i63.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i63.MatchSchedulePairingAttempt>) {
+    if (t == List<_i64.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i63.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i64.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == List<_i64.PlayerMatchResultInput>) {
+    if (t == List<_i65.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i64.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i65.PlayerMatchResultInput>(e))
               .toList()
           as T;
     }
-    if (t == List<_i65.RegisteredPlayerSearchResult>) {
+    if (t == List<_i66.RegisteredPlayerSearchResult>) {
       return (data as List)
-              .map((e) => deserialize<_i65.RegisteredPlayerSearchResult>(e))
+              .map((e) => deserialize<_i66.RegisteredPlayerSearchResult>(e))
               .toList()
           as T;
     }
-    if (t == List<_i66.Location>) {
-      return (data as List).map((e) => deserialize<_i66.Location>(e)).toList()
+    if (t == List<_i67.Location>) {
+      return (data as List).map((e) => deserialize<_i67.Location>(e)).toList()
           as T;
     }
     try {
@@ -3000,11 +3098,12 @@ class Protocol extends _i1.SerializationManagerServer {
       _i53.MatchScheduleNotPlayedReason => 'MatchScheduleNotPlayedReason',
       _i54.MatchScheduleStatus => 'MatchScheduleStatus',
       _i55.MatchSubscription => 'MatchSubscription',
-      _i56.PaginationMetadata => 'PaginationMetadata',
-      _i57.RootHubException => 'RootHubException',
-      _i58.WebAnalyticsClick => 'WebAnalyticsClick',
-      _i59.WebAnalyticsDeviceType => 'WebAnalyticsDeviceType',
-      _i60.WebIpLocationCache => 'WebIpLocationCache',
+      _i56.AccountDeletionRequest => 'AccountDeletionRequest',
+      _i57.PaginationMetadata => 'PaginationMetadata',
+      _i58.RootHubException => 'RootHubException',
+      _i59.WebAnalyticsClick => 'WebAnalyticsClick',
+      _i60.WebAnalyticsDeviceType => 'WebAnalyticsDeviceType',
+      _i61.WebIpLocationCache => 'WebIpLocationCache',
       _ => null,
     };
   }
@@ -3121,15 +3220,17 @@ class Protocol extends _i1.SerializationManagerServer {
         return 'MatchScheduleStatus';
       case _i55.MatchSubscription():
         return 'MatchSubscription';
-      case _i56.PaginationMetadata():
+      case _i56.AccountDeletionRequest():
+        return 'AccountDeletionRequest';
+      case _i57.PaginationMetadata():
         return 'PaginationMetadata';
-      case _i57.RootHubException():
+      case _i58.RootHubException():
         return 'RootHubException';
-      case _i58.WebAnalyticsClick():
+      case _i59.WebAnalyticsClick():
         return 'WebAnalyticsClick';
-      case _i59.WebAnalyticsDeviceType():
+      case _i60.WebAnalyticsDeviceType():
         return 'WebAnalyticsDeviceType';
-      case _i60.WebIpLocationCache():
+      case _i61.WebIpLocationCache():
         return 'WebIpLocationCache';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -3306,20 +3407,23 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'MatchSubscription') {
       return deserialize<_i55.MatchSubscription>(data['data']);
     }
+    if (dataClassName == 'AccountDeletionRequest') {
+      return deserialize<_i56.AccountDeletionRequest>(data['data']);
+    }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i56.PaginationMetadata>(data['data']);
+      return deserialize<_i57.PaginationMetadata>(data['data']);
     }
     if (dataClassName == 'RootHubException') {
-      return deserialize<_i57.RootHubException>(data['data']);
+      return deserialize<_i58.RootHubException>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsClick') {
-      return deserialize<_i58.WebAnalyticsClick>(data['data']);
+      return deserialize<_i59.WebAnalyticsClick>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsDeviceType') {
-      return deserialize<_i59.WebAnalyticsDeviceType>(data['data']);
+      return deserialize<_i60.WebAnalyticsDeviceType>(data['data']);
     }
     if (dataClassName == 'WebIpLocationCache') {
-      return deserialize<_i60.WebIpLocationCache>(data['data']);
+      return deserialize<_i61.WebIpLocationCache>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -3393,10 +3497,12 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i52.MatchSchedulePairingAttempt.t;
       case _i55.MatchSubscription:
         return _i55.MatchSubscription.t;
-      case _i58.WebAnalyticsClick:
-        return _i58.WebAnalyticsClick.t;
-      case _i60.WebIpLocationCache:
-        return _i60.WebIpLocationCache.t;
+      case _i56.AccountDeletionRequest:
+        return _i56.AccountDeletionRequest.t;
+      case _i59.WebAnalyticsClick:
+        return _i59.WebAnalyticsClick.t;
+      case _i61.WebIpLocationCache:
+        return _i61.WebIpLocationCache.t;
     }
     return null;
   }

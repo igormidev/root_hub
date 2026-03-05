@@ -191,6 +191,8 @@ class TestEndpoints {
 
   late final _GetPlayerData getPlayerData;
 
+  late final _RequestAccountDeletion requestAccountDeletion;
+
   late final _ReverseGeocodeCity reverseGeocodeCity;
 
   late final _UpdatePlayerData updatePlayerData;
@@ -282,6 +284,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getPlayerData = _GetPlayerData(
+      endpoints,
+      serializationManager,
+    );
+    requestAccountDeletion = _RequestAccountDeletion(
       endpoints,
       serializationManager,
     );
@@ -535,6 +541,52 @@ class _GetPlayerData {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i4.PlayerData?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _RequestAccountDeletion {
+  _RequestAccountDeletion(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required String email,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'requestAccountDeletion',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'requestAccountDeletion',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'email': email,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
