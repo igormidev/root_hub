@@ -52,7 +52,13 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
         return;
       }
       final isAuthenticated = ref.read(clientProvider).auth.isAuthenticated;
-      if (isAuthenticated) {
+      final canAutoCompleteLogin = ref
+          .read(authFlowProvider)
+          .maybeWhen(
+            requiresLogin: () => true,
+            orElse: () => false,
+          );
+      if (isAuthenticated && canAutoCompleteLogin) {
         _requestLoginCompletion();
       }
     });
