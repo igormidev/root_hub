@@ -235,8 +235,62 @@
       "noPersonalStatsYet": "No personal stats yet",
       "registerYourFirstMatchToStartYourDashboard": "Play and register your first match to start your personal dashboard."
     },
+    "ui_sections_home_community_tools_section": {
+      "title": "Community Tools",
+      "description": "Helpful ROOT references for table prep, faction planning, and faster match setup.",
+      "comingSoon": "Soon",
+      "rootTag": "ROOT",
+      "reachCalculatorTitle": "Reach Calculator",
+      "advancedSetupQuickguideTitle": "Advanced Setup Quickguide",
+      "setupOrderTitle": "Setup Order",
+      "recommendedFactionsToPlayTitle": "Recommended Factions"
+    },
+    "ui_screens_root_reach_calculator_screen": {
+      "title": "Reach Calculator",
+      "description": "Build a roster and check whether the table has enough reach for a balanced match.",
+      "targetReached": "Target\nsecured",
+      "needMoreReach": "Need {remainingReach}\nmore reach",
+      "tapOnceToPickTapTwiceToBanTapAgainToReset": "Tap once to pick, tap twice to ban, then tap again to reset.",
+      "picked": "Picked",
+      "banned": "Banned",
+      "unavailable": "Unavailable",
+      "players": "Player quantity",
+      "requiredReach": "Required reach: {reach}+"
+    },
+    "ui_screens_advanced_setup_quickguide_screen": {
+      "title": "Advanced Setup Quickguide",
+      "description": "Pick a faction to open its Advanced Setup summary. The draft flow below follows the public 10-faction model used through Marauder.",
+      "generalFlow": "General flow",
+      "chooseAFaction": "Choose a faction",
+      "chooseAFactionDescription": "Tap any faction board to open its setup details in a quick reference sheet."
+    },
+    "ui_sheets_advanced_setup_faction_details_sheet": {
+      "originalEnglish": "Original English"
+    },
+    "ui_screens_setup_order_screen": {
+      "title": "Setup Order",
+      "description": "Standard setup follows a fixed faction priority. This page is a quick reminder of that order.",
+      "secondVagabondTitle": "Second vagabond rule"
+    },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "No values for this metric yet."
+    },
+    "ui_content_root_community_tools_content": {
+      "vagabondSecondSuffix": "II",
+      "advancedSetupOverviewBody": "<h>general_flow<h>\n1. Choose and set up the map.\n2. Choose the deck.\n3. Set up bots, if used.\n4. Randomize seating order and first player.\n5. Set up landmarks, if used.\n6. Set up hirelings, if used.\n7. Draw 5 cards per player.\n8. Set up factions either by Standard Setup or by Advanced Setup faction cards.\n9. Put all score markers on 0.\n10. Each player keeps 3 of the 5 cards and returns the other 2 to the shared deck.\n\n<h>draft_logic<h>\n1. Shuffle all militant setup cards and place one face up in the center pool.\n2. Shuffle the remaining militant setup cards together with all insurgent setup cards.\n3. Deal one setup card per player to the pool. There will be one more card than players in total.\n4. In 2-player, remove insurgent setup cards before dealing unless you are deliberately using the adventurous hirelings exception.\n5. If the last dealt card is insurgent, it is locked and cannot be chosen until at least one militant faction has been chosen.\n6. If a Vagabond setup card appears, also reveal a random Vagabond character card next to it.\n7. Starting with the last player in turn order and moving counterclockwise, each player chooses a setup card and immediately resolves that faction's setup.\n8. Reach is not used by Advanced Setup, though setup cards may still show reach values.",
+      "setupOrderSecondVagabondBody": "- When a second Vagabond is present, insert it immediately after the first Vagabond.\n- In two-Vagabond games, the current Law explicitly says that under Standard Setup you randomly determine which Vagabond sets up first.",
+      "advancedSetupFactionGuideBodies": {
+        "marquiseDeCat": "<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 3\n- pattern: three_clearings_each_adjacent_to_one_other_homeland\n- map_edge_required: false\n\n<h>canonical_setup_logic<h>\n- choose three homeland clearings that form a connected chain\n- place 2 warriors in each homeland\n- place 1 warrior in every other clearing\n- place the keep in one homeland, preferring one not adjacent to an enemy homeland\n- place 1 sawmill, 1 workshop, and 1 recruiter on the map, each in a different homeland\n- fill building tracks, leaving only the leftmost space of each track empty",
+        "eyrieDynasties": "<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 1\n- map_edge_required: true\n- minimum_clearings_between_enemy_homelands: 2\n\n<h>canonical_setup_logic<h>\n- choose one homeland on the map edge\n- if possible, that homeland should have at least two clearings between it and enemy homelands\n- place 6 warriors and 1 roost in that homeland\n- choose any leader and place it on the leader slot\n- keep the other leaders face up nearby\n- place the 2 loyal viziers according to the chosen leader\n- fill the roost track, leaving only the leftmost space empty",
+        "woodlandAlliance": "<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 0\n\n<h>canonical_setup_logic<h>\n- draw 3 cards into the supporters stack\n- fill the sympathy track with all sympathy tokens\n- place the 3 bases onto the matching base spaces on the faction board",
+        "vagabond": "<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 0\n- starts_in_forest: true\n\n<h>canonical_setup_logic<h>\n- place the pawn in any forest\n- shuffle the quest deck and reveal 3 quests nearby\n- place the 4 ruin items under the ruins randomly unless another faction already handled ruin items this setup\n- place the assigned character card on the character slot\n- take the starting items listed for that character and place them in the satchel / matching tracks\n- after setup, place relationship markers for the non-vagabond factions in play on indifferent\n\n<h>special_notes<h>\n<i>- in public Marauder-era AdSet, dealing a Vagabond setup card also deals a random character card<i>\n<i>- in live post-Marauder Appendix A, future-proof support should allow one or both Vagabond setup cards in the draft pool<i>",
+        "theLizardCult": "<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 1\n- not_adjacent_to_enemy_homeland: true\n\n<h>canonical_setup_logic<h>\n- choose one homeland not adjacent to an enemy homeland if possible\n- place 4 warriors and 1 matching garden in that homeland\n- distribute 3 more warriors among adjacent clearings as evenly as possible\n- place 2 warriors in the acolytes box\n- fill the garden tracks, leaving empty the leftmost slot of the garden type already placed on the map\n- place the outcast marker on its outcast side",
+        "riverfolkCompany": "<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 0\n- river_clearings_only: true\n\n<h>canonical_setup_logic<h>\n- place 4 warriors among any river clearings\n- place 3 warriors in the payments box\n- fill the trade-post tracks with matching trade posts\n- place the 3 service markers on the services track and set prices for each service",
+        "undergroundDuchy": "<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 1\n- not_adjacent_to_enemy_homeland: true\n\n<h>canonical_setup_logic<h>\n- choose one homeland not adjacent to an enemy homeland if possible\n- place 2 warriors and 1 tunnel in that homeland\n- distribute 5 more warriors among adjacent clearings as evenly as possible\n- place the burrow board near the map\n- fill both building tracks with citadels and markets\n- place all 9 ministers face up on the unswayed ministers pile\n- place the 9 crowns on the victory-point spaces shown on the faction board",
+        "corvidConspiracy": "<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 1\n\n<h>canonical_setup_logic<h>\n- choose one homeland clearing\n- place 1 warrior and 1 facedown plot token of your choice there\n- place 1 warrior in a clearing of each suit, counting the homeland placement, for 4 warriors total\n\n<h>localization_note<h>\n<i>- the French label above is the best public match found in community / translated-law references, but should still be checked against an official French component before shipping exact UI wording<i>",
+        "lordOfTheHundreds": "<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 1\n- map_edge_required: true\n- minimum_clearings_between_enemy_homelands: 2\n\n<h>canonical_setup_logic<h>\n- choose one homeland on the map edge\n- if possible, that homeland should have at least two clearings between it and enemy homelands\n- place the warlord, 4 warriors, and the stronghold in that homeland\n- place the stubborn mood card in the mood slot\n- place the 4 ruin items under the ruins randomly unless another faction already handled ruin items this setup",
+        "keepersInIron": "<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 2\n- must_be_adjacent_to_each_other: true\n- map_edge_required: true\n- minimum_clearings_between_enemy_homelands: 2\n\n<h>canonical_setup_logic<h>\n- shuffle all relics facedown and place one random relic in each forest first\n- choose 2 adjacent homeland clearings on the map edge\n- if possible, those homelands should have at least two clearings between them and enemy homelands\n- place 4 warriors in each homeland\n- distribute any remaining relics as evenly as possible among forests not adjacent to your homelands\n- place one faithful retainer into each retinue column slot\n\n<h>localization_note<h>\n<i>- the French label above follows current public French-market usage, but still merits manual verification against the localized component set before shipping exact UI wording<i>"
+      }
     }
   },
   "match": {

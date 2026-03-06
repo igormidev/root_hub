@@ -102,7 +102,13 @@ class _TranslationsHomePtBr extends TranslationsHomeEn {
 	// Translations
 	@override late final _TranslationsHomeUiSectionsHomeStatsSectionPtBr ui_sections_home_stats_section = _TranslationsHomeUiSectionsHomeStatsSectionPtBr._(_root);
 	@override late final _TranslationsHomeUiScreensHomeScreenPtBr ui_screens_home_screen = _TranslationsHomeUiScreensHomeScreenPtBr._(_root);
+	@override late final _TranslationsHomeUiSectionsHomeCommunityToolsSectionPtBr ui_sections_home_community_tools_section = _TranslationsHomeUiSectionsHomeCommunityToolsSectionPtBr._(_root);
+	@override late final _TranslationsHomeUiScreensRootReachCalculatorScreenPtBr ui_screens_root_reach_calculator_screen = _TranslationsHomeUiScreensRootReachCalculatorScreenPtBr._(_root);
+	@override late final _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenPtBr ui_screens_advanced_setup_quickguide_screen = _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenPtBr._(_root);
+	@override late final _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetPtBr ui_sheets_advanced_setup_faction_details_sheet = _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetPtBr._(_root);
+	@override late final _TranslationsHomeUiScreensSetupOrderScreenPtBr ui_screens_setup_order_screen = _TranslationsHomeUiScreensSetupOrderScreenPtBr._(_root);
 	@override late final _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetPtBr ui_widgets_home_stats_pie_chart_widget = _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetPtBr._(_root);
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentPtBr ui_content_root_community_tools_content = _TranslationsHomeUiContentRootCommunityToolsContentPtBr._(_root);
 }
 
 // Path: match
@@ -507,6 +513,78 @@ class _TranslationsHomeUiScreensHomeScreenPtBr extends TranslationsHomeUiScreens
 	@override String get registerYourFirstMatchToStartYourDashboard => 'Jogue e registre sua primeira partida para começar seu painel pessoal.';
 }
 
+// Path: home.ui_sections_home_community_tools_section
+class _TranslationsHomeUiSectionsHomeCommunityToolsSectionPtBr extends TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
+	_TranslationsHomeUiSectionsHomeCommunityToolsSectionPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Ferramentas da Comunidade';
+	@override String get description => 'Referências úteis de ROOT para preparar a mesa, planejar facções e acelerar a organização da partida.';
+	@override String get comingSoon => 'Em breve';
+	@override String get rootTag => 'ROOT';
+	@override String get reachCalculatorTitle => 'Calculadora de Alcance';
+	@override String get advancedSetupQuickguideTitle => 'Guia Rápido de Preparação Avançada';
+	@override String get setupOrderTitle => 'Ordem de Preparação';
+	@override String get recommendedFactionsToPlayTitle => 'Facções Recomendadas';
+}
+
+// Path: home.ui_screens_root_reach_calculator_screen
+class _TranslationsHomeUiScreensRootReachCalculatorScreenPtBr extends TranslationsHomeUiScreensRootReachCalculatorScreenEn {
+	_TranslationsHomeUiScreensRootReachCalculatorScreenPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Calculadora de Alcance';
+	@override String get description => 'Monte a composição e veja se a mesa tem alcance suficiente para uma partida equilibrada.';
+	@override String get targetReached => 'Alcance\ngarantido';
+	@override String needMoreReach({required Object remainingReach}) => 'Faltam ${remainingReach}\nde alcance';
+	@override String get tapOnceToPickTapTwiceToBanTapAgainToReset => 'Toque uma vez para escolher, duas para banir e mais uma para resetar.';
+	@override String get picked => 'Escolhidas';
+	@override String get banned => 'Banidas';
+	@override String get unavailable => 'Indisponíveis';
+	@override String get players => 'Quantidade de jogadores';
+	@override String requiredReach({required Object reach}) => 'Alcance necessário: ${reach}+';
+}
+
+// Path: home.ui_screens_advanced_setup_quickguide_screen
+class _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenPtBr extends TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn {
+	_TranslationsHomeUiScreensAdvancedSetupQuickguideScreenPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Guia Rápido de Preparação Avançada';
+	@override String get description => 'Escolha uma facção para abrir seu resumo de Preparação Avançada. O fluxo abaixo segue o modelo público de 10 facções usado até Marauder.';
+	@override String get generalFlow => 'Fluxo geral';
+	@override String get chooseAFaction => 'Escolha uma facção';
+	@override String get chooseAFactionDescription => 'Toque em qualquer facção para abrir os detalhes de preparação em uma ficha rápida.';
+}
+
+// Path: home.ui_sheets_advanced_setup_faction_details_sheet
+class _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetPtBr extends TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn {
+	_TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get originalEnglish => 'Inglês original';
+}
+
+// Path: home.ui_screens_setup_order_screen
+class _TranslationsHomeUiScreensSetupOrderScreenPtBr extends TranslationsHomeUiScreensSetupOrderScreenEn {
+	_TranslationsHomeUiScreensSetupOrderScreenPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Ordem de Preparação';
+	@override String get description => 'A preparação padrão segue uma prioridade fixa entre facções. Esta página é um lembrete rápido dessa ordem.';
+	@override String get secondVagabondTitle => 'Regra do segundo Malandro';
+}
+
 // Path: home.ui_widgets_home_stats_pie_chart_widget
 class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetPtBr extends TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 	_TranslationsHomeUiWidgetsHomeStatsPieChartWidgetPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
@@ -515,6 +593,19 @@ class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetPtBr extends Translations
 
 	// Translations
 	@override String get noValuesForThisMetricYet => 'Ainda não há valores para esta métrica.';
+}
+
+// Path: home.ui_content_root_community_tools_content
+class _TranslationsHomeUiContentRootCommunityToolsContentPtBr extends TranslationsHomeUiContentRootCommunityToolsContentEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get vagabondSecondSuffix => 'II';
+	@override String get advancedSetupOverviewBody => '<h>fluxo_geral<h>\n1. Escolha e prepare o mapa.\n2. Escolha o baralho.\n3. Prepare os bots, se forem usados.\n4. Aleatorize a ordem dos assentos e o primeiro jogador.\n5. Prepare os marcos, se forem usados.\n6. Prepare os mercenários, se forem usados.\n7. Compre 5 cartas por jogador.\n8. Prepare as facções usando a Preparação Padrão ou as cartas de Preparação Avançada.\n9. Coloque todos os marcadores de pontuação em 0.\n10. Cada jogador fica com 3 das 5 cartas e devolve as outras 2 ao baralho compartilhado.\n\n<h>lógica_do_draft<h>\n1. Embaralhe todas as cartas de preparação militantes e coloque uma virada para cima no centro.\n2. Embaralhe as cartas militantes restantes junto com todas as cartas insurgentes.\n3. Distribua uma carta de preparação por jogador para a reserva. Haverá uma carta a mais do que o número de jogadores.\n4. Em partidas com 2 jogadores, remova as cartas insurgentes antes de distribuir, a menos que você esteja usando deliberadamente a exceção dos mercenários aventureiros.\n5. Se a última carta distribuída for insurgente, ela fica travada e não pode ser escolhida até que pelo menos uma facção militante tenha sido escolhida.\n6. Se aparecer uma carta de preparação do Malandro, revele também uma carta aleatória de personagem do Malandro ao lado dela.\n7. Começando pelo último jogador na ordem de turno e seguindo no sentido anti-horário, cada jogador escolhe uma carta de preparação e resolve imediatamente a preparação daquela facção.\n8. Alcance não é usado na Preparação Avançada, embora as cartas de preparação ainda possam mostrar valores de alcance.';
+	@override String get setupOrderSecondVagabondBody => '- Quando um segundo Malandro estiver na partida, insira-o imediatamente após o primeiro Malandro.\n- Em partidas com dois Malandros, a Lei atual diz explicitamente que, na Preparação Padrão, você determina aleatoriamente qual Malandro prepara primeiro.';
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesPtBr advancedSetupFactionGuideBodies = _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesPtBr._(_root);
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -1524,4 +1615,23 @@ class _TranslationsAuthAuthLoginScreenErrorsPtBr extends TranslationsAuthAuthLog
 	@override String get passwordResetFailed => 'Não foi possível redefinir a senha agora. Tente novamente mais tarde.';
 	@override String get networkUnavailable => 'Sem conexão com o servidor. Verifique sua internet e tente novamente.';
 	@override String get unexpected => 'Ocorreu um erro inesperado. Tente novamente.';
+}
+
+// Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies
+class _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesPtBr extends TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get marquiseDeCat => '<h>classe_do_adset<h>\n*militante*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 3\n- padrão: três clareiras, cada uma adjacente a pelo menos outro território inicial\n- borda_do_mapa_obrigatória: não\n\n<h>lógica_canônica_de_preparação<h>\n- escolha três clareiras de território inicial que formem uma cadeia conectada\n- coloque 2 guerreiros em cada território inicial\n- coloque 1 guerreiro em cada outra clareira\n- coloque a fortaleza em um território inicial, preferindo um que não seja adjacente a um território inicial inimigo\n- coloque 1 serraria, 1 oficina e 1 recrutador no mapa, cada um em um território inicial diferente\n- preencha as trilhas de construções, deixando vazia apenas a casa mais à esquerda de cada trilha';
+	@override String get eyrieDynasties => '<h>classe_do_adset<h>\n*militante*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 1\n- borda_do_mapa_obrigatória: sim\n- número_mínimo_de_clareiras_entre_territórios_iniciais_inimigos: 2\n\n<h>lógica_canônica_de_preparação<h>\n- escolha um território inicial na borda do mapa\n- se possível, esse território inicial deve ter pelo menos duas clareiras entre ele e territórios iniciais inimigos\n- coloque 6 guerreiros e 1 poleiro nesse território inicial\n- escolha qualquer líder e coloque-o no espaço de líder\n- mantenha os outros líderes virados para cima por perto\n- coloque os 2 vizires leais de acordo com o líder escolhido\n- preencha a trilha de poleiros, deixando vazio apenas o espaço mais à esquerda';
+	@override String get woodlandAlliance => '<h>classe_do_adset<h>\n*insurgente*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 0\n\n<h>lógica_canônica_de_preparação<h>\n- compre 3 cartas para a pilha de apoiadores\n- preencha a trilha de simpatia com todos os marcadores de simpatia\n- coloque as 3 bases nos espaços correspondentes de base no tabuleiro da facção';
+	@override String get vagabond => '<h>classe_do_adset<h>\n*insurgente*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 0\n- começa_na_floresta: sim\n\n<h>lógica_canônica_de_preparação<h>\n- coloque o peão em qualquer floresta\n- embaralhe o baralho de missões e revele 3 missões por perto\n- coloque os 4 itens de ruína sob as ruínas aleatoriamente, a menos que outra facção já tenha lidado com itens de ruína nesta preparação\n- coloque a carta de personagem designada no espaço de personagem\n- pegue os itens iniciais listados para aquele personagem e coloque-os na sacola / trilhas correspondentes\n- após a preparação, coloque os marcadores de relacionamento das facções não malandras em jogo em indiferente\n\n<h>notas_especiais<h>\n<i>- no AdSet público da era Marauder, revelar uma carta de preparação do Malandro também revela uma carta aleatória de personagem do Malandro<i>\n<i>- no Apêndice A pós-Marauder em atualização contínua, o suporte futuro deve permitir uma ou duas cartas de preparação do Malandro na reserva de draft<i>';
+	@override String get theLizardCult => '<h>classe_do_adset<h>\n*insurgente*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 1\n- não_adjacente_a_território_inicial_inimigo: sim\n\n<h>lógica_canônica_de_preparação<h>\n- escolha um território inicial que não seja adjacente a um território inicial inimigo, se possível\n- coloque 4 guerreiros e 1 jardim correspondente nesse território inicial\n- distribua mais 3 guerreiros entre clareiras adjacentes da maneira mais uniforme possível\n- coloque 2 guerreiros na caixa de acólitos\n- preencha as trilhas de jardins, deixando vazia a casa mais à esquerda do tipo de jardim já colocado no mapa\n- coloque o marcador de proscrito no lado de proscrito';
+	@override String get riverfolkCompany => '<h>classe_do_adset<h>\n*insurgente*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 0\n- apenas_clareiras_com_rio: sim\n\n<h>lógica_canônica_de_preparação<h>\n- coloque 4 guerreiros em quaisquer clareiras com rio\n- coloque 3 guerreiros na caixa de pagamentos\n- preencha as trilhas de entrepostos com os entrepostos correspondentes\n- coloque os 3 marcadores de serviço na trilha de serviços e defina os preços de cada serviço';
+	@override String get undergroundDuchy => '<h>classe_do_adset<h>\n*militante*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 1\n- não_adjacente_a_território_inicial_inimigo: sim\n\n<h>lógica_canônica_de_preparação<h>\n- escolha um território inicial que não seja adjacente a um território inicial inimigo, se possível\n- coloque 2 guerreiros e 1 túnel nesse território inicial\n- distribua mais 5 guerreiros entre clareiras adjacentes da maneira mais uniforme possível\n- coloque o tabuleiro da toca próximo ao mapa\n- preencha ambas as trilhas de construções com cidadelas e mercados\n- coloque todos os 9 ministros virados para cima na pilha de ministros não convencidos\n- coloque as 9 coroas nos espaços de pontos de vitória mostrados no tabuleiro da facção';
+	@override String get corvidConspiracy => '<h>classe_do_adset<h>\n*insurgente*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 1\n\n<h>lógica_canônica_de_preparação<h>\n- escolha uma clareira de território inicial\n- coloque ali 1 guerreiro e 1 marcador de trama virado para baixo de sua escolha\n- coloque 1 guerreiro em uma clareira de cada naipe, contando a colocação no território inicial, totalizando 4 guerreiros\n\n<h>nota_de_localização<h>\n<i>- o nome francês acima é a melhor correspondência pública encontrada em referências comunitárias / leis traduzidas, mas ainda deve ser conferido com um componente oficial em francês antes de publicar texto oficial exato na interface<i>';
+	@override String get lordOfTheHundreds => '<h>classe_do_adset<h>\n*militante*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 1\n- borda_do_mapa_obrigatória: sim\n- número_mínimo_de_clareiras_entre_territórios_iniciais_inimigos: 2\n\n<h>lógica_canônica_de_preparação<h>\n- escolha um território inicial na borda do mapa\n- se possível, esse território inicial deve ter pelo menos duas clareiras entre ele e territórios iniciais inimigos\n- coloque o senhor da guerra, 4 guerreiros e a fortaleza nesse território inicial\n- coloque a carta de humor teimoso no espaço de humor\n- coloque os 4 itens de ruína sob as ruínas aleatoriamente, a menos que outra facção já tenha lidado com itens de ruína nesta preparação';
+	@override String get keepersInIron => '<h>classe_do_adset<h>\n*militante*\n\n<h>regras_do_território_inicial<h>\n- quantidade: 2\n- devem_ser_adjacentes_entre_si: sim\n- borda_do_mapa_obrigatória: sim\n- número_mínimo_de_clareiras_entre_territórios_iniciais_inimigos: 2\n\n<h>lógica_canônica_de_preparação<h>\n- embaralhe todas as relíquias viradas para baixo e coloque primeiro uma relíquia aleatória em cada floresta\n- escolha 2 clareiras de território inicial adjacentes na borda do mapa\n- se possível, esses territórios iniciais devem ter pelo menos duas clareiras entre eles e territórios iniciais inimigos\n- coloque 4 guerreiros em cada território inicial\n- distribua quaisquer relíquias restantes da maneira mais uniforme possível entre florestas que não sejam adjacentes aos seus territórios iniciais\n- coloque um retentor fiel em cada espaço de coluna da retinua\n\n<h>nota_de_localização<h>\n<i>- o nome francês acima segue o uso atual do mercado francês, mas ainda merece verificação manual com o conjunto de componentes localizado antes de publicar texto oficial exato na interface<i>';
 }

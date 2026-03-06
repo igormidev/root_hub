@@ -154,7 +154,7 @@ class _FeatureHardcodedUiStringRule extends DartLintRule {
         code: const LintCode(
           name: 'feature_hardcoded_ui_string',
           problemMessage:
-              'Hard-coded string literal found in feature/state code.',
+              'Hard-coded string literal found in feature/state/core content code.',
           correctionMessage:
               'Move user-facing text to localization keys. Use // ignore: feature_hardcoded_ui_string above non-translatable strings.',
         ),
@@ -167,12 +167,12 @@ class _FeatureHardcodedUiStringRule extends DartLintRule {
     CustomLintContext context,
   ) {
     final filePath = resolver.source.fullName;
-    if (!_isLintableFeatureFile(filePath)) {
+    if (!_isLintableFeatureHardcodedStringFile(filePath)) {
       return;
     }
 
     context.registry.addSimpleStringLiteral((literal) {
-      if (!_shouldReportFeatureStringNode(literal)) {
+      if (!_shouldReportFeatureOrContentStringNode(literal, filePath)) {
         return;
       }
 
@@ -180,7 +180,7 @@ class _FeatureHardcodedUiStringRule extends DartLintRule {
     });
 
     context.registry.addStringInterpolation((interpolation) {
-      if (!_shouldReportFeatureStringNode(interpolation)) {
+      if (!_shouldReportFeatureOrContentStringNode(interpolation, filePath)) {
         return;
       }
 
@@ -391,6 +391,19 @@ bool _isLintableFeatureFile(String path) {
 
   return (normalizedPath.contains('/lib/src/features/') ||
           normalizedPath.contains('/lib/src/states/register_match/')) &&
+      normalizedPath.endsWith('.dart') &&
+      !normalizedPath.endsWith('.g.dart') &&
+      !normalizedPath.endsWith('.freezed.dart');
+}
+
+bool _isLintableFeatureHardcodedStringFile(String path) {
+  return _isLintableFeatureFile(path) || _isLintableCoreContentFile(path);
+}
+
+bool _isLintableCoreContentFile(String path) {
+  final normalizedPath = path.replaceAll('\\', '/');
+
+  return normalizedPath.contains('/lib/src/core/content/') &&
       normalizedPath.endsWith('.dart') &&
       !normalizedPath.endsWith('.g.dart') &&
       !normalizedPath.endsWith('.freezed.dart');
@@ -650,6 +663,42 @@ bool _shouldReportFeatureStringNode(AstNode node) {
   }
 
   return _isLikelyUiTextLiteral(node);
+}
+
+bool _shouldReportFeatureOrContentStringNode(AstNode node, String filePath) {
+  if (_isLintableCoreContentFile(filePath)) {
+    return _shouldReportCoreContentStringNode(node);
+  }
+
+  return _shouldReportFeatureStringNode(node);
+}
+
+bool _shouldReportCoreContentStringNode(AstNode node) {
+  if (node is SimpleStringLiteral) {
+    if (node.value.trim().isEmpty) {
+      return false;
+    }
+
+    if (_isStringLiteralInSkippableNode(node)) {
+      return false;
+    }
+
+    return _containsAlphabeticCharacters(node.value);
+  }
+
+  if (node is! StringInterpolation) {
+    return false;
+  }
+
+  if (_isStringLiteralInSkippableNode(node)) {
+    return false;
+  }
+
+  return _nodeContainsAlphabeticLiteralText(node);
+}
+
+bool _containsAlphabeticCharacters(String value) {
+  return RegExp(r'[A-Za-zÀ-ÿ]').hasMatch(value);
 }
 
 bool _shouldReportServerResponseLiteral(SimpleStringLiteral literal) {

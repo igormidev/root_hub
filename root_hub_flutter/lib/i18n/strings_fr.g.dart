@@ -102,7 +102,13 @@ class _TranslationsHomeFr extends TranslationsHomeEn {
 	// Translations
 	@override late final _TranslationsHomeUiSectionsHomeStatsSectionFr ui_sections_home_stats_section = _TranslationsHomeUiSectionsHomeStatsSectionFr._(_root);
 	@override late final _TranslationsHomeUiScreensHomeScreenFr ui_screens_home_screen = _TranslationsHomeUiScreensHomeScreenFr._(_root);
+	@override late final _TranslationsHomeUiSectionsHomeCommunityToolsSectionFr ui_sections_home_community_tools_section = _TranslationsHomeUiSectionsHomeCommunityToolsSectionFr._(_root);
+	@override late final _TranslationsHomeUiScreensRootReachCalculatorScreenFr ui_screens_root_reach_calculator_screen = _TranslationsHomeUiScreensRootReachCalculatorScreenFr._(_root);
+	@override late final _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenFr ui_screens_advanced_setup_quickguide_screen = _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenFr._(_root);
+	@override late final _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetFr ui_sheets_advanced_setup_faction_details_sheet = _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetFr._(_root);
+	@override late final _TranslationsHomeUiScreensSetupOrderScreenFr ui_screens_setup_order_screen = _TranslationsHomeUiScreensSetupOrderScreenFr._(_root);
 	@override late final _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr ui_widgets_home_stats_pie_chart_widget = _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr._(_root);
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentFr ui_content_root_community_tools_content = _TranslationsHomeUiContentRootCommunityToolsContentFr._(_root);
 }
 
 // Path: match
@@ -507,6 +513,78 @@ class _TranslationsHomeUiScreensHomeScreenFr extends TranslationsHomeUiScreensHo
 	@override String get registerYourFirstMatchToStartYourDashboard => 'Jouez et enregistrez votre première partie pour démarrer votre tableau de bord personnel.';
 }
 
+// Path: home.ui_sections_home_community_tools_section
+class _TranslationsHomeUiSectionsHomeCommunityToolsSectionFr extends TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
+	_TranslationsHomeUiSectionsHomeCommunityToolsSectionFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Outils de la Communauté';
+	@override String get description => 'Références ROOT utiles pour préparer la table, planifier les factions et accélérer l\'organisation de la partie.';
+	@override String get comingSoon => 'Bientôt';
+	@override String get rootTag => 'ROOT';
+	@override String get reachCalculatorTitle => 'Calculateur de Portée';
+	@override String get advancedSetupQuickguideTitle => 'Guide Rapide de Mise en place Avancée';
+	@override String get setupOrderTitle => 'Ordre de Mise en place';
+	@override String get recommendedFactionsToPlayTitle => 'Factions Recommandées';
+}
+
+// Path: home.ui_screens_root_reach_calculator_screen
+class _TranslationsHomeUiScreensRootReachCalculatorScreenFr extends TranslationsHomeUiScreensRootReachCalculatorScreenEn {
+	_TranslationsHomeUiScreensRootReachCalculatorScreenFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Calculateur de Portée';
+	@override String get description => 'Composez une table et vérifiez si elle a assez de portée pour une partie équilibrée.';
+	@override String get targetReached => 'Objectif\natteint';
+	@override String needMoreReach({required Object remainingReach}) => 'Encore ${remainingReach}\nde portée';
+	@override String get tapOnceToPickTapTwiceToBanTapAgainToReset => 'Touchez une fois pour choisir, deux fois pour bannir, puis encore une fois pour réinitialiser.';
+	@override String get picked => 'Choisies';
+	@override String get banned => 'Bannies';
+	@override String get unavailable => 'Indisponibles';
+	@override String get players => 'Nombre de joueurs';
+	@override String requiredReach({required Object reach}) => 'Portée requise : ${reach}+';
+}
+
+// Path: home.ui_screens_advanced_setup_quickguide_screen
+class _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenFr extends TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn {
+	_TranslationsHomeUiScreensAdvancedSetupQuickguideScreenFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Guide Rapide de Mise en place Avancée';
+	@override String get description => 'Choisissez une faction pour ouvrir son résumé de Mise en place Avancée. Le flux ci-dessous suit le modèle public à 10 factions utilisé jusqu\'à Maraudeur.';
+	@override String get generalFlow => 'Flux général';
+	@override String get chooseAFaction => 'Choisissez une faction';
+	@override String get chooseAFactionDescription => 'Touchez une faction pour ouvrir ses détails de mise en place dans une fiche de référence rapide.';
+}
+
+// Path: home.ui_sheets_advanced_setup_faction_details_sheet
+class _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetFr extends TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn {
+	_TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get originalEnglish => 'Anglais original';
+}
+
+// Path: home.ui_screens_setup_order_screen
+class _TranslationsHomeUiScreensSetupOrderScreenFr extends TranslationsHomeUiScreensSetupOrderScreenEn {
+	_TranslationsHomeUiScreensSetupOrderScreenFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Ordre de Mise en place';
+	@override String get description => 'La mise en place standard suit une priorité fixe entre les factions. Cette page est un rappel rapide de cet ordre.';
+	@override String get secondVagabondTitle => 'Règle du second Vagabond';
+}
+
 // Path: home.ui_widgets_home_stats_pie_chart_widget
 class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr extends TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 	_TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -515,6 +593,19 @@ class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr extends TranslationsHo
 
 	// Translations
 	@override String get noValuesForThisMetricYet => 'Aucune valeur pour cette métrique pour l\'instant.';
+}
+
+// Path: home.ui_content_root_community_tools_content
+class _TranslationsHomeUiContentRootCommunityToolsContentFr extends TranslationsHomeUiContentRootCommunityToolsContentEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get vagabondSecondSuffix => 'II';
+	@override String get advancedSetupOverviewBody => '<h>flux_général<h>\n1. Choisissez et mettez en place la carte.\n2. Choisissez le paquet.\n3. Mettez en place les bots, si vous les utilisez.\n4. Déterminez aléatoirement l\'ordre des sièges et le premier joueur.\n5. Mettez en place les repères, si vous les utilisez.\n6. Mettez en place les hommes de main, si vous les utilisez.\n7. Piochez 5 cartes par joueur.\n8. Mettez en place les factions soit avec la Mise en place Standard, soit avec les cartes de Mise en place Avancée.\n9. Placez tous les marqueurs de score sur 0.\n10. Chaque joueur garde 3 des 5 cartes et remet les 2 autres dans le paquet commun.\n\n<h>logique_de_la_draft<h>\n1. Mélangez toutes les cartes de mise en place militantes et placez-en une face visible au centre.\n2. Mélangez les cartes militantes restantes avec toutes les cartes insurgées.\n3. Distribuez une carte de mise en place par joueur dans la réserve. Il y aura une carte de plus que le nombre de joueurs.\n4. À 2 joueurs, retirez les cartes insurgées avant la distribution, sauf si vous utilisez volontairement l\'exception des hommes de main aventureux.\n5. Si la dernière carte distribuée est insurgée, elle est verrouillée et ne peut pas être choisie tant qu\'au moins une faction militante n\'a pas été choisie.\n6. Si une carte de mise en place du Vagabond apparaît, révélez aussi une carte personnage du Vagabond aléatoire à côté.\n7. En commençant par le dernier joueur dans l\'ordre du tour et en avançant dans le sens antihoraire, chaque joueur choisit une carte de mise en place et résout immédiatement la mise en place de cette faction.\n8. La portée n\'est pas utilisée dans la Mise en place Avancée, même si les cartes de mise en place peuvent encore afficher des valeurs de portée.';
+	@override String get setupOrderSecondVagabondBody => '- Lorsqu\'un second Vagabond est dans la partie, insérez-le immédiatement après le premier Vagabond.\n- Dans les parties avec deux Vagabonds, la Loi actuelle dit explicitement qu\'en Mise en place Standard, vous déterminez aléatoirement quel Vagabond se met en place en premier.';
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesFr advancedSetupFactionGuideBodies = _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesFr._(_root);
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -1524,4 +1615,23 @@ class _TranslationsAuthAuthLoginScreenErrorsFr extends TranslationsAuthAuthLogin
 	@override String get passwordResetFailed => 'Une erreur est survenue pendant la réinitialisation du mot de passe. Réessayez plus tard.';
 	@override String get networkUnavailable => 'Impossible de se connecter au serveur. Vérifiez votre connexion et réessayez.';
 	@override String get unexpected => 'Une erreur inattendue est survenue. Réessayez.';
+}
+
+// Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies
+class _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesFr extends TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get marquiseDeCat => '<h>classe_de_l_adset<h>\n*militante*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 3\n- schéma : trois clairières, chacune adjacente à au moins un autre territoire d\'origine\n- bord_de_carte_obligatoire : non\n\n<h>logique_canonique_de_mise_en_place<h>\n- choisissez trois clairières d\'origine qui forment une chaîne connectée\n- placez 2 guerriers dans chaque territoire d\'origine\n- placez 1 guerrier dans chaque autre clairière\n- placez le Donjon dans un territoire d\'origine, en préférant un territoire qui n\'est pas adjacent à un territoire d\'origine ennemi\n- placez 1 Scierie, 1 Atelier et 1 Recruteur sur la carte, chacun dans un territoire d\'origine différent\n- remplissez les pistes de bâtiments en ne laissant vide que la case la plus à gauche de chaque piste';
+	@override String get eyrieDynasties => '<h>classe_de_l_adset<h>\n*militante*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 1\n- bord_de_carte_obligatoire : oui\n- clairières_minimales_entre_territoires_d_origine_ennemis : 2\n\n<h>logique_canonique_de_mise_en_place<h>\n- choisissez un territoire d\'origine sur le bord de la carte\n- si possible, ce territoire d\'origine doit avoir au moins deux clairières entre lui et les territoires d\'origine ennemis\n- placez 6 guerriers et 1 Perchoir dans ce territoire d\'origine\n- choisissez n\'importe quel chef et placez-le sur l\'emplacement du chef\n- gardez les autres chefs face visible à proximité\n- placez les 2 vizirs loyaux selon le chef choisi\n- remplissez la piste des Perchoirs en ne laissant vide que la case la plus à gauche';
+	@override String get woodlandAlliance => '<h>classe_de_l_adset<h>\n*insurgée*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 0\n\n<h>logique_canonique_de_mise_en_place<h>\n- piochez 3 cartes dans la pile des sympathisants\n- remplissez la piste de Sympathie avec tous les jetons de Sympathie\n- placez les 3 bases sur les emplacements correspondants du plateau de faction';
+	@override String get vagabond => '<h>classe_de_l_adset<h>\n*insurgée*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 0\n- commence_en_forêt : oui\n\n<h>logique_canonique_de_mise_en_place<h>\n- placez le pion dans n\'importe quelle forêt\n- mélangez le paquet de quêtes et révélez 3 quêtes à proximité\n- placez au hasard les 4 objets de ruine sous les ruines, sauf si une autre faction a déjà géré les objets de ruine pendant cette mise en place\n- placez la carte personnage attribuée sur l\'emplacement du personnage\n- prenez les objets de départ indiqués pour ce personnage et placez-les dans la sacoche / les pistes correspondantes\n- après la mise en place, placez les marqueurs de relation pour les factions non Vagabond en jeu sur indifférent\n\n<h>notes_spéciales<h>\n<i>- dans l\'AdSet public de l\'ère Maraudeur, révéler une carte de mise en place du Vagabond révèle aussi une carte personnage du Vagabond aléatoire<i>\n<i>- dans l\'Appendice A vivant post-Maraudeur, le support futur devrait permettre une ou deux cartes de mise en place du Vagabond dans la réserve de draft<i>';
+	@override String get theLizardCult => '<h>classe_de_l_adset<h>\n*insurgée*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 1\n- pas_adjacent_à_un_territoire_d_origine_ennemi : oui\n\n<h>logique_canonique_de_mise_en_place<h>\n- choisissez un territoire d\'origine qui n\'est pas adjacent à un territoire d\'origine ennemi, si possible\n- placez 4 guerriers et 1 jardin correspondant dans ce territoire d\'origine\n- répartissez 3 guerriers supplémentaires parmi les clairières adjacentes aussi uniformément que possible\n- placez 2 guerriers dans la case des acolytes\n- remplissez les pistes de jardins en laissant vide la case la plus à gauche du type de jardin déjà placé sur la carte\n- placez le marqueur d\'exilé sur sa face d\'exilé';
+	@override String get riverfolkCompany => '<h>classe_de_l_adset<h>\n*insurgée*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 0\n- clairières_avec_rivière_uniquement : oui\n\n<h>logique_canonique_de_mise_en_place<h>\n- placez 4 guerriers dans n\'importe quelles clairières riveraines\n- placez 3 guerriers dans la case des paiements\n- remplissez les pistes de comptoirs avec les comptoirs correspondants\n- placez les 3 marqueurs de service sur la piste des services et fixez le prix de chaque service';
+	@override String get undergroundDuchy => '<h>classe_de_l_adset<h>\n*militante*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 1\n- pas_adjacent_à_un_territoire_d_origine_ennemi : oui\n\n<h>logique_canonique_de_mise_en_place<h>\n- choisissez un territoire d\'origine qui n\'est pas adjacent à un territoire d\'origine ennemi, si possible\n- placez 2 guerriers et 1 tunnel dans ce territoire d\'origine\n- répartissez 5 guerriers supplémentaires parmi les clairières adjacentes aussi uniformément que possible\n- placez le plateau du Terrier près de la carte\n- remplissez les deux pistes de bâtiments avec les citadelles et les marchés\n- placez les 9 ministres face visible dans la pile des ministres non ralliés\n- placez les 9 couronnes sur les cases de points de victoire indiquées sur le plateau de faction';
+	@override String get corvidConspiracy => '<h>classe_de_l_adset<h>\n*insurgée*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 1\n\n<h>logique_canonique_de_mise_en_place<h>\n- choisissez une clairière d\'origine\n- placez-y 1 guerrier et 1 jeton de complot face cachée de votre choix\n- placez 1 guerrier dans une clairière de chaque couleur, en comptant la pose du territoire d\'origine, pour un total de 4 guerriers\n\n<h>note_de_localisation<h>\n<i>- l\'intitulé français ci-dessus est la meilleure correspondance publique trouvée dans les références communautaires / lois traduites, mais il devrait quand même être vérifié avec un composant officiel en français avant de publier un texte exact dans l\'interface<i>';
+	@override String get lordOfTheHundreds => '<h>classe_de_l_adset<h>\n*militante*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 1\n- bord_de_carte_obligatoire : oui\n- clairières_minimales_entre_territoires_d_origine_ennemis : 2\n\n<h>logique_canonique_de_mise_en_place<h>\n- choisissez un territoire d\'origine sur le bord de la carte\n- si possible, ce territoire d\'origine doit avoir au moins deux clairières entre lui et les territoires d\'origine ennemis\n- placez le chef de guerre, 4 guerriers et la forteresse dans ce territoire d\'origine\n- placez la carte d\'humeur obstinée dans l\'emplacement d\'humeur\n- placez au hasard les 4 objets de ruine sous les ruines, sauf si une autre faction a déjà géré les objets de ruine pendant cette mise en place';
+	@override String get keepersInIron => '<h>classe_de_l_adset<h>\n*militante*\n\n<h>règles_du_territoire_d_origine<h>\n- quantité : 2\n- doivent_être_adjacent_l_un_à_l_autre : oui\n- bord_de_carte_obligatoire : oui\n- clairières_minimales_entre_territoires_d_origine_ennemis : 2\n\n<h>logique_canonique_de_mise_en_place<h>\n- mélangez toutes les reliques face cachée et placez d\'abord une relique aléatoire dans chaque forêt\n- choisissez 2 clairières d\'origine adjacentes sur le bord de la carte\n- si possible, ces territoires d\'origine doivent avoir au moins deux clairières entre eux et les territoires d\'origine ennemis\n- placez 4 guerriers dans chaque territoire d\'origine\n- répartissez toutes les reliques restantes aussi uniformément que possible parmi les forêts qui ne sont pas adjacentes à vos territoires d\'origine\n- placez un fidèle serviteur dans chaque emplacement de colonne du cortège\n\n<h>note_de_localisation<h>\n<i>- l\'intitulé français ci-dessus suit l\'usage actuel du marché français, mais mérite tout de même une vérification manuelle avec l\'ensemble de composants localisé avant de publier un texte exact dans l\'interface<i>';
 }

@@ -106,7 +106,13 @@ class TranslationsHomeEn {
 	// Translations
 	late final TranslationsHomeUiSectionsHomeStatsSectionEn ui_sections_home_stats_section = TranslationsHomeUiSectionsHomeStatsSectionEn.internal(_root);
 	late final TranslationsHomeUiScreensHomeScreenEn ui_screens_home_screen = TranslationsHomeUiScreensHomeScreenEn.internal(_root);
+	late final TranslationsHomeUiSectionsHomeCommunityToolsSectionEn ui_sections_home_community_tools_section = TranslationsHomeUiSectionsHomeCommunityToolsSectionEn.internal(_root);
+	late final TranslationsHomeUiScreensRootReachCalculatorScreenEn ui_screens_root_reach_calculator_screen = TranslationsHomeUiScreensRootReachCalculatorScreenEn.internal(_root);
+	late final TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn ui_screens_advanced_setup_quickguide_screen = TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn.internal(_root);
+	late final TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn ui_sheets_advanced_setup_faction_details_sheet = TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn.internal(_root);
+	late final TranslationsHomeUiScreensSetupOrderScreenEn ui_screens_setup_order_screen = TranslationsHomeUiScreensSetupOrderScreenEn.internal(_root);
 	late final TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn ui_widgets_home_stats_pie_chart_widget = TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn.internal(_root);
+	late final TranslationsHomeUiContentRootCommunityToolsContentEn ui_content_root_community_tools_content = TranslationsHomeUiContentRootCommunityToolsContentEn.internal(_root);
 }
 
 // Path: match
@@ -874,6 +880,132 @@ class TranslationsHomeUiScreensHomeScreenEn {
 	String get registerYourFirstMatchToStartYourDashboard => 'Play and register your first match to start your personal dashboard.';
 }
 
+// Path: home.ui_sections_home_community_tools_section
+class TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
+	TranslationsHomeUiSectionsHomeCommunityToolsSectionEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Community Tools'
+	String get title => 'Community Tools';
+
+	/// en: 'Helpful ROOT references for table prep, faction planning, and faster match setup.'
+	String get description => 'Helpful ROOT references for table prep, faction planning, and faster match setup.';
+
+	/// en: 'Soon'
+	String get comingSoon => 'Soon';
+
+	/// en: 'ROOT'
+	String get rootTag => 'ROOT';
+
+	/// en: 'Reach Calculator'
+	String get reachCalculatorTitle => 'Reach Calculator';
+
+	/// en: 'Advanced Setup Quickguide'
+	String get advancedSetupQuickguideTitle => 'Advanced Setup Quickguide';
+
+	/// en: 'Setup Order'
+	String get setupOrderTitle => 'Setup Order';
+
+	/// en: 'Recommended Factions'
+	String get recommendedFactionsToPlayTitle => 'Recommended Factions';
+}
+
+// Path: home.ui_screens_root_reach_calculator_screen
+class TranslationsHomeUiScreensRootReachCalculatorScreenEn {
+	TranslationsHomeUiScreensRootReachCalculatorScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Reach Calculator'
+	String get title => 'Reach Calculator';
+
+	/// en: 'Build a roster and check whether the table has enough reach for a balanced match.'
+	String get description => 'Build a roster and check whether the table has enough reach for a balanced match.';
+
+	/// en: 'Target secured'
+	String get targetReached => 'Target\nsecured';
+
+	/// en: 'Need {remainingReach} more reach'
+	String needMoreReach({required Object remainingReach}) => 'Need ${remainingReach}\nmore reach';
+
+	/// en: 'Tap once to pick, tap twice to ban, then tap again to reset.'
+	String get tapOnceToPickTapTwiceToBanTapAgainToReset => 'Tap once to pick, tap twice to ban, then tap again to reset.';
+
+	/// en: 'Picked'
+	String get picked => 'Picked';
+
+	/// en: 'Banned'
+	String get banned => 'Banned';
+
+	/// en: 'Unavailable'
+	String get unavailable => 'Unavailable';
+
+	/// en: 'Player quantity'
+	String get players => 'Player quantity';
+
+	/// en: 'Required reach: {reach}+'
+	String requiredReach({required Object reach}) => 'Required reach: ${reach}+';
+}
+
+// Path: home.ui_screens_advanced_setup_quickguide_screen
+class TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn {
+	TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Advanced Setup Quickguide'
+	String get title => 'Advanced Setup Quickguide';
+
+	/// en: 'Pick a faction to open its Advanced Setup summary. The draft flow below follows the public 10-faction model used through Marauder.'
+	String get description => 'Pick a faction to open its Advanced Setup summary. The draft flow below follows the public 10-faction model used through Marauder.';
+
+	/// en: 'General flow'
+	String get generalFlow => 'General flow';
+
+	/// en: 'Choose a faction'
+	String get chooseAFaction => 'Choose a faction';
+
+	/// en: 'Tap any faction board to open its setup details in a quick reference sheet.'
+	String get chooseAFactionDescription => 'Tap any faction board to open its setup details in a quick reference sheet.';
+}
+
+// Path: home.ui_sheets_advanced_setup_faction_details_sheet
+class TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn {
+	TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Original English'
+	String get originalEnglish => 'Original English';
+}
+
+// Path: home.ui_screens_setup_order_screen
+class TranslationsHomeUiScreensSetupOrderScreenEn {
+	TranslationsHomeUiScreensSetupOrderScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Setup Order'
+	String get title => 'Setup Order';
+
+	/// en: 'Standard setup follows a fixed faction priority. This page is a quick reminder of that order.'
+	String get description => 'Standard setup follows a fixed faction priority. This page is a quick reminder of that order.';
+
+	/// en: 'Second vagabond rule'
+	String get secondVagabondTitle => 'Second vagabond rule';
+}
+
 // Path: home.ui_widgets_home_stats_pie_chart_widget
 class TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 	TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn.internal(this._root);
@@ -884,6 +1016,26 @@ class TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 
 	/// en: 'No values for this metric yet.'
 	String get noValuesForThisMetricYet => 'No values for this metric yet.';
+}
+
+// Path: home.ui_content_root_community_tools_content
+class TranslationsHomeUiContentRootCommunityToolsContentEn {
+	TranslationsHomeUiContentRootCommunityToolsContentEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'II'
+	String get vagabondSecondSuffix => 'II';
+
+	/// en: '<h>general_flow<h> 1. Choose and set up the map. 2. Choose the deck. 3. Set up bots, if used. 4. Randomize seating order and first player. 5. Set up landmarks, if used. 6. Set up hirelings, if used. 7. Draw 5 cards per player. 8. Set up factions either by Standard Setup or by Advanced Setup faction cards. 9. Put all score markers on 0. 10. Each player keeps 3 of the 5 cards and returns the other 2 to the shared deck. <h>draft_logic<h> 1. Shuffle all militant setup cards and place one face up in the center pool. 2. Shuffle the remaining militant setup cards together with all insurgent setup cards. 3. Deal one setup card per player to the pool. There will be one more card than players in total. 4. In 2-player, remove insurgent setup cards before dealing unless you are deliberately using the adventurous hirelings exception. 5. If the last dealt card is insurgent, it is locked and cannot be chosen until at least one militant faction has been chosen. 6. If a Vagabond setup card appears, also reveal a random Vagabond character card next to it. 7. Starting with the last player in turn order and moving counterclockwise, each player chooses a setup card and immediately resolves that faction's setup. 8. Reach is not used by Advanced Setup, though setup cards may still show reach values.'
+	String get advancedSetupOverviewBody => '<h>general_flow<h>\n1. Choose and set up the map.\n2. Choose the deck.\n3. Set up bots, if used.\n4. Randomize seating order and first player.\n5. Set up landmarks, if used.\n6. Set up hirelings, if used.\n7. Draw 5 cards per player.\n8. Set up factions either by Standard Setup or by Advanced Setup faction cards.\n9. Put all score markers on 0.\n10. Each player keeps 3 of the 5 cards and returns the other 2 to the shared deck.\n\n<h>draft_logic<h>\n1. Shuffle all militant setup cards and place one face up in the center pool.\n2. Shuffle the remaining militant setup cards together with all insurgent setup cards.\n3. Deal one setup card per player to the pool. There will be one more card than players in total.\n4. In 2-player, remove insurgent setup cards before dealing unless you are deliberately using the adventurous hirelings exception.\n5. If the last dealt card is insurgent, it is locked and cannot be chosen until at least one militant faction has been chosen.\n6. If a Vagabond setup card appears, also reveal a random Vagabond character card next to it.\n7. Starting with the last player in turn order and moving counterclockwise, each player chooses a setup card and immediately resolves that faction\'s setup.\n8. Reach is not used by Advanced Setup, though setup cards may still show reach values.';
+
+	/// en: '- When a second Vagabond is present, insert it immediately after the first Vagabond. - In two-Vagabond games, the current Law explicitly says that under Standard Setup you randomly determine which Vagabond sets up first.'
+	String get setupOrderSecondVagabondBody => '- When a second Vagabond is present, insert it immediately after the first Vagabond.\n- In two-Vagabond games, the current Law explicitly says that under Standard Setup you randomly determine which Vagabond sets up first.';
+
+	late final TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn advancedSetupFactionGuideBodies = TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn.internal(_root);
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -2849,4 +3001,43 @@ class TranslationsAuthAuthLoginScreenErrorsEn {
 
 	/// en: 'An unexpected error occurred. Please try again.'
 	String get unexpected => 'An unexpected error occurred. Please try again.';
+}
+
+// Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies
+class TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn {
+	TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: '<h>adset_class<h> *militant* <h>homeland_rules<h> - count: 3 - pattern: three_clearings_each_adjacent_to_one_other_homeland - map_edge_required: false <h>canonical_setup_logic<h> - choose three homeland clearings that form a connected chain - place 2 warriors in each homeland - place 1 warrior in every other clearing - place the keep in one homeland, preferring one not adjacent to an enemy homeland - place 1 sawmill, 1 workshop, and 1 recruiter on the map, each in a different homeland - fill building tracks, leaving only the leftmost space of each track empty'
+	String get marquiseDeCat => '<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 3\n- pattern: three_clearings_each_adjacent_to_one_other_homeland\n- map_edge_required: false\n\n<h>canonical_setup_logic<h>\n- choose three homeland clearings that form a connected chain\n- place 2 warriors in each homeland\n- place 1 warrior in every other clearing\n- place the keep in one homeland, preferring one not adjacent to an enemy homeland\n- place 1 sawmill, 1 workshop, and 1 recruiter on the map, each in a different homeland\n- fill building tracks, leaving only the leftmost space of each track empty';
+
+	/// en: '<h>adset_class<h> *militant* <h>homeland_rules<h> - count: 1 - map_edge_required: true - minimum_clearings_between_enemy_homelands: 2 <h>canonical_setup_logic<h> - choose one homeland on the map edge - if possible, that homeland should have at least two clearings between it and enemy homelands - place 6 warriors and 1 roost in that homeland - choose any leader and place it on the leader slot - keep the other leaders face up nearby - place the 2 loyal viziers according to the chosen leader - fill the roost track, leaving only the leftmost space empty'
+	String get eyrieDynasties => '<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 1\n- map_edge_required: true\n- minimum_clearings_between_enemy_homelands: 2\n\n<h>canonical_setup_logic<h>\n- choose one homeland on the map edge\n- if possible, that homeland should have at least two clearings between it and enemy homelands\n- place 6 warriors and 1 roost in that homeland\n- choose any leader and place it on the leader slot\n- keep the other leaders face up nearby\n- place the 2 loyal viziers according to the chosen leader\n- fill the roost track, leaving only the leftmost space empty';
+
+	/// en: '<h>adset_class<h> *insurgent* <h>homeland_rules<h> - count: 0 <h>canonical_setup_logic<h> - draw 3 cards into the supporters stack - fill the sympathy track with all sympathy tokens - place the 3 bases onto the matching base spaces on the faction board'
+	String get woodlandAlliance => '<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 0\n\n<h>canonical_setup_logic<h>\n- draw 3 cards into the supporters stack\n- fill the sympathy track with all sympathy tokens\n- place the 3 bases onto the matching base spaces on the faction board';
+
+	/// en: '<h>adset_class<h> *insurgent* <h>homeland_rules<h> - count: 0 - starts_in_forest: true <h>canonical_setup_logic<h> - place the pawn in any forest - shuffle the quest deck and reveal 3 quests nearby - place the 4 ruin items under the ruins randomly unless another faction already handled ruin items this setup - place the assigned character card on the character slot - take the starting items listed for that character and place them in the satchel / matching tracks - after setup, place relationship markers for the non-vagabond factions in play on indifferent <h>special_notes<h> <i>- in public Marauder-era AdSet, dealing a Vagabond setup card also deals a random character card<i> <i>- in live post-Marauder Appendix A, future-proof support should allow one or both Vagabond setup cards in the draft pool<i>'
+	String get vagabond => '<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 0\n- starts_in_forest: true\n\n<h>canonical_setup_logic<h>\n- place the pawn in any forest\n- shuffle the quest deck and reveal 3 quests nearby\n- place the 4 ruin items under the ruins randomly unless another faction already handled ruin items this setup\n- place the assigned character card on the character slot\n- take the starting items listed for that character and place them in the satchel / matching tracks\n- after setup, place relationship markers for the non-vagabond factions in play on indifferent\n\n<h>special_notes<h>\n<i>- in public Marauder-era AdSet, dealing a Vagabond setup card also deals a random character card<i>\n<i>- in live post-Marauder Appendix A, future-proof support should allow one or both Vagabond setup cards in the draft pool<i>';
+
+	/// en: '<h>adset_class<h> *insurgent* <h>homeland_rules<h> - count: 1 - not_adjacent_to_enemy_homeland: true <h>canonical_setup_logic<h> - choose one homeland not adjacent to an enemy homeland if possible - place 4 warriors and 1 matching garden in that homeland - distribute 3 more warriors among adjacent clearings as evenly as possible - place 2 warriors in the acolytes box - fill the garden tracks, leaving empty the leftmost slot of the garden type already placed on the map - place the outcast marker on its outcast side'
+	String get theLizardCult => '<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 1\n- not_adjacent_to_enemy_homeland: true\n\n<h>canonical_setup_logic<h>\n- choose one homeland not adjacent to an enemy homeland if possible\n- place 4 warriors and 1 matching garden in that homeland\n- distribute 3 more warriors among adjacent clearings as evenly as possible\n- place 2 warriors in the acolytes box\n- fill the garden tracks, leaving empty the leftmost slot of the garden type already placed on the map\n- place the outcast marker on its outcast side';
+
+	/// en: '<h>adset_class<h> *insurgent* <h>homeland_rules<h> - count: 0 - river_clearings_only: true <h>canonical_setup_logic<h> - place 4 warriors among any river clearings - place 3 warriors in the payments box - fill the trade-post tracks with matching trade posts - place the 3 service markers on the services track and set prices for each service'
+	String get riverfolkCompany => '<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 0\n- river_clearings_only: true\n\n<h>canonical_setup_logic<h>\n- place 4 warriors among any river clearings\n- place 3 warriors in the payments box\n- fill the trade-post tracks with matching trade posts\n- place the 3 service markers on the services track and set prices for each service';
+
+	/// en: '<h>adset_class<h> *militant* <h>homeland_rules<h> - count: 1 - not_adjacent_to_enemy_homeland: true <h>canonical_setup_logic<h> - choose one homeland not adjacent to an enemy homeland if possible - place 2 warriors and 1 tunnel in that homeland - distribute 5 more warriors among adjacent clearings as evenly as possible - place the burrow board near the map - fill both building tracks with citadels and markets - place all 9 ministers face up on the unswayed ministers pile - place the 9 crowns on the victory-point spaces shown on the faction board'
+	String get undergroundDuchy => '<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 1\n- not_adjacent_to_enemy_homeland: true\n\n<h>canonical_setup_logic<h>\n- choose one homeland not adjacent to an enemy homeland if possible\n- place 2 warriors and 1 tunnel in that homeland\n- distribute 5 more warriors among adjacent clearings as evenly as possible\n- place the burrow board near the map\n- fill both building tracks with citadels and markets\n- place all 9 ministers face up on the unswayed ministers pile\n- place the 9 crowns on the victory-point spaces shown on the faction board';
+
+	/// en: '<h>adset_class<h> *insurgent* <h>homeland_rules<h> - count: 1 <h>canonical_setup_logic<h> - choose one homeland clearing - place 1 warrior and 1 facedown plot token of your choice there - place 1 warrior in a clearing of each suit, counting the homeland placement, for 4 warriors total <h>localization_note<h> <i>- the French label above is the best public match found in community / translated-law references, but should still be checked against an official French component before shipping exact UI wording<i>'
+	String get corvidConspiracy => '<h>adset_class<h>\n*insurgent*\n\n<h>homeland_rules<h>\n- count: 1\n\n<h>canonical_setup_logic<h>\n- choose one homeland clearing\n- place 1 warrior and 1 facedown plot token of your choice there\n- place 1 warrior in a clearing of each suit, counting the homeland placement, for 4 warriors total\n\n<h>localization_note<h>\n<i>- the French label above is the best public match found in community / translated-law references, but should still be checked against an official French component before shipping exact UI wording<i>';
+
+	/// en: '<h>adset_class<h> *militant* <h>homeland_rules<h> - count: 1 - map_edge_required: true - minimum_clearings_between_enemy_homelands: 2 <h>canonical_setup_logic<h> - choose one homeland on the map edge - if possible, that homeland should have at least two clearings between it and enemy homelands - place the warlord, 4 warriors, and the stronghold in that homeland - place the stubborn mood card in the mood slot - place the 4 ruin items under the ruins randomly unless another faction already handled ruin items this setup'
+	String get lordOfTheHundreds => '<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 1\n- map_edge_required: true\n- minimum_clearings_between_enemy_homelands: 2\n\n<h>canonical_setup_logic<h>\n- choose one homeland on the map edge\n- if possible, that homeland should have at least two clearings between it and enemy homelands\n- place the warlord, 4 warriors, and the stronghold in that homeland\n- place the stubborn mood card in the mood slot\n- place the 4 ruin items under the ruins randomly unless another faction already handled ruin items this setup';
+
+	/// en: '<h>adset_class<h> *militant* <h>homeland_rules<h> - count: 2 - must_be_adjacent_to_each_other: true - map_edge_required: true - minimum_clearings_between_enemy_homelands: 2 <h>canonical_setup_logic<h> - shuffle all relics facedown and place one random relic in each forest first - choose 2 adjacent homeland clearings on the map edge - if possible, those homelands should have at least two clearings between them and enemy homelands - place 4 warriors in each homeland - distribute any remaining relics as evenly as possible among forests not adjacent to your homelands - place one faithful retainer into each retinue column slot <h>localization_note<h> <i>- the French label above follows current public French-market usage, but still merits manual verification against the localized component set before shipping exact UI wording<i>'
+	String get keepersInIron => '<h>adset_class<h>\n*militant*\n\n<h>homeland_rules<h>\n- count: 2\n- must_be_adjacent_to_each_other: true\n- map_edge_required: true\n- minimum_clearings_between_enemy_homelands: 2\n\n<h>canonical_setup_logic<h>\n- shuffle all relics facedown and place one random relic in each forest first\n- choose 2 adjacent homeland clearings on the map edge\n- if possible, those homelands should have at least two clearings between them and enemy homelands\n- place 4 warriors in each homeland\n- distribute any remaining relics as evenly as possible among forests not adjacent to your homelands\n- place one faithful retainer into each retinue column slot\n\n<h>localization_note<h>\n<i>- the French label above follows current public French-market usage, but still merits manual verification against the localized component set before shipping exact UI wording<i>';
 }

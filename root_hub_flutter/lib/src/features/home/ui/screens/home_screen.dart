@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
+import 'package:root_hub_flutter/src/features/home/ui/sections/home_community_tools_section.dart';
 import 'package:root_hub_flutter/src/features/home/ui/sections/home_stats_section.dart';
 import 'package:root_hub_flutter/src/states/home/home_stats_provider.dart';
 
@@ -53,6 +54,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
           SizedBox(height: 18),
+          HomeCommunityToolsSection(),
+          SizedBox(height: 26),
           HomeStatsSection(
             title: t.home.ui_screens_home_screen.communityStats,
             description: t

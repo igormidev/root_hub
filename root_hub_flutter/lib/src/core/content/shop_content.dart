@@ -1,3 +1,5 @@
+// ignore_for_file: feature_hardcoded_ui_string
+
 final Map<ValidCountry, List<ProductContent>> shopContents = {
   ValidCountry.english: [
     ProductContent(

@@ -119,6 +119,41 @@ class HelpTextScreen extends StatelessWidget {
       expect(output, contains('help_text_screen.dart'));
     });
 
+    test(
+      'flags hardcoded translatable content in core content files',
+      () async {
+        final contentFile = File(
+          p.join(
+            flutterRoot.path,
+            'lib',
+            'src',
+            'core',
+            'content',
+            'demo_content.dart',
+          ),
+        );
+        await contentFile.create(recursive: true);
+        await contentFile.writeAsString("""
+String buildDemoBody() {
+  return '''
+<h>title<h>
+The woodland must stay translated.
+''';
+}
+""");
+
+        final result = await _runChecker(
+          flutterRoot: flutterRoot,
+          serverRoot: serverRoot,
+        );
+        final output = '${result.stdout}\n${result.stderr}';
+
+        expect(result.exitCode, isNot(0));
+        expect(output, contains('[feature_hardcoded_ui_string]'));
+        expect(output, contains('demo_content.dart'));
+      },
+    );
+
     test('flags locale keys missing in non-english files', () async {
       final ptBrFile = File(
         p.join(flutterRoot.path, 'lib', 'i18n', 'pt-BR.json'),

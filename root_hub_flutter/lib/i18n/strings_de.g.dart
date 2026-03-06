@@ -102,7 +102,13 @@ class _TranslationsHomeDe extends TranslationsHomeEn {
 	// Translations
 	@override late final _TranslationsHomeUiSectionsHomeStatsSectionDe ui_sections_home_stats_section = _TranslationsHomeUiSectionsHomeStatsSectionDe._(_root);
 	@override late final _TranslationsHomeUiScreensHomeScreenDe ui_screens_home_screen = _TranslationsHomeUiScreensHomeScreenDe._(_root);
+	@override late final _TranslationsHomeUiSectionsHomeCommunityToolsSectionDe ui_sections_home_community_tools_section = _TranslationsHomeUiSectionsHomeCommunityToolsSectionDe._(_root);
+	@override late final _TranslationsHomeUiScreensRootReachCalculatorScreenDe ui_screens_root_reach_calculator_screen = _TranslationsHomeUiScreensRootReachCalculatorScreenDe._(_root);
+	@override late final _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenDe ui_screens_advanced_setup_quickguide_screen = _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenDe._(_root);
+	@override late final _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetDe ui_sheets_advanced_setup_faction_details_sheet = _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetDe._(_root);
+	@override late final _TranslationsHomeUiScreensSetupOrderScreenDe ui_screens_setup_order_screen = _TranslationsHomeUiScreensSetupOrderScreenDe._(_root);
 	@override late final _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetDe ui_widgets_home_stats_pie_chart_widget = _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetDe._(_root);
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentDe ui_content_root_community_tools_content = _TranslationsHomeUiContentRootCommunityToolsContentDe._(_root);
 }
 
 // Path: match
@@ -507,6 +513,78 @@ class _TranslationsHomeUiScreensHomeScreenDe extends TranslationsHomeUiScreensHo
 	@override String get registerYourFirstMatchToStartYourDashboard => 'Spiele und trage dein erstes Match ein, um dein persönliches Dashboard zu starten.';
 }
 
+// Path: home.ui_sections_home_community_tools_section
+class _TranslationsHomeUiSectionsHomeCommunityToolsSectionDe extends TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
+	_TranslationsHomeUiSectionsHomeCommunityToolsSectionDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Gemeinschaftswerkzeuge';
+	@override String get description => 'Nützliche ROOT-Referenzen für Tischvorbereitung, Fraktionsplanung und einen schnelleren Spielaufbau.';
+	@override String get comingSoon => 'Bald';
+	@override String get rootTag => 'ROOT';
+	@override String get reachCalculatorTitle => 'Reichweitenrechner';
+	@override String get advancedSetupQuickguideTitle => 'Schnellhilfe für Erweiterten Aufbau';
+	@override String get setupOrderTitle => 'Aufbau-Reihenfolge';
+	@override String get recommendedFactionsToPlayTitle => 'Empfohlene Fraktionen';
+}
+
+// Path: home.ui_screens_root_reach_calculator_screen
+class _TranslationsHomeUiScreensRootReachCalculatorScreenDe extends TranslationsHomeUiScreensRootReachCalculatorScreenEn {
+	_TranslationsHomeUiScreensRootReachCalculatorScreenDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Reichweitenrechner';
+	@override String get description => 'Stelle eine Runde zusammen und prüfe, ob der Tisch genug Reichweite für eine ausgewogene Partie hat.';
+	@override String get targetReached => 'Ziel\nerreicht';
+	@override String needMoreReach({required Object remainingReach}) => 'Noch ${remainingReach}\nReichweite';
+	@override String get tapOnceToPickTapTwiceToBanTapAgainToReset => 'Einmal tippen zum Wählen, zweimal zum Bannen, noch einmal zum Zurücksetzen.';
+	@override String get picked => 'Gewählt';
+	@override String get banned => 'Gebannt';
+	@override String get unavailable => 'Nicht verfügbar';
+	@override String get players => 'Spieleranzahl';
+	@override String requiredReach({required Object reach}) => 'Erforderliche Reichweite: ${reach}+';
+}
+
+// Path: home.ui_screens_advanced_setup_quickguide_screen
+class _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenDe extends TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn {
+	_TranslationsHomeUiScreensAdvancedSetupQuickguideScreenDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Schnellhilfe für Erweiterten Aufbau';
+	@override String get description => 'Wähle eine Fraktion, um ihre Zusammenfassung für den Erweiterten Aufbau zu öffnen. Der Ablauf unten folgt dem öffentlichen 10-Fraktionen-Modell bis Marauder.';
+	@override String get generalFlow => 'Allgemeiner Ablauf';
+	@override String get chooseAFaction => 'Wähle eine Fraktion';
+	@override String get chooseAFactionDescription => 'Tippe auf eine Fraktion, um ihre Aufbau-Details in einer schnellen Referenz zu öffnen.';
+}
+
+// Path: home.ui_sheets_advanced_setup_faction_details_sheet
+class _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetDe extends TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn {
+	_TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get originalEnglish => 'Original-Englisch';
+}
+
+// Path: home.ui_screens_setup_order_screen
+class _TranslationsHomeUiScreensSetupOrderScreenDe extends TranslationsHomeUiScreensSetupOrderScreenEn {
+	_TranslationsHomeUiScreensSetupOrderScreenDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Aufbau-Reihenfolge';
+	@override String get description => 'Der Standardaufbau folgt einer festen Fraktionspriorität. Diese Seite ist eine kurze Erinnerung an diese Reihenfolge.';
+	@override String get secondVagabondTitle => 'Regel für den zweiten Vagabunden';
+}
+
 // Path: home.ui_widgets_home_stats_pie_chart_widget
 class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetDe extends TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 	_TranslationsHomeUiWidgetsHomeStatsPieChartWidgetDe._(TranslationsDe root) : this._root = root, super.internal(root);
@@ -515,6 +593,19 @@ class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetDe extends TranslationsHo
 
 	// Translations
 	@override String get noValuesForThisMetricYet => 'Für diese Metrik liegen noch keine Werte vor.';
+}
+
+// Path: home.ui_content_root_community_tools_content
+class _TranslationsHomeUiContentRootCommunityToolsContentDe extends TranslationsHomeUiContentRootCommunityToolsContentEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get vagabondSecondSuffix => 'II';
+	@override String get advancedSetupOverviewBody => '<h>allgemeiner_ablauf<h>\n1. Wähle die Karte und baue sie auf.\n2. Wähle das Deck.\n3. Richte Bots ein, falls sie benutzt werden.\n4. Bestimme Sitzreihenfolge und Startspieler zufällig.\n5. Richte Wahrzeichen ein, falls sie benutzt werden.\n6. Richte Hirelings ein, falls sie benutzt werden.\n7. Ziehe 5 Karten pro Spieler.\n8. Richte die Fraktionen entweder mit dem Standardaufbau oder mit den Karten für den erweiterten Aufbau ein.\n9. Lege alle Siegpunktmarker auf 0.\n10. Jeder Spieler behält 3 der 5 Karten und legt die anderen 2 in das gemeinsame Deck zurück.\n\n<h>draft_logik<h>\n1. Mische alle militanten Aufbaukarten und lege eine offen in die Mitte.\n2. Mische die übrigen militanten Aufbaukarten zusammen mit allen aufständischen Aufbaukarten.\n3. Lege pro Spieler eine Aufbaukarte in den Pool. Insgesamt gibt es eine Karte mehr als Spieler.\n4. Im 2-Spieler-Spiel entfernst du die aufständischen Aufbaukarten vor dem Austeilen, es sei denn, du verwendest bewusst die Ausnahme mit den abenteuerlichen Hirelings.\n5. Wenn die zuletzt ausgeteilte Karte aufständisch ist, bleibt sie gesperrt und kann erst gewählt werden, nachdem mindestens eine militante Fraktion gewählt wurde.\n6. Wenn eine Vagabund-Aufbaukarte erscheint, decke daneben auch eine zufällige Vagabunden-Charakterkarte auf.\n7. Beginnend mit dem letzten Spieler in der Zugreihenfolge und dann gegen den Uhrzeigersinn wählt jeder Spieler eine Aufbaukarte und führt den Aufbau dieser Fraktion sofort aus.\n8. Reichweite wird im erweiterten Aufbau nicht verwendet, auch wenn Aufbaukarten weiterhin Reichweitenwerte zeigen können.';
+	@override String get setupOrderSecondVagabondBody => '- Wenn ein zweiter Vagabund im Spiel ist, füge ihn unmittelbar nach dem ersten Vagabunden ein.\n- In Spielen mit zwei Vagabunden sagt das aktuelle Gesetz ausdrücklich, dass du im Standardaufbau zufällig bestimmst, welcher Vagabund zuerst aufgebaut wird.';
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesDe advancedSetupFactionGuideBodies = _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesDe._(_root);
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -1524,4 +1615,23 @@ class _TranslationsAuthAuthLoginScreenErrorsDe extends TranslationsAuthAuthLogin
 	@override String get passwordResetFailed => 'Beim Zurücksetzen des Passworts ist ein Fehler aufgetreten. Bitte versuche es später erneut.';
 	@override String get networkUnavailable => 'Keine Verbindung zum Server möglich. Prüfe deine Verbindung und versuche es erneut.';
 	@override String get unexpected => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.';
+}
+
+// Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies
+class _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesDe extends TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesDe._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get marquiseDeCat => '<h>adset_klasse<h>\n*militant*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 3\n- muster: drei Lichtungen, von denen jede an mindestens ein anderes Heimatgebiet angrenzt\n- kartenrand_erforderlich: nein\n\n<h>kanonische_aufbaulogik<h>\n- wähle drei Heimatlichtungen, die eine zusammenhängende Kette bilden\n- platziere 2 Krieger in jedem Heimatgebiet\n- platziere 1 Krieger in jeder anderen Lichtung\n- platziere die Festung in einem Heimatgebiet und bevorzuge dabei eines, das nicht an ein feindliches Heimatgebiet angrenzt\n- platziere 1 Sägewerk, 1 Werkstatt und 1 Rekrutierer auf der Karte, jeweils in einem anderen Heimatgebiet\n- fülle die Gebäudespuren und lasse nur das linke Feld jeder Spur leer';
+	@override String get eyrieDynasties => '<h>adset_klasse<h>\n*militant*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 1\n- kartenrand_erforderlich: ja\n- minimale_lichtungen_zwischen_feindlichen_heimatgebieten: 2\n\n<h>kanonische_aufbaulogik<h>\n- wähle ein Heimatgebiet am Kartenrand\n- wenn möglich, sollte dieses Heimatgebiet mindestens zwei Lichtungen Abstand zu feindlichen Heimatgebieten haben\n- platziere 6 Krieger und 1 Horst in diesem Heimatgebiet\n- wähle einen beliebigen Anführer und lege ihn auf den Anführerplatz\n- halte die anderen Anführer offen in der Nähe bereit\n- platziere die 2 treuen Wesire entsprechend dem gewählten Anführer\n- fülle die Horstleiste und lasse nur das linke Feld leer';
+	@override String get woodlandAlliance => '<h>adset_klasse<h>\n*aufständisch*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 0\n\n<h>kanonische_aufbaulogik<h>\n- ziehe 3 Karten in den Unterstützerstapel\n- fülle die Sympathieleiste mit allen Sympathiemarkern\n- platziere die 3 Basen auf die passenden Basenfelder des Fraktionstableaus';
+	@override String get vagabond => '<h>adset_klasse<h>\n*aufständisch*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 0\n- startet_im_wald: ja\n\n<h>kanonische_aufbaulogik<h>\n- platziere die Spielfigur in einem beliebigen Wald\n- mische das Questdeck und decke 3 Quests in der Nähe auf\n- platziere die 4 Ruinengegenstände zufällig unter den Ruinen, sofern nicht bereits eine andere Fraktion in diesem Aufbau die Ruinengegenstände behandelt hat\n- lege die zugewiesene Charakterkarte auf den Charakterplatz\n- nimm die Startgegenstände dieses Charakters und lege sie in den Beutel / auf die passenden Leisten\n- lege nach dem Aufbau die Beziehungsmarker der nicht-vagabundischen Fraktionen im Spiel auf gleichgültig\n\n<h>spezielle_hinweise<h>\n<i>- im öffentlichen Marauder-Ära-AdSet führt eine Vagabund-Aufbaukarte auch zu einer zufälligen Vagabunden-Charakterkarte<i>\n<i>- im lebenden Appendix A nach Marauder sollte zukünftige Unterstützung eine oder zwei Vagabund-Aufbaukarten im Draftpool erlauben<i>';
+	@override String get theLizardCult => '<h>adset_klasse<h>\n*aufständisch*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 1\n- nicht_angrenzend_an_feindliches_heimatgebiet: ja\n\n<h>kanonische_aufbaulogik<h>\n- wähle nach Möglichkeit ein Heimatgebiet, das nicht an ein feindliches Heimatgebiet angrenzt\n- platziere 4 Krieger und 1 passenden Garten in diesem Heimatgebiet\n- verteile 3 weitere Krieger so gleichmäßig wie möglich auf angrenzende Lichtungen\n- platziere 2 Krieger im Akolythenfeld\n- fülle die Gartenspuren und lasse das linke Feld des Gartentyps leer, der bereits auf der Karte liegt\n- lege den Ausgestoßenenmarker auf seine Ausgestoßenenseite';
+	@override String get riverfolkCompany => '<h>adset_klasse<h>\n*aufständisch*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 0\n- nur_flusslichtungen: ja\n\n<h>kanonische_aufbaulogik<h>\n- platziere 4 Krieger auf beliebige Flusslichtungen\n- platziere 3 Krieger in das Zahlungsfeld\n- fülle die Handelspostenleisten mit den passenden Handelsposten\n- lege die 3 Dienstleistungsmarker auf die Dienstleistungsleiste und bestimme die Preise für jeden Dienst';
+	@override String get undergroundDuchy => '<h>adset_klasse<h>\n*militant*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 1\n- nicht_angrenzend_an_feindliches_heimatgebiet: ja\n\n<h>kanonische_aufbaulogik<h>\n- wähle nach Möglichkeit ein Heimatgebiet, das nicht an ein feindliches Heimatgebiet angrenzt\n- platziere 2 Krieger und 1 Tunnel in diesem Heimatgebiet\n- verteile 5 weitere Krieger so gleichmäßig wie möglich auf angrenzende Lichtungen\n- lege das Bau-Board neben die Karte\n- fülle beide Gebäudespuren mit Zitadellen und Märkten\n- lege alle 9 Minister offen auf den Stapel der ungewogenen Minister\n- platziere die 9 Kronen auf die Siegpunktefelder des Fraktionstableaus';
+	@override String get corvidConspiracy => '<h>adset_klasse<h>\n*aufständisch*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 1\n\n<h>kanonische_aufbaulogik<h>\n- wähle eine Heimatlichtung\n- platziere dort 1 Krieger und 1 verdeckten Komplottmarker deiner Wahl\n- platziere 1 Krieger in eine Lichtung jeder Farbe, einschließlich der Heimatplatzierung, also insgesamt 4 Krieger\n\n<h>lokalisierungshinweis<h>\n<i>- die französische Bezeichnung oben ist die beste öffentliche Übereinstimmung aus Community- / übersetzten Gesetzesquellen, sollte aber vor einer Veröffentlichung mit exakter UI-Formulierung trotzdem noch mit einem offiziellen französischen Bestandteil geprüft werden<i>';
+	@override String get lordOfTheHundreds => '<h>adset_klasse<h>\n*militant*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 1\n- kartenrand_erforderlich: ja\n- minimale_lichtungen_zwischen_feindlichen_heimatgebieten: 2\n\n<h>kanonische_aufbaulogik<h>\n- wähle ein Heimatgebiet am Kartenrand\n- wenn möglich, sollte dieses Heimatgebiet mindestens zwei Lichtungen Abstand zu feindlichen Heimatgebieten haben\n- platziere den Kriegsherrn, 4 Krieger und die Festung in diesem Heimatgebiet\n- lege die Karte Starrsinnige Stimmung in das Stimmungsfeld\n- platziere die 4 Ruinengegenstände zufällig unter den Ruinen, sofern nicht bereits eine andere Fraktion in diesem Aufbau die Ruinengegenstände behandelt hat';
+	@override String get keepersInIron => '<h>adset_klasse<h>\n*militant*\n\n<h>regeln_für_das_heimatgebiet<h>\n- anzahl: 2\n- müssen_aneinander_angrenzen: ja\n- kartenrand_erforderlich: ja\n- minimale_lichtungen_zwischen_feindlichen_heimatgebieten: 2\n\n<h>kanonische_aufbaulogik<h>\n- mische alle Relikte verdeckt und lege zuerst ein zufälliges Relikt in jeden Wald\n- wähle 2 benachbarte Heimatlichtungen am Kartenrand\n- wenn möglich, sollten diese Heimatgebiete mindestens zwei Lichtungen Abstand zu feindlichen Heimatgebieten haben\n- platziere 4 Krieger in jedes Heimatgebiet\n- verteile alle verbleibenden Relikte so gleichmäßig wie möglich auf Wälder, die nicht an deine Heimatgebiete angrenzen\n- platziere einen treuen Gefolgsmann in jeden Spaltenplatz der Retinue\n\n<h>lokalisierungshinweis<h>\n<i>- die französische Bezeichnung oben folgt der aktuellen französischen Marktnutzung, sollte aber trotzdem noch manuell gegen den lokalisierten Komponentensatz geprüft werden, bevor exakte UI-Formulierungen veröffentlicht werden<i>';
 }

@@ -235,8 +235,62 @@
       "noPersonalStatsYet": "Aún no hay estadísticas personales",
       "registerYourFirstMatchToStartYourDashboard": "Juega y registra tu primera partida para comenzar tu panel personal."
     },
+    "ui_sections_home_community_tools_section": {
+      "title": "Herramientas de la Comunidad",
+      "description": "Referencias útiles de ROOT para preparar la mesa, planear facciones y agilizar la organización de la partida.",
+      "comingSoon": "Pronto",
+      "rootTag": "ROOT",
+      "reachCalculatorTitle": "Calculadora de Alcance",
+      "advancedSetupQuickguideTitle": "Guía Rápida de Preparación Avanzada",
+      "setupOrderTitle": "Orden de Preparación",
+      "recommendedFactionsToPlayTitle": "Facciones Recomendadas"
+    },
+    "ui_screens_root_reach_calculator_screen": {
+      "title": "Calculadora de Alcance",
+      "description": "Construye una alineación y comprueba si la mesa tiene alcance suficiente para una partida equilibrada.",
+      "targetReached": "Objetivo\nasegurado",
+      "needMoreReach": "Faltan {remainingReach}\nde alcance",
+      "tapOnceToPickTapTwiceToBanTapAgainToReset": "Toca una vez para elegir, dos para vetar y otra vez para reiniciar.",
+      "picked": "Elegidas",
+      "banned": "Vetadas",
+      "unavailable": "No disponibles",
+      "players": "Cantidad de jugadores",
+      "requiredReach": "Alcance requerido: {reach}+"
+    },
+    "ui_screens_advanced_setup_quickguide_screen": {
+      "title": "Guía Rápida de Preparación Avanzada",
+      "description": "Elige una facción para abrir su resumen de Preparación Avanzada. El flujo de abajo sigue el modelo público de 10 facciones usado hasta Marauder.",
+      "generalFlow": "Flujo general",
+      "chooseAFaction": "Elige una facción",
+      "chooseAFactionDescription": "Toca cualquier facción para abrir los detalles de preparación en una hoja de referencia rápida."
+    },
+    "ui_sheets_advanced_setup_faction_details_sheet": {
+      "originalEnglish": "Inglés original"
+    },
+    "ui_screens_setup_order_screen": {
+      "title": "Orden de Preparación",
+      "description": "La preparación estándar sigue una prioridad fija de facciones. Esta página es un recordatorio rápido de ese orden.",
+      "secondVagabondTitle": "Regla del segundo Vagabundo"
+    },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Aún no hay valores para esta métrica."
+    },
+    "ui_content_root_community_tools_content": {
+      "vagabondSecondSuffix": "II",
+      "advancedSetupOverviewBody": "<h>flujo_general<h>\n1. Elige y prepara el mapa.\n2. Elige el mazo.\n3. Prepara los bots, si se usan.\n4. Aleatoriza el orden de asiento y el primer jugador.\n5. Prepara los hitos, si se usan.\n6. Prepara los esbirros, si se usan.\n7. Roba 5 cartas por jugador.\n8. Prepara las facciones usando la Preparación Estándar o las cartas de Preparación Avanzada.\n9. Coloca todos los marcadores de puntuación en 0.\n10. Cada jugador se queda con 3 de las 5 cartas y devuelve las otras 2 al mazo compartido.\n\n<h>lógica_del_draft<h>\n1. Baraja todas las cartas de preparación militantes y coloca una boca arriba en el centro.\n2. Baraja las cartas militantes restantes junto con todas las cartas insurgentes.\n3. Reparte una carta de preparación por jugador a la reserva. Habrá una carta más que jugadores.\n4. En partidas de 2 jugadores, retira las cartas insurgentes antes de repartir, a menos que estés usando deliberadamente la excepción de los esbirros aventureros.\n5. Si la última carta repartida es insurgente, queda bloqueada y no puede elegirse hasta que al menos una facción militante haya sido elegida.\n6. Si aparece una carta de preparación del Vagabundo, revela también una carta aleatoria de personaje del Vagabundo junto a ella.\n7. Empezando por el último jugador en el orden de turno y avanzando en sentido antihorario, cada jugador elige una carta de preparación y resuelve inmediatamente la preparación de esa facción.\n8. El alcance no se usa en la Preparación Avanzada, aunque las cartas de preparación todavía pueden mostrar valores de alcance.",
+      "setupOrderSecondVagabondBody": "- Cuando haya un segundo Vagabundo en la partida, insértalo inmediatamente después del primer Vagabundo.\n- En partidas con dos Vagabundos, la Ley actual dice explícitamente que, en la Preparación Estándar, se determina al azar cuál Vagabundo se prepara primero.",
+      "advancedSetupFactionGuideBodies": {
+        "marquiseDeCat": "<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 3\n- patrón: tres claros, cada uno adyacente al menos a otro territorio inicial\n- borde_del_mapa_obligatorio: no\n\n<h>lógica_canónica_de_preparación<h>\n- elige tres claros iniciales que formen una cadena conectada\n- coloca 2 guerreros en cada territorio inicial\n- coloca 1 guerrero en cada otro claro\n- coloca la fortaleza en un territorio inicial, prefiriendo uno que no sea adyacente a un territorio inicial enemigo\n- coloca 1 serrería, 1 taller y 1 reclutador en el mapa, cada uno en un territorio inicial diferente\n- completa las pistas de edificios, dejando vacía solo la casilla más a la izquierda de cada pista",
+        "eyrieDynasties": "<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- borde_del_mapa_obligatorio: sí\n- claros_mínimos_entre_territorios_iniciales_enemigos: 2\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial en el borde del mapa\n- si es posible, ese territorio inicial debe tener al menos dos claros entre él y los territorios iniciales enemigos\n- coloca 6 guerreros y 1 nido en ese territorio inicial\n- elige cualquier líder y colócalo en el espacio de líder\n- deja a los demás líderes boca arriba cerca\n- coloca los 2 visires leales según el líder elegido\n- completa la pista de nidos, dejando vacía solo la casilla más a la izquierda",
+        "woodlandAlliance": "<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 0\n\n<h>lógica_canónica_de_preparación<h>\n- roba 3 cartas a la pila de simpatizantes\n- llena la pista de simpatía con todos los marcadores de simpatía\n- coloca las 3 bases en los espacios de base correspondientes del tablero de facción",
+        "vagabond": "<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 0\n- empieza_en_bosque: sí\n\n<h>lógica_canónica_de_preparación<h>\n- coloca la peana en cualquier bosque\n- baraja el mazo de misiones y revela 3 misiones cerca\n- coloca aleatoriamente los 4 objetos de ruina bajo las ruinas, a menos que otra facción ya haya gestionado los objetos de ruina en esta preparación\n- coloca la carta de personaje asignada en el espacio de personaje\n- toma los objetos iniciales indicados para ese personaje y colócalos en la bolsa / pistas correspondientes\n- después de la preparación, coloca los marcadores de relación de las facciones no Vagabundo en juego en indiferente\n\n<h>notas_especiales<h>\n<i>- en el AdSet público de la era Marauder, revelar una carta de preparación del Vagabundo también revela una carta aleatoria de personaje del Vagabundo<i>\n<i>- en el Apéndice A vivo posterior a Marauder, el soporte futuro debe permitir una o dos cartas de preparación del Vagabundo en la reserva del draft<i>",
+        "theLizardCult": "<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- no_adyacente_a_territorio_inicial_enemigo: sí\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial que no sea adyacente a un territorio inicial enemigo, si es posible\n- coloca 4 guerreros y 1 jardín correspondiente en ese territorio inicial\n- distribuye 3 guerreros más entre los claros adyacentes de la forma más uniforme posible\n- coloca 2 guerreros en la caja de acólitos\n- completa las pistas de jardines, dejando vacía la casilla más a la izquierda del tipo de jardín ya colocado en el mapa\n- coloca el marcador de proscrito en su lado de proscrito",
+        "riverfolkCompany": "<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 0\n- solo_claros_con_río: sí\n\n<h>lógica_canónica_de_preparación<h>\n- coloca 4 guerreros entre cualesquiera claros con río\n- coloca 3 guerreros en la caja de pagos\n- completa las pistas de puestos comerciales con los puestos comerciales correspondientes\n- coloca los 3 marcadores de servicio en la pista de servicios y fija el precio de cada servicio",
+        "undergroundDuchy": "<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- no_adyacente_a_territorio_inicial_enemigo: sí\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial que no sea adyacente a un territorio inicial enemigo, si es posible\n- coloca 2 guerreros y 1 túnel en ese territorio inicial\n- distribuye 5 guerreros más entre los claros adyacentes de la forma más uniforme posible\n- coloca el tablero de la Madriguera junto al mapa\n- completa ambas pistas de edificios con ciudadelas y mercados\n- coloca a los 9 ministros boca arriba en la pila de ministros no influenciados\n- coloca las 9 coronas en los espacios de puntos de victoria mostrados en el tablero de facción",
+        "corvidConspiracy": "<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n\n<h>lógica_canónica_de_preparación<h>\n- elige un claro inicial\n- coloca allí 1 guerrero y 1 ficha de complot boca abajo a tu elección\n- coloca 1 guerrero en un claro de cada palo, contando la colocación del territorio inicial, para un total de 4 guerreros\n\n<h>nota_de_localización<h>\n<i>- la etiqueta francesa de arriba es la mejor coincidencia pública encontrada en referencias comunitarias / leyes traducidas, pero aun así debe comprobarse contra un componente oficial en francés antes de publicar un texto exacto en la interfaz<i>",
+        "lordOfTheHundreds": "<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- borde_del_mapa_obligatorio: sí\n- claros_mínimos_entre_territorios_iniciales_enemigos: 2\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial en el borde del mapa\n- si es posible, ese territorio inicial debe tener al menos dos claros entre él y los territorios iniciales enemigos\n- coloca al señor de la guerra, 4 guerreros y la fortaleza en ese territorio inicial\n- coloca la carta de humor obstinado en el espacio de humor\n- coloca aleatoriamente los 4 objetos de ruina bajo las ruinas, a menos que otra facción ya haya gestionado los objetos de ruina en esta preparación",
+        "keepersInIron": "<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 2\n- deben_ser_adyacentes_entre_sí: sí\n- borde_del_mapa_obligatorio: sí\n- claros_mínimos_entre_territorios_iniciales_enemigos: 2\n\n<h>lógica_canónica_de_preparación<h>\n- baraja todas las reliquias boca abajo y coloca primero una reliquia aleatoria en cada bosque\n- elige 2 claros iniciales adyacentes en el borde del mapa\n- si es posible, esos territorios iniciales deben tener al menos dos claros entre ellos y los territorios iniciales enemigos\n- coloca 4 guerreros en cada territorio inicial\n- distribuye cualquier reliquia restante de la forma más uniforme posible entre bosques que no sean adyacentes a tus territorios iniciales\n- coloca un guardián fiel en cada espacio de columna del séquito\n\n<h>nota_de_localización<h>\n<i>- la etiqueta francesa de arriba sigue el uso actual del mercado francés, pero aun así merece una verificación manual con el conjunto de componentes localizado antes de publicar un texto exacto en la interfaz<i>"
+      }
     }
   },
   "match": {

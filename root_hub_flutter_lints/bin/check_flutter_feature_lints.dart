@@ -69,6 +69,13 @@ void main(List<String> args) {
   final serverRoot = _resolveServerRoot(args);
   final libDir = Directory(p.join(flutterRoot.path, 'lib'));
   final featuresDirPath = p.join(flutterRoot.path, 'lib', 'src', 'features');
+  final coreContentDirPath = p.join(
+    flutterRoot.path,
+    'lib',
+    'src',
+    'core',
+    'content',
+  );
   final registerMatchStateDirPath = p.join(
     flutterRoot.path,
     'lib',
@@ -148,6 +155,7 @@ void main(List<String> args) {
     if (!_isFeatureOrStateFile(
       file.path,
       featuresDirPath: featuresDirPath,
+      coreContentDirPath: coreContentDirPath,
       registerMatchStateDirPath: registerMatchStateDirPath,
     )) {
       continue;
@@ -200,7 +208,7 @@ void main(List<String> args) {
     final stringLiteralCollector = _FeatureStringLiteralCollector();
     parsed.unit.accept(stringLiteralCollector);
     for (final node in stringLiteralCollector.nodes) {
-      if (!_shouldReportFeatureStringNode(node)) {
+      if (!_shouldReportFeatureOrContentStringNode(node, file.path)) {
         continue;
       }
 
@@ -220,7 +228,7 @@ void main(List<String> args) {
           line: location.lineNumber,
           column: location.columnNumber,
           message:
-              'Hard-coded string literal found in feature/state code. Move user-facing text to localization keys, or add // ignore: feature_hardcoded_ui_string above non-translatable strings.',
+              'Hard-coded string literal found in feature/state/core content code. Move user-facing text to localization keys, or add // ignore: feature_hardcoded_ui_string above non-translatable strings.',
         ),
       );
     }
@@ -304,14 +312,17 @@ Iterable<File> _flutterLibDartFiles(Directory libDir) sync* {
 bool _isFeatureOrStateFile(
   String filePath, {
   required String featuresDirPath,
+  required String coreContentDirPath,
   required String registerMatchStateDirPath,
 }) {
   final normalizedFilePath = p.normalize(filePath);
   final normalizedFeaturesDirPath = p.normalize(featuresDirPath);
+  final normalizedCoreContentDirPath = p.normalize(coreContentDirPath);
   final normalizedRegisterMatchStateDirPath = p.normalize(
     registerMatchStateDirPath,
   );
   return p.isWithin(normalizedFeaturesDirPath, normalizedFilePath) ||
+      p.isWithin(normalizedCoreContentDirPath, normalizedFilePath) ||
       p.isWithin(normalizedRegisterMatchStateDirPath, normalizedFilePath);
 }
 
@@ -439,6 +450,42 @@ bool _shouldReportFeatureStringNode(AstNode node) {
   }
 
   return _isLikelyUiTextLiteral(node);
+}
+
+bool _shouldReportFeatureOrContentStringNode(AstNode node, String filePath) {
+  if (filePath.replaceAll('\\', '/').contains('/lib/src/core/content/')) {
+    return _shouldReportCoreContentStringNode(node);
+  }
+
+  return _shouldReportFeatureStringNode(node);
+}
+
+bool _shouldReportCoreContentStringNode(AstNode node) {
+  if (node is SimpleStringLiteral) {
+    if (node.value.trim().isEmpty) {
+      return false;
+    }
+
+    if (_isStringNodeInSkippableParent(node)) {
+      return false;
+    }
+
+    return _containsAlphabeticCharacters(node.value);
+  }
+
+  if (node is! StringInterpolation) {
+    return false;
+  }
+
+  if (_isStringNodeInSkippableParent(node)) {
+    return false;
+  }
+
+  return _nodeContainsAlphabeticLiteralText(node);
+}
+
+bool _containsAlphabeticCharacters(String value) {
+  return RegExp(r'[A-Za-zÀ-ÿ]').hasMatch(value);
 }
 
 bool _isStringNodeInSkippableParent(AstNode node) {

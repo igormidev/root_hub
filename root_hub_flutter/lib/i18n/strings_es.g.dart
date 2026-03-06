@@ -102,7 +102,13 @@ class _TranslationsHomeEs extends TranslationsHomeEn {
 	// Translations
 	@override late final _TranslationsHomeUiSectionsHomeStatsSectionEs ui_sections_home_stats_section = _TranslationsHomeUiSectionsHomeStatsSectionEs._(_root);
 	@override late final _TranslationsHomeUiScreensHomeScreenEs ui_screens_home_screen = _TranslationsHomeUiScreensHomeScreenEs._(_root);
+	@override late final _TranslationsHomeUiSectionsHomeCommunityToolsSectionEs ui_sections_home_community_tools_section = _TranslationsHomeUiSectionsHomeCommunityToolsSectionEs._(_root);
+	@override late final _TranslationsHomeUiScreensRootReachCalculatorScreenEs ui_screens_root_reach_calculator_screen = _TranslationsHomeUiScreensRootReachCalculatorScreenEs._(_root);
+	@override late final _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEs ui_screens_advanced_setup_quickguide_screen = _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEs._(_root);
+	@override late final _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEs ui_sheets_advanced_setup_faction_details_sheet = _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEs._(_root);
+	@override late final _TranslationsHomeUiScreensSetupOrderScreenEs ui_screens_setup_order_screen = _TranslationsHomeUiScreensSetupOrderScreenEs._(_root);
 	@override late final _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEs ui_widgets_home_stats_pie_chart_widget = _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEs._(_root);
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentEs ui_content_root_community_tools_content = _TranslationsHomeUiContentRootCommunityToolsContentEs._(_root);
 }
 
 // Path: match
@@ -507,6 +513,78 @@ class _TranslationsHomeUiScreensHomeScreenEs extends TranslationsHomeUiScreensHo
 	@override String get registerYourFirstMatchToStartYourDashboard => 'Juega y registra tu primera partida para comenzar tu panel personal.';
 }
 
+// Path: home.ui_sections_home_community_tools_section
+class _TranslationsHomeUiSectionsHomeCommunityToolsSectionEs extends TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
+	_TranslationsHomeUiSectionsHomeCommunityToolsSectionEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Herramientas de la Comunidad';
+	@override String get description => 'Referencias útiles de ROOT para preparar la mesa, planear facciones y agilizar la organización de la partida.';
+	@override String get comingSoon => 'Pronto';
+	@override String get rootTag => 'ROOT';
+	@override String get reachCalculatorTitle => 'Calculadora de Alcance';
+	@override String get advancedSetupQuickguideTitle => 'Guía Rápida de Preparación Avanzada';
+	@override String get setupOrderTitle => 'Orden de Preparación';
+	@override String get recommendedFactionsToPlayTitle => 'Facciones Recomendadas';
+}
+
+// Path: home.ui_screens_root_reach_calculator_screen
+class _TranslationsHomeUiScreensRootReachCalculatorScreenEs extends TranslationsHomeUiScreensRootReachCalculatorScreenEn {
+	_TranslationsHomeUiScreensRootReachCalculatorScreenEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Calculadora de Alcance';
+	@override String get description => 'Construye una alineación y comprueba si la mesa tiene alcance suficiente para una partida equilibrada.';
+	@override String get targetReached => 'Objetivo\nasegurado';
+	@override String needMoreReach({required Object remainingReach}) => 'Faltan ${remainingReach}\nde alcance';
+	@override String get tapOnceToPickTapTwiceToBanTapAgainToReset => 'Toca una vez para elegir, dos para vetar y otra vez para reiniciar.';
+	@override String get picked => 'Elegidas';
+	@override String get banned => 'Vetadas';
+	@override String get unavailable => 'No disponibles';
+	@override String get players => 'Cantidad de jugadores';
+	@override String requiredReach({required Object reach}) => 'Alcance requerido: ${reach}+';
+}
+
+// Path: home.ui_screens_advanced_setup_quickguide_screen
+class _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEs extends TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn {
+	_TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Guía Rápida de Preparación Avanzada';
+	@override String get description => 'Elige una facción para abrir su resumen de Preparación Avanzada. El flujo de abajo sigue el modelo público de 10 facciones usado hasta Marauder.';
+	@override String get generalFlow => 'Flujo general';
+	@override String get chooseAFaction => 'Elige una facción';
+	@override String get chooseAFactionDescription => 'Toca cualquier facción para abrir los detalles de preparación en una hoja de referencia rápida.';
+}
+
+// Path: home.ui_sheets_advanced_setup_faction_details_sheet
+class _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEs extends TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn {
+	_TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get originalEnglish => 'Inglés original';
+}
+
+// Path: home.ui_screens_setup_order_screen
+class _TranslationsHomeUiScreensSetupOrderScreenEs extends TranslationsHomeUiScreensSetupOrderScreenEn {
+	_TranslationsHomeUiScreensSetupOrderScreenEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Orden de Preparación';
+	@override String get description => 'La preparación estándar sigue una prioridad fija de facciones. Esta página es un recordatorio rápido de ese orden.';
+	@override String get secondVagabondTitle => 'Regla del segundo Vagabundo';
+}
+
 // Path: home.ui_widgets_home_stats_pie_chart_widget
 class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEs extends TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn {
 	_TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -515,6 +593,19 @@ class _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEs extends TranslationsHo
 
 	// Translations
 	@override String get noValuesForThisMetricYet => 'Aún no hay valores para esta métrica.';
+}
+
+// Path: home.ui_content_root_community_tools_content
+class _TranslationsHomeUiContentRootCommunityToolsContentEs extends TranslationsHomeUiContentRootCommunityToolsContentEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get vagabondSecondSuffix => 'II';
+	@override String get advancedSetupOverviewBody => '<h>flujo_general<h>\n1. Elige y prepara el mapa.\n2. Elige el mazo.\n3. Prepara los bots, si se usan.\n4. Aleatoriza el orden de asiento y el primer jugador.\n5. Prepara los hitos, si se usan.\n6. Prepara los esbirros, si se usan.\n7. Roba 5 cartas por jugador.\n8. Prepara las facciones usando la Preparación Estándar o las cartas de Preparación Avanzada.\n9. Coloca todos los marcadores de puntuación en 0.\n10. Cada jugador se queda con 3 de las 5 cartas y devuelve las otras 2 al mazo compartido.\n\n<h>lógica_del_draft<h>\n1. Baraja todas las cartas de preparación militantes y coloca una boca arriba en el centro.\n2. Baraja las cartas militantes restantes junto con todas las cartas insurgentes.\n3. Reparte una carta de preparación por jugador a la reserva. Habrá una carta más que jugadores.\n4. En partidas de 2 jugadores, retira las cartas insurgentes antes de repartir, a menos que estés usando deliberadamente la excepción de los esbirros aventureros.\n5. Si la última carta repartida es insurgente, queda bloqueada y no puede elegirse hasta que al menos una facción militante haya sido elegida.\n6. Si aparece una carta de preparación del Vagabundo, revela también una carta aleatoria de personaje del Vagabundo junto a ella.\n7. Empezando por el último jugador en el orden de turno y avanzando en sentido antihorario, cada jugador elige una carta de preparación y resuelve inmediatamente la preparación de esa facción.\n8. El alcance no se usa en la Preparación Avanzada, aunque las cartas de preparación todavía pueden mostrar valores de alcance.';
+	@override String get setupOrderSecondVagabondBody => '- Cuando haya un segundo Vagabundo en la partida, insértalo inmediatamente después del primer Vagabundo.\n- En partidas con dos Vagabundos, la Ley actual dice explícitamente que, en la Preparación Estándar, se determina al azar cuál Vagabundo se prepara primero.';
+	@override late final _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEs advancedSetupFactionGuideBodies = _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEs._(_root);
 }
 
 // Path: match.ui_sheets_match_edit_table_error_widget
@@ -1524,4 +1615,23 @@ class _TranslationsAuthAuthLoginScreenErrorsEs extends TranslationsAuthAuthLogin
 	@override String get passwordResetFailed => 'Ocurrió un error al restablecer la contraseña. Inténtalo más tarde.';
 	@override String get networkUnavailable => 'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.';
 	@override String get unexpected => 'Ocurrió un error inesperado. Inténtalo de nuevo.';
+}
+
+// Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies
+class _TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEs extends TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEn {
+	_TranslationsHomeUiContentRootCommunityToolsContentAdvancedSetupFactionGuideBodiesEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get marquiseDeCat => '<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 3\n- patrón: tres claros, cada uno adyacente al menos a otro territorio inicial\n- borde_del_mapa_obligatorio: no\n\n<h>lógica_canónica_de_preparación<h>\n- elige tres claros iniciales que formen una cadena conectada\n- coloca 2 guerreros en cada territorio inicial\n- coloca 1 guerrero en cada otro claro\n- coloca la fortaleza en un territorio inicial, prefiriendo uno que no sea adyacente a un territorio inicial enemigo\n- coloca 1 serrería, 1 taller y 1 reclutador en el mapa, cada uno en un territorio inicial diferente\n- completa las pistas de edificios, dejando vacía solo la casilla más a la izquierda de cada pista';
+	@override String get eyrieDynasties => '<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- borde_del_mapa_obligatorio: sí\n- claros_mínimos_entre_territorios_iniciales_enemigos: 2\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial en el borde del mapa\n- si es posible, ese territorio inicial debe tener al menos dos claros entre él y los territorios iniciales enemigos\n- coloca 6 guerreros y 1 nido en ese territorio inicial\n- elige cualquier líder y colócalo en el espacio de líder\n- deja a los demás líderes boca arriba cerca\n- coloca los 2 visires leales según el líder elegido\n- completa la pista de nidos, dejando vacía solo la casilla más a la izquierda';
+	@override String get woodlandAlliance => '<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 0\n\n<h>lógica_canónica_de_preparación<h>\n- roba 3 cartas a la pila de simpatizantes\n- llena la pista de simpatía con todos los marcadores de simpatía\n- coloca las 3 bases en los espacios de base correspondientes del tablero de facción';
+	@override String get vagabond => '<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 0\n- empieza_en_bosque: sí\n\n<h>lógica_canónica_de_preparación<h>\n- coloca la peana en cualquier bosque\n- baraja el mazo de misiones y revela 3 misiones cerca\n- coloca aleatoriamente los 4 objetos de ruina bajo las ruinas, a menos que otra facción ya haya gestionado los objetos de ruina en esta preparación\n- coloca la carta de personaje asignada en el espacio de personaje\n- toma los objetos iniciales indicados para ese personaje y colócalos en la bolsa / pistas correspondientes\n- después de la preparación, coloca los marcadores de relación de las facciones no Vagabundo en juego en indiferente\n\n<h>notas_especiales<h>\n<i>- en el AdSet público de la era Marauder, revelar una carta de preparación del Vagabundo también revela una carta aleatoria de personaje del Vagabundo<i>\n<i>- en el Apéndice A vivo posterior a Marauder, el soporte futuro debe permitir una o dos cartas de preparación del Vagabundo en la reserva del draft<i>';
+	@override String get theLizardCult => '<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- no_adyacente_a_territorio_inicial_enemigo: sí\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial que no sea adyacente a un territorio inicial enemigo, si es posible\n- coloca 4 guerreros y 1 jardín correspondiente en ese territorio inicial\n- distribuye 3 guerreros más entre los claros adyacentes de la forma más uniforme posible\n- coloca 2 guerreros en la caja de acólitos\n- completa las pistas de jardines, dejando vacía la casilla más a la izquierda del tipo de jardín ya colocado en el mapa\n- coloca el marcador de proscrito en su lado de proscrito';
+	@override String get riverfolkCompany => '<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 0\n- solo_claros_con_río: sí\n\n<h>lógica_canónica_de_preparación<h>\n- coloca 4 guerreros entre cualesquiera claros con río\n- coloca 3 guerreros en la caja de pagos\n- completa las pistas de puestos comerciales con los puestos comerciales correspondientes\n- coloca los 3 marcadores de servicio en la pista de servicios y fija el precio de cada servicio';
+	@override String get undergroundDuchy => '<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- no_adyacente_a_territorio_inicial_enemigo: sí\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial que no sea adyacente a un territorio inicial enemigo, si es posible\n- coloca 2 guerreros y 1 túnel en ese territorio inicial\n- distribuye 5 guerreros más entre los claros adyacentes de la forma más uniforme posible\n- coloca el tablero de la Madriguera junto al mapa\n- completa ambas pistas de edificios con ciudadelas y mercados\n- coloca a los 9 ministros boca arriba en la pila de ministros no influenciados\n- coloca las 9 coronas en los espacios de puntos de victoria mostrados en el tablero de facción';
+	@override String get corvidConspiracy => '<h>clase_de_adset<h>\n*insurgente*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n\n<h>lógica_canónica_de_preparación<h>\n- elige un claro inicial\n- coloca allí 1 guerrero y 1 ficha de complot boca abajo a tu elección\n- coloca 1 guerrero en un claro de cada palo, contando la colocación del territorio inicial, para un total de 4 guerreros\n\n<h>nota_de_localización<h>\n<i>- la etiqueta francesa de arriba es la mejor coincidencia pública encontrada en referencias comunitarias / leyes traducidas, pero aun así debe comprobarse contra un componente oficial en francés antes de publicar un texto exacto en la interfaz<i>';
+	@override String get lordOfTheHundreds => '<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 1\n- borde_del_mapa_obligatorio: sí\n- claros_mínimos_entre_territorios_iniciales_enemigos: 2\n\n<h>lógica_canónica_de_preparación<h>\n- elige un territorio inicial en el borde del mapa\n- si es posible, ese territorio inicial debe tener al menos dos claros entre él y los territorios iniciales enemigos\n- coloca al señor de la guerra, 4 guerreros y la fortaleza en ese territorio inicial\n- coloca la carta de humor obstinado en el espacio de humor\n- coloca aleatoriamente los 4 objetos de ruina bajo las ruinas, a menos que otra facción ya haya gestionado los objetos de ruina en esta preparación';
+	@override String get keepersInIron => '<h>clase_de_adset<h>\n*militante*\n\n<h>reglas_del_territorio_inicial<h>\n- cantidad: 2\n- deben_ser_adyacentes_entre_sí: sí\n- borde_del_mapa_obligatorio: sí\n- claros_mínimos_entre_territorios_iniciales_enemigos: 2\n\n<h>lógica_canónica_de_preparación<h>\n- baraja todas las reliquias boca abajo y coloca primero una reliquia aleatoria en cada bosque\n- elige 2 claros iniciales adyacentes en el borde del mapa\n- si es posible, esos territorios iniciales deben tener al menos dos claros entre ellos y los territorios iniciales enemigos\n- coloca 4 guerreros en cada territorio inicial\n- distribuye cualquier reliquia restante de la forma más uniforme posible entre bosques que no sean adyacentes a tus territorios iniciales\n- coloca un guardián fiel en cada espacio de columna del séquito\n\n<h>nota_de_localización<h>\n<i>- la etiqueta francesa de arriba sigue el uso actual del mercado francés, pero aun así merece una verificación manual con el conjunto de componentes localizado antes de publicar un texto exacto en la interfaz<i>';
 }
