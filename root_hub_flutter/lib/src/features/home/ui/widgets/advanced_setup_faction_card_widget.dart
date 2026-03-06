@@ -17,6 +17,7 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     const cardRadius = 28.0;
+    const imageHeight = 122.0;
 
     return Material(
       color: Colors.transparent,
@@ -27,7 +28,7 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Positioned.fill(
-              top: 24,
+              top: 28,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(cardRadius),
@@ -66,7 +67,7 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
                       ),
                       Positioned.fill(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(14, 58, 14, 14),
+                          padding: EdgeInsets.fromLTRB(14, 66, 14, 14),
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Text(
@@ -90,12 +91,12 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: -2,
+              top: -10,
               left: 0,
               right: 0,
               child: IgnorePointer(
                 child: SizedBox(
-                  height: 108,
+                  height: imageHeight,
                   child: Image.asset(
                     faction.getFactionImage,
                     fit: BoxFit.contain,

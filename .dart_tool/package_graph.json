@@ -28,6 +28,7 @@
       "version": "0.0.0",
       "dependencies": [
         "blurhash_dart",
+        "email_validator",
         "google_maps_apis",
         "googleapis_auth",
         "http",
@@ -118,6 +119,7 @@
       "name": "root_hub_web_portal",
       "version": "0.0.1",
       "dependencies": [
+        "email_validator",
         "jaspr",
         "root_hub_client"
       ],
@@ -233,6 +235,11 @@
         "shelf_static",
         "universal_web"
       ]
+    },
+    {
+      "name": "email_validator",
+      "version": "3.0.0",
+      "dependencies": []
     },
     {
       "name": "test",
@@ -2238,11 +2245,6 @@
         "vector_graphics_codec",
         "vector_graphics_compiler"
       ]
-    },
-    {
-      "name": "email_validator",
-      "version": "3.0.0",
-      "dependencies": []
     },
     {
       "name": "sky_engine",

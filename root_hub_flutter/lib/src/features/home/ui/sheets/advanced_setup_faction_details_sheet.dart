@@ -26,6 +26,9 @@ class _AdvancedSetupFactionDetailsSheetState
 
   @override
   Widget build(BuildContext context) {
+    const imageTopOffset = 8.0;
+    const imageSize = 154.0;
+    const sheetTopOffset = 68.0;
     final currentLocale = LocaleSettings.currentLocale;
     final showLanguageToggle = currentLocale != AppLocale.en;
     final guideContent = buildAdvancedSetupFactionGuideContent(
@@ -42,17 +45,17 @@ class _AdvancedSetupFactionDetailsSheetState
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox(
-        height: maxHeight + 54,
+        height: maxHeight + sheetTopOffset,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Positioned(
-              top: 54,
+              top: sheetTopOffset,
               left: 0,
               right: 0,
               bottom: 0,
               child: Container(
-                padding: EdgeInsets.fromLTRB(20, 12, 20, 18 + safeAreaBottom),
+                padding: EdgeInsets.fromLTRB(20, 12, 20, 0),
                 decoration: BoxDecoration(
                   color: colorScheme.surface,
                   borderRadius: BorderRadius.vertical(
@@ -80,9 +83,9 @@ class _AdvancedSetupFactionDetailsSheetState
                         ),
                       ),
                     ),
-                    SizedBox(height: 18),
+                    SizedBox(height: 22),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(104, 0, 18, 0),
+                      padding: EdgeInsets.only(left: 120),
                       child: Text(
                         widget.faction.displayName,
                         textAlign: TextAlign.center,
@@ -96,9 +99,9 @@ class _AdvancedSetupFactionDetailsSheetState
                     ),
                     if (showLanguageToggle) ...[
                       SizedBox(height: 18),
-                      Wrap(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         spacing: 8,
-                        runSpacing: 8,
                         children: [
                           ChoiceChip(
                             label: Text(
@@ -132,6 +135,7 @@ class _AdvancedSetupFactionDetailsSheetState
                     Expanded(
                       child: SingleChildScrollView(
                         physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.only(bottom: safeAreaBottom),
                         child: BabelSelectableText(
                           visibleBody,
                           style: Theme.of(context).textTheme.bodyLarge
@@ -166,12 +170,12 @@ class _AdvancedSetupFactionDetailsSheetState
               ),
             ),
             Positioned(
-              top: 0,
-              left: 18,
+              top: imageTopOffset,
+              left: 0,
               child: IgnorePointer(
                 child: SizedBox(
-                  width: 122,
-                  height: 122,
+                  width: imageSize,
+                  height: imageSize,
                   child: Image.asset(
                     widget.faction.getFactionImage,
                     fit: BoxFit.contain,
