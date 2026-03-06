@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Calculadora de Alcance",
       "advancedSetupQuickguideTitle": "Preparação\nAvançada",
       "setupOrderTitle": "Ordem de Preparação",
-      "recommendedFactionsToPlayTitle": "Facções Recomendadas"
+      "recommendedFactionsToPlayTitle": "Composições Recomendadas"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Calculadora de Alcance",
@@ -272,6 +272,21 @@
       "title": "Ordem de Preparação",
       "description": "A preparação padrão segue uma prioridade fixa entre facções. Esta página é um lembrete rápido dessa ordem.",
       "secondVagabondTitle": "Regra do segundo Malandro"
+    },
+    "ui_screens_recommended_compositions_screen": {
+      "title": "Composições Recomendadas",
+      "ownedBoxesTitle": "1. Quais caixas você tem?",
+      "ownedBoxesDescription": "Selecione as caixas que você comprou.",
+      "playerCountTitle": "2. Quantos jogadores?",
+      "playerCountDescription": "Escolha o tamanho da mesa para esta partida.",
+      "resultsTitle": "Composições compatíveis",
+      "resultsDescription": "Estas composições combinam com as caixas que você tem e com a quantidade de jogadores escolhida.",
+      "boxNames": {
+        "baseGame": "Jogo Base",
+        "riverfolkExpansion": "Expansão Riverfolk",
+        "underworldExpansion": "Expansão Underworld",
+        "marauderExpansion": "Expansão Marauder"
+      }
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Ainda não há valores para esta métrica."

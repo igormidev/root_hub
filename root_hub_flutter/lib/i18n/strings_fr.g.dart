@@ -107,6 +107,7 @@ class _TranslationsHomeFr extends TranslationsHomeEn {
 	@override late final _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenFr ui_screens_advanced_setup_quickguide_screen = _TranslationsHomeUiScreensAdvancedSetupQuickguideScreenFr._(_root);
 	@override late final _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetFr ui_sheets_advanced_setup_faction_details_sheet = _TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetFr._(_root);
 	@override late final _TranslationsHomeUiScreensSetupOrderScreenFr ui_screens_setup_order_screen = _TranslationsHomeUiScreensSetupOrderScreenFr._(_root);
+	@override late final _TranslationsHomeUiScreensRecommendedCompositionsScreenFr ui_screens_recommended_compositions_screen = _TranslationsHomeUiScreensRecommendedCompositionsScreenFr._(_root);
 	@override late final _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr ui_widgets_home_stats_pie_chart_widget = _TranslationsHomeUiWidgetsHomeStatsPieChartWidgetFr._(_root);
 	@override late final _TranslationsHomeUiContentRootCommunityToolsContentFr ui_content_root_community_tools_content = _TranslationsHomeUiContentRootCommunityToolsContentFr._(_root);
 }
@@ -527,7 +528,7 @@ class _TranslationsHomeUiSectionsHomeCommunityToolsSectionFr extends Translation
 	@override String get reachCalculatorTitle => 'Calculateur de Portée';
 	@override String get advancedSetupQuickguideTitle => 'Mise en place\navancée';
 	@override String get setupOrderTitle => 'Ordre de Mise en place';
-	@override String get recommendedFactionsToPlayTitle => 'Factions Recommandées';
+	@override String get recommendedFactionsToPlayTitle => 'Compositions Recommandées';
 }
 
 // Path: home.ui_screens_root_reach_calculator_screen
@@ -584,6 +585,23 @@ class _TranslationsHomeUiScreensSetupOrderScreenFr extends TranslationsHomeUiScr
 	@override String get title => 'Ordre de Mise en place';
 	@override String get description => 'La mise en place standard suit une priorité fixe entre les factions. Cette page est un rappel rapide de cet ordre.';
 	@override String get secondVagabondTitle => 'Règle du second Vagabond';
+}
+
+// Path: home.ui_screens_recommended_compositions_screen
+class _TranslationsHomeUiScreensRecommendedCompositionsScreenFr extends TranslationsHomeUiScreensRecommendedCompositionsScreenEn {
+	_TranslationsHomeUiScreensRecommendedCompositionsScreenFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Compositions Recommandées';
+	@override String get ownedBoxesTitle => '1. Quelles boîtes possédez-vous ?';
+	@override String get ownedBoxesDescription => 'Sélectionnez les boîtes que vous avez achetées.';
+	@override String get playerCountTitle => '2. Combien de joueurs ?';
+	@override String get playerCountDescription => 'Choisissez la taille de table pour cette partie.';
+	@override String get resultsTitle => 'Compositions compatibles';
+	@override String get resultsDescription => 'Ces compositions correspondent aux boîtes que vous avez et au nombre de joueurs choisi.';
+	@override late final _TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesFr boxNames = _TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesFr._(_root);
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget
@@ -1616,6 +1634,19 @@ class _TranslationsAuthAuthLoginScreenErrorsFr extends TranslationsAuthAuthLogin
 	@override String get passwordResetFailed => 'Une erreur est survenue pendant la réinitialisation du mot de passe. Réessayez plus tard.';
 	@override String get networkUnavailable => 'Impossible de se connecter au serveur. Vérifiez votre connexion et réessayez.';
 	@override String get unexpected => 'Une erreur inattendue est survenue. Réessayez.';
+}
+
+// Path: home.ui_screens_recommended_compositions_screen.boxNames
+class _TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesFr extends TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesEn {
+	_TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get baseGame => 'Jeu de base';
+	@override String get riverfolkExpansion => 'Extension Riverfolk';
+	@override String get underworldExpansion => 'Extension Underworld';
+	@override String get marauderExpansion => 'Extension Maraudeur';
 }
 
 // Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies

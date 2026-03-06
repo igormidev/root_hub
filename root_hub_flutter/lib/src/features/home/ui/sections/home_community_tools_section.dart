@@ -64,7 +64,8 @@ class HomeCommunityToolsSection extends StatelessWidget {
                 RootCommunityTool.advancedSetupQuickguide =>
                   dashboardAdvancedSetupQuickguidePath,
                 RootCommunityTool.setupOrder => dashboardSetupOrderPath,
-                RootCommunityTool.recommendedFactionsToPlay => null,
+                RootCommunityTool.recommendedFactionsToPlay =>
+                  dashboardRecommendedCompositionsPath,
               };
 
               return HomeCommunityToolCardWidget(
@@ -78,11 +79,9 @@ class HomeCommunityToolsSection extends StatelessWidget {
                           .home
                           .ui_sections_home_community_tools_section
                           .comingSoon,
-                onTap: route == null
-                    ? null
-                    : () {
-                        context.push(route);
-                      },
+                onTap: () {
+                  context.push(route);
+                },
               );
             },
           ),

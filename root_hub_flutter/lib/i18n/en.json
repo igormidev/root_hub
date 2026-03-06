@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Reach Calculator",
       "advancedSetupQuickguideTitle": "Advanced Setup",
       "setupOrderTitle": "Setup Order",
-      "recommendedFactionsToPlayTitle": "Recommended Factions"
+      "recommendedFactionsToPlayTitle": "Recommended Compositions"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Reach Calculator",
@@ -272,6 +272,21 @@
       "title": "Setup Order",
       "description": "Standard setup follows a fixed faction priority. This page is a quick reminder of that order.",
       "secondVagabondTitle": "Second vagabond rule"
+    },
+    "ui_screens_recommended_compositions_screen": {
+      "title": "Recommended Compositions",
+      "ownedBoxesTitle": "1. What boxes do you own?",
+      "ownedBoxesDescription": "Select the boxes that you have purchased.",
+      "playerCountTitle": "2. How many players?",
+      "playerCountDescription": "Choose the table size for this match.",
+      "resultsTitle": "Matching compositions",
+      "resultsDescription": "These lineups fit the boxes you own and the player count you picked.",
+      "boxNames": {
+        "baseGame": "Base Game",
+        "riverfolkExpansion": "Riverfolk Expansion",
+        "underworldExpansion": "Underworld Expansion",
+        "marauderExpansion": "Marauder Expansion"
+      }
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "No values for this metric yet."

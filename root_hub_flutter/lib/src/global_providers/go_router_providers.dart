@@ -11,6 +11,7 @@ import 'package:root_hub_flutter/src/features/auth/auth_onboarding_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_faction_editor_screen.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/screens/dashboard_screen.dart';
 import 'package:root_hub_flutter/src/features/home/ui/screens/advanced_setup_quickguide_screen.dart';
+import 'package:root_hub_flutter/src/features/home/ui/screens/recommended_compositions_screen.dart';
 import 'package:root_hub_flutter/src/features/home/ui/screens/root_reach_calculator_screen.dart';
 import 'package:root_hub_flutter/src/features/home/ui/screens/setup_order_screen.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_screen.dart';
@@ -73,6 +74,10 @@ class RouterNotifier extends Notifier<GoRouter> {
         GoRoute(
           path: dashboardSetupOrderPath,
           builder: (context, state) => SetupOrderScreen(),
+        ),
+        GoRoute(
+          path: dashboardRecommendedCompositionsPath,
+          builder: (context, state) => RecommendedCompositionsScreen(),
         ),
         GoRoute(
           path: dashboardMatchCreatePath,

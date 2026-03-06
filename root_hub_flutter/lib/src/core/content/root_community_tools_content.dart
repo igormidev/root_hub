@@ -25,7 +25,7 @@ extension RootCommunityToolUiExtension on RootCommunityTool {
     RootCommunityTool.recommendedFactionsToPlay => const Color(0xFF7A5C45),
   };
 
-  bool get isEnabled => this != RootCommunityTool.recommendedFactionsToPlay;
+  bool get isEnabled => true;
 
   String localizedTitle(Translations t) => switch (this) {
     RootCommunityTool.reachCalculator =>

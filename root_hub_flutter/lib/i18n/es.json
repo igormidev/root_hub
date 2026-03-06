@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Calculadora de Alcance",
       "advancedSetupQuickguideTitle": "Preparación\nAvanzada",
       "setupOrderTitle": "Orden de Preparación",
-      "recommendedFactionsToPlayTitle": "Facciones Recomendadas"
+      "recommendedFactionsToPlayTitle": "Composiciones Recomendadas"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Calculadora de Alcance",
@@ -272,6 +272,21 @@
       "title": "Orden de Preparación",
       "description": "La preparación estándar sigue una prioridad fija de facciones. Esta página es un recordatorio rápido de ese orden.",
       "secondVagabondTitle": "Regla del segundo Vagabundo"
+    },
+    "ui_screens_recommended_compositions_screen": {
+      "title": "Composiciones Recomendadas",
+      "ownedBoxesTitle": "1. ¿Qué cajas tienes?",
+      "ownedBoxesDescription": "Selecciona las cajas que has comprado.",
+      "playerCountTitle": "2. ¿Cuántos jugadores?",
+      "playerCountDescription": "Elige el tamaño de la mesa para esta partida.",
+      "resultsTitle": "Composiciones compatibles",
+      "resultsDescription": "Estas composiciones encajan con las cajas que tienes y con la cantidad de jugadores elegida.",
+      "boxNames": {
+        "baseGame": "Juego Base",
+        "riverfolkExpansion": "Expansión Riverfolk",
+        "underworldExpansion": "Expansión Underworld",
+        "marauderExpansion": "Expansión Marauder"
+      }
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Aún no hay valores para esta métrica."

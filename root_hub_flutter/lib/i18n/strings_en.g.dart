@@ -111,6 +111,7 @@ class TranslationsHomeEn {
 	late final TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn ui_screens_advanced_setup_quickguide_screen = TranslationsHomeUiScreensAdvancedSetupQuickguideScreenEn.internal(_root);
 	late final TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn ui_sheets_advanced_setup_faction_details_sheet = TranslationsHomeUiSheetsAdvancedSetupFactionDetailsSheetEn.internal(_root);
 	late final TranslationsHomeUiScreensSetupOrderScreenEn ui_screens_setup_order_screen = TranslationsHomeUiScreensSetupOrderScreenEn.internal(_root);
+	late final TranslationsHomeUiScreensRecommendedCompositionsScreenEn ui_screens_recommended_compositions_screen = TranslationsHomeUiScreensRecommendedCompositionsScreenEn.internal(_root);
 	late final TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn ui_widgets_home_stats_pie_chart_widget = TranslationsHomeUiWidgetsHomeStatsPieChartWidgetEn.internal(_root);
 	late final TranslationsHomeUiContentRootCommunityToolsContentEn ui_content_root_community_tools_content = TranslationsHomeUiContentRootCommunityToolsContentEn.internal(_root);
 }
@@ -909,8 +910,8 @@ class TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
 	/// en: 'Setup Order'
 	String get setupOrderTitle => 'Setup Order';
 
-	/// en: 'Recommended Factions'
-	String get recommendedFactionsToPlayTitle => 'Recommended Factions';
+	/// en: 'Recommended Compositions'
+	String get recommendedFactionsToPlayTitle => 'Recommended Compositions';
 }
 
 // Path: home.ui_screens_root_reach_calculator_screen
@@ -1007,6 +1008,38 @@ class TranslationsHomeUiScreensSetupOrderScreenEn {
 
 	/// en: 'Second vagabond rule'
 	String get secondVagabondTitle => 'Second vagabond rule';
+}
+
+// Path: home.ui_screens_recommended_compositions_screen
+class TranslationsHomeUiScreensRecommendedCompositionsScreenEn {
+	TranslationsHomeUiScreensRecommendedCompositionsScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Recommended Compositions'
+	String get title => 'Recommended Compositions';
+
+	/// en: '1. What boxes do you own?'
+	String get ownedBoxesTitle => '1. What boxes do you own?';
+
+	/// en: 'Select the boxes that you have purchased.'
+	String get ownedBoxesDescription => 'Select the boxes that you have purchased.';
+
+	/// en: '2. How many players?'
+	String get playerCountTitle => '2. How many players?';
+
+	/// en: 'Choose the table size for this match.'
+	String get playerCountDescription => 'Choose the table size for this match.';
+
+	/// en: 'Matching compositions'
+	String get resultsTitle => 'Matching compositions';
+
+	/// en: 'These lineups fit the boxes you own and the player count you picked.'
+	String get resultsDescription => 'These lineups fit the boxes you own and the player count you picked.';
+
+	late final TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesEn boxNames = TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesEn.internal(_root);
 }
 
 // Path: home.ui_widgets_home_stats_pie_chart_widget
@@ -3004,6 +3037,27 @@ class TranslationsAuthAuthLoginScreenErrorsEn {
 
 	/// en: 'An unexpected error occurred. Please try again.'
 	String get unexpected => 'An unexpected error occurred. Please try again.';
+}
+
+// Path: home.ui_screens_recommended_compositions_screen.boxNames
+class TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesEn {
+	TranslationsHomeUiScreensRecommendedCompositionsScreenBoxNamesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Base Game'
+	String get baseGame => 'Base Game';
+
+	/// en: 'Riverfolk Expansion'
+	String get riverfolkExpansion => 'Riverfolk Expansion';
+
+	/// en: 'Underworld Expansion'
+	String get underworldExpansion => 'Underworld Expansion';
+
+	/// en: 'Marauder Expansion'
+	String get marauderExpansion => 'Marauder Expansion';
 }
 
 // Path: home.ui_content_root_community_tools_content.advancedSetupFactionGuideBodies

@@ -7,6 +7,8 @@ const dashboardFactionPath = '/dashboard/profile/faction';
 const dashboardReachCalculatorPath = '/dashboard/tools/reach-calculator';
 const dashboardAdvancedSetupQuickguidePath = '/dashboard/tools/advanced-setup';
 const dashboardSetupOrderPath = '/dashboard/tools/setup-order';
+const dashboardRecommendedCompositionsPath =
+    '/dashboard/tools/recommended-compositions';
 const dashboardMatchCreatePath = '/dashboard/match/create';
 const dashboardMatchCreateLocationPath = '/dashboard/match/create/location';
 const dashboardMatchChatPath = '/dashboard/match/:matchId/chat';

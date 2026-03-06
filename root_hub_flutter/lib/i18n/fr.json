@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Calculateur de Portée",
       "advancedSetupQuickguideTitle": "Mise en place\navancée",
       "setupOrderTitle": "Ordre de Mise en place",
-      "recommendedFactionsToPlayTitle": "Factions Recommandées"
+      "recommendedFactionsToPlayTitle": "Compositions Recommandées"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Calculateur de Portée",
@@ -272,6 +272,21 @@
       "title": "Ordre de Mise en place",
       "description": "La mise en place standard suit une priorité fixe entre les factions. Cette page est un rappel rapide de cet ordre.",
       "secondVagabondTitle": "Règle du second Vagabond"
+    },
+    "ui_screens_recommended_compositions_screen": {
+      "title": "Compositions Recommandées",
+      "ownedBoxesTitle": "1. Quelles boîtes possédez-vous ?",
+      "ownedBoxesDescription": "Sélectionnez les boîtes que vous avez achetées.",
+      "playerCountTitle": "2. Combien de joueurs ?",
+      "playerCountDescription": "Choisissez la taille de table pour cette partie.",
+      "resultsTitle": "Compositions compatibles",
+      "resultsDescription": "Ces compositions correspondent aux boîtes que vous avez et au nombre de joueurs choisi.",
+      "boxNames": {
+        "baseGame": "Jeu de base",
+        "riverfolkExpansion": "Extension Riverfolk",
+        "underworldExpansion": "Extension Underworld",
+        "marauderExpansion": "Extension Maraudeur"
+      }
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Aucune valeur pour cette métrique pour l'instant."

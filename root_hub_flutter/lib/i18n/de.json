@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Reichweitenrechner",
       "advancedSetupQuickguideTitle": "Erweiterter\nAufbau",
       "setupOrderTitle": "Aufbau-Reihenfolge",
-      "recommendedFactionsToPlayTitle": "Empfohlene Fraktionen"
+      "recommendedFactionsToPlayTitle": "Empfohlene Aufstellungen"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Reichweitenrechner",
@@ -272,6 +272,21 @@
       "title": "Aufbau-Reihenfolge",
       "description": "Der Standardaufbau folgt einer festen Fraktionspriorität. Diese Seite ist eine kurze Erinnerung an diese Reihenfolge.",
       "secondVagabondTitle": "Regel für den zweiten Vagabunden"
+    },
+    "ui_screens_recommended_compositions_screen": {
+      "title": "Empfohlene Aufstellungen",
+      "ownedBoxesTitle": "1. Welche Boxen besitzt du?",
+      "ownedBoxesDescription": "Wähle die Boxen aus, die du gekauft hast.",
+      "playerCountTitle": "2. Wie viele Spieler?",
+      "playerCountDescription": "Wähle die Tischgröße für diese Partie.",
+      "resultsTitle": "Passende Aufstellungen",
+      "resultsDescription": "Diese Aufstellungen passen zu deinen Boxen und zur gewählten Spielerzahl.",
+      "boxNames": {
+        "baseGame": "Grundspiel",
+        "riverfolkExpansion": "Riverfolk-Erweiterung",
+        "underworldExpansion": "Underworld-Erweiterung",
+        "marauderExpansion": "Marauder-Erweiterung"
+      }
     },
     "ui_widgets_home_stats_pie_chart_widget": {
       "noValuesForThisMetricYet": "Für diese Metrik liegen noch keine Werte vor."
