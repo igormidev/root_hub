@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
-import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
+import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 
 class MatchPlayedMatchSummaryDialog extends StatelessWidget {
   const MatchPlayedMatchSummaryDialog({

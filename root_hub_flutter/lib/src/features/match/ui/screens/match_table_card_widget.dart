@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
+import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/extension/match_podium_extension.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_description_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_info_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_report_available_chip_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_description_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_time_status_chip_widget.dart';
-import 'package:root_hub_flutter/i18n/strings.g.dart';
 
 class MatchTableCardWidget extends StatelessWidget {
   const MatchTableCardWidget({
@@ -178,6 +178,7 @@ class MatchTableCardWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8),
+
               Tooltip(
                 triggerMode: TooltipTriggerMode.tap,
                 message: t.match.ui_screens_match_table_card_widget
@@ -198,7 +199,9 @@ class MatchTableCardWidget extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(999),
-                    color: colorScheme.primaryContainer.withValues(alpha: 0.76),
+                    color: colorScheme.primaryContainer.withValues(
+                      alpha: 0.76,
+                    ),
                   ),
                   child: Text(
                     '$subscribedPlayersCount/$maxPlayers',
