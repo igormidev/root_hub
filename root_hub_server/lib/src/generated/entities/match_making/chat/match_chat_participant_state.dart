@@ -462,6 +462,8 @@ class MatchChatParticipantStateRepository {
     _i1.OrderByListBuilder<MatchChatParticipantStateTable>? orderByList,
     _i1.Transaction? transaction,
     MatchChatParticipantStateInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<MatchChatParticipantState>(
       where: where?.call(MatchChatParticipantState.t),
@@ -472,6 +474,8 @@ class MatchChatParticipantStateRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -501,6 +505,8 @@ class MatchChatParticipantStateRepository {
     _i1.OrderByListBuilder<MatchChatParticipantStateTable>? orderByList,
     _i1.Transaction? transaction,
     MatchChatParticipantStateInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<MatchChatParticipantState>(
       where: where?.call(MatchChatParticipantState.t),
@@ -510,6 +516,8 @@ class MatchChatParticipantStateRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -519,11 +527,15 @@ class MatchChatParticipantStateRepository {
     int id, {
     _i1.Transaction? transaction,
     MatchChatParticipantStateInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<MatchChatParticipantState>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -533,14 +545,20 @@ class MatchChatParticipantStateRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<MatchChatParticipantState>> insert(
     _i1.Session session,
     List<MatchChatParticipantState> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<MatchChatParticipantState>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -683,6 +701,22 @@ class MatchChatParticipantStateRepository {
     return session.db.count<MatchChatParticipantState>(
       where: where?.call(MatchChatParticipantState.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [MatchChatParticipantState] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<MatchChatParticipantStateTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<MatchChatParticipantState>(
+      where: where(MatchChatParticipantState.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

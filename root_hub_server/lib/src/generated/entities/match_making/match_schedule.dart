@@ -110,7 +110,11 @@ abstract class MatchSchedulePairingAttempt
               jsonSerialization['notPlayedMarkedBy'],
             ),
       closedForSubscriptions:
-          jsonSerialization['closedForSubscriptions'] as bool?,
+          jsonSerialization['closedForSubscriptions'] == null
+          ? null
+          : _i1.BoolJsonExtension.fromJson(
+              jsonSerialization['closedForSubscriptions'],
+            ),
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null
@@ -875,6 +879,8 @@ class MatchSchedulePairingAttemptRepository {
     _i1.OrderByListBuilder<MatchSchedulePairingAttemptTable>? orderByList,
     _i1.Transaction? transaction,
     MatchSchedulePairingAttemptInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<MatchSchedulePairingAttempt>(
       where: where?.call(MatchSchedulePairingAttempt.t),
@@ -885,6 +891,8 @@ class MatchSchedulePairingAttemptRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -914,6 +922,8 @@ class MatchSchedulePairingAttemptRepository {
     _i1.OrderByListBuilder<MatchSchedulePairingAttemptTable>? orderByList,
     _i1.Transaction? transaction,
     MatchSchedulePairingAttemptInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<MatchSchedulePairingAttempt>(
       where: where?.call(MatchSchedulePairingAttempt.t),
@@ -923,6 +933,8 @@ class MatchSchedulePairingAttemptRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -932,11 +944,15 @@ class MatchSchedulePairingAttemptRepository {
     int id, {
     _i1.Transaction? transaction,
     MatchSchedulePairingAttemptInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<MatchSchedulePairingAttempt>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -946,14 +962,20 @@ class MatchSchedulePairingAttemptRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<MatchSchedulePairingAttempt>> insert(
     _i1.Session session,
     List<MatchSchedulePairingAttempt> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<MatchSchedulePairingAttempt>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -1096,6 +1118,22 @@ class MatchSchedulePairingAttemptRepository {
     return session.db.count<MatchSchedulePairingAttempt>(
       where: where?.call(MatchSchedulePairingAttempt.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [MatchSchedulePairingAttempt] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<MatchSchedulePairingAttemptTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<MatchSchedulePairingAttempt>(
+      where: where(MatchSchedulePairingAttempt.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

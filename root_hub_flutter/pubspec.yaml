@@ -2,7 +2,7 @@ name: root_hub_flutter
 description: A new Flutter project with Serverpod.
 
 publish_to: "none"
-version: 1.0.3+6
+version: 1.1.2+9
 
 environment:
   sdk: "^3.8.0"
@@ -19,9 +19,9 @@ dependencies:
   google_fonts: ^8.0.2
   root_hub_client:
     path: ../root_hub_client
-  serverpod_auth_idp_flutter: 3.3.1
-  serverpod_auth_idp_client: 3.3.1
-  serverpod_flutter: 3.3.1
+  serverpod_auth_idp_flutter: 3.4.1
+  serverpod_auth_idp_client: 3.4.1
+  serverpod_flutter: 3.4.1
   babel_text: ^2.1.0
   intl: any
   slang: ^4.9.0

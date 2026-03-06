@@ -602,6 +602,8 @@ class PlayedMatchRepository {
     _i1.OrderByListBuilder<PlayedMatchTable>? orderByList,
     _i1.Transaction? transaction,
     PlayedMatchInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<PlayedMatch>(
       where: where?.call(PlayedMatch.t),
@@ -612,6 +614,8 @@ class PlayedMatchRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -641,6 +645,8 @@ class PlayedMatchRepository {
     _i1.OrderByListBuilder<PlayedMatchTable>? orderByList,
     _i1.Transaction? transaction,
     PlayedMatchInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<PlayedMatch>(
       where: where?.call(PlayedMatch.t),
@@ -650,6 +656,8 @@ class PlayedMatchRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -659,11 +667,15 @@ class PlayedMatchRepository {
     int id, {
     _i1.Transaction? transaction,
     PlayedMatchInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<PlayedMatch>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -673,14 +685,20 @@ class PlayedMatchRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<PlayedMatch>> insert(
     _i1.Session session,
     List<PlayedMatch> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<PlayedMatch>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -821,6 +839,22 @@ class PlayedMatchRepository {
     return session.db.count<PlayedMatch>(
       where: where?.call(PlayedMatch.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [PlayedMatch] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<PlayedMatchTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<PlayedMatch>(
+      where: where(PlayedMatch.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

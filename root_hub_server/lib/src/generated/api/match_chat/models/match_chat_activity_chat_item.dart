@@ -59,8 +59,12 @@ abstract class MatchChatActivityChatItem
         jsonSerialization['attemptedAt'],
       ),
       unreadMessagesCount: jsonSerialization['unreadMessagesCount'] as int,
-      isSubscribed: jsonSerialization['isSubscribed'] as bool,
-      hasPlayedResult: jsonSerialization['hasPlayedResult'] as bool,
+      isSubscribed: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['isSubscribed'],
+      ),
+      hasPlayedResult: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['hasPlayedResult'],
+      ),
       locationTitle: jsonSerialization['locationTitle'] as String,
       locationSubtitle: jsonSerialization['locationSubtitle'] as String?,
       lastMessageAt: jsonSerialization['lastMessageAt'] == null

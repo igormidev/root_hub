@@ -47,7 +47,9 @@ abstract class PlayerPushNotificationToken
       platform: _i2.PushNotificationPlatform.fromJson(
         (jsonSerialization['platform'] as String),
       ),
-      isActive: jsonSerialization['isActive'] as bool?,
+      isActive: jsonSerialization['isActive'] == null
+          ? null
+          : _i1.BoolJsonExtension.fromJson(jsonSerialization['isActive']),
       lastConfirmedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['lastConfirmedAt'],
       ),
@@ -379,6 +381,8 @@ class PlayerPushNotificationTokenRepository {
     _i1.OrderByListBuilder<PlayerPushNotificationTokenTable>? orderByList,
     _i1.Transaction? transaction,
     PlayerPushNotificationTokenInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<PlayerPushNotificationToken>(
       where: where?.call(PlayerPushNotificationToken.t),
@@ -389,6 +393,8 @@ class PlayerPushNotificationTokenRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -418,6 +424,8 @@ class PlayerPushNotificationTokenRepository {
     _i1.OrderByListBuilder<PlayerPushNotificationTokenTable>? orderByList,
     _i1.Transaction? transaction,
     PlayerPushNotificationTokenInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<PlayerPushNotificationToken>(
       where: where?.call(PlayerPushNotificationToken.t),
@@ -427,6 +435,8 @@ class PlayerPushNotificationTokenRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -436,11 +446,15 @@ class PlayerPushNotificationTokenRepository {
     int id, {
     _i1.Transaction? transaction,
     PlayerPushNotificationTokenInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<PlayerPushNotificationToken>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -450,14 +464,20 @@ class PlayerPushNotificationTokenRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<PlayerPushNotificationToken>> insert(
     _i1.Session session,
     List<PlayerPushNotificationToken> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<PlayerPushNotificationToken>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -600,6 +620,22 @@ class PlayerPushNotificationTokenRepository {
     return session.db.count<PlayerPushNotificationToken>(
       where: where?.call(PlayerPushNotificationToken.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [PlayerPushNotificationToken] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<PlayerPushNotificationTokenTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<PlayerPushNotificationToken>(
+      where: where(PlayerPushNotificationToken.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

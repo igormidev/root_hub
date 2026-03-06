@@ -391,6 +391,8 @@ class PostCommentRepository {
     _i1.OrderByListBuilder<PostCommentTable>? orderByList,
     _i1.Transaction? transaction,
     PostCommentInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<PostComment>(
       where: where?.call(PostComment.t),
@@ -401,6 +403,8 @@ class PostCommentRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -430,6 +434,8 @@ class PostCommentRepository {
     _i1.OrderByListBuilder<PostCommentTable>? orderByList,
     _i1.Transaction? transaction,
     PostCommentInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<PostComment>(
       where: where?.call(PostComment.t),
@@ -439,6 +445,8 @@ class PostCommentRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -448,11 +456,15 @@ class PostCommentRepository {
     int id, {
     _i1.Transaction? transaction,
     PostCommentInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<PostComment>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -462,14 +474,20 @@ class PostCommentRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<PostComment>> insert(
     _i1.Session session,
     List<PostComment> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<PostComment>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -610,6 +628,22 @@ class PostCommentRepository {
     return session.db.count<PostComment>(
       where: where?.call(PostComment.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [PostComment] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<PostCommentTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<PostComment>(
+      where: where(PostComment.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

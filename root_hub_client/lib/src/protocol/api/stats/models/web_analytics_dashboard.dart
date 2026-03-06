@@ -43,7 +43,9 @@ abstract class WebAnalyticsDashboard implements _i1.SerializableModel {
     Map<String, dynamic> jsonSerialization,
   ) {
     return WebAnalyticsDashboard(
-      isAuthorized: jsonSerialization['isAuthorized'] as bool,
+      isAuthorized: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['isAuthorized'],
+      ),
       totalClicks: jsonSerialization['totalClicks'] as int,
       uniqueCountries: jsonSerialization['uniqueCountries'] as int,
       uniqueDevices: jsonSerialization['uniqueDevices'] as int,

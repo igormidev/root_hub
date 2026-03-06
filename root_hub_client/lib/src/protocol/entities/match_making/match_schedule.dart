@@ -108,7 +108,11 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
               jsonSerialization['notPlayedMarkedBy'],
             ),
       closedForSubscriptions:
-          jsonSerialization['closedForSubscriptions'] as bool?,
+          jsonSerialization['closedForSubscriptions'] == null
+          ? null
+          : _i1.BoolJsonExtension.fromJson(
+              jsonSerialization['closedForSubscriptions'],
+            ),
       locationId: jsonSerialization['locationId'] as int,
       location: jsonSerialization['location'] == null
           ? null

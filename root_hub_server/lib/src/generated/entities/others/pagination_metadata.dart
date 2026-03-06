@@ -39,8 +39,12 @@ abstract class PaginationMetadata
           jsonSerialization['itemsInCurrentPageCount'] as int,
       totalItemsCount: jsonSerialization['totalItemsCount'] as int,
       totalPagesCount: jsonSerialization['totalPagesCount'] as int,
-      hasNextPage: jsonSerialization['hasNextPage'] as bool,
-      hasPreviousPage: jsonSerialization['hasPreviousPage'] as bool,
+      hasNextPage: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['hasNextPage'],
+      ),
+      hasPreviousPage: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['hasPreviousPage'],
+      ),
     );
   }
 

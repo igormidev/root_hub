@@ -1257,19 +1257,19 @@
     },
     {
       "name": "relic",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/relic-1.0.0",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/relic-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "relic_core",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/relic_core-1.0.0",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/relic_core-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "relic_io",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/relic_io-1.0.0",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/relic_io-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -1323,79 +1323,79 @@
     },
     {
       "name": "serverpod",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_auth_core_client",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_core_client-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_core_client-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_auth_core_flutter",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_core_flutter-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_core_flutter-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_auth_core_server",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_core_server-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_core_server-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_auth_idp_client",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_idp_client-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_idp_client-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_auth_idp_flutter",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_idp_flutter-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_idp_flutter-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_auth_idp_server",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_idp_server-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_auth_idp_server-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_client",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_client-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_client-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_flutter",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_flutter-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_flutter-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_lints",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_lints-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_lints-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_serialization",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_serialization-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_serialization-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_shared",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_shared-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_shared-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
     {
       "name": "serverpod_test",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_test-3.3.1",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/serverpod_test-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -1755,7 +1755,7 @@
     },
     {
       "name": "uuid",
-      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/uuid-4.5.2",
+      "rootUri": "file:///Users/igor/.pub-cache/hosted/pub.dev/uuid-4.5.3",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },

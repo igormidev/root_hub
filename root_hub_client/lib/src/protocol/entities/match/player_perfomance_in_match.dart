@@ -70,7 +70,7 @@ abstract class PlayerPerfomanceInMatch implements _i1.SerializableModel {
       factionUsedInMatch: _i5.Faction.fromJson(
         (jsonSerialization['factionUsedInMatch'] as String),
       ),
-      didWin: jsonSerialization['didWin'] as bool,
+      didWin: _i1.BoolJsonExtension.fromJson(jsonSerialization['didWin']),
       scoreInMatch: jsonSerialization['scoreInMatch'] as int?,
     );
   }

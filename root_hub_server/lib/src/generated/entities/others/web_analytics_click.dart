@@ -492,6 +492,8 @@ class WebAnalyticsClickRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<WebAnalyticsClickTable>? orderByList,
     _i1.Transaction? transaction,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<WebAnalyticsClick>(
       where: where?.call(WebAnalyticsClick.t),
@@ -501,6 +503,8 @@ class WebAnalyticsClickRepository {
       limit: limit,
       offset: offset,
       transaction: transaction,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -529,6 +533,8 @@ class WebAnalyticsClickRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<WebAnalyticsClickTable>? orderByList,
     _i1.Transaction? transaction,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<WebAnalyticsClick>(
       where: where?.call(WebAnalyticsClick.t),
@@ -537,6 +543,8 @@ class WebAnalyticsClickRepository {
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -545,10 +553,14 @@ class WebAnalyticsClickRepository {
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<WebAnalyticsClick>(
       id,
       transaction: transaction,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -558,14 +570,20 @@ class WebAnalyticsClickRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<WebAnalyticsClick>> insert(
     _i1.Session session,
     List<WebAnalyticsClick> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<WebAnalyticsClick>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -708,6 +726,22 @@ class WebAnalyticsClickRepository {
     return session.db.count<WebAnalyticsClick>(
       where: where?.call(WebAnalyticsClick.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [WebAnalyticsClick] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<WebAnalyticsClickTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<WebAnalyticsClick>(
+      where: where(WebAnalyticsClick.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

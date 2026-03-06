@@ -461,6 +461,8 @@ class MatchChatHistoryRepository {
     _i1.OrderByListBuilder<MatchChatHistoryTable>? orderByList,
     _i1.Transaction? transaction,
     MatchChatHistoryInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<MatchChatHistory>(
       where: where?.call(MatchChatHistory.t),
@@ -471,6 +473,8 @@ class MatchChatHistoryRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -500,6 +504,8 @@ class MatchChatHistoryRepository {
     _i1.OrderByListBuilder<MatchChatHistoryTable>? orderByList,
     _i1.Transaction? transaction,
     MatchChatHistoryInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<MatchChatHistory>(
       where: where?.call(MatchChatHistory.t),
@@ -509,6 +515,8 @@ class MatchChatHistoryRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -518,11 +526,15 @@ class MatchChatHistoryRepository {
     int id, {
     _i1.Transaction? transaction,
     MatchChatHistoryInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<MatchChatHistory>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -532,14 +544,20 @@ class MatchChatHistoryRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<MatchChatHistory>> insert(
     _i1.Session session,
     List<MatchChatHistory> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<MatchChatHistory>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -682,6 +700,22 @@ class MatchChatHistoryRepository {
     return session.db.count<MatchChatHistory>(
       where: where?.call(MatchChatHistory.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [MatchChatHistory] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<MatchChatHistoryTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<MatchChatHistory>(
+      where: where(MatchChatHistory.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

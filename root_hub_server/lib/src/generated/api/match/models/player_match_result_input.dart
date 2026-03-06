@@ -37,7 +37,7 @@ abstract class PlayerMatchResultInput
     return PlayerMatchResultInput(
       anonymousPlayerId: jsonSerialization['anonymousPlayerId'] as int?,
       playerDataId: jsonSerialization['playerDataId'] as int?,
-      didWin: jsonSerialization['didWin'] as bool,
+      didWin: _i1.BoolJsonExtension.fromJson(jsonSerialization['didWin']),
       scoreInMatch: jsonSerialization['scoreInMatch'] as int?,
       factionUsedInMatch: _i2.Faction.fromJson(
         (jsonSerialization['factionUsedInMatch'] as String),

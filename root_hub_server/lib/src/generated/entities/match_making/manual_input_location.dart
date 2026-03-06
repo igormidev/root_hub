@@ -475,6 +475,8 @@ class ManualInputLocationRepository {
     _i1.OrderByListBuilder<ManualInputLocationTable>? orderByList,
     _i1.Transaction? transaction,
     ManualInputLocationInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<ManualInputLocation>(
       where: where?.call(ManualInputLocation.t),
@@ -485,6 +487,8 @@ class ManualInputLocationRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -514,6 +518,8 @@ class ManualInputLocationRepository {
     _i1.OrderByListBuilder<ManualInputLocationTable>? orderByList,
     _i1.Transaction? transaction,
     ManualInputLocationInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<ManualInputLocation>(
       where: where?.call(ManualInputLocation.t),
@@ -523,6 +529,8 @@ class ManualInputLocationRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -532,11 +540,15 @@ class ManualInputLocationRepository {
     int id, {
     _i1.Transaction? transaction,
     ManualInputLocationInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<ManualInputLocation>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -546,14 +558,20 @@ class ManualInputLocationRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<ManualInputLocation>> insert(
     _i1.Session session,
     List<ManualInputLocation> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<ManualInputLocation>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -696,6 +714,22 @@ class ManualInputLocationRepository {
     return session.db.count<ManualInputLocation>(
       where: where?.call(ManualInputLocation.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [ManualInputLocation] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<ManualInputLocationTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<ManualInputLocation>(
+      where: where(ManualInputLocation.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

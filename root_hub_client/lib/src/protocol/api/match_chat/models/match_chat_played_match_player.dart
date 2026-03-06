@@ -36,9 +36,11 @@ abstract class MatchChatPlayedMatchPlayer implements _i1.SerializableModel {
     return MatchChatPlayedMatchPlayer(
       displayName: jsonSerialization['displayName'] as String,
       faction: _i2.Faction.fromJson((jsonSerialization['faction'] as String)),
-      didWin: jsonSerialization['didWin'] as bool,
+      didWin: _i1.BoolJsonExtension.fromJson(jsonSerialization['didWin']),
       score: jsonSerialization['score'] as int?,
-      isAnonymous: jsonSerialization['isAnonymous'] as bool,
+      isAnonymous: _i1.BoolJsonExtension.fromJson(
+        jsonSerialization['isAnonymous'],
+      ),
     );
   }
 

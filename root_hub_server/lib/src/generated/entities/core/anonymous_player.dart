@@ -401,6 +401,8 @@ class AnonymousPlayerRepository {
     _i1.OrderByListBuilder<AnonymousPlayerTable>? orderByList,
     _i1.Transaction? transaction,
     AnonymousPlayerInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<AnonymousPlayer>(
       where: where?.call(AnonymousPlayer.t),
@@ -411,6 +413,8 @@ class AnonymousPlayerRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -440,6 +444,8 @@ class AnonymousPlayerRepository {
     _i1.OrderByListBuilder<AnonymousPlayerTable>? orderByList,
     _i1.Transaction? transaction,
     AnonymousPlayerInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<AnonymousPlayer>(
       where: where?.call(AnonymousPlayer.t),
@@ -449,6 +455,8 @@ class AnonymousPlayerRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -458,11 +466,15 @@ class AnonymousPlayerRepository {
     int id, {
     _i1.Transaction? transaction,
     AnonymousPlayerInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<AnonymousPlayer>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -472,14 +484,20 @@ class AnonymousPlayerRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<AnonymousPlayer>> insert(
     _i1.Session session,
     List<AnonymousPlayer> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<AnonymousPlayer>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -622,6 +640,22 @@ class AnonymousPlayerRepository {
     return session.db.count<AnonymousPlayer>(
       where: where?.call(AnonymousPlayer.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [AnonymousPlayer] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<AnonymousPlayerTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<AnonymousPlayer>(
+      where: where(AnonymousPlayer.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

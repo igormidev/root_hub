@@ -89,7 +89,9 @@ abstract class GooglePlaceLocation implements _i1.SerializableModel {
       priceLevel: jsonSerialization['priceLevel'] as String?,
       primaryPhotoName: jsonSerialization['primaryPhotoName'] as String?,
       timezone: jsonSerialization['timezone'] as String?,
-      isPublicPlace: jsonSerialization['isPublicPlace'] as bool?,
+      isPublicPlace: jsonSerialization['isPublicPlace'] == null
+          ? null
+          : _i1.BoolJsonExtension.fromJson(jsonSerialization['isPublicPlace']),
       notes: jsonSerialization['notes'] as String?,
       location: jsonSerialization['location'] == null
           ? null

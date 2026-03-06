@@ -45,7 +45,9 @@ abstract class PlayerPushNotificationToken implements _i1.SerializableModel {
       platform: _i2.PushNotificationPlatform.fromJson(
         (jsonSerialization['platform'] as String),
       ),
-      isActive: jsonSerialization['isActive'] as bool?,
+      isActive: jsonSerialization['isActive'] == null
+          ? null
+          : _i1.BoolJsonExtension.fromJson(jsonSerialization['isActive']),
       lastConfirmedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['lastConfirmedAt'],
       ),

@@ -50,7 +50,7 @@
     },
     {
       "name": "root_hub_flutter",
-      "version": "1.0.3+6",
+      "version": "1.1.2+9",
       "dependencies": [
         "adaptive_dialog",
         "app_links",
@@ -738,7 +738,7 @@
     },
     {
       "name": "serverpod_flutter",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "connectivity_plus",
         "flutter",
@@ -747,7 +747,7 @@
     },
     {
       "name": "serverpod_auth_idp_client",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "serverpod_auth_core_client",
         "serverpod_client"
@@ -755,7 +755,7 @@
     },
     {
       "name": "serverpod_auth_idp_flutter",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "animations",
         "crypto",
@@ -812,7 +812,7 @@
     },
     {
       "name": "serverpod_test",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "meta",
         "serverpod",
@@ -872,7 +872,7 @@
     },
     {
       "name": "serverpod_auth_core_server",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "clock",
         "crypto",
@@ -888,7 +888,7 @@
     },
     {
       "name": "serverpod_auth_idp_server",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "clock",
         "dart_jsonwebtoken",
@@ -907,7 +907,7 @@
     },
     {
       "name": "serverpod",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "args",
         "collection",
@@ -932,7 +932,7 @@
     },
     {
       "name": "serverpod_client",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "collection",
         "http",
@@ -1590,11 +1590,10 @@
     },
     {
       "name": "uuid",
-      "version": "4.5.2",
+      "version": "4.5.3",
       "dependencies": [
         "crypto",
-        "fixnum",
-        "meta"
+        "fixnum"
       ]
     },
     {
@@ -2164,7 +2163,7 @@
     },
     {
       "name": "serverpod_auth_core_client",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "clock",
         "serverpod_client"
@@ -2182,7 +2181,7 @@
     },
     {
       "name": "serverpod_auth_core_flutter",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "clock",
         "flutter",
@@ -2265,7 +2264,7 @@
     },
     {
       "name": "serverpod_lints",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "flutter_lints",
         "lints"
@@ -2301,7 +2300,7 @@
     },
     {
       "name": "serverpod_shared",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
         "crypto",
         "meta",
@@ -2378,8 +2377,9 @@
     },
     {
       "name": "serverpod_serialization",
-      "version": "3.3.1",
+      "version": "3.4.1",
       "dependencies": [
+        "meta",
         "uuid",
         "yaml"
       ]
@@ -2391,7 +2391,7 @@
     },
     {
       "name": "relic",
-      "version": "1.0.0",
+      "version": "1.1.1",
       "dependencies": [
         "relic_core",
         "relic_io"
@@ -2939,7 +2939,7 @@
     },
     {
       "name": "relic_io",
-      "version": "1.0.0",
+      "version": "1.1.1",
       "dependencies": [
         "crypto",
         "mime",
@@ -2952,7 +2952,7 @@
     },
     {
       "name": "relic_core",
-      "version": "1.0.0",
+      "version": "1.1.1",
       "dependencies": [
         "async",
         "collection",

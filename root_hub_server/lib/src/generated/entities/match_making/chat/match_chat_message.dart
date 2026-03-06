@@ -520,6 +520,8 @@ class MatchChatMessageRepository {
     _i1.OrderByListBuilder<MatchChatMessageTable>? orderByList,
     _i1.Transaction? transaction,
     MatchChatMessageInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<MatchChatMessage>(
       where: where?.call(MatchChatMessage.t),
@@ -530,6 +532,8 @@ class MatchChatMessageRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -559,6 +563,8 @@ class MatchChatMessageRepository {
     _i1.OrderByListBuilder<MatchChatMessageTable>? orderByList,
     _i1.Transaction? transaction,
     MatchChatMessageInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<MatchChatMessage>(
       where: where?.call(MatchChatMessage.t),
@@ -568,6 +574,8 @@ class MatchChatMessageRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -577,11 +585,15 @@ class MatchChatMessageRepository {
     int id, {
     _i1.Transaction? transaction,
     MatchChatMessageInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<MatchChatMessage>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -591,14 +603,20 @@ class MatchChatMessageRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<MatchChatMessage>> insert(
     _i1.Session session,
     List<MatchChatMessage> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<MatchChatMessage>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -741,6 +759,22 @@ class MatchChatMessageRepository {
     return session.db.count<MatchChatMessage>(
       where: where?.call(MatchChatMessage.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [MatchChatMessage] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<MatchChatMessageTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<MatchChatMessage>(
+      where: where(MatchChatMessage.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }

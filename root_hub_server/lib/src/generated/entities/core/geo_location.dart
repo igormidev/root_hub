@@ -318,6 +318,8 @@ class GeoLocationRepository {
     _i1.OrderByListBuilder<GeoLocationTable>? orderByList,
     _i1.Transaction? transaction,
     GeoLocationInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.find<GeoLocation>(
       where: where?.call(GeoLocation.t),
@@ -328,6 +330,8 @@ class GeoLocationRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -357,6 +361,8 @@ class GeoLocationRepository {
     _i1.OrderByListBuilder<GeoLocationTable>? orderByList,
     _i1.Transaction? transaction,
     GeoLocationInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findFirstRow<GeoLocation>(
       where: where?.call(GeoLocation.t),
@@ -366,6 +372,8 @@ class GeoLocationRepository {
       offset: offset,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -375,11 +383,15 @@ class GeoLocationRepository {
     int id, {
     _i1.Transaction? transaction,
     GeoLocationInclude? include,
+    _i1.LockMode? lockMode,
+    _i1.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<GeoLocation>(
       id,
       transaction: transaction,
       include: include,
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
     );
   }
 
@@ -389,14 +401,20 @@ class GeoLocationRepository {
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
+  ///
+  /// If [ignoreConflicts] is set to `true`, rows that conflict with existing
+  /// rows are silently skipped, and only the successfully inserted rows are
+  /// returned.
   Future<List<GeoLocation>> insert(
     _i1.Session session,
     List<GeoLocation> rows, {
     _i1.Transaction? transaction,
+    bool ignoreConflicts = false,
   }) async {
     return session.db.insert<GeoLocation>(
       rows,
       transaction: transaction,
+      ignoreConflicts: ignoreConflicts,
     );
   }
 
@@ -537,6 +555,22 @@ class GeoLocationRepository {
     return session.db.count<GeoLocation>(
       where: where?.call(GeoLocation.t),
       limit: limit,
+      transaction: transaction,
+    );
+  }
+
+  /// Acquires row-level locks on [GeoLocation] rows matching the [where] expression.
+  Future<void> lockRows(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<GeoLocationTable> where,
+    required _i1.LockMode lockMode,
+    required _i1.Transaction transaction,
+    _i1.LockBehavior lockBehavior = _i1.LockBehavior.wait,
+  }) async {
+    return session.db.lockRows<GeoLocation>(
+      where: where(GeoLocation.t),
+      lockMode: lockMode,
+      lockBehavior: lockBehavior,
       transaction: transaction,
     );
   }
