@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 
@@ -15,61 +16,94 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    const cardRadius = 28.0;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(cardRadius),
         onTap: onTap,
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: faction.factionColor.withValues(alpha: 0.34),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                faction.factionColor.withValues(alpha: 0.16),
-                colorScheme.surfaceContainerHighest.withValues(alpha: 0.92),
-                colorScheme.surface,
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: faction.factionColor.withValues(alpha: 0.16),
-                blurRadius: 24,
-                offset: Offset(0, 14),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(14, 14, 14, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Image.asset(
-                      faction.getFactionImage,
-                      fit: BoxFit.contain,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned.fill(
+              top: 24,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(cardRadius),
+                  border: Border.all(
+                    color: faction.factionColor.withValues(alpha: 0.28),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: faction.factionColor.withValues(alpha: 0.14),
+                      blurRadius: 22,
+                      offset: Offset(0, 14),
                     ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(cardRadius - 1),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                faction.factionColor.withValues(alpha: 0.18),
+                                colorScheme.surfaceContainerHighest.withValues(
+                                  alpha: 0.88,
+                                ),
+                                colorScheme.surface.withValues(alpha: 0.98),
+                              ],
+                              stops: [0, 0.52, 1],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(14, 58, 14, 14),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              faction.displayName,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.medievalSharp(
+                                fontSize: 23,
+                                fontWeight: FontWeight.w400,
+                                color: colorScheme.onSurface,
+                                height: 1.05,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 12),
-                Text(
-                  faction.displayName,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    height: 1.08,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Positioned(
+              top: -2,
+              left: 0,
+              right: 0,
+              child: IgnorePointer(
+                child: SizedBox(
+                  height: 108,
+                  child: Image.asset(
+                    faction.getFactionImage,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

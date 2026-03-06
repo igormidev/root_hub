@@ -1,5 +1,6 @@
 import 'package:babel_text/babel_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/content/root_community_tools_content.dart';
@@ -40,128 +41,141 @@ class _AdvancedSetupFactionDetailsSheetState
 
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        height: maxHeight,
-        padding: EdgeInsets.fromLTRB(16, 10, 16, 16 + safeAreaBottom),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 24,
-              offset: Offset(0, -8),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: SizedBox(
+        height: maxHeight + 54,
+        child: Stack(
+          clipBehavior: Clip.none,
           children: [
-            Center(
+            Positioned(
+              top: 54,
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: Container(
-                width: 42,
-                height: 5,
+                padding: EdgeInsets.fromLTRB(20, 12, 20, 18 + safeAreaBottom),
                 decoration: BoxDecoration(
-                  color: colorScheme.outline.withValues(alpha: 0.35),
-                  borderRadius: BorderRadius.circular(999),
+                  color: colorScheme.surface,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.2),
+                      blurRadius: 24,
+                      offset: Offset(0, -8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 42,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: colorScheme.outline.withValues(alpha: 0.35),
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 18),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(104, 0, 18, 0),
+                      child: Text(
+                        widget.faction.displayName,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                          height: 0.98,
+                        ),
+                      ),
+                    ),
+                    if (showLanguageToggle) ...[
+                      SizedBox(height: 18),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          ChoiceChip(
+                            label: Text(
+                              currentLocale.displayLabel(t),
+                            ),
+                            selected: !_showEnglishSource,
+                            onSelected: (_) {
+                              setState(() {
+                                _showEnglishSource = false;
+                              });
+                            },
+                          ),
+                          ChoiceChip(
+                            label: Text(
+                              t
+                                  .home
+                                  .ui_sheets_advanced_setup_faction_details_sheet
+                                  .originalEnglish,
+                            ),
+                            selected: _showEnglishSource,
+                            onSelected: (_) {
+                              setState(() {
+                                _showEnglishSource = true;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                    SizedBox(height: 16),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: BabelSelectableText(
+                          visibleBody,
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: colorScheme.onSurface,
+                                height: 1.56,
+                                fontWeight: FontWeight.w700,
+                              ),
+                          styleMapping: {
+                            '<h>': (_, currentStyle) =>
+                                GoogleFonts.cormorantGaramond(
+                                  textStyle: currentStyle.copyWith(
+                                    color: widget.faction.factionColor,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.02,
+                                  ),
+                                ),
+                            '*': (_, currentStyle) => currentStyle.copyWith(
+                              fontWeight: FontWeight.w900,
+                            ),
+                            '<i>': (_, currentStyle) => currentStyle.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 14),
-            Row(
-              children: [
-                Container(
-                  width: 62,
-                  height: 62,
-                  padding: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: widget.faction.factionColor.withValues(alpha: 0.14),
-                    border: Border.all(
-                      color: widget.faction.factionColor.withValues(
-                        alpha: 0.24,
-                      ),
-                    ),
-                  ),
+            Positioned(
+              top: 0,
+              left: 18,
+              child: IgnorePointer(
+                child: SizedBox(
+                  width: 122,
+                  height: 122,
                   child: Image.asset(
                     widget.faction.getFactionImage,
                     fit: BoxFit.contain,
                   ),
-                ),
-                SizedBox(width: 14),
-                Expanded(
-                  child: Text(
-                    widget.faction.displayName,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      height: 1.08,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            if (showLanguageToggle) ...[
-              SizedBox(height: 16),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  ChoiceChip(
-                    label: Text(
-                      currentLocale.displayLabel(t),
-                    ),
-                    selected: !_showEnglishSource,
-                    onSelected: (_) {
-                      setState(() {
-                        _showEnglishSource = false;
-                      });
-                    },
-                  ),
-                  ChoiceChip(
-                    label: Text(
-                      t
-                          .home
-                          .ui_sheets_advanced_setup_faction_details_sheet
-                          .originalEnglish,
-                    ),
-                    selected: _showEnglishSource,
-                    onSelected: (_) {
-                      setState(() {
-                        _showEnglishSource = true;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ],
-            SizedBox(height: 16),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: BabelSelectableText(
-                  visibleBody,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurface,
-                    height: 1.52,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  styleMapping: {
-                    '<h>': (_, currentStyle) => currentStyle.copyWith(
-                      color: widget.faction.factionColor,
-                      fontWeight: FontWeight.w900,
-                      decoration: TextDecoration.underline,
-                    ),
-                    '*': (_, currentStyle) => currentStyle.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
-                    '<i>': (_, currentStyle) => currentStyle.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  },
                 ),
               ),
             ),
