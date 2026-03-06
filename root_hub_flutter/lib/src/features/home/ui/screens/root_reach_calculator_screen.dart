@@ -137,18 +137,18 @@ class _RootReachCalculatorScreenState extends State<RootReachCalculatorScreen> {
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(16, 12, 16, bottomInset + 146),
+        padding: EdgeInsets.fromLTRB(16, 0, 16, bottomInset),
         children: [
           Text(
             t.home.ui_screens_root_reach_calculator_screen.description,
             textAlign: TextAlign.center,
             style: textTheme.bodyLarge?.copyWith(
               color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
-              height: 1.45,
+              fontWeight: FontWeight.w300,
+              height: 1.3,
             ),
           ),
-          SizedBox(height: 22),
+          SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -164,7 +164,14 @@ class _RootReachCalculatorScreenState extends State<RootReachCalculatorScreen> {
                   height: 0.92,
                 ),
               ),
-              SizedBox(width: 12),
+              SizedBox(
+                width: 25,
+                height: 44,
+                child: VerticalDivider(
+                  thickness: 1,
+                ),
+              ),
+              SizedBox(width: 6),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 118),
                 child: Text(
@@ -213,40 +220,24 @@ class _RootReachCalculatorScreenState extends State<RootReachCalculatorScreen> {
             ],
           ),
           SizedBox(height: 12),
-          Text(
-            t
-                .home
-                .ui_screens_root_reach_calculator_screen
-                .tapOnceToPickTapTwiceToBanTapAgainToReset,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
-              height: 1.45,
-            ),
-          ),
-          SizedBox(height: 22),
-          GridView.builder(
-            itemCount: ReachCalculatorFaction.values.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 6,
-              mainAxisSpacing: 14,
-              childAspectRatio: 0.84,
-            ),
-            itemBuilder: (context, index) {
-              final faction = ReachCalculatorFaction.values[index];
-
-              return ReachCalculatorFactionButtonWidget(
-                faction: faction,
-                status: statuses[faction]!,
-                onTap: () {
-                  _handleFactionPressed(faction);
-                },
-              );
-            },
+          Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              for (final faction in ReachCalculatorFaction.values) ...[
+                // if (faction != ReachCalculatorFaction.values.first) SizedBox(width: 6),
+                SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: ReachCalculatorFactionButtonWidget(
+                    faction: faction,
+                    status: statuses[faction]!,
+                    onTap: () {
+                      _handleFactionPressed(faction);
+                    },
+                  ),
+                ),
+              ],
+            ],
           ),
         ],
       ),
