@@ -50,13 +50,15 @@
     },
     {
       "name": "root_hub_flutter",
-      "version": "1.1.2+9",
+      "version": "1.1.4+11",
       "dependencies": [
         "adaptive_dialog",
         "app_links",
+        "auto_size_text",
         "babel_text",
         "blurhash_dart",
         "cached_network_image",
+        "confetti",
         "cupertino_icons",
         "firebase_core",
         "firebase_messaging",
@@ -379,6 +381,14 @@
       ]
     },
     {
+      "name": "confetti",
+      "version": "0.8.0",
+      "dependencies": [
+        "flutter",
+        "vector_math"
+      ]
+    },
+    {
       "name": "firebase_messaging",
       "version": "16.1.1",
       "dependencies": [
@@ -398,6 +408,13 @@
         "firebase_core_web",
         "flutter",
         "meta"
+      ]
+    },
+    {
+      "name": "auto_size_text",
+      "version": "3.0.0",
+      "dependencies": [
+        "flutter"
       ]
     },
     {

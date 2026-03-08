@@ -1,61 +1,67 @@
-Running `(cd /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/; TMPDIR=/var/folders/_8/nmgh3s5j1gncsykp5dm7vdc40000gn/T/ PATH=/opt/homebrew/opt/libpq/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/Users/igor/.codex/tmp/arg0/codex-arg0XYx3rA:/Users/igor/.local/bin:/opt/homebrew/opt/libpq/bin:/Users/igor/Installations/flutter/bin:/Users/igor/.pub-cache/bin:/Applications/Codex.app/Contents/Resources HOME=/Users/igor /Users/igor/Installations/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/igor/PersonalProjects/root_hub/.dart_tool/package_config.json /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/objective_c/9fb02c5622/hook.dill --config=/Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/objective_c/9fb02c5622/input.json )`.
-INFO: 2026-03-03 23:05:35.587446: Running `which clang`.
+Running `(cd /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/; TMPDIR=/var/folders/_8/nmgh3s5j1gncsykp5dm7vdc40000gn/T/ PATH=/opt/homebrew/opt/libpq/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/Users/igor/.codex/tmp/arg0/codex-arg0vR4nqF:/Users/igor/.local/bin:/opt/homebrew/opt/libpq/bin:/Users/igor/Installations/flutter/bin:/Users/igor/.pub-cache/bin:/Applications/Codex.app/Contents/Resources HOME=/Users/igor /Users/igor/Installations/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/igor/PersonalProjects/root_hub/.dart_tool/package_config.json /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/objective_c/9fb02c5622/hook.dill --config=/Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/objective_c/9fb02c5622/input.json )`.
+INFO: 2026-03-08 17:57:00.650564: Running `which clang`.
 
-INFO: 2026-03-03 23:05:35.598129: Running `/usr/bin/clang --version`.
+INFO: 2026-03-08 17:57:00.661748: Running `/usr/bin/clang --version`.
 
-INFO: 2026-03-03 23:05:35.708665: Running `/usr/bin/clang --version`.
+INFO: 2026-03-08 17:57:00.768003: Running `/usr/bin/clang --version`.
 
-INFO: 2026-03-03 23:05:35.729361: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/include/dart_api_dl.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/include/dart_api_dl.c.o
+INFO: 2026-03-08 17:57:00.786659: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/include/dart_api_dl.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/include/dart_api_dl.c.o
 
-INFO: 2026-03-03 23:05:35.729672: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.c.o
+INFO: 2026-03-08 17:57:00.786905: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.c.o
 
-INFO: 2026-03-03 23:05:35.729792: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/test/util.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/test/util.c.o
+INFO: 2026-03-08 17:57:00.787012: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/test/util.c -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/test/util.c.o
 
-INFO: 2026-03-03 23:05:35.729883: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/input_stream_adapter.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/input_stream_adapter.m.o
+INFO: 2026-03-08 17:57:00.787100: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/input_stream_adapter.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/input_stream_adapter.m.o
 
-INFO: 2026-03-03 23:05:35.729975: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.m.o
+INFO: 2026-03-08 17:57:00.787180: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.m.o
 
-INFO: 2026-03-03 23:05:35.730054: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/observer.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/observer.m.o
+INFO: 2026-03-08 17:57:00.787261: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/observer.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/observer.m.o
 
-INFO: 2026-03-03 23:05:35.730133: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/ns_number.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/ns_number.m.o
+INFO: 2026-03-08 17:57:00.787338: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/ns_number.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/ns_number.m.o
 
-INFO: 2026-03-03 23:05:35.730214: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/protocol.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/protocol.m.o
+INFO: 2026-03-08 17:57:00.787425: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/protocol.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/protocol.m.o
 
-INFO: 2026-03-03 23:05:35.730306: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c_bindings_generated.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c_bindings_generated.m.o
+INFO: 2026-03-08 17:57:00.787513: Running: /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 -x objective-c -fobjc-arc -c /Users/igor/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c_bindings_generated.m -fpic -I src -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c_bindings_generated.m.o
 
-INFO: 2026-03-03 23:05:35.841472: 
-INFO: 2026-03-03 23:05:35.841483: 
-INFO: 2026-03-03 23:05:35.841491: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/test/util.c.o
+INFO: 2026-03-08 17:57:00.881158: 
+INFO: 2026-03-08 17:57:00.881225: 
+INFO: 2026-03-08 17:57:00.881249: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.c.o
 
-t_api_dl.c.o
+INFO: 2026-03-08 17:57:00.881357: 
+INFO: 2026-03-08 17:57:00.881368: 
+INFO: 2026-03-08 17:57:00.881376: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/include/dart_api_dl.c.o
 
-INFO: 2026-03-03 23:05:35.842121: 
-INFO: 2026-03-03 23:05:35.842140: 
-INFO: 2026-03-03 23:05:35.842150: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/observer.m.o
+INFO: 2026-03-08 17:57:00.888244: 
+INFO: 2026-03-08 17:57:00.888274: 
+INFO: 2026-03-08 17:57:00.888284: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/test/util.c.o
 
-INFO: 2026-03-03 23:05:35.843148: 
-INFO: 2026-03-03 23:05:35.843168: 
-INFO: 2026-03-03 23:05:35.843180: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/protocol.m.o
+INFO: 2026-03-08 17:57:00.888548: 
+INFO: 2026-03-08 17:57:00.888566: 
+INFO: 2026-03-08 17:57:00.888578: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/observer.m.o
 
-INFO: 2026-03-03 23:05:36.046156: 
-INFO: 2026-03-03 23:05:36.046192: 
-INFO: 2026-03-03 23:05:36.046212: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/ns_number.m.o
+INFO: 2026-03-08 17:57:00.890906: 
+INFO: 2026-03-08 17:57:00.890931: 
+INFO: 2026-03-08 17:57:00.890941: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/protocol.m.o
 
-INFO: 2026-03-03 23:05:36.051552: 
-INFO: 2026-03-03 23:05:36.051582: 
-INFO: 2026-03-03 23:05:36.051590: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.m.o
+INFO: 2026-03-08 17:57:01.104932: 
+INFO: 2026-03-08 17:57:01.104983: 
+INFO: 2026-03-08 17:57:01.105005: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/ns_number.m.o
 
-INFO: 2026-03-03 23:05:36.052965: 
-INFO: 2026-03-03 23:05:36.052987: 
-INFO: 2026-03-03 23:05:36.052995: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/input_stream_adapter.m.o
+INFO: 2026-03-08 17:57:01.109458: 
+INFO: 2026-03-08 17:57:01.109494: 
+INFO: 2026-03-08 17:57:01.109502: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.m.o
 
-INFO: 2026-03-03 23:05:36.062729: 
-INFO: 2026-03-03 23:05:36.062742: 
-INFO: 2026-03-03 23:05:36.062751: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c_bindings_generated.m.o
+INFO: 2026-03-08 17:57:01.111486: 
+INFO: 2026-03-08 17:57:01.111502: 
+INFO: 2026-03-08 17:57:01.111510: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/input_stream_adapter.m.o
 
-INFO: 2026-03-03 23:05:36.062959: Running: /usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/include/dart_api_dl.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/test/util.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/input_stream_adapter.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/observer.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/ns_number.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/protocol.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c_bindings_generated.m.o -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/objective_c.dylib
+INFO: 2026-03-08 17:57:01.122107: 
+INFO: 2026-03-08 17:57:01.122138: 
+INFO: 2026-03-08 17:57:01.122146: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c_bindings_generated.m.o
 
-INFO: 2026-03-03 23:05:36.171670: 
-INFO: 2026-03-03 23:05:36.171719: 
-INFO: 2026-03-03 23:05:36.171727: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/objective_c.dylib
+INFO: 2026-03-08 17:57:01.122417: Running: /usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-darwin -mmacos-version-min=12 /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/include/dart_api_dl.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/test/util.c.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/input_stream_adapter.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/observer.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/ns_number.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/protocol.m.o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/obj/src/objective_c_bindings_generated.m.o -o /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/objective_c.dylib
+
+INFO: 2026-03-08 17:57:01.243373: 
+INFO: 2026-03-08 17:57:01.243419: 
+INFO: 2026-03-08 17:57:01.243429: Generated /Users/igor/PersonalProjects/root_hub/.dart_tool/hooks_runner/shared/objective_c/build/9fb02c5622/objective_c.dylib
 

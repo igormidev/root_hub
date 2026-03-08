@@ -2,7 +2,7 @@ name: root_hub_flutter
 description: A new Flutter project with Serverpod.
 
 publish_to: "none"
-version: 1.1.2+9
+version: 1.1.4+11
 
 environment:
   sdk: "^3.8.0"
@@ -57,8 +57,10 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_cache_manager: ^3.4.1
   fl_chart: ^1.1.1
+  auto_size_text: ^3.0.0
   firebase_core: ^4.1.1
   firebase_messaging: ^16.0.2
+  confetti: ^0.8.0
 
 dev_dependencies:
   build_runner: ^2.11.1
