@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:serverpod/serverpod.dart';
 
 const _resendEndpoint = 'https://api.resend.com/emails';
-const _fromEmail = 'Zen Scrap <noreply@zenscrap.com>';
+const _fromEmail = 'Root HUB <noreply@zenscrap.com>';
+// const _fromEmail = 'Zen Scrap <noreply@zenscrap.com>';
 
 Future<bool> sendEmailWithResend({
   required Session session,

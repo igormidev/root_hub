@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
+import 'package:root_hub_flutter/src/core/app_config.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/dashboard/ui/dialogs/edit_display_name_dialog.dart';
@@ -280,6 +281,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         playerData?.displayName ??
         t.dashboard.ui_screens_dashboard_screen.rootPlayer;
     final viewPadding = MediaQuery.viewPaddingOf(context);
+    final isShopActive = AppConfig.isShopActive;
+
+    if (!isShopActive && selectedTab == DashboardTab.shop) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+
+        ref.read(dashboardProvider.notifier).changeTab(DashboardTab.home);
+      });
+    }
 
     if (pendingSharedMatchId != null && selectedTab != DashboardTab.match) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -538,20 +550,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         },
                       ),
                     ),
-                    Expanded(
-                      child: DashboardBottomTabItemWidget(
-                        colorScheme: colorScheme,
-                        label: t.dashboard.ui_screens_dashboard_screen.shop,
-                        icon: Icons.storefront_outlined,
-                        selectedIcon: Icons.storefront_rounded,
-                        selected: selectedTab == DashboardTab.shop,
-                        onTap: () {
-                          ref
-                              .read(dashboardProvider.notifier)
-                              .changeTab(DashboardTab.shop);
-                        },
+                    if (isShopActive)
+                      Expanded(
+                        child: DashboardBottomTabItemWidget(
+                          colorScheme: colorScheme,
+                          label: t.dashboard.ui_screens_dashboard_screen.shop,
+                          icon: Icons.storefront_outlined,
+                          selectedIcon: Icons.storefront_rounded,
+                          selected: selectedTab == DashboardTab.shop,
+                          onTap: () {
+                            ref
+                                .read(dashboardProvider.notifier)
+                                .changeTab(DashboardTab.shop);
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

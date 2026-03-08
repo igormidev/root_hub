@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:root_hub_flutter/src/core/app_config.dart';
 import 'package:root_hub_flutter/src/states/dashboard/dashboard_state.dart';
 
 class DashboardNotifier extends Notifier<DashboardState> {
@@ -6,6 +7,10 @@ class DashboardNotifier extends Notifier<DashboardState> {
   DashboardState build() => const DashboardState();
 
   void changeTab(DashboardTab tab) {
+    if (!AppConfig.isShopActive && tab == DashboardTab.shop) {
+      return;
+    }
+
     if (state.selectedTab == tab) {
       return;
     }

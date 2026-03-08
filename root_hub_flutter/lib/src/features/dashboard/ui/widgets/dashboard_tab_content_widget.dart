@@ -1,5 +1,6 @@
 import 'package:root_hub_flutter/src/features/activity/ui/screens/activity_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:root_hub_flutter/src/core/app_config.dart';
 import 'package:root_hub_flutter/src/features/home/ui/screens/home_screen.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_screen.dart';
 import 'package:root_hub_flutter/src/features/shop/ui/screens/shop_screen.dart';
@@ -23,6 +24,10 @@ class DashboardTabContentWidget extends StatelessWidget {
       case DashboardTab.activity:
         return ActivityScreen();
       case DashboardTab.shop:
+        if (!AppConfig.isShopActive) {
+          return HomeScreen();
+        }
+
         return ShopScreen();
     }
   }
