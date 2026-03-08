@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Reichweitenrechner",
       "advancedSetupQuickguideTitle": "Erweiterter\nAufbau",
       "setupOrderTitle": "Aufbau-Reihenfolge",
-      "recommendedFactionsToPlayTitle": "Empfohlene Aufstellungen"
+      "recommendedFactionsToPlayTitle": "Ausgewogene Partievorschläge"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Reichweitenrechner",
@@ -274,7 +274,8 @@
       "secondVagabondTitle": "Regel für den zweiten Vagabunden"
     },
     "ui_screens_recommended_compositions_screen": {
-      "title": "Empfohlene Aufstellungen",
+      "title": "Ausgewogene Tipps",
+      "description": "Wähle deine Boxen und die Spielerzahl, um ausgewogene Aufstellungen für den Tisch zu sehen.",
       "ownedBoxesTitle": "1. Welche Boxen besitzt du?",
       "ownedBoxesDescription": "Wähle die Boxen aus, die du gekauft hast.",
       "playerCountTitle": "2. Wie viele Spieler?",
@@ -882,6 +883,12 @@
       "reasonWeatherOrEmergency": "Wetter oder Notfall",
       "reasonExpiredWithoutResult": "Nach 24 Stunden ohne Ergebnis abgelaufen",
       "reasonOther": "Sonstiges"
+    },
+    "ui_dialogs_register_match_success_dialog": {
+      "title": "Spiel erfolgreich eingetragen",
+      "description": "Der Sieger, die Fraktionen und die Beweisfotos wurden gespeichert.",
+      "details": "Alle an diesem Tisch können das abgeschlossene Spiel jetzt in ihrem Verlauf finden.",
+      "close": "Schließen"
     }
   },
   "shop": {

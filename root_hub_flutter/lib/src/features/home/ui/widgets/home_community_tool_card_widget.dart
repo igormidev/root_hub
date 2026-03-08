@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +10,8 @@ class HomeCommunityToolCardWidget extends StatelessWidget {
     required this.accentColor,
     required this.enabled,
     required this.topLabel,
+    this.titleMaxLines = 2,
+    this.titleMinFontSize = 18,
     this.onTap,
     super.key,
   });
@@ -18,6 +21,8 @@ class HomeCommunityToolCardWidget extends StatelessWidget {
   final Color accentColor;
   final bool enabled;
   final String topLabel;
+  final int titleMaxLines;
+  final double titleMinFontSize;
   final VoidCallback? onTap;
 
   @override
@@ -130,16 +135,22 @@ class HomeCommunityToolCardWidget extends StatelessWidget {
                 Positioned(
                   left: 16,
                   right: 16,
+                  top: 104,
                   bottom: 16,
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: colorScheme.onSurface,
-                      height: 0.95,
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: AutoSizeText(
+                      title,
+                      maxLines: titleMaxLines,
+                      minFontSize: titleMinFontSize,
+                      overflow: TextOverflow.ellipsis,
+                      stepGranularity: 0.5,
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onSurface,
+                        height: 0.95,
+                      ),
                     ),
                   ),
                 ),

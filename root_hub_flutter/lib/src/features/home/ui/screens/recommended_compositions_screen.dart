@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
@@ -19,10 +20,13 @@ class RecommendedCompositionsScreen extends StatefulWidget {
 
 class _RecommendedCompositionsScreenState
     extends State<RecommendedCompositionsScreen> {
+  final GlobalKey _resultsSectionKey = GlobalKey();
   final Set<PurchasedExpansions> _selectedExpansions = {
     PurchasedExpansions.baseGame,
   };
 
+  bool _hasAutoScrolledToResults = false;
+  bool _isAutoScrollScheduled = false;
   AmountOfPlayersInMatch? _selectedPlayerCount;
 
   Map<AmountOfPlayersInMatch, List<RecomendedFactionComposition>>
@@ -56,6 +60,41 @@ class _RecommendedCompositionsScreenState
     ),
   );
 
+  bool get _canShowResults =>
+      _selectedPlayerCount != null && _selectedCompositions.isNotEmpty;
+
+  void _maybeScheduleResultsScroll() {
+    if (_hasAutoScrolledToResults ||
+        _isAutoScrollScheduled ||
+        !_canShowResults) {
+      return;
+    }
+
+    _isAutoScrollScheduled = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _isAutoScrollScheduled = false;
+
+      if (!mounted || _hasAutoScrolledToResults || !_canShowResults) {
+        return;
+      }
+
+      final resultsContext = _resultsSectionKey.currentContext;
+      if (resultsContext == null) {
+        _maybeScheduleResultsScroll();
+        return;
+      }
+
+      _hasAutoScrolledToResults = true;
+      await Scrollable.ensureVisible(
+        resultsContext,
+        duration: Duration(milliseconds: 650),
+        curve: Curves.easeInOutCubic,
+        alignment: 0.08,
+      );
+    });
+  }
+
   void _toggleExpansion(PurchasedExpansions expansion, bool isSelected) {
     setState(() {
       if (isSelected) {
@@ -70,6 +109,8 @@ class _RecommendedCompositionsScreenState
         _selectedPlayerCount = null;
       }
     });
+
+    _maybeScheduleResultsScroll();
   }
 
   void _selectPlayerCount(AmountOfPlayersInMatch playerCount) {
@@ -80,6 +121,8 @@ class _RecommendedCompositionsScreenState
     setState(() {
       _selectedPlayerCount = playerCount;
     });
+
+    _maybeScheduleResultsScroll();
   }
 
   @override
@@ -88,14 +131,27 @@ class _RecommendedCompositionsScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: AutoSizeText(
           t.home.ui_screens_recommended_compositions_screen.title,
+          maxLines: 1,
+          minFontSize: 14,
+          overflow: TextOverflow.ellipsis,
+          stepGranularity: 0.5,
         ),
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.fromLTRB(16, 12, 16, bottomInset + 28),
         children: [
+          Text(
+            t.home.ui_screens_recommended_compositions_screen.description,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+              height: 1.45,
+            ),
+          ),
+          SizedBox(height: 22),
           RecommendedCompositionsStepSectionWidget(
                 title: t
                     .home
@@ -181,9 +237,14 @@ class _RecommendedCompositionsScreenState
                 ? SizedBox.shrink(
                     key: ValueKey<int>(0),
                   )
-                : RecommendedCompositionsResultsSection(
+                : KeyedSubtree(
                     key: ValueKey(_resultsKey),
-                    compositions: _selectedCompositions,
+                    child: Container(
+                      key: _resultsSectionKey,
+                      child: RecommendedCompositionsResultsSection(
+                        compositions: _selectedCompositions,
+                      ),
+                    ),
                   ),
           ),
         ],

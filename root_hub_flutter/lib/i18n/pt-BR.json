@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Calculadora de Alcance",
       "advancedSetupQuickguideTitle": "Preparação\nAvançada",
       "setupOrderTitle": "Ordem de Preparação",
-      "recommendedFactionsToPlayTitle": "Composições Recomendadas"
+      "recommendedFactionsToPlayTitle": "Sugestões de partidas equilibradas"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Calculadora de Alcance",
@@ -274,7 +274,8 @@
       "secondVagabondTitle": "Regra do segundo Malandro"
     },
     "ui_screens_recommended_compositions_screen": {
-      "title": "Composições Recomendadas",
+      "title": "Sugestões equilibradas",
+      "description": "Escolha suas caixas e a quantidade de jogadores para ver composições equilibradas para a mesa.",
       "ownedBoxesTitle": "1. Quais caixas você tem?",
       "ownedBoxesDescription": "Selecione as caixas que você comprou.",
       "playerCountTitle": "2. Quantos jogadores?",
@@ -882,6 +883,12 @@
       "reasonWeatherOrEmergency": "Clima ou emergência",
       "reasonExpiredWithoutResult": "Expirada sem resultado após 24 horas",
       "reasonOther": "Outro"
+    },
+    "ui_dialogs_register_match_success_dialog": {
+      "title": "Partida registrada com sucesso",
+      "description": "O vencedor, as facções e as fotos de comprovação foram salvos.",
+      "details": "Todos desta mesa agora podem encontrar a partida concluída no histórico.",
+      "close": "Fechar"
     }
   },
   "shop": {

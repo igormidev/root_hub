@@ -18,6 +18,8 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     const cardRadius = 28.0;
     const imageHeight = 122.0;
+    const labelAreaHeight = 64.0;
+    const labelBottomPadding = 16.0;
 
     return Material(
       color: Colors.transparent,
@@ -67,19 +69,29 @@ class AdvancedSetupFactionCardWidget extends StatelessWidget {
                       ),
                       Positioned.fill(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(14, 66, 14, 14),
+                          padding: EdgeInsets.fromLTRB(
+                            14,
+                            66,
+                            14,
+                            labelBottomPadding,
+                          ),
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: Text(
-                              faction.displayName,
-                              maxLines: 2,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.medievalSharp(
-                                fontSize: 23,
-                                fontWeight: FontWeight.w400,
-                                color: colorScheme.onSurface,
-                                height: 1.05,
+                            child: SizedBox(
+                              height: labelAreaHeight,
+                              child: Center(
+                                child: Text(
+                                  faction.displayName,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.medievalSharp(
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.w400,
+                                    color: colorScheme.onSurface,
+                                    height: 1.12,
+                                  ),
+                                ),
                               ),
                             ),
                           ),

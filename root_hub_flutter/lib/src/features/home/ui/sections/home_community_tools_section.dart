@@ -73,6 +73,12 @@ class HomeCommunityToolsSection extends StatelessWidget {
                 icon: tool.icon,
                 accentColor: tool.accentColor,
                 enabled: tool.isEnabled,
+                titleMaxLines:
+                    tool == RootCommunityTool.recommendedFactionsToPlay ? 3 : 2,
+                titleMinFontSize:
+                    tool == RootCommunityTool.recommendedFactionsToPlay
+                    ? 12
+                    : 18,
                 topLabel: tool.isEnabled
                     ? t.home.ui_sections_home_community_tools_section.rootTag
                     : t

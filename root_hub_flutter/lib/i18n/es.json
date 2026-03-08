@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Calculadora de Alcance",
       "advancedSetupQuickguideTitle": "Preparación\nAvanzada",
       "setupOrderTitle": "Orden de Preparación",
-      "recommendedFactionsToPlayTitle": "Composiciones Recomendadas"
+      "recommendedFactionsToPlayTitle": "Sugerencias de partidas equilibradas"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Calculadora de Alcance",
@@ -274,7 +274,8 @@
       "secondVagabondTitle": "Regla del segundo Vagabundo"
     },
     "ui_screens_recommended_compositions_screen": {
-      "title": "Composiciones Recomendadas",
+      "title": "Sugerencias equilibradas",
+      "description": "Elige tus cajas y la cantidad de jugadores para ver composiciones equilibradas para la mesa.",
       "ownedBoxesTitle": "1. ¿Qué cajas tienes?",
       "ownedBoxesDescription": "Selecciona las cajas que has comprado.",
       "playerCountTitle": "2. ¿Cuántos jugadores?",
@@ -882,6 +883,12 @@
       "reasonWeatherOrEmergency": "Clima o emergencia",
       "reasonExpiredWithoutResult": "Expiró sin resultado después de 24 horas",
       "reasonOther": "Otro"
+    },
+    "ui_dialogs_register_match_success_dialog": {
+      "title": "Partida registrada con éxito",
+      "description": "El ganador, las facciones y las fotos de prueba se guardaron correctamente.",
+      "details": "Todos en esta mesa ahora pueden encontrar la partida completada en su historial.",
+      "close": "Cerrar"
     }
   },
   "shop": {

@@ -53,7 +53,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ],
-          SizedBox(height: 18),
           HomeCommunityToolsSection(),
           SizedBox(height: 26),
           HomeStatsSection(

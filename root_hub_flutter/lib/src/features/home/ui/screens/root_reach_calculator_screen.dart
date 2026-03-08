@@ -137,7 +137,7 @@ class _RootReachCalculatorScreenState extends State<RootReachCalculatorScreen> {
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(16, 0, 16, bottomInset),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, bottomInset),
         children: [
           Text(
             t.home.ui_screens_root_reach_calculator_screen.description,
@@ -195,7 +195,7 @@ class _RootReachCalculatorScreenState extends State<RootReachCalculatorScreen> {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 12),
           Wrap(
             alignment: WrapAlignment.center,
             spacing: 10,
@@ -219,7 +219,7 @@ class _RootReachCalculatorScreenState extends State<RootReachCalculatorScreen> {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          SizedBox(height: 8),
           Wrap(
             alignment: WrapAlignment.center,
             children: [

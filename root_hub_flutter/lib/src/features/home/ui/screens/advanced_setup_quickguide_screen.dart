@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:babel_text/babel_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,29 +56,39 @@ class AdvancedSetupQuickguideScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 22),
-          GridView.builder(
-            itemCount: factions.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 14,
-              mainAxisSpacing: 18,
-              childAspectRatio: 1.18,
-            ),
-            itemBuilder: (context, index) {
-              final faction = factions[index];
+          LayoutBuilder(
+            builder: (context, constraints) {
+              const crossAxisCount = 2;
+              const crossAxisSpacing = 14.0;
+              final itemWidth =
+                  (constraints.maxWidth - crossAxisSpacing) / crossAxisCount;
+              final cardHeight = math.max(itemWidth / 1.02, 186.0);
 
-              return AdvancedSetupFactionCardWidget(
-                faction: faction,
-                onTap: () async {
-                  await showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) {
-                      return AdvancedSetupFactionDetailsSheet(
-                        faction: faction,
+              return GridView.builder(
+                itemCount: factions.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: crossAxisSpacing,
+                  mainAxisSpacing: 18,
+                  mainAxisExtent: cardHeight,
+                ),
+                itemBuilder: (context, index) {
+                  final faction = factions[index];
+
+                  return AdvancedSetupFactionCardWidget(
+                    faction: faction,
+                    onTap: () async {
+                      await showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return AdvancedSetupFactionDetailsSheet(
+                            faction: faction,
+                          );
+                        },
                       );
                     },
                   );

@@ -12,6 +12,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/core/extension/faction_ui_extension.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_add_anonymous_player_sheet.dart';
+import 'package:root_hub_flutter/src/features/register_match/ui/dialogs/register_match_success_dialog.dart';
 import 'package:root_hub_flutter/src/features/register_match/ui/sheets/register_match_search_registered_player_sheet.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
@@ -1150,6 +1151,12 @@ class _RegisterMatchWizardSheetState
         title: submitError.title,
         description: submitError.description,
       );
+      return;
+    }
+
+    await RegisterMatchSuccessDialog.show(context);
+
+    if (!mounted) {
       return;
     }
 

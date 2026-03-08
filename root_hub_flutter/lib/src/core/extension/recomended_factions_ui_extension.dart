@@ -32,7 +32,7 @@ extension PurchasedExpansionsUiExtension on PurchasedExpansions {
     PurchasedExpansions.baseGame => Color(0xFF9F6B3A),
     PurchasedExpansions.riverfolkExpansion => Color(0xFF328B96),
     PurchasedExpansions.underworldExpansion => Color(0xFF7B5A9E),
-    PurchasedExpansions.marauderExpansion => Color(0xFF9B4A3F),
+    PurchasedExpansions.marauderExpansion => Color.fromARGB(255, 255, 21, 0),
   };
 }
 

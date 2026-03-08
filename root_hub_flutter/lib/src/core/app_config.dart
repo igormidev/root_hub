@@ -1,7 +1,8 @@
-
 import 'dart:async';
 
 class AppConfig {
+  static const bool isShopActive = false;
+
   final String? apiUrl;
 
   AppConfig({

@@ -185,6 +185,7 @@ class _TranslationsRegisterMatchFr extends TranslationsRegisterMatchEn {
 	@override late final _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionFr ui_sheets_register_match_wizard_social_proof_step_section = _TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionFr._(_root);
 	@override late final _TranslationsRegisterMatchUiStatesRegisterMatchProviderFr ui_states_register_match_provider = _TranslationsRegisterMatchUiStatesRegisterMatchProviderFr._(_root);
 	@override late final _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr ui_dialogs_register_match_cancel_match_dialog = _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr._(_root);
+	@override late final _TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogFr ui_dialogs_register_match_success_dialog = _TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogFr._(_root);
 }
 
 // Path: shop
@@ -528,7 +529,7 @@ class _TranslationsHomeUiSectionsHomeCommunityToolsSectionFr extends Translation
 	@override String get reachCalculatorTitle => 'Calculateur de Portée';
 	@override String get advancedSetupQuickguideTitle => 'Mise en place\navancée';
 	@override String get setupOrderTitle => 'Ordre de Mise en place';
-	@override String get recommendedFactionsToPlayTitle => 'Compositions Recommandées';
+	@override String get recommendedFactionsToPlayTitle => 'Suggestions de parties équilibrées';
 }
 
 // Path: home.ui_screens_root_reach_calculator_screen
@@ -594,7 +595,8 @@ class _TranslationsHomeUiScreensRecommendedCompositionsScreenFr extends Translat
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Compositions Recommandées';
+	@override String get title => 'Suggestions équilibrées';
+	@override String get description => 'Choisissez vos boîtes et le nombre de joueurs pour voir des compositions équilibrées pour la table.';
 	@override String get ownedBoxesTitle => '1. Quelles boîtes possédez-vous ?';
 	@override String get ownedBoxesDescription => 'Sélectionnez les boîtes que vous avez achetées.';
 	@override String get playerCountTitle => '2. Combien de joueurs ?';
@@ -1595,6 +1597,19 @@ class _TranslationsRegisterMatchUiDialogsRegisterMatchCancelMatchDialogFr extend
 	@override String get reasonWeatherOrEmergency => 'Météo ou urgence';
 	@override String get reasonExpiredWithoutResult => 'Expiré sans résultat après 24 heures';
 	@override String get reasonOther => 'Autre';
+}
+
+// Path: register_match.ui_dialogs_register_match_success_dialog
+class _TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogFr extends TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogEn {
+	_TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Match enregistré avec succès';
+	@override String get description => 'Le vainqueur, les factions et les photos de preuve ont bien été enregistrés.';
+	@override String get details => 'Tous les joueurs de cette table peuvent maintenant retrouver le match terminé dans leur historique.';
+	@override String get close => 'Fermer';
 }
 
 // Path: shop.ui_screens_shop_screen

@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Reach Calculator",
       "advancedSetupQuickguideTitle": "Advanced Setup",
       "setupOrderTitle": "Setup Order",
-      "recommendedFactionsToPlayTitle": "Recommended Compositions"
+      "recommendedFactionsToPlayTitle": "Balanced match suggestions"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Reach Calculator",
@@ -274,7 +274,8 @@
       "secondVagabondTitle": "Second vagabond rule"
     },
     "ui_screens_recommended_compositions_screen": {
-      "title": "Recommended Compositions",
+      "title": "Balanced suggestions",
+      "description": "Choose your boxes and player count to see balanced faction lineups for the table.",
       "ownedBoxesTitle": "1. What boxes do you own?",
       "ownedBoxesDescription": "Select the boxes that you have purchased.",
       "playerCountTitle": "2. How many players?",
@@ -882,6 +883,12 @@
       "unableToUploadProofImageReadDescription": "The selected image file could not be read for upload.",
       "unableToUploadProofImageNetworkDescription": "The image upload failed before reaching storage.",
       "unableToUploadProofImageStorageDescription": "The storage provider rejected the selected image."
+    },
+    "ui_dialogs_register_match_success_dialog": {
+      "title": "Match registered successfully",
+      "description": "The winner, factions, and proof photos have been saved.",
+      "details": "Everyone at this table can now find the completed match in their history.",
+      "close": "Close"
     }
   },
   "shop": {

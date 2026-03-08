@@ -243,7 +243,7 @@
       "reachCalculatorTitle": "Calculateur de Portée",
       "advancedSetupQuickguideTitle": "Mise en place\navancée",
       "setupOrderTitle": "Ordre de Mise en place",
-      "recommendedFactionsToPlayTitle": "Compositions Recommandées"
+      "recommendedFactionsToPlayTitle": "Suggestions de parties équilibrées"
     },
     "ui_screens_root_reach_calculator_screen": {
       "title": "Calculateur de Portée",
@@ -274,7 +274,8 @@
       "secondVagabondTitle": "Règle du second Vagabond"
     },
     "ui_screens_recommended_compositions_screen": {
-      "title": "Compositions Recommandées",
+      "title": "Suggestions équilibrées",
+      "description": "Choisissez vos boîtes et le nombre de joueurs pour voir des compositions équilibrées pour la table.",
       "ownedBoxesTitle": "1. Quelles boîtes possédez-vous ?",
       "ownedBoxesDescription": "Sélectionnez les boîtes que vous avez achetées.",
       "playerCountTitle": "2. Combien de joueurs ?",
@@ -882,6 +883,12 @@
       "reasonWeatherOrEmergency": "Météo ou urgence",
       "reasonExpiredWithoutResult": "Expiré sans résultat après 24 heures",
       "reasonOther": "Autre"
+    },
+    "ui_dialogs_register_match_success_dialog": {
+      "title": "Match enregistré avec succès",
+      "description": "Le vainqueur, les factions et les photos de preuve ont bien été enregistrés.",
+      "details": "Tous les joueurs de cette table peuvent maintenant retrouver le match terminé dans leur historique.",
+      "close": "Fermer"
     }
   },
   "shop": {

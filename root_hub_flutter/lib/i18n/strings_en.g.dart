@@ -189,6 +189,7 @@ class TranslationsRegisterMatchEn {
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionEn ui_sheets_register_match_picker_header_section = TranslationsRegisterMatchUiSheetsRegisterMatchPickerHeaderSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionEn ui_sheets_register_match_wizard_social_proof_step_section = TranslationsRegisterMatchUiSheetsRegisterMatchWizardSocialProofStepSectionEn.internal(_root);
 	late final TranslationsRegisterMatchUiStatesRegisterMatchProviderEn ui_states_register_match_provider = TranslationsRegisterMatchUiStatesRegisterMatchProviderEn.internal(_root);
+	late final TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogEn ui_dialogs_register_match_success_dialog = TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogEn.internal(_root);
 }
 
 // Path: shop
@@ -910,8 +911,8 @@ class TranslationsHomeUiSectionsHomeCommunityToolsSectionEn {
 	/// en: 'Setup Order'
 	String get setupOrderTitle => 'Setup Order';
 
-	/// en: 'Recommended Compositions'
-	String get recommendedFactionsToPlayTitle => 'Recommended Compositions';
+	/// en: 'Balanced match suggestions'
+	String get recommendedFactionsToPlayTitle => 'Balanced match suggestions';
 }
 
 // Path: home.ui_screens_root_reach_calculator_screen
@@ -1018,8 +1019,11 @@ class TranslationsHomeUiScreensRecommendedCompositionsScreenEn {
 
 	// Translations
 
-	/// en: 'Recommended Compositions'
-	String get title => 'Recommended Compositions';
+	/// en: 'Balanced suggestions'
+	String get title => 'Balanced suggestions';
+
+	/// en: 'Choose your boxes and player count to see balanced faction lineups for the table.'
+	String get description => 'Choose your boxes and player count to see balanced faction lineups for the table.';
 
 	/// en: '1. What boxes do you own?'
 	String get ownedBoxesTitle => '1. What boxes do you own?';
@@ -2956,6 +2960,27 @@ class TranslationsRegisterMatchUiStatesRegisterMatchProviderEn {
 
 	/// en: 'The storage provider rejected the selected image.'
 	String get unableToUploadProofImageStorageDescription => 'The storage provider rejected the selected image.';
+}
+
+// Path: register_match.ui_dialogs_register_match_success_dialog
+class TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogEn {
+	TranslationsRegisterMatchUiDialogsRegisterMatchSuccessDialogEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Match registered successfully'
+	String get title => 'Match registered successfully';
+
+	/// en: 'The winner, factions, and proof photos have been saved.'
+	String get description => 'The winner, factions, and proof photos have been saved.';
+
+	/// en: 'Everyone at this table can now find the completed match in their history.'
+	String get details => 'Everyone at this table can now find the completed match in their history.';
+
+	/// en: 'Close'
+	String get close => 'Close';
 }
 
 // Path: shop.ui_screens_shop_screen
