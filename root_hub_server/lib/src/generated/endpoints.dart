@@ -1272,6 +1272,26 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<String?>(),
               nullable: true,
             ),
+            'audioBytes': _i1.ParameterDescription(
+              name: 'audioBytes',
+              type: _i1.getType<_i48.ByteData?>(),
+              nullable: true,
+            ),
+            'audioFileName': _i1.ParameterDescription(
+              name: 'audioFileName',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+            'audioContentType': _i1.ParameterDescription(
+              name: 'audioContentType',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+            'audioDurationMilliseconds': _i1.ParameterDescription(
+              name: 'audioDurationMilliseconds',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -1288,6 +1308,11 @@ class Endpoints extends _i1.EndpointDispatch {
                         imageBytes: params['imageBytes'],
                         imageFileName: params['imageFileName'],
                         imageContentType: params['imageContentType'],
+                        audioBytes: params['audioBytes'],
+                        audioFileName: params['audioFileName'],
+                        audioContentType: params['audioContentType'],
+                        audioDurationMilliseconds:
+                            params['audioDurationMilliseconds'],
                       ),
         ),
       },

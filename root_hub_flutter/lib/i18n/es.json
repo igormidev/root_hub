@@ -112,6 +112,8 @@
     "ui_screens_dashboard_screen": {
       "shop": "Tienda",
       "match": "Partidas",
+      "schedules": "Agendas",
+      "chat": "Chat",
       "activity": "Actividad",
       "home": "Inicio",
       "rootHub": "ROOT HUB",
@@ -191,6 +193,15 @@
       "noCompletedChats": "Aún no hay chats finalizados",
       "onceMatchesFinishTheirChatsWillStayAvailableHere": "Cuando las partidas terminen, sus chats seguirán disponibles en esta sección."
     },
+    "ui_screens_chat_screen": {
+      "searchChats": "Buscar chats",
+      "allFilter": "Todos",
+      "unreadFilter": "No leídos",
+      "noChatsTitle": "Todavía no hay chats",
+      "noChatsDescription": "Abre o únete a un chat de mesa y aparecerá aquí.",
+      "noSearchResultsTitle": "No se encontraron chats",
+      "noSearchResultsDescription": "Prueba otra búsqueda o limpia los filtros."
+    },
     "ui_widgets_activity_subscribed_schedule_card": {
       "unknownLocation": "Ubicación desconocida",
       "selected": "Seleccionado",
@@ -208,6 +219,9 @@
       "photoShared": "Foto compartida",
       "systemUpdate": "Actualización del sistema",
       "noMessagesYet": "Sin mensajes aún"
+    },
+    "ui_widgets_chat_match_list_tile_widget": {
+      "voiceMessage": "Mensaje de voz"
     }
   },
   "home": {
@@ -624,6 +638,8 @@
       "subscribed": "suscrito",
       "unableToResolveYourAccountInformation": "No se puede resolver la información de su cuenta.",
       "noMessagesYet": "Aún no hay mensajes",
+      "voiceMessage": "Mensaje de voz",
+      "matchTitleFallback": "Partida #{scheduledMatchId}",
       "typeAMessage": "Escribe un mensaje",
       "tableInfo": "Información de la partida",
       "playedMatchInfo": "Información de partida finalizada",

@@ -96,11 +96,11 @@ Related project:
 
 ### `match_chat`
 - `get_match_chat_message.dart`: paginated match chat history + subscribed player IDs for sender badges.
-- `get_match_chat_activity_overview.dart`: aggregated activity payload for subscribed active schedules, active chats, and latest ended chats.
+- `get_match_chat_activity_overview.dart`: aggregated activity payload that powers the dashboard split between subscribed active schedules and the unified chat inbox.
 - `get_match_chat_unread_count.dart`: high-performance unread total for current player badge usage.
 - `get_match_chat_played_match_summary.dart`: played-match summary used by completed-chat info UI.
-- `send_match_chat_message.dart`: send text or image messages to a match chat.
-  - Image uploads are handled server-side through UploadThing (`/v7/prepareUpload`).
+- `send_match_chat_message.dart`: send text, image, or voice messages to a match chat.
+  - Image and voice uploads are handled server-side through UploadThing (`/v7/prepareUpload`).
   - Also dispatches push notifications to subscribed players in that match (excluding sender).
 - `match_chat_participant_state_service.dart`: chat participant lifecycle + unread/read state updates.
 

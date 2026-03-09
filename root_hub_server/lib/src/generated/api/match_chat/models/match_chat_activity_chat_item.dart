@@ -26,6 +26,9 @@ abstract class MatchChatActivityChatItem
     required this.hasPlayedResult,
     required this.locationTitle,
     this.locationSubtitle,
+    this.locationProviderPlaceId,
+    this.locationLatitude,
+    this.locationLongitude,
     this.lastMessageAt,
     this.lastMessagePreview,
     this.lastMessageType,
@@ -42,6 +45,9 @@ abstract class MatchChatActivityChatItem
     required bool hasPlayedResult,
     required String locationTitle,
     String? locationSubtitle,
+    String? locationProviderPlaceId,
+    double? locationLatitude,
+    double? locationLongitude,
     DateTime? lastMessageAt,
     String? lastMessagePreview,
     _i2.MatchChatMessageType? lastMessageType,
@@ -67,6 +73,12 @@ abstract class MatchChatActivityChatItem
       ),
       locationTitle: jsonSerialization['locationTitle'] as String,
       locationSubtitle: jsonSerialization['locationSubtitle'] as String?,
+      locationProviderPlaceId:
+          jsonSerialization['locationProviderPlaceId'] as String?,
+      locationLatitude: (jsonSerialization['locationLatitude'] as num?)
+          ?.toDouble(),
+      locationLongitude: (jsonSerialization['locationLongitude'] as num?)
+          ?.toDouble(),
       lastMessageAt: jsonSerialization['lastMessageAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(
@@ -101,6 +113,12 @@ abstract class MatchChatActivityChatItem
 
   String? locationSubtitle;
 
+  String? locationProviderPlaceId;
+
+  double? locationLatitude;
+
+  double? locationLongitude;
+
   DateTime? lastMessageAt;
 
   String? lastMessagePreview;
@@ -122,6 +140,9 @@ abstract class MatchChatActivityChatItem
     bool? hasPlayedResult,
     String? locationTitle,
     String? locationSubtitle,
+    String? locationProviderPlaceId,
+    double? locationLatitude,
+    double? locationLongitude,
     DateTime? lastMessageAt,
     String? lastMessagePreview,
     _i2.MatchChatMessageType? lastMessageType,
@@ -140,6 +161,10 @@ abstract class MatchChatActivityChatItem
       'hasPlayedResult': hasPlayedResult,
       'locationTitle': locationTitle,
       if (locationSubtitle != null) 'locationSubtitle': locationSubtitle,
+      if (locationProviderPlaceId != null)
+        'locationProviderPlaceId': locationProviderPlaceId,
+      if (locationLatitude != null) 'locationLatitude': locationLatitude,
+      if (locationLongitude != null) 'locationLongitude': locationLongitude,
       if (lastMessageAt != null) 'lastMessageAt': lastMessageAt?.toJson(),
       if (lastMessagePreview != null) 'lastMessagePreview': lastMessagePreview,
       if (lastMessageType != null) 'lastMessageType': lastMessageType?.toJson(),
@@ -161,6 +186,10 @@ abstract class MatchChatActivityChatItem
       'hasPlayedResult': hasPlayedResult,
       'locationTitle': locationTitle,
       if (locationSubtitle != null) 'locationSubtitle': locationSubtitle,
+      if (locationProviderPlaceId != null)
+        'locationProviderPlaceId': locationProviderPlaceId,
+      if (locationLatitude != null) 'locationLatitude': locationLatitude,
+      if (locationLongitude != null) 'locationLongitude': locationLongitude,
       if (lastMessageAt != null) 'lastMessageAt': lastMessageAt?.toJson(),
       if (lastMessagePreview != null) 'lastMessagePreview': lastMessagePreview,
       if (lastMessageType != null) 'lastMessageType': lastMessageType?.toJson(),
@@ -188,6 +217,9 @@ class _MatchChatActivityChatItemImpl extends MatchChatActivityChatItem {
     required bool hasPlayedResult,
     required String locationTitle,
     String? locationSubtitle,
+    String? locationProviderPlaceId,
+    double? locationLatitude,
+    double? locationLongitude,
     DateTime? lastMessageAt,
     String? lastMessagePreview,
     _i2.MatchChatMessageType? lastMessageType,
@@ -202,6 +234,9 @@ class _MatchChatActivityChatItemImpl extends MatchChatActivityChatItem {
          hasPlayedResult: hasPlayedResult,
          locationTitle: locationTitle,
          locationSubtitle: locationSubtitle,
+         locationProviderPlaceId: locationProviderPlaceId,
+         locationLatitude: locationLatitude,
+         locationLongitude: locationLongitude,
          lastMessageAt: lastMessageAt,
          lastMessagePreview: lastMessagePreview,
          lastMessageType: lastMessageType,
@@ -222,6 +257,9 @@ class _MatchChatActivityChatItemImpl extends MatchChatActivityChatItem {
     bool? hasPlayedResult,
     String? locationTitle,
     Object? locationSubtitle = _Undefined,
+    Object? locationProviderPlaceId = _Undefined,
+    Object? locationLatitude = _Undefined,
+    Object? locationLongitude = _Undefined,
     Object? lastMessageAt = _Undefined,
     Object? lastMessagePreview = _Undefined,
     Object? lastMessageType = _Undefined,
@@ -239,6 +277,15 @@ class _MatchChatActivityChatItemImpl extends MatchChatActivityChatItem {
       locationSubtitle: locationSubtitle is String?
           ? locationSubtitle
           : this.locationSubtitle,
+      locationProviderPlaceId: locationProviderPlaceId is String?
+          ? locationProviderPlaceId
+          : this.locationProviderPlaceId,
+      locationLatitude: locationLatitude is double?
+          ? locationLatitude
+          : this.locationLatitude,
+      locationLongitude: locationLongitude is double?
+          ? locationLongitude
+          : this.locationLongitude,
       lastMessageAt: lastMessageAt is DateTime?
           ? lastMessageAt
           : this.lastMessageAt,

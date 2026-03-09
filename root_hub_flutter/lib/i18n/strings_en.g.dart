@@ -93,8 +93,10 @@ class TranslationsActivityEn {
 
 	// Translations
 	late final TranslationsActivityUiScreensActivityScreenEn ui_screens_activity_screen = TranslationsActivityUiScreensActivityScreenEn.internal(_root);
+	late final TranslationsActivityUiScreensChatScreenEn ui_screens_chat_screen = TranslationsActivityUiScreensChatScreenEn.internal(_root);
 	late final TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn ui_widgets_activity_subscribed_schedule_card = TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn.internal(_root);
 	late final TranslationsActivityUiWidgetsActivityChatCardEn ui_widgets_activity_chat_card = TranslationsActivityUiWidgetsActivityChatCardEn.internal(_root);
+	late final TranslationsActivityUiWidgetsChatMatchListTileWidgetEn ui_widgets_chat_match_list_tile_widget = TranslationsActivityUiWidgetsChatMatchListTileWidgetEn.internal(_root);
 }
 
 // Path: home
@@ -500,6 +502,12 @@ class TranslationsDashboardUiScreensDashboardScreenEn {
 	/// en: 'Match'
 	String get match => 'Match';
 
+	/// en: 'Schedules'
+	String get schedules => 'Schedules';
+
+	/// en: 'Chat'
+	String get chat => 'Chat';
+
 	/// en: 'Activity'
 	String get activity => 'Activity';
 
@@ -744,6 +752,36 @@ class TranslationsActivityUiScreensActivityScreenEn {
 	String get onceMatchesFinishTheirChatsWillStayAvailableHere => 'Once matches finish, their chats remain available in this section.';
 }
 
+// Path: activity.ui_screens_chat_screen
+class TranslationsActivityUiScreensChatScreenEn {
+	TranslationsActivityUiScreensChatScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Search chats'
+	String get searchChats => 'Search chats';
+
+	/// en: 'All'
+	String get allFilter => 'All';
+
+	/// en: 'Unread'
+	String get unreadFilter => 'Unread';
+
+	/// en: 'No chats yet'
+	String get noChatsTitle => 'No chats yet';
+
+	/// en: 'Open or join a table chat and it will show up here.'
+	String get noChatsDescription => 'Open or join a table chat and it will show up here.';
+
+	/// en: 'No chats found'
+	String get noSearchResultsTitle => 'No chats found';
+
+	/// en: 'Try another search or clear the filters.'
+	String get noSearchResultsDescription => 'Try another search or clear the filters.';
+}
+
 // Path: activity.ui_widgets_activity_subscribed_schedule_card
 class TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn {
 	TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn.internal(this._root);
@@ -802,6 +840,18 @@ class TranslationsActivityUiWidgetsActivityChatCardEn {
 
 	/// en: 'No messages yet'
 	String get noMessagesYet => 'No messages yet';
+}
+
+// Path: activity.ui_widgets_chat_match_list_tile_widget
+class TranslationsActivityUiWidgetsChatMatchListTileWidgetEn {
+	TranslationsActivityUiWidgetsChatMatchListTileWidgetEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Voice message'
+	String get voiceMessage => 'Voice message';
 }
 
 // Path: home.ui_sections_home_stats_section
@@ -2114,6 +2164,12 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 
 	/// en: 'No messages yet'
 	String get noMessagesYet => 'No messages yet';
+
+	/// en: 'Voice message'
+	String get voiceMessage => 'Voice message';
+
+	/// en: 'Match #{scheduledMatchId}'
+	String matchTitleFallback({required Object scheduledMatchId}) => 'Match #${scheduledMatchId}';
 
 	/// en: 'Type a message'
 	String get typeAMessage => 'Type a message';

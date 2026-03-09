@@ -89,8 +89,10 @@ class _TranslationsActivityFr extends TranslationsActivityEn {
 
 	// Translations
 	@override late final _TranslationsActivityUiScreensActivityScreenFr ui_screens_activity_screen = _TranslationsActivityUiScreensActivityScreenFr._(_root);
+	@override late final _TranslationsActivityUiScreensChatScreenFr ui_screens_chat_screen = _TranslationsActivityUiScreensChatScreenFr._(_root);
 	@override late final _TranslationsActivityUiWidgetsActivitySubscribedScheduleCardFr ui_widgets_activity_subscribed_schedule_card = _TranslationsActivityUiWidgetsActivitySubscribedScheduleCardFr._(_root);
 	@override late final _TranslationsActivityUiWidgetsActivityChatCardFr ui_widgets_activity_chat_card = _TranslationsActivityUiWidgetsActivityChatCardFr._(_root);
+	@override late final _TranslationsActivityUiWidgetsChatMatchListTileWidgetFr ui_widgets_chat_match_list_tile_widget = _TranslationsActivityUiWidgetsChatMatchListTileWidgetFr._(_root);
 }
 
 // Path: home
@@ -332,6 +334,8 @@ class _TranslationsDashboardUiScreensDashboardScreenFr extends TranslationsDashb
 	// Translations
 	@override String get shop => 'Boutique';
 	@override String get match => 'Parties';
+	@override String get schedules => 'Sessions';
+	@override String get chat => 'Chat';
 	@override String get activity => 'Activité';
 	@override String get home => 'Accueil';
 	@override String get rootHub => 'ROOT HUB';
@@ -445,6 +449,22 @@ class _TranslationsActivityUiScreensActivityScreenFr extends TranslationsActivit
 	@override String get onceMatchesFinishTheirChatsWillStayAvailableHere => 'Une fois les parties terminées, leurs chats restent disponibles dans cette section.';
 }
 
+// Path: activity.ui_screens_chat_screen
+class _TranslationsActivityUiScreensChatScreenFr extends TranslationsActivityUiScreensChatScreenEn {
+	_TranslationsActivityUiScreensChatScreenFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchChats => 'Rechercher des chats';
+	@override String get allFilter => 'Tous';
+	@override String get unreadFilter => 'Non lus';
+	@override String get noChatsTitle => 'Aucun chat pour le moment';
+	@override String get noChatsDescription => 'Ouvrez ou rejoignez un chat de table et il apparaîtra ici.';
+	@override String get noSearchResultsTitle => 'Aucun chat trouvé';
+	@override String get noSearchResultsDescription => 'Essayez une autre recherche ou effacez les filtres.';
+}
+
 // Path: activity.ui_widgets_activity_subscribed_schedule_card
 class _TranslationsActivityUiWidgetsActivitySubscribedScheduleCardFr extends TranslationsActivityUiWidgetsActivitySubscribedScheduleCardEn {
 	_TranslationsActivityUiWidgetsActivitySubscribedScheduleCardFr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -475,6 +495,16 @@ class _TranslationsActivityUiWidgetsActivityChatCardFr extends TranslationsActiv
 	@override String get photoShared => 'Photo partagée';
 	@override String get systemUpdate => 'Mise à jour système';
 	@override String get noMessagesYet => 'Pas encore de messages';
+}
+
+// Path: activity.ui_widgets_chat_match_list_tile_widget
+class _TranslationsActivityUiWidgetsChatMatchListTileWidgetFr extends TranslationsActivityUiWidgetsChatMatchListTileWidgetEn {
+	_TranslationsActivityUiWidgetsChatMatchListTileWidgetFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get voiceMessage => 'Message vocal';
 }
 
 // Path: home.ui_sections_home_stats_section
@@ -1165,6 +1195,8 @@ class _TranslationsMatchUiScreensMatchChatScreenFr extends TranslationsMatchUiSc
 	@override String get subscribed => 'Abonné';
 	@override String get unableToResolveYourAccountInformation => 'Impossible de résoudre les informations de votre compte.';
 	@override String get noMessagesYet => 'Pas encore de messages';
+	@override String get voiceMessage => 'Message vocal';
+	@override String matchTitleFallback({required Object scheduledMatchId}) => 'Partie #${scheduledMatchId}';
 	@override String get typeAMessage => 'Tapez un message';
 	@override String get tableInfo => 'Infos de la partie';
 	@override String get playedMatchInfo => 'Infos de la partie terminée';

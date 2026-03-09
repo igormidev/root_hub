@@ -4,6 +4,8 @@ fields:
   sentAt: DateTime
   content: String
   imageUrl: String?
+  audioUrl: String?
+  audioDurationMilliseconds: int?
   blurhash: String?
   imageWidth: int?
   imageHeight: int?

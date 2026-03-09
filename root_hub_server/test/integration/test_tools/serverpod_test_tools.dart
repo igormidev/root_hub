@@ -1673,6 +1673,10 @@ class _SendMatchChatMessage {
     _i11.ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
+    _i11.ByteData? audioBytes,
+    String? audioFileName,
+    String? audioContentType,
+    int? audioDurationMilliseconds,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1692,6 +1696,10 @@ class _SendMatchChatMessage {
             'imageBytes': imageBytes,
             'imageFileName': imageFileName,
             'imageContentType': imageContentType,
+            'audioBytes': audioBytes,
+            'audioFileName': audioFileName,
+            'audioContentType': audioContentType,
+            'audioDurationMilliseconds': audioDurationMilliseconds,
           }),
           serializationManager: _serializationManager,
         );

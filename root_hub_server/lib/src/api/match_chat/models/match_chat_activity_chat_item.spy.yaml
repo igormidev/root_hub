@@ -9,6 +9,9 @@ fields:
   hasPlayedResult: bool
   locationTitle: String
   locationSubtitle: String?
+  locationProviderPlaceId: String?
+  locationLatitude: double?
+  locationLongitude: double?
   lastMessageAt: DateTime?
   lastMessagePreview: String?
   lastMessageType: MatchChatMessageType?

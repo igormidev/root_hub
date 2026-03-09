@@ -124,7 +124,7 @@ class UploadThingStorageClient {
         language: language,
         uploadUrl: preparedUpload.uploadUrl,
         uploadKey: preparedUpload.uploadKey,
-        imageBytes: imageBytes,
+        fileBytes: imageBytes,
       );
       session.log(
         '[MatchChat][UploadThing] Upload completed. url=${preparedUpload.publicUrl}',
@@ -141,6 +141,80 @@ class UploadThingStorageClient {
     } catch (error, stackTrace) {
       session.log(
         '[MatchChat][UploadThing] Upload failed with unexpected error: $error',
+        level: LogLevel.error,
+        exception: error,
+        stackTrace: stackTrace,
+      );
+      throw RootHubEndpointError.endpointUnavailable(
+        language: language,
+        description: t.fallback.unableToUploadImage,
+      );
+    }
+  }
+
+  Future<String> uploadPublicFile(
+    Session session, {
+    required ServerSupportedTranslation language,
+    required Uint8List fileBytes,
+    required String fileName,
+    String? contentType,
+  }) async {
+    final t = ServerTranslations.of(language);
+    final normalizedFileName = _resolveGenericFileName(fileName);
+    final normalizedContentType = _resolveGenericContentType(contentType);
+    session.log(
+      '[MatchChat][UploadThing] Starting generic upload. '
+      'fileName=$normalizedFileName contentType=$normalizedContentType '
+      'bytes=${fileBytes.length}',
+      level: LogLevel.info,
+    );
+
+    try {
+      final credentials = _resolveCredentials(
+        session,
+        language: language,
+      );
+      final preparedUpload = await _prepareUpload(
+        session: session,
+        language: language,
+        apiKey: credentials.apiKey,
+        fileName: normalizedFileName,
+        fileSize: fileBytes.length,
+        fileType: normalizedContentType,
+      );
+
+      final appId = await _resolveAppId(
+        session,
+        language: language,
+        credentials: credentials,
+      );
+      final publicUrl = buildPublicImageUrl(
+        appId: appId,
+        uploadKey: preparedUpload.key,
+      );
+
+      await _performUpload(
+        session: session,
+        language: language,
+        uploadUrl: preparedUpload.uploadUrl,
+        uploadKey: preparedUpload.key,
+        fileBytes: fileBytes,
+      );
+      session.log(
+        '[MatchChat][UploadThing] Generic upload completed. url=$publicUrl',
+        level: LogLevel.info,
+      );
+      return publicUrl;
+    } on RootHubException catch (error) {
+      session.log(
+        '[MatchChat][UploadThing] Generic upload failed with RootHubException. '
+        'title=${error.title} description=${error.description}',
+        level: LogLevel.warning,
+      );
+      rethrow;
+    } catch (error, stackTrace) {
+      session.log(
+        '[MatchChat][UploadThing] Generic upload failed with unexpected error: $error',
         level: LogLevel.error,
         exception: error,
         stackTrace: stackTrace,
@@ -308,12 +382,28 @@ class UploadThingStorageClient {
     return 'match-chat-image.jpg';
   }
 
+  String _resolveGenericFileName(String inputFileName) {
+    final normalized = inputFileName.trim();
+    if (normalized.isNotEmpty) {
+      return normalized;
+    }
+    return 'match-chat-upload.bin';
+  }
+
   String _resolveContentType(String? inputContentType) {
     final normalized = inputContentType?.trim();
     if (normalized != null && normalized.isNotEmpty) {
       return normalized;
     }
     return 'image/jpeg';
+  }
+
+  String _resolveGenericContentType(String? inputContentType) {
+    final normalized = inputContentType?.trim();
+    if (normalized != null && normalized.isNotEmpty) {
+      return normalized;
+    }
+    return 'application/octet-stream';
   }
 
   Future<_PreparedUpload> _prepareUpload({
@@ -397,7 +487,7 @@ class UploadThingStorageClient {
     required ServerSupportedTranslation language,
     required String uploadUrl,
     required String uploadKey,
-    required Uint8List imageBytes,
+    required Uint8List fileBytes,
   }) async {
     final t = ServerTranslations.of(language);
 
@@ -408,7 +498,7 @@ class UploadThingStorageClient {
     request.files.add(
       http.MultipartFile.fromBytes(
         'file',
-        imageBytes,
+        fileBytes,
         filename: uploadKey,
       ),
     );

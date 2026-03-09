@@ -240,14 +240,23 @@ class TranslationsErrorsEn {
 	/// en: 'Chat history and player must be persisted.'
 	String get chatHistoryAndPlayerMustBePersisted => 'Chat history and player must be persisted.';
 
-	/// en: 'Message must include text content or an image.'
-	String get messageMustIncludeTextOrImage => 'Message must include text content or an image.';
+	/// en: 'Message must include text content, an image, or audio.'
+	String get messageMustIncludeTextOrImage => 'Message must include text content, an image, or audio.';
 
 	/// en: 'Image bytes cannot be empty.'
 	String get imageBytesCannotBeEmpty => 'Image bytes cannot be empty.';
 
+	/// en: 'Audio bytes cannot be empty.'
+	String get audioBytesCannotBeEmpty => 'Audio bytes cannot be empty.';
+
+	/// en: 'Message cannot include both an image and audio.'
+	String get messageCannotIncludeImageAndAudio => 'Message cannot include both an image and audio.';
+
 	/// en: 'Image is too large. Please send an image smaller than 3 MB.'
 	String get imageTooLargeSixMb => 'Image is too large. Please send an image smaller than 3 MB.';
+
+	/// en: 'Audio is too large. Please send audio smaller than 12 MB.'
+	String get audioTooLarge => 'Audio is too large. Please send audio smaller than 12 MB.';
 
 	/// en: 'Chat history for scheduled match {scheduledMatchId} was not found.'
 	String chatHistoryForScheduledMatchNotFound({required Object scheduledMatchId}) => 'Chat history for scheduled match ${scheduledMatchId} was not found.';
@@ -423,8 +432,8 @@ class TranslationsErrorsEn {
 	/// en: 'UploadThing API key is not configured. Set `uploadThingApiKey` or `uploadThingToken` in config/passwords.yaml.'
 	String get uploadThingApiKeyNotConfigured => 'UploadThing API key is not configured. Set `uploadThingApiKey` or `uploadThingToken` in config/passwords.yaml.';
 
-	/// en: 'UploadThing failed to prepare image upload. Please try again.'
-	String get uploadThingPrepareUploadFailed => 'UploadThing failed to prepare image upload. Please try again.';
+	/// en: 'UploadThing failed to prepare file upload. Please try again.'
+	String get uploadThingPrepareUploadFailed => 'UploadThing failed to prepare file upload. Please try again.';
 
 	/// en: 'UploadThing returned an invalid upload preparation format.'
 	String get uploadThingInvalidUploadPreparationFormat => 'UploadThing returned an invalid upload preparation format.';
@@ -432,8 +441,8 @@ class TranslationsErrorsEn {
 	/// en: 'UploadThing response is missing key or upload URL.'
 	String get uploadThingMissingKeyOrUrl => 'UploadThing response is missing key or upload URL.';
 
-	/// en: 'UploadThing rejected the uploaded image bytes.'
-	String get uploadThingRejectedImageBytes => 'UploadThing rejected the uploaded image bytes.';
+	/// en: 'UploadThing rejected the uploaded file bytes.'
+	String get uploadThingRejectedImageBytes => 'UploadThing rejected the uploaded file bytes.';
 
 	/// en: 'UploadThing app info lookup failed.'
 	String get uploadThingAppInfoLookupFailed => 'UploadThing app info lookup failed.';
@@ -555,8 +564,8 @@ class TranslationsFallbackEn {
 	/// en: 'Unable to search registered players right now. Please try again.'
 	String get unableToSearchRegisteredPlayers => 'Unable to search registered players right now. Please try again.';
 
-	/// en: 'Unable to upload image right now. Please try again.'
-	String get unableToUploadImage => 'Unable to upload image right now. Please try again.';
+	/// en: 'Unable to upload media right now. Please try again.'
+	String get unableToUploadImage => 'Unable to upload media right now. Please try again.';
 
 	/// en: 'Unable to process this request right now. Please try again later.'
 	String get unexpected => 'Unable to process this request right now. Please try again later.';
@@ -650,6 +659,9 @@ class TranslationsPushNotificationsMatchChatEn {
 
 	/// en: '{senderDisplayName} sent an image'
 	String senderSentImage({required Object senderDisplayName}) => '${senderDisplayName} sent an image';
+
+	/// en: '{senderDisplayName} sent a voice message'
+	String senderSentVoiceMessage({required Object senderDisplayName}) => '${senderDisplayName} sent a voice message';
 
 	/// en: '{senderDisplayName} sent a new message'
 	String senderSentMessage({required Object senderDisplayName}) => '${senderDisplayName} sent a new message';

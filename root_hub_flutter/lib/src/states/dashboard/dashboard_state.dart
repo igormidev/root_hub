@@ -5,7 +5,8 @@ part 'dashboard_state.freezed.dart';
 enum DashboardTab {
   home,
   match,
-  activity,
+  schedules,
+  chat,
   shop,
 }
 

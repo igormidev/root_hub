@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchChatState {
 
- int? get scheduledMatchId; bool get isLoading; bool get hasLoadedOnce; bool get isLoadingMore; bool get hasNextPage; int get currentPage; bool get isSendingMessage; bool get isUploadingImage; bool get isLoadingPlayedMatchSummary; RootHubException? get loadError; RootHubException? get actionError; RootHubException? get playedMatchSummaryError; MatchChatPlayedMatchSummary? get playedMatchSummary; Set<int> get subscribedPlayerIds;
+ int? get scheduledMatchId; bool get isLoading; bool get hasLoadedOnce; bool get isLoadingMore; bool get hasNextPage; int get currentPage; bool get isSendingMessage; bool get isUploadingImage; bool get isUploadingAudio; bool get isLoadingPlayedMatchSummary; RootHubException? get loadError; RootHubException? get actionError; RootHubException? get playedMatchSummaryError; MatchChatPlayedMatchSummary? get playedMatchSummary; Set<int> get subscribedPlayerIds;
 /// Create a copy of MatchChatState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MatchChatStateCopyWith<MatchChatState> get copyWith => _$MatchChatStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchChatState&&(identical(other.scheduledMatchId, scheduledMatchId) || other.scheduledMatchId == scheduledMatchId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.isSendingMessage, isSendingMessage) || other.isSendingMessage == isSendingMessage)&&(identical(other.isUploadingImage, isUploadingImage) || other.isUploadingImage == isUploadingImage)&&(identical(other.isLoadingPlayedMatchSummary, isLoadingPlayedMatchSummary) || other.isLoadingPlayedMatchSummary == isLoadingPlayedMatchSummary)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.actionError, actionError) || other.actionError == actionError)&&(identical(other.playedMatchSummaryError, playedMatchSummaryError) || other.playedMatchSummaryError == playedMatchSummaryError)&&(identical(other.playedMatchSummary, playedMatchSummary) || other.playedMatchSummary == playedMatchSummary)&&const DeepCollectionEquality().equals(other.subscribedPlayerIds, subscribedPlayerIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchChatState&&(identical(other.scheduledMatchId, scheduledMatchId) || other.scheduledMatchId == scheduledMatchId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.isSendingMessage, isSendingMessage) || other.isSendingMessage == isSendingMessage)&&(identical(other.isUploadingImage, isUploadingImage) || other.isUploadingImage == isUploadingImage)&&(identical(other.isUploadingAudio, isUploadingAudio) || other.isUploadingAudio == isUploadingAudio)&&(identical(other.isLoadingPlayedMatchSummary, isLoadingPlayedMatchSummary) || other.isLoadingPlayedMatchSummary == isLoadingPlayedMatchSummary)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.actionError, actionError) || other.actionError == actionError)&&(identical(other.playedMatchSummaryError, playedMatchSummaryError) || other.playedMatchSummaryError == playedMatchSummaryError)&&(identical(other.playedMatchSummary, playedMatchSummary) || other.playedMatchSummary == playedMatchSummary)&&const DeepCollectionEquality().equals(other.subscribedPlayerIds, subscribedPlayerIds));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,scheduledMatchId,isLoading,hasLoadedOnce,isLoadingMore,hasNextPage,currentPage,isSendingMessage,isUploadingImage,isLoadingPlayedMatchSummary,loadError,actionError,playedMatchSummaryError,playedMatchSummary,const DeepCollectionEquality().hash(subscribedPlayerIds));
+int get hashCode => Object.hash(runtimeType,scheduledMatchId,isLoading,hasLoadedOnce,isLoadingMore,hasNextPage,currentPage,isSendingMessage,isUploadingImage,isUploadingAudio,isLoadingPlayedMatchSummary,loadError,actionError,playedMatchSummaryError,playedMatchSummary,const DeepCollectionEquality().hash(subscribedPlayerIds));
 
 @override
 String toString() {
-  return 'MatchChatState(scheduledMatchId: $scheduledMatchId, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, isLoadingMore: $isLoadingMore, hasNextPage: $hasNextPage, currentPage: $currentPage, isSendingMessage: $isSendingMessage, isUploadingImage: $isUploadingImage, isLoadingPlayedMatchSummary: $isLoadingPlayedMatchSummary, loadError: $loadError, actionError: $actionError, playedMatchSummaryError: $playedMatchSummaryError, playedMatchSummary: $playedMatchSummary, subscribedPlayerIds: $subscribedPlayerIds)';
+  return 'MatchChatState(scheduledMatchId: $scheduledMatchId, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, isLoadingMore: $isLoadingMore, hasNextPage: $hasNextPage, currentPage: $currentPage, isSendingMessage: $isSendingMessage, isUploadingImage: $isUploadingImage, isUploadingAudio: $isUploadingAudio, isLoadingPlayedMatchSummary: $isLoadingPlayedMatchSummary, loadError: $loadError, actionError: $actionError, playedMatchSummaryError: $playedMatchSummaryError, playedMatchSummary: $playedMatchSummary, subscribedPlayerIds: $subscribedPlayerIds)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MatchChatStateCopyWith<$Res>  {
   factory $MatchChatStateCopyWith(MatchChatState value, $Res Function(MatchChatState) _then) = _$MatchChatStateCopyWithImpl;
 @useResult
 $Res call({
- int? scheduledMatchId, bool isLoading, bool hasLoadedOnce, bool isLoadingMore, bool hasNextPage, int currentPage, bool isSendingMessage, bool isUploadingImage, bool isLoadingPlayedMatchSummary, RootHubException? loadError, RootHubException? actionError, RootHubException? playedMatchSummaryError, MatchChatPlayedMatchSummary? playedMatchSummary, Set<int> subscribedPlayerIds
+ int? scheduledMatchId, bool isLoading, bool hasLoadedOnce, bool isLoadingMore, bool hasNextPage, int currentPage, bool isSendingMessage, bool isUploadingImage, bool isUploadingAudio, bool isLoadingPlayedMatchSummary, RootHubException? loadError, RootHubException? actionError, RootHubException? playedMatchSummaryError, MatchChatPlayedMatchSummary? playedMatchSummary, Set<int> subscribedPlayerIds
 });
 
 
@@ -62,7 +62,7 @@ class _$MatchChatStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchChatState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? scheduledMatchId = freezed,Object? isLoading = null,Object? hasLoadedOnce = null,Object? isLoadingMore = null,Object? hasNextPage = null,Object? currentPage = null,Object? isSendingMessage = null,Object? isUploadingImage = null,Object? isLoadingPlayedMatchSummary = null,Object? loadError = freezed,Object? actionError = freezed,Object? playedMatchSummaryError = freezed,Object? playedMatchSummary = freezed,Object? subscribedPlayerIds = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? scheduledMatchId = freezed,Object? isLoading = null,Object? hasLoadedOnce = null,Object? isLoadingMore = null,Object? hasNextPage = null,Object? currentPage = null,Object? isSendingMessage = null,Object? isUploadingImage = null,Object? isUploadingAudio = null,Object? isLoadingPlayedMatchSummary = null,Object? loadError = freezed,Object? actionError = freezed,Object? playedMatchSummaryError = freezed,Object? playedMatchSummary = freezed,Object? subscribedPlayerIds = null,}) {
   return _then(_self.copyWith(
 scheduledMatchId: freezed == scheduledMatchId ? _self.scheduledMatchId : scheduledMatchId // ignore: cast_nullable_to_non_nullable
 as int?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -72,6 +72,7 @@ as bool,hasNextPage: null == hasNextPage ? _self.hasNextPage : hasNextPage // ig
 as bool,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,isSendingMessage: null == isSendingMessage ? _self.isSendingMessage : isSendingMessage // ignore: cast_nullable_to_non_nullable
 as bool,isUploadingImage: null == isUploadingImage ? _self.isUploadingImage : isUploadingImage // ignore: cast_nullable_to_non_nullable
+as bool,isUploadingAudio: null == isUploadingAudio ? _self.isUploadingAudio : isUploadingAudio // ignore: cast_nullable_to_non_nullable
 as bool,isLoadingPlayedMatchSummary: null == isLoadingPlayedMatchSummary ? _self.isLoadingPlayedMatchSummary : isLoadingPlayedMatchSummary // ignore: cast_nullable_to_non_nullable
 as bool,loadError: freezed == loadError ? _self.loadError : loadError // ignore: cast_nullable_to_non_nullable
 as RootHubException?,actionError: freezed == actionError ? _self.actionError : actionError // ignore: cast_nullable_to_non_nullable
@@ -163,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? scheduledMatchId,  bool isLoading,  bool hasLoadedOnce,  bool isLoadingMore,  bool hasNextPage,  int currentPage,  bool isSendingMessage,  bool isUploadingImage,  bool isLoadingPlayedMatchSummary,  RootHubException? loadError,  RootHubException? actionError,  RootHubException? playedMatchSummaryError,  MatchChatPlayedMatchSummary? playedMatchSummary,  Set<int> subscribedPlayerIds)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? scheduledMatchId,  bool isLoading,  bool hasLoadedOnce,  bool isLoadingMore,  bool hasNextPage,  int currentPage,  bool isSendingMessage,  bool isUploadingImage,  bool isUploadingAudio,  bool isLoadingPlayedMatchSummary,  RootHubException? loadError,  RootHubException? actionError,  RootHubException? playedMatchSummaryError,  MatchChatPlayedMatchSummary? playedMatchSummary,  Set<int> subscribedPlayerIds)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchChatState() when $default != null:
-return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that.isLoadingMore,_that.hasNextPage,_that.currentPage,_that.isSendingMessage,_that.isUploadingImage,_that.isLoadingPlayedMatchSummary,_that.loadError,_that.actionError,_that.playedMatchSummaryError,_that.playedMatchSummary,_that.subscribedPlayerIds);case _:
+return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that.isLoadingMore,_that.hasNextPage,_that.currentPage,_that.isSendingMessage,_that.isUploadingImage,_that.isUploadingAudio,_that.isLoadingPlayedMatchSummary,_that.loadError,_that.actionError,_that.playedMatchSummaryError,_that.playedMatchSummary,_that.subscribedPlayerIds);case _:
   return orElse();
 
 }
@@ -184,10 +185,10 @@ return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? scheduledMatchId,  bool isLoading,  bool hasLoadedOnce,  bool isLoadingMore,  bool hasNextPage,  int currentPage,  bool isSendingMessage,  bool isUploadingImage,  bool isLoadingPlayedMatchSummary,  RootHubException? loadError,  RootHubException? actionError,  RootHubException? playedMatchSummaryError,  MatchChatPlayedMatchSummary? playedMatchSummary,  Set<int> subscribedPlayerIds)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? scheduledMatchId,  bool isLoading,  bool hasLoadedOnce,  bool isLoadingMore,  bool hasNextPage,  int currentPage,  bool isSendingMessage,  bool isUploadingImage,  bool isUploadingAudio,  bool isLoadingPlayedMatchSummary,  RootHubException? loadError,  RootHubException? actionError,  RootHubException? playedMatchSummaryError,  MatchChatPlayedMatchSummary? playedMatchSummary,  Set<int> subscribedPlayerIds)  $default,) {final _that = this;
 switch (_that) {
 case _MatchChatState():
-return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that.isLoadingMore,_that.hasNextPage,_that.currentPage,_that.isSendingMessage,_that.isUploadingImage,_that.isLoadingPlayedMatchSummary,_that.loadError,_that.actionError,_that.playedMatchSummaryError,_that.playedMatchSummary,_that.subscribedPlayerIds);case _:
+return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that.isLoadingMore,_that.hasNextPage,_that.currentPage,_that.isSendingMessage,_that.isUploadingImage,_that.isUploadingAudio,_that.isLoadingPlayedMatchSummary,_that.loadError,_that.actionError,_that.playedMatchSummaryError,_that.playedMatchSummary,_that.subscribedPlayerIds);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +205,10 @@ return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? scheduledMatchId,  bool isLoading,  bool hasLoadedOnce,  bool isLoadingMore,  bool hasNextPage,  int currentPage,  bool isSendingMessage,  bool isUploadingImage,  bool isLoadingPlayedMatchSummary,  RootHubException? loadError,  RootHubException? actionError,  RootHubException? playedMatchSummaryError,  MatchChatPlayedMatchSummary? playedMatchSummary,  Set<int> subscribedPlayerIds)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? scheduledMatchId,  bool isLoading,  bool hasLoadedOnce,  bool isLoadingMore,  bool hasNextPage,  int currentPage,  bool isSendingMessage,  bool isUploadingImage,  bool isUploadingAudio,  bool isLoadingPlayedMatchSummary,  RootHubException? loadError,  RootHubException? actionError,  RootHubException? playedMatchSummaryError,  MatchChatPlayedMatchSummary? playedMatchSummary,  Set<int> subscribedPlayerIds)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchChatState() when $default != null:
-return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that.isLoadingMore,_that.hasNextPage,_that.currentPage,_that.isSendingMessage,_that.isUploadingImage,_that.isLoadingPlayedMatchSummary,_that.loadError,_that.actionError,_that.playedMatchSummaryError,_that.playedMatchSummary,_that.subscribedPlayerIds);case _:
+return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that.isLoadingMore,_that.hasNextPage,_that.currentPage,_that.isSendingMessage,_that.isUploadingImage,_that.isUploadingAudio,_that.isLoadingPlayedMatchSummary,_that.loadError,_that.actionError,_that.playedMatchSummaryError,_that.playedMatchSummary,_that.subscribedPlayerIds);case _:
   return null;
 
 }
@@ -219,7 +220,7 @@ return $default(_that.scheduledMatchId,_that.isLoading,_that.hasLoadedOnce,_that
 
 
 class _MatchChatState implements MatchChatState {
-  const _MatchChatState({this.scheduledMatchId, this.isLoading = false, this.hasLoadedOnce = false, this.isLoadingMore = false, this.hasNextPage = false, this.currentPage = 0, this.isSendingMessage = false, this.isUploadingImage = false, this.isLoadingPlayedMatchSummary = false, this.loadError, this.actionError, this.playedMatchSummaryError, this.playedMatchSummary, final  Set<int> subscribedPlayerIds = const <int>{}}): _subscribedPlayerIds = subscribedPlayerIds;
+  const _MatchChatState({this.scheduledMatchId, this.isLoading = false, this.hasLoadedOnce = false, this.isLoadingMore = false, this.hasNextPage = false, this.currentPage = 0, this.isSendingMessage = false, this.isUploadingImage = false, this.isUploadingAudio = false, this.isLoadingPlayedMatchSummary = false, this.loadError, this.actionError, this.playedMatchSummaryError, this.playedMatchSummary, final  Set<int> subscribedPlayerIds = const <int>{}}): _subscribedPlayerIds = subscribedPlayerIds;
   
 
 @override final  int? scheduledMatchId;
@@ -230,6 +231,7 @@ class _MatchChatState implements MatchChatState {
 @override@JsonKey() final  int currentPage;
 @override@JsonKey() final  bool isSendingMessage;
 @override@JsonKey() final  bool isUploadingImage;
+@override@JsonKey() final  bool isUploadingAudio;
 @override@JsonKey() final  bool isLoadingPlayedMatchSummary;
 @override final  RootHubException? loadError;
 @override final  RootHubException? actionError;
@@ -253,16 +255,16 @@ _$MatchChatStateCopyWith<_MatchChatState> get copyWith => __$MatchChatStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchChatState&&(identical(other.scheduledMatchId, scheduledMatchId) || other.scheduledMatchId == scheduledMatchId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.isSendingMessage, isSendingMessage) || other.isSendingMessage == isSendingMessage)&&(identical(other.isUploadingImage, isUploadingImage) || other.isUploadingImage == isUploadingImage)&&(identical(other.isLoadingPlayedMatchSummary, isLoadingPlayedMatchSummary) || other.isLoadingPlayedMatchSummary == isLoadingPlayedMatchSummary)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.actionError, actionError) || other.actionError == actionError)&&(identical(other.playedMatchSummaryError, playedMatchSummaryError) || other.playedMatchSummaryError == playedMatchSummaryError)&&(identical(other.playedMatchSummary, playedMatchSummary) || other.playedMatchSummary == playedMatchSummary)&&const DeepCollectionEquality().equals(other._subscribedPlayerIds, _subscribedPlayerIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchChatState&&(identical(other.scheduledMatchId, scheduledMatchId) || other.scheduledMatchId == scheduledMatchId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasNextPage, hasNextPage) || other.hasNextPage == hasNextPage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.isSendingMessage, isSendingMessage) || other.isSendingMessage == isSendingMessage)&&(identical(other.isUploadingImage, isUploadingImage) || other.isUploadingImage == isUploadingImage)&&(identical(other.isUploadingAudio, isUploadingAudio) || other.isUploadingAudio == isUploadingAudio)&&(identical(other.isLoadingPlayedMatchSummary, isLoadingPlayedMatchSummary) || other.isLoadingPlayedMatchSummary == isLoadingPlayedMatchSummary)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.actionError, actionError) || other.actionError == actionError)&&(identical(other.playedMatchSummaryError, playedMatchSummaryError) || other.playedMatchSummaryError == playedMatchSummaryError)&&(identical(other.playedMatchSummary, playedMatchSummary) || other.playedMatchSummary == playedMatchSummary)&&const DeepCollectionEquality().equals(other._subscribedPlayerIds, _subscribedPlayerIds));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,scheduledMatchId,isLoading,hasLoadedOnce,isLoadingMore,hasNextPage,currentPage,isSendingMessage,isUploadingImage,isLoadingPlayedMatchSummary,loadError,actionError,playedMatchSummaryError,playedMatchSummary,const DeepCollectionEquality().hash(_subscribedPlayerIds));
+int get hashCode => Object.hash(runtimeType,scheduledMatchId,isLoading,hasLoadedOnce,isLoadingMore,hasNextPage,currentPage,isSendingMessage,isUploadingImage,isUploadingAudio,isLoadingPlayedMatchSummary,loadError,actionError,playedMatchSummaryError,playedMatchSummary,const DeepCollectionEquality().hash(_subscribedPlayerIds));
 
 @override
 String toString() {
-  return 'MatchChatState(scheduledMatchId: $scheduledMatchId, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, isLoadingMore: $isLoadingMore, hasNextPage: $hasNextPage, currentPage: $currentPage, isSendingMessage: $isSendingMessage, isUploadingImage: $isUploadingImage, isLoadingPlayedMatchSummary: $isLoadingPlayedMatchSummary, loadError: $loadError, actionError: $actionError, playedMatchSummaryError: $playedMatchSummaryError, playedMatchSummary: $playedMatchSummary, subscribedPlayerIds: $subscribedPlayerIds)';
+  return 'MatchChatState(scheduledMatchId: $scheduledMatchId, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, isLoadingMore: $isLoadingMore, hasNextPage: $hasNextPage, currentPage: $currentPage, isSendingMessage: $isSendingMessage, isUploadingImage: $isUploadingImage, isUploadingAudio: $isUploadingAudio, isLoadingPlayedMatchSummary: $isLoadingPlayedMatchSummary, loadError: $loadError, actionError: $actionError, playedMatchSummaryError: $playedMatchSummaryError, playedMatchSummary: $playedMatchSummary, subscribedPlayerIds: $subscribedPlayerIds)';
 }
 
 
@@ -273,7 +275,7 @@ abstract mixin class _$MatchChatStateCopyWith<$Res> implements $MatchChatStateCo
   factory _$MatchChatStateCopyWith(_MatchChatState value, $Res Function(_MatchChatState) _then) = __$MatchChatStateCopyWithImpl;
 @override @useResult
 $Res call({
- int? scheduledMatchId, bool isLoading, bool hasLoadedOnce, bool isLoadingMore, bool hasNextPage, int currentPage, bool isSendingMessage, bool isUploadingImage, bool isLoadingPlayedMatchSummary, RootHubException? loadError, RootHubException? actionError, RootHubException? playedMatchSummaryError, MatchChatPlayedMatchSummary? playedMatchSummary, Set<int> subscribedPlayerIds
+ int? scheduledMatchId, bool isLoading, bool hasLoadedOnce, bool isLoadingMore, bool hasNextPage, int currentPage, bool isSendingMessage, bool isUploadingImage, bool isUploadingAudio, bool isLoadingPlayedMatchSummary, RootHubException? loadError, RootHubException? actionError, RootHubException? playedMatchSummaryError, MatchChatPlayedMatchSummary? playedMatchSummary, Set<int> subscribedPlayerIds
 });
 
 
@@ -290,7 +292,7 @@ class __$MatchChatStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchChatState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? scheduledMatchId = freezed,Object? isLoading = null,Object? hasLoadedOnce = null,Object? isLoadingMore = null,Object? hasNextPage = null,Object? currentPage = null,Object? isSendingMessage = null,Object? isUploadingImage = null,Object? isLoadingPlayedMatchSummary = null,Object? loadError = freezed,Object? actionError = freezed,Object? playedMatchSummaryError = freezed,Object? playedMatchSummary = freezed,Object? subscribedPlayerIds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? scheduledMatchId = freezed,Object? isLoading = null,Object? hasLoadedOnce = null,Object? isLoadingMore = null,Object? hasNextPage = null,Object? currentPage = null,Object? isSendingMessage = null,Object? isUploadingImage = null,Object? isUploadingAudio = null,Object? isLoadingPlayedMatchSummary = null,Object? loadError = freezed,Object? actionError = freezed,Object? playedMatchSummaryError = freezed,Object? playedMatchSummary = freezed,Object? subscribedPlayerIds = null,}) {
   return _then(_MatchChatState(
 scheduledMatchId: freezed == scheduledMatchId ? _self.scheduledMatchId : scheduledMatchId // ignore: cast_nullable_to_non_nullable
 as int?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -300,6 +302,7 @@ as bool,hasNextPage: null == hasNextPage ? _self.hasNextPage : hasNextPage // ig
 as bool,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,isSendingMessage: null == isSendingMessage ? _self.isSendingMessage : isSendingMessage // ignore: cast_nullable_to_non_nullable
 as bool,isUploadingImage: null == isUploadingImage ? _self.isUploadingImage : isUploadingImage // ignore: cast_nullable_to_non_nullable
+as bool,isUploadingAudio: null == isUploadingAudio ? _self.isUploadingAudio : isUploadingAudio // ignore: cast_nullable_to_non_nullable
 as bool,isLoadingPlayedMatchSummary: null == isLoadingPlayedMatchSummary ? _self.isLoadingPlayedMatchSummary : isLoadingPlayedMatchSummary // ignore: cast_nullable_to_non_nullable
 as bool,loadError: freezed == loadError ? _self.loadError : loadError // ignore: cast_nullable_to_non_nullable
 as RootHubException?,actionError: freezed == actionError ? _self.actionError : actionError // ignore: cast_nullable_to_non_nullable

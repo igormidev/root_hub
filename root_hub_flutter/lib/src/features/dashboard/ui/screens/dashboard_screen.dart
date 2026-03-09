@@ -538,15 +538,30 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     Expanded(
                       child: DashboardBottomTabItemWidget(
                         colorScheme: colorScheme,
-                        label: t.dashboard.ui_screens_dashboard_screen.activity,
+                        label:
+                            t.dashboard.ui_screens_dashboard_screen.schedules,
+                        icon: Icons.event_note_outlined,
+                        selectedIcon: Icons.event_note_rounded,
+                        selected: selectedTab == DashboardTab.schedules,
+                        onTap: () {
+                          ref
+                              .read(dashboardProvider.notifier)
+                              .changeTab(DashboardTab.schedules);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: DashboardBottomTabItemWidget(
+                        colorScheme: colorScheme,
+                        label: t.dashboard.ui_screens_dashboard_screen.chat,
                         icon: Icons.forum_outlined,
                         selectedIcon: Icons.forum_rounded,
-                        selected: selectedTab == DashboardTab.activity,
+                        selected: selectedTab == DashboardTab.chat,
                         badgeCount: unreadActivityCount,
                         onTap: () {
                           ref
                               .read(dashboardProvider.notifier)
-                              .changeTab(DashboardTab.activity);
+                              .changeTab(DashboardTab.chat);
                         },
                       ),
                     ),
@@ -585,7 +600,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     ref
         .read(deepLinkProvider.notifier)
         .consumePendingMatchChatNavigation(matchId: scheduledMatchId);
-    ref.read(dashboardProvider.notifier).changeTab(DashboardTab.match);
+    ref.read(dashboardProvider.notifier).changeTab(DashboardTab.chat);
 
     try {
       await context.push(

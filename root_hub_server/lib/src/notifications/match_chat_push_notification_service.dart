@@ -149,6 +149,12 @@ class MatchChatPushNotificationService {
       );
     }
 
+    if (message.audioUrl != null) {
+      return t.pushNotifications.matchChat.senderSentVoiceMessage(
+        senderDisplayName: normalizedSender,
+      );
+    }
+
     return t.pushNotifications.matchChat.senderSentMessage(
       senderDisplayName: normalizedSender,
     );

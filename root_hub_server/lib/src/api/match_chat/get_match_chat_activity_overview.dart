@@ -72,7 +72,11 @@ class GetMatchChatActivityOverview extends Endpoint {
         }
 
         subscribedActiveSchedules.sort(
-          (a, b) => b.attemptedAt.compareTo(a.attemptedAt),
+          (a, b) => _compareSchedulesByClosestAttempt(
+            a,
+            b,
+            now: now,
+          ),
         );
 
         final participantStates = await MatchChatParticipantState.db.find(
@@ -124,6 +128,7 @@ class GetMatchChatActivityOverview extends Endpoint {
               (schedule.subscriptions ?? const <MatchSubscription>[]).any(
                 (entry) => entry.playerDataId == playerDataId,
               );
+          final googlePlace = schedule.location?.googlePlaceLocation;
 
           final lastMessage = chatHistory.messages?.firstOrNull;
           final lastMessageContent = lastMessage?.content.trim();
@@ -143,6 +148,9 @@ class GetMatchChatActivityOverview extends Endpoint {
               hasPlayedResult: schedule.status != MatchScheduleStatus.scheduled,
               locationTitle: locationTitle,
               locationSubtitle: locationSubtitle,
+              locationProviderPlaceId: googlePlace?.providerPlaceId,
+              locationLatitude: googlePlace?.lat,
+              locationLongitude: googlePlace?.lng,
               lastMessageAt: lastMessage?.sentAt,
               lastMessagePreview: normalizedLastMessageContent,
               lastMessageType: lastMessage?.messageType,
@@ -254,6 +262,21 @@ class GetMatchChatActivityOverview extends Endpoint {
   }) {
     return !entry.hasPlayedResult &&
         !entry.attemptedAt.isBefore(activeThreshold);
+  }
+
+  int _compareSchedulesByClosestAttempt(
+    MatchSchedulePairingAttempt a,
+    MatchSchedulePairingAttempt b, {
+    required DateTime now,
+  }) {
+    final aDistance = a.attemptedAt.difference(now).abs();
+    final bDistance = b.attemptedAt.difference(now).abs();
+    final distanceComparison = aDistance.compareTo(bDistance);
+    if (distanceComparison != 0) {
+      return distanceComparison;
+    }
+
+    return a.attemptedAt.compareTo(b.attemptedAt);
   }
 
   int _compareActiveChatItems(

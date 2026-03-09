@@ -112,6 +112,8 @@
     "ui_screens_dashboard_screen": {
       "shop": "Shop",
       "match": "Match",
+      "schedules": "Schedules",
+      "chat": "Chat",
       "activity": "Activity",
       "home": "Home",
       "rootHub": "ROOT HUB",
@@ -191,6 +193,15 @@
       "noCompletedChats": "No completed chats yet",
       "onceMatchesFinishTheirChatsWillStayAvailableHere": "Once matches finish, their chats remain available in this section."
     },
+    "ui_screens_chat_screen": {
+      "searchChats": "Search chats",
+      "allFilter": "All",
+      "unreadFilter": "Unread",
+      "noChatsTitle": "No chats yet",
+      "noChatsDescription": "Open or join a table chat and it will show up here.",
+      "noSearchResultsTitle": "No chats found",
+      "noSearchResultsDescription": "Try another search or clear the filters."
+    },
     "ui_widgets_activity_subscribed_schedule_card": {
       "unknownLocation": "Unknown location",
       "selected": "Selected",
@@ -208,6 +219,9 @@
       "photoShared": "Photo shared",
       "systemUpdate": "System update",
       "noMessagesYet": "No messages yet"
+    },
+    "ui_widgets_chat_match_list_tile_widget": {
+      "voiceMessage": "Voice message"
     }
   },
   "home": {
@@ -624,6 +638,8 @@
       "subscribed": "Subscribed",
       "unableToResolveYourAccountInformation": "Unable to resolve your account information.",
       "noMessagesYet": "No messages yet",
+      "voiceMessage": "Voice message",
+      "matchTitleFallback": "Match #{scheduledMatchId}",
       "typeAMessage": "Type a message",
       "tableInfo": "Table info",
       "playedMatchInfo": "Played match info",

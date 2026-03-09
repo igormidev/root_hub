@@ -112,6 +112,8 @@
     "ui_screens_dashboard_screen": {
       "shop": "Shop",
       "match": "Partien",
+      "schedules": "Termine",
+      "chat": "Chat",
       "activity": "Aktivität",
       "home": "Start",
       "rootHub": "ROOT HUB",
@@ -191,6 +193,15 @@
       "noCompletedChats": "Noch keine abgeschlossenen Chats",
       "onceMatchesFinishTheirChatsWillStayAvailableHere": "Sobald Partien beendet sind, bleiben ihre Chats in diesem Bereich verfügbar."
     },
+    "ui_screens_chat_screen": {
+      "searchChats": "Chats suchen",
+      "allFilter": "Alle",
+      "unreadFilter": "Ungelesen",
+      "noChatsTitle": "Noch keine Chats",
+      "noChatsDescription": "Öffne oder betrete einen Tisch-Chat und er erscheint hier.",
+      "noSearchResultsTitle": "Keine Chats gefunden",
+      "noSearchResultsDescription": "Versuche eine andere Suche oder lösche die Filter."
+    },
     "ui_widgets_activity_subscribed_schedule_card": {
       "unknownLocation": "Unbekannter Ort",
       "selected": "Ausgewählt",
@@ -208,6 +219,9 @@
       "photoShared": "Foto geteilt",
       "systemUpdate": "System-Update",
       "noMessagesYet": "Noch keine Nachrichten"
+    },
+    "ui_widgets_chat_match_list_tile_widget": {
+      "voiceMessage": "Sprachnachricht"
     }
   },
   "home": {
@@ -624,6 +638,8 @@
       "subscribed": "Gezeichnet",
       "unableToResolveYourAccountInformation": "Ihre Kontoinformationen können nicht aufgelöst werden.",
       "noMessagesYet": "Noch keine Nachrichten",
+      "voiceMessage": "Sprachnachricht",
+      "matchTitleFallback": "Partie #{scheduledMatchId}",
       "typeAMessage": "Nachricht eingeben",
       "tableInfo": "Partieinfo",
       "playedMatchInfo": "Info zur beendeten Partie",

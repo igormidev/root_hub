@@ -13,6 +13,7 @@ import 'package:serverpod/serverpod.dart';
 class SendMatchChatMessage extends Endpoint {
   static const _uploadThingStorageClient = UploadThingStorageClient();
   static const _maxImageBytes = 3 * 1024 * 1024;
+  static const _maxAudioBytes = 12 * 1024 * 1024;
 
   @override
   bool get requireLogin => true;
@@ -25,6 +26,10 @@ class SendMatchChatMessage extends Endpoint {
     ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
+    ByteData? audioBytes,
+    String? audioFileName,
+    String? audioContentType,
+    int? audioDurationMilliseconds,
   }) async {
     final t = ServerTranslations.of(language);
 
@@ -39,8 +44,9 @@ class SendMatchChatMessage extends Endpoint {
 
         final normalizedContent = content.trim();
         final hasImage = imageBytes != null && imageBytes.lengthInBytes > 0;
+        final hasAudio = audioBytes != null && audioBytes.lengthInBytes > 0;
 
-        if (normalizedContent.isEmpty && !hasImage) {
+        if (normalizedContent.isEmpty && !hasImage && !hasAudio) {
           throw RootHubEndpointError.invalidRequest(
             language: language,
             description: t.errors.messageMustIncludeTextOrImage,
@@ -54,10 +60,31 @@ class SendMatchChatMessage extends Endpoint {
           );
         }
 
+        if (audioBytes != null && audioBytes.lengthInBytes == 0) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.audioBytesCannotBeEmpty,
+          );
+        }
+
+        if (hasImage && hasAudio) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.messageCannotIncludeImageAndAudio,
+          );
+        }
+
         if (imageBytes != null && imageBytes.lengthInBytes > _maxImageBytes) {
           throw RootHubEndpointError.invalidRequest(
             language: language,
             description: t.errors.imageTooLargeSixMb,
+          );
+        }
+
+        if (audioBytes != null && audioBytes.lengthInBytes > _maxAudioBytes) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.audioTooLarge,
           );
         }
 
@@ -69,7 +96,8 @@ class SendMatchChatMessage extends Endpoint {
         session.log(
           '[MatchChat] Sending message. '
           'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id} '
-          'hasText=${normalizedContent.isNotEmpty} hasImage=$hasImage',
+          'hasText=${normalizedContent.isNotEmpty} hasImage=$hasImage '
+          'hasAudio=$hasAudio',
           level: LogLevel.info,
         );
 
@@ -104,6 +132,7 @@ class SendMatchChatMessage extends Endpoint {
         }
 
         String? uploadedImageUrl;
+        String? uploadedAudioUrl;
         String? computedBlurhash;
         int? computedImageWidth;
         int? computedImageHeight;
@@ -191,16 +220,66 @@ class SendMatchChatMessage extends Endpoint {
           }
         }
 
+        if (hasAudio) {
+          final audioBytesList = audioBytes.buffer.asUint8List(
+            audioBytes.offsetInBytes,
+            audioBytes.lengthInBytes,
+          );
+          session.log(
+            '[MatchChat] Voice message detected. '
+            'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id} '
+            'name=${audioFileName ?? '<empty>'} contentType=${audioContentType ?? '<null>'} '
+            'bytes=${audioBytesList.length} durationMs=$audioDurationMilliseconds',
+            level: LogLevel.info,
+          );
+
+          try {
+            uploadedAudioUrl = await _uploadThingStorageClient.uploadPublicFile(
+              session,
+              language: language,
+              fileBytes: audioBytesList,
+              fileName: audioFileName ?? '',
+              contentType: audioContentType,
+            );
+          } on RootHubException catch (error) {
+            session.log(
+              '[MatchChat] Voice upload failed with RootHubException. '
+              'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id} '
+              'title=${error.title} description=${error.description}',
+              level: LogLevel.warning,
+            );
+            rethrow;
+          } catch (error, stackTrace) {
+            session.log(
+              '[MatchChat] Voice upload failed with unexpected error. '
+              'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id}: $error',
+              level: LogLevel.error,
+              exception: error,
+              stackTrace: stackTrace,
+            );
+            throw RootHubEndpointError.endpointUnavailable(
+              language: language,
+              description: t.fallback.unableToUploadImage,
+            );
+          }
+        }
+
         final message = await MatchChatMessage.db.insertRow(
           session,
           MatchChatMessage(
             sentAt: DateTime.now(),
             content: normalizedContent,
             imageUrl: uploadedImageUrl,
+            audioUrl: uploadedAudioUrl,
+            audioDurationMilliseconds: hasAudio
+                ? audioDurationMilliseconds
+                : null,
             blurhash: computedBlurhash,
             imageWidth: computedImageWidth,
             imageHeight: computedImageHeight,
-            messageType: MatchChatMessageType.userMessage,
+            messageType: hasAudio
+                ? MatchChatMessageType.userVoiceMessage
+                : MatchChatMessageType.userMessage,
             matchChatHistoryId: chatHistoryId,
             playerDataId: playerData.id!,
           ),
@@ -255,7 +334,8 @@ class SendMatchChatMessage extends Endpoint {
         session.log(
           '[MatchChat] Message sent. '
           'scheduledMatchId=$scheduledMatchId playerDataId=${playerData.id} '
-          'messageId=${message.id} hasImage=${uploadedImageUrl != null}',
+          'messageId=${message.id} hasImage=${uploadedImageUrl != null} '
+          'hasAudio=${uploadedAudioUrl != null}',
           level: LogLevel.info,
         );
 

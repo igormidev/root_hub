@@ -1,5 +1,6 @@
 enum: MatchChatMessageType
 values:
   - userMessage
+  - userVoiceMessage
   - systemJoin
   - systemLeave

@@ -118,9 +118,12 @@ class _TranslationsErrorsDe extends TranslationsErrorsEn {
 	@override String tableReachedMaximumPlayers({required Object maxPlayers}) => 'This table has reached its maximum of ${maxPlayers} players.';
 	@override String get playerDataIdMustBeGreaterThanZero => 'Player data id must be greater than zero.';
 	@override String get chatHistoryAndPlayerMustBePersisted => 'Chat history and player must be persisted.';
-	@override String get messageMustIncludeTextOrImage => 'Message must include text content or an image.';
+	@override String get messageMustIncludeTextOrImage => 'Die Nachricht muss Text, ein Bild oder Audio enthalten.';
 	@override String get imageBytesCannotBeEmpty => 'Image bytes cannot be empty.';
+	@override String get audioBytesCannotBeEmpty => 'Audio-Bytes duerfen nicht leer sein.';
+	@override String get messageCannotIncludeImageAndAudio => 'Die Nachricht darf nicht gleichzeitig ein Bild und Audio enthalten.';
 	@override String get imageTooLargeSixMb => 'Image is too large. Please send an image smaller than 3 MB.';
+	@override String get audioTooLarge => 'Das Audio ist zu gross. Bitte sende Audio mit weniger als 12 MB.';
 	@override String chatHistoryForScheduledMatchNotFound({required Object scheduledMatchId}) => 'Chat history for scheduled match ${scheduledMatchId} was not found.';
 	@override String get selectedTableWasNotFound => 'The selected table was not found.';
 	@override String get unknownPlayer => 'Unknown player';
@@ -173,10 +176,10 @@ class _TranslationsErrorsDe extends TranslationsErrorsEn {
 	@override String googlePlacesRequestFailedWithHttp({required Object statusCode}) => 'Google Places API request failed with HTTP ${statusCode}.';
 	@override String failedToFetchMatchLocations({required Object requestedPage, required Object message}) => 'Failed to fetch match locations (page ${requestedPage}): ${message}';
 	@override String get uploadThingApiKeyNotConfigured => 'UploadThing API key is not configured. Set `uploadThingApiKey` or `uploadThingToken` in config/passwords.yaml.';
-	@override String get uploadThingPrepareUploadFailed => 'UploadThing failed to prepare image upload. Please try again.';
+	@override String get uploadThingPrepareUploadFailed => 'UploadThing konnte das Hochladen der Datei nicht vorbereiten. Bitte versuche es erneut.';
 	@override String get uploadThingInvalidUploadPreparationFormat => 'UploadThing returned an invalid upload preparation format.';
 	@override String get uploadThingMissingKeyOrUrl => 'UploadThing response is missing key or upload URL.';
-	@override String get uploadThingRejectedImageBytes => 'UploadThing rejected the uploaded image bytes.';
+	@override String get uploadThingRejectedImageBytes => 'UploadThing hat die hochgeladenen Dateibytes abgelehnt.';
 	@override String get uploadThingAppInfoLookupFailed => 'UploadThing app info lookup failed.';
 	@override String get uploadThingInvalidAppInfoFormat => 'UploadThing returned an invalid app info format.';
 	@override String get uploadThingAppIdMissing => 'UploadThing app id is missing in app info response.';
@@ -228,7 +231,7 @@ class _TranslationsFallbackDe extends TranslationsFallbackEn {
 	@override String get unableToRegisterMatchResult => 'Unable to register this match result right now. Please try again.';
 	@override String get unableToLoadPendingMatchReports => 'Unable to load pending match reports right now. Please try again.';
 	@override String get unableToSearchRegisteredPlayers => 'Unable to search registered players right now. Please try again.';
-	@override String get unableToUploadImage => 'Unable to upload image right now. Please try again.';
+	@override String get unableToUploadImage => 'Medien koennen im Moment nicht hochgeladen werden. Bitte versuche es erneut.';
 	@override String get unexpected => 'Unable to process this request right now. Please try again later.';
 	@override String get unableToCancelScheduledMatch => 'Dieses geplante Spiel konnte derzeit nicht als nicht gespielt markiert werden. Bitte versuche es erneut.';
 }
@@ -293,6 +296,7 @@ class _TranslationsPushNotificationsMatchChatDe extends TranslationsPushNotifica
 	@override String newMessageInMatchTitle({required Object matchTitle}) => 'Neue Nachricht in ${matchTitle}';
 	@override String senderMessagePreview({required Object senderDisplayName, required Object messagePreview}) => '${senderDisplayName}: ${messagePreview}';
 	@override String senderSentImage({required Object senderDisplayName}) => '${senderDisplayName} hat ein Bild gesendet';
+	@override String senderSentVoiceMessage({required Object senderDisplayName}) => '${senderDisplayName} hat eine Sprachnachricht gesendet';
 	@override String senderSentMessage({required Object senderDisplayName}) => '${senderDisplayName} hat eine neue Nachricht gesendet';
 }
 

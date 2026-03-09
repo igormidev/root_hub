@@ -64,9 +64,12 @@
     "tableReachedMaximumPlayers": "This table has reached its maximum of {maxPlayers} players.",
     "playerDataIdMustBeGreaterThanZero": "Player data id must be greater than zero.",
     "chatHistoryAndPlayerMustBePersisted": "Chat history and player must be persisted.",
-    "messageMustIncludeTextOrImage": "Message must include text content or an image.",
+    "messageMustIncludeTextOrImage": "Message must include text content, an image, or audio.",
     "imageBytesCannotBeEmpty": "Image bytes cannot be empty.",
+    "audioBytesCannotBeEmpty": "Audio bytes cannot be empty.",
+    "messageCannotIncludeImageAndAudio": "Message cannot include both an image and audio.",
     "imageTooLargeSixMb": "Image is too large. Please send an image smaller than 3 MB.",
+    "audioTooLarge": "Audio is too large. Please send audio smaller than 12 MB.",
     "chatHistoryForScheduledMatchNotFound": "Chat history for scheduled match {scheduledMatchId} was not found.",
     "selectedTableWasNotFound": "The selected table was not found.",
     "unknownPlayer": "Unknown player",
@@ -125,10 +128,10 @@
     "googlePlacesRequestFailedWithHttp": "Google Places API request failed with HTTP {statusCode}.",
     "failedToFetchMatchLocations": "Failed to fetch match locations (page {requestedPage}): {message}",
     "uploadThingApiKeyNotConfigured": "UploadThing API key is not configured. Set `uploadThingApiKey` or `uploadThingToken` in config/passwords.yaml.",
-    "uploadThingPrepareUploadFailed": "UploadThing failed to prepare image upload. Please try again.",
+    "uploadThingPrepareUploadFailed": "UploadThing failed to prepare file upload. Please try again.",
     "uploadThingInvalidUploadPreparationFormat": "UploadThing returned an invalid upload preparation format.",
     "uploadThingMissingKeyOrUrl": "UploadThing response is missing key or upload URL.",
-    "uploadThingRejectedImageBytes": "UploadThing rejected the uploaded image bytes.",
+    "uploadThingRejectedImageBytes": "UploadThing rejected the uploaded file bytes.",
     "uploadThingAppInfoLookupFailed": "UploadThing app info lookup failed.",
     "uploadThingInvalidAppInfoFormat": "UploadThing returned an invalid app info format.",
     "uploadThingAppIdMissing": "UploadThing app id is missing in app info response."
@@ -168,7 +171,7 @@
     "unableToCancelScheduledMatch": "Unable to mark this scheduled match as not played right now. Please try again.",
     "unableToLoadPendingMatchReports": "Unable to load pending match reports right now. Please try again.",
     "unableToSearchRegisteredPlayers": "Unable to search registered players right now. Please try again.",
-    "unableToUploadImage": "Unable to upload image right now. Please try again.",
+    "unableToUploadImage": "Unable to upload media right now. Please try again.",
     "unexpected": "Unable to process this request right now. Please try again later."
   },
   "systemMessages": {
@@ -185,6 +188,7 @@
       "newMessageInMatchTitle": "New message in {matchTitle}",
       "senderMessagePreview": "{senderDisplayName}: {messagePreview}",
       "senderSentImage": "{senderDisplayName} sent an image",
+      "senderSentVoiceMessage": "{senderDisplayName} sent a voice message",
       "senderSentMessage": "{senderDisplayName} sent a new message"
     },
     "nearbyMatch": {

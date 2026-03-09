@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:chatview/chatview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,26 +12,25 @@ import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
 import 'package:root_hub_flutter/src/features/match/ui/dialogs/match_played_match_summary_dialog.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_loading_error_state_widget.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_sender_avatar_widget.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_chat_system_event_message_widget.dart';
-import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_chat_image_message_sheet.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_edit_table_sheet.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_table_info_sheet.dart';
-import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_image_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_app_bar_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/widgets/match_chat_custom_message_widget.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
 import 'package:root_hub_flutter/src/states/match/match_chat_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 
 class MatchChatScreen extends ConsumerStatefulWidget {
-  final int scheduledMatchId;
-  final String? matchTitle;
-
   const MatchChatScreen({
     super.key,
     required this.scheduledMatchId,
     this.matchTitle,
   });
+
+  final int scheduledMatchId;
+  final String? matchTitle;
 
   @override
   ConsumerState<MatchChatScreen> createState() => _MatchChatScreenState();
@@ -48,6 +46,8 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       if (!mounted) {
         return;
       }
+
+      ref.read(matchTablesProvider.notifier).ensureLoaded();
       ref.read(matchChatProvider.notifier).openChat(widget.scheduledMatchId);
     });
   }
@@ -60,6 +60,8 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
         if (!mounted) {
           return;
         }
+
+        ref.read(matchTablesProvider.notifier).ensureLoaded();
         ref.read(matchChatProvider.notifier).openChat(widget.scheduledMatchId);
       });
     }
@@ -76,11 +78,12 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
           authenticated: (playerData) => playerData,
           orElse: () => null,
         );
-
     final currentUserId = authenticatedPlayer?.id?.toString();
     final isCurrentChat = chatState.scheduledMatchId == widget.scheduledMatchId;
     final isMessageActionInProgress =
-        chatState.isSendingMessage || chatState.isUploadingImage;
+        chatState.isSendingMessage ||
+        chatState.isUploadingImage ||
+        chatState.isUploadingAudio;
     final isLoadingInitial =
         !isCurrentChat || (chatState.isLoading && !chatState.hasLoadedOnce);
     final loadError = isCurrentChat ? chatState.loadError : null;
@@ -90,17 +93,20 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     final isLoadingPlayedMatchSummary = isCurrentChat
         ? chatState.isLoadingPlayedMatchSummary
         : false;
-    final title = widget.matchTitle?.trim().isNotEmpty == true
-        ? widget.matchTitle!.trim()
-        : 'Match #${widget.scheduledMatchId} Chat';
-
     final tablesState = ref.watch(matchTablesProvider);
     final currentTable = tablesState.tables
-        .where((t) => t.id == widget.scheduledMatchId)
+        .where((entry) => entry.id == widget.scheduledMatchId)
         .firstOrNull;
     final isHost =
         authenticatedPlayer?.id != null &&
         currentTable?.playerDataId == authenticatedPlayer?.id;
+    final title = currentTable?.title.trim().isNotEmpty == true
+        ? currentTable!.title.trim()
+        : widget.matchTitle?.trim().isNotEmpty == true
+        ? widget.matchTitle!.trim()
+        : t.match.ui_screens_match_chat_screen.matchTitleFallback(
+            scheduledMatchId: widget.scheduledMatchId.toString(),
+          );
 
     if (chatState.actionError != null && !_isShowingActionErrorDialog) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -109,65 +115,22 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        actions: [
-          if (isMessageActionInProgress)
-            Padding(
-              padding: EdgeInsets.only(right: 4),
-              child: Center(
-                child: SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.2,
-                    color: colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-          if (isHost && playedMatchSummary == null)
-            IconButton(
-              tooltip: t.match.ui_screens_match_chat_screen.editTable,
-              icon: Icon(Icons.edit_outlined),
-              onPressed: () => _openEditSheet(context),
-            ),
-          if (isLoadingPlayedMatchSummary)
-            Padding(
-              padding: EdgeInsets.only(right: 4),
-              child: Center(
-                child: SizedBox(
-                  width: 17,
-                  height: 17,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.1,
-                    color: colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-          IconButton(
-            tooltip: playedMatchSummary != null
-                ? t.match.ui_screens_match_chat_screen.playedMatchInfo
-                : t.match.ui_screens_match_chat_screen.tableInfo,
-            icon: Icon(
-              playedMatchSummary != null
-                  ? Icons.emoji_events_rounded
-                  : Icons.info_outline_rounded,
-            ),
-            onPressed: isLoadingPlayedMatchSummary
-                ? null
-                : playedMatchSummary != null
-                ? () {
-                    _openPlayedMatchSummaryDialog(playedMatchSummary);
-                  }
-                : _openTableInfoSheet,
-          ),
-        ],
+      appBar: MatchChatAppBarWidget(
+        matchTitle: title,
+        currentTable: currentTable,
+        isMessageActionInProgress: isMessageActionInProgress,
+        isHost: isHost,
+        playedMatchSummary: playedMatchSummary,
+        isLoadingPlayedMatchSummary: isLoadingPlayedMatchSummary,
+        onOpenEdit: () {
+          _openEditSheet(context);
+        },
+        onOpenInfo: _openTableInfoSheet,
+        onOpenPlayedSummary: playedMatchSummary == null
+            ? null
+            : () {
+                _openPlayedMatchSummaryDialog(playedMatchSummary);
+              },
       ),
       body: Builder(
         builder: (context) {
@@ -211,179 +174,175 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
             );
           }
 
-          return Chat(
-            currentUserId: currentUserId,
-            theme: ChatTheme.fromThemeData(Theme.of(context)),
-            resolveUser: chatNotifier.resolveUser,
+          final chatViewState =
+              chatNotifier.chatController.initialMessageList.isEmpty
+              ? ChatViewState.noData
+              : ChatViewState.hasMessages;
+
+          return ChatView(
             chatController: chatNotifier.chatController,
-            onMessageSend: (text) async {
-              if (isMessageActionInProgress) {
-                return;
-              }
-              await chatNotifier.sendTextMessage(text);
-            },
-            onAttachmentTap: isMessageActionInProgress
-                ? null
-                : () => _pickAndSendImage(
-                    chatNotifier,
-                    currentUserId: currentUserId,
-                  ),
-            builders: Builders(
-              composerBuilder: (context) => Composer(
-                attachmentIcon: Icon(Icons.add_photo_alternate_rounded),
-                hintText: t.match.ui_screens_match_chat_screen.typeAMessage,
-              ),
-              emptyChatListBuilder: (context) => EmptyChatList(
-                text: t.match.ui_screens_match_chat_screen.noMessagesYet,
-              ),
-              chatAnimatedListBuilder: (context, itemBuilder) =>
-                  ChatAnimatedList(
-                    itemBuilder: itemBuilder,
-                    onEndReached: chatState.hasNextPage
-                        ? chatNotifier.loadOlderMessages
-                        : null,
-                  ),
-              chatMessageBuilder:
-                  (
-                    context,
-                    message,
-                    index,
-                    animation,
-                    child, {
-                    bool? isRemoved,
-                    required bool isSentByMe,
-                    MessageGroupStatus? groupStatus,
-                  }) {
-                    final shouldShowSenderHeader =
-                        !isSentByMe && (groupStatus?.isFirst ?? true);
-
-                    Widget? headerWidget;
-                    if (shouldShowSenderHeader) {
-                      final authorId = message.authorId;
-                      final isSubscribedSender = chatNotifier
-                          .isAuthorSubscribed(
-                            authorId,
-                          );
-                      final profileImageUrl = chatNotifier
-                          .profileImageUrlForAuthorId(authorId);
-                      final factionIconPath = chatNotifier
-                          .factionIconPathForAuthorId(authorId);
-
-                      headerWidget = Padding(
-                        padding: EdgeInsets.fromLTRB(8, 2, 8, 4),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            MatchChatSenderAvatarWidget(
-                              profileImageUrl,
-                            ),
-                            SizedBox(width: 6),
-                            Flexible(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      chatNotifier.displayNameForAuthorId(
-                                        authorId,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge
-                                          ?.copyWith(
-                                            color: colorScheme.onSurfaceVariant,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                    ),
-                                  ),
-                                  if (factionIconPath != null) ...[
-                                    SizedBox(width: 6),
-                                    Image.asset(
-                                      factionIconPath,
-                                      width: 18,
-                                      height: 18,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                            if (isSubscribedSender) ...[
-                              SizedBox(width: 6),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(
-                                  8,
-                                  2,
-                                  8,
-                                  2,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(999),
-                                  color: colorScheme.primaryContainer,
-                                ),
-                                child: Text(
-                                  t
-                                      .match
-                                      .ui_screens_match_chat_screen
-                                      .subscribed,
-                                  style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(
-                                        color: colorScheme.onPrimaryContainer,
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      );
+            chatViewState: chatViewState,
+            loadMoreData: chatState.hasNextPage
+                ? (direction, _) async {
+                    if (direction.isPrevious) {
+                      await chatNotifier.loadOlderMessages();
                     }
-
-                    return ChatMessage(
-                      message: message,
-                      index: index,
-                      animation: animation,
-                      isRemoved: isRemoved,
-                      groupStatus: groupStatus,
-                      headerWidget: headerWidget,
-                      child: child,
-                    );
-                  },
-              customMessageBuilder:
-                  (
-                    context,
-                    message,
-                    index, {
-                    required bool isSentByMe,
-                    MessageGroupStatus? groupStatus,
-                  }) => MatchChatSystemEventMessageWidget(
-                    message: message,
-                  ),
-              imageMessageBuilder:
-                  (
-                    context,
-                    message,
-                    index, {
-                    required bool isSentByMe,
-                    MessageGroupStatus? groupStatus,
-                  }) => MatchChatImageWidget(
-                    message: message,
-                    index: index,
-                  ),
-              loadMoreBuilder: (context) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Center(
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  }
+                : null,
+            isLastPage: () => !chatState.hasNextPage,
+            loadingWidget: Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            ),
+            onSendTap: (message, _, messageType) {
+              switch (messageType) {
+                case MessageType.text:
+                  unawaited(chatNotifier.sendTextMessage(message));
+                  break;
+                case MessageType.voice:
+                  unawaited(chatNotifier.sendVoiceMessage(message));
+                  break;
+                case MessageType.image:
+                case MessageType.custom:
+                  break;
+              }
+            },
+            chatBackgroundConfig: ChatBackgroundConfiguration(
+              backgroundColor: colorScheme.surface,
+            ),
+            chatViewStateConfig: ChatViewStateConfiguration(
+              noMessageWidgetConfig: ChatViewStateWidgetConfiguration(
+                title: t.match.ui_screens_match_chat_screen.noMessagesYet,
+              ),
+            ),
+            profileCircleConfig: ProfileCircleConfiguration(
+              circleRadius: 18,
+              bottomPadding: 4,
+              padding: EdgeInsets.only(left: 4, right: 6),
+            ),
+            featureActiveConfig: FeatureActiveConfig(
+              enableSwipeToReply: false,
+              enableReactionPopup: false,
+              enableReplySnackBar: false,
+              enableDoubleTapToLike: false,
+              enablePagination: true,
+              enableCurrentUserProfileAvatar: false,
+              enableOtherUserProfileAvatar: true,
+              enableOtherUserName: true,
+              enableScrollToBottomButton: true,
+            ),
+            chatBubbleConfig: ChatBubbleConfiguration(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              margin: EdgeInsets.only(bottom: 8),
+              maxWidth: MediaQuery.sizeOf(context).width * 0.74,
+              inComingChatBubbleConfig: ChatBubble(
+                color: colorScheme.surfaceContainerHighest,
+                border: Border.all(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.55),
+                ),
+                borderRadius: BorderRadius.circular(20),
+                senderNameTextStyle: Theme.of(context).textTheme.labelLarge
+                    ?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w800,
                     ),
-                  ),
-                );
+                textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              outgoingChatBubbleConfig: ChatBubble(
+                color: colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(20),
+                textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.w700,
+                ),
+                receiptsWidgetConfig: ReceiptsWidgetConfig(
+                  receiptsBuilder: (_) => SizedBox.shrink(),
+                  lastSeenAgoBuilder: (_, __) => SizedBox.shrink(),
+                ),
+              ),
+            ),
+            messageConfig: MessageConfiguration(
+              customMessageBuilder: (message) {
+                return MatchChatCustomMessageWidget(message: message);
               },
+              voiceMessageConfig: VoiceMessageConfiguration(
+                outgoingPlayerWaveStyle: PlayerWaveStyle(
+                  fixedWaveColor: colorScheme.onPrimaryContainer,
+                  liveWaveColor: colorScheme.onPrimaryContainer.withValues(
+                    alpha: 0.42,
+                  ),
+                  spacing: 5,
+                ),
+                inComingPlayerWaveStyle: PlayerWaveStyle(
+                  fixedWaveColor: colorScheme.primary,
+                  liveWaveColor: colorScheme.primary.withValues(alpha: 0.35),
+                  spacing: 5,
+                ),
+                playIcon: (isMessageBySender) => Icon(
+                  Icons.play_arrow_rounded,
+                  color: isMessageBySender
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurface,
+                ),
+                pauseIcon: (isMessageBySender) => Icon(
+                  Icons.pause_rounded,
+                  color: isMessageBySender
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurface,
+                ),
+              ),
+            ),
+            sendMessageConfig: SendMessageConfiguration(
+              defaultSendButtonColor: colorScheme.primary,
+              textFieldBackgroundColor: colorScheme.surfaceContainerLow,
+              allowRecordingVoice: true,
+              voiceRecordingConfiguration: VoiceRecordingConfiguration(
+                backgroundColor: colorScheme.surfaceContainerHighest,
+                recorderIconColor: colorScheme.primary,
+              ),
+              cancelRecordConfiguration: CancelRecordConfiguration(
+                iconColor: colorScheme.error,
+              ),
+              textFieldConfig: TextFieldConfiguration(
+                enabled: !isMessageActionInProgress,
+                hintText: t.match.ui_screens_match_chat_screen.typeAMessage,
+                hideLeadingActionsOnType: true,
+                margin: EdgeInsets.fromLTRB(12, 8, 12, 12),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                textCapitalization: TextCapitalization.sentences,
+                textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w700,
+                ),
+                trailingActions: (context, _) {
+                  return [
+                    IconButton(
+                      onPressed: isMessageActionInProgress
+                          ? null
+                          : () {
+                              _pickAndSendImage(chatNotifier);
+                            },
+                      icon: Icon(Icons.add_photo_alternate_rounded),
+                      color: colorScheme.primary,
+                    ),
+                  ];
+                },
+              ),
             ),
           );
         },
@@ -450,8 +409,8 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       return false;
     }
 
-    final selectedImageMb = _formatMegabytes(imageBytes);
-    final maxAllowedMb = _formatMegabytes(maxBytes);
+    final selectedImageMb = (imageBytes / (1024 * 1024)).toStringAsFixed(1);
+    final maxAllowedMb = (maxBytes / (1024 * 1024)).toStringAsFixed(1);
 
     final shouldCompress = await showDialog<bool>(
       context: context,
@@ -487,10 +446,6 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     return shouldCompress ?? false;
   }
 
-  String _formatMegabytes(int bytes) {
-    return (bytes / (1024 * 1024)).toStringAsFixed(1);
-  }
-
   Future<void> _showActionErrorDialog(RootHubException error) async {
     if (_isShowingActionErrorDialog || !mounted) {
       return;
@@ -512,10 +467,7 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     }
   }
 
-  Future<void> _pickAndSendImage(
-    MatchChatNotifier chatNotifier, {
-    required String currentUserId,
-  }) async {
+  Future<void> _pickAndSendImage(MatchChatNotifier chatNotifier) async {
     final source = await _pickImageSource();
     if (!mounted || source == null) {
       return;
@@ -523,7 +475,6 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
 
     await chatNotifier.pickAndSendImage(
       source: source,
-      authorId: currentUserId,
       onConfirmImageCompression: _showImageCompressionDialog,
       onConfirmImageMessage: _showImageMessageDialog,
     );

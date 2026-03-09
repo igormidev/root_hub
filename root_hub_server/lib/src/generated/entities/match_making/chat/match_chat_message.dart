@@ -25,6 +25,8 @@ abstract class MatchChatMessage
     required this.sentAt,
     required this.content,
     this.imageUrl,
+    this.audioUrl,
+    this.audioDurationMilliseconds,
     this.blurhash,
     this.imageWidth,
     this.imageHeight,
@@ -40,6 +42,8 @@ abstract class MatchChatMessage
     required DateTime sentAt,
     required String content,
     String? imageUrl,
+    String? audioUrl,
+    int? audioDurationMilliseconds,
     String? blurhash,
     int? imageWidth,
     int? imageHeight,
@@ -56,6 +60,9 @@ abstract class MatchChatMessage
       sentAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['sentAt']),
       content: jsonSerialization['content'] as String,
       imageUrl: jsonSerialization['imageUrl'] as String?,
+      audioUrl: jsonSerialization['audioUrl'] as String?,
+      audioDurationMilliseconds:
+          jsonSerialization['audioDurationMilliseconds'] as int?,
       blurhash: jsonSerialization['blurhash'] as String?,
       imageWidth: jsonSerialization['imageWidth'] as int?,
       imageHeight: jsonSerialization['imageHeight'] as int?,
@@ -90,6 +97,10 @@ abstract class MatchChatMessage
 
   String? imageUrl;
 
+  String? audioUrl;
+
+  int? audioDurationMilliseconds;
+
   String? blurhash;
 
   int? imageWidth;
@@ -117,6 +128,8 @@ abstract class MatchChatMessage
     DateTime? sentAt,
     String? content,
     String? imageUrl,
+    String? audioUrl,
+    int? audioDurationMilliseconds,
     String? blurhash,
     int? imageWidth,
     int? imageHeight,
@@ -134,6 +147,9 @@ abstract class MatchChatMessage
       'sentAt': sentAt.toJson(),
       'content': content,
       if (imageUrl != null) 'imageUrl': imageUrl,
+      if (audioUrl != null) 'audioUrl': audioUrl,
+      if (audioDurationMilliseconds != null)
+        'audioDurationMilliseconds': audioDurationMilliseconds,
       if (blurhash != null) 'blurhash': blurhash,
       if (imageWidth != null) 'imageWidth': imageWidth,
       if (imageHeight != null) 'imageHeight': imageHeight,
@@ -154,6 +170,9 @@ abstract class MatchChatMessage
       'sentAt': sentAt.toJson(),
       'content': content,
       if (imageUrl != null) 'imageUrl': imageUrl,
+      if (audioUrl != null) 'audioUrl': audioUrl,
+      if (audioDurationMilliseconds != null)
+        'audioDurationMilliseconds': audioDurationMilliseconds,
       if (blurhash != null) 'blurhash': blurhash,
       if (imageWidth != null) 'imageWidth': imageWidth,
       if (imageHeight != null) 'imageHeight': imageHeight,
@@ -210,6 +229,8 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     required DateTime sentAt,
     required String content,
     String? imageUrl,
+    String? audioUrl,
+    int? audioDurationMilliseconds,
     String? blurhash,
     int? imageWidth,
     int? imageHeight,
@@ -223,6 +244,8 @@ class _MatchChatMessageImpl extends MatchChatMessage {
          sentAt: sentAt,
          content: content,
          imageUrl: imageUrl,
+         audioUrl: audioUrl,
+         audioDurationMilliseconds: audioDurationMilliseconds,
          blurhash: blurhash,
          imageWidth: imageWidth,
          imageHeight: imageHeight,
@@ -242,6 +265,8 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     DateTime? sentAt,
     String? content,
     Object? imageUrl = _Undefined,
+    Object? audioUrl = _Undefined,
+    Object? audioDurationMilliseconds = _Undefined,
     Object? blurhash = _Undefined,
     Object? imageWidth = _Undefined,
     Object? imageHeight = _Undefined,
@@ -256,6 +281,10 @@ class _MatchChatMessageImpl extends MatchChatMessage {
       sentAt: sentAt ?? this.sentAt,
       content: content ?? this.content,
       imageUrl: imageUrl is String? ? imageUrl : this.imageUrl,
+      audioUrl: audioUrl is String? ? audioUrl : this.audioUrl,
+      audioDurationMilliseconds: audioDurationMilliseconds is int?
+          ? audioDurationMilliseconds
+          : this.audioDurationMilliseconds,
       blurhash: blurhash is String? ? blurhash : this.blurhash,
       imageWidth: imageWidth is int? ? imageWidth : this.imageWidth,
       imageHeight: imageHeight is int? ? imageHeight : this.imageHeight,
@@ -288,6 +317,17 @@ class MatchChatMessageUpdateTable
     table.imageUrl,
     value,
   );
+
+  _i1.ColumnValue<String, String> audioUrl(String? value) => _i1.ColumnValue(
+    table.audioUrl,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> audioDurationMilliseconds(int? value) =>
+      _i1.ColumnValue(
+        table.audioDurationMilliseconds,
+        value,
+      );
 
   _i1.ColumnValue<String, String> blurhash(String? value) => _i1.ColumnValue(
     table.blurhash,
@@ -337,6 +377,14 @@ class MatchChatMessageTable extends _i1.Table<int?> {
       'imageUrl',
       this,
     );
+    audioUrl = _i1.ColumnString(
+      'audioUrl',
+      this,
+    );
+    audioDurationMilliseconds = _i1.ColumnInt(
+      'audioDurationMilliseconds',
+      this,
+    );
     blurhash = _i1.ColumnString(
       'blurhash',
       this,
@@ -371,6 +419,10 @@ class MatchChatMessageTable extends _i1.Table<int?> {
   late final _i1.ColumnString content;
 
   late final _i1.ColumnString imageUrl;
+
+  late final _i1.ColumnString audioUrl;
+
+  late final _i1.ColumnInt audioDurationMilliseconds;
 
   late final _i1.ColumnString blurhash;
 
@@ -420,6 +472,8 @@ class MatchChatMessageTable extends _i1.Table<int?> {
     sentAt,
     content,
     imageUrl,
+    audioUrl,
+    audioDurationMilliseconds,
     blurhash,
     imageWidth,
     imageHeight,

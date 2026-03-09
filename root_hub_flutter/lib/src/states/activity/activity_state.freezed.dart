@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ActivityState {
 
- List<MatchSchedulePairingAttempt> get subscribedActiveSchedules; List<MatchChatActivityChatItem> get activeChats; List<MatchChatActivityChatItem> get endedChats; int get unreadMessagesCount; bool get isLoading; bool get hasLoadedOnce; RootHubException? get loadError; bool get isLoadingUnreadCount; bool get hasLoadedUnreadCount; RootHubException? get unreadCountError;
+ List<MatchSchedulePairingAttempt> get subscribedActiveSchedules; List<MatchChatActivityChatItem> get chatItems; int get unreadMessagesCount; bool get isLoading; bool get hasLoadedOnce; RootHubException? get loadError; bool get isLoadingUnreadCount; bool get hasLoadedUnreadCount; RootHubException? get unreadCountError;
 /// Create a copy of ActivityState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ActivityStateCopyWith<ActivityState> get copyWith => _$ActivityStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActivityState&&const DeepCollectionEquality().equals(other.subscribedActiveSchedules, subscribedActiveSchedules)&&const DeepCollectionEquality().equals(other.activeChats, activeChats)&&const DeepCollectionEquality().equals(other.endedChats, endedChats)&&(identical(other.unreadMessagesCount, unreadMessagesCount) || other.unreadMessagesCount == unreadMessagesCount)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.isLoadingUnreadCount, isLoadingUnreadCount) || other.isLoadingUnreadCount == isLoadingUnreadCount)&&(identical(other.hasLoadedUnreadCount, hasLoadedUnreadCount) || other.hasLoadedUnreadCount == hasLoadedUnreadCount)&&(identical(other.unreadCountError, unreadCountError) || other.unreadCountError == unreadCountError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActivityState&&const DeepCollectionEquality().equals(other.subscribedActiveSchedules, subscribedActiveSchedules)&&const DeepCollectionEquality().equals(other.chatItems, chatItems)&&(identical(other.unreadMessagesCount, unreadMessagesCount) || other.unreadMessagesCount == unreadMessagesCount)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.isLoadingUnreadCount, isLoadingUnreadCount) || other.isLoadingUnreadCount == isLoadingUnreadCount)&&(identical(other.hasLoadedUnreadCount, hasLoadedUnreadCount) || other.hasLoadedUnreadCount == hasLoadedUnreadCount)&&(identical(other.unreadCountError, unreadCountError) || other.unreadCountError == unreadCountError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(subscribedActiveSchedules),const DeepCollectionEquality().hash(activeChats),const DeepCollectionEquality().hash(endedChats),unreadMessagesCount,isLoading,hasLoadedOnce,loadError,isLoadingUnreadCount,hasLoadedUnreadCount,unreadCountError);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(subscribedActiveSchedules),const DeepCollectionEquality().hash(chatItems),unreadMessagesCount,isLoading,hasLoadedOnce,loadError,isLoadingUnreadCount,hasLoadedUnreadCount,unreadCountError);
 
 @override
 String toString() {
-  return 'ActivityState(subscribedActiveSchedules: $subscribedActiveSchedules, activeChats: $activeChats, endedChats: $endedChats, unreadMessagesCount: $unreadMessagesCount, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, loadError: $loadError, isLoadingUnreadCount: $isLoadingUnreadCount, hasLoadedUnreadCount: $hasLoadedUnreadCount, unreadCountError: $unreadCountError)';
+  return 'ActivityState(subscribedActiveSchedules: $subscribedActiveSchedules, chatItems: $chatItems, unreadMessagesCount: $unreadMessagesCount, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, loadError: $loadError, isLoadingUnreadCount: $isLoadingUnreadCount, hasLoadedUnreadCount: $hasLoadedUnreadCount, unreadCountError: $unreadCountError)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ActivityStateCopyWith<$Res>  {
   factory $ActivityStateCopyWith(ActivityState value, $Res Function(ActivityState) _then) = _$ActivityStateCopyWithImpl;
 @useResult
 $Res call({
- List<MatchSchedulePairingAttempt> subscribedActiveSchedules, List<MatchChatActivityChatItem> activeChats, List<MatchChatActivityChatItem> endedChats, int unreadMessagesCount, bool isLoading, bool hasLoadedOnce, RootHubException? loadError, bool isLoadingUnreadCount, bool hasLoadedUnreadCount, RootHubException? unreadCountError
+ List<MatchSchedulePairingAttempt> subscribedActiveSchedules, List<MatchChatActivityChatItem> chatItems, int unreadMessagesCount, bool isLoading, bool hasLoadedOnce, RootHubException? loadError, bool isLoadingUnreadCount, bool hasLoadedUnreadCount, RootHubException? unreadCountError
 });
 
 
@@ -62,11 +62,10 @@ class _$ActivityStateCopyWithImpl<$Res>
 
 /// Create a copy of ActivityState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? subscribedActiveSchedules = null,Object? activeChats = null,Object? endedChats = null,Object? unreadMessagesCount = null,Object? isLoading = null,Object? hasLoadedOnce = null,Object? loadError = freezed,Object? isLoadingUnreadCount = null,Object? hasLoadedUnreadCount = null,Object? unreadCountError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? subscribedActiveSchedules = null,Object? chatItems = null,Object? unreadMessagesCount = null,Object? isLoading = null,Object? hasLoadedOnce = null,Object? loadError = freezed,Object? isLoadingUnreadCount = null,Object? hasLoadedUnreadCount = null,Object? unreadCountError = freezed,}) {
   return _then(_self.copyWith(
 subscribedActiveSchedules: null == subscribedActiveSchedules ? _self.subscribedActiveSchedules : subscribedActiveSchedules // ignore: cast_nullable_to_non_nullable
-as List<MatchSchedulePairingAttempt>,activeChats: null == activeChats ? _self.activeChats : activeChats // ignore: cast_nullable_to_non_nullable
-as List<MatchChatActivityChatItem>,endedChats: null == endedChats ? _self.endedChats : endedChats // ignore: cast_nullable_to_non_nullable
+as List<MatchSchedulePairingAttempt>,chatItems: null == chatItems ? _self.chatItems : chatItems // ignore: cast_nullable_to_non_nullable
 as List<MatchChatActivityChatItem>,unreadMessagesCount: null == unreadMessagesCount ? _self.unreadMessagesCount : unreadMessagesCount // ignore: cast_nullable_to_non_nullable
 as int,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,hasLoadedOnce: null == hasLoadedOnce ? _self.hasLoadedOnce : hasLoadedOnce // ignore: cast_nullable_to_non_nullable
@@ -159,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<MatchSchedulePairingAttempt> subscribedActiveSchedules,  List<MatchChatActivityChatItem> activeChats,  List<MatchChatActivityChatItem> endedChats,  int unreadMessagesCount,  bool isLoading,  bool hasLoadedOnce,  RootHubException? loadError,  bool isLoadingUnreadCount,  bool hasLoadedUnreadCount,  RootHubException? unreadCountError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<MatchSchedulePairingAttempt> subscribedActiveSchedules,  List<MatchChatActivityChatItem> chatItems,  int unreadMessagesCount,  bool isLoading,  bool hasLoadedOnce,  RootHubException? loadError,  bool isLoadingUnreadCount,  bool hasLoadedUnreadCount,  RootHubException? unreadCountError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ActivityState() when $default != null:
-return $default(_that.subscribedActiveSchedules,_that.activeChats,_that.endedChats,_that.unreadMessagesCount,_that.isLoading,_that.hasLoadedOnce,_that.loadError,_that.isLoadingUnreadCount,_that.hasLoadedUnreadCount,_that.unreadCountError);case _:
+return $default(_that.subscribedActiveSchedules,_that.chatItems,_that.unreadMessagesCount,_that.isLoading,_that.hasLoadedOnce,_that.loadError,_that.isLoadingUnreadCount,_that.hasLoadedUnreadCount,_that.unreadCountError);case _:
   return orElse();
 
 }
@@ -180,10 +179,10 @@ return $default(_that.subscribedActiveSchedules,_that.activeChats,_that.endedCha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<MatchSchedulePairingAttempt> subscribedActiveSchedules,  List<MatchChatActivityChatItem> activeChats,  List<MatchChatActivityChatItem> endedChats,  int unreadMessagesCount,  bool isLoading,  bool hasLoadedOnce,  RootHubException? loadError,  bool isLoadingUnreadCount,  bool hasLoadedUnreadCount,  RootHubException? unreadCountError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<MatchSchedulePairingAttempt> subscribedActiveSchedules,  List<MatchChatActivityChatItem> chatItems,  int unreadMessagesCount,  bool isLoading,  bool hasLoadedOnce,  RootHubException? loadError,  bool isLoadingUnreadCount,  bool hasLoadedUnreadCount,  RootHubException? unreadCountError)  $default,) {final _that = this;
 switch (_that) {
 case _ActivityState():
-return $default(_that.subscribedActiveSchedules,_that.activeChats,_that.endedChats,_that.unreadMessagesCount,_that.isLoading,_that.hasLoadedOnce,_that.loadError,_that.isLoadingUnreadCount,_that.hasLoadedUnreadCount,_that.unreadCountError);case _:
+return $default(_that.subscribedActiveSchedules,_that.chatItems,_that.unreadMessagesCount,_that.isLoading,_that.hasLoadedOnce,_that.loadError,_that.isLoadingUnreadCount,_that.hasLoadedUnreadCount,_that.unreadCountError);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +199,10 @@ return $default(_that.subscribedActiveSchedules,_that.activeChats,_that.endedCha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<MatchSchedulePairingAttempt> subscribedActiveSchedules,  List<MatchChatActivityChatItem> activeChats,  List<MatchChatActivityChatItem> endedChats,  int unreadMessagesCount,  bool isLoading,  bool hasLoadedOnce,  RootHubException? loadError,  bool isLoadingUnreadCount,  bool hasLoadedUnreadCount,  RootHubException? unreadCountError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<MatchSchedulePairingAttempt> subscribedActiveSchedules,  List<MatchChatActivityChatItem> chatItems,  int unreadMessagesCount,  bool isLoading,  bool hasLoadedOnce,  RootHubException? loadError,  bool isLoadingUnreadCount,  bool hasLoadedUnreadCount,  RootHubException? unreadCountError)?  $default,) {final _that = this;
 switch (_that) {
 case _ActivityState() when $default != null:
-return $default(_that.subscribedActiveSchedules,_that.activeChats,_that.endedChats,_that.unreadMessagesCount,_that.isLoading,_that.hasLoadedOnce,_that.loadError,_that.isLoadingUnreadCount,_that.hasLoadedUnreadCount,_that.unreadCountError);case _:
+return $default(_that.subscribedActiveSchedules,_that.chatItems,_that.unreadMessagesCount,_that.isLoading,_that.hasLoadedOnce,_that.loadError,_that.isLoadingUnreadCount,_that.hasLoadedUnreadCount,_that.unreadCountError);case _:
   return null;
 
 }
@@ -215,7 +214,7 @@ return $default(_that.subscribedActiveSchedules,_that.activeChats,_that.endedCha
 
 
 class _ActivityState implements ActivityState {
-  const _ActivityState({final  List<MatchSchedulePairingAttempt> subscribedActiveSchedules = const <MatchSchedulePairingAttempt>[], final  List<MatchChatActivityChatItem> activeChats = const <MatchChatActivityChatItem>[], final  List<MatchChatActivityChatItem> endedChats = const <MatchChatActivityChatItem>[], this.unreadMessagesCount = 0, this.isLoading = false, this.hasLoadedOnce = false, this.loadError, this.isLoadingUnreadCount = false, this.hasLoadedUnreadCount = false, this.unreadCountError}): _subscribedActiveSchedules = subscribedActiveSchedules,_activeChats = activeChats,_endedChats = endedChats;
+  const _ActivityState({final  List<MatchSchedulePairingAttempt> subscribedActiveSchedules = const <MatchSchedulePairingAttempt>[], final  List<MatchChatActivityChatItem> chatItems = const <MatchChatActivityChatItem>[], this.unreadMessagesCount = 0, this.isLoading = false, this.hasLoadedOnce = false, this.loadError, this.isLoadingUnreadCount = false, this.hasLoadedUnreadCount = false, this.unreadCountError}): _subscribedActiveSchedules = subscribedActiveSchedules,_chatItems = chatItems;
   
 
  final  List<MatchSchedulePairingAttempt> _subscribedActiveSchedules;
@@ -225,18 +224,11 @@ class _ActivityState implements ActivityState {
   return EqualUnmodifiableListView(_subscribedActiveSchedules);
 }
 
- final  List<MatchChatActivityChatItem> _activeChats;
-@override@JsonKey() List<MatchChatActivityChatItem> get activeChats {
-  if (_activeChats is EqualUnmodifiableListView) return _activeChats;
+ final  List<MatchChatActivityChatItem> _chatItems;
+@override@JsonKey() List<MatchChatActivityChatItem> get chatItems {
+  if (_chatItems is EqualUnmodifiableListView) return _chatItems;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_activeChats);
-}
-
- final  List<MatchChatActivityChatItem> _endedChats;
-@override@JsonKey() List<MatchChatActivityChatItem> get endedChats {
-  if (_endedChats is EqualUnmodifiableListView) return _endedChats;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_endedChats);
+  return EqualUnmodifiableListView(_chatItems);
 }
 
 @override@JsonKey() final  int unreadMessagesCount;
@@ -257,16 +249,16 @@ _$ActivityStateCopyWith<_ActivityState> get copyWith => __$ActivityStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ActivityState&&const DeepCollectionEquality().equals(other._subscribedActiveSchedules, _subscribedActiveSchedules)&&const DeepCollectionEquality().equals(other._activeChats, _activeChats)&&const DeepCollectionEquality().equals(other._endedChats, _endedChats)&&(identical(other.unreadMessagesCount, unreadMessagesCount) || other.unreadMessagesCount == unreadMessagesCount)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.isLoadingUnreadCount, isLoadingUnreadCount) || other.isLoadingUnreadCount == isLoadingUnreadCount)&&(identical(other.hasLoadedUnreadCount, hasLoadedUnreadCount) || other.hasLoadedUnreadCount == hasLoadedUnreadCount)&&(identical(other.unreadCountError, unreadCountError) || other.unreadCountError == unreadCountError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ActivityState&&const DeepCollectionEquality().equals(other._subscribedActiveSchedules, _subscribedActiveSchedules)&&const DeepCollectionEquality().equals(other._chatItems, _chatItems)&&(identical(other.unreadMessagesCount, unreadMessagesCount) || other.unreadMessagesCount == unreadMessagesCount)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasLoadedOnce, hasLoadedOnce) || other.hasLoadedOnce == hasLoadedOnce)&&(identical(other.loadError, loadError) || other.loadError == loadError)&&(identical(other.isLoadingUnreadCount, isLoadingUnreadCount) || other.isLoadingUnreadCount == isLoadingUnreadCount)&&(identical(other.hasLoadedUnreadCount, hasLoadedUnreadCount) || other.hasLoadedUnreadCount == hasLoadedUnreadCount)&&(identical(other.unreadCountError, unreadCountError) || other.unreadCountError == unreadCountError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_subscribedActiveSchedules),const DeepCollectionEquality().hash(_activeChats),const DeepCollectionEquality().hash(_endedChats),unreadMessagesCount,isLoading,hasLoadedOnce,loadError,isLoadingUnreadCount,hasLoadedUnreadCount,unreadCountError);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_subscribedActiveSchedules),const DeepCollectionEquality().hash(_chatItems),unreadMessagesCount,isLoading,hasLoadedOnce,loadError,isLoadingUnreadCount,hasLoadedUnreadCount,unreadCountError);
 
 @override
 String toString() {
-  return 'ActivityState(subscribedActiveSchedules: $subscribedActiveSchedules, activeChats: $activeChats, endedChats: $endedChats, unreadMessagesCount: $unreadMessagesCount, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, loadError: $loadError, isLoadingUnreadCount: $isLoadingUnreadCount, hasLoadedUnreadCount: $hasLoadedUnreadCount, unreadCountError: $unreadCountError)';
+  return 'ActivityState(subscribedActiveSchedules: $subscribedActiveSchedules, chatItems: $chatItems, unreadMessagesCount: $unreadMessagesCount, isLoading: $isLoading, hasLoadedOnce: $hasLoadedOnce, loadError: $loadError, isLoadingUnreadCount: $isLoadingUnreadCount, hasLoadedUnreadCount: $hasLoadedUnreadCount, unreadCountError: $unreadCountError)';
 }
 
 
@@ -277,7 +269,7 @@ abstract mixin class _$ActivityStateCopyWith<$Res> implements $ActivityStateCopy
   factory _$ActivityStateCopyWith(_ActivityState value, $Res Function(_ActivityState) _then) = __$ActivityStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<MatchSchedulePairingAttempt> subscribedActiveSchedules, List<MatchChatActivityChatItem> activeChats, List<MatchChatActivityChatItem> endedChats, int unreadMessagesCount, bool isLoading, bool hasLoadedOnce, RootHubException? loadError, bool isLoadingUnreadCount, bool hasLoadedUnreadCount, RootHubException? unreadCountError
+ List<MatchSchedulePairingAttempt> subscribedActiveSchedules, List<MatchChatActivityChatItem> chatItems, int unreadMessagesCount, bool isLoading, bool hasLoadedOnce, RootHubException? loadError, bool isLoadingUnreadCount, bool hasLoadedUnreadCount, RootHubException? unreadCountError
 });
 
 
@@ -294,11 +286,10 @@ class __$ActivityStateCopyWithImpl<$Res>
 
 /// Create a copy of ActivityState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? subscribedActiveSchedules = null,Object? activeChats = null,Object? endedChats = null,Object? unreadMessagesCount = null,Object? isLoading = null,Object? hasLoadedOnce = null,Object? loadError = freezed,Object? isLoadingUnreadCount = null,Object? hasLoadedUnreadCount = null,Object? unreadCountError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? subscribedActiveSchedules = null,Object? chatItems = null,Object? unreadMessagesCount = null,Object? isLoading = null,Object? hasLoadedOnce = null,Object? loadError = freezed,Object? isLoadingUnreadCount = null,Object? hasLoadedUnreadCount = null,Object? unreadCountError = freezed,}) {
   return _then(_ActivityState(
 subscribedActiveSchedules: null == subscribedActiveSchedules ? _self._subscribedActiveSchedules : subscribedActiveSchedules // ignore: cast_nullable_to_non_nullable
-as List<MatchSchedulePairingAttempt>,activeChats: null == activeChats ? _self._activeChats : activeChats // ignore: cast_nullable_to_non_nullable
-as List<MatchChatActivityChatItem>,endedChats: null == endedChats ? _self._endedChats : endedChats // ignore: cast_nullable_to_non_nullable
+as List<MatchSchedulePairingAttempt>,chatItems: null == chatItems ? _self._chatItems : chatItems // ignore: cast_nullable_to_non_nullable
 as List<MatchChatActivityChatItem>,unreadMessagesCount: null == unreadMessagesCount ? _self.unreadMessagesCount : unreadMessagesCount // ignore: cast_nullable_to_non_nullable
 as int,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,hasLoadedOnce: null == hasLoadedOnce ? _self.hasLoadedOnce : hasLoadedOnce // ignore: cast_nullable_to_non_nullable

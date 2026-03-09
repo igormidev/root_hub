@@ -14,6 +14,7 @@ abstract class MatchChatState with _$MatchChatState {
     @Default(0) int currentPage,
     @Default(false) bool isSendingMessage,
     @Default(false) bool isUploadingImage,
+    @Default(false) bool isUploadingAudio,
     @Default(false) bool isLoadingPlayedMatchSummary,
     RootHubException? loadError,
     RootHubException? actionError,

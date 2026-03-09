@@ -612,6 +612,10 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
     _i10.ByteData? imageBytes,
     String? imageFileName,
     String? imageContentType,
+    _i10.ByteData? audioBytes,
+    String? audioFileName,
+    String? audioContentType,
+    int? audioDurationMilliseconds,
   }) => caller.callServerEndpoint<_i25.MatchChatMessage>(
     'sendMatchChatMessage',
     'v1',
@@ -622,6 +626,10 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
       'imageBytes': imageBytes,
       'imageFileName': imageFileName,
       'imageContentType': imageContentType,
+      'audioBytes': audioBytes,
+      'audioFileName': audioFileName,
+      'audioContentType': audioContentType,
+      'audioDurationMilliseconds': audioDurationMilliseconds,
     },
   );
 }

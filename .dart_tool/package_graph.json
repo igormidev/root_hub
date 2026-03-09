@@ -58,6 +58,7 @@
         "babel_text",
         "blurhash_dart",
         "cached_network_image",
+        "chatview",
         "confetti",
         "cupertino_icons",
         "firebase_core",
@@ -66,12 +67,9 @@
         "flutter",
         "flutter_animate",
         "flutter_cache_manager",
-        "flutter_chat_core",
-        "flutter_chat_ui",
         "flutter_image_compress",
         "flutter_localizations",
         "flutter_riverpod",
-        "flyer_chat_image_message",
         "freezed_annotation",
         "geolocator",
         "go_router",
@@ -461,40 +459,18 @@
       ]
     },
     {
-      "name": "flyer_chat_image_message",
-      "version": "2.3.0",
+      "name": "chatview",
+      "version": "3.0.0",
       "dependencies": [
-        "blurhash_dart",
-        "cross_cache",
+        "any_link_preview",
+        "audio_waveforms",
+        "cached_network_image",
+        "chatview_utils",
+        "emoji_picker_flutter",
         "flutter",
-        "flutter_chat_core",
-        "image",
-        "provider",
-        "thumbhash"
-      ]
-    },
-    {
-      "name": "flutter_chat_ui",
-      "version": "2.11.1",
-      "dependencies": [
-        "cross_cache",
-        "diffutil_dart",
-        "flutter",
-        "flutter_chat_core",
-        "provider",
-        "scrollview_observer"
-      ]
-    },
-    {
-      "name": "flutter_chat_core",
-      "version": "2.9.0",
-      "dependencies": [
-        "dio",
-        "flutter",
-        "freezed_annotation",
+        "image_picker",
         "intl",
-        "json_annotation",
-        "path_provider"
+        "url_launcher"
       ]
     },
     {
@@ -1671,54 +1647,42 @@
       ]
     },
     {
-      "name": "thumbhash",
-      "version": "0.1.0+1",
-      "dependencies": []
-    },
-    {
-      "name": "provider",
-      "version": "6.1.5+1",
+      "name": "emoji_picker_flutter",
+      "version": "4.4.0",
       "dependencies": [
-        "collection",
         "flutter",
-        "nested"
+        "flutter_web_plugins",
+        "plugin_platform_interface",
+        "shared_preferences",
+        "web"
       ]
     },
     {
-      "name": "cross_cache",
-      "version": "1.1.0",
-      "dependencies": [
-        "cross_file",
-        "crypto",
-        "dio",
-        "flutter",
-        "idb_shim",
-        "path_provider"
-      ]
-    },
-    {
-      "name": "scrollview_observer",
-      "version": "1.26.3",
+      "name": "chatview_utils",
+      "version": "3.0.0",
       "dependencies": [
         "flutter"
       ]
     },
     {
-      "name": "diffutil_dart",
-      "version": "4.0.1",
-      "dependencies": []
+      "name": "audio_waveforms",
+      "version": "2.0.2",
+      "dependencies": [
+        "flutter"
+      ]
     },
     {
-      "name": "dio",
-      "version": "5.9.1",
+      "name": "any_link_preview",
+      "version": "3.0.3",
       "dependencies": [
-        "async",
-        "collection",
-        "dio_web_adapter",
-        "http_parser",
-        "meta",
-        "mime",
-        "path"
+        "flutter",
+        "flutter_svg",
+        "html",
+        "http",
+        "shared_preferences",
+        "string_validator",
+        "url_launcher",
+        "xml"
       ]
     },
     {
@@ -2208,6 +2172,15 @@
       ]
     },
     {
+      "name": "provider",
+      "version": "6.1.5+1",
+      "dependencies": [
+        "collection",
+        "flutter",
+        "nested"
+      ]
+    },
+    {
       "name": "pinput",
       "version": "6.0.2",
       "dependencies": [
@@ -2298,6 +2271,19 @@
       "dependencies": [
         "meta",
         "web"
+      ]
+    },
+    {
+      "name": "dio",
+      "version": "5.9.1",
+      "dependencies": [
+        "async",
+        "collection",
+        "dio_web_adapter",
+        "http_parser",
+        "meta",
+        "mime",
+        "path"
       ]
     },
     {
@@ -2634,33 +2620,9 @@
       ]
     },
     {
-      "name": "nested",
-      "version": "1.0.0",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
-      "name": "idb_shim",
-      "version": "2.8.2+4",
-      "dependencies": [
-        "collection",
-        "meta",
-        "path",
-        "sembast",
-        "synchronized",
-        "web"
-      ]
-    },
-    {
-      "name": "dio_web_adapter",
-      "version": "2.1.1",
-      "dependencies": [
-        "dio",
-        "http_parser",
-        "meta",
-        "web"
-      ]
+      "name": "string_validator",
+      "version": "1.2.0",
+      "dependencies": []
     },
     {
       "name": "gtk",
@@ -2841,6 +2803,13 @@
       ]
     },
     {
+      "name": "nested",
+      "version": "1.0.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "google_sign_in_platform_interface",
       "version": "3.1.0",
       "dependencies": [
@@ -2911,6 +2880,16 @@
         "flutter",
         "http",
         "vector_graphics_codec"
+      ]
+    },
+    {
+      "name": "dio_web_adapter",
+      "version": "2.1.1",
+      "dependencies": [
+        "dio",
+        "http_parser",
+        "meta",
+        "web"
       ]
     },
     {
@@ -3020,15 +2999,6 @@
         "logging",
         "native_toolchain_c",
         "pub_semver"
-      ]
-    },
-    {
-      "name": "sembast",
-      "version": "3.8.6",
-      "dependencies": [
-        "meta",
-        "path",
-        "synchronized"
       ]
     },
     {

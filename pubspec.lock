@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  any_link_preview:
+    dependency: transitive
+    description:
+      name: any_link_preview
+      sha256: "0617bd49a58dd0478cd5c4c83bcf7a2d1b7d301aad229817d13693fe86807ea1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
   app_links:
     dependency: transitive
     description:
@@ -145,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+  audio_waveforms:
+    dependency: transitive
+    description:
+      name: audio_waveforms
+      sha256: "03b3430ecf430a2e90185518a228c02be3d26653c62dd931e50d671213a6dbc8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   auto_size_text:
     dependency: transitive
     description:
@@ -305,6 +321,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  chatview:
+    dependency: transitive
+    description:
+      name: chatview
+      sha256: "4503f1673339c414dd2455bd551dee992748cbf76eeca2e8ba6224ff1ad31eee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  chatview_utils:
+    dependency: transitive
+    description:
+      name: chatview_utils
+      sha256: b872e70d4f17902868f31aed49356eac3bb186bb79557e4fbcf42c6053dbcf63
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   checked_yaml:
     dependency: transitive
     description:
@@ -417,14 +449,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
-  cross_cache:
-    dependency: transitive
-    description:
-      name: cross_cache
-      sha256: "4983a16603cc99b0a14de6a772fa8ee4533411f46f3c423f1386fea7566049c5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   cross_file:
     dependency: transitive
     description:
@@ -529,14 +553,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.3"
-  diffutil_dart:
-    dependency: transitive
-    description:
-      name: diffutil_dart
-      sha256: "5e74883aedf87f3b703cb85e815bdc1ed9208b33501556e4a8a5572af9845c81"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.1"
   dio:
     dependency: transitive
     description:
@@ -577,6 +593,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  emoji_picker_flutter:
+    dependency: transitive
+    description:
+      name: emoji_picker_flutter
+      sha256: "984d3e9b9cf3175df9a868ce4a2d9611491e80e5d3b8e2b1e8991a4998972885"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.0"
   equatable:
     dependency: transitive
     description:
@@ -726,22 +750,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
-  flutter_chat_core:
-    dependency: transitive
-    description:
-      name: flutter_chat_core
-      sha256: "8c46790f64f106bf6e610e2a7324b3844320e9e295867c06d45d9deb134d848d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.9.0"
-  flutter_chat_ui:
-    dependency: transitive
-    description:
-      name: flutter_chat_ui
-      sha256: cfbaac38f429beb33d9cc1ca920ae7ccbadbed282c99335d590d61306d3a3d0f
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.11.1"
   flutter_image_compress:
     dependency: transitive
     description:
@@ -917,14 +925,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flyer_chat_image_message:
-    dependency: transitive
-    description:
-      name: flyer_chat_image_message
-      sha256: "04730c9373c9c7315ba0e1a360c67ac5f6c7ec8a700ffe2d2dc00e29b7f8ff90"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   freezed:
     dependency: transitive
     description:
@@ -1205,14 +1205,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
-  idb_shim:
-    dependency: transitive
-    description:
-      name: idb_shim
-      sha256: "921301da0a735f336a28fc35c3abdbd4498895cc205fa1ea9f7e785e7d854ceb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.8.2+4"
   image:
     dependency: transitive
     description:
@@ -1749,22 +1741,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  scrollview_observer:
-    dependency: transitive
-    description:
-      name: scrollview_observer
-      sha256: "6e40ced415145c449a691d892157a3b854b751f024aed20d9aebda04c21444a3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.26.3"
-  sembast:
-    dependency: transitive
-    description:
-      name: sembast
-      sha256: "139cf71496105de32e7a08a4e3a1ead0f81c4a616ec9703ed07e8f0d10cdd505"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.8.6"
   serverpod:
     dependency: transitive
     description:
@@ -2162,6 +2138,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  string_validator:
+    dependency: transitive
+    description:
+      name: string_validator
+      sha256: "240f4c98027dfbe8639c8271ef18cc9de735b47067aa15a720cfed9576a512b1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   super_string:
     dependency: transitive
     description:
@@ -2250,14 +2234,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.15"
-  thumbhash:
-    dependency: transitive
-    description:
-      name: thumbhash
-      sha256: "5f6d31c5279ca0b5caa81ec10aae8dcaab098d82cb699ea66ada4ed09c794a37"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.0+1"
   typed_data:
     dependency: transitive
     description:

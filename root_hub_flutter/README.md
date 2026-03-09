@@ -18,7 +18,7 @@ With Root Hub, users can:
 5. User sees the list of available match schedules.
 6. User subscribes to an existing match or creates a new one.
 7. Shared match links (`/join`) are resolved through app deep links (`roothub://join?matchId=...`) and the app opens the subscribe flow after authentication.
-8. User tracks subscribed tables and chat activity in the Activity tab.
+8. User tracks subscribed tables in the Schedules tab and chat activity in the Chat tab.
 9. User can interact socially via posts/comments.
 10. After a game, user registers the result and factions.
 11. App syncs Firebase push tokens to the authenticated account so match chat notifications can reach subscribed players.
@@ -61,14 +61,15 @@ root_hub_flutter/
 │       │   ├── auth_flow/
 │       │   ├── deep_link/
 │       │   ├── onboarding/
-│       │   ├── activity/
+│       │   ├── activity/          # Dashboard schedules/chat overview + unread badge state
 │       │   └── dashboard/
 │       └── features/              # UI feature modules (screens/widgets/sections/dialogs)
-│           ├── activity/
 │           ├── auth/
+│           ├── chat/
 │           ├── dashboard/
 │           ├── home/
 │           ├── match/
+│           ├── schedules/
 │           └── shop/
 ├── assets/
 └── pubspec.yaml

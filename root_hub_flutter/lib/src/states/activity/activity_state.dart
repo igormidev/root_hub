@@ -9,9 +9,7 @@ abstract class ActivityState with _$ActivityState {
     @Default(<MatchSchedulePairingAttempt>[])
     List<MatchSchedulePairingAttempt> subscribedActiveSchedules,
     @Default(<MatchChatActivityChatItem>[])
-    List<MatchChatActivityChatItem> activeChats,
-    @Default(<MatchChatActivityChatItem>[])
-    List<MatchChatActivityChatItem> endedChats,
+    List<MatchChatActivityChatItem> chatItems,
     @Default(0) int unreadMessagesCount,
     @Default(false) bool isLoading,
     @Default(false) bool hasLoadedOnce,

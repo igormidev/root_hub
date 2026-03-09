@@ -14,6 +14,7 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 enum MatchChatMessageType implements _i1.SerializableModel {
   userMessage,
+  userVoiceMessage,
   systemJoin,
   systemLeave;
 
@@ -21,6 +22,8 @@ enum MatchChatMessageType implements _i1.SerializableModel {
     switch (name) {
       case 'userMessage':
         return MatchChatMessageType.userMessage;
+      case 'userVoiceMessage':
+        return MatchChatMessageType.userVoiceMessage;
       case 'systemJoin':
         return MatchChatMessageType.systemJoin;
       case 'systemLeave':
