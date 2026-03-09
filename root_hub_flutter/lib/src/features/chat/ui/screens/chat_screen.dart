@@ -12,6 +12,8 @@ import 'package:root_hub_flutter/src/states/activity/activity_provider.dart';
 enum _ChatInboxFilter {
   all,
   unread,
+  scheduledMatches,
+  completedMatches,
 }
 
 class ChatScreen extends ConsumerStatefulWidget {
@@ -130,18 +132,39 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           textEditingController: _searchController,
           hintText: t.activity.ui_screens_chat_screen.searchChats,
           padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+          debounceDuration: Duration(milliseconds: 400),
           onSearch: _searchChats,
         ),
         header: ChatFilterBarWidget(
           allLabel: t.activity.ui_screens_chat_screen.allFilter,
           unreadLabel: t.activity.ui_screens_chat_screen.unreadFilter,
+          scheduledLabel:
+              t.activity.ui_screens_chat_screen.scheduledMatchesFilter,
+          completedLabel:
+              t.activity.ui_screens_chat_screen.completedMatchesFilter,
           showAllSelected: _selectedFilter == _ChatInboxFilter.all,
           showUnreadSelected: _selectedFilter == _ChatInboxFilter.unread,
+          showScheduledSelected:
+              _selectedFilter == _ChatInboxFilter.scheduledMatches,
+          showCompletedSelected:
+              _selectedFilter == _ChatInboxFilter.completedMatches,
           onAllTap: () {
             _changeFilter(_ChatInboxFilter.all, activityState.chatItems);
           },
           onUnreadTap: () {
             _changeFilter(_ChatInboxFilter.unread, activityState.chatItems);
+          },
+          onScheduledTap: () {
+            _changeFilter(
+              _ChatInboxFilter.scheduledMatches,
+              activityState.chatItems,
+            );
+          },
+          onCompletedTap: () {
+            _changeFilter(
+              _ChatInboxFilter.completedMatches,
+              activityState.chatItems,
+            );
           },
         ),
         chatBuilder: (context, chat) {
@@ -219,6 +242,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _ChatInboxFilter.all => items,
       _ChatInboxFilter.unread =>
         items.where((item) => item.unreadMessagesCount > 0).toList(),
+      _ChatInboxFilter.scheduledMatches =>
+        items
+            .where(
+              (item) => item.scheduleStatus == MatchScheduleStatus.scheduled,
+            )
+            .toList(),
+      _ChatInboxFilter.completedMatches =>
+        items
+            .where((item) => item.scheduleStatus == MatchScheduleStatus.played)
+            .toList(),
     };
   }
 

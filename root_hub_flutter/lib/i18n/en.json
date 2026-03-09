@@ -197,6 +197,8 @@
       "searchChats": "Search chats",
       "allFilter": "All",
       "unreadFilter": "Unread",
+      "scheduledMatchesFilter": "Scheduled matches",
+      "completedMatchesFilter": "Completed matches",
       "noChatsTitle": "No chats yet",
       "noChatsDescription": "Open or join a table chat and it will show up here.",
       "noSearchResultsTitle": "No chats found",

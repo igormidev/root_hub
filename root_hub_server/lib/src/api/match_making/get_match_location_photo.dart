@@ -12,7 +12,8 @@ class GetMatchLocationPhoto extends Endpoint {
   Future<String?> v1(
     Session session, {
     required ServerSupportedTranslation language,
-    required String providerPlaceId,
+    String? providerPlaceId,
+    String? photoName,
     int maxWidthPx = 1200,
     int maxHeightPx = 420,
   }) async {
@@ -20,8 +21,10 @@ class GetMatchLocationPhoto extends Endpoint {
     // this endpoint returns a nullable value instead of localized errors.
     ServerTranslations.of(language);
 
-    final normalizedPlaceId = providerPlaceId.trim();
-    if (normalizedPlaceId.isEmpty) {
+    final normalizedPlaceId = providerPlaceId?.trim();
+    final normalizedPhotoName = photoName?.trim();
+    if ((normalizedPlaceId == null || normalizedPlaceId.isEmpty) &&
+        (normalizedPhotoName == null || normalizedPhotoName.isEmpty)) {
       return null;
     }
 
@@ -35,8 +38,22 @@ class GetMatchLocationPhoto extends Endpoint {
 
     try {
       final placesApi = PlacesAPINew(apiKey: apiKey);
+      if (normalizedPhotoName != null && normalizedPhotoName.isNotEmpty) {
+        final directPhotoUriResponse = await placesApi.getPlainPhotoUrl(
+          name: normalizedPhotoName,
+          maxWidthPx: normalizedMaxWidth,
+          maxHeightPx: normalizedMaxHeight,
+        );
+        final directPhotoUri = directPhotoUriResponse.body?.trim();
+        if (directPhotoUriResponse.isSuccessful &&
+            directPhotoUri != null &&
+            directPhotoUri.isNotEmpty) {
+          return directPhotoUri;
+        }
+      }
+
       final detailsResponse = await placesApi.getDetails(
-        id: normalizedPlaceId,
+        id: normalizedPlaceId!,
         fields: const ['photos'],
       );
 

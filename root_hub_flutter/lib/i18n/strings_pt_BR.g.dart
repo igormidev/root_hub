@@ -459,6 +459,8 @@ class _TranslationsActivityUiScreensChatScreenPtBr extends TranslationsActivityU
 	@override String get searchChats => 'Buscar chats';
 	@override String get allFilter => 'Todos';
 	@override String get unreadFilter => 'Não lidos';
+	@override String get scheduledMatchesFilter => 'Partidas agendadas';
+	@override String get completedMatchesFilter => 'Partidas concluídas';
 	@override String get noChatsTitle => 'Ainda não há chats';
 	@override String get noChatsDescription => 'Abra ou entre em um chat de mesa e ele aparecerá aqui.';
 	@override String get noSearchResultsTitle => 'Nenhum chat encontrado';

@@ -197,6 +197,8 @@
       "searchChats": "Rechercher des chats",
       "allFilter": "Tous",
       "unreadFilter": "Non lus",
+      "scheduledMatchesFilter": "Parties planifiées",
+      "completedMatchesFilter": "Parties terminées",
       "noChatsTitle": "Aucun chat pour le moment",
       "noChatsDescription": "Ouvrez ou rejoignez un chat de table et il apparaîtra ici.",
       "noSearchResultsTitle": "Aucun chat trouvé",

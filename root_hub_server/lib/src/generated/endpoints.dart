@@ -1652,8 +1652,13 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'providerPlaceId': _i1.ParameterDescription(
               name: 'providerPlaceId',
-              type: _i1.getType<String>(),
-              nullable: false,
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
+            'photoName': _i1.ParameterDescription(
+              name: 'photoName',
+              type: _i1.getType<String?>(),
+              nullable: true,
             ),
             'maxWidthPx': _i1.ParameterDescription(
               name: 'maxWidthPx',
@@ -1677,6 +1682,7 @@ class Endpoints extends _i1.EndpointDispatch {
                         session,
                         language: params['language'],
                         providerPlaceId: params['providerPlaceId'],
+                        photoName: params['photoName'],
                         maxWidthPx: params['maxWidthPx'],
                         maxHeightPx: params['maxHeightPx'],
                       ),

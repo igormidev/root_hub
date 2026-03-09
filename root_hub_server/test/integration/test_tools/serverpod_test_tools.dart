@@ -2060,7 +2060,8 @@ class _GetMatchLocationPhoto {
   _i3.Future<String?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
-    required String providerPlaceId,
+    String? providerPlaceId,
+    String? photoName,
     required int maxWidthPx,
     required int maxHeightPx,
   }) async {
@@ -2078,6 +2079,7 @@ class _GetMatchLocationPhoto {
           parameters: _i1.testObjectToJson({
             'language': language,
             'providerPlaceId': providerPlaceId,
+            'photoName': photoName,
             'maxWidthPx': maxWidthPx,
             'maxHeightPx': maxHeightPx,
           }),

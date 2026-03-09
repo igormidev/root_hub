@@ -47,10 +47,15 @@ class _MatchLocationHeaderImageWidgetState
 
   Future<String?> _resolveHeaderImageUrl() async {
     final providerPlaceId = widget.google?.providerPlaceId.trim();
-    if (providerPlaceId != null && providerPlaceId.isNotEmpty) {
+    final photoName = widget.google?.primaryPhotoName?.trim();
+    if ((providerPlaceId != null && providerPlaceId.isNotEmpty) ||
+        (photoName != null && photoName.isNotEmpty)) {
       final resolvedPhotoUrl = await ref
           .read(matchTablesProvider.notifier)
-          .resolveLocationHeaderPhotoUrl(providerPlaceId: providerPlaceId);
+          .resolveLocationHeaderPhotoUrl(
+            providerPlaceId: providerPlaceId,
+            photoName: photoName,
+          );
       if (resolvedPhotoUrl != null && resolvedPhotoUrl.isNotEmpty) {
         return resolvedPhotoUrl;
       }

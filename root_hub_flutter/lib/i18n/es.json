@@ -197,6 +197,8 @@
       "searchChats": "Buscar chats",
       "allFilter": "Todos",
       "unreadFilter": "No leídos",
+      "scheduledMatchesFilter": "Partidas programadas",
+      "completedMatchesFilter": "Partidas finalizadas",
       "noChatsTitle": "Todavía no hay chats",
       "noChatsDescription": "Abre o únete a un chat de mesa y aparecerá aquí.",
       "noSearchResultsTitle": "No se encontraron chats",

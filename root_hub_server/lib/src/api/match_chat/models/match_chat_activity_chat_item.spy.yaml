@@ -7,11 +7,13 @@ fields:
   unreadMessagesCount: int
   isSubscribed: bool
   hasPlayedResult: bool
+  scheduleStatus: MatchScheduleStatus
   locationTitle: String
   locationSubtitle: String?
   locationProviderPlaceId: String?
   locationLatitude: double?
   locationLongitude: double?
+  googlePlaceLocation: GooglePlaceLocation?
   lastMessageAt: DateTime?
   lastMessagePreview: String?
   lastMessageType: MatchChatMessageType?

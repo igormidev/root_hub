@@ -239,15 +239,23 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
   }
 
   Future<String?> resolveLocationHeaderPhotoUrl({
-    required String providerPlaceId,
+    String? providerPlaceId,
+    String? photoName,
   }) async {
-    final normalizedPlaceId = providerPlaceId.trim();
-    if (normalizedPlaceId.isEmpty) {
+    final normalizedPlaceId = providerPlaceId?.trim();
+    final normalizedPhotoName = photoName?.trim();
+    if ((normalizedPlaceId == null || normalizedPlaceId.isEmpty) &&
+        (normalizedPhotoName == null || normalizedPhotoName.isEmpty)) {
       return null;
     }
 
-    if (_locationPhotoUrlCache.containsKey(normalizedPlaceId)) {
-      return _locationPhotoUrlCache[normalizedPlaceId];
+    final cacheKey =
+        normalizedPhotoName != null && normalizedPhotoName.isNotEmpty
+        ? 'photo:$normalizedPhotoName'
+        : 'place:$normalizedPlaceId';
+
+    if (_locationPhotoUrlCache.containsKey(cacheKey)) {
+      return _locationPhotoUrlCache[cacheKey];
     }
 
     final result = await ref
@@ -256,6 +264,7 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
         .v1(
           language: ref.read(serverSupportedTranslationProvider),
           providerPlaceId: normalizedPlaceId,
+          photoName: normalizedPhotoName,
           maxWidthPx: 1200,
           maxHeightPx: 420,
         )
@@ -272,7 +281,7 @@ class MatchTablesNotifier extends Notifier<MatchTablesState> {
       (_) => null,
     );
 
-    _locationPhotoUrlCache[normalizedPlaceId] = resolvedPhotoUrl;
+    _locationPhotoUrlCache[cacheKey] = resolvedPhotoUrl;
     return resolvedPhotoUrl;
   }
 }

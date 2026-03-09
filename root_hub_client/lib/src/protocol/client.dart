@@ -800,7 +800,8 @@ class EndpointGetMatchLocationPhoto extends _i1.EndpointRef {
 
   _i2.Future<String?> v1({
     required _i4.ServerSupportedTranslation language,
-    required String providerPlaceId,
+    String? providerPlaceId,
+    String? photoName,
     required int maxWidthPx,
     required int maxHeightPx,
   }) => caller.callServerEndpoint<String?>(
@@ -809,6 +810,7 @@ class EndpointGetMatchLocationPhoto extends _i1.EndpointRef {
     {
       'language': language,
       'providerPlaceId': providerPlaceId,
+      'photoName': photoName,
       'maxWidthPx': maxWidthPx,
       'maxHeightPx': maxHeightPx,
     },

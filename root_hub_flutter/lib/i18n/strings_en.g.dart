@@ -769,6 +769,12 @@ class TranslationsActivityUiScreensChatScreenEn {
 	/// en: 'Unread'
 	String get unreadFilter => 'Unread';
 
+	/// en: 'Scheduled matches'
+	String get scheduledMatchesFilter => 'Scheduled matches';
+
+	/// en: 'Completed matches'
+	String get completedMatchesFilter => 'Completed matches';
+
 	/// en: 'No chats yet'
 	String get noChatsTitle => 'No chats yet';
 

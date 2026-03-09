@@ -45,6 +45,7 @@ class ChatMatchListTileWidget extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   LocationPhotoAvatarWidget(
+                    googlePlaceLocation: chatItem.googlePlaceLocation,
                     providerPlaceId: chatItem.locationProviderPlaceId,
                     latitude: chatItem.locationLatitude,
                     longitude: chatItem.locationLongitude,

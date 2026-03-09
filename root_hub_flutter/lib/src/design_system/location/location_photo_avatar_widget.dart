@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
+import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 
 final _locationAvatarCacheManager = CacheManager(
@@ -21,9 +22,10 @@ final _locationAvatarResolvedPhotoCache = <String, _ResolvedLocationPhoto>{};
 
 class LocationPhotoAvatarWidget extends ConsumerStatefulWidget {
   const LocationPhotoAvatarWidget({
-    required this.providerPlaceId,
-    required this.latitude,
-    required this.longitude,
+    this.googlePlaceLocation,
+    this.providerPlaceId,
+    this.latitude,
+    this.longitude,
     this.size = 56,
     this.placeholderIcon,
     this.borderColor,
@@ -31,6 +33,7 @@ class LocationPhotoAvatarWidget extends ConsumerStatefulWidget {
     super.key,
   });
 
+  final GooglePlaceLocation? googlePlaceLocation;
   final String? providerPlaceId;
   final double? latitude;
   final double? longitude;
@@ -57,7 +60,13 @@ class _LocationPhotoAvatarWidgetState
   @override
   void didUpdateWidget(covariant LocationPhotoAvatarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.providerPlaceId != widget.providerPlaceId ||
+    if (oldWidget.googlePlaceLocation?.providerPlaceId !=
+            widget.googlePlaceLocation?.providerPlaceId ||
+        oldWidget.googlePlaceLocation?.primaryPhotoName !=
+            widget.googlePlaceLocation?.primaryPhotoName ||
+        oldWidget.googlePlaceLocation?.lat != widget.googlePlaceLocation?.lat ||
+        oldWidget.googlePlaceLocation?.lng != widget.googlePlaceLocation?.lng ||
+        oldWidget.providerPlaceId != widget.providerPlaceId ||
         oldWidget.latitude != widget.latitude ||
         oldWidget.longitude != widget.longitude) {
       _photoFuture = _resolvePhoto();
@@ -91,11 +100,18 @@ class _LocationPhotoAvatarWidgetState
   }
 
   Future<String?> _resolvePhotoUrl() async {
-    final providerPlaceId = widget.providerPlaceId?.trim();
-    if (providerPlaceId != null && providerPlaceId.isNotEmpty) {
+    final providerPlaceId =
+        widget.googlePlaceLocation?.providerPlaceId.trim() ??
+        widget.providerPlaceId?.trim();
+    final photoName = widget.googlePlaceLocation?.primaryPhotoName?.trim();
+    if ((providerPlaceId != null && providerPlaceId.isNotEmpty) ||
+        (photoName != null && photoName.isNotEmpty)) {
       final resolvedPhotoUrl = await ref
           .read(matchTablesProvider.notifier)
-          .resolveLocationHeaderPhotoUrl(providerPlaceId: providerPlaceId);
+          .resolveLocationHeaderPhotoUrl(
+            providerPlaceId: providerPlaceId,
+            photoName: photoName,
+          );
       final normalizedPhotoUrl = resolvedPhotoUrl?.trim();
       if (normalizedPhotoUrl != null && normalizedPhotoUrl.isNotEmpty) {
         return normalizedPhotoUrl;
@@ -106,8 +122,8 @@ class _LocationPhotoAvatarWidgetState
   }
 
   String? _buildFallbackMapTileUrl() {
-    final latitude = widget.latitude;
-    final longitude = widget.longitude;
+    final latitude = widget.googlePlaceLocation?.lat ?? widget.latitude;
+    final longitude = widget.googlePlaceLocation?.lng ?? widget.longitude;
     if (latitude == null || longitude == null) {
       return null;
     }
