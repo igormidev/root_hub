@@ -357,6 +357,7 @@
       "noPlayersHaveJoinedThisTableYet": "No players have joined this table yet.",
       "theseAreTheCurrentPlayersThatWillParticipate": "These are the current players that will participate.",
       "noPlayersSubscribedYet": "No players subscribed yet.",
+      "locationAdditionalInfo": "Additional location info",
       "createdAtValue": "Created at: {value}",
       "playersInThisMatch": "Players in this match",
       "playersRange": "{minPlayers}-{maxPlayers} players",
@@ -445,15 +446,31 @@
     "ui_screens_match_create_table_location_loading_search_widget": {
       "searchingLocations": "Searching locations..."
     },
+    "ui_sheets_match_create_table_location_confirmation_sheet": {
+      "confirmLocation": "Confirm location",
+      "createTableAtThisLocation": "Create table at this location",
+      "reviewTheSelectedLocationBeforePublishingYourMatch": "Review the selected location before publishing your match.",
+      "selectedLocation": "Selected location",
+      "locationAdditionalInfoOptional": "Additional location info (optional)",
+      "addOptionalExtraDirectionsOrMeetingDetailsForThisLocation": "Add optional extra directions or meetup details to help players find the exact table.",
+      "exampleWeWillBeUpstairsNearTheBackTablesAskForTheRootGroup": "Example: We'll be upstairs near the back tables. Ask for the ROOT group.",
+      "back": "Back",
+      "createTable": "Create table"
+    },
     "ui_screens_match_create_table_location_screen": {
       "previouslySelectedLocations": "Previously selected locations",
       "searchResults": "Search results",
+      "tapALocationToSelectIt": "Tap a location to select it.",
       "tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo": "Tap a location to select it. Previously selected locations are saved here for faster hosting.",
       "searchLocationGooglePlaces": "Search location (Google Places)",
       "chooseTableLocation": "Choose Table Location",
       "chooseOneLocationFromTheListBeforeCreatingTheTable": "Choose one location from the list before creating the table.",
       "locationRequired": "Location required",
-      "continueButton": "Continue"
+      "continueButton": "Continue",
+      "tableCreatedSuccessTitle": "Table created successfully",
+      "tableCreatedSuccessDescription": "Your match is live and players can start subscribing now.",
+      "tableCreatedSuccessDetails": "You can reopen the chat and track subscriptions from the Schedules and Chat tabs.",
+      "close": "Close"
     },
     "ui_screens_match_join_sheet_error_widget": {
       "retry": "Retry",
@@ -471,6 +488,7 @@
       "ratingValue": "Rating {value}",
       "shareMessage": "Root Hub connects players to play ROOT in person at public places. Join this match at {location} at {hour} on {day}: {link}",
       "close": "Close",
+      "locationAdditionalInfo": "Additional location info",
       "manualLocationNotes": "Manual location notes",
       "phone": "Phone",
       "phone2": "Phone",

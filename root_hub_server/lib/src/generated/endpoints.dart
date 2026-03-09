@@ -1508,6 +1508,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<int>(),
               nullable: false,
             ),
+            'locationAdditionalInfo': _i1.ParameterDescription(
+              name: 'locationAdditionalInfo',
+              type: _i1.getType<String?>(),
+              nullable: true,
+            ),
             'hostWillPlay': _i1.ParameterDescription(
               name: 'hostWillPlay',
               type: _i1.getType<bool>(),
@@ -1529,6 +1534,8 @@ class Endpoints extends _i1.EndpointDispatch {
                         maxAmountOfPlayers: params['maxAmountOfPlayers'],
                         attemptedAt: params['attemptedAt'],
                         locationId: params['locationId'],
+                        locationAdditionalInfo:
+                            params['locationAdditionalInfo'],
                         hostWillPlay: params['hostWillPlay'],
                       ),
         ),

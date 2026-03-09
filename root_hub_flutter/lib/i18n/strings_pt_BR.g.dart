@@ -132,6 +132,7 @@ class _TranslationsMatchPtBr extends TranslationsMatchEn {
 	@override late final _TranslationsMatchUiSheetsMatchEditTableFormWidgetPtBr ui_sheets_match_edit_table_form_widget = _TranslationsMatchUiSheetsMatchEditTableFormWidgetPtBr._(_root);
 	@override late final _TranslationsMatchUiSheetsMatchTableInfoBottomActionsWidgetPtBr ui_sheets_match_table_info_bottom_actions_widget = _TranslationsMatchUiSheetsMatchTableInfoBottomActionsWidgetPtBr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetPtBr ui_screens_match_create_table_location_loading_search_widget = _TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetPtBr._(_root);
+	@override late final _TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetPtBr ui_sheets_match_create_table_location_confirmation_sheet = _TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetPtBr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchCreateTableLocationScreenPtBr ui_screens_match_create_table_location_screen = _TranslationsMatchUiScreensMatchCreateTableLocationScreenPtBr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchJoinSheetErrorWidgetPtBr ui_screens_match_join_sheet_error_widget = _TranslationsMatchUiScreensMatchJoinSheetErrorWidgetPtBr._(_root);
 	@override late final _TranslationsMatchUiScreensMatchScreenPtBr ui_screens_match_screen = _TranslationsMatchUiScreensMatchScreenPtBr._(_root);
@@ -718,6 +719,7 @@ class _TranslationsMatchUiSheetsMatchTableInfoContentWidgetPtBr extends Translat
 	@override String get noPlayersHaveJoinedThisTableYet => 'Nenhum jogador se juntou a esta partida ainda.';
 	@override String get theseAreTheCurrentPlayersThatWillParticipate => 'Estes são os jogadores atuais que participarão.';
 	@override String get noPlayersSubscribedYet => 'Nenhum jogador inscrito ainda.';
+	@override String get locationAdditionalInfo => 'Informações adicionais do local';
 	@override String createdAtValue({required Object value}) => 'Criada em: ${value}';
 	@override String get playersInThisMatch => 'Jogadores nesta partida';
 	@override String playersRange({required Object minPlayers, required Object maxPlayers}) => '${minPlayers}-${maxPlayers} jogadores';
@@ -856,6 +858,24 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetPtBr
 	@override String get searchingLocations => 'Pesquisando locais...';
 }
 
+// Path: match.ui_sheets_match_create_table_location_confirmation_sheet
+class _TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetPtBr extends TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetEn {
+	_TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
+
+	final TranslationsPtBr _root; // ignore: unused_field
+
+	// Translations
+	@override String get confirmLocation => 'Confirmar local';
+	@override String get createTableAtThisLocation => 'Criar partida neste local';
+	@override String get reviewTheSelectedLocationBeforePublishingYourMatch => 'Revise o local escolhido antes de publicar a sua partida.';
+	@override String get selectedLocation => 'Local selecionado';
+	@override String get locationAdditionalInfoOptional => 'Informações adicionais do local (opcional)';
+	@override String get addOptionalExtraDirectionsOrMeetingDetailsForThisLocation => 'Adicione instruções extras ou detalhes de encontro para ajudar os jogadores a encontrar a mesa exata.';
+	@override String get exampleWeWillBeUpstairsNearTheBackTablesAskForTheRootGroup => 'Exemplo: Estaremos no andar de cima, perto das mesas do fundo. Peça pelo grupo do ROOT.';
+	@override String get back => 'Voltar';
+	@override String get createTable => 'Criar partida';
+}
+
 // Path: match.ui_screens_match_create_table_location_screen
 class _TranslationsMatchUiScreensMatchCreateTableLocationScreenPtBr extends TranslationsMatchUiScreensMatchCreateTableLocationScreenEn {
 	_TranslationsMatchUiScreensMatchCreateTableLocationScreenPtBr._(TranslationsPtBr root) : this._root = root, super.internal(root);
@@ -865,12 +885,17 @@ class _TranslationsMatchUiScreensMatchCreateTableLocationScreenPtBr extends Tran
 	// Translations
 	@override String get previouslySelectedLocations => 'Locais previamente selecionados';
 	@override String get searchResults => 'Resultados da pesquisa';
+	@override String get tapALocationToSelectIt => 'Toque em um local para selecioná-lo.';
 	@override String get tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo => 'Toque em um local para selecioná-lo. Locais já escolhidos ficam salvos aqui para criar partidas mais rápido.';
 	@override String get searchLocationGooglePlaces => 'Local de pesquisa (Google Places)';
 	@override String get chooseTableLocation => 'Escolha o local da partida';
 	@override String get chooseOneLocationFromTheListBeforeCreatingTheTable => 'Escolha um local da lista antes de criar a partida.';
 	@override String get locationRequired => 'Local obrigatório';
 	@override String get continueButton => 'Continuar';
+	@override String get tableCreatedSuccessTitle => 'Partida criada com sucesso';
+	@override String get tableCreatedSuccessDescription => 'Sua partida já está publicada e outros jogadores podem se inscrever agora.';
+	@override String get tableCreatedSuccessDetails => 'Você pode abrir o chat novamente e acompanhar as inscrições pelas abas de Partidas e Chat.';
+	@override String get close => 'Fechar';
 }
 
 // Path: match.ui_screens_match_join_sheet_error_widget
@@ -902,6 +927,7 @@ class _TranslationsMatchUiScreensMatchScreenPtBr extends TranslationsMatchUiScre
 	@override String ratingValue({required Object value}) => 'Nota ${value}';
 	@override String shareMessage({required Object location, required Object hour, required Object day, required Object link}) => 'O Root Hub conecta pessoas para jogar ROOT presencialmente em locais públicos. Entre nesta partida em ${location}, às ${hour}, no dia ${day}: ${link}';
 	@override String get close => 'Fechar';
+	@override String get locationAdditionalInfo => 'Informações adicionais do local';
 	@override String get manualLocationNotes => 'Notas de localização manuais';
 	@override String get phone => 'Telefone';
 	@override String get phone2 => 'Telefone';

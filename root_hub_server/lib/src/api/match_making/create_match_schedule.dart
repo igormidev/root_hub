@@ -12,6 +12,7 @@ class CreateMatchSchedule extends Endpoint {
   static const _maxScheduleDays = 15;
   static const _minScheduleMinutes = 10;
   static const _maxDescriptionLength = 1000;
+  static const _maxLocationAdditionalInfoLength = 1000;
 
   Future<MatchSchedulePairingAttempt> v1(
     Session session, {
@@ -22,6 +23,7 @@ class CreateMatchSchedule extends Endpoint {
     required MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
+    String? locationAdditionalInfo,
     required bool hostWillPlay,
   }) async {
     final t = ServerTranslations.of(language);
@@ -30,6 +32,7 @@ class CreateMatchSchedule extends Endpoint {
       () async {
         final normalizedTitle = title.trim();
         final normalizedDescription = description?.trim();
+        final normalizedLocationAdditionalInfo = locationAdditionalInfo?.trim();
         if (normalizedTitle.isEmpty) {
           throw RootHubEndpointError.invalidRequest(
             language: language,
@@ -43,6 +46,17 @@ class CreateMatchSchedule extends Endpoint {
             description: t.errors.nameCannotExceedCharacters(
               label: t.labels.matchDescription,
               maxLength: _maxDescriptionLength,
+            ),
+          );
+        }
+        if (normalizedLocationAdditionalInfo != null &&
+            normalizedLocationAdditionalInfo.length >
+                _maxLocationAdditionalInfoLength) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.nameCannotExceedCharacters(
+              label: t.labels.locationAdditionalInfo,
+              maxLength: _maxLocationAdditionalInfoLength,
             ),
           );
         }
@@ -128,6 +142,10 @@ class CreateMatchSchedule extends Endpoint {
               maxAmountOfPlayers: maxAmountOfPlayers,
               attemptedAt: attemptedAt,
               locationId: location.id!,
+              locationAdditionalInfo:
+                  normalizedLocationAdditionalInfo?.isEmpty == true
+                  ? null
+                  : normalizedLocationAdditionalInfo,
               playerDataId: playerData.id!,
             ),
             transaction: transaction,

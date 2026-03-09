@@ -3,7 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,14 +11,12 @@ import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/match_share/match_share_link_builder.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_actionable_info_row_widget.dart';
+import 'package:root_hub_flutter/src/features/match/ui/dialogs/match_location_info_dialog.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_initial_loading_state_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_join_sheet_content_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_join_sheet_error_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_join_sheet_loading_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_loading_error_state_widget.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_location_header_image_widget.dart';
-import 'package:root_hub_flutter/src/features/match/ui/screens/match_location_meta_chip_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_nearby_header_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_no_matches_state_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_card_widget.dart';
@@ -32,7 +29,6 @@ import 'package:root_hub_flutter/src/states/deep_link/deep_link_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 import 'package:root_hub_flutter/src/states/match/match_tables_provider.dart';
 import 'package:root_hub_flutter/src/states/register_match/register_match_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MatchScreen extends ConsumerStatefulWidget {
   const MatchScreen({
@@ -168,9 +164,17 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                         table.location?.googlePlaceLocation,
                       ),
                       formatDurationToClock: _formatDurationToClock,
-                      onOpenLocationInfo: (location) {
-                        _showLocationInfoDialog(context, location);
-                      },
+                      onOpenLocationInfo:
+                          (
+                            location,
+                            locationAdditionalInfo,
+                          ) {
+                            _showLocationInfoDialog(
+                              context,
+                              location: location,
+                              locationAdditionalInfo: locationAdditionalInfo,
+                            );
+                          },
                       onOpenJoinTable:
                           ({
                             required tableId,
@@ -587,9 +591,17 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
                           extra: tableTitle,
                         );
                       },
-                      onOpenLocationInfo: (location) {
-                        _showLocationInfoDialog(sheetContext, location);
-                      },
+                      onOpenLocationInfo:
+                          (
+                            location,
+                            locationAdditionalInfo,
+                          ) {
+                            _showLocationInfoDialog(
+                              sheetContext,
+                              location: location,
+                              locationAdditionalInfo: locationAdditionalInfo,
+                            );
+                          },
                     );
                   },
                 ),
@@ -621,422 +633,15 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
   }
 
   Future<void> _showLocationInfoDialog(
-    BuildContext context,
-    Location? location,
-  ) async {
-    final google = location?.googlePlaceLocation;
-    final manual = location?.manualInputLocation;
-    final locationTitle = google?.name ?? manual?.title ?? 'Unknown location';
-    final locationSubtitle =
-        google?.shortFormattedAddress ??
-        google?.formattedAddress ??
-        manual?.cityName ??
-        'Address unavailable';
-    final playedMatchesCount = location?.playedMatches?.length ?? 0;
-    final types = google?.types ?? <String>[];
-
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        final colorScheme = Theme.of(dialogContext).colorScheme;
-        final maxDialogHeight = MediaQuery.of(dialogContext).size.height * 0.86;
-
-        return Dialog(
-          insetPadding: EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 16,
-          ),
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: maxDialogHeight,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                MatchLocationHeaderImageWidget(
-                  locationTitle: locationTitle,
-                  locationSubtitle: locationSubtitle,
-                  google: google,
-                ),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.fromLTRB(14, 14, 14, 10),
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(
-                                12,
-                                10,
-                                12,
-                                10,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: colorScheme.primaryContainer.withValues(
-                                  alpha: 0.62,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.sports_esports_rounded,
-                                    color: colorScheme.primary,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '$playedMatchesCount',
-                                        style: Theme.of(dialogContext)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                      ),
-                                      Text(
-                                        playedMatchesCount == 1
-                                            ? t
-                                                  .match
-                                                  .ui_screens_match_screen
-                                                  .matchPlayedHere
-                                            : t
-                                                  .match
-                                                  .ui_screens_match_screen
-                                                  .matchesPlayedHere,
-                                        style: Theme.of(dialogContext)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  colorScheme.onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              color: google?.isPublicPlace == false
-                                  ? colorScheme.tertiaryContainer
-                                  : colorScheme.secondaryContainer,
-                            ),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  google?.isPublicPlace == false
-                                      ? Icons.lock_rounded
-                                      : Icons.public_rounded,
-                                  size: 18,
-                                  color: google?.isPublicPlace == false
-                                      ? colorScheme.onTertiaryContainer
-                                      : colorScheme.onSecondaryContainer,
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  google?.isPublicPlace == false
-                                      ? t.match.ui_screens_match_screen.private
-                                      : t.match.ui_screens_match_screen.public,
-                                  style: Theme.of(dialogContext)
-                                      .textTheme
-                                      .labelMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w900,
-                                        color: google?.isPublicPlace == false
-                                            ? colorScheme.onTertiaryContainer
-                                            : colorScheme.onSecondaryContainer,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          if (google?.rating != null)
-                            MatchLocationMetaChipWidget(
-                              icon: Icons.star_rounded,
-                              label: t.match.ui_screens_match_screen
-                                  .ratingValue(
-                                    value: google!.rating!.toStringAsFixed(1),
-                                  ),
-                            ),
-                          if (google?.userRatingCount != null)
-                            MatchLocationMetaChipWidget(
-                              icon: Icons.groups_2_rounded,
-                              label: t.match.ui_screens_match_screen
-                                  .ratingsCount(
-                                    count: google!.userRatingCount!,
-                                  ),
-                            ),
-                          if (google?.timezone != null &&
-                              google!.timezone!.trim().isNotEmpty)
-                            MatchLocationMetaChipWidget(
-                              icon: Icons.schedule_rounded,
-                              label: google.timezone!,
-                            ),
-                          for (final type in types)
-                            MatchLocationMetaChipWidget(
-                              icon: Icons.sell_rounded,
-                              label: type,
-                            ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      if (google?.url != null && google!.url!.trim().isNotEmpty)
-                        MatchActionableInfoRowWidget(
-                          icon: Icons.map_rounded,
-                          label: t.match.ui_screens_match_screen.mapLink2,
-                          value: google.url!.trim(),
-                          onCopyTap: () {
-                            _copyValue(
-                              value: google.url!.trim(),
-                              label: t.match.ui_screens_match_screen.mapLink,
-                            );
-                          },
-                          onActionTap: () {
-                            _launchExternalUrl(google.url!.trim());
-                          },
-                        ),
-                      if (google?.websiteUri != null &&
-                          google!.websiteUri!.trim().isNotEmpty)
-                        MatchActionableInfoRowWidget(
-                          icon: Icons.language_rounded,
-                          label: t.match.ui_screens_match_screen.website2,
-                          value: google.websiteUri!.trim(),
-                          onCopyTap: () {
-                            _copyValue(
-                              value: google.websiteUri!.trim(),
-                              label: t.match.ui_screens_match_screen.website,
-                            );
-                          },
-                          onActionTap: () {
-                            _launchExternalUrl(google.websiteUri!.trim());
-                          },
-                        ),
-                      if (google?.phoneNumber != null &&
-                          google!.phoneNumber!.trim().isNotEmpty)
-                        MatchActionableInfoRowWidget(
-                          icon: Icons.phone_rounded,
-                          label: t.match.ui_screens_match_screen.phone2,
-                          value: google.phoneNumber!.trim(),
-                          onCopyTap: () {
-                            _copyValue(
-                              value: google.phoneNumber!.trim(),
-                              label: t.match.ui_screens_match_screen.phone,
-                            );
-                          },
-                          onActionTap: () {
-                            _launchPhone(google.phoneNumber!.trim());
-                          },
-                        ),
-                      if (manual != null) ...[
-                        SizedBox(height: 8),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: colorScheme.surfaceContainerHighest
-                                .withValues(
-                                  alpha: 0.55,
-                                ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                t
-                                    .match
-                                    .ui_screens_match_screen
-                                    .manualLocationNotes,
-                                style: Theme.of(dialogContext)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                '${manual.title} • ${manual.cityName}, ${manual.country.toJson()}',
-                                style: Theme.of(dialogContext)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
-                              ),
-                              if (manual.description?.trim().isNotEmpty == true)
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    manual.description!.trim(),
-                                    style: Theme.of(dialogContext)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FilledButton.tonal(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: Text(
-                          t.match.ui_screens_match_screen.close,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _copyValue({
-    required String value,
-    required String label,
+    BuildContext context, {
+    required Location? location,
+    String? locationAdditionalInfo,
   }) async {
-    await Clipboard.setData(ClipboardData(text: value));
-    if (!mounted) {
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          t.match.ui_screens_match_screen.copiedLabel(label: label),
-        ),
-      ),
+    await MatchLocationInfoDialog.show(
+      context,
+      location: location,
+      locationAdditionalInfo: locationAdditionalInfo,
     );
-  }
-
-  Future<void> _launchExternalUrl(String rawUrl) async {
-    final parsedUri = Uri.tryParse(rawUrl);
-    if (parsedUri == null) {
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            t.match.ui_screens_match_screen.invalidUrlFormat,
-          ),
-        ),
-      );
-      return;
-    }
-
-    final launched = await launchUrl(
-      parsedUri,
-      mode: LaunchMode.externalApplication,
-    );
-    if (launched || !mounted) {
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          t.match.ui_screens_match_screen.unableToOpenTheLinkRightNow,
-        ),
-      ),
-    );
-  }
-
-  Future<void> _launchPhone(String rawPhone) async {
-    final normalizedPhone = _normalizePhoneNumber(rawPhone);
-    if (normalizedPhone.isEmpty) {
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            t.match.ui_screens_match_screen.invalidPhoneNumberFormat,
-          ),
-        ),
-      );
-      return;
-    }
-
-    final telUri = Uri(
-      scheme: 'tel',
-      path: normalizedPhone,
-    );
-    final launched = await launchUrl(
-      telUri,
-      mode: LaunchMode.externalApplication,
-    );
-    if (launched || !mounted) {
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          t.match.ui_screens_match_screen.unableToOpenTheDialerRightNow,
-        ),
-      ),
-    );
-  }
-
-  String _normalizePhoneNumber(String rawPhone) {
-    final trimmed = rawPhone.trim();
-    if (trimmed.isEmpty) {
-      return '';
-    }
-
-    final hasLeadingPlus = trimmed.startsWith('+');
-    final digitsOnly = trimmed.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digitsOnly.isEmpty) {
-      return '';
-    }
-
-    return hasLeadingPlus ? '+$digitsOnly' : digitsOnly;
   }
 
   String _formatDurationToClock(Duration duration) {

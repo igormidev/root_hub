@@ -39,6 +39,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     this.closedForSubscriptions,
     required this.locationId,
     this.location,
+    this.locationAdditionalInfo,
     required this.playerDataId,
     this.host,
     this.subscriptions,
@@ -62,6 +63,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     bool? closedForSubscriptions,
     required int locationId,
     _i6.Location? location,
+    String? locationAdditionalInfo,
     required int playerDataId,
     _i5.PlayerData? host,
     List<_i7.MatchSubscription>? subscriptions,
@@ -119,6 +121,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
           : _i10.Protocol().deserialize<_i6.Location>(
               jsonSerialization['location'],
             ),
+      locationAdditionalInfo:
+          jsonSerialization['locationAdditionalInfo'] as String?,
       playerDataId: jsonSerialization['playerDataId'] as int,
       host: jsonSerialization['host'] == null
           ? null
@@ -176,6 +180,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
 
   _i6.Location? location;
 
+  String? locationAdditionalInfo;
+
   int playerDataId;
 
   _i5.PlayerData? host;
@@ -205,6 +211,7 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
     bool? closedForSubscriptions,
     int? locationId,
     _i6.Location? location,
+    String? locationAdditionalInfo,
     int? playerDataId,
     _i5.PlayerData? host,
     List<_i7.MatchSubscription>? subscriptions,
@@ -234,6 +241,8 @@ abstract class MatchSchedulePairingAttempt implements _i1.SerializableModel {
         'closedForSubscriptions': closedForSubscriptions,
       'locationId': locationId,
       if (location != null) 'location': location?.toJson(),
+      if (locationAdditionalInfo != null)
+        'locationAdditionalInfo': locationAdditionalInfo,
       'playerDataId': playerDataId,
       if (host != null) 'host': host?.toJson(),
       if (subscriptions != null)
@@ -268,6 +277,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     bool? closedForSubscriptions,
     required int locationId,
     _i6.Location? location,
+    String? locationAdditionalInfo,
     required int playerDataId,
     _i5.PlayerData? host,
     List<_i7.MatchSubscription>? subscriptions,
@@ -289,6 +299,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
          closedForSubscriptions: closedForSubscriptions,
          locationId: locationId,
          location: location,
+         locationAdditionalInfo: locationAdditionalInfo,
          playerDataId: playerDataId,
          host: host,
          subscriptions: subscriptions,
@@ -316,6 +327,7 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
     Object? closedForSubscriptions = _Undefined,
     int? locationId,
     Object? location = _Undefined,
+    Object? locationAdditionalInfo = _Undefined,
     int? playerDataId,
     Object? host = _Undefined,
     Object? subscriptions = _Undefined,
@@ -350,6 +362,9 @@ class _MatchSchedulePairingAttemptImpl extends MatchSchedulePairingAttempt {
       location: location is _i6.Location?
           ? location
           : this.location?.copyWith(),
+      locationAdditionalInfo: locationAdditionalInfo is String?
+          ? locationAdditionalInfo
+          : this.locationAdditionalInfo,
       playerDataId: playerDataId ?? this.playerDataId,
       host: host is _i5.PlayerData? ? host : this.host?.copyWith(),
       subscriptions: subscriptions is List<_i7.MatchSubscription>?

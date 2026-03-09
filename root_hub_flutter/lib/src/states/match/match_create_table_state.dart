@@ -9,6 +9,7 @@ abstract class MatchCreateTableState with _$MatchCreateTableState {
   const factory MatchCreateTableState({
     @Default('') String title,
     @Default('') String description,
+    @Default('') String locationAdditionalInfo,
     @Default(3) int minPlayers,
     @Default(4) int maxPlayers,
     DateTime? scheduledDate,

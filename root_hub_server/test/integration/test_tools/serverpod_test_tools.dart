@@ -1902,6 +1902,7 @@ class _CreateMatchSchedule {
     required _i27.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
+    String? locationAdditionalInfo,
     required bool hostWillPlay,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1923,6 +1924,7 @@ class _CreateMatchSchedule {
             'maxAmountOfPlayers': maxAmountOfPlayers,
             'attemptedAt': attemptedAt,
             'locationId': locationId,
+            'locationAdditionalInfo': locationAdditionalInfo,
             'hostWillPlay': hostWillPlay,
           }),
           serializationManager: _serializationManager,

@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
 import 'package:root_hub_flutter/src/design_system/location_picker/location_search_picker_widget.dart';
+import 'package:root_hub_flutter/src/design_system/success_celebration_dialog.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
+import 'package:root_hub_flutter/src/features/match/ui/sheets/match_create_table_location_confirmation_sheet.dart';
 import 'package:root_hub_flutter/src/states/match/match_create_table_provider.dart';
 
 import 'package:root_hub_flutter/i18n/strings.g.dart';
@@ -46,9 +48,10 @@ class _MatchCreateTableLocationScreenState
         .setLocationQuery(_searchController.text);
   }
 
-  Future<void> _createTable() async {
+  Future<void> _openLocationConfirmationSheet() async {
     final state = ref.read(matchCreateTableProvider);
-    if (state.selectedLocation == null) {
+    final selectedLocation = state.selectedLocation;
+    if (selectedLocation == null) {
       await showErrorDialog(
         context,
         title: t
@@ -63,19 +66,37 @@ class _MatchCreateTableLocationScreenState
       return;
     }
 
-    final error = await ref
-        .read(matchCreateTableProvider.notifier)
-        .createTable();
+    final didCreateTable =
+        await MatchCreateTableLocationConfirmationSheet.show(
+          context,
+          selectedLocation: selectedLocation,
+        ) ??
+        false;
     if (!mounted) {
       return;
     }
 
-    if (error != null) {
-      await showErrorDialog(
-        context,
-        title: error.title,
-        description: error.description,
-      );
+    if (!didCreateTable) {
+      return;
+    }
+
+    await SuccessCelebrationDialog.show(
+      context,
+      title: t
+          .match
+          .ui_screens_match_create_table_location_screen
+          .tableCreatedSuccessTitle,
+      description: t
+          .match
+          .ui_screens_match_create_table_location_screen
+          .tableCreatedSuccessDescription,
+      details: t
+          .match
+          .ui_screens_match_create_table_location_screen
+          .tableCreatedSuccessDetails,
+      closeLabel: t.match.ui_screens_match_create_table_location_screen.close,
+    );
+    if (!mounted) {
       return;
     }
 
@@ -154,7 +175,9 @@ class _MatchCreateTableLocationScreenState
                   width: double.infinity,
                   height: 58,
                   child: ElevatedButton(
-                    onPressed: state.isCreatingTable ? null : _createTable,
+                    onPressed: state.isCreatingTable
+                        ? null
+                        : _openLocationConfirmationSheet,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorScheme.primary,
                       foregroundColor: colorScheme.onPrimary,

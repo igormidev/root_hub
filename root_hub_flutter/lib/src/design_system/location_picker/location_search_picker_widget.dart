@@ -70,10 +70,15 @@ class LocationSearchPickerWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
             child: Text(
-              t
-                  .match
-                  .ui_screens_match_create_table_location_screen
-                  .tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo,
+              queryIsEmpty
+                  ? t
+                        .match
+                        .ui_screens_match_create_table_location_screen
+                        .tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo
+                  : t
+                        .match
+                        .ui_screens_match_create_table_location_screen
+                        .tapALocationToSelectIt,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w700,
@@ -86,36 +91,6 @@ class LocationSearchPickerWidget extends StatelessWidget {
             physics: listPhysics,
             padding: listPadding,
             children: [
-              if (selectedLocation != null)
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: colorScheme.primary),
-                    color: colorScheme.primaryContainer.withValues(alpha: 0.45),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle_rounded,
-                        color: colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          _locationTitle(selectedLocation!),
-                          style:
-                              Theme.of(
-                                context,
-                              ).textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w900,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               if (!queryIsEmpty) ...[
                 Text(
                   t
@@ -213,70 +188,72 @@ class LocationSearchPickerWidget extends StatelessWidget {
                           location.id == selectedLocation?.id,
                       onTap: () => onLocationSelected(location),
                     ),
-                const SizedBox(height: 14),
               ],
-              Text(
-                t
-                    .match
-                    .ui_screens_match_create_table_location_screen
-                    .previouslySelectedLocations,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
+              if (queryIsEmpty) ...[
+                Text(
+                  t
+                      .match
+                      .ui_screens_match_create_table_location_screen
+                      .previouslySelectedLocations,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              if (!hasLoadedRecentLocations)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2.5),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        t
-                            .match
-                            .ui_screens_match_create_table_location_loading_recent_widget
-                            .loadingPreviousLocations,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
+                const SizedBox(height: 8),
+                if (!hasLoadedRecentLocations)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2.5),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              else if (recentLocations.isEmpty)
-                Container(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: colorScheme.outlineVariant),
-                    color: colorScheme.surface.withValues(alpha: 0.9),
-                  ),
-                  child: Text(
-                    t
-                        .match
-                        .ui_screens_match_create_table_location_no_recent_locations_widget
-                        .noPreviousLocationsYetSearchAndSelectOneAbove,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w700,
+                        const SizedBox(width: 10),
+                        Text(
+                          t
+                              .match
+                              .ui_screens_match_create_table_location_loading_recent_widget
+                              .loadingPreviousLocations,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                        ),
+                      ],
                     ),
-                  ),
-                )
-              else
-                for (final location in recentLocations)
-                  _LocationSearchResultTileWidget(
-                    title: _locationTitle(location),
-                    subtitle: _locationSubtitle(location),
-                    isSelected:
-                        location.id != null &&
-                        location.id == selectedLocation?.id,
-                    onTap: () => onLocationSelected(location),
-                  ),
+                  )
+                else if (recentLocations.isEmpty)
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: colorScheme.outlineVariant),
+                      color: colorScheme.surface.withValues(alpha: 0.9),
+                    ),
+                    child: Text(
+                      t
+                          .match
+                          .ui_screens_match_create_table_location_no_recent_locations_widget
+                          .noPreviousLocationsYetSearchAndSelectOneAbove,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                else
+                  for (final location in recentLocations)
+                    _LocationSearchResultTileWidget(
+                      title: _locationTitle(location),
+                      subtitle: _locationSubtitle(location),
+                      isSelected:
+                          location.id != null &&
+                          location.id == selectedLocation?.id,
+                      onTap: () => onLocationSelected(location),
+                    ),
+              ],
             ],
           ),
         ),

@@ -1295,6 +1295,12 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'int',
         ),
         _i2.ColumnDefinition(
+          name: 'locationAdditionalInfo',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
           name: 'playerDataId',
           columnType: _i2.ColumnType.bigint,
           isNullable: false,

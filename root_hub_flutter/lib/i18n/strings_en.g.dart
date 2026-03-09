@@ -136,6 +136,7 @@ class TranslationsMatchEn {
 	late final TranslationsMatchUiSheetsMatchEditTableFormWidgetEn ui_sheets_match_edit_table_form_widget = TranslationsMatchUiSheetsMatchEditTableFormWidgetEn.internal(_root);
 	late final TranslationsMatchUiSheetsMatchTableInfoBottomActionsWidgetEn ui_sheets_match_table_info_bottom_actions_widget = TranslationsMatchUiSheetsMatchTableInfoBottomActionsWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetEn ui_screens_match_create_table_location_loading_search_widget = TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetEn.internal(_root);
+	late final TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetEn ui_sheets_match_create_table_location_confirmation_sheet = TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchCreateTableLocationScreenEn ui_screens_match_create_table_location_screen = TranslationsMatchUiScreensMatchCreateTableLocationScreenEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchJoinSheetErrorWidgetEn ui_screens_match_join_sheet_error_widget = TranslationsMatchUiScreensMatchJoinSheetErrorWidgetEn.internal(_root);
 	late final TranslationsMatchUiScreensMatchScreenEn ui_screens_match_screen = TranslationsMatchUiScreensMatchScreenEn.internal(_root);
@@ -1238,6 +1239,9 @@ class TranslationsMatchUiSheetsMatchTableInfoContentWidgetEn {
 	/// en: 'No players subscribed yet.'
 	String get noPlayersSubscribedYet => 'No players subscribed yet.';
 
+	/// en: 'Additional location info'
+	String get locationAdditionalInfo => 'Additional location info';
+
 	/// en: 'Created at: {value}'
 	String createdAtValue({required Object value}) => 'Created at: ${value}';
 
@@ -1521,6 +1525,42 @@ class TranslationsMatchUiScreensMatchCreateTableLocationLoadingSearchWidgetEn {
 	String get searchingLocations => 'Searching locations...';
 }
 
+// Path: match.ui_sheets_match_create_table_location_confirmation_sheet
+class TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetEn {
+	TranslationsMatchUiSheetsMatchCreateTableLocationConfirmationSheetEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Confirm location'
+	String get confirmLocation => 'Confirm location';
+
+	/// en: 'Create table at this location'
+	String get createTableAtThisLocation => 'Create table at this location';
+
+	/// en: 'Review the selected location before publishing your match.'
+	String get reviewTheSelectedLocationBeforePublishingYourMatch => 'Review the selected location before publishing your match.';
+
+	/// en: 'Selected location'
+	String get selectedLocation => 'Selected location';
+
+	/// en: 'Additional location info (optional)'
+	String get locationAdditionalInfoOptional => 'Additional location info (optional)';
+
+	/// en: 'Add optional extra directions or meetup details to help players find the exact table.'
+	String get addOptionalExtraDirectionsOrMeetingDetailsForThisLocation => 'Add optional extra directions or meetup details to help players find the exact table.';
+
+	/// en: 'Example: We'll be upstairs near the back tables. Ask for the ROOT group.'
+	String get exampleWeWillBeUpstairsNearTheBackTablesAskForTheRootGroup => 'Example: We\'ll be upstairs near the back tables. Ask for the ROOT group.';
+
+	/// en: 'Back'
+	String get back => 'Back';
+
+	/// en: 'Create table'
+	String get createTable => 'Create table';
+}
+
 // Path: match.ui_screens_match_create_table_location_screen
 class TranslationsMatchUiScreensMatchCreateTableLocationScreenEn {
 	TranslationsMatchUiScreensMatchCreateTableLocationScreenEn.internal(this._root);
@@ -1534,6 +1574,9 @@ class TranslationsMatchUiScreensMatchCreateTableLocationScreenEn {
 
 	/// en: 'Search results'
 	String get searchResults => 'Search results';
+
+	/// en: 'Tap a location to select it.'
+	String get tapALocationToSelectIt => 'Tap a location to select it.';
 
 	/// en: 'Tap a location to select it. Previously selected locations are saved here for faster hosting.'
 	String get tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo => 'Tap a location to select it. Previously selected locations are saved here for faster hosting.';
@@ -1552,6 +1595,18 @@ class TranslationsMatchUiScreensMatchCreateTableLocationScreenEn {
 
 	/// en: 'Continue'
 	String get continueButton => 'Continue';
+
+	/// en: 'Table created successfully'
+	String get tableCreatedSuccessTitle => 'Table created successfully';
+
+	/// en: 'Your match is live and players can start subscribing now.'
+	String get tableCreatedSuccessDescription => 'Your match is live and players can start subscribing now.';
+
+	/// en: 'You can reopen the chat and track subscriptions from the Schedules and Chat tabs.'
+	String get tableCreatedSuccessDetails => 'You can reopen the chat and track subscriptions from the Schedules and Chat tabs.';
+
+	/// en: 'Close'
+	String get close => 'Close';
 }
 
 // Path: match.ui_screens_match_join_sheet_error_widget
@@ -1609,6 +1664,9 @@ class TranslationsMatchUiScreensMatchScreenEn {
 
 	/// en: 'Close'
 	String get close => 'Close';
+
+	/// en: 'Additional location info'
+	String get locationAdditionalInfo => 'Additional location info';
 
 	/// en: 'Manual location notes'
 	String get manualLocationNotes => 'Manual location notes';

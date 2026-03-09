@@ -22,7 +22,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
   final PlayerData? currentPlayer;
   final MatchSchedulePairingAttempt fallbackTable;
   final VoidCallback onOpenChat;
-  final void Function(Location? location) onOpenLocationInfo;
+  final void Function(
+    Location? location,
+    String? locationAdditionalInfo,
+  )
+  onOpenLocationInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +54,11 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
         googlePlace?.formattedAddress ??
         manualLocation?.cityName ??
         t.match.ui_screens_match_table_card_widget.addressUnavailable;
+    final normalizedLocationAdditionalInfo = table.locationAdditionalInfo
+        ?.trim();
+    final hasLocationAdditionalInfo =
+        normalizedLocationAdditionalInfo != null &&
+        normalizedLocationAdditionalInfo.isNotEmpty;
 
     final minPlayers = table.minAmountOfPlayers.playerCount;
     final maxPlayers = table.maxAmountOfPlayers.playerCount;
@@ -243,7 +252,10 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                           IconButton(
                             visualDensity: VisualDensity.compact,
                             onPressed: () {
-                              onOpenLocationInfo(location);
+                              onOpenLocationInfo(
+                                location,
+                                table.locationAdditionalInfo,
+                              );
                             },
                             icon: Icon(Icons.info_outline_rounded),
                           ),
@@ -257,6 +269,44 @@ class MatchJoinSheetContentWidget extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      if (hasLocationAdditionalInfo) ...[
+                        SizedBox(height: 10),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: colorScheme.primaryContainer.withValues(
+                              alpha: 0.28,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                t
+                                    .match
+                                    .ui_sheets_match_table_info_content_widget
+                                    .locationAdditionalInfo,
+                                style: Theme.of(context).textTheme.labelLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                normalizedLocationAdditionalInfo,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w700,
+                                      height: 1.35,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

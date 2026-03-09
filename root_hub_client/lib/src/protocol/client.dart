@@ -720,6 +720,7 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
     required _i26.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
+    String? locationAdditionalInfo,
     required bool hostWillPlay,
   }) => caller.callServerEndpoint<_i15.MatchSchedulePairingAttempt>(
     'createMatchSchedule',
@@ -732,6 +733,7 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
       'maxAmountOfPlayers': maxAmountOfPlayers,
       'attemptedAt': attemptedAt,
       'locationId': locationId,
+      'locationAdditionalInfo': locationAdditionalInfo,
       'hostWillPlay': hostWillPlay,
     },
   );

@@ -31,7 +31,11 @@ class MatchTableCardWidget extends StatelessWidget {
   final DateTime currentTime;
   final String? distanceLabel;
   final String Function(Duration duration) formatDurationToClock;
-  final void Function(Location? location) onOpenLocationInfo;
+  final void Function(
+    Location? location,
+    String? locationAdditionalInfo,
+  )
+  onOpenLocationInfo;
   final Future<void> Function({
     required int? tableId,
     required MatchSchedulePairingAttempt fallbackTable,
@@ -283,7 +287,10 @@ class MatchTableCardWidget extends StatelessWidget {
                     child: IconButton(
                       visualDensity: VisualDensity.compact,
                       onPressed: () {
-                        onOpenLocationInfo(location);
+                        onOpenLocationInfo(
+                          location,
+                          table.locationAdditionalInfo,
+                        );
                       },
                       icon: Icon(
                         Icons.info_outline_rounded,

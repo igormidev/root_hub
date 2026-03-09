@@ -357,6 +357,7 @@
       "noPlayersHaveJoinedThisTableYet": "Ningún jugador se ha unido a esta partida todavía.",
       "theseAreTheCurrentPlayersThatWillParticipate": "Estos son los jugadores actuales que participarán.",
       "noPlayersSubscribedYet": "Ningún jugador se ha suscrito todavía.",
+      "locationAdditionalInfo": "Información adicional del lugar",
       "createdAtValue": "Creada el: {value}",
       "playersInThisMatch": "Jugadores en este partida",
       "playersRange": "{minPlayers}-{maxPlayers} jugadores",
@@ -445,15 +446,31 @@
     "ui_screens_match_create_table_location_loading_search_widget": {
       "searchingLocations": "Buscando ubicaciones..."
     },
+    "ui_sheets_match_create_table_location_confirmation_sheet": {
+      "confirmLocation": "Confirmar ubicación",
+      "createTableAtThisLocation": "Crear partida en esta ubicación",
+      "reviewTheSelectedLocationBeforePublishingYourMatch": "Revisa la ubicación seleccionada antes de publicar tu partida.",
+      "selectedLocation": "Ubicación seleccionada",
+      "locationAdditionalInfoOptional": "Información adicional del lugar (opcional)",
+      "addOptionalExtraDirectionsOrMeetingDetailsForThisLocation": "Agrega indicaciones extra o detalles del punto de encuentro para ayudar a los jugadores a encontrar la mesa exacta.",
+      "exampleWeWillBeUpstairsNearTheBackTablesAskForTheRootGroup": "Ejemplo: Estaremos arriba, cerca de las mesas del fondo. Pregunta por el grupo de ROOT.",
+      "back": "Volver",
+      "createTable": "Crear partida"
+    },
     "ui_screens_match_create_table_location_screen": {
       "previouslySelectedLocations": "Ubicaciones previamente seleccionadas",
       "searchResults": "Resultados de la búsqueda",
+      "tapALocationToSelectIt": "Toca una ubicación para seleccionarla.",
       "tapALocationToSelectItPreviouslySelectedLocationsAreSavedHereForFasterHo": "Toca una ubicación para seleccionarla. Las ubicaciones previamente seleccionadas se guardan aquí para un alojamiento más rápido.",
       "searchLocationGooglePlaces": "Ubicación de búsqueda (Google Places)",
       "chooseTableLocation": "Elija la ubicación de la partida",
       "chooseOneLocationFromTheListBeforeCreatingTheTable": "Elija una ubicación de la lista antes de crear la partida.",
       "locationRequired": "Ubicación requerida",
-      "continueButton": "Continuar"
+      "continueButton": "Continuar",
+      "tableCreatedSuccessTitle": "Partida creada correctamente",
+      "tableCreatedSuccessDescription": "Tu partida ya está publicada y otros jugadores pueden unirse ahora.",
+      "tableCreatedSuccessDetails": "Puedes volver a abrir el chat y seguir las inscripciones desde las pestañas de Partidas y Chat.",
+      "close": "Cerrar"
     },
     "ui_screens_match_join_sheet_error_widget": {
       "retry": "Rever",
@@ -471,6 +488,7 @@
       "ratingValue": "Valoración {value}",
       "shareMessage": "Root Hub conecta personas para jugar ROOT en persona en lugares públicos. Únete a esta partida en {location}, a las {hour}, el día {day}: {link}",
       "close": "Cerca",
+      "locationAdditionalInfo": "Información adicional del lugar",
       "manualLocationNotes": "Notas de ubicación manuales",
       "phone": "Teléfono",
       "phone2": "Teléfono",

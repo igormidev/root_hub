@@ -281,6 +281,7 @@ class _TranslationsLabelsPtBr extends TranslationsLabelsEn {
 	@override String get groupPhoto => 'Group photo';
 	@override String get boardPhoto => 'Board photo';
 	@override String get matchDescription => 'Description';
+	@override String get locationAdditionalInfo => 'Informações adicionais do local';
 }
 
 // Path: pushNotifications.common

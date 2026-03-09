@@ -16,7 +16,11 @@ class MatchTableInfoContentWidget extends StatelessWidget {
   final bool isRemovingPlayer;
   final VoidCallback onClose;
   final VoidCallback onUnsubscribe;
-  final void Function(Location? location) onOpenLocationInfo;
+  final void Function(
+    Location? location,
+    String? locationAdditionalInfo,
+  )
+  onOpenLocationInfo;
   final Future<void> Function(MatchSchedulePairingAttempt table) onShareTable;
   final Future<void> Function(List<MatchSchedulePlayerSnapshot>)
   onShowRemovePlayerDialog;
@@ -71,6 +75,11 @@ class MatchTableInfoContentWidget extends StatelessWidget {
     final hasNotPlayedReasonDetails =
         notPlayedReasonDetails != null && notPlayedReasonDetails.isNotEmpty;
     final notPlayedMarkedByDisplayName = table.notPlayedMarkedBy?.displayName;
+    final normalizedLocationAdditionalInfo = table.locationAdditionalInfo
+        ?.trim();
+    final hasLocationAdditionalInfo =
+        normalizedLocationAdditionalInfo != null &&
+        normalizedLocationAdditionalInfo.isNotEmpty;
 
     return Column(
       children: [
@@ -289,7 +298,10 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                             child: IconButton(
                               visualDensity: VisualDensity.compact,
                               onPressed: () {
-                                onOpenLocationInfo(location);
+                                onOpenLocationInfo(
+                                  location,
+                                  table.locationAdditionalInfo,
+                                );
                               },
                               icon: Icon(
                                 Icons.info_outline_rounded,
@@ -308,6 +320,44 @@ class MatchTableInfoContentWidget extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      if (hasLocationAdditionalInfo) ...[
+                        SizedBox(height: 10),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: colorScheme.primaryContainer.withValues(
+                              alpha: 0.28,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                t
+                                    .match
+                                    .ui_sheets_match_table_info_content_widget
+                                    .locationAdditionalInfo,
+                                style: Theme.of(context).textTheme.labelLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                normalizedLocationAdditionalInfo,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w700,
+                                      height: 1.35,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

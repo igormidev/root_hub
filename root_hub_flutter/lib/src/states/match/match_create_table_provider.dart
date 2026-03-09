@@ -66,6 +66,13 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     );
   }
 
+  void setLocationAdditionalInfo(String locationAdditionalInfo) {
+    state = state.copyWith(
+      locationAdditionalInfo: locationAdditionalInfo,
+      createTableError: null,
+    );
+  }
+
   void increaseMinPlayers() {
     if (state.minPlayers >= state.maxPlayers) {
       return;
@@ -142,6 +149,7 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     if (normalizedQuery.isEmpty) {
       state = state.copyWith(
         locationQuery: query,
+        selectedLocation: null,
         isSearchingLocations: false,
         hasPerformedLocationSearch: false,
         searchResults: const <Location>[],
@@ -153,12 +161,13 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
     final runId = _activeSearchRunId;
     state = state.copyWith(
       locationQuery: query,
+      selectedLocation: null,
       isSearchingLocations: true,
       hasPerformedLocationSearch: true,
       locationSearchError: null,
     );
 
-    _searchDebounce = Timer(const Duration(milliseconds: 360), () {
+    _searchDebounce = Timer(const Duration(milliseconds: 400), () {
       unawaited(
         _executeLocationSearch(
           runId: runId,
@@ -268,6 +277,9 @@ class MatchCreateTableNotifier extends Notifier<MatchCreateTableState> {
           maxAmountOfPlayers: matchPodiumFromPlayerCount(state.maxPlayers),
           attemptedAt: attemptedAt,
           locationId: locationId,
+          locationAdditionalInfo: state.locationAdditionalInfo.trim().isEmpty
+              ? null
+              : state.locationAdditionalInfo.trim(),
           hostWillPlay: state.hostWillPlay,
         )
         .toResult;

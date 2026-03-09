@@ -650,6 +650,9 @@ class TranslationsLabelsEn {
 
 	/// en: 'Description'
 	String get matchDescription => 'Description';
+
+	/// en: 'Additional location info'
+	String get locationAdditionalInfo => 'Additional location info';
 }
 
 // Path: pushNotifications.common
