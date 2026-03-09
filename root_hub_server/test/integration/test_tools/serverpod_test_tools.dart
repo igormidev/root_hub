@@ -225,6 +225,8 @@ class TestEndpoints {
 
   late final _SearchRegisteredPlayers searchRegisteredPlayers;
 
+  late final _DeleteMatchChatMessage deleteMatchChatMessage;
+
   late final _GetMatchChatActivityOverview getMatchChatActivityOverview;
 
   late final _GetMatchChatMessage getMatchChatMessage;
@@ -356,6 +358,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     searchRegisteredPlayers = _SearchRegisteredPlayers(
+      endpoints,
+      serializationManager,
+    );
+    deleteMatchChatMessage = _DeleteMatchChatMessage(
       endpoints,
       serializationManager,
     );
@@ -1481,6 +1487,54 @@ class _SearchRegisteredPlayers {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<List<_i22.RegisteredPlayerSearchResult>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _DeleteMatchChatMessage {
+  _DeleteMatchChatMessage(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required int messageId,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'deleteMatchChatMessage',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'deleteMatchChatMessage',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'scheduledMatchId': scheduledMatchId,
+            'messageId': messageId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

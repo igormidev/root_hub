@@ -81,7 +81,8 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     final isMessageActionInProgress =
         chatState.isSendingMessage ||
         chatState.isUploadingImage ||
-        chatState.isUploadingAudio;
+        chatState.isUploadingAudio ||
+        chatState.isDeletingMessage;
     final isLoadingInitial =
         !isCurrentChat || (chatState.isLoading && !chatState.hasLoadedOnce);
     final loadError = isCurrentChat ? chatState.loadError : null;
@@ -386,6 +387,24 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               ),
               micIconColor: colorScheme.primary,
             ),
+            replyPopupConfig: ReplyPopupConfiguration(
+              backgroundColor: colorScheme.surface,
+              topBorderColor: colorScheme.outlineVariant.withValues(
+                alpha: 0.55,
+              ),
+              onUnsendTap: (message) {
+                if (!chatNotifier.canDeleteMessage(message)) {
+                  return;
+                }
+
+                unawaited(
+                  _confirmAndDeleteMessage(
+                    chatNotifier,
+                    message: message,
+                  ),
+                );
+              },
+            ),
             reactionPopupConfig: ReactionPopupConfiguration(
               backgroundColor: colorScheme.surface,
               userReactionCallback: (message, emoji) {
@@ -591,6 +610,47 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     } finally {
       _isShowingActionErrorDialog = false;
     }
+  }
+
+  Future<void> _confirmAndDeleteMessage(
+    MatchChatNotifier chatNotifier, {
+    required Message message,
+  }) async {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(
+            t.match.ui_screens_match_chat_screen.deleteMessageTitle,
+          ),
+          content: Text(
+            t.match.ui_screens_match_chat_screen.deleteMessageDescription,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.cancel2,
+              ),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(
+                t.match.ui_screens_match_chat_screen.deleteMessageAction,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldDelete != true) {
+      return;
+    }
+
+    await chatNotifier.deleteMessage(message);
   }
 
   Future<void> _sendPickedImage(

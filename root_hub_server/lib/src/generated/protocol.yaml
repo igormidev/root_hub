@@ -40,6 +40,8 @@ registerMatchData:
   - v1:
 searchRegisteredPlayers:
   - v1:
+deleteMatchChatMessage:
+  - v1:
 getMatchChatActivityOverview:
   - v1:
 getMatchChatMessage:

@@ -226,4 +226,33 @@ class MatchChatParticipantStateService {
       transaction: transaction,
     );
   }
+
+  static Future<void> decrementUnreadForRecipientsOnDeletedMessage(
+    Session session, {
+    required int chatHistoryId,
+    required int senderPlayerDataId,
+    required DateTime sentAt,
+    Transaction? transaction,
+  }) async {
+    await session.db.unsafeExecute(
+      '''
+      UPDATE match_chat_participant_state
+      SET "unreadMessagesCount" = GREATEST("unreadMessagesCount" - 1, 0)
+      WHERE "matchChatHistoryId" = @chatHistoryId
+        AND "playerDataId" <> @senderPlayerDataId
+        AND (
+          "lastReadMessageAt" IS NULL OR
+          "lastReadMessageAt" < @sentAt
+        )
+      ''',
+      parameters: QueryParameters.named(
+        <String, Object?>{
+          'chatHistoryId': chatHistoryId,
+          'senderPlayerDataId': senderPlayerDataId,
+          'sentAt': sentAt,
+        },
+      ),
+      transaction: transaction,
+    );
+  }
 }

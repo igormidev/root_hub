@@ -524,6 +524,28 @@ class EndpointSearchRegisteredPlayers extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointDeleteMatchChatMessage extends _i1.EndpointRef {
+  EndpointDeleteMatchChatMessage(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'deleteMatchChatMessage';
+
+  _i2.Future<void> v1({
+    required _i4.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required int messageId,
+  }) => caller.callServerEndpoint<void>(
+    'deleteMatchChatMessage',
+    'v1',
+    {
+      'language': language,
+      'scheduledMatchId': scheduledMatchId,
+      'messageId': messageId,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointGetMatchChatActivityOverview extends _i1.EndpointRef {
   EndpointGetMatchChatActivityOverview(_i1.EndpointCaller caller)
     : super(caller);
@@ -1322,6 +1344,7 @@ class Client extends _i1.ServerpodClientShared {
     prepareMatchProofUpload = EndpointPrepareMatchProofUpload(this);
     registerMatchData = EndpointRegisterMatchData(this);
     searchRegisteredPlayers = EndpointSearchRegisteredPlayers(this);
+    deleteMatchChatMessage = EndpointDeleteMatchChatMessage(this);
     getMatchChatActivityOverview = EndpointGetMatchChatActivityOverview(this);
     getMatchChatMessage = EndpointGetMatchChatMessage(this);
     getMatchChatPlayedMatchSummary = EndpointGetMatchChatPlayedMatchSummary(
@@ -1391,6 +1414,8 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointRegisterMatchData registerMatchData;
 
   late final EndpointSearchRegisteredPlayers searchRegisteredPlayers;
+
+  late final EndpointDeleteMatchChatMessage deleteMatchChatMessage;
 
   late final EndpointGetMatchChatActivityOverview getMatchChatActivityOverview;
 
@@ -1467,6 +1492,7 @@ class Client extends _i1.ServerpodClientShared {
     'prepareMatchProofUpload': prepareMatchProofUpload,
     'registerMatchData': registerMatchData,
     'searchRegisteredPlayers': searchRegisteredPlayers,
+    'deleteMatchChatMessage': deleteMatchChatMessage,
     'getMatchChatActivityOverview': getMatchChatActivityOverview,
     'getMatchChatMessage': getMatchChatMessage,
     'getMatchChatPlayedMatchSummary': getMatchChatPlayedMatchSummary,

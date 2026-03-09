@@ -552,6 +552,72 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     unawaited(_persistReaction(message, emoji));
   }
 
+  bool canDeleteMessage(Message message) {
+    if (message.isCustomSystemMessage) {
+      return false;
+    }
+
+    return message.sentBy == _chatController.currentUser.id &&
+        int.tryParse(message.id) != null;
+  }
+
+  Future<void> deleteMessage(Message message) async {
+    final scheduledMatchId = state.scheduledMatchId;
+    final serverMessageId = int.tryParse(message.id);
+    if (scheduledMatchId == null ||
+        serverMessageId == null ||
+        !canDeleteMessage(message)) {
+      return;
+    }
+
+    state = state.copyWith(
+      isDeletingMessage: true,
+      actionError: null,
+    );
+
+    try {
+      await ref
+          .read(clientProvider)
+          .deleteMatchChatMessage
+          .v1(
+            language: ref.read(serverSupportedTranslationProvider),
+            scheduledMatchId: scheduledMatchId,
+            messageId: serverMessageId,
+          );
+
+      await _removeUiMessageById(message.id);
+      _refreshExistingMessageStatuses();
+      _applyTypingPresence();
+
+      state = state.copyWith(
+        isDeletingMessage: false,
+        actionError: null,
+      );
+
+      unawaited(_syncLatestMessages());
+    } on RootHubException catch (error) {
+      state = state.copyWith(
+        isDeletingMessage: false,
+        actionError: error,
+      );
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchChat] Unexpected delete message failure. '
+        'scheduledMatchId=$scheduledMatchId messageId=$serverMessageId',
+      );
+      state = state.copyWith(
+        isDeletingMessage: false,
+        actionError: RootHubException(
+          title: 'Unable to delete message',
+          description:
+              'An unexpected error occurred while deleting this message.',
+        ),
+      );
+    }
+  }
+
   void updateTypingStatus(TypeWriterStatus status) {
     final scheduledMatchId = state.scheduledMatchId;
     if (scheduledMatchId == null) {
@@ -1090,6 +1156,21 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       messageId: oldMessage.id,
       newMessage: newMessage,
     );
+  }
+
+  Future<void> _removeUiMessageById(String messageId) async {
+    final previousLength = _chatMessages.length;
+    _chatMessages.removeWhere((message) => message.id == messageId);
+    if (_chatMessages.length == previousLength) {
+      return;
+    }
+
+    _chatController.initialMessageList = List<Message>.from(_chatMessages);
+    if (!_chatController.messageStreamController.isClosed) {
+      _chatController.messageStreamController.add(
+        _chatController.initialMessageList,
+      );
+    }
   }
 
   Future<List<Message>> _toUiMessages(MatchChatMessage serverMessage) async {

@@ -1198,6 +1198,11 @@ class _TranslationsMatchUiScreensMatchChatScreenEs extends TranslationsMatchUiSc
 	@override String get voiceMessage => 'Mensaje de voz';
 	@override String matchTitleFallback({required Object scheduledMatchId}) => 'Partida #${scheduledMatchId}';
 	@override String get typeAMessage => 'Escribe un mensaje';
+	@override String get replyAction => 'Responder';
+	@override String get deleteMessageAction => 'Eliminar';
+	@override String get dismissAction => 'Cerrar';
+	@override String get deleteMessageTitle => '¿Eliminar mensaje?';
+	@override String get deleteMessageDescription => 'Esto eliminará el mensaje para todos en el chat de la mesa.';
 	@override String get tableInfo => 'Información de la partida';
 	@override String get playedMatchInfo => 'Información de partida finalizada';
 	@override String get editTable => 'Editar partida';

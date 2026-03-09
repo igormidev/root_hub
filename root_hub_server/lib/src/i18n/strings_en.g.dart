@@ -180,6 +180,12 @@ class TranslationsErrorsEn {
 	/// en: 'Reaction emoji cannot be empty.'
 	String get reactionEmojiCannotBeEmpty => 'Reaction emoji cannot be empty.';
 
+	/// en: 'You can only delete messages that you sent.'
+	String get onlyOwnMessagesCanBeDeleted => 'You can only delete messages that you sent.';
+
+	/// en: 'System messages cannot be deleted.'
+	String get systemMessagesCannotBeDeleted => 'System messages cannot be deleted.';
+
 	/// en: 'Scheduled pairing attempt not found.'
 	String get scheduledPairingAttemptNotFound => 'Scheduled pairing attempt not found.';
 
@@ -527,6 +533,9 @@ class TranslationsFallbackEn {
 
 	/// en: 'Unable to send the message right now. Please try again.'
 	String get unableToSendMessage => 'Unable to send the message right now. Please try again.';
+
+	/// en: 'Unable to delete the message right now. Please try again.'
+	String get unableToDeleteChatMessage => 'Unable to delete the message right now. Please try again.';
 
 	/// en: 'Unable to update the chat reaction right now. Please try again.'
 	String get unableToUpdateChatReaction => 'Unable to update the chat reaction right now. Please try again.';

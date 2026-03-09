@@ -641,6 +641,11 @@
       "voiceMessage": "Sprachnachricht",
       "matchTitleFallback": "Partie #{scheduledMatchId}",
       "typeAMessage": "Nachricht eingeben",
+      "replyAction": "Antworten",
+      "deleteMessageAction": "Löschen",
+      "dismissAction": "Schließen",
+      "deleteMessageTitle": "Nachricht löschen?",
+      "deleteMessageDescription": "Dadurch wird die Nachricht für alle im Tisch-Chat entfernt.",
       "tableInfo": "Partieinfo",
       "playedMatchInfo": "Info zur beendeten Partie",
       "editTable": "Partie bearbeiten"

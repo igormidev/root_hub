@@ -2174,6 +2174,21 @@ class TranslationsMatchUiScreensMatchChatScreenEn {
 	/// en: 'Type a message'
 	String get typeAMessage => 'Type a message';
 
+	/// en: 'Reply'
+	String get replyAction => 'Reply';
+
+	/// en: 'Delete'
+	String get deleteMessageAction => 'Delete';
+
+	/// en: 'Close'
+	String get dismissAction => 'Close';
+
+	/// en: 'Delete message?'
+	String get deleteMessageTitle => 'Delete message?';
+
+	/// en: 'This will remove the message for everyone in the table chat.'
+	String get deleteMessageDescription => 'This will remove the message for everyone in the table chat.';
+
 	/// en: 'Table info'
 	String get tableInfo => 'Table info';
 
