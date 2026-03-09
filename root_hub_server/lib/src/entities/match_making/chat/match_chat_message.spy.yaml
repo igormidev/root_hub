@@ -6,6 +6,12 @@ fields:
   imageUrl: String?
   audioUrl: String?
   audioDurationMilliseconds: int?
+  replyToMessageId: int?
+  replyToMessagePreview: String?
+  replyToMessageUiType: MatchChatMessageUiType?
+  replyToMessageSenderPlayerDataId: int?
+  replyToAudioDurationMilliseconds: int?
+  reactionsJson: String?
   blurhash: String?
   imageWidth: int?
   imageHeight: int?
@@ -20,3 +26,5 @@ indexes:
     fields: matchChatHistoryId
   chat_message_player_data_id_idx:
     fields: playerDataId
+  chat_message_reply_to_message_id_idx:
+    fields: replyToMessageId

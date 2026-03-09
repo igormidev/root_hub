@@ -1,15 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart'
     as cache_manager;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
-import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/chat/match_chat_view_message_metadata.dart';
@@ -45,24 +44,33 @@ final _matchChatAudioCacheManager = cache_manager.CacheManager(
 class MatchChatNotifier extends Notifier<MatchChatState> {
   static const int _maxImageBytes = 3 * 1024 * 1024;
   static const int _maxReadableImageBytes = 20 * 1024 * 1024;
+  static const Duration _chatSyncInterval = Duration(seconds: 4);
+  static const Duration _typingSignalThrottle = Duration(seconds: 2);
+  static const Duration _typingPresenceWindow = Duration(seconds: 6);
 
-  final ImagePicker _imagePicker = ImagePicker();
   final Lock _sendOperationLock = Lock();
 
   final List<Message> _chatMessages = <Message>[];
   final Map<String, PlayerData> _playersByAuthorId = <String, PlayerData>{};
   final Map<String, String> _profileImageUrlsByAuthorId = <String, String>{};
   final Map<String, String> _audioPlaybackPathByUrl = <String, String>{};
+  final Map<String, MatchChatParticipantPresence>
+  _participantPresenceByPlayerId = <String, MatchChatParticipantPresence>{};
 
   late ChatController _chatController;
   bool _hasInitializedChatController = false;
   bool _isOpeningChat = false;
+  bool _isSyncingLatest = false;
+  bool _lastTypingStateSent = false;
   int _optimisticMessageCounter = 0;
+  Timer? _chatSyncTimer;
+  DateTime? _lastTypingSignalSentAt;
 
   @override
   MatchChatState build() {
     _resetChatController();
     ref.onDispose(() {
+      _chatSyncTimer?.cancel();
       if (_hasInitializedChatController) {
         _chatController.dispose();
       }
@@ -96,6 +104,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     }
 
     _isOpeningChat = true;
+    _stopLiveSync();
     try {
       state = MatchChatState(
         scheduledMatchId: scheduledMatchId,
@@ -106,6 +115,11 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       _chatMessages.clear();
       _playersByAuthorId.clear();
       _profileImageUrlsByAuthorId.clear();
+      _audioPlaybackPathByUrl.clear();
+      _participantPresenceByPlayerId.clear();
+      _lastTypingStateSent = false;
+      _lastTypingSignalSentAt = null;
+      _chatController.setTypingIndicator = false;
       _resetChatController();
 
       await Future.wait<dynamic>([
@@ -115,6 +129,10 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         ),
         _loadPlayedMatchSummary(scheduledMatchId),
       ]);
+
+      if (state.scheduledMatchId == scheduledMatchId && state.hasLoadedOnce) {
+        _startLiveSync();
+      }
     } finally {
       _isOpeningChat = false;
     }
@@ -148,7 +166,21 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     );
   }
 
-  Future<void> sendTextMessage(String text) async {
+  Future<void> loadOlderMessagesUntilFound(String messageId) async {
+    if (messageId.trim().isEmpty) {
+      return;
+    }
+
+    while (_chatMessages.every((message) => message.id != messageId) &&
+        state.hasNextPage) {
+      await loadOlderMessages();
+    }
+  }
+
+  Future<void> sendTextMessage(
+    String text, {
+    ReplyMessage replyMessage = const ReplyMessage(),
+  }) async {
     final scheduledMatchId = state.scheduledMatchId;
     final currentUserId = _resolveCurrentUserId();
     if (scheduledMatchId == null || currentUserId == null) {
@@ -165,83 +197,19 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         return;
       }
 
-      final pendingMessage = _buildPendingTextMessage(
+      await _sendTextMessageLocked(
+        scheduledMatchId: scheduledMatchId,
         authorId: currentUserId,
         text: normalizedText,
+        replyMessage: replyMessage,
       );
-
-      state = state.copyWith(
-        isSendingMessage: true,
-        actionError: null,
-      );
-      await _insertUiMessage(pendingMessage);
-
-      talker.debug(
-        '[MatchChat] Sending text message. '
-        'scheduledMatchId=$scheduledMatchId chars=${normalizedText.length}',
-      );
-
-      try {
-        final result = await ref
-            .read(clientProvider)
-            .sendMatchChatMessage
-            .v1(
-              language: ref.read(serverSupportedTranslationProvider),
-              scheduledMatchId: scheduledMatchId,
-              content: normalizedText,
-            )
-            .toResult;
-
-        await result.fold(
-          (serverMessage) async {
-            await _replaceUiMessage(
-              oldMessage: pendingMessage,
-              newMessage: await _toUiMessage(serverMessage),
-            );
-            state = state.copyWith(
-              isSendingMessage: false,
-              actionError: null,
-            );
-          },
-          (error) async {
-            await _replaceUiMessage(
-              oldMessage: pendingMessage,
-              newMessage: pendingMessage.copyWith(
-                status: MessageStatus.undelivered,
-              ),
-            );
-            state = state.copyWith(
-              isSendingMessage: false,
-              actionError: error,
-            );
-          },
-        );
-      } catch (error, stackTrace) {
-        talker.handle(
-          error,
-          stackTrace,
-          '[MatchChat] Unexpected text message failure. '
-          'scheduledMatchId=$scheduledMatchId',
-        );
-        await _replaceUiMessage(
-          oldMessage: pendingMessage,
-          newMessage: pendingMessage.copyWith(
-            status: MessageStatus.undelivered,
-          ),
-        );
-        state = state.copyWith(
-          isSendingMessage: false,
-          actionError: RootHubException(
-            title: 'Unable to send message',
-            description:
-                'An unexpected error occurred while sending your message.',
-          ),
-        );
-      }
     });
   }
 
-  Future<void> sendVoiceMessage(String recordingPath) async {
+  Future<void> sendVoiceMessage(
+    String recordingPath, {
+    ReplyMessage replyMessage = const ReplyMessage(),
+  }) async {
     final scheduledMatchId = state.scheduledMatchId;
     final currentUserId = _resolveCurrentUserId();
     if (scheduledMatchId == null || currentUserId == null) {
@@ -285,6 +253,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         authorId: currentUserId,
         recordingPath: normalizedRecordingPath,
         duration: duration,
+        replyMessage: replyMessage,
       );
 
       state = state.copyWith(
@@ -308,14 +277,16 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
                 normalizedRecordingPath,
               ),
               audioDurationMilliseconds: duration?.inMilliseconds,
+              replyToMessageId: _resolveReplyToMessageId(replyMessage),
             )
             .toResult;
 
         await result.fold(
           (serverMessage) async {
+            final newMessage = await _toUiMessages(serverMessage);
             await _replaceUiMessage(
               oldMessage: pendingMessage,
-              newMessage: await _toUiMessage(serverMessage),
+              newMessage: newMessage.first,
             );
             state = state.copyWith(
               isSendingMessage: false,
@@ -363,8 +334,9 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     });
   }
 
-  Future<void> pickAndSendImage({
-    required ImageSource source,
+  Future<void> sendImagePathMessage({
+    required String imagePath,
+    ReplyMessage replyMessage = const ReplyMessage(),
     required ConfirmImageCompressionCallback onConfirmImageCompression,
     required ConfirmImageMessageCallback onConfirmImageMessage,
   }) async {
@@ -373,49 +345,34 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     if (scheduledMatchId == null || currentUserId == null) {
       return;
     }
-    if (_sendOperationLock.locked) {
+
+    final normalizedImagePath = imagePath.trim();
+    if (normalizedImagePath.isEmpty || _sendOperationLock.locked) {
       return;
     }
+
+    String? captionToSend;
 
     await _sendOperationLock.synchronized(() async {
       if (state.scheduledMatchId != scheduledMatchId) {
         return;
       }
 
-      XFile? pickedImage;
-      try {
-        pickedImage = await _imagePicker.pickImage(
-          source: source,
-          maxWidth: 1800,
-          maxHeight: 1800,
-          imageQuality: 88,
-          requestFullMetadata: false,
-        );
-      } catch (error, stackTrace) {
-        talker.handle(
-          error,
-          stackTrace,
-          '[MatchChat] Failed to open image source. '
-          'scheduledMatchId=$scheduledMatchId source=$source',
-        );
+      final selectedImage = File(normalizedImagePath);
+      if (!await selectedImage.exists()) {
         state = state.copyWith(
           actionError: RootHubException(
-            title: 'Unable to access camera or gallery',
-            description:
-                'Allow camera and photo permissions in system settings and try again.',
+            title: 'Unable to read image',
+            description: 'The selected image could not be found.',
           ),
         );
-        return;
-      }
-
-      if (pickedImage == null) {
         return;
       }
 
       Uint8List imageBytes;
       try {
         final streamedImageBytes = await _readImageBytesByStreaming(
-          pickedImage,
+          normalizedImagePath,
           maxReadableBytes: _maxReadableImageBytes,
         );
         if (streamedImageBytes == null) {
@@ -425,8 +382,8 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             actionError: RootHubException(
               title: 'Image is too large',
               description:
-                  'The selected image exceeds the $maxReadableMb MB processing limit. '
-                  'Choose a smaller image and try again.',
+                  'The selected image exceeds the $maxReadableMb MB processing '
+                  'limit. Choose a smaller image and try again.',
             ),
           );
           return;
@@ -436,8 +393,8 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         talker.handle(
           error,
           stackTrace,
-          '[MatchChat] Failed to stream selected image bytes. '
-          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+          '[MatchChat] Failed to read selected image bytes. '
+          'scheduledMatchId=$scheduledMatchId path=$normalizedImagePath',
         );
         state = state.copyWith(
           actionError: RootHubException(
@@ -461,8 +418,8 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       }
 
       var imageBytesToUpload = imageBytes;
-      var imageFileName = pickedImage.name;
-      var imageContentType = pickedImage.mimeType;
+      var imageFileName = _resolveFileName(normalizedImagePath);
+      var imageContentType = _resolveImageContentType(normalizedImagePath);
 
       if (imageBytes.length > _maxImageBytes) {
         final shouldCompressImage = await onConfirmImageCompression(
@@ -491,7 +448,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
         imageBytesToUpload = compressedImageBytes;
         imageFileName = _resolveCompressedImageFileName(
-          originalFileName: pickedImage.name,
+          originalFileName: imageFileName,
         );
         imageContentType = 'image/jpeg';
       }
@@ -502,16 +459,12 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       if (messageContent == null) {
         return;
       }
-      final normalizedMessageContent = messageContent.trim();
+      final normalizedCaption = messageContent.trim();
 
-      final previewDecodedImage = img.decodeImage(imageBytesToUpload);
       final pendingImageMessage = _buildPendingImageMessage(
         authorId: currentUserId,
-        previewBytes: imageBytesToUpload,
-        blurhash: _encodeBlurhash(previewDecodedImage),
-        caption: normalizedMessageContent,
-        width: previewDecodedImage?.width,
-        height: previewDecodedImage?.height,
+        imagePath: normalizedImagePath,
+        replyMessage: replyMessage,
       );
 
       state = state.copyWith(
@@ -527,23 +480,28 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
             .v1(
               language: ref.read(serverSupportedTranslationProvider),
               scheduledMatchId: scheduledMatchId,
-              content: normalizedMessageContent,
+              content: '',
               imageBytes: ByteData.sublistView(imageBytesToUpload),
               imageFileName: imageFileName,
               imageContentType: imageContentType,
+              replyToMessageId: _resolveReplyToMessageId(replyMessage),
             )
             .toResult;
 
         await sendResult.fold(
           (serverMessage) async {
+            final newMessage = await _toUiMessages(serverMessage);
             await _replaceUiMessage(
               oldMessage: pendingImageMessage,
-              newMessage: await _toUiMessage(serverMessage),
+              newMessage: newMessage.first,
             );
             state = state.copyWith(
               isUploadingImage: false,
               actionError: null,
             );
+            if (normalizedCaption.isNotEmpty) {
+              captionToSend = normalizedCaption;
+            }
           },
           (error) async {
             await _replaceUiMessage(
@@ -563,7 +521,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
           error,
           stackTrace,
           '[MatchChat] Unexpected image message failure. '
-          'scheduledMatchId=$scheduledMatchId name=${pickedImage.name}',
+          'scheduledMatchId=$scheduledMatchId path=$normalizedImagePath',
         );
         await _replaceUiMessage(
           oldMessage: pendingImageMessage,
@@ -581,6 +539,42 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         );
       }
     });
+
+    if (captionToSend != null && captionToSend!.isNotEmpty) {
+      await sendTextMessage(
+        captionToSend!,
+        replyMessage: replyMessage,
+      );
+    }
+  }
+
+  void sendReaction(Message message, String emoji) {
+    unawaited(_persistReaction(message, emoji));
+  }
+
+  void updateTypingStatus(TypeWriterStatus status) {
+    final scheduledMatchId = state.scheduledMatchId;
+    if (scheduledMatchId == null) {
+      return;
+    }
+
+    final shouldSendTyping = status.isTyping;
+    final now = DateTime.now();
+    final throttleWindowReached =
+        _lastTypingSignalSentAt == null ||
+        now.difference(_lastTypingSignalSentAt!) >= _typingSignalThrottle;
+
+    if (!shouldSendTyping && !_lastTypingStateSent) {
+      return;
+    }
+
+    if (shouldSendTyping && _lastTypingStateSent && !throttleWindowReached) {
+      return;
+    }
+
+    _lastTypingStateSent = shouldSendTyping;
+    _lastTypingSignalSentAt = now;
+    unawaited(_pushTypingState(isTyping: shouldSendTyping));
   }
 
   void clearActionError() {
@@ -713,6 +707,102 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     _hasInitializedChatController = true;
   }
 
+  void _startLiveSync() {
+    _chatSyncTimer?.cancel();
+    _chatSyncTimer = Timer.periodic(_chatSyncInterval, (_) {
+      unawaited(_syncLatestMessages());
+    });
+  }
+
+  void _stopLiveSync() {
+    _chatSyncTimer?.cancel();
+    _chatSyncTimer = null;
+  }
+
+  Future<void> _sendTextMessageLocked({
+    required int scheduledMatchId,
+    required String authorId,
+    required String text,
+    required ReplyMessage replyMessage,
+  }) async {
+    final pendingMessage = _buildPendingTextMessage(
+      authorId: authorId,
+      text: text,
+      replyMessage: replyMessage,
+    );
+
+    state = state.copyWith(
+      isSendingMessage: true,
+      actionError: null,
+    );
+    await _insertUiMessage(pendingMessage);
+
+    talker.debug(
+      '[MatchChat] Sending text message. '
+      'scheduledMatchId=$scheduledMatchId chars=${text.length}',
+    );
+
+    try {
+      final result = await ref
+          .read(clientProvider)
+          .sendMatchChatMessage
+          .v1(
+            language: ref.read(serverSupportedTranslationProvider),
+            scheduledMatchId: scheduledMatchId,
+            content: text,
+            replyToMessageId: _resolveReplyToMessageId(replyMessage),
+          )
+          .toResult;
+
+      await result.fold(
+        (serverMessage) async {
+          final newMessage = await _toUiMessages(serverMessage);
+          await _replaceUiMessage(
+            oldMessage: pendingMessage,
+            newMessage: newMessage.first,
+          );
+          state = state.copyWith(
+            isSendingMessage: false,
+            actionError: null,
+          );
+        },
+        (error) async {
+          await _replaceUiMessage(
+            oldMessage: pendingMessage,
+            newMessage: pendingMessage.copyWith(
+              status: MessageStatus.undelivered,
+            ),
+          );
+          state = state.copyWith(
+            isSendingMessage: false,
+            actionError: error,
+          );
+        },
+      );
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchChat] Unexpected text message failure. '
+        'scheduledMatchId=$scheduledMatchId',
+      );
+      await _replaceUiMessage(
+        oldMessage: pendingMessage,
+        newMessage: pendingMessage.copyWith(
+          status: MessageStatus.undelivered,
+        ),
+      );
+      state = state.copyWith(
+        isSendingMessage: false,
+        actionError: RootHubException(
+          title: 'Unable to send message',
+          description:
+              'An unexpected error occurred while sending your message.',
+        ),
+      );
+    }
+  }
+
   Future<void> _loadPage({
     required int page,
     required bool replaceMessages,
@@ -734,54 +824,10 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
     await result.fold(
       (chatPage) async {
-        final orderedMessages = [...chatPage.messages]
-          ..sort((a, b) => a.sentAt.compareTo(b.sentAt));
-
-        for (final senderProfile in chatPage.senderProfiles) {
-          final authorId = senderProfile.playerDataId.toString();
-          final normalizedProfileImageUrl = senderProfile.profileImageUrl
-              ?.trim();
-          if (normalizedProfileImageUrl == null ||
-              normalizedProfileImageUrl.isEmpty) {
-            continue;
-          }
-
-          _profileImageUrlsByAuthorId[authorId] = normalizedProfileImageUrl;
-        }
-
-        final mappedMessages = await Future.wait(
-          orderedMessages.map(_toUiMessage),
-        );
-
-        if (replaceMessages) {
-          _chatMessages
-            ..clear()
-            ..addAll(mappedMessages);
-          _chatController.replaceMessageList(List<Message>.from(_chatMessages));
-          _chatController.scrollToLastMessage(
-            waitFor: Duration(milliseconds: 60),
-          );
-        } else {
-          final existingIds = _chatMessages
-              .map((message) => message.id)
-              .toSet();
-          final uniqueMessages = mappedMessages
-              .where((message) => !existingIds.contains(message.id))
-              .toList();
-          _chatMessages.insertAll(0, uniqueMessages);
-          if (uniqueMessages.isNotEmpty) {
-            _chatController.loadMoreData(uniqueMessages);
-          }
-        }
-
-        state = state.copyWith(
-          isLoading: false,
-          hasLoadedOnce: true,
-          isLoadingMore: false,
-          hasNextPage: chatPage.paginationMetadata.hasNextPage,
-          currentPage: chatPage.paginationMetadata.currentPage,
-          loadError: null,
-          subscribedPlayerIds: chatPage.subscribedPlayerIds.toSet(),
+        await _applyRemotePage(
+          chatPage,
+          replaceMessages: replaceMessages,
+          mergeLatestOnly: false,
         );
       },
       (error) async {
@@ -795,6 +841,192 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         );
       },
     );
+  }
+
+  Future<void> _syncLatestMessages() async {
+    final scheduledMatchId = state.scheduledMatchId;
+    if (scheduledMatchId == null || _isSyncingLatest || state.isLoading) {
+      return;
+    }
+
+    _isSyncingLatest = true;
+    try {
+      final result = await ref
+          .read(clientProvider)
+          .getMatchChatMessage
+          .v1(
+            language: ref.read(serverSupportedTranslationProvider),
+            scheduledMatchId: scheduledMatchId,
+            page: 1,
+          )
+          .toResult;
+
+      await result.fold(
+        (chatPage) async {
+          await _applyRemotePage(
+            chatPage,
+            replaceMessages: false,
+            mergeLatestOnly: true,
+          );
+        },
+        (error) async {
+          talker.debug(
+            '[MatchChat] Live sync failed. '
+            'scheduledMatchId=$scheduledMatchId error=${error.description}',
+          );
+        },
+      );
+    } finally {
+      _isSyncingLatest = false;
+    }
+  }
+
+  Future<void> _applyRemotePage(
+    MatchChatMessagesPagination chatPage, {
+    required bool replaceMessages,
+    required bool mergeLatestOnly,
+  }) async {
+    _ingestSenderProfiles(chatPage.senderProfiles);
+    _ingestParticipantPresence(chatPage.participantPresence);
+
+    final orderedMessages = [...chatPage.messages]
+      ..sort((a, b) => a.sentAt.compareTo(b.sentAt));
+
+    final mappedMessageBatches = await Future.wait(
+      orderedMessages.map(_toUiMessages),
+    );
+    final mappedMessages =
+        mappedMessageBatches.expand((messages) => messages).toList()
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+    if (replaceMessages) {
+      _chatMessages
+        ..clear()
+        ..addAll(mappedMessages);
+      _chatController.replaceMessageList(List<Message>.from(_chatMessages));
+      _chatController.scrollToLastMessage(
+        waitFor: Duration(milliseconds: 60),
+      );
+    } else if (mergeLatestOnly) {
+      _mergeLatestMessages(mappedMessages);
+    } else {
+      final existingIds = _chatMessages.map((message) => message.id).toSet();
+      final uniqueMessages = mappedMessages
+          .where((message) => !existingIds.contains(message.id))
+          .toList();
+      _chatMessages.insertAll(0, uniqueMessages);
+      if (uniqueMessages.isNotEmpty) {
+        _chatController.loadMoreData(uniqueMessages);
+      }
+    }
+
+    _refreshExistingMessageStatuses();
+    _applyTypingPresence();
+
+    state = state.copyWith(
+      isLoading: false,
+      hasLoadedOnce: true,
+      isLoadingMore: false,
+      hasNextPage: chatPage.paginationMetadata.hasNextPage,
+      currentPage: chatPage.paginationMetadata.currentPage,
+      loadError: null,
+      subscribedPlayerIds: chatPage.subscribedPlayerIds.toSet(),
+    );
+  }
+
+  void _ingestSenderProfiles(List<MatchChatSenderProfile> senderProfiles) {
+    for (final senderProfile in senderProfiles) {
+      final authorId = senderProfile.playerDataId.toString();
+      final normalizedProfileImageUrl = senderProfile.profileImageUrl?.trim();
+      if (normalizedProfileImageUrl == null ||
+          normalizedProfileImageUrl.isEmpty) {
+        continue;
+      }
+
+      _profileImageUrlsByAuthorId[authorId] = normalizedProfileImageUrl;
+      _upsertChatUser(authorId);
+    }
+  }
+
+  void _ingestParticipantPresence(
+    List<MatchChatParticipantPresence> participantPresence,
+  ) {
+    _participantPresenceByPlayerId
+      ..clear()
+      ..addEntries(
+        participantPresence.map(
+          (entry) => MapEntry(entry.playerDataId.toString(), entry),
+        ),
+      );
+  }
+
+  void _mergeLatestMessages(List<Message> remoteMessages) {
+    final existingIndexById = <String, int>{
+      for (final entry in _chatMessages.indexed) entry.$2.id: entry.$1,
+    };
+
+    for (final remoteMessage in remoteMessages) {
+      final existingIndex = existingIndexById[remoteMessage.id];
+      if (existingIndex == null) {
+        _chatMessages.add(remoteMessage);
+        _chatController.addMessage(remoteMessage);
+        existingIndexById[remoteMessage.id] = _chatMessages.length - 1;
+        continue;
+      }
+
+      final currentMessage = _chatMessages[existingIndex];
+      if (currentMessage == remoteMessage) {
+        continue;
+      }
+
+      _chatMessages[existingIndex] = remoteMessage;
+      _chatController.updateMessage(
+        messageId: currentMessage.id,
+        newMessage: remoteMessage,
+      );
+    }
+  }
+
+  void _refreshExistingMessageStatuses() {
+    for (final entry in _chatMessages.indexed) {
+      final currentMessage = entry.$2;
+      if (currentMessage.status == MessageStatus.pending ||
+          currentMessage.status == MessageStatus.undelivered) {
+        continue;
+      }
+
+      final nextStatus = _resolveUiMessageStatus(currentMessage);
+      if (nextStatus == currentMessage.status) {
+        continue;
+      }
+
+      final updatedMessage = currentMessage.copyWith(status: nextStatus);
+      _chatMessages[entry.$1] = updatedMessage;
+      _chatController.updateMessage(
+        messageId: currentMessage.id,
+        newMessage: updatedMessage,
+      );
+    }
+  }
+
+  void _applyTypingPresence() {
+    final currentUserId = _chatController.currentUser.id;
+    final now = DateTime.now();
+
+    final typingPlayerIds = _participantPresenceByPlayerId.values
+        .where((entry) => entry.playerDataId.toString() != currentUserId)
+        .where((entry) {
+          final typingAt = entry.lastTypingAt;
+          if (typingAt == null) {
+            return false;
+          }
+
+          return now.difference(typingAt.toLocal()) <= _typingPresenceWindow;
+        })
+        .map((entry) => entry.playerDataId.toString())
+        .toSet();
+
+    _chatController.setTypingIndicator = typingPlayerIds.isNotEmpty;
   }
 
   Future<void> _loadPlayedMatchSummary(int scheduledMatchId) async {
@@ -860,7 +1092,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     );
   }
 
-  Future<Message> _toUiMessage(MatchChatMessage serverMessage) async {
+  Future<List<Message>> _toUiMessages(MatchChatMessage serverMessage) async {
     final messageId =
         serverMessage.id?.toString() ??
         '${serverMessage.playerDataId}_${serverMessage.sentAt.millisecondsSinceEpoch}';
@@ -872,30 +1104,38 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     }
     _upsertChatUser(authorId);
 
+    final replyMessage = _buildReplyMessage(serverMessage, authorId);
+    final reaction = _buildReaction(serverMessage.reactionsJson);
+    final status = _resolveServerMessageStatus(serverMessage);
     final normalizedText = serverMessage.content.trim();
+
     final isSystemMessage =
         serverMessage.messageType == MatchChatMessageType.systemJoin ||
         serverMessage.messageType == MatchChatMessageType.systemLeave;
 
     if (isSystemMessage) {
-      return Message(
-        id: messageId,
-        message: normalizedText,
-        createdAt: serverMessage.sentAt,
-        sentBy: _chatController.currentUser.id,
-        messageType: MessageType.custom,
-        status: MessageStatus.delivered,
-        update: <String, dynamic>{
-          MatchChatViewMessageMetadata.kindKey:
-              MatchChatViewMessageMetadata.encodeKind(
-                MatchChatViewCustomMessageKind.system,
-              ),
-          MatchChatViewMessageMetadata.systemTypeKey:
-              serverMessage.messageType == MatchChatMessageType.systemJoin
-              ? 'systemJoin'
-              : 'systemLeave',
-        },
-      );
+      return <Message>[
+        Message(
+          id: messageId,
+          message: normalizedText,
+          createdAt: serverMessage.sentAt,
+          sentBy: _chatController.currentUser.id,
+          messageType: MessageType.custom,
+          replyMessage: replyMessage,
+          reaction: reaction,
+          status: status,
+          update: <String, dynamic>{
+            MatchChatViewMessageMetadata.kindKey:
+                MatchChatViewMessageMetadata.encodeKind(
+                  MatchChatViewCustomMessageKind.system,
+                ),
+            MatchChatViewMessageMetadata.systemTypeKey:
+                serverMessage.messageType == MatchChatMessageType.systemJoin
+                ? 'systemJoin'
+                : 'systemLeave',
+          },
+        ),
+      ];
     }
 
     final normalizedAudioUrl = serverMessage.audioUrl?.trim();
@@ -904,66 +1144,213 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
         normalizedAudioUrl,
       );
       if (audioPlaybackPath != null) {
-        return Message(
-          id: messageId,
-          message: audioPlaybackPath,
-          createdAt: serverMessage.sentAt,
-          sentBy: authorId,
-          messageType: MessageType.voice,
-          voiceMessageDuration: serverMessage.audioDurationMilliseconds == null
-              ? await _resolveAudioDuration(audioPlaybackPath)
-              : Duration(
-                  milliseconds: serverMessage.audioDurationMilliseconds!,
-                ),
-          status: MessageStatus.delivered,
-        );
+        return <Message>[
+          Message(
+            id: messageId,
+            message: audioPlaybackPath,
+            createdAt: serverMessage.sentAt,
+            sentBy: authorId,
+            messageType: MessageType.voice,
+            replyMessage: replyMessage,
+            reaction: reaction,
+            voiceMessageDuration:
+                serverMessage.audioDurationMilliseconds == null
+                ? await _resolveAudioDuration(audioPlaybackPath)
+                : Duration(
+                    milliseconds: serverMessage.audioDurationMilliseconds!,
+                  ),
+            status: status,
+          ),
+        ];
       }
 
-      return Message(
-        id: messageId,
-        message: t.match.ui_screens_match_chat_screen.voiceMessage,
-        createdAt: serverMessage.sentAt,
-        sentBy: authorId,
-        messageType: MessageType.text,
-        status: MessageStatus.delivered,
-      );
+      return <Message>[
+        Message(
+          id: messageId,
+          message: t.match.ui_screens_match_chat_screen.voiceMessage,
+          createdAt: serverMessage.sentAt,
+          sentBy: authorId,
+          messageType: MessageType.text,
+          replyMessage: replyMessage,
+          reaction: reaction,
+          status: status,
+        ),
+      ];
     }
 
     final normalizedImageUrl = serverMessage.imageUrl?.trim();
-    final hasImage =
-        normalizedImageUrl != null && normalizedImageUrl.isNotEmpty;
+    if (normalizedImageUrl != null && normalizedImageUrl.isNotEmpty) {
+      if (normalizedText.isNotEmpty) {
+        return <Message>[
+          Message(
+            id: messageId,
+            message: normalizedText,
+            createdAt: serverMessage.sentAt,
+            sentBy: authorId,
+            messageType: MessageType.custom,
+            replyMessage: replyMessage,
+            reaction: reaction,
+            status: status,
+            update: <String, dynamic>{
+              MatchChatViewMessageMetadata.kindKey:
+                  MatchChatViewMessageMetadata.encodeKind(
+                    MatchChatViewCustomMessageKind.image,
+                  ),
+              MatchChatViewMessageMetadata.imageUrlKey: normalizedImageUrl,
+              MatchChatViewMessageMetadata.blurhashKey: serverMessage.blurhash,
+              MatchChatViewMessageMetadata.widthKey: serverMessage.imageWidth
+                  ?.toDouble(),
+              MatchChatViewMessageMetadata.heightKey: serverMessage.imageHeight
+                  ?.toDouble(),
+            },
+          ),
+        ];
+      }
 
-    if (hasImage) {
-      return Message(
+      return <Message>[
+        Message(
+          id: messageId,
+          message: normalizedImageUrl,
+          createdAt: serverMessage.sentAt,
+          sentBy: authorId,
+          messageType: MessageType.image,
+          replyMessage: replyMessage,
+          reaction: reaction,
+          status: status,
+        ),
+      ];
+    }
+
+    return <Message>[
+      Message(
         id: messageId,
         message: normalizedText,
         createdAt: serverMessage.sentAt,
         sentBy: authorId,
-        messageType: MessageType.custom,
-        status: MessageStatus.delivered,
-        update: <String, dynamic>{
-          MatchChatViewMessageMetadata.kindKey:
-              MatchChatViewMessageMetadata.encodeKind(
-                MatchChatViewCustomMessageKind.image,
-              ),
-          MatchChatViewMessageMetadata.imageUrlKey: normalizedImageUrl,
-          MatchChatViewMessageMetadata.blurhashKey: serverMessage.blurhash,
-          MatchChatViewMessageMetadata.widthKey: serverMessage.imageWidth
-              ?.toDouble(),
-          MatchChatViewMessageMetadata.heightKey: serverMessage.imageHeight
-              ?.toDouble(),
-        },
+        messageType: MessageType.text,
+        replyMessage: replyMessage,
+        reaction: reaction,
+        status: status,
+      ),
+    ];
+  }
+
+  ReplyMessage _buildReplyMessage(
+    MatchChatMessage serverMessage,
+    String authorId,
+  ) {
+    final replyToMessageId = serverMessage.replyToMessageId;
+    if (replyToMessageId == null) {
+      return const ReplyMessage();
+    }
+
+    return ReplyMessage(
+      messageId: replyToMessageId.toString(),
+      message: serverMessage.replyToMessagePreview ?? '',
+      replyBy: authorId,
+      replyTo: serverMessage.replyToMessageSenderPlayerDataId?.toString() ?? '',
+      messageType: _resolveReplyMessageType(serverMessage.replyToMessageUiType),
+      voiceMessageDuration:
+          serverMessage.replyToAudioDurationMilliseconds == null
+          ? null
+          : Duration(
+              milliseconds: serverMessage.replyToAudioDurationMilliseconds!,
+            ),
+    );
+  }
+
+  MessageType _resolveReplyMessageType(MatchChatMessageUiType? uiType) {
+    return switch (uiType) {
+      MatchChatMessageUiType.image => MessageType.image,
+      MatchChatMessageUiType.voice => MessageType.voice,
+      MatchChatMessageUiType.system => MessageType.custom,
+      MatchChatMessageUiType.text || null => MessageType.text,
+    };
+  }
+
+  Reaction _buildReaction(String? reactionsJson) {
+    final normalizedJson = reactionsJson?.trim();
+    if (normalizedJson == null || normalizedJson.isEmpty) {
+      return Reaction(
+        reactions: <String>[],
+        reactedUserIds: <String>[],
       );
     }
 
-    return Message(
-      id: messageId,
-      message: normalizedText,
-      createdAt: serverMessage.sentAt,
-      sentBy: authorId,
-      messageType: MessageType.text,
-      status: MessageStatus.delivered,
-    );
+    try {
+      final decoded = jsonDecode(normalizedJson);
+      if (decoded is! Map<String, dynamic>) {
+        return Reaction(
+          reactions: <String>[],
+          reactedUserIds: <String>[],
+        );
+      }
+
+      final reactionEntries = decoded.entries
+          .map(
+            (entry) => (
+              playerId: entry.key.trim(),
+              emoji: entry.value.toString().trim(),
+            ),
+          )
+          .where(
+            (entry) => entry.playerId.isNotEmpty && entry.emoji.isNotEmpty,
+          )
+          .toList();
+
+      return Reaction(
+        reactions: reactionEntries.map((entry) => entry.emoji).toList(),
+        reactedUserIds: reactionEntries.map((entry) => entry.playerId).toList(),
+      );
+    } catch (_) {
+      return Reaction(
+        reactions: <String>[],
+        reactedUserIds: <String>[],
+      );
+    }
+  }
+
+  MessageStatus _resolveServerMessageStatus(MatchChatMessage serverMessage) {
+    final currentUserId = _chatController.currentUser.id;
+    if (serverMessage.playerDataId.toString() != currentUserId) {
+      return MessageStatus.delivered;
+    }
+
+    final hasAnyOtherRead = _participantPresenceByPlayerId.values.any((entry) {
+      if (entry.playerDataId.toString() == currentUserId) {
+        return false;
+      }
+
+      final lastRead = entry.lastReadMessageAt;
+      if (lastRead == null) {
+        return false;
+      }
+
+      return !lastRead.toLocal().isBefore(serverMessage.sentAt);
+    });
+
+    return hasAnyOtherRead ? MessageStatus.read : MessageStatus.delivered;
+  }
+
+  MessageStatus _resolveUiMessageStatus(Message message) {
+    if (message.sentBy != _chatController.currentUser.id) {
+      return MessageStatus.delivered;
+    }
+
+    final hasAnyOtherRead = _participantPresenceByPlayerId.values.any((entry) {
+      if (entry.playerDataId.toString() == _chatController.currentUser.id) {
+        return false;
+      }
+
+      final lastRead = entry.lastReadMessageAt;
+      if (lastRead == null) {
+        return false;
+      }
+
+      return !lastRead.toLocal().isBefore(message.createdAt);
+    });
+
+    return hasAnyOtherRead ? MessageStatus.read : MessageStatus.delivered;
   }
 
   void _upsertChatUser(String authorId) {
@@ -985,6 +1372,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
   Message _buildPendingTextMessage({
     required String authorId,
     required String text,
+    required ReplyMessage replyMessage,
   }) {
     final now = DateTime.now();
     return Message(
@@ -993,6 +1381,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       createdAt: now,
       sentBy: authorId,
       messageType: MessageType.text,
+      replyMessage: replyMessage,
       status: MessageStatus.pending,
     );
   }
@@ -1001,6 +1390,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     required String authorId,
     required String recordingPath,
     required Duration? duration,
+    required ReplyMessage replyMessage,
   }) {
     final now = DateTime.now();
     return Message(
@@ -1009,6 +1399,7 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       createdAt: now,
       sentBy: authorId,
       messageType: MessageType.voice,
+      replyMessage: replyMessage,
       voiceMessageDuration: duration,
       status: MessageStatus.pending,
     );
@@ -1016,30 +1407,18 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
 
   Message _buildPendingImageMessage({
     required String authorId,
-    required Uint8List previewBytes,
-    required String? blurhash,
-    required String caption,
-    required int? width,
-    required int? height,
+    required String imagePath,
+    required ReplyMessage replyMessage,
   }) {
     final now = DateTime.now();
     return Message(
       id: _buildOptimisticMessageId(prefix: 'local-image'),
-      message: caption,
+      message: imagePath,
       createdAt: now,
       sentBy: authorId,
-      messageType: MessageType.custom,
+      messageType: MessageType.image,
+      replyMessage: replyMessage,
       status: MessageStatus.pending,
-      update: <String, dynamic>{
-        MatchChatViewMessageMetadata.kindKey:
-            MatchChatViewMessageMetadata.encodeKind(
-              MatchChatViewCustomMessageKind.image,
-            ),
-        MatchChatViewMessageMetadata.localPreviewBytesKey: previewBytes,
-        MatchChatViewMessageMetadata.blurhashKey: blurhash,
-        MatchChatViewMessageMetadata.widthKey: width?.toDouble(),
-        MatchChatViewMessageMetadata.heightKey: height?.toDouble(),
-      },
     );
   }
 
@@ -1050,55 +1429,96 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
     return '$prefix-${DateTime.now().microsecondsSinceEpoch}-$_optimisticMessageCounter';
   }
 
-  String? _encodeBlurhash(img.Image? sourceImage) {
-    if (sourceImage == null) {
+  int? _resolveReplyToMessageId(ReplyMessage replyMessage) {
+    final rawMessageId = replyMessage.messageId.trim();
+    if (rawMessageId.isEmpty) {
       return null;
     }
 
-    try {
-      const maxDimension = 180;
-      final shouldDownsample =
-          sourceImage.width > maxDimension || sourceImage.height > maxDimension;
-      final imageForHash = shouldDownsample
-          ? img.copyResize(
-              sourceImage,
-              width: sourceImage.width >= sourceImage.height
-                  ? maxDimension
-                  : (sourceImage.width * maxDimension / sourceImage.height)
-                        .round()
-                        .clamp(1, maxDimension),
-              height: sourceImage.height > sourceImage.width
-                  ? maxDimension
-                  : (sourceImage.height * maxDimension / sourceImage.width)
-                        .round()
-                        .clamp(1, maxDimension),
-              interpolation: img.Interpolation.average,
-            )
-          : sourceImage;
+    return int.tryParse(rawMessageId);
+  }
 
-      return BlurHash.encode(
-        imageForHash,
-        numCompX: 4,
-        numCompY: 3,
-      ).hash;
+  Future<void> _persistReaction(
+    Message message,
+    String emoji,
+  ) async {
+    final scheduledMatchId = state.scheduledMatchId;
+    final serverMessageId = int.tryParse(message.id);
+    if (scheduledMatchId == null || serverMessageId == null) {
+      return;
+    }
+
+    try {
+      final updatedServerMessage = await ref
+          .read(clientProvider)
+          .setMatchChatMessageReaction
+          .v1(
+            language: ref.read(serverSupportedTranslationProvider),
+            scheduledMatchId: scheduledMatchId,
+            messageId: serverMessageId,
+            emoji: emoji,
+          );
+
+      final existingMessage = _chatMessages
+          .where((entry) => entry.id == message.id)
+          .firstOrNull;
+      if (existingMessage == null) {
+        return;
+      }
+
+      final reaction = _buildReaction(updatedServerMessage.reactionsJson);
+      final updatedMessage = existingMessage.copyWith(reaction: reaction);
+
+      await _replaceUiMessage(
+        oldMessage: existingMessage,
+        newMessage: updatedMessage,
+      );
     } catch (error, stackTrace) {
       talker.handle(
         error,
         stackTrace,
-        '[MatchChat] Failed to generate blurhash for pending image preview.',
+        '[MatchChat] Failed to persist reaction. '
+        'scheduledMatchId=$scheduledMatchId messageId=$serverMessageId',
       );
-      return null;
+      await _syncLatestMessages();
+    }
+  }
+
+  Future<void> _pushTypingState({
+    required bool isTyping,
+  }) async {
+    final scheduledMatchId = state.scheduledMatchId;
+    if (scheduledMatchId == null) {
+      return;
+    }
+
+    try {
+      await ref
+          .read(clientProvider)
+          .setMatchChatTyping
+          .v1(
+            language: ref.read(serverSupportedTranslationProvider),
+            scheduledMatchId: scheduledMatchId,
+            isTyping: isTyping,
+          );
+    } catch (error, stackTrace) {
+      talker.handle(
+        error,
+        stackTrace,
+        '[MatchChat] Failed to push typing state. '
+        'scheduledMatchId=$scheduledMatchId isTyping=$isTyping',
+      );
     }
   }
 
   Future<Uint8List?> _readImageBytesByStreaming(
-    XFile pickedImage, {
+    String imagePath, {
     required int maxReadableBytes,
   }) async {
     final bytesBuilder = BytesBuilder(copy: false);
     var totalBytes = 0;
 
-    await for (final chunk in pickedImage.openRead()) {
+    await for (final chunk in File(imagePath).openRead()) {
       totalBytes += chunk.length;
       if (totalBytes > maxReadableBytes) {
         return null;
@@ -1213,6 +1633,17 @@ class MatchChatNotifier extends Notifier<MatchChatState> {
       'm4a' => 'audio/mp4',
       'mp3' => 'audio/mpeg',
       'wav' => 'audio/wav',
+      _ => null,
+    };
+  }
+
+  String? _resolveImageContentType(String path) {
+    final extension = path.trim().split('.').last.toLowerCase();
+    return switch (extension) {
+      'heic' || 'heif' => 'image/heic',
+      'jpeg' || 'jpg' => 'image/jpeg',
+      'png' => 'image/png',
+      'webp' => 'image/webp',
       _ => null,
     };
   }

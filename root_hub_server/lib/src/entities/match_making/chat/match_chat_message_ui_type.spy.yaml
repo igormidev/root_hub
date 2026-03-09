@@ -1,0 +1,6 @@
+enum: MatchChatMessageUiType
+values:
+  - text
+  - image
+  - voice
+  - system

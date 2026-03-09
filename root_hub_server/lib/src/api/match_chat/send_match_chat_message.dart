@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:image/image.dart' as img;
+import 'package:root_hub_server/src/api/match_chat/match_chat_message_presentation.dart';
 import 'package:root_hub_server/src/api/match_chat/match_chat_participant_state_service.dart';
 import 'package:root_hub_server/src/core/uploadthing_storage_client.dart';
 import 'package:root_hub_server/src/core/root_hub_endpoint_error.dart';
@@ -30,6 +31,7 @@ class SendMatchChatMessage extends Endpoint {
     String? audioFileName,
     String? audioContentType,
     int? audioDurationMilliseconds,
+    int? replyToMessageId,
   }) async {
     final t = ServerTranslations.of(language);
 
@@ -88,6 +90,13 @@ class SendMatchChatMessage extends Endpoint {
           );
         }
 
+        if (replyToMessageId != null && replyToMessageId <= 0) {
+          throw RootHubEndpointError.invalidRequest(
+            language: language,
+            description: t.errors.messageIdMustBeGreaterThanZero,
+          );
+        }
+
         final playerData =
             await MatchChatParticipantStateService.getAuthenticatedPlayerData(
               session,
@@ -136,6 +145,7 @@ class SendMatchChatMessage extends Endpoint {
         String? computedBlurhash;
         int? computedImageWidth;
         int? computedImageHeight;
+        MatchChatMessage? repliedMessage;
 
         if (hasImage) {
           final imageBytesList = imageBytes.buffer.asUint8List(
@@ -264,6 +274,31 @@ class SendMatchChatMessage extends Endpoint {
           }
         }
 
+        if (replyToMessageId != null) {
+          repliedMessage = await MatchChatMessage.db.findFirstRow(
+            session,
+            where: (t) =>
+                t.id.equals(replyToMessageId) &
+                t.matchChatHistoryId.equals(chatHistoryId),
+          );
+
+          if (repliedMessage == null) {
+            throw RootHubEndpointError.notFound(
+              language: language,
+              description: t.errors.messageWithIdNotFound(
+                messageId: replyToMessageId,
+              ),
+            );
+          }
+        }
+
+        final repliedMessageUiType = repliedMessage == null
+            ? null
+            : MatchChatMessagePresentation.resolveUiType(repliedMessage);
+        final repliedMessagePreview = repliedMessage == null
+            ? null
+            : MatchChatMessagePresentation.resolveReplyPreview(repliedMessage);
+
         final message = await MatchChatMessage.db.insertRow(
           session,
           MatchChatMessage(
@@ -274,6 +309,13 @@ class SendMatchChatMessage extends Endpoint {
             audioDurationMilliseconds: hasAudio
                 ? audioDurationMilliseconds
                 : null,
+            replyToMessageId: repliedMessage?.id,
+            replyToMessagePreview: repliedMessagePreview,
+            replyToMessageUiType: repliedMessageUiType,
+            replyToMessageSenderPlayerDataId: repliedMessage?.playerDataId,
+            replyToAudioDurationMilliseconds:
+                repliedMessage?.audioDurationMilliseconds,
+            reactionsJson: null,
             blurhash: computedBlurhash,
             imageWidth: computedImageWidth,
             imageHeight: computedImageHeight,
@@ -301,6 +343,13 @@ class SendMatchChatMessage extends Endpoint {
           language: language,
           chatHistory: chatHistory,
           playerData: playerData,
+        );
+        await MatchChatParticipantStateService.setTypingState(
+          session,
+          language: language,
+          chatHistory: chatHistory,
+          playerData: playerData,
+          isTyping: false,
         );
         await MatchChatParticipantStateService.incrementUnreadForRecipients(
           session,

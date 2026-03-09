@@ -235,6 +235,10 @@ class TestEndpoints {
 
   late final _SendMatchChatMessage sendMatchChatMessage;
 
+  late final _SetMatchChatMessageReaction setMatchChatMessageReaction;
+
+  late final _SetMatchChatTyping setMatchChatTyping;
+
   late final _CreateMatchSchedule createMatchSchedule;
 
   late final _EditMatchSchedule editMatchSchedule;
@@ -372,6 +376,14 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     sendMatchChatMessage = _SendMatchChatMessage(
+      endpoints,
+      serializationManager,
+    );
+    setMatchChatMessageReaction = _SetMatchChatMessageReaction(
+      endpoints,
+      serializationManager,
+    );
+    setMatchChatTyping = _SetMatchChatTyping(
       endpoints,
       serializationManager,
     );
@@ -1677,6 +1689,7 @@ class _SendMatchChatMessage {
     String? audioFileName,
     String? audioContentType,
     int? audioDurationMilliseconds,
+    int? replyToMessageId,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1700,6 +1713,7 @@ class _SendMatchChatMessage {
             'audioFileName': audioFileName,
             'audioContentType': audioContentType,
             'audioDurationMilliseconds': audioDurationMilliseconds,
+            'replyToMessageId': replyToMessageId,
           }),
           serializationManager: _serializationManager,
         );
@@ -1709,6 +1723,104 @@ class _SendMatchChatMessage {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<_i26.MatchChatMessage>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _SetMatchChatMessageReaction {
+  _SetMatchChatMessageReaction(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i26.MatchChatMessage> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required int messageId,
+    required String emoji,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'setMatchChatMessageReaction',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'setMatchChatMessageReaction',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'scheduledMatchId': scheduledMatchId,
+            'messageId': messageId,
+            'emoji': emoji,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i26.MatchChatMessage>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _SetMatchChatTyping {
+  _SetMatchChatTyping(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required bool isTyping,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'setMatchChatTyping',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'setMatchChatTyping',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'scheduledMatchId': scheduledMatchId,
+            'isTyping': isTyping,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

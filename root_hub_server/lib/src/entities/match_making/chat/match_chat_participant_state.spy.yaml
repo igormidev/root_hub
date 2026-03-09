@@ -8,6 +8,7 @@ fields:
   firstSeenAt: DateTime
   lastOpenedAt: DateTime
   lastReadMessageAt: DateTime?
+  lastTypingAt: DateTime?
   unreadMessagesCount: int, default=0
 
 indexes:

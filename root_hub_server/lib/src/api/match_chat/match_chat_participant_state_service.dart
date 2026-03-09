@@ -141,6 +141,35 @@ class MatchChatParticipantStateService {
     );
   }
 
+  static Future<void> setTypingState(
+    Session session, {
+    required ServerSupportedTranslation language,
+    required MatchChatHistory chatHistory,
+    required PlayerData playerData,
+    required bool isTyping,
+    Transaction? transaction,
+  }) async {
+    final participantState = await ensureParticipantStateExists(
+      session,
+      language: language,
+      chatHistory: chatHistory,
+      playerData: playerData,
+      transaction: transaction,
+    );
+
+    final nextTypingAt = isTyping ? DateTime.now() : null;
+    if (participantState.lastTypingAt == nextTypingAt) {
+      return;
+    }
+
+    participantState.lastTypingAt = nextTypingAt;
+    await MatchChatParticipantState.db.updateRow(
+      session,
+      participantState,
+      transaction: transaction,
+    );
+  }
+
   static Future<void> incrementUnreadForRecipients(
     Session session, {
     required int chatHistoryId,
@@ -182,6 +211,7 @@ class MatchChatParticipantStateService {
           WHEN "lastReadMessageAt" > @sentAt THEN "lastReadMessageAt"
           ELSE @sentAt
         END,
+        "lastTypingAt" = NULL,
         "unreadMessagesCount" = 0
       WHERE "matchChatHistoryId" = @chatHistoryId
         AND "playerDataId" = @senderPlayerDataId

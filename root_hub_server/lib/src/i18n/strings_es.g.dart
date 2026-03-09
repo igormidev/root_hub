@@ -95,6 +95,9 @@ class _TranslationsErrorsEs extends TranslationsErrorsEn {
 	@override String matchWithIdNotFound({required Object matchId}) => 'Match with id ${matchId} not found.';
 	@override String get scheduledMatchIdMustBeGreaterThanZero => 'Scheduled match id must be greater than zero.';
 	@override String scheduledMatchWithIdNotFound({required Object scheduledMatchId}) => 'Scheduled match with id ${scheduledMatchId} was not found.';
+	@override String get messageIdMustBeGreaterThanZero => 'Message id must be greater than zero.';
+	@override String messageWithIdNotFound({required Object messageId}) => 'Message with id ${messageId} was not found.';
+	@override String get reactionEmojiCannotBeEmpty => 'Reaction emoji cannot be empty.';
 	@override String get scheduledPairingAttemptNotFound => 'Scheduled pairing attempt not found.';
 	@override String locationWithIdNotFound({required Object locationId}) => 'Location with id ${locationId} was not found.';
 	@override String get locationNotFound => 'Location not found.';
@@ -217,6 +220,8 @@ class _TranslationsFallbackEs extends TranslationsFallbackEn {
 	@override String get unableToLoadChatMessages => 'Unable to load chat messages right now. Please try again.';
 	@override String get unableToLoadMatchActivity => 'Unable to load match activity right now. Please try again.';
 	@override String get unableToSendMessage => 'Unable to send the message right now. Please try again.';
+	@override String get unableToUpdateChatReaction => 'Unable to update the chat reaction right now. Please try again.';
+	@override String get unableToUpdateChatTypingStatus => 'Unable to update the typing status right now. Please try again.';
 	@override String get unableToLoadScheduledMatchDetails => 'Unable to load scheduled match details right now. Please try again.';
 	@override String get unableToLoadNearbyMatchSchedules => 'Unable to load nearby match schedules right now. Please try again.';
 	@override String get unableToCreateMatchSchedule => 'Unable to create a match schedule right now. Please try again.';

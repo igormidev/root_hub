@@ -26,65 +26,67 @@ import 'api/match/models/registered_player_search_result.dart' as _i11;
 import 'api/match_chat/models/match_chat_activity_chat_item.dart' as _i12;
 import 'api/match_chat/models/match_chat_activity_overview.dart' as _i13;
 import 'api/match_chat/models/match_chat_messages_pagination.dart' as _i14;
-import 'api/match_chat/models/match_chat_played_match_player.dart' as _i15;
-import 'api/match_chat/models/match_chat_played_match_summary.dart' as _i16;
-import 'api/match_chat/models/match_chat_sender_profile.dart' as _i17;
-import 'api/match_making/models/location_pagination.dart' as _i18;
-import 'api/match_making/models/match_schedule_info.dart' as _i19;
-import 'api/match_making/models/match_schedule_player_snapshot.dart' as _i20;
-import 'api/match_making/models/subscribed_matches_pagination.dart' as _i21;
-import 'api/stats/models/platform_stats.dart' as _i22;
-import 'api/stats/models/player_stats.dart' as _i23;
-import 'api/stats/models/web_analytics_click_item.dart' as _i24;
-import 'api/stats/models/web_analytics_clicks_pagination.dart' as _i25;
-import 'api/stats/models/web_analytics_dashboard.dart' as _i26;
-import 'api/stats/models/web_analytics_metric_item.dart' as _i27;
-import 'api/stats/models/web_analytics_timeline_point.dart' as _i28;
-import 'entities/community/post.dart' as _i29;
-import 'entities/community/post_comment.dart' as _i30;
-import 'entities/core/anonymous_player.dart' as _i31;
-import 'entities/core/country.dart' as _i32;
-import 'entities/core/faction.dart' as _i33;
-import 'entities/core/geo_location.dart' as _i34;
-import 'entities/core/language.dart' as _i35;
-import 'entities/core/match_podium.dart' as _i36;
-import 'entities/core/player_data.dart' as _i37;
-import 'entities/core/player_push_notification_token.dart' as _i38;
-import 'entities/core/push_notification_platform.dart' as _i39;
-import 'entities/core/server_supported_translation.dart' as _i40;
-import 'entities/match/match_in_person_proof.dart' as _i41;
-import 'entities/match/played_match.dart' as _i42;
-import 'entities/match/player_in_match.dart' as _i43;
-import 'entities/match/player_perfomance_in_match.dart' as _i44;
-import 'entities/match_making/chat/match_chat_history.dart' as _i45;
-import 'entities/match_making/chat/match_chat_message.dart' as _i46;
-import 'entities/match_making/chat/match_chat_message_type.dart' as _i47;
-import 'entities/match_making/chat/match_chat_participant_state.dart' as _i48;
-import 'entities/match_making/google_place_location.dart' as _i49;
-import 'entities/match_making/location.dart' as _i50;
-import 'entities/match_making/manual_input_location.dart' as _i51;
-import 'entities/match_making/match_schedule.dart' as _i52;
-import 'entities/match_making/match_schedule_not_played_reason.dart' as _i53;
-import 'entities/match_making/match_schedule_status.dart' as _i54;
-import 'entities/match_making/match_subscription.dart' as _i55;
-import 'entities/others/account_deletion_request.dart' as _i56;
-import 'entities/others/pagination_metadata.dart' as _i57;
-import 'entities/others/root_hub_exception.dart' as _i58;
-import 'entities/others/web_analytics_click.dart' as _i59;
-import 'entities/others/web_analytics_device_type.dart' as _i60;
-import 'entities/others/web_ip_location_cache.dart' as _i61;
+import 'api/match_chat/models/match_chat_participant_presence.dart' as _i15;
+import 'api/match_chat/models/match_chat_played_match_player.dart' as _i16;
+import 'api/match_chat/models/match_chat_played_match_summary.dart' as _i17;
+import 'api/match_chat/models/match_chat_sender_profile.dart' as _i18;
+import 'api/match_making/models/location_pagination.dart' as _i19;
+import 'api/match_making/models/match_schedule_info.dart' as _i20;
+import 'api/match_making/models/match_schedule_player_snapshot.dart' as _i21;
+import 'api/match_making/models/subscribed_matches_pagination.dart' as _i22;
+import 'api/stats/models/platform_stats.dart' as _i23;
+import 'api/stats/models/player_stats.dart' as _i24;
+import 'api/stats/models/web_analytics_click_item.dart' as _i25;
+import 'api/stats/models/web_analytics_clicks_pagination.dart' as _i26;
+import 'api/stats/models/web_analytics_dashboard.dart' as _i27;
+import 'api/stats/models/web_analytics_metric_item.dart' as _i28;
+import 'api/stats/models/web_analytics_timeline_point.dart' as _i29;
+import 'entities/community/post.dart' as _i30;
+import 'entities/community/post_comment.dart' as _i31;
+import 'entities/core/anonymous_player.dart' as _i32;
+import 'entities/core/country.dart' as _i33;
+import 'entities/core/faction.dart' as _i34;
+import 'entities/core/geo_location.dart' as _i35;
+import 'entities/core/language.dart' as _i36;
+import 'entities/core/match_podium.dart' as _i37;
+import 'entities/core/player_data.dart' as _i38;
+import 'entities/core/player_push_notification_token.dart' as _i39;
+import 'entities/core/push_notification_platform.dart' as _i40;
+import 'entities/core/server_supported_translation.dart' as _i41;
+import 'entities/match/match_in_person_proof.dart' as _i42;
+import 'entities/match/played_match.dart' as _i43;
+import 'entities/match/player_in_match.dart' as _i44;
+import 'entities/match/player_perfomance_in_match.dart' as _i45;
+import 'entities/match_making/chat/match_chat_history.dart' as _i46;
+import 'entities/match_making/chat/match_chat_message.dart' as _i47;
+import 'entities/match_making/chat/match_chat_message_type.dart' as _i48;
+import 'entities/match_making/chat/match_chat_message_ui_type.dart' as _i49;
+import 'entities/match_making/chat/match_chat_participant_state.dart' as _i50;
+import 'entities/match_making/google_place_location.dart' as _i51;
+import 'entities/match_making/location.dart' as _i52;
+import 'entities/match_making/manual_input_location.dart' as _i53;
+import 'entities/match_making/match_schedule.dart' as _i54;
+import 'entities/match_making/match_schedule_not_played_reason.dart' as _i55;
+import 'entities/match_making/match_schedule_status.dart' as _i56;
+import 'entities/match_making/match_subscription.dart' as _i57;
+import 'entities/others/account_deletion_request.dart' as _i58;
+import 'entities/others/pagination_metadata.dart' as _i59;
+import 'entities/others/root_hub_exception.dart' as _i60;
+import 'entities/others/web_analytics_click.dart' as _i61;
+import 'entities/others/web_analytics_device_type.dart' as _i62;
+import 'entities/others/web_ip_location_cache.dart' as _i63;
 import 'package:root_hub_server/src/generated/entities/core/anonymous_player.dart'
-    as _i62;
-import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
-    as _i63;
-import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i64;
-import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
+import 'package:root_hub_server/src/generated/entities/match/played_match.dart'
     as _i65;
-import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_schedule.dart'
     as _i66;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/api/match/models/player_match_result_input.dart'
     as _i67;
+import 'package:root_hub_server/src/generated/api/match/models/registered_player_search_result.dart'
+    as _i68;
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+    as _i69;
 export 'api/account/models/reverse_geocode_city_result.dart';
 export 'api/community/models/comments_pagination.dart';
 export 'api/community/models/post_pagination.dart';
@@ -95,6 +97,7 @@ export 'api/match/models/registered_player_search_result.dart';
 export 'api/match_chat/models/match_chat_activity_chat_item.dart';
 export 'api/match_chat/models/match_chat_activity_overview.dart';
 export 'api/match_chat/models/match_chat_messages_pagination.dart';
+export 'api/match_chat/models/match_chat_participant_presence.dart';
 export 'api/match_chat/models/match_chat_played_match_player.dart';
 export 'api/match_chat/models/match_chat_played_match_summary.dart';
 export 'api/match_chat/models/match_chat_sender_profile.dart';
@@ -128,6 +131,7 @@ export 'entities/match/player_perfomance_in_match.dart';
 export 'entities/match_making/chat/match_chat_history.dart';
 export 'entities/match_making/chat/match_chat_message.dart';
 export 'entities/match_making/chat/match_chat_message_type.dart';
+export 'entities/match_making/chat/match_chat_message_ui_type.dart';
 export 'entities/match_making/chat/match_chat_participant_state.dart';
 export 'entities/match_making/google_place_location.dart';
 export 'entities/match_making/location.dart';
@@ -818,6 +822,42 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'int?',
         ),
         _i2.ColumnDefinition(
+          name: 'replyToMessageId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'replyToMessagePreview',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'replyToMessageUiType',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'protocol:MatchChatMessageUiType?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'replyToMessageSenderPlayerDataId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'replyToAudioDurationMilliseconds',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'reactionsJson',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
           name: 'blurhash',
           columnType: _i2.ColumnType.text,
           isNullable: true,
@@ -916,6 +956,19 @@ class Protocol extends _i1.SerializationManagerServer {
           isUnique: false,
           isPrimary: false,
         ),
+        _i2.IndexDefinition(
+          indexName: 'chat_message_reply_to_message_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'replyToMessageId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
       ],
       managed: true,
     ),
@@ -959,6 +1012,12 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'lastReadMessageAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'lastTypingAt',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: true,
           dartType: 'DateTime?',
@@ -2405,146 +2464,152 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i14.MatchChatMessagesPagination) {
       return _i14.MatchChatMessagesPagination.fromJson(data) as T;
     }
-    if (t == _i15.MatchChatPlayedMatchPlayer) {
-      return _i15.MatchChatPlayedMatchPlayer.fromJson(data) as T;
+    if (t == _i15.MatchChatParticipantPresence) {
+      return _i15.MatchChatParticipantPresence.fromJson(data) as T;
     }
-    if (t == _i16.MatchChatPlayedMatchSummary) {
-      return _i16.MatchChatPlayedMatchSummary.fromJson(data) as T;
+    if (t == _i16.MatchChatPlayedMatchPlayer) {
+      return _i16.MatchChatPlayedMatchPlayer.fromJson(data) as T;
     }
-    if (t == _i17.MatchChatSenderProfile) {
-      return _i17.MatchChatSenderProfile.fromJson(data) as T;
+    if (t == _i17.MatchChatPlayedMatchSummary) {
+      return _i17.MatchChatPlayedMatchSummary.fromJson(data) as T;
     }
-    if (t == _i18.LocationPagination) {
-      return _i18.LocationPagination.fromJson(data) as T;
+    if (t == _i18.MatchChatSenderProfile) {
+      return _i18.MatchChatSenderProfile.fromJson(data) as T;
     }
-    if (t == _i19.MatchScheduleInfo) {
-      return _i19.MatchScheduleInfo.fromJson(data) as T;
+    if (t == _i19.LocationPagination) {
+      return _i19.LocationPagination.fromJson(data) as T;
     }
-    if (t == _i20.MatchSchedulePlayerSnapshot) {
-      return _i20.MatchSchedulePlayerSnapshot.fromJson(data) as T;
+    if (t == _i20.MatchScheduleInfo) {
+      return _i20.MatchScheduleInfo.fromJson(data) as T;
     }
-    if (t == _i21.SubscribedMatchesPagination) {
-      return _i21.SubscribedMatchesPagination.fromJson(data) as T;
+    if (t == _i21.MatchSchedulePlayerSnapshot) {
+      return _i21.MatchSchedulePlayerSnapshot.fromJson(data) as T;
     }
-    if (t == _i22.PlatformStats) {
-      return _i22.PlatformStats.fromJson(data) as T;
+    if (t == _i22.SubscribedMatchesPagination) {
+      return _i22.SubscribedMatchesPagination.fromJson(data) as T;
     }
-    if (t == _i23.PlayerStats) {
-      return _i23.PlayerStats.fromJson(data) as T;
+    if (t == _i23.PlatformStats) {
+      return _i23.PlatformStats.fromJson(data) as T;
     }
-    if (t == _i24.WebAnalyticsClickItem) {
-      return _i24.WebAnalyticsClickItem.fromJson(data) as T;
+    if (t == _i24.PlayerStats) {
+      return _i24.PlayerStats.fromJson(data) as T;
     }
-    if (t == _i25.WebAnalyticsClicksPagination) {
-      return _i25.WebAnalyticsClicksPagination.fromJson(data) as T;
+    if (t == _i25.WebAnalyticsClickItem) {
+      return _i25.WebAnalyticsClickItem.fromJson(data) as T;
     }
-    if (t == _i26.WebAnalyticsDashboard) {
-      return _i26.WebAnalyticsDashboard.fromJson(data) as T;
+    if (t == _i26.WebAnalyticsClicksPagination) {
+      return _i26.WebAnalyticsClicksPagination.fromJson(data) as T;
     }
-    if (t == _i27.WebAnalyticsMetricItem) {
-      return _i27.WebAnalyticsMetricItem.fromJson(data) as T;
+    if (t == _i27.WebAnalyticsDashboard) {
+      return _i27.WebAnalyticsDashboard.fromJson(data) as T;
     }
-    if (t == _i28.WebAnalyticsTimelinePoint) {
-      return _i28.WebAnalyticsTimelinePoint.fromJson(data) as T;
+    if (t == _i28.WebAnalyticsMetricItem) {
+      return _i28.WebAnalyticsMetricItem.fromJson(data) as T;
     }
-    if (t == _i29.Post) {
-      return _i29.Post.fromJson(data) as T;
+    if (t == _i29.WebAnalyticsTimelinePoint) {
+      return _i29.WebAnalyticsTimelinePoint.fromJson(data) as T;
     }
-    if (t == _i30.PostComment) {
-      return _i30.PostComment.fromJson(data) as T;
+    if (t == _i30.Post) {
+      return _i30.Post.fromJson(data) as T;
     }
-    if (t == _i31.AnonymousPlayer) {
-      return _i31.AnonymousPlayer.fromJson(data) as T;
+    if (t == _i31.PostComment) {
+      return _i31.PostComment.fromJson(data) as T;
     }
-    if (t == _i32.Country) {
-      return _i32.Country.fromJson(data) as T;
+    if (t == _i32.AnonymousPlayer) {
+      return _i32.AnonymousPlayer.fromJson(data) as T;
     }
-    if (t == _i33.Faction) {
-      return _i33.Faction.fromJson(data) as T;
+    if (t == _i33.Country) {
+      return _i33.Country.fromJson(data) as T;
     }
-    if (t == _i34.GeoLocation) {
-      return _i34.GeoLocation.fromJson(data) as T;
+    if (t == _i34.Faction) {
+      return _i34.Faction.fromJson(data) as T;
     }
-    if (t == _i35.Language) {
-      return _i35.Language.fromJson(data) as T;
+    if (t == _i35.GeoLocation) {
+      return _i35.GeoLocation.fromJson(data) as T;
     }
-    if (t == _i36.MatchPodium) {
-      return _i36.MatchPodium.fromJson(data) as T;
+    if (t == _i36.Language) {
+      return _i36.Language.fromJson(data) as T;
     }
-    if (t == _i37.PlayerData) {
-      return _i37.PlayerData.fromJson(data) as T;
+    if (t == _i37.MatchPodium) {
+      return _i37.MatchPodium.fromJson(data) as T;
     }
-    if (t == _i38.PlayerPushNotificationToken) {
-      return _i38.PlayerPushNotificationToken.fromJson(data) as T;
+    if (t == _i38.PlayerData) {
+      return _i38.PlayerData.fromJson(data) as T;
     }
-    if (t == _i39.PushNotificationPlatform) {
-      return _i39.PushNotificationPlatform.fromJson(data) as T;
+    if (t == _i39.PlayerPushNotificationToken) {
+      return _i39.PlayerPushNotificationToken.fromJson(data) as T;
     }
-    if (t == _i40.ServerSupportedTranslation) {
-      return _i40.ServerSupportedTranslation.fromJson(data) as T;
+    if (t == _i40.PushNotificationPlatform) {
+      return _i40.PushNotificationPlatform.fromJson(data) as T;
     }
-    if (t == _i41.MatchInPersonProof) {
-      return _i41.MatchInPersonProof.fromJson(data) as T;
+    if (t == _i41.ServerSupportedTranslation) {
+      return _i41.ServerSupportedTranslation.fromJson(data) as T;
     }
-    if (t == _i42.PlayedMatch) {
-      return _i42.PlayedMatch.fromJson(data) as T;
+    if (t == _i42.MatchInPersonProof) {
+      return _i42.MatchInPersonProof.fromJson(data) as T;
     }
-    if (t == _i43.PlayerInMatch) {
-      return _i43.PlayerInMatch.fromJson(data) as T;
+    if (t == _i43.PlayedMatch) {
+      return _i43.PlayedMatch.fromJson(data) as T;
     }
-    if (t == _i44.PlayerPerfomanceInMatch) {
-      return _i44.PlayerPerfomanceInMatch.fromJson(data) as T;
+    if (t == _i44.PlayerInMatch) {
+      return _i44.PlayerInMatch.fromJson(data) as T;
     }
-    if (t == _i45.MatchChatHistory) {
-      return _i45.MatchChatHistory.fromJson(data) as T;
+    if (t == _i45.PlayerPerfomanceInMatch) {
+      return _i45.PlayerPerfomanceInMatch.fromJson(data) as T;
     }
-    if (t == _i46.MatchChatMessage) {
-      return _i46.MatchChatMessage.fromJson(data) as T;
+    if (t == _i46.MatchChatHistory) {
+      return _i46.MatchChatHistory.fromJson(data) as T;
     }
-    if (t == _i47.MatchChatMessageType) {
-      return _i47.MatchChatMessageType.fromJson(data) as T;
+    if (t == _i47.MatchChatMessage) {
+      return _i47.MatchChatMessage.fromJson(data) as T;
     }
-    if (t == _i48.MatchChatParticipantState) {
-      return _i48.MatchChatParticipantState.fromJson(data) as T;
+    if (t == _i48.MatchChatMessageType) {
+      return _i48.MatchChatMessageType.fromJson(data) as T;
     }
-    if (t == _i49.GooglePlaceLocation) {
-      return _i49.GooglePlaceLocation.fromJson(data) as T;
+    if (t == _i49.MatchChatMessageUiType) {
+      return _i49.MatchChatMessageUiType.fromJson(data) as T;
     }
-    if (t == _i50.Location) {
-      return _i50.Location.fromJson(data) as T;
+    if (t == _i50.MatchChatParticipantState) {
+      return _i50.MatchChatParticipantState.fromJson(data) as T;
     }
-    if (t == _i51.ManualInputLocation) {
-      return _i51.ManualInputLocation.fromJson(data) as T;
+    if (t == _i51.GooglePlaceLocation) {
+      return _i51.GooglePlaceLocation.fromJson(data) as T;
     }
-    if (t == _i52.MatchSchedulePairingAttempt) {
-      return _i52.MatchSchedulePairingAttempt.fromJson(data) as T;
+    if (t == _i52.Location) {
+      return _i52.Location.fromJson(data) as T;
     }
-    if (t == _i53.MatchScheduleNotPlayedReason) {
-      return _i53.MatchScheduleNotPlayedReason.fromJson(data) as T;
+    if (t == _i53.ManualInputLocation) {
+      return _i53.ManualInputLocation.fromJson(data) as T;
     }
-    if (t == _i54.MatchScheduleStatus) {
-      return _i54.MatchScheduleStatus.fromJson(data) as T;
+    if (t == _i54.MatchSchedulePairingAttempt) {
+      return _i54.MatchSchedulePairingAttempt.fromJson(data) as T;
     }
-    if (t == _i55.MatchSubscription) {
-      return _i55.MatchSubscription.fromJson(data) as T;
+    if (t == _i55.MatchScheduleNotPlayedReason) {
+      return _i55.MatchScheduleNotPlayedReason.fromJson(data) as T;
     }
-    if (t == _i56.AccountDeletionRequest) {
-      return _i56.AccountDeletionRequest.fromJson(data) as T;
+    if (t == _i56.MatchScheduleStatus) {
+      return _i56.MatchScheduleStatus.fromJson(data) as T;
     }
-    if (t == _i57.PaginationMetadata) {
-      return _i57.PaginationMetadata.fromJson(data) as T;
+    if (t == _i57.MatchSubscription) {
+      return _i57.MatchSubscription.fromJson(data) as T;
     }
-    if (t == _i58.RootHubException) {
-      return _i58.RootHubException.fromJson(data) as T;
+    if (t == _i58.AccountDeletionRequest) {
+      return _i58.AccountDeletionRequest.fromJson(data) as T;
     }
-    if (t == _i59.WebAnalyticsClick) {
-      return _i59.WebAnalyticsClick.fromJson(data) as T;
+    if (t == _i59.PaginationMetadata) {
+      return _i59.PaginationMetadata.fromJson(data) as T;
     }
-    if (t == _i60.WebAnalyticsDeviceType) {
-      return _i60.WebAnalyticsDeviceType.fromJson(data) as T;
+    if (t == _i60.RootHubException) {
+      return _i60.RootHubException.fromJson(data) as T;
     }
-    if (t == _i61.WebIpLocationCache) {
-      return _i61.WebIpLocationCache.fromJson(data) as T;
+    if (t == _i61.WebAnalyticsClick) {
+      return _i61.WebAnalyticsClick.fromJson(data) as T;
+    }
+    if (t == _i62.WebAnalyticsDeviceType) {
+      return _i62.WebAnalyticsDeviceType.fromJson(data) as T;
+    }
+    if (t == _i63.WebIpLocationCache) {
+      return _i63.WebIpLocationCache.fromJson(data) as T;
     }
     if (t == _i1.getType<_i5.ReverseGeocodeCityResult?>()) {
       return (data != null ? _i5.ReverseGeocodeCityResult.fromJson(data) : null)
@@ -2594,216 +2659,226 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == _i1.getType<_i15.MatchChatPlayedMatchPlayer?>()) {
+    if (t == _i1.getType<_i15.MatchChatParticipantPresence?>()) {
       return (data != null
-              ? _i15.MatchChatPlayedMatchPlayer.fromJson(data)
+              ? _i15.MatchChatParticipantPresence.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i16.MatchChatPlayedMatchSummary?>()) {
+    if (t == _i1.getType<_i16.MatchChatPlayedMatchPlayer?>()) {
       return (data != null
-              ? _i16.MatchChatPlayedMatchSummary.fromJson(data)
+              ? _i16.MatchChatPlayedMatchPlayer.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i17.MatchChatSenderProfile?>()) {
-      return (data != null ? _i17.MatchChatSenderProfile.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i18.LocationPagination?>()) {
-      return (data != null ? _i18.LocationPagination.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i19.MatchScheduleInfo?>()) {
-      return (data != null ? _i19.MatchScheduleInfo.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i20.MatchSchedulePlayerSnapshot?>()) {
+    if (t == _i1.getType<_i17.MatchChatPlayedMatchSummary?>()) {
       return (data != null
-              ? _i20.MatchSchedulePlayerSnapshot.fromJson(data)
+              ? _i17.MatchChatPlayedMatchSummary.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i21.SubscribedMatchesPagination?>()) {
+    if (t == _i1.getType<_i18.MatchChatSenderProfile?>()) {
+      return (data != null ? _i18.MatchChatSenderProfile.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i19.LocationPagination?>()) {
+      return (data != null ? _i19.LocationPagination.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i20.MatchScheduleInfo?>()) {
+      return (data != null ? _i20.MatchScheduleInfo.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i21.MatchSchedulePlayerSnapshot?>()) {
       return (data != null
-              ? _i21.SubscribedMatchesPagination.fromJson(data)
+              ? _i21.MatchSchedulePlayerSnapshot.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i22.PlatformStats?>()) {
-      return (data != null ? _i22.PlatformStats.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i23.PlayerStats?>()) {
-      return (data != null ? _i23.PlayerStats.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i24.WebAnalyticsClickItem?>()) {
-      return (data != null ? _i24.WebAnalyticsClickItem.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i25.WebAnalyticsClicksPagination?>()) {
+    if (t == _i1.getType<_i22.SubscribedMatchesPagination?>()) {
       return (data != null
-              ? _i25.WebAnalyticsClicksPagination.fromJson(data)
+              ? _i22.SubscribedMatchesPagination.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i26.WebAnalyticsDashboard?>()) {
-      return (data != null ? _i26.WebAnalyticsDashboard.fromJson(data) : null)
+    if (t == _i1.getType<_i23.PlatformStats?>()) {
+      return (data != null ? _i23.PlatformStats.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i24.PlayerStats?>()) {
+      return (data != null ? _i24.PlayerStats.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i25.WebAnalyticsClickItem?>()) {
+      return (data != null ? _i25.WebAnalyticsClickItem.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i27.WebAnalyticsMetricItem?>()) {
-      return (data != null ? _i27.WebAnalyticsMetricItem.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i28.WebAnalyticsTimelinePoint?>()) {
+    if (t == _i1.getType<_i26.WebAnalyticsClicksPagination?>()) {
       return (data != null
-              ? _i28.WebAnalyticsTimelinePoint.fromJson(data)
+              ? _i26.WebAnalyticsClicksPagination.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i29.Post?>()) {
-      return (data != null ? _i29.Post.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i27.WebAnalyticsDashboard?>()) {
+      return (data != null ? _i27.WebAnalyticsDashboard.fromJson(data) : null)
+          as T;
     }
-    if (t == _i1.getType<_i30.PostComment?>()) {
-      return (data != null ? _i30.PostComment.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i28.WebAnalyticsMetricItem?>()) {
+      return (data != null ? _i28.WebAnalyticsMetricItem.fromJson(data) : null)
+          as T;
     }
-    if (t == _i1.getType<_i31.AnonymousPlayer?>()) {
-      return (data != null ? _i31.AnonymousPlayer.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i32.Country?>()) {
-      return (data != null ? _i32.Country.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i33.Faction?>()) {
-      return (data != null ? _i33.Faction.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i34.GeoLocation?>()) {
-      return (data != null ? _i34.GeoLocation.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i35.Language?>()) {
-      return (data != null ? _i35.Language.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i36.MatchPodium?>()) {
-      return (data != null ? _i36.MatchPodium.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i37.PlayerData?>()) {
-      return (data != null ? _i37.PlayerData.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i38.PlayerPushNotificationToken?>()) {
+    if (t == _i1.getType<_i29.WebAnalyticsTimelinePoint?>()) {
       return (data != null
-              ? _i38.PlayerPushNotificationToken.fromJson(data)
+              ? _i29.WebAnalyticsTimelinePoint.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i39.PushNotificationPlatform?>()) {
+    if (t == _i1.getType<_i30.Post?>()) {
+      return (data != null ? _i30.Post.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i31.PostComment?>()) {
+      return (data != null ? _i31.PostComment.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i32.AnonymousPlayer?>()) {
+      return (data != null ? _i32.AnonymousPlayer.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i33.Country?>()) {
+      return (data != null ? _i33.Country.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i34.Faction?>()) {
+      return (data != null ? _i34.Faction.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i35.GeoLocation?>()) {
+      return (data != null ? _i35.GeoLocation.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i36.Language?>()) {
+      return (data != null ? _i36.Language.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i37.MatchPodium?>()) {
+      return (data != null ? _i37.MatchPodium.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i38.PlayerData?>()) {
+      return (data != null ? _i38.PlayerData.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i39.PlayerPushNotificationToken?>()) {
       return (data != null
-              ? _i39.PushNotificationPlatform.fromJson(data)
+              ? _i39.PlayerPushNotificationToken.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i40.ServerSupportedTranslation?>()) {
+    if (t == _i1.getType<_i40.PushNotificationPlatform?>()) {
       return (data != null
-              ? _i40.ServerSupportedTranslation.fromJson(data)
+              ? _i40.PushNotificationPlatform.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i41.MatchInPersonProof?>()) {
-      return (data != null ? _i41.MatchInPersonProof.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i42.PlayedMatch?>()) {
-      return (data != null ? _i42.PlayedMatch.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i43.PlayerInMatch?>()) {
-      return (data != null ? _i43.PlayerInMatch.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i44.PlayerPerfomanceInMatch?>()) {
-      return (data != null ? _i44.PlayerPerfomanceInMatch.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i45.MatchChatHistory?>()) {
-      return (data != null ? _i45.MatchChatHistory.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i46.MatchChatMessage?>()) {
-      return (data != null ? _i46.MatchChatMessage.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i47.MatchChatMessageType?>()) {
-      return (data != null ? _i47.MatchChatMessageType.fromJson(data) : null)
-          as T;
-    }
-    if (t == _i1.getType<_i48.MatchChatParticipantState?>()) {
+    if (t == _i1.getType<_i41.ServerSupportedTranslation?>()) {
       return (data != null
-              ? _i48.MatchChatParticipantState.fromJson(data)
+              ? _i41.ServerSupportedTranslation.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i49.GooglePlaceLocation?>()) {
-      return (data != null ? _i49.GooglePlaceLocation.fromJson(data) : null)
+    if (t == _i1.getType<_i42.MatchInPersonProof?>()) {
+      return (data != null ? _i42.MatchInPersonProof.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i50.Location?>()) {
-      return (data != null ? _i50.Location.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i43.PlayedMatch?>()) {
+      return (data != null ? _i43.PlayedMatch.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i51.ManualInputLocation?>()) {
-      return (data != null ? _i51.ManualInputLocation.fromJson(data) : null)
+    if (t == _i1.getType<_i44.PlayerInMatch?>()) {
+      return (data != null ? _i44.PlayerInMatch.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i45.PlayerPerfomanceInMatch?>()) {
+      return (data != null ? _i45.PlayerPerfomanceInMatch.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i52.MatchSchedulePairingAttempt?>()) {
+    if (t == _i1.getType<_i46.MatchChatHistory?>()) {
+      return (data != null ? _i46.MatchChatHistory.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i47.MatchChatMessage?>()) {
+      return (data != null ? _i47.MatchChatMessage.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i48.MatchChatMessageType?>()) {
+      return (data != null ? _i48.MatchChatMessageType.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i49.MatchChatMessageUiType?>()) {
+      return (data != null ? _i49.MatchChatMessageUiType.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i50.MatchChatParticipantState?>()) {
       return (data != null
-              ? _i52.MatchSchedulePairingAttempt.fromJson(data)
+              ? _i50.MatchChatParticipantState.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i53.MatchScheduleNotPlayedReason?>()) {
+    if (t == _i1.getType<_i51.GooglePlaceLocation?>()) {
+      return (data != null ? _i51.GooglePlaceLocation.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i52.Location?>()) {
+      return (data != null ? _i52.Location.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i53.ManualInputLocation?>()) {
+      return (data != null ? _i53.ManualInputLocation.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i54.MatchSchedulePairingAttempt?>()) {
       return (data != null
-              ? _i53.MatchScheduleNotPlayedReason.fromJson(data)
+              ? _i54.MatchSchedulePairingAttempt.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i54.MatchScheduleStatus?>()) {
-      return (data != null ? _i54.MatchScheduleStatus.fromJson(data) : null)
+    if (t == _i1.getType<_i55.MatchScheduleNotPlayedReason?>()) {
+      return (data != null
+              ? _i55.MatchScheduleNotPlayedReason.fromJson(data)
+              : null)
           as T;
     }
-    if (t == _i1.getType<_i55.MatchSubscription?>()) {
-      return (data != null ? _i55.MatchSubscription.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i56.AccountDeletionRequest?>()) {
-      return (data != null ? _i56.AccountDeletionRequest.fromJson(data) : null)
+    if (t == _i1.getType<_i56.MatchScheduleStatus?>()) {
+      return (data != null ? _i56.MatchScheduleStatus.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i57.PaginationMetadata?>()) {
-      return (data != null ? _i57.PaginationMetadata.fromJson(data) : null)
+    if (t == _i1.getType<_i57.MatchSubscription?>()) {
+      return (data != null ? _i57.MatchSubscription.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i58.AccountDeletionRequest?>()) {
+      return (data != null ? _i58.AccountDeletionRequest.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i58.RootHubException?>()) {
-      return (data != null ? _i58.RootHubException.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i59.WebAnalyticsClick?>()) {
-      return (data != null ? _i59.WebAnalyticsClick.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i60.WebAnalyticsDeviceType?>()) {
-      return (data != null ? _i60.WebAnalyticsDeviceType.fromJson(data) : null)
+    if (t == _i1.getType<_i59.PaginationMetadata?>()) {
+      return (data != null ? _i59.PaginationMetadata.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i61.WebIpLocationCache?>()) {
-      return (data != null ? _i61.WebIpLocationCache.fromJson(data) : null)
+    if (t == _i1.getType<_i60.RootHubException?>()) {
+      return (data != null ? _i60.RootHubException.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i61.WebAnalyticsClick?>()) {
+      return (data != null ? _i61.WebAnalyticsClick.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i62.WebAnalyticsDeviceType?>()) {
+      return (data != null ? _i62.WebAnalyticsDeviceType.fromJson(data) : null)
           as T;
     }
-    if (t == List<_i30.PostComment>) {
+    if (t == _i1.getType<_i63.WebIpLocationCache?>()) {
+      return (data != null ? _i63.WebIpLocationCache.fromJson(data) : null)
+          as T;
+    }
+    if (t == List<_i31.PostComment>) {
       return (data as List)
-              .map((e) => deserialize<_i30.PostComment>(e))
+              .map((e) => deserialize<_i31.PostComment>(e))
               .toList()
           as T;
     }
-    if (t == List<_i29.Post>) {
-      return (data as List).map((e) => deserialize<_i29.Post>(e)).toList() as T;
+    if (t == List<_i30.Post>) {
+      return (data as List).map((e) => deserialize<_i30.Post>(e)).toList() as T;
     }
-    if (t == List<_i55.MatchSubscription>) {
+    if (t == List<_i57.MatchSubscription>) {
       return (data as List)
-              .map((e) => deserialize<_i55.MatchSubscription>(e))
+              .map((e) => deserialize<_i57.MatchSubscription>(e))
               .toList()
           as T;
     }
-    if (t == List<_i52.MatchSchedulePairingAttempt>) {
+    if (t == List<_i54.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i52.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i54.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
@@ -2813,177 +2888,183 @@ class Protocol extends _i1.SerializationManagerServer {
               .toList()
           as T;
     }
-    if (t == List<_i46.MatchChatMessage>) {
+    if (t == List<_i47.MatchChatMessage>) {
       return (data as List)
-              .map((e) => deserialize<_i46.MatchChatMessage>(e))
+              .map((e) => deserialize<_i47.MatchChatMessage>(e))
               .toList()
           as T;
     }
-    if (t == List<_i17.MatchChatSenderProfile>) {
+    if (t == List<_i18.MatchChatSenderProfile>) {
       return (data as List)
-              .map((e) => deserialize<_i17.MatchChatSenderProfile>(e))
+              .map((e) => deserialize<_i18.MatchChatSenderProfile>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i15.MatchChatParticipantPresence>) {
+      return (data as List)
+              .map((e) => deserialize<_i15.MatchChatParticipantPresence>(e))
               .toList()
           as T;
     }
     if (t == List<int>) {
       return (data as List).map((e) => deserialize<int>(e)).toList() as T;
     }
-    if (t == List<_i15.MatchChatPlayedMatchPlayer>) {
+    if (t == List<_i16.MatchChatPlayedMatchPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i15.MatchChatPlayedMatchPlayer>(e))
+              .map((e) => deserialize<_i16.MatchChatPlayedMatchPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i50.Location>) {
-      return (data as List).map((e) => deserialize<_i50.Location>(e)).toList()
+    if (t == List<_i52.Location>) {
+      return (data as List).map((e) => deserialize<_i52.Location>(e)).toList()
           as T;
     }
-    if (t == List<_i20.MatchSchedulePlayerSnapshot>) {
+    if (t == List<_i21.MatchSchedulePlayerSnapshot>) {
       return (data as List)
-              .map((e) => deserialize<_i20.MatchSchedulePlayerSnapshot>(e))
+              .map((e) => deserialize<_i21.MatchSchedulePlayerSnapshot>(e))
               .toList()
           as T;
     }
-    if (t == List<_i24.WebAnalyticsClickItem>) {
+    if (t == List<_i25.WebAnalyticsClickItem>) {
       return (data as List)
-              .map((e) => deserialize<_i24.WebAnalyticsClickItem>(e))
+              .map((e) => deserialize<_i25.WebAnalyticsClickItem>(e))
               .toList()
           as T;
     }
-    if (t == List<_i27.WebAnalyticsMetricItem>) {
+    if (t == List<_i28.WebAnalyticsMetricItem>) {
       return (data as List)
-              .map((e) => deserialize<_i27.WebAnalyticsMetricItem>(e))
+              .map((e) => deserialize<_i28.WebAnalyticsMetricItem>(e))
               .toList()
           as T;
     }
-    if (t == List<_i28.WebAnalyticsTimelinePoint>) {
+    if (t == List<_i29.WebAnalyticsTimelinePoint>) {
       return (data as List)
-              .map((e) => deserialize<_i28.WebAnalyticsTimelinePoint>(e))
+              .map((e) => deserialize<_i29.WebAnalyticsTimelinePoint>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i30.PostComment>?>()) {
+    if (t == _i1.getType<List<_i31.PostComment>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i30.PostComment>(e))
+                    .map((e) => deserialize<_i31.PostComment>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i44.PlayerPerfomanceInMatch>) {
+    if (t == List<_i45.PlayerPerfomanceInMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i44.PlayerPerfomanceInMatch>(e))
+              .map((e) => deserialize<_i45.PlayerPerfomanceInMatch>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i44.PlayerPerfomanceInMatch>?>()) {
+    if (t == _i1.getType<List<_i45.PlayerPerfomanceInMatch>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i44.PlayerPerfomanceInMatch>(e))
+                    .map((e) => deserialize<_i45.PlayerPerfomanceInMatch>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i43.PlayerInMatch>) {
+    if (t == List<_i44.PlayerInMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i43.PlayerInMatch>(e))
+              .map((e) => deserialize<_i44.PlayerInMatch>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i43.PlayerInMatch>?>()) {
+    if (t == _i1.getType<List<_i44.PlayerInMatch>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i43.PlayerInMatch>(e))
+                    .map((e) => deserialize<_i44.PlayerInMatch>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == _i1.getType<List<_i29.Post>?>()) {
+    if (t == _i1.getType<List<_i30.Post>?>()) {
       return (data != null
-              ? (data as List).map((e) => deserialize<_i29.Post>(e)).toList()
+              ? (data as List).map((e) => deserialize<_i30.Post>(e)).toList()
               : null)
           as T;
     }
-    if (t == _i1.getType<List<_i52.MatchSchedulePairingAttempt>?>()) {
+    if (t == _i1.getType<List<_i54.MatchSchedulePairingAttempt>?>()) {
       return (data != null
               ? (data as List)
                     .map(
-                      (e) => deserialize<_i52.MatchSchedulePairingAttempt>(e),
+                      (e) => deserialize<_i54.MatchSchedulePairingAttempt>(e),
                     )
                     .toList()
               : null)
           as T;
     }
-    if (t == _i1.getType<List<_i55.MatchSubscription>?>()) {
+    if (t == _i1.getType<List<_i57.MatchSubscription>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i55.MatchSubscription>(e))
+                    .map((e) => deserialize<_i57.MatchSubscription>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == _i1.getType<List<_i46.MatchChatMessage>?>()) {
+    if (t == _i1.getType<List<_i47.MatchChatMessage>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i46.MatchChatMessage>(e))
+                    .map((e) => deserialize<_i47.MatchChatMessage>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i48.MatchChatParticipantState>) {
+    if (t == List<_i50.MatchChatParticipantState>) {
       return (data as List)
-              .map((e) => deserialize<_i48.MatchChatParticipantState>(e))
+              .map((e) => deserialize<_i50.MatchChatParticipantState>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i48.MatchChatParticipantState>?>()) {
+    if (t == _i1.getType<List<_i50.MatchChatParticipantState>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i48.MatchChatParticipantState>(e))
+                    .map((e) => deserialize<_i50.MatchChatParticipantState>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i38.PlayerPushNotificationToken>) {
+    if (t == List<_i39.PlayerPushNotificationToken>) {
       return (data as List)
-              .map((e) => deserialize<_i38.PlayerPushNotificationToken>(e))
+              .map((e) => deserialize<_i39.PlayerPushNotificationToken>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i38.PlayerPushNotificationToken>?>()) {
+    if (t == _i1.getType<List<_i39.PlayerPushNotificationToken>?>()) {
       return (data != null
               ? (data as List)
                     .map(
-                      (e) => deserialize<_i38.PlayerPushNotificationToken>(e),
+                      (e) => deserialize<_i39.PlayerPushNotificationToken>(e),
                     )
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i51.ManualInputLocation>) {
+    if (t == List<_i53.ManualInputLocation>) {
       return (data as List)
-              .map((e) => deserialize<_i51.ManualInputLocation>(e))
+              .map((e) => deserialize<_i53.ManualInputLocation>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i51.ManualInputLocation>?>()) {
+    if (t == _i1.getType<List<_i53.ManualInputLocation>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i51.ManualInputLocation>(e))
+                    .map((e) => deserialize<_i53.ManualInputLocation>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i31.AnonymousPlayer>) {
+    if (t == List<_i32.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i31.AnonymousPlayer>(e))
+              .map((e) => deserialize<_i32.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i31.AnonymousPlayer>?>()) {
+    if (t == _i1.getType<List<_i32.AnonymousPlayer>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i31.AnonymousPlayer>(e))
+                    .map((e) => deserialize<_i32.AnonymousPlayer>(e))
                     .toList()
               : null)
           as T;
@@ -2997,52 +3078,52 @@ class Protocol extends _i1.SerializationManagerServer {
               : null)
           as T;
     }
-    if (t == List<_i42.PlayedMatch>) {
+    if (t == List<_i43.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i42.PlayedMatch>(e))
+              .map((e) => deserialize<_i43.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == _i1.getType<List<_i42.PlayedMatch>?>()) {
+    if (t == _i1.getType<List<_i43.PlayedMatch>?>()) {
       return (data != null
               ? (data as List)
-                    .map((e) => deserialize<_i42.PlayedMatch>(e))
+                    .map((e) => deserialize<_i43.PlayedMatch>(e))
                     .toList()
               : null)
           as T;
     }
-    if (t == List<_i62.AnonymousPlayer>) {
+    if (t == List<_i64.AnonymousPlayer>) {
       return (data as List)
-              .map((e) => deserialize<_i62.AnonymousPlayer>(e))
+              .map((e) => deserialize<_i64.AnonymousPlayer>(e))
               .toList()
           as T;
     }
-    if (t == List<_i63.PlayedMatch>) {
+    if (t == List<_i65.PlayedMatch>) {
       return (data as List)
-              .map((e) => deserialize<_i63.PlayedMatch>(e))
+              .map((e) => deserialize<_i65.PlayedMatch>(e))
               .toList()
           as T;
     }
-    if (t == List<_i64.MatchSchedulePairingAttempt>) {
+    if (t == List<_i66.MatchSchedulePairingAttempt>) {
       return (data as List)
-              .map((e) => deserialize<_i64.MatchSchedulePairingAttempt>(e))
+              .map((e) => deserialize<_i66.MatchSchedulePairingAttempt>(e))
               .toList()
           as T;
     }
-    if (t == List<_i65.PlayerMatchResultInput>) {
+    if (t == List<_i67.PlayerMatchResultInput>) {
       return (data as List)
-              .map((e) => deserialize<_i65.PlayerMatchResultInput>(e))
+              .map((e) => deserialize<_i67.PlayerMatchResultInput>(e))
               .toList()
           as T;
     }
-    if (t == List<_i66.RegisteredPlayerSearchResult>) {
+    if (t == List<_i68.RegisteredPlayerSearchResult>) {
       return (data as List)
-              .map((e) => deserialize<_i66.RegisteredPlayerSearchResult>(e))
+              .map((e) => deserialize<_i68.RegisteredPlayerSearchResult>(e))
               .toList()
           as T;
     }
-    if (t == List<_i67.Location>) {
-      return (data as List).map((e) => deserialize<_i67.Location>(e)).toList()
+    if (t == List<_i69.Location>) {
+      return (data as List).map((e) => deserialize<_i69.Location>(e)).toList()
           as T;
     }
     try {
@@ -3069,53 +3150,55 @@ class Protocol extends _i1.SerializationManagerServer {
       _i12.MatchChatActivityChatItem => 'MatchChatActivityChatItem',
       _i13.MatchChatActivityOverview => 'MatchChatActivityOverview',
       _i14.MatchChatMessagesPagination => 'MatchChatMessagesPagination',
-      _i15.MatchChatPlayedMatchPlayer => 'MatchChatPlayedMatchPlayer',
-      _i16.MatchChatPlayedMatchSummary => 'MatchChatPlayedMatchSummary',
-      _i17.MatchChatSenderProfile => 'MatchChatSenderProfile',
-      _i18.LocationPagination => 'LocationPagination',
-      _i19.MatchScheduleInfo => 'MatchScheduleInfo',
-      _i20.MatchSchedulePlayerSnapshot => 'MatchSchedulePlayerSnapshot',
-      _i21.SubscribedMatchesPagination => 'SubscribedMatchesPagination',
-      _i22.PlatformStats => 'PlatformStats',
-      _i23.PlayerStats => 'PlayerStats',
-      _i24.WebAnalyticsClickItem => 'WebAnalyticsClickItem',
-      _i25.WebAnalyticsClicksPagination => 'WebAnalyticsClicksPagination',
-      _i26.WebAnalyticsDashboard => 'WebAnalyticsDashboard',
-      _i27.WebAnalyticsMetricItem => 'WebAnalyticsMetricItem',
-      _i28.WebAnalyticsTimelinePoint => 'WebAnalyticsTimelinePoint',
-      _i29.Post => 'Post',
-      _i30.PostComment => 'PostComment',
-      _i31.AnonymousPlayer => 'AnonymousPlayer',
-      _i32.Country => 'Country',
-      _i33.Faction => 'Faction',
-      _i34.GeoLocation => 'GeoLocation',
-      _i35.Language => 'Language',
-      _i36.MatchPodium => 'MatchPodium',
-      _i37.PlayerData => 'PlayerData',
-      _i38.PlayerPushNotificationToken => 'PlayerPushNotificationToken',
-      _i39.PushNotificationPlatform => 'PushNotificationPlatform',
-      _i40.ServerSupportedTranslation => 'ServerSupportedTranslation',
-      _i41.MatchInPersonProof => 'MatchInPersonProof',
-      _i42.PlayedMatch => 'PlayedMatch',
-      _i43.PlayerInMatch => 'PlayerInMatch',
-      _i44.PlayerPerfomanceInMatch => 'PlayerPerfomanceInMatch',
-      _i45.MatchChatHistory => 'MatchChatHistory',
-      _i46.MatchChatMessage => 'MatchChatMessage',
-      _i47.MatchChatMessageType => 'MatchChatMessageType',
-      _i48.MatchChatParticipantState => 'MatchChatParticipantState',
-      _i49.GooglePlaceLocation => 'GooglePlaceLocation',
-      _i50.Location => 'Location',
-      _i51.ManualInputLocation => 'ManualInputLocation',
-      _i52.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
-      _i53.MatchScheduleNotPlayedReason => 'MatchScheduleNotPlayedReason',
-      _i54.MatchScheduleStatus => 'MatchScheduleStatus',
-      _i55.MatchSubscription => 'MatchSubscription',
-      _i56.AccountDeletionRequest => 'AccountDeletionRequest',
-      _i57.PaginationMetadata => 'PaginationMetadata',
-      _i58.RootHubException => 'RootHubException',
-      _i59.WebAnalyticsClick => 'WebAnalyticsClick',
-      _i60.WebAnalyticsDeviceType => 'WebAnalyticsDeviceType',
-      _i61.WebIpLocationCache => 'WebIpLocationCache',
+      _i15.MatchChatParticipantPresence => 'MatchChatParticipantPresence',
+      _i16.MatchChatPlayedMatchPlayer => 'MatchChatPlayedMatchPlayer',
+      _i17.MatchChatPlayedMatchSummary => 'MatchChatPlayedMatchSummary',
+      _i18.MatchChatSenderProfile => 'MatchChatSenderProfile',
+      _i19.LocationPagination => 'LocationPagination',
+      _i20.MatchScheduleInfo => 'MatchScheduleInfo',
+      _i21.MatchSchedulePlayerSnapshot => 'MatchSchedulePlayerSnapshot',
+      _i22.SubscribedMatchesPagination => 'SubscribedMatchesPagination',
+      _i23.PlatformStats => 'PlatformStats',
+      _i24.PlayerStats => 'PlayerStats',
+      _i25.WebAnalyticsClickItem => 'WebAnalyticsClickItem',
+      _i26.WebAnalyticsClicksPagination => 'WebAnalyticsClicksPagination',
+      _i27.WebAnalyticsDashboard => 'WebAnalyticsDashboard',
+      _i28.WebAnalyticsMetricItem => 'WebAnalyticsMetricItem',
+      _i29.WebAnalyticsTimelinePoint => 'WebAnalyticsTimelinePoint',
+      _i30.Post => 'Post',
+      _i31.PostComment => 'PostComment',
+      _i32.AnonymousPlayer => 'AnonymousPlayer',
+      _i33.Country => 'Country',
+      _i34.Faction => 'Faction',
+      _i35.GeoLocation => 'GeoLocation',
+      _i36.Language => 'Language',
+      _i37.MatchPodium => 'MatchPodium',
+      _i38.PlayerData => 'PlayerData',
+      _i39.PlayerPushNotificationToken => 'PlayerPushNotificationToken',
+      _i40.PushNotificationPlatform => 'PushNotificationPlatform',
+      _i41.ServerSupportedTranslation => 'ServerSupportedTranslation',
+      _i42.MatchInPersonProof => 'MatchInPersonProof',
+      _i43.PlayedMatch => 'PlayedMatch',
+      _i44.PlayerInMatch => 'PlayerInMatch',
+      _i45.PlayerPerfomanceInMatch => 'PlayerPerfomanceInMatch',
+      _i46.MatchChatHistory => 'MatchChatHistory',
+      _i47.MatchChatMessage => 'MatchChatMessage',
+      _i48.MatchChatMessageType => 'MatchChatMessageType',
+      _i49.MatchChatMessageUiType => 'MatchChatMessageUiType',
+      _i50.MatchChatParticipantState => 'MatchChatParticipantState',
+      _i51.GooglePlaceLocation => 'GooglePlaceLocation',
+      _i52.Location => 'Location',
+      _i53.ManualInputLocation => 'ManualInputLocation',
+      _i54.MatchSchedulePairingAttempt => 'MatchSchedulePairingAttempt',
+      _i55.MatchScheduleNotPlayedReason => 'MatchScheduleNotPlayedReason',
+      _i56.MatchScheduleStatus => 'MatchScheduleStatus',
+      _i57.MatchSubscription => 'MatchSubscription',
+      _i58.AccountDeletionRequest => 'AccountDeletionRequest',
+      _i59.PaginationMetadata => 'PaginationMetadata',
+      _i60.RootHubException => 'RootHubException',
+      _i61.WebAnalyticsClick => 'WebAnalyticsClick',
+      _i62.WebAnalyticsDeviceType => 'WebAnalyticsDeviceType',
+      _i63.WebIpLocationCache => 'WebIpLocationCache',
       _ => null,
     };
   }
@@ -3150,99 +3233,103 @@ class Protocol extends _i1.SerializationManagerServer {
         return 'MatchChatActivityOverview';
       case _i14.MatchChatMessagesPagination():
         return 'MatchChatMessagesPagination';
-      case _i15.MatchChatPlayedMatchPlayer():
+      case _i15.MatchChatParticipantPresence():
+        return 'MatchChatParticipantPresence';
+      case _i16.MatchChatPlayedMatchPlayer():
         return 'MatchChatPlayedMatchPlayer';
-      case _i16.MatchChatPlayedMatchSummary():
+      case _i17.MatchChatPlayedMatchSummary():
         return 'MatchChatPlayedMatchSummary';
-      case _i17.MatchChatSenderProfile():
+      case _i18.MatchChatSenderProfile():
         return 'MatchChatSenderProfile';
-      case _i18.LocationPagination():
+      case _i19.LocationPagination():
         return 'LocationPagination';
-      case _i19.MatchScheduleInfo():
+      case _i20.MatchScheduleInfo():
         return 'MatchScheduleInfo';
-      case _i20.MatchSchedulePlayerSnapshot():
+      case _i21.MatchSchedulePlayerSnapshot():
         return 'MatchSchedulePlayerSnapshot';
-      case _i21.SubscribedMatchesPagination():
+      case _i22.SubscribedMatchesPagination():
         return 'SubscribedMatchesPagination';
-      case _i22.PlatformStats():
+      case _i23.PlatformStats():
         return 'PlatformStats';
-      case _i23.PlayerStats():
+      case _i24.PlayerStats():
         return 'PlayerStats';
-      case _i24.WebAnalyticsClickItem():
+      case _i25.WebAnalyticsClickItem():
         return 'WebAnalyticsClickItem';
-      case _i25.WebAnalyticsClicksPagination():
+      case _i26.WebAnalyticsClicksPagination():
         return 'WebAnalyticsClicksPagination';
-      case _i26.WebAnalyticsDashboard():
+      case _i27.WebAnalyticsDashboard():
         return 'WebAnalyticsDashboard';
-      case _i27.WebAnalyticsMetricItem():
+      case _i28.WebAnalyticsMetricItem():
         return 'WebAnalyticsMetricItem';
-      case _i28.WebAnalyticsTimelinePoint():
+      case _i29.WebAnalyticsTimelinePoint():
         return 'WebAnalyticsTimelinePoint';
-      case _i29.Post():
+      case _i30.Post():
         return 'Post';
-      case _i30.PostComment():
+      case _i31.PostComment():
         return 'PostComment';
-      case _i31.AnonymousPlayer():
+      case _i32.AnonymousPlayer():
         return 'AnonymousPlayer';
-      case _i32.Country():
+      case _i33.Country():
         return 'Country';
-      case _i33.Faction():
+      case _i34.Faction():
         return 'Faction';
-      case _i34.GeoLocation():
+      case _i35.GeoLocation():
         return 'GeoLocation';
-      case _i35.Language():
+      case _i36.Language():
         return 'Language';
-      case _i36.MatchPodium():
+      case _i37.MatchPodium():
         return 'MatchPodium';
-      case _i37.PlayerData():
+      case _i38.PlayerData():
         return 'PlayerData';
-      case _i38.PlayerPushNotificationToken():
+      case _i39.PlayerPushNotificationToken():
         return 'PlayerPushNotificationToken';
-      case _i39.PushNotificationPlatform():
+      case _i40.PushNotificationPlatform():
         return 'PushNotificationPlatform';
-      case _i40.ServerSupportedTranslation():
+      case _i41.ServerSupportedTranslation():
         return 'ServerSupportedTranslation';
-      case _i41.MatchInPersonProof():
+      case _i42.MatchInPersonProof():
         return 'MatchInPersonProof';
-      case _i42.PlayedMatch():
+      case _i43.PlayedMatch():
         return 'PlayedMatch';
-      case _i43.PlayerInMatch():
+      case _i44.PlayerInMatch():
         return 'PlayerInMatch';
-      case _i44.PlayerPerfomanceInMatch():
+      case _i45.PlayerPerfomanceInMatch():
         return 'PlayerPerfomanceInMatch';
-      case _i45.MatchChatHistory():
+      case _i46.MatchChatHistory():
         return 'MatchChatHistory';
-      case _i46.MatchChatMessage():
+      case _i47.MatchChatMessage():
         return 'MatchChatMessage';
-      case _i47.MatchChatMessageType():
+      case _i48.MatchChatMessageType():
         return 'MatchChatMessageType';
-      case _i48.MatchChatParticipantState():
+      case _i49.MatchChatMessageUiType():
+        return 'MatchChatMessageUiType';
+      case _i50.MatchChatParticipantState():
         return 'MatchChatParticipantState';
-      case _i49.GooglePlaceLocation():
+      case _i51.GooglePlaceLocation():
         return 'GooglePlaceLocation';
-      case _i50.Location():
+      case _i52.Location():
         return 'Location';
-      case _i51.ManualInputLocation():
+      case _i53.ManualInputLocation():
         return 'ManualInputLocation';
-      case _i52.MatchSchedulePairingAttempt():
+      case _i54.MatchSchedulePairingAttempt():
         return 'MatchSchedulePairingAttempt';
-      case _i53.MatchScheduleNotPlayedReason():
+      case _i55.MatchScheduleNotPlayedReason():
         return 'MatchScheduleNotPlayedReason';
-      case _i54.MatchScheduleStatus():
+      case _i56.MatchScheduleStatus():
         return 'MatchScheduleStatus';
-      case _i55.MatchSubscription():
+      case _i57.MatchSubscription():
         return 'MatchSubscription';
-      case _i56.AccountDeletionRequest():
+      case _i58.AccountDeletionRequest():
         return 'AccountDeletionRequest';
-      case _i57.PaginationMetadata():
+      case _i59.PaginationMetadata():
         return 'PaginationMetadata';
-      case _i58.RootHubException():
+      case _i60.RootHubException():
         return 'RootHubException';
-      case _i59.WebAnalyticsClick():
+      case _i61.WebAnalyticsClick():
         return 'WebAnalyticsClick';
-      case _i60.WebAnalyticsDeviceType():
+      case _i62.WebAnalyticsDeviceType():
         return 'WebAnalyticsDeviceType';
-      case _i61.WebIpLocationCache():
+      case _i63.WebIpLocationCache():
         return 'WebIpLocationCache';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -3296,146 +3383,152 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'MatchChatMessagesPagination') {
       return deserialize<_i14.MatchChatMessagesPagination>(data['data']);
     }
+    if (dataClassName == 'MatchChatParticipantPresence') {
+      return deserialize<_i15.MatchChatParticipantPresence>(data['data']);
+    }
     if (dataClassName == 'MatchChatPlayedMatchPlayer') {
-      return deserialize<_i15.MatchChatPlayedMatchPlayer>(data['data']);
+      return deserialize<_i16.MatchChatPlayedMatchPlayer>(data['data']);
     }
     if (dataClassName == 'MatchChatPlayedMatchSummary') {
-      return deserialize<_i16.MatchChatPlayedMatchSummary>(data['data']);
+      return deserialize<_i17.MatchChatPlayedMatchSummary>(data['data']);
     }
     if (dataClassName == 'MatchChatSenderProfile') {
-      return deserialize<_i17.MatchChatSenderProfile>(data['data']);
+      return deserialize<_i18.MatchChatSenderProfile>(data['data']);
     }
     if (dataClassName == 'LocationPagination') {
-      return deserialize<_i18.LocationPagination>(data['data']);
+      return deserialize<_i19.LocationPagination>(data['data']);
     }
     if (dataClassName == 'MatchScheduleInfo') {
-      return deserialize<_i19.MatchScheduleInfo>(data['data']);
+      return deserialize<_i20.MatchScheduleInfo>(data['data']);
     }
     if (dataClassName == 'MatchSchedulePlayerSnapshot') {
-      return deserialize<_i20.MatchSchedulePlayerSnapshot>(data['data']);
+      return deserialize<_i21.MatchSchedulePlayerSnapshot>(data['data']);
     }
     if (dataClassName == 'SubscribedMatchesPagination') {
-      return deserialize<_i21.SubscribedMatchesPagination>(data['data']);
+      return deserialize<_i22.SubscribedMatchesPagination>(data['data']);
     }
     if (dataClassName == 'PlatformStats') {
-      return deserialize<_i22.PlatformStats>(data['data']);
+      return deserialize<_i23.PlatformStats>(data['data']);
     }
     if (dataClassName == 'PlayerStats') {
-      return deserialize<_i23.PlayerStats>(data['data']);
+      return deserialize<_i24.PlayerStats>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsClickItem') {
-      return deserialize<_i24.WebAnalyticsClickItem>(data['data']);
+      return deserialize<_i25.WebAnalyticsClickItem>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsClicksPagination') {
-      return deserialize<_i25.WebAnalyticsClicksPagination>(data['data']);
+      return deserialize<_i26.WebAnalyticsClicksPagination>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsDashboard') {
-      return deserialize<_i26.WebAnalyticsDashboard>(data['data']);
+      return deserialize<_i27.WebAnalyticsDashboard>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsMetricItem') {
-      return deserialize<_i27.WebAnalyticsMetricItem>(data['data']);
+      return deserialize<_i28.WebAnalyticsMetricItem>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsTimelinePoint') {
-      return deserialize<_i28.WebAnalyticsTimelinePoint>(data['data']);
+      return deserialize<_i29.WebAnalyticsTimelinePoint>(data['data']);
     }
     if (dataClassName == 'Post') {
-      return deserialize<_i29.Post>(data['data']);
+      return deserialize<_i30.Post>(data['data']);
     }
     if (dataClassName == 'PostComment') {
-      return deserialize<_i30.PostComment>(data['data']);
+      return deserialize<_i31.PostComment>(data['data']);
     }
     if (dataClassName == 'AnonymousPlayer') {
-      return deserialize<_i31.AnonymousPlayer>(data['data']);
+      return deserialize<_i32.AnonymousPlayer>(data['data']);
     }
     if (dataClassName == 'Country') {
-      return deserialize<_i32.Country>(data['data']);
+      return deserialize<_i33.Country>(data['data']);
     }
     if (dataClassName == 'Faction') {
-      return deserialize<_i33.Faction>(data['data']);
+      return deserialize<_i34.Faction>(data['data']);
     }
     if (dataClassName == 'GeoLocation') {
-      return deserialize<_i34.GeoLocation>(data['data']);
+      return deserialize<_i35.GeoLocation>(data['data']);
     }
     if (dataClassName == 'Language') {
-      return deserialize<_i35.Language>(data['data']);
+      return deserialize<_i36.Language>(data['data']);
     }
     if (dataClassName == 'MatchPodium') {
-      return deserialize<_i36.MatchPodium>(data['data']);
+      return deserialize<_i37.MatchPodium>(data['data']);
     }
     if (dataClassName == 'PlayerData') {
-      return deserialize<_i37.PlayerData>(data['data']);
+      return deserialize<_i38.PlayerData>(data['data']);
     }
     if (dataClassName == 'PlayerPushNotificationToken') {
-      return deserialize<_i38.PlayerPushNotificationToken>(data['data']);
+      return deserialize<_i39.PlayerPushNotificationToken>(data['data']);
     }
     if (dataClassName == 'PushNotificationPlatform') {
-      return deserialize<_i39.PushNotificationPlatform>(data['data']);
+      return deserialize<_i40.PushNotificationPlatform>(data['data']);
     }
     if (dataClassName == 'ServerSupportedTranslation') {
-      return deserialize<_i40.ServerSupportedTranslation>(data['data']);
+      return deserialize<_i41.ServerSupportedTranslation>(data['data']);
     }
     if (dataClassName == 'MatchInPersonProof') {
-      return deserialize<_i41.MatchInPersonProof>(data['data']);
+      return deserialize<_i42.MatchInPersonProof>(data['data']);
     }
     if (dataClassName == 'PlayedMatch') {
-      return deserialize<_i42.PlayedMatch>(data['data']);
+      return deserialize<_i43.PlayedMatch>(data['data']);
     }
     if (dataClassName == 'PlayerInMatch') {
-      return deserialize<_i43.PlayerInMatch>(data['data']);
+      return deserialize<_i44.PlayerInMatch>(data['data']);
     }
     if (dataClassName == 'PlayerPerfomanceInMatch') {
-      return deserialize<_i44.PlayerPerfomanceInMatch>(data['data']);
+      return deserialize<_i45.PlayerPerfomanceInMatch>(data['data']);
     }
     if (dataClassName == 'MatchChatHistory') {
-      return deserialize<_i45.MatchChatHistory>(data['data']);
+      return deserialize<_i46.MatchChatHistory>(data['data']);
     }
     if (dataClassName == 'MatchChatMessage') {
-      return deserialize<_i46.MatchChatMessage>(data['data']);
+      return deserialize<_i47.MatchChatMessage>(data['data']);
     }
     if (dataClassName == 'MatchChatMessageType') {
-      return deserialize<_i47.MatchChatMessageType>(data['data']);
+      return deserialize<_i48.MatchChatMessageType>(data['data']);
+    }
+    if (dataClassName == 'MatchChatMessageUiType') {
+      return deserialize<_i49.MatchChatMessageUiType>(data['data']);
     }
     if (dataClassName == 'MatchChatParticipantState') {
-      return deserialize<_i48.MatchChatParticipantState>(data['data']);
+      return deserialize<_i50.MatchChatParticipantState>(data['data']);
     }
     if (dataClassName == 'GooglePlaceLocation') {
-      return deserialize<_i49.GooglePlaceLocation>(data['data']);
+      return deserialize<_i51.GooglePlaceLocation>(data['data']);
     }
     if (dataClassName == 'Location') {
-      return deserialize<_i50.Location>(data['data']);
+      return deserialize<_i52.Location>(data['data']);
     }
     if (dataClassName == 'ManualInputLocation') {
-      return deserialize<_i51.ManualInputLocation>(data['data']);
+      return deserialize<_i53.ManualInputLocation>(data['data']);
     }
     if (dataClassName == 'MatchSchedulePairingAttempt') {
-      return deserialize<_i52.MatchSchedulePairingAttempt>(data['data']);
+      return deserialize<_i54.MatchSchedulePairingAttempt>(data['data']);
     }
     if (dataClassName == 'MatchScheduleNotPlayedReason') {
-      return deserialize<_i53.MatchScheduleNotPlayedReason>(data['data']);
+      return deserialize<_i55.MatchScheduleNotPlayedReason>(data['data']);
     }
     if (dataClassName == 'MatchScheduleStatus') {
-      return deserialize<_i54.MatchScheduleStatus>(data['data']);
+      return deserialize<_i56.MatchScheduleStatus>(data['data']);
     }
     if (dataClassName == 'MatchSubscription') {
-      return deserialize<_i55.MatchSubscription>(data['data']);
+      return deserialize<_i57.MatchSubscription>(data['data']);
     }
     if (dataClassName == 'AccountDeletionRequest') {
-      return deserialize<_i56.AccountDeletionRequest>(data['data']);
+      return deserialize<_i58.AccountDeletionRequest>(data['data']);
     }
     if (dataClassName == 'PaginationMetadata') {
-      return deserialize<_i57.PaginationMetadata>(data['data']);
+      return deserialize<_i59.PaginationMetadata>(data['data']);
     }
     if (dataClassName == 'RootHubException') {
-      return deserialize<_i58.RootHubException>(data['data']);
+      return deserialize<_i60.RootHubException>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsClick') {
-      return deserialize<_i59.WebAnalyticsClick>(data['data']);
+      return deserialize<_i61.WebAnalyticsClick>(data['data']);
     }
     if (dataClassName == 'WebAnalyticsDeviceType') {
-      return deserialize<_i60.WebAnalyticsDeviceType>(data['data']);
+      return deserialize<_i62.WebAnalyticsDeviceType>(data['data']);
     }
     if (dataClassName == 'WebIpLocationCache') {
-      return deserialize<_i61.WebIpLocationCache>(data['data']);
+      return deserialize<_i63.WebIpLocationCache>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -3473,48 +3566,48 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i29.Post:
-        return _i29.Post.t;
-      case _i30.PostComment:
-        return _i30.PostComment.t;
-      case _i31.AnonymousPlayer:
-        return _i31.AnonymousPlayer.t;
-      case _i34.GeoLocation:
-        return _i34.GeoLocation.t;
-      case _i37.PlayerData:
-        return _i37.PlayerData.t;
-      case _i38.PlayerPushNotificationToken:
-        return _i38.PlayerPushNotificationToken.t;
-      case _i41.MatchInPersonProof:
-        return _i41.MatchInPersonProof.t;
-      case _i42.PlayedMatch:
-        return _i42.PlayedMatch.t;
-      case _i43.PlayerInMatch:
-        return _i43.PlayerInMatch.t;
-      case _i44.PlayerPerfomanceInMatch:
-        return _i44.PlayerPerfomanceInMatch.t;
-      case _i45.MatchChatHistory:
-        return _i45.MatchChatHistory.t;
-      case _i46.MatchChatMessage:
-        return _i46.MatchChatMessage.t;
-      case _i48.MatchChatParticipantState:
-        return _i48.MatchChatParticipantState.t;
-      case _i49.GooglePlaceLocation:
-        return _i49.GooglePlaceLocation.t;
-      case _i50.Location:
-        return _i50.Location.t;
-      case _i51.ManualInputLocation:
-        return _i51.ManualInputLocation.t;
-      case _i52.MatchSchedulePairingAttempt:
-        return _i52.MatchSchedulePairingAttempt.t;
-      case _i55.MatchSubscription:
-        return _i55.MatchSubscription.t;
-      case _i56.AccountDeletionRequest:
-        return _i56.AccountDeletionRequest.t;
-      case _i59.WebAnalyticsClick:
-        return _i59.WebAnalyticsClick.t;
-      case _i61.WebIpLocationCache:
-        return _i61.WebIpLocationCache.t;
+      case _i30.Post:
+        return _i30.Post.t;
+      case _i31.PostComment:
+        return _i31.PostComment.t;
+      case _i32.AnonymousPlayer:
+        return _i32.AnonymousPlayer.t;
+      case _i35.GeoLocation:
+        return _i35.GeoLocation.t;
+      case _i38.PlayerData:
+        return _i38.PlayerData.t;
+      case _i39.PlayerPushNotificationToken:
+        return _i39.PlayerPushNotificationToken.t;
+      case _i42.MatchInPersonProof:
+        return _i42.MatchInPersonProof.t;
+      case _i43.PlayedMatch:
+        return _i43.PlayedMatch.t;
+      case _i44.PlayerInMatch:
+        return _i44.PlayerInMatch.t;
+      case _i45.PlayerPerfomanceInMatch:
+        return _i45.PlayerPerfomanceInMatch.t;
+      case _i46.MatchChatHistory:
+        return _i46.MatchChatHistory.t;
+      case _i47.MatchChatMessage:
+        return _i47.MatchChatMessage.t;
+      case _i50.MatchChatParticipantState:
+        return _i50.MatchChatParticipantState.t;
+      case _i51.GooglePlaceLocation:
+        return _i51.GooglePlaceLocation.t;
+      case _i52.Location:
+        return _i52.Location.t;
+      case _i53.ManualInputLocation:
+        return _i53.ManualInputLocation.t;
+      case _i54.MatchSchedulePairingAttempt:
+        return _i54.MatchSchedulePairingAttempt.t;
+      case _i57.MatchSubscription:
+        return _i57.MatchSubscription.t;
+      case _i58.AccountDeletionRequest:
+        return _i58.AccountDeletionRequest.t;
+      case _i61.WebAnalyticsClick:
+        return _i61.WebAnalyticsClick.t;
+      case _i63.WebIpLocationCache:
+        return _i63.WebIpLocationCache.t;
     }
     return null;
   }

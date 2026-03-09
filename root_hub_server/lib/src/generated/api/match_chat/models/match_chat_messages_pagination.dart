@@ -13,14 +13,17 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../../../entities/match_making/chat/match_chat_message.dart' as _i2;
 import '../../../api/match_chat/models/match_chat_sender_profile.dart' as _i3;
-import '../../../entities/others/pagination_metadata.dart' as _i4;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
+import '../../../api/match_chat/models/match_chat_participant_presence.dart'
+    as _i4;
+import '../../../entities/others/pagination_metadata.dart' as _i5;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i6;
 
 abstract class MatchChatMessagesPagination
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
   MatchChatMessagesPagination._({
     required this.messages,
     required this.senderProfiles,
+    required this.participantPresence,
     required this.subscribedPlayerIds,
     required this.paginationMetadata,
   });
@@ -28,25 +31,30 @@ abstract class MatchChatMessagesPagination
   factory MatchChatMessagesPagination({
     required List<_i2.MatchChatMessage> messages,
     required List<_i3.MatchChatSenderProfile> senderProfiles,
+    required List<_i4.MatchChatParticipantPresence> participantPresence,
     required List<int> subscribedPlayerIds,
-    required _i4.PaginationMetadata paginationMetadata,
+    required _i5.PaginationMetadata paginationMetadata,
   }) = _MatchChatMessagesPaginationImpl;
 
   factory MatchChatMessagesPagination.fromJson(
     Map<String, dynamic> jsonSerialization,
   ) {
     return MatchChatMessagesPagination(
-      messages: _i5.Protocol().deserialize<List<_i2.MatchChatMessage>>(
+      messages: _i6.Protocol().deserialize<List<_i2.MatchChatMessage>>(
         jsonSerialization['messages'],
       ),
-      senderProfiles: _i5.Protocol()
+      senderProfiles: _i6.Protocol()
           .deserialize<List<_i3.MatchChatSenderProfile>>(
             jsonSerialization['senderProfiles'],
           ),
-      subscribedPlayerIds: _i5.Protocol().deserialize<List<int>>(
+      participantPresence: _i6.Protocol()
+          .deserialize<List<_i4.MatchChatParticipantPresence>>(
+            jsonSerialization['participantPresence'],
+          ),
+      subscribedPlayerIds: _i6.Protocol().deserialize<List<int>>(
         jsonSerialization['subscribedPlayerIds'],
       ),
-      paginationMetadata: _i5.Protocol().deserialize<_i4.PaginationMetadata>(
+      paginationMetadata: _i6.Protocol().deserialize<_i5.PaginationMetadata>(
         jsonSerialization['paginationMetadata'],
       ),
     );
@@ -56,9 +64,11 @@ abstract class MatchChatMessagesPagination
 
   List<_i3.MatchChatSenderProfile> senderProfiles;
 
+  List<_i4.MatchChatParticipantPresence> participantPresence;
+
   List<int> subscribedPlayerIds;
 
-  _i4.PaginationMetadata paginationMetadata;
+  _i5.PaginationMetadata paginationMetadata;
 
   /// Returns a shallow copy of this [MatchChatMessagesPagination]
   /// with some or all fields replaced by the given arguments.
@@ -66,8 +76,9 @@ abstract class MatchChatMessagesPagination
   MatchChatMessagesPagination copyWith({
     List<_i2.MatchChatMessage>? messages,
     List<_i3.MatchChatSenderProfile>? senderProfiles,
+    List<_i4.MatchChatParticipantPresence>? participantPresence,
     List<int>? subscribedPlayerIds,
-    _i4.PaginationMetadata? paginationMetadata,
+    _i5.PaginationMetadata? paginationMetadata,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -75,6 +86,9 @@ abstract class MatchChatMessagesPagination
       '__className__': 'MatchChatMessagesPagination',
       'messages': messages.toJson(valueToJson: (v) => v.toJson()),
       'senderProfiles': senderProfiles.toJson(valueToJson: (v) => v.toJson()),
+      'participantPresence': participantPresence.toJson(
+        valueToJson: (v) => v.toJson(),
+      ),
       'subscribedPlayerIds': subscribedPlayerIds.toJson(),
       'paginationMetadata': paginationMetadata.toJson(),
     };
@@ -86,6 +100,9 @@ abstract class MatchChatMessagesPagination
       '__className__': 'MatchChatMessagesPagination',
       'messages': messages.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       'senderProfiles': senderProfiles.toJson(
+        valueToJson: (v) => v.toJsonForProtocol(),
+      ),
+      'participantPresence': participantPresence.toJson(
         valueToJson: (v) => v.toJsonForProtocol(),
       ),
       'subscribedPlayerIds': subscribedPlayerIds.toJson(),
@@ -103,11 +120,13 @@ class _MatchChatMessagesPaginationImpl extends MatchChatMessagesPagination {
   _MatchChatMessagesPaginationImpl({
     required List<_i2.MatchChatMessage> messages,
     required List<_i3.MatchChatSenderProfile> senderProfiles,
+    required List<_i4.MatchChatParticipantPresence> participantPresence,
     required List<int> subscribedPlayerIds,
-    required _i4.PaginationMetadata paginationMetadata,
+    required _i5.PaginationMetadata paginationMetadata,
   }) : super._(
          messages: messages,
          senderProfiles: senderProfiles,
+         participantPresence: participantPresence,
          subscribedPlayerIds: subscribedPlayerIds,
          paginationMetadata: paginationMetadata,
        );
@@ -119,14 +138,18 @@ class _MatchChatMessagesPaginationImpl extends MatchChatMessagesPagination {
   MatchChatMessagesPagination copyWith({
     List<_i2.MatchChatMessage>? messages,
     List<_i3.MatchChatSenderProfile>? senderProfiles,
+    List<_i4.MatchChatParticipantPresence>? participantPresence,
     List<int>? subscribedPlayerIds,
-    _i4.PaginationMetadata? paginationMetadata,
+    _i5.PaginationMetadata? paginationMetadata,
   }) {
     return MatchChatMessagesPagination(
       messages: messages ?? this.messages.map((e0) => e0.copyWith()).toList(),
       senderProfiles:
           senderProfiles ??
           this.senderProfiles.map((e0) => e0.copyWith()).toList(),
+      participantPresence:
+          participantPresence ??
+          this.participantPresence.map((e0) => e0.copyWith()).toList(),
       subscribedPlayerIds:
           subscribedPlayerIds ??
           this.subscribedPlayerIds.map((e0) => e0).toList(),

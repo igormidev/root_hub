@@ -25,6 +25,7 @@ abstract class MatchChatParticipantState implements _i1.SerializableModel {
     required this.firstSeenAt,
     required this.lastOpenedAt,
     this.lastReadMessageAt,
+    this.lastTypingAt,
     int? unreadMessagesCount,
   }) : unreadMessagesCount = unreadMessagesCount ?? 0;
 
@@ -37,6 +38,7 @@ abstract class MatchChatParticipantState implements _i1.SerializableModel {
     required DateTime firstSeenAt,
     required DateTime lastOpenedAt,
     DateTime? lastReadMessageAt,
+    DateTime? lastTypingAt,
     int? unreadMessagesCount,
   }) = _MatchChatParticipantStateImpl;
 
@@ -68,6 +70,11 @@ abstract class MatchChatParticipantState implements _i1.SerializableModel {
           : _i1.DateTimeJsonExtension.fromJson(
               jsonSerialization['lastReadMessageAt'],
             ),
+      lastTypingAt: jsonSerialization['lastTypingAt'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(
+              jsonSerialization['lastTypingAt'],
+            ),
       unreadMessagesCount: jsonSerialization['unreadMessagesCount'] as int?,
     );
   }
@@ -91,6 +98,8 @@ abstract class MatchChatParticipantState implements _i1.SerializableModel {
 
   DateTime? lastReadMessageAt;
 
+  DateTime? lastTypingAt;
+
   int unreadMessagesCount;
 
   /// Returns a shallow copy of this [MatchChatParticipantState]
@@ -105,6 +114,7 @@ abstract class MatchChatParticipantState implements _i1.SerializableModel {
     DateTime? firstSeenAt,
     DateTime? lastOpenedAt,
     DateTime? lastReadMessageAt,
+    DateTime? lastTypingAt,
     int? unreadMessagesCount,
   });
   @override
@@ -121,6 +131,7 @@ abstract class MatchChatParticipantState implements _i1.SerializableModel {
       'lastOpenedAt': lastOpenedAt.toJson(),
       if (lastReadMessageAt != null)
         'lastReadMessageAt': lastReadMessageAt?.toJson(),
+      if (lastTypingAt != null) 'lastTypingAt': lastTypingAt?.toJson(),
       'unreadMessagesCount': unreadMessagesCount,
     };
   }
@@ -143,6 +154,7 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
     required DateTime firstSeenAt,
     required DateTime lastOpenedAt,
     DateTime? lastReadMessageAt,
+    DateTime? lastTypingAt,
     int? unreadMessagesCount,
   }) : super._(
          id: id,
@@ -153,6 +165,7 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
          firstSeenAt: firstSeenAt,
          lastOpenedAt: lastOpenedAt,
          lastReadMessageAt: lastReadMessageAt,
+         lastTypingAt: lastTypingAt,
          unreadMessagesCount: unreadMessagesCount,
        );
 
@@ -169,6 +182,7 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
     DateTime? firstSeenAt,
     DateTime? lastOpenedAt,
     Object? lastReadMessageAt = _Undefined,
+    Object? lastTypingAt = _Undefined,
     int? unreadMessagesCount,
   }) {
     return MatchChatParticipantState(
@@ -186,6 +200,9 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
       lastReadMessageAt: lastReadMessageAt is DateTime?
           ? lastReadMessageAt
           : this.lastReadMessageAt,
+      lastTypingAt: lastTypingAt is DateTime?
+          ? lastTypingAt
+          : this.lastTypingAt,
       unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
     );
   }

@@ -12,11 +12,13 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../../../entities/match_making/chat/match_chat_message_type.dart'
+import '../../../entities/match_making/chat/match_chat_message_ui_type.dart'
     as _i2;
-import '../../../entities/match_making/chat/match_chat_history.dart' as _i3;
-import '../../../entities/core/player_data.dart' as _i4;
-import 'package:root_hub_server/src/generated/protocol.dart' as _i5;
+import '../../../entities/match_making/chat/match_chat_message_type.dart'
+    as _i3;
+import '../../../entities/match_making/chat/match_chat_history.dart' as _i4;
+import '../../../entities/core/player_data.dart' as _i5;
+import 'package:root_hub_server/src/generated/protocol.dart' as _i6;
 
 abstract class MatchChatMessage
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -27,6 +29,12 @@ abstract class MatchChatMessage
     this.imageUrl,
     this.audioUrl,
     this.audioDurationMilliseconds,
+    this.replyToMessageId,
+    this.replyToMessagePreview,
+    this.replyToMessageUiType,
+    this.replyToMessageSenderPlayerDataId,
+    this.replyToAudioDurationMilliseconds,
+    this.reactionsJson,
     this.blurhash,
     this.imageWidth,
     this.imageHeight,
@@ -44,14 +52,20 @@ abstract class MatchChatMessage
     String? imageUrl,
     String? audioUrl,
     int? audioDurationMilliseconds,
+    int? replyToMessageId,
+    String? replyToMessagePreview,
+    _i2.MatchChatMessageUiType? replyToMessageUiType,
+    int? replyToMessageSenderPlayerDataId,
+    int? replyToAudioDurationMilliseconds,
+    String? reactionsJson,
     String? blurhash,
     int? imageWidth,
     int? imageHeight,
-    required _i2.MatchChatMessageType messageType,
+    required _i3.MatchChatMessageType messageType,
     required int matchChatHistoryId,
-    _i3.MatchChatHistory? matchChatHistory,
+    _i4.MatchChatHistory? matchChatHistory,
     required int playerDataId,
-    _i4.PlayerData? sender,
+    _i5.PlayerData? sender,
   }) = _MatchChatMessageImpl;
 
   factory MatchChatMessage.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -63,22 +77,35 @@ abstract class MatchChatMessage
       audioUrl: jsonSerialization['audioUrl'] as String?,
       audioDurationMilliseconds:
           jsonSerialization['audioDurationMilliseconds'] as int?,
+      replyToMessageId: jsonSerialization['replyToMessageId'] as int?,
+      replyToMessagePreview:
+          jsonSerialization['replyToMessagePreview'] as String?,
+      replyToMessageUiType: jsonSerialization['replyToMessageUiType'] == null
+          ? null
+          : _i2.MatchChatMessageUiType.fromJson(
+              (jsonSerialization['replyToMessageUiType'] as String),
+            ),
+      replyToMessageSenderPlayerDataId:
+          jsonSerialization['replyToMessageSenderPlayerDataId'] as int?,
+      replyToAudioDurationMilliseconds:
+          jsonSerialization['replyToAudioDurationMilliseconds'] as int?,
+      reactionsJson: jsonSerialization['reactionsJson'] as String?,
       blurhash: jsonSerialization['blurhash'] as String?,
       imageWidth: jsonSerialization['imageWidth'] as int?,
       imageHeight: jsonSerialization['imageHeight'] as int?,
-      messageType: _i2.MatchChatMessageType.fromJson(
+      messageType: _i3.MatchChatMessageType.fromJson(
         (jsonSerialization['messageType'] as String),
       ),
       matchChatHistoryId: jsonSerialization['matchChatHistoryId'] as int,
       matchChatHistory: jsonSerialization['matchChatHistory'] == null
           ? null
-          : _i5.Protocol().deserialize<_i3.MatchChatHistory>(
+          : _i6.Protocol().deserialize<_i4.MatchChatHistory>(
               jsonSerialization['matchChatHistory'],
             ),
       playerDataId: jsonSerialization['playerDataId'] as int,
       sender: jsonSerialization['sender'] == null
           ? null
-          : _i5.Protocol().deserialize<_i4.PlayerData>(
+          : _i6.Protocol().deserialize<_i5.PlayerData>(
               jsonSerialization['sender'],
             ),
     );
@@ -101,21 +128,33 @@ abstract class MatchChatMessage
 
   int? audioDurationMilliseconds;
 
+  int? replyToMessageId;
+
+  String? replyToMessagePreview;
+
+  _i2.MatchChatMessageUiType? replyToMessageUiType;
+
+  int? replyToMessageSenderPlayerDataId;
+
+  int? replyToAudioDurationMilliseconds;
+
+  String? reactionsJson;
+
   String? blurhash;
 
   int? imageWidth;
 
   int? imageHeight;
 
-  _i2.MatchChatMessageType messageType;
+  _i3.MatchChatMessageType messageType;
 
   int matchChatHistoryId;
 
-  _i3.MatchChatHistory? matchChatHistory;
+  _i4.MatchChatHistory? matchChatHistory;
 
   int playerDataId;
 
-  _i4.PlayerData? sender;
+  _i5.PlayerData? sender;
 
   @override
   _i1.Table<int?> get table => t;
@@ -130,14 +169,20 @@ abstract class MatchChatMessage
     String? imageUrl,
     String? audioUrl,
     int? audioDurationMilliseconds,
+    int? replyToMessageId,
+    String? replyToMessagePreview,
+    _i2.MatchChatMessageUiType? replyToMessageUiType,
+    int? replyToMessageSenderPlayerDataId,
+    int? replyToAudioDurationMilliseconds,
+    String? reactionsJson,
     String? blurhash,
     int? imageWidth,
     int? imageHeight,
-    _i2.MatchChatMessageType? messageType,
+    _i3.MatchChatMessageType? messageType,
     int? matchChatHistoryId,
-    _i3.MatchChatHistory? matchChatHistory,
+    _i4.MatchChatHistory? matchChatHistory,
     int? playerDataId,
-    _i4.PlayerData? sender,
+    _i5.PlayerData? sender,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -150,6 +195,16 @@ abstract class MatchChatMessage
       if (audioUrl != null) 'audioUrl': audioUrl,
       if (audioDurationMilliseconds != null)
         'audioDurationMilliseconds': audioDurationMilliseconds,
+      if (replyToMessageId != null) 'replyToMessageId': replyToMessageId,
+      if (replyToMessagePreview != null)
+        'replyToMessagePreview': replyToMessagePreview,
+      if (replyToMessageUiType != null)
+        'replyToMessageUiType': replyToMessageUiType?.toJson(),
+      if (replyToMessageSenderPlayerDataId != null)
+        'replyToMessageSenderPlayerDataId': replyToMessageSenderPlayerDataId,
+      if (replyToAudioDurationMilliseconds != null)
+        'replyToAudioDurationMilliseconds': replyToAudioDurationMilliseconds,
+      if (reactionsJson != null) 'reactionsJson': reactionsJson,
       if (blurhash != null) 'blurhash': blurhash,
       if (imageWidth != null) 'imageWidth': imageWidth,
       if (imageHeight != null) 'imageHeight': imageHeight,
@@ -173,6 +228,16 @@ abstract class MatchChatMessage
       if (audioUrl != null) 'audioUrl': audioUrl,
       if (audioDurationMilliseconds != null)
         'audioDurationMilliseconds': audioDurationMilliseconds,
+      if (replyToMessageId != null) 'replyToMessageId': replyToMessageId,
+      if (replyToMessagePreview != null)
+        'replyToMessagePreview': replyToMessagePreview,
+      if (replyToMessageUiType != null)
+        'replyToMessageUiType': replyToMessageUiType?.toJson(),
+      if (replyToMessageSenderPlayerDataId != null)
+        'replyToMessageSenderPlayerDataId': replyToMessageSenderPlayerDataId,
+      if (replyToAudioDurationMilliseconds != null)
+        'replyToAudioDurationMilliseconds': replyToAudioDurationMilliseconds,
+      if (reactionsJson != null) 'reactionsJson': reactionsJson,
       if (blurhash != null) 'blurhash': blurhash,
       if (imageWidth != null) 'imageWidth': imageWidth,
       if (imageHeight != null) 'imageHeight': imageHeight,
@@ -186,8 +251,8 @@ abstract class MatchChatMessage
   }
 
   static MatchChatMessageInclude include({
-    _i3.MatchChatHistoryInclude? matchChatHistory,
-    _i4.PlayerDataInclude? sender,
+    _i4.MatchChatHistoryInclude? matchChatHistory,
+    _i5.PlayerDataInclude? sender,
   }) {
     return MatchChatMessageInclude._(
       matchChatHistory: matchChatHistory,
@@ -231,14 +296,20 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     String? imageUrl,
     String? audioUrl,
     int? audioDurationMilliseconds,
+    int? replyToMessageId,
+    String? replyToMessagePreview,
+    _i2.MatchChatMessageUiType? replyToMessageUiType,
+    int? replyToMessageSenderPlayerDataId,
+    int? replyToAudioDurationMilliseconds,
+    String? reactionsJson,
     String? blurhash,
     int? imageWidth,
     int? imageHeight,
-    required _i2.MatchChatMessageType messageType,
+    required _i3.MatchChatMessageType messageType,
     required int matchChatHistoryId,
-    _i3.MatchChatHistory? matchChatHistory,
+    _i4.MatchChatHistory? matchChatHistory,
     required int playerDataId,
-    _i4.PlayerData? sender,
+    _i5.PlayerData? sender,
   }) : super._(
          id: id,
          sentAt: sentAt,
@@ -246,6 +317,12 @@ class _MatchChatMessageImpl extends MatchChatMessage {
          imageUrl: imageUrl,
          audioUrl: audioUrl,
          audioDurationMilliseconds: audioDurationMilliseconds,
+         replyToMessageId: replyToMessageId,
+         replyToMessagePreview: replyToMessagePreview,
+         replyToMessageUiType: replyToMessageUiType,
+         replyToMessageSenderPlayerDataId: replyToMessageSenderPlayerDataId,
+         replyToAudioDurationMilliseconds: replyToAudioDurationMilliseconds,
+         reactionsJson: reactionsJson,
          blurhash: blurhash,
          imageWidth: imageWidth,
          imageHeight: imageHeight,
@@ -267,10 +344,16 @@ class _MatchChatMessageImpl extends MatchChatMessage {
     Object? imageUrl = _Undefined,
     Object? audioUrl = _Undefined,
     Object? audioDurationMilliseconds = _Undefined,
+    Object? replyToMessageId = _Undefined,
+    Object? replyToMessagePreview = _Undefined,
+    Object? replyToMessageUiType = _Undefined,
+    Object? replyToMessageSenderPlayerDataId = _Undefined,
+    Object? replyToAudioDurationMilliseconds = _Undefined,
+    Object? reactionsJson = _Undefined,
     Object? blurhash = _Undefined,
     Object? imageWidth = _Undefined,
     Object? imageHeight = _Undefined,
-    _i2.MatchChatMessageType? messageType,
+    _i3.MatchChatMessageType? messageType,
     int? matchChatHistoryId,
     Object? matchChatHistory = _Undefined,
     int? playerDataId,
@@ -285,16 +368,34 @@ class _MatchChatMessageImpl extends MatchChatMessage {
       audioDurationMilliseconds: audioDurationMilliseconds is int?
           ? audioDurationMilliseconds
           : this.audioDurationMilliseconds,
+      replyToMessageId: replyToMessageId is int?
+          ? replyToMessageId
+          : this.replyToMessageId,
+      replyToMessagePreview: replyToMessagePreview is String?
+          ? replyToMessagePreview
+          : this.replyToMessagePreview,
+      replyToMessageUiType: replyToMessageUiType is _i2.MatchChatMessageUiType?
+          ? replyToMessageUiType
+          : this.replyToMessageUiType,
+      replyToMessageSenderPlayerDataId: replyToMessageSenderPlayerDataId is int?
+          ? replyToMessageSenderPlayerDataId
+          : this.replyToMessageSenderPlayerDataId,
+      replyToAudioDurationMilliseconds: replyToAudioDurationMilliseconds is int?
+          ? replyToAudioDurationMilliseconds
+          : this.replyToAudioDurationMilliseconds,
+      reactionsJson: reactionsJson is String?
+          ? reactionsJson
+          : this.reactionsJson,
       blurhash: blurhash is String? ? blurhash : this.blurhash,
       imageWidth: imageWidth is int? ? imageWidth : this.imageWidth,
       imageHeight: imageHeight is int? ? imageHeight : this.imageHeight,
       messageType: messageType ?? this.messageType,
       matchChatHistoryId: matchChatHistoryId ?? this.matchChatHistoryId,
-      matchChatHistory: matchChatHistory is _i3.MatchChatHistory?
+      matchChatHistory: matchChatHistory is _i4.MatchChatHistory?
           ? matchChatHistory
           : this.matchChatHistory?.copyWith(),
       playerDataId: playerDataId ?? this.playerDataId,
-      sender: sender is _i4.PlayerData? ? sender : this.sender?.copyWith(),
+      sender: sender is _i5.PlayerData? ? sender : this.sender?.copyWith(),
     );
   }
 }
@@ -329,6 +430,41 @@ class MatchChatMessageUpdateTable
         value,
       );
 
+  _i1.ColumnValue<int, int> replyToMessageId(int? value) => _i1.ColumnValue(
+    table.replyToMessageId,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> replyToMessagePreview(String? value) =>
+      _i1.ColumnValue(
+        table.replyToMessagePreview,
+        value,
+      );
+
+  _i1.ColumnValue<_i2.MatchChatMessageUiType, _i2.MatchChatMessageUiType>
+  replyToMessageUiType(_i2.MatchChatMessageUiType? value) => _i1.ColumnValue(
+    table.replyToMessageUiType,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> replyToMessageSenderPlayerDataId(int? value) =>
+      _i1.ColumnValue(
+        table.replyToMessageSenderPlayerDataId,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> replyToAudioDurationMilliseconds(int? value) =>
+      _i1.ColumnValue(
+        table.replyToAudioDurationMilliseconds,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> reactionsJson(String? value) =>
+      _i1.ColumnValue(
+        table.reactionsJson,
+        value,
+      );
+
   _i1.ColumnValue<String, String> blurhash(String? value) => _i1.ColumnValue(
     table.blurhash,
     value,
@@ -344,8 +480,8 @@ class MatchChatMessageUpdateTable
     value,
   );
 
-  _i1.ColumnValue<_i2.MatchChatMessageType, _i2.MatchChatMessageType>
-  messageType(_i2.MatchChatMessageType value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i3.MatchChatMessageType, _i3.MatchChatMessageType>
+  messageType(_i3.MatchChatMessageType value) => _i1.ColumnValue(
     table.messageType,
     value,
   );
@@ -383,6 +519,31 @@ class MatchChatMessageTable extends _i1.Table<int?> {
     );
     audioDurationMilliseconds = _i1.ColumnInt(
       'audioDurationMilliseconds',
+      this,
+    );
+    replyToMessageId = _i1.ColumnInt(
+      'replyToMessageId',
+      this,
+    );
+    replyToMessagePreview = _i1.ColumnString(
+      'replyToMessagePreview',
+      this,
+    );
+    replyToMessageUiType = _i1.ColumnEnum(
+      'replyToMessageUiType',
+      this,
+      _i1.EnumSerialization.byName,
+    );
+    replyToMessageSenderPlayerDataId = _i1.ColumnInt(
+      'replyToMessageSenderPlayerDataId',
+      this,
+    );
+    replyToAudioDurationMilliseconds = _i1.ColumnInt(
+      'replyToAudioDurationMilliseconds',
+      this,
+    );
+    reactionsJson = _i1.ColumnString(
+      'reactionsJson',
       this,
     );
     blurhash = _i1.ColumnString(
@@ -424,44 +585,56 @@ class MatchChatMessageTable extends _i1.Table<int?> {
 
   late final _i1.ColumnInt audioDurationMilliseconds;
 
+  late final _i1.ColumnInt replyToMessageId;
+
+  late final _i1.ColumnString replyToMessagePreview;
+
+  late final _i1.ColumnEnum<_i2.MatchChatMessageUiType> replyToMessageUiType;
+
+  late final _i1.ColumnInt replyToMessageSenderPlayerDataId;
+
+  late final _i1.ColumnInt replyToAudioDurationMilliseconds;
+
+  late final _i1.ColumnString reactionsJson;
+
   late final _i1.ColumnString blurhash;
 
   late final _i1.ColumnInt imageWidth;
 
   late final _i1.ColumnInt imageHeight;
 
-  late final _i1.ColumnEnum<_i2.MatchChatMessageType> messageType;
+  late final _i1.ColumnEnum<_i3.MatchChatMessageType> messageType;
 
   late final _i1.ColumnInt matchChatHistoryId;
 
-  _i3.MatchChatHistoryTable? _matchChatHistory;
+  _i4.MatchChatHistoryTable? _matchChatHistory;
 
   late final _i1.ColumnInt playerDataId;
 
-  _i4.PlayerDataTable? _sender;
+  _i5.PlayerDataTable? _sender;
 
-  _i3.MatchChatHistoryTable get matchChatHistory {
+  _i4.MatchChatHistoryTable get matchChatHistory {
     if (_matchChatHistory != null) return _matchChatHistory!;
     _matchChatHistory = _i1.createRelationTable(
       relationFieldName: 'matchChatHistory',
       field: MatchChatMessage.t.matchChatHistoryId,
-      foreignField: _i3.MatchChatHistory.t.id,
+      foreignField: _i4.MatchChatHistory.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.MatchChatHistoryTable(tableRelation: foreignTableRelation),
+          _i4.MatchChatHistoryTable(tableRelation: foreignTableRelation),
     );
     return _matchChatHistory!;
   }
 
-  _i4.PlayerDataTable get sender {
+  _i5.PlayerDataTable get sender {
     if (_sender != null) return _sender!;
     _sender = _i1.createRelationTable(
       relationFieldName: 'sender',
       field: MatchChatMessage.t.playerDataId,
-      foreignField: _i4.PlayerData.t.id,
+      foreignField: _i5.PlayerData.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i4.PlayerDataTable(tableRelation: foreignTableRelation),
+          _i5.PlayerDataTable(tableRelation: foreignTableRelation),
     );
     return _sender!;
   }
@@ -474,6 +647,12 @@ class MatchChatMessageTable extends _i1.Table<int?> {
     imageUrl,
     audioUrl,
     audioDurationMilliseconds,
+    replyToMessageId,
+    replyToMessagePreview,
+    replyToMessageUiType,
+    replyToMessageSenderPlayerDataId,
+    replyToAudioDurationMilliseconds,
+    reactionsJson,
     blurhash,
     imageWidth,
     imageHeight,
@@ -496,16 +675,16 @@ class MatchChatMessageTable extends _i1.Table<int?> {
 
 class MatchChatMessageInclude extends _i1.IncludeObject {
   MatchChatMessageInclude._({
-    _i3.MatchChatHistoryInclude? matchChatHistory,
-    _i4.PlayerDataInclude? sender,
+    _i4.MatchChatHistoryInclude? matchChatHistory,
+    _i5.PlayerDataInclude? sender,
   }) {
     _matchChatHistory = matchChatHistory;
     _sender = sender;
   }
 
-  _i3.MatchChatHistoryInclude? _matchChatHistory;
+  _i4.MatchChatHistoryInclude? _matchChatHistory;
 
-  _i4.PlayerDataInclude? _sender;
+  _i5.PlayerDataInclude? _sender;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -842,7 +1021,7 @@ class MatchChatMessageAttachRowRepository {
   Future<void> matchChatHistory(
     _i1.Session session,
     MatchChatMessage matchChatMessage,
-    _i3.MatchChatHistory matchChatHistory, {
+    _i4.MatchChatHistory matchChatHistory, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.id == null) {
@@ -867,7 +1046,7 @@ class MatchChatMessageAttachRowRepository {
   Future<void> sender(
     _i1.Session session,
     MatchChatMessage matchChatMessage,
-    _i4.PlayerData sender, {
+    _i5.PlayerData sender, {
     _i1.Transaction? transaction,
   }) async {
     if (matchChatMessage.id == null) {

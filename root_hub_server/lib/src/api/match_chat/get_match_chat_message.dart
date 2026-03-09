@@ -123,9 +123,15 @@ class GetMatchChatMessage extends Endpoint {
           readAt: DateTime.now(),
         );
 
+        final participantPresence = await _resolveParticipantPresence(
+          session,
+          chatHistoryId: chatHistoryId,
+        );
+
         return MatchChatMessagesPagination(
           messages: messages,
           senderProfiles: senderProfiles,
+          participantPresence: participantPresence,
           subscribedPlayerIds: subscribedPlayerIds,
           paginationMetadata: PaginationMetadata(
             currentPage: page,
@@ -173,5 +179,28 @@ class GetMatchChatMessage extends Endpoint {
 
     senderProfiles.sort((a, b) => a.playerDataId.compareTo(b.playerDataId));
     return senderProfiles;
+  }
+
+  Future<List<MatchChatParticipantPresence>> _resolveParticipantPresence(
+    Session session, {
+    required int chatHistoryId,
+  }) async {
+    final participantStates = await MatchChatParticipantState.db.find(
+      session,
+      where: (t) => t.matchChatHistoryId.equals(chatHistoryId),
+    );
+
+    final mapped = participantStates
+        .map(
+          (entry) => MatchChatParticipantPresence(
+            playerDataId: entry.playerDataId,
+            lastReadMessageAt: entry.lastReadMessageAt,
+            lastTypingAt: entry.lastTypingAt,
+          ),
+        )
+        .toList()
+      ..sort((a, b) => a.playerDataId.compareTo(b.playerDataId));
+
+    return mapped;
   }
 }

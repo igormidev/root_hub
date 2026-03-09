@@ -50,6 +50,10 @@ getMatchChatUnreadCount:
   - v1:
 sendMatchChatMessage:
   - v1:
+setMatchChatMessageReaction:
+  - v1:
+setMatchChatTyping:
+  - v1:
 createMatchSchedule:
   - v1:
 editMatchSchedule:

@@ -27,6 +27,7 @@ abstract class MatchChatParticipantState
     required this.firstSeenAt,
     required this.lastOpenedAt,
     this.lastReadMessageAt,
+    this.lastTypingAt,
     int? unreadMessagesCount,
   }) : unreadMessagesCount = unreadMessagesCount ?? 0;
 
@@ -39,6 +40,7 @@ abstract class MatchChatParticipantState
     required DateTime firstSeenAt,
     required DateTime lastOpenedAt,
     DateTime? lastReadMessageAt,
+    DateTime? lastTypingAt,
     int? unreadMessagesCount,
   }) = _MatchChatParticipantStateImpl;
 
@@ -70,6 +72,11 @@ abstract class MatchChatParticipantState
           : _i1.DateTimeJsonExtension.fromJson(
               jsonSerialization['lastReadMessageAt'],
             ),
+      lastTypingAt: jsonSerialization['lastTypingAt'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(
+              jsonSerialization['lastTypingAt'],
+            ),
       unreadMessagesCount: jsonSerialization['unreadMessagesCount'] as int?,
     );
   }
@@ -95,6 +102,8 @@ abstract class MatchChatParticipantState
 
   DateTime? lastReadMessageAt;
 
+  DateTime? lastTypingAt;
+
   int unreadMessagesCount;
 
   @override
@@ -112,6 +121,7 @@ abstract class MatchChatParticipantState
     DateTime? firstSeenAt,
     DateTime? lastOpenedAt,
     DateTime? lastReadMessageAt,
+    DateTime? lastTypingAt,
     int? unreadMessagesCount,
   });
   @override
@@ -128,6 +138,7 @@ abstract class MatchChatParticipantState
       'lastOpenedAt': lastOpenedAt.toJson(),
       if (lastReadMessageAt != null)
         'lastReadMessageAt': lastReadMessageAt?.toJson(),
+      if (lastTypingAt != null) 'lastTypingAt': lastTypingAt?.toJson(),
       'unreadMessagesCount': unreadMessagesCount,
     };
   }
@@ -146,6 +157,7 @@ abstract class MatchChatParticipantState
       'lastOpenedAt': lastOpenedAt.toJson(),
       if (lastReadMessageAt != null)
         'lastReadMessageAt': lastReadMessageAt?.toJson(),
+      if (lastTypingAt != null) 'lastTypingAt': lastTypingAt?.toJson(),
       'unreadMessagesCount': unreadMessagesCount,
     };
   }
@@ -198,6 +210,7 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
     required DateTime firstSeenAt,
     required DateTime lastOpenedAt,
     DateTime? lastReadMessageAt,
+    DateTime? lastTypingAt,
     int? unreadMessagesCount,
   }) : super._(
          id: id,
@@ -208,6 +221,7 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
          firstSeenAt: firstSeenAt,
          lastOpenedAt: lastOpenedAt,
          lastReadMessageAt: lastReadMessageAt,
+         lastTypingAt: lastTypingAt,
          unreadMessagesCount: unreadMessagesCount,
        );
 
@@ -224,6 +238,7 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
     DateTime? firstSeenAt,
     DateTime? lastOpenedAt,
     Object? lastReadMessageAt = _Undefined,
+    Object? lastTypingAt = _Undefined,
     int? unreadMessagesCount,
   }) {
     return MatchChatParticipantState(
@@ -241,6 +256,9 @@ class _MatchChatParticipantStateImpl extends MatchChatParticipantState {
       lastReadMessageAt: lastReadMessageAt is DateTime?
           ? lastReadMessageAt
           : this.lastReadMessageAt,
+      lastTypingAt: lastTypingAt is DateTime?
+          ? lastTypingAt
+          : this.lastTypingAt,
       unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
     );
   }
@@ -278,6 +296,12 @@ class MatchChatParticipantStateUpdateTable
         value,
       );
 
+  _i1.ColumnValue<DateTime, DateTime> lastTypingAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.lastTypingAt,
+        value,
+      );
+
   _i1.ColumnValue<int, int> unreadMessagesCount(int value) => _i1.ColumnValue(
     table.unreadMessagesCount,
     value,
@@ -308,6 +332,10 @@ class MatchChatParticipantStateTable extends _i1.Table<int?> {
       'lastReadMessageAt',
       this,
     );
+    lastTypingAt = _i1.ColumnDateTime(
+      'lastTypingAt',
+      this,
+    );
     unreadMessagesCount = _i1.ColumnInt(
       'unreadMessagesCount',
       this,
@@ -330,6 +358,8 @@ class MatchChatParticipantStateTable extends _i1.Table<int?> {
   late final _i1.ColumnDateTime lastOpenedAt;
 
   late final _i1.ColumnDateTime lastReadMessageAt;
+
+  late final _i1.ColumnDateTime lastTypingAt;
 
   late final _i1.ColumnInt unreadMessagesCount;
 
@@ -367,6 +397,7 @@ class MatchChatParticipantStateTable extends _i1.Table<int?> {
     firstSeenAt,
     lastOpenedAt,
     lastReadMessageAt,
+    lastTypingAt,
     unreadMessagesCount,
   ];
 

@@ -171,6 +171,15 @@ class TranslationsErrorsEn {
 	/// en: 'Scheduled match with id {scheduledMatchId} was not found.'
 	String scheduledMatchWithIdNotFound({required Object scheduledMatchId}) => 'Scheduled match with id ${scheduledMatchId} was not found.';
 
+	/// en: 'Message id must be greater than zero.'
+	String get messageIdMustBeGreaterThanZero => 'Message id must be greater than zero.';
+
+	/// en: 'Message with id {messageId} was not found.'
+	String messageWithIdNotFound({required Object messageId}) => 'Message with id ${messageId} was not found.';
+
+	/// en: 'Reaction emoji cannot be empty.'
+	String get reactionEmojiCannotBeEmpty => 'Reaction emoji cannot be empty.';
+
 	/// en: 'Scheduled pairing attempt not found.'
 	String get scheduledPairingAttemptNotFound => 'Scheduled pairing attempt not found.';
 
@@ -518,6 +527,12 @@ class TranslationsFallbackEn {
 
 	/// en: 'Unable to send the message right now. Please try again.'
 	String get unableToSendMessage => 'Unable to send the message right now. Please try again.';
+
+	/// en: 'Unable to update the chat reaction right now. Please try again.'
+	String get unableToUpdateChatReaction => 'Unable to update the chat reaction right now. Please try again.';
+
+	/// en: 'Unable to update the typing status right now. Please try again.'
+	String get unableToUpdateChatTypingStatus => 'Unable to update the typing status right now. Please try again.';
 
 	/// en: 'Unable to load scheduled match details right now. Please try again.'
 	String get unableToLoadScheduledMatchDetails => 'Unable to load scheduled match details right now. Please try again.';

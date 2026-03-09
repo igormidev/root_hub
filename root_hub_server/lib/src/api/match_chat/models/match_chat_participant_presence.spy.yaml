@@ -1,0 +1,5 @@
+class: MatchChatParticipantPresence
+fields:
+  playerDataId: int
+  lastReadMessageAt: DateTime?
+  lastTypingAt: DateTime?

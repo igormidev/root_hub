@@ -616,6 +616,7 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
     String? audioFileName,
     String? audioContentType,
     int? audioDurationMilliseconds,
+    int? replyToMessageId,
   }) => caller.callServerEndpoint<_i25.MatchChatMessage>(
     'sendMatchChatMessage',
     'v1',
@@ -630,6 +631,54 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
       'audioFileName': audioFileName,
       'audioContentType': audioContentType,
       'audioDurationMilliseconds': audioDurationMilliseconds,
+      'replyToMessageId': replyToMessageId,
+    },
+  );
+}
+
+/// {@category Endpoint}
+class EndpointSetMatchChatMessageReaction extends _i1.EndpointRef {
+  EndpointSetMatchChatMessageReaction(_i1.EndpointCaller caller)
+    : super(caller);
+
+  @override
+  String get name => 'setMatchChatMessageReaction';
+
+  _i2.Future<_i25.MatchChatMessage> v1({
+    required _i4.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required int messageId,
+    required String emoji,
+  }) => caller.callServerEndpoint<_i25.MatchChatMessage>(
+    'setMatchChatMessageReaction',
+    'v1',
+    {
+      'language': language,
+      'scheduledMatchId': scheduledMatchId,
+      'messageId': messageId,
+      'emoji': emoji,
+    },
+  );
+}
+
+/// {@category Endpoint}
+class EndpointSetMatchChatTyping extends _i1.EndpointRef {
+  EndpointSetMatchChatTyping(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'setMatchChatTyping';
+
+  _i2.Future<void> v1({
+    required _i4.ServerSupportedTranslation language,
+    required int scheduledMatchId,
+    required bool isTyping,
+  }) => caller.callServerEndpoint<void>(
+    'setMatchChatTyping',
+    'v1',
+    {
+      'language': language,
+      'scheduledMatchId': scheduledMatchId,
+      'isTyping': isTyping,
     },
   );
 }
@@ -1280,6 +1329,8 @@ class Client extends _i1.ServerpodClientShared {
     );
     getMatchChatUnreadCount = EndpointGetMatchChatUnreadCount(this);
     sendMatchChatMessage = EndpointSendMatchChatMessage(this);
+    setMatchChatMessageReaction = EndpointSetMatchChatMessageReaction(this);
+    setMatchChatTyping = EndpointSetMatchChatTyping(this);
     createMatchSchedule = EndpointCreateMatchSchedule(this);
     editMatchSchedule = EndpointEditMatchSchedule(this);
     getMatchLocation = EndpointGetMatchLocation(this);
@@ -1352,6 +1403,10 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointSendMatchChatMessage sendMatchChatMessage;
 
+  late final EndpointSetMatchChatMessageReaction setMatchChatMessageReaction;
+
+  late final EndpointSetMatchChatTyping setMatchChatTyping;
+
   late final EndpointCreateMatchSchedule createMatchSchedule;
 
   late final EndpointEditMatchSchedule editMatchSchedule;
@@ -1417,6 +1472,8 @@ class Client extends _i1.ServerpodClientShared {
     'getMatchChatPlayedMatchSummary': getMatchChatPlayedMatchSummary,
     'getMatchChatUnreadCount': getMatchChatUnreadCount,
     'sendMatchChatMessage': sendMatchChatMessage,
+    'setMatchChatMessageReaction': setMatchChatMessageReaction,
+    'setMatchChatTyping': setMatchChatTyping,
     'createMatchSchedule': createMatchSchedule,
     'editMatchSchedule': editMatchSchedule,
     'getMatchLocation': getMatchLocation,

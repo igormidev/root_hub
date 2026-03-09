@@ -2,5 +2,6 @@ class: MatchChatMessagesPagination
 fields:
   messages: List<MatchChatMessage>
   senderProfiles: List<MatchChatSenderProfile>
+  participantPresence: List<MatchChatParticipantPresence>
   subscribedPlayerIds: List<int>
   paginationMetadata: PaginationMetadata

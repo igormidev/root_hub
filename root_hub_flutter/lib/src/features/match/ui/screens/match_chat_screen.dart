@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:chatview/chatview.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/design_system/default_error_snackbar.dart';
@@ -200,19 +198,44 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                 ),
               ),
             ),
-            onSendTap: (message, _, messageType) {
+            onSendTap: (message, replyMessage, messageType) {
               switch (messageType) {
                 case MessageType.text:
-                  unawaited(chatNotifier.sendTextMessage(message));
+                  unawaited(
+                    chatNotifier.sendTextMessage(
+                      message,
+                      replyMessage: replyMessage,
+                    ),
+                  );
                   break;
                 case MessageType.voice:
-                  unawaited(chatNotifier.sendVoiceMessage(message));
+                  unawaited(
+                    chatNotifier.sendVoiceMessage(
+                      message,
+                      replyMessage: replyMessage,
+                    ),
+                  );
                   break;
                 case MessageType.image:
+                  unawaited(
+                    _sendPickedImage(
+                      chatNotifier,
+                      imagePath: message,
+                      replyMessage: replyMessage,
+                    ),
+                  );
+                  break;
                 case MessageType.custom:
                   break;
               }
             },
+            typeIndicatorConfig: TypeIndicatorConfiguration(
+              flashingCircleDarkColor: colorScheme.primary,
+              flashingCircleBrightColor: colorScheme.primary.withValues(
+                alpha: 0.36,
+              ),
+              padding: EdgeInsets.only(left: 14, bottom: 14),
+            ),
             chatBackgroundConfig: ChatBackgroundConfiguration(
               backgroundColor: colorScheme.surface,
             ),
@@ -227,10 +250,10 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               padding: EdgeInsets.only(left: 4, right: 6),
             ),
             featureActiveConfig: FeatureActiveConfig(
-              enableSwipeToReply: false,
-              enableReactionPopup: false,
-              enableReplySnackBar: false,
-              enableDoubleTapToLike: false,
+              enableSwipeToReply: true,
+              enableReactionPopup: true,
+              enableReplySnackBar: true,
+              enableDoubleTapToLike: true,
               enablePagination: true,
               enableCurrentUserProfileAvatar: false,
               enableOtherUserProfileAvatar: true,
@@ -247,6 +270,22 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                   color: colorScheme.outlineVariant.withValues(alpha: 0.55),
                 ),
                 borderRadius: BorderRadius.circular(20),
+                linkPreviewConfig: LinkPreviewConfiguration(
+                  backgroundColor: colorScheme.surfaceContainer,
+                  loadingColor: colorScheme.primary,
+                  bodyStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  linkStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.primary,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 senderNameTextStyle: Theme.of(context).textTheme.labelLarge
                     ?.copyWith(
                       color: colorScheme.onSurfaceVariant,
@@ -259,13 +298,30 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               outgoingChatBubbleConfig: ChatBubble(
                 color: colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(20),
+                linkPreviewConfig: LinkPreviewConfiguration(
+                  backgroundColor: colorScheme.primary.withValues(alpha: 0.10),
+                  loadingColor: colorScheme.onPrimaryContainer,
+                  bodyStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onPrimaryContainer.withValues(
+                      alpha: 0.78,
+                    ),
+                    fontWeight: FontWeight.w600,
+                  ),
+                  titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  linkStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onPrimaryContainer,
                   fontWeight: FontWeight.w700,
                 ),
                 receiptsWidgetConfig: ReceiptsWidgetConfig(
-                  receiptsBuilder: (_) => SizedBox.shrink(),
-                  lastSeenAgoBuilder: (_, __) => SizedBox.shrink(),
+                  showReceiptsIn: ShowReceiptsIn.all,
                 ),
               ),
             ),
@@ -273,6 +329,18 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
               customMessageBuilder: (message) {
                 return MatchChatCustomMessageWidget(message: message);
               },
+              imageMessageConfig: ImageMessageConfiguration(
+                hideShareIcon: false,
+                borderRadius: BorderRadius.circular(18),
+                margin: EdgeInsets.symmetric(vertical: 4),
+              ),
+              messageReactionConfig: MessageReactionConfiguration(
+                backgroundColor: colorScheme.surface,
+                borderColor: colorScheme.outlineVariant.withValues(alpha: 0.4),
+                reactionsBottomSheetConfig: ReactionsBottomSheetConfiguration(
+                  backgroundColor: colorScheme.surface,
+                ),
+              ),
               voiceMessageConfig: VoiceMessageConfiguration(
                 outgoingPlayerWaveStyle: PlayerWaveStyle(
                   fixedWaveColor: colorScheme.onPrimaryContainer,
@@ -299,6 +367,30 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                       : colorScheme.onSurface,
                 ),
               ),
+              showReactionsOnCustomMessages: true,
+            ),
+            repliedMessageConfig: RepliedMessageConfiguration(
+              loadOldReplyMessage: (messageId) {
+                return chatNotifier.loadOlderMessagesUntilFound(messageId);
+              },
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              verticalBarColor: colorScheme.primary,
+              replyTitleTextStyle: Theme.of(context).textTheme.labelMedium
+                  ?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w800,
+                  ),
+              textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w700,
+              ),
+              micIconColor: colorScheme.primary,
+            ),
+            reactionPopupConfig: ReactionPopupConfiguration(
+              backgroundColor: colorScheme.surface,
+              userReactionCallback: (message, emoji) {
+                chatNotifier.sendReaction(message, emoji);
+              },
             ),
             sendMessageConfig: SendMessageConfiguration(
               defaultSendButtonColor: colorScheme.primary,
@@ -329,16 +421,50 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w700,
                 ),
+                onMessageTyping: chatNotifier.updateTypingStatus,
                 trailingActions: (context, _) {
                   return [
-                    IconButton(
+                    GalleryActionButton(
                       onPressed: isMessageActionInProgress
                           ? null
-                          : () {
-                              _pickAndSendImage(chatNotifier);
+                          : (path, replyMessage) {
+                              if (path == null || path.trim().isEmpty) {
+                                return;
+                              }
+                              unawaited(
+                                _sendPickedImage(
+                                  chatNotifier,
+                                  imagePath: path,
+                                  replyMessage:
+                                      replyMessage ?? const ReplyMessage(),
+                                ),
+                              );
                             },
-                      icon: Icon(Icons.add_photo_alternate_rounded),
-                      color: colorScheme.primary,
+                      icon: Icon(
+                        Icons.photo_library_outlined,
+                        color: colorScheme.primary,
+                      ),
+                    ),
+                    CameraActionButton(
+                      onPressed: isMessageActionInProgress
+                          ? null
+                          : (path, replyMessage) {
+                              if (path == null || path.trim().isEmpty) {
+                                return;
+                              }
+                              unawaited(
+                                _sendPickedImage(
+                                  chatNotifier,
+                                  imagePath: path,
+                                  replyMessage:
+                                      replyMessage ?? const ReplyMessage(),
+                                ),
+                              );
+                            },
+                      icon: Icon(
+                        Icons.photo_camera_outlined,
+                        color: colorScheme.primary,
+                      ),
                     ),
                   ];
                 },
@@ -467,14 +593,18 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
     }
   }
 
-  Future<void> _pickAndSendImage(MatchChatNotifier chatNotifier) async {
-    final source = await _pickImageSource();
-    if (!mounted || source == null) {
+  Future<void> _sendPickedImage(
+    MatchChatNotifier chatNotifier, {
+    required String imagePath,
+    required ReplyMessage replyMessage,
+  }) async {
+    if (!mounted || imagePath.trim().isEmpty) {
       return;
     }
 
-    await chatNotifier.pickAndSendImage(
-      source: source,
+    await chatNotifier.sendImagePathMessage(
+      imagePath: imagePath,
+      replyMessage: replyMessage,
       onConfirmImageCompression: _showImageCompressionDialog,
       onConfirmImageMessage: _showImageMessageDialog,
     );
@@ -495,90 +625,6 @@ class _MatchChatScreenState extends ConsumerState<MatchChatScreen> {
       builder: (sheetContext) {
         return MatchChatImageMessageSheet(
           previewBytes: previewBytes,
-        );
-      },
-    );
-  }
-
-  Future<ImageSource?> _pickImageSource() async {
-    final platform = Theme.of(context).platform;
-    if (platform == TargetPlatform.iOS) {
-      return _showIosImageSourceDialog();
-    }
-
-    return _showAndroidImageSourceDialog();
-  }
-
-  Future<ImageSource?> _showIosImageSourceDialog() {
-    return showCupertinoModalPopup<ImageSource>(
-      context: context,
-      builder: (dialogContext) {
-        return CupertinoActionSheet(
-          title: Text(
-            t.match.ui_screens_match_chat_screen.sendAPhoto,
-          ),
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(ImageSource.camera);
-              },
-              child: Text(
-                t.match.ui_screens_match_chat_screen.takePhoto2,
-              ),
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(ImageSource.gallery);
-              },
-              child: Text(
-                t.match.ui_screens_match_chat_screen.chooseFromLibrary,
-              ),
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-            },
-            child: Text(
-              t.match.ui_screens_match_chat_screen.cancel,
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<ImageSource?> _showAndroidImageSourceDialog() {
-    return showModalBottomSheet<ImageSource>(
-      context: context,
-      showDragHandle: true,
-      builder: (dialogContext) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.photo_camera_rounded),
-                title: Text(
-                  t.match.ui_screens_match_chat_screen.takePhoto,
-                ),
-                onTap: () {
-                  Navigator.of(dialogContext).pop(ImageSource.camera);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_library_rounded),
-                title: Text(
-                  t.match.ui_screens_match_chat_screen.chooseFromGallery,
-                ),
-                onTap: () {
-                  Navigator.of(dialogContext).pop(ImageSource.gallery);
-                },
-              ),
-              SizedBox(height: 4),
-            ],
-          ),
         );
       },
     );
