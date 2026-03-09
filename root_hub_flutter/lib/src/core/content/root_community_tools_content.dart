@@ -22,7 +22,8 @@ extension RootCommunityToolUiExtension on RootCommunityTool {
     RootCommunityTool.reachCalculator => const Color(0xFF87613F),
     RootCommunityTool.advancedSetupQuickguide => const Color(0xFF3F6C8F),
     RootCommunityTool.setupOrder => const Color(0xFF4D7A57),
-    RootCommunityTool.recommendedFactionsToPlay => const Color(0xFF7A5C45),
+    RootCommunityTool.recommendedFactionsToPlay => Colors.deepOrange,
+    // RootCommunityTool.recommendedFactionsToPlay => const Color(0xFF7A5C45),
   };
 
   bool get isEnabled => true;

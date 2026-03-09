@@ -1,3 +1,6 @@
+const _authEmailArtworkUrl =
+    'https://roothub.serverpod.space/images/root-hub-email-app-icon.png';
+
 String buildAuthEmailHtml({
   required String title,
   required String description,
@@ -26,12 +29,19 @@ String buildAuthEmailHtml({
               </td>
             </tr>
             <tr>
-              <td style="padding:24px 32px 6px;">
-                <img
-                  src="https://therewillbe.games/media/reviews/photos/original/fe/50/4b/root-review-81-1537397135.png"
-                  alt="ROOT artwork"
-                  style="display:block;width:100%;max-width:576px;border-radius:12px;border:1px solid #e8dccf;"
-                />
+              <td style="padding:24px 32px 6px;" align="center">
+                <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+                  <tr>
+                    <td style="border-radius:12px;border:1px solid #e8dccf;overflow:hidden;" align="center">
+                      <img
+                        src="$_authEmailArtworkUrl"
+                        alt="Root Hub app icon"
+                        width="220"
+                        style="display:block;width:100%;max-width:220px;height:auto;border:0;outline:none;text-decoration:none;"
+                      />
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
             <tr>
