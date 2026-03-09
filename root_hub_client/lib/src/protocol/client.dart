@@ -54,29 +54,31 @@ import 'package:root_hub_client/src/protocol/api/match_chat/models/match_chat_me
     as _i23;
 import 'package:root_hub_client/src/protocol/api/match_chat/models/match_chat_played_match_summary.dart'
     as _i24;
-import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
+import 'package:root_hub_client/src/protocol/api/match_chat/models/player_schedules_pagination.dart'
     as _i25;
-import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/chat/match_chat_message.dart'
     as _i26;
-import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
+import 'package:root_hub_client/src/protocol/entities/core/match_podium.dart'
     as _i27;
-import 'package:root_hub_client/src/protocol/api/match_making/models/match_schedule_info.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/location.dart'
     as _i28;
-import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/match_schedule_info.dart'
     as _i29;
-import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
+import 'package:root_hub_client/src/protocol/api/match_making/models/subscribed_matches_pagination.dart'
     as _i30;
-import 'package:root_hub_client/src/protocol/entities/core/push_notification_platform.dart'
+import 'package:root_hub_client/src/protocol/entities/match_making/match_subscription.dart'
     as _i31;
-import 'package:root_hub_client/src/protocol/api/stats/models/platform_stats.dart'
+import 'package:root_hub_client/src/protocol/entities/core/push_notification_platform.dart'
     as _i32;
-import 'package:root_hub_client/src/protocol/api/stats/models/player_stats.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/platform_stats.dart'
     as _i33;
-import 'package:root_hub_client/src/protocol/api/stats/models/web_analytics_dashboard.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/player_stats.dart'
     as _i34;
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+import 'package:root_hub_client/src/protocol/api/stats/models/web_analytics_dashboard.dart'
     as _i35;
-import 'protocol.dart' as _i36;
+import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
+    as _i36;
+import 'protocol.dart' as _i37;
 
 /// {@category Endpoint}
 class EndpointCreatePlayerData extends _i1.EndpointRef {
@@ -621,13 +623,53 @@ class EndpointGetMatchChatUnreadCount extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointGetPlayerActiveSchedules extends _i1.EndpointRef {
+  EndpointGetPlayerActiveSchedules(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getPlayerActiveSchedules';
+
+  _i2.Future<_i25.PlayerSchedulesPagination> v1({
+    required _i4.ServerSupportedTranslation language,
+    required int page,
+  }) => caller.callServerEndpoint<_i25.PlayerSchedulesPagination>(
+    'getPlayerActiveSchedules',
+    'v1',
+    {
+      'language': language,
+      'page': page,
+    },
+  );
+}
+
+/// {@category Endpoint}
+class EndpointGetPlayerPastSchedules extends _i1.EndpointRef {
+  EndpointGetPlayerPastSchedules(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'getPlayerPastSchedules';
+
+  _i2.Future<_i25.PlayerSchedulesPagination> v1({
+    required _i4.ServerSupportedTranslation language,
+    required int page,
+  }) => caller.callServerEndpoint<_i25.PlayerSchedulesPagination>(
+    'getPlayerPastSchedules',
+    'v1',
+    {
+      'language': language,
+      'page': page,
+    },
+  );
+}
+
+/// {@category Endpoint}
 class EndpointSendMatchChatMessage extends _i1.EndpointRef {
   EndpointSendMatchChatMessage(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'sendMatchChatMessage';
 
-  _i2.Future<_i25.MatchChatMessage> v1({
+  _i2.Future<_i26.MatchChatMessage> v1({
     required _i4.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required String content,
@@ -639,7 +681,7 @@ class EndpointSendMatchChatMessage extends _i1.EndpointRef {
     String? audioContentType,
     int? audioDurationMilliseconds,
     int? replyToMessageId,
-  }) => caller.callServerEndpoint<_i25.MatchChatMessage>(
+  }) => caller.callServerEndpoint<_i26.MatchChatMessage>(
     'sendMatchChatMessage',
     'v1',
     {
@@ -666,12 +708,12 @@ class EndpointSetMatchChatMessageReaction extends _i1.EndpointRef {
   @override
   String get name => 'setMatchChatMessageReaction';
 
-  _i2.Future<_i25.MatchChatMessage> v1({
+  _i2.Future<_i26.MatchChatMessage> v1({
     required _i4.ServerSupportedTranslation language,
     required int scheduledMatchId,
     required int messageId,
     required String emoji,
-  }) => caller.callServerEndpoint<_i25.MatchChatMessage>(
+  }) => caller.callServerEndpoint<_i26.MatchChatMessage>(
     'setMatchChatMessageReaction',
     'v1',
     {
@@ -716,8 +758,8 @@ class EndpointCreateMatchSchedule extends _i1.EndpointRef {
     required _i4.ServerSupportedTranslation language,
     required String title,
     String? description,
-    required _i26.MatchPodium minAmountOfPlayers,
-    required _i26.MatchPodium maxAmountOfPlayers,
+    required _i27.MatchPodium minAmountOfPlayers,
+    required _i27.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     String? locationAdditionalInfo,
@@ -751,8 +793,8 @@ class EndpointEditMatchSchedule extends _i1.EndpointRef {
     required int scheduledMatchId,
     required String title,
     String? description,
-    required _i26.MatchPodium minAmountOfPlayers,
-    required _i26.MatchPodium maxAmountOfPlayers,
+    required _i27.MatchPodium minAmountOfPlayers,
+    required _i27.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     bool? closedForSubscriptions,
   }) => caller.callServerEndpoint<void>(
@@ -778,11 +820,11 @@ class EndpointGetMatchLocation extends _i1.EndpointRef {
   @override
   String get name => 'getMatchLocation';
 
-  _i2.Future<List<_i27.Location>> v1({
+  _i2.Future<List<_i28.Location>> v1({
     required _i4.ServerSupportedTranslation language,
     required String query,
     required int page,
-  }) => caller.callServerEndpoint<List<_i27.Location>>(
+  }) => caller.callServerEndpoint<List<_i28.Location>>(
     'getMatchLocation',
     'v1',
     {
@@ -826,10 +868,10 @@ class EndpointGetMatchScheduleInfo extends _i1.EndpointRef {
   @override
   String get name => 'getMatchScheduleInfo';
 
-  _i2.Future<_i28.MatchScheduleInfo> v1({
+  _i2.Future<_i29.MatchScheduleInfo> v1({
     required _i4.ServerSupportedTranslation language,
     required int scheduledMatchId,
-  }) => caller.callServerEndpoint<_i28.MatchScheduleInfo>(
+  }) => caller.callServerEndpoint<_i29.MatchScheduleInfo>(
     'getMatchScheduleInfo',
     'v1',
     {
@@ -846,10 +888,10 @@ class EndpointGetPlayerSubscribedMatches extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerSubscribedMatches';
 
-  _i2.Future<_i29.SubscribedMatchesPagination> v1({
+  _i2.Future<_i30.SubscribedMatchesPagination> v1({
     required _i4.ServerSupportedTranslation language,
     required int page,
-  }) => caller.callServerEndpoint<_i29.SubscribedMatchesPagination>(
+  }) => caller.callServerEndpoint<_i30.SubscribedMatchesPagination>(
     'getPlayerSubscribedMatches',
     'v1',
     {
@@ -904,10 +946,10 @@ class EndpointSubscribeToMatch extends _i1.EndpointRef {
   @override
   String get name => 'subscribeToMatch';
 
-  _i2.Future<_i30.MatchSubscription> v1({
+  _i2.Future<_i31.MatchSubscription> v1({
     required _i4.ServerSupportedTranslation language,
     required int scheduledMatchId,
-  }) => caller.callServerEndpoint<_i30.MatchSubscription>(
+  }) => caller.callServerEndpoint<_i31.MatchSubscription>(
     'subscribeToMatch',
     'v1',
     {
@@ -968,7 +1010,7 @@ class EndpointSyncPushNotificationToken extends _i1.EndpointRef {
   _i2.Future<void> v1({
     required _i4.ServerSupportedTranslation language,
     required String token,
-    required _i31.PushNotificationPlatform platform,
+    required _i32.PushNotificationPlatform platform,
   }) => caller.callServerEndpoint<void>(
     'syncPushNotificationToken',
     'v1',
@@ -987,9 +1029,9 @@ class EndpointGetPlatformStats extends _i1.EndpointRef {
   @override
   String get name => 'getPlatformStats';
 
-  _i2.Future<_i32.PlatformStats?> v1({
+  _i2.Future<_i33.PlatformStats?> v1({
     required _i4.ServerSupportedTranslation language,
-  }) => caller.callServerEndpoint<_i32.PlatformStats?>(
+  }) => caller.callServerEndpoint<_i33.PlatformStats?>(
     'getPlatformStats',
     'v1',
     {'language': language},
@@ -1003,9 +1045,9 @@ class EndpointGetPlayerStats extends _i1.EndpointRef {
   @override
   String get name => 'getPlayerStats';
 
-  _i2.Future<_i33.PlayerStats?> v1({
+  _i2.Future<_i34.PlayerStats?> v1({
     required _i4.ServerSupportedTranslation language,
-  }) => caller.callServerEndpoint<_i33.PlayerStats?>(
+  }) => caller.callServerEndpoint<_i34.PlayerStats?>(
     'getPlayerStats',
     'v1',
     {'language': language},
@@ -1019,11 +1061,11 @@ class EndpointGetWebAnalyticsDashboard extends _i1.EndpointRef {
   @override
   String get name => 'getWebAnalyticsDashboard';
 
-  _i2.Future<_i34.WebAnalyticsDashboard> v1({
+  _i2.Future<_i35.WebAnalyticsDashboard> v1({
     required _i4.ServerSupportedTranslation language,
     required String password,
     required int page,
-  }) => caller.callServerEndpoint<_i34.WebAnalyticsDashboard>(
+  }) => caller.callServerEndpoint<_i35.WebAnalyticsDashboard>(
     'getWebAnalyticsDashboard',
     'v1',
     {
@@ -1034,25 +1076,14 @@ class EndpointGetWebAnalyticsDashboard extends _i1.EndpointRef {
   );
 }
 
-/// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
-/// are made available on the server and enable the corresponding sign-in widget
-/// on the client.
+/// Exposes the email identity provider with Root Hub specific auth feedback.
 /// {@category Endpoint}
-class EndpointEmailIdp extends _i35.EndpointEmailIdpBase {
+class EndpointEmailIdp extends _i36.EndpointEmailIdpBase {
   EndpointEmailIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'emailIdp';
 
-  /// Logs in the user and returns a new session.
-  ///
-  /// Throws an [EmailAccountLoginException] in case of errors, with reason:
-  /// - [EmailAccountLoginExceptionReason.invalidCredentials] if the email or
-  ///   password is incorrect.
-  /// - [EmailAccountLoginExceptionReason.tooManyAttempts] if there have been
-  ///   too many failed login attempts.
-  ///
-  /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
   _i2.Future<_i9.AuthSuccess> login({
     required String email,
@@ -1066,16 +1097,6 @@ class EndpointEmailIdp extends _i35.EndpointEmailIdpBase {
     },
   );
 
-  /// Starts the registration for a new user account with an email-based login
-  /// associated to it.
-  ///
-  /// Upon successful completion of this method, an email will have been
-  /// sent to [email] with a verification link, which the user must open to
-  /// complete the registration.
-  ///
-  /// Always returns a account request ID, which can be used to complete the
-  /// registration. If the email is already registered, the returned ID will not
-  /// be valid.
   @override
   _i2.Future<_i1.UuidValue> startRegistration({required String email}) =>
       caller.callServerEndpoint<_i1.UuidValue>(
@@ -1083,6 +1104,40 @@ class EndpointEmailIdp extends _i35.EndpointEmailIdpBase {
         'startRegistration',
         {'email': email},
       );
+
+  @override
+  _i2.Future<_i9.AuthSuccess> finishRegistration({
+    required String registrationToken,
+    required String password,
+  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
+    'emailIdp',
+    'finishRegistration',
+    {
+      'registrationToken': registrationToken,
+      'password': password,
+    },
+  );
+
+  @override
+  _i2.Future<_i1.UuidValue> startPasswordReset({required String email}) =>
+      caller.callServerEndpoint<_i1.UuidValue>(
+        'emailIdp',
+        'startPasswordReset',
+        {'email': email},
+      );
+
+  @override
+  _i2.Future<void> finishPasswordReset({
+    required String finishPasswordResetToken,
+    required String newPassword,
+  }) => caller.callServerEndpoint<void>(
+    'emailIdp',
+    'finishPasswordReset',
+    {
+      'finishPasswordResetToken': finishPasswordResetToken,
+      'newPassword': newPassword,
+    },
+  );
 
   /// Verifies an account request code and returns a token
   /// that can be used to complete the account creation.
@@ -1106,54 +1161,6 @@ class EndpointEmailIdp extends _i35.EndpointEmailIdpBase {
       'verificationCode': verificationCode,
     },
   );
-
-  /// Completes a new account registration, creating a new auth user with a
-  /// profile and attaching the given email account to it.
-  ///
-  /// Throws an [EmailAccountRequestException] in case of errors, with reason:
-  /// - [EmailAccountRequestExceptionReason.expired] if the account request has
-  ///   already expired.
-  /// - [EmailAccountRequestExceptionReason.policyViolation] if the password
-  ///   does not comply with the password policy.
-  /// - [EmailAccountRequestExceptionReason.invalid] if the [registrationToken]
-  ///   is invalid.
-  ///
-  /// Throws an [AuthUserBlockedException] if the auth user is blocked.
-  ///
-  /// Returns a session for the newly created user.
-  @override
-  _i2.Future<_i9.AuthSuccess> finishRegistration({
-    required String registrationToken,
-    required String password,
-  }) => caller.callServerEndpoint<_i9.AuthSuccess>(
-    'emailIdp',
-    'finishRegistration',
-    {
-      'registrationToken': registrationToken,
-      'password': password,
-    },
-  );
-
-  /// Requests a password reset for [email].
-  ///
-  /// If the email address is registered, an email with reset instructions will
-  /// be send out. If the email is unknown, this method will have no effect.
-  ///
-  /// Always returns a password reset request ID, which can be used to complete
-  /// the reset. If the email is not registered, the returned ID will not be
-  /// valid.
-  ///
-  /// Throws an [EmailAccountPasswordResetException] in case of errors, with reason:
-  /// - [EmailAccountPasswordResetExceptionReason.tooManyAttempts] if the user has
-  ///   made too many attempts trying to request a password reset.
-  ///
-  @override
-  _i2.Future<_i1.UuidValue> startPasswordReset({required String email}) =>
-      caller.callServerEndpoint<_i1.UuidValue>(
-        'emailIdp',
-        'startPasswordReset',
-        {'email': email},
-      );
 
   /// Verifies a password reset code and returns a finishPasswordResetToken
   /// that can be used to finish the password reset.
@@ -1182,33 +1189,6 @@ class EndpointEmailIdp extends _i35.EndpointEmailIdpBase {
     },
   );
 
-  /// Completes a password reset request by setting a new password.
-  ///
-  /// The [verificationCode] returned from [verifyPasswordResetCode] is used to
-  /// validate the password reset request.
-  ///
-  /// Throws an [EmailAccountPasswordResetException] in case of errors, with reason:
-  /// - [EmailAccountPasswordResetExceptionReason.expired] if the password reset
-  ///   request has already expired.
-  /// - [EmailAccountPasswordResetExceptionReason.policyViolation] if the new
-  ///   password does not comply with the password policy.
-  /// - [EmailAccountPasswordResetExceptionReason.invalid] if no request exists
-  ///   for the given [passwordResetRequestId] or [verificationCode] is invalid.
-  ///
-  /// Throws an [AuthUserBlockedException] if the auth user is blocked.
-  @override
-  _i2.Future<void> finishPasswordReset({
-    required String finishPasswordResetToken,
-    required String newPassword,
-  }) => caller.callServerEndpoint<void>(
-    'emailIdp',
-    'finishPasswordReset',
-    {
-      'finishPasswordResetToken': finishPasswordResetToken,
-      'newPassword': newPassword,
-    },
-  );
-
   @override
   _i2.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
     'emailIdp',
@@ -1220,7 +1200,7 @@ class EndpointEmailIdp extends _i35.EndpointEmailIdpBase {
 /// By extending [GoogleIdpBaseEndpoint], the Google identity provider endpoints
 /// are made available on the server and enable Google sign-in on the client.
 /// {@category Endpoint}
-class EndpointGoogleIdp extends _i35.EndpointGoogleIdpBase {
+class EndpointGoogleIdp extends _i36.EndpointGoogleIdpBase {
   EndpointGoogleIdp(_i1.EndpointCaller caller) : super(caller);
 
   @override
@@ -1291,11 +1271,11 @@ class EndpointJwtRefresh extends _i9.EndpointRefreshJwtTokens {
 
 class Modules {
   Modules(Client client) {
-    serverpod_auth_idp = _i35.Caller(client);
+    serverpod_auth_idp = _i36.Caller(client);
     serverpod_auth_core = _i9.Caller(client);
   }
 
-  late final _i35.Caller serverpod_auth_idp;
+  late final _i36.Caller serverpod_auth_idp;
 
   late final _i9.Caller serverpod_auth_core;
 }
@@ -1320,7 +1300,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i36.Protocol(),
+         _i37.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -1355,6 +1335,8 @@ class Client extends _i1.ServerpodClientShared {
       this,
     );
     getMatchChatUnreadCount = EndpointGetMatchChatUnreadCount(this);
+    getPlayerActiveSchedules = EndpointGetPlayerActiveSchedules(this);
+    getPlayerPastSchedules = EndpointGetPlayerPastSchedules(this);
     sendMatchChatMessage = EndpointSendMatchChatMessage(this);
     setMatchChatMessageReaction = EndpointSetMatchChatMessageReaction(this);
     setMatchChatTyping = EndpointSetMatchChatTyping(this);
@@ -1430,6 +1412,10 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointGetMatchChatUnreadCount getMatchChatUnreadCount;
 
+  late final EndpointGetPlayerActiveSchedules getPlayerActiveSchedules;
+
+  late final EndpointGetPlayerPastSchedules getPlayerPastSchedules;
+
   late final EndpointSendMatchChatMessage sendMatchChatMessage;
 
   late final EndpointSetMatchChatMessageReaction setMatchChatMessageReaction;
@@ -1501,6 +1487,8 @@ class Client extends _i1.ServerpodClientShared {
     'getMatchChatMessage': getMatchChatMessage,
     'getMatchChatPlayedMatchSummary': getMatchChatPlayedMatchSummary,
     'getMatchChatUnreadCount': getMatchChatUnreadCount,
+    'getPlayerActiveSchedules': getPlayerActiveSchedules,
+    'getPlayerPastSchedules': getPlayerPastSchedules,
     'sendMatchChatMessage': sendMatchChatMessage,
     'setMatchChatMessageReaction': setMatchChatMessageReaction,
     'setMatchChatTyping': setMatchChatTyping,

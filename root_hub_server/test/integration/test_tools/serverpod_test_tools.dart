@@ -57,27 +57,29 @@ import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_m
     as _i24;
 import 'package:root_hub_server/src/generated/api/match_chat/models/match_chat_played_match_summary.dart'
     as _i25;
-import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
+import 'package:root_hub_server/src/generated/api/match_chat/models/player_schedules_pagination.dart'
     as _i26;
-import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/chat/match_chat_message.dart'
     as _i27;
-import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
+import 'package:root_hub_server/src/generated/entities/core/match_podium.dart'
     as _i28;
-import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/location.dart'
     as _i29;
-import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/match_schedule_info.dart'
     as _i30;
-import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
+import 'package:root_hub_server/src/generated/api/match_making/models/subscribed_matches_pagination.dart'
     as _i31;
-import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
+import 'package:root_hub_server/src/generated/entities/match_making/match_subscription.dart'
     as _i32;
-import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
+import 'package:root_hub_server/src/generated/entities/core/push_notification_platform.dart'
     as _i33;
-import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
+import 'package:root_hub_server/src/generated/api/stats/models/platform_stats.dart'
     as _i34;
-import 'package:root_hub_server/src/generated/api/stats/models/web_analytics_dashboard.dart'
+import 'package:root_hub_server/src/generated/api/stats/models/player_stats.dart'
     as _i35;
-import 'package:root_hub_server/src/generated/future_calls.dart' as _i36;
+import 'package:root_hub_server/src/generated/api/stats/models/web_analytics_dashboard.dart'
+    as _i36;
+import 'package:root_hub_server/src/generated/future_calls.dart' as _i37;
 import 'package:root_hub_server/src/generated/protocol.dart';
 import 'package:root_hub_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -235,6 +237,10 @@ class TestEndpoints {
 
   late final _GetMatchChatUnreadCount getMatchChatUnreadCount;
 
+  late final _GetPlayerActiveSchedules getPlayerActiveSchedules;
+
+  late final _GetPlayerPastSchedules getPlayerPastSchedules;
+
   late final _SendMatchChatMessage sendMatchChatMessage;
 
   late final _SetMatchChatMessageReaction setMatchChatMessageReaction;
@@ -378,6 +384,14 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     getMatchChatUnreadCount = _GetMatchChatUnreadCount(
+      endpoints,
+      serializationManager,
+    );
+    getPlayerActiveSchedules = _GetPlayerActiveSchedules(
+      endpoints,
+      serializationManager,
+    );
+    getPlayerPastSchedules = _GetPlayerPastSchedules(
       endpoints,
       serializationManager,
     );
@@ -1721,6 +1735,98 @@ class _GetMatchChatUnreadCount {
   }
 }
 
+class _GetPlayerActiveSchedules {
+  _GetPlayerActiveSchedules(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i26.PlayerSchedulesPagination> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int page,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getPlayerActiveSchedules',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getPlayerActiveSchedules',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'page': page,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i26.PlayerSchedulesPagination>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GetPlayerPastSchedules {
+  _GetPlayerPastSchedules(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i26.PlayerSchedulesPagination> v1(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i5.ServerSupportedTranslation language,
+    required int page,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'getPlayerPastSchedules',
+            method: 'v1',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'getPlayerPastSchedules',
+          methodName: 'v1',
+          parameters: _i1.testObjectToJson({
+            'language': language,
+            'page': page,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i26.PlayerSchedulesPagination>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _SendMatchChatMessage {
   _SendMatchChatMessage(
     this._endpointDispatch,
@@ -1731,7 +1837,7 @@ class _SendMatchChatMessage {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i26.MatchChatMessage> v1(
+  _i3.Future<_i27.MatchChatMessage> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1776,7 +1882,7 @@ class _SendMatchChatMessage {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i26.MatchChatMessage>);
+                as _i3.Future<_i27.MatchChatMessage>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1795,7 +1901,7 @@ class _SetMatchChatMessageReaction {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i26.MatchChatMessage> v1(
+  _i3.Future<_i27.MatchChatMessage> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -1826,7 +1932,7 @@ class _SetMatchChatMessageReaction {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i26.MatchChatMessage>);
+                as _i3.Future<_i27.MatchChatMessage>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1898,8 +2004,8 @@ class _CreateMatchSchedule {
     required _i5.ServerSupportedTranslation language,
     required String title,
     String? description,
-    required _i27.MatchPodium minAmountOfPlayers,
-    required _i27.MatchPodium maxAmountOfPlayers,
+    required _i28.MatchPodium minAmountOfPlayers,
+    required _i28.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     required int locationId,
     String? locationAdditionalInfo,
@@ -1959,8 +2065,8 @@ class _EditMatchSchedule {
     required int scheduledMatchId,
     required String title,
     String? description,
-    required _i27.MatchPodium minAmountOfPlayers,
-    required _i27.MatchPodium maxAmountOfPlayers,
+    required _i28.MatchPodium minAmountOfPlayers,
+    required _i28.MatchPodium maxAmountOfPlayers,
     required DateTime attemptedAt,
     bool? closedForSubscriptions,
   }) async {
@@ -2011,7 +2117,7 @@ class _GetMatchLocation {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i28.Location>> v1(
+  _i3.Future<List<_i29.Location>> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String query,
@@ -2040,7 +2146,7 @@ class _GetMatchLocation {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i28.Location>>);
+                as _i3.Future<List<_i29.Location>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2111,7 +2217,7 @@ class _GetMatchScheduleInfo {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i29.MatchScheduleInfo> v1(
+  _i3.Future<_i30.MatchScheduleInfo> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -2138,7 +2244,7 @@ class _GetMatchScheduleInfo {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i29.MatchScheduleInfo>);
+                as _i3.Future<_i30.MatchScheduleInfo>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2157,7 +2263,7 @@ class _GetPlayerSubscribedMatches {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i30.SubscribedMatchesPagination> v1(
+  _i3.Future<_i31.SubscribedMatchesPagination> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int page,
@@ -2184,7 +2290,7 @@ class _GetPlayerSubscribedMatches {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i30.SubscribedMatchesPagination>);
+                as _i3.Future<_i31.SubscribedMatchesPagination>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2293,7 +2399,7 @@ class _SubscribeToMatch {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i31.MatchSubscription> v1(
+  _i3.Future<_i32.MatchSubscription> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required int scheduledMatchId,
@@ -2320,7 +2426,7 @@ class _SubscribeToMatch {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i31.MatchSubscription>);
+                as _i3.Future<_i32.MatchSubscription>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2435,7 +2541,7 @@ class _SyncPushNotificationToken {
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String token,
-    required _i32.PushNotificationPlatform platform,
+    required _i33.PushNotificationPlatform platform,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -2479,7 +2585,7 @@ class _GetPlatformStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i33.PlatformStats?> v1(
+  _i3.Future<_i34.PlatformStats?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -2502,7 +2608,7 @@ class _GetPlatformStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i33.PlatformStats?>);
+                as _i3.Future<_i34.PlatformStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2521,7 +2627,7 @@ class _GetPlayerStats {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i34.PlayerStats?> v1(
+  _i3.Future<_i35.PlayerStats?> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
   }) async {
@@ -2544,7 +2650,7 @@ class _GetPlayerStats {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i34.PlayerStats?>);
+                as _i3.Future<_i35.PlayerStats?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2563,7 +2669,7 @@ class _GetWebAnalyticsDashboard {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i35.WebAnalyticsDashboard> v1(
+  _i3.Future<_i36.WebAnalyticsDashboard> v1(
     _i1.TestSessionBuilder sessionBuilder, {
     required _i5.ServerSupportedTranslation language,
     required String password,
@@ -2592,7 +2698,7 @@ class _GetWebAnalyticsDashboard {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i35.WebAnalyticsDashboard>);
+                as _i3.Future<_i36.WebAnalyticsDashboard>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -2677,41 +2783,6 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<String> verifyRegistrationCode(
-    _i1.TestSessionBuilder sessionBuilder, {
-    required _i2.UuidValue accountRequestId,
-    required String verificationCode,
-  }) async {
-    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
-      var _localUniqueSession =
-          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'emailIdp',
-            method: 'verifyRegistrationCode',
-          );
-      try {
-        var _localCallContext = await _endpointDispatch.getMethodCallContext(
-          createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'emailIdp',
-          methodName: 'verifyRegistrationCode',
-          parameters: _i1.testObjectToJson({
-            'accountRequestId': accountRequestId,
-            'verificationCode': verificationCode,
-          }),
-          serializationManager: _serializationManager,
-        );
-        var _localReturnValue =
-            await (_localCallContext.method.call(
-                  _localUniqueSession,
-                  _localCallContext.arguments,
-                )
-                as _i3.Future<String>);
-        return _localReturnValue;
-      } finally {
-        await _localUniqueSession.close();
-      }
-    });
-  }
-
   _i3.Future<_i10.AuthSuccess> finishRegistration(
     _i1.TestSessionBuilder sessionBuilder, {
     required String registrationToken,
@@ -2778,41 +2849,6 @@ class _EmailIdpEndpoint {
     });
   }
 
-  _i3.Future<String> verifyPasswordResetCode(
-    _i1.TestSessionBuilder sessionBuilder, {
-    required _i2.UuidValue passwordResetRequestId,
-    required String verificationCode,
-  }) async {
-    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
-      var _localUniqueSession =
-          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'emailIdp',
-            method: 'verifyPasswordResetCode',
-          );
-      try {
-        var _localCallContext = await _endpointDispatch.getMethodCallContext(
-          createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'emailIdp',
-          methodName: 'verifyPasswordResetCode',
-          parameters: _i1.testObjectToJson({
-            'passwordResetRequestId': passwordResetRequestId,
-            'verificationCode': verificationCode,
-          }),
-          serializationManager: _serializationManager,
-        );
-        var _localReturnValue =
-            await (_localCallContext.method.call(
-                  _localUniqueSession,
-                  _localCallContext.arguments,
-                )
-                as _i3.Future<String>);
-        return _localReturnValue;
-      } finally {
-        await _localUniqueSession.close();
-      }
-    });
-  }
-
   _i3.Future<void> finishPasswordReset(
     _i1.TestSessionBuilder sessionBuilder, {
     required String finishPasswordResetToken,
@@ -2841,6 +2877,76 @@ class _EmailIdpEndpoint {
                   _localCallContext.arguments,
                 )
                 as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<String> verifyRegistrationCode(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i2.UuidValue accountRequestId,
+    required String verificationCode,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'emailIdp',
+            method: 'verifyRegistrationCode',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'emailIdp',
+          methodName: 'verifyRegistrationCode',
+          parameters: _i1.testObjectToJson({
+            'accountRequestId': accountRequestId,
+            'verificationCode': verificationCode,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<String>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<String> verifyPasswordResetCode(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required _i2.UuidValue passwordResetRequestId,
+    required String verificationCode,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'emailIdp',
+            method: 'verifyPasswordResetCode',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'emailIdp',
+          methodName: 'verifyPasswordResetCode',
+          parameters: _i1.testObjectToJson({
+            'passwordResetRequestId': passwordResetRequestId,
+            'verificationCode': verificationCode,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<String>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -3001,7 +3107,7 @@ class _MarkStaleMatchSchedulesNotPlayedPeriodicCallFutureCall {
     var _localUniqueSession = (sessionBuilder as _i1.InternalTestSessionBuilder)
         .internalBuild();
     try {
-      await _i36.MarkStaleMatchSchedulesNotPlayedPeriodicCallInvokeFutureCall()
+      await _i37.MarkStaleMatchSchedulesNotPlayedPeriodicCallInvokeFutureCall()
           .invoke(
             _localUniqueSession,
             object,

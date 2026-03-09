@@ -9,6 +9,7 @@ import 'package:root_hub_client/root_hub_client.dart';
 import 'package:root_hub_flutter/i18n/strings.g.dart';
 import 'package:root_hub_flutter/src/core/match_share/match_share_link_builder.dart';
 import 'package:root_hub_flutter/src/core/navigation/app_routes.dart';
+import 'package:root_hub_flutter/src/design_system/sliding_segmented_control_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/dialogs/match_location_info_dialog.dart';
 import 'package:root_hub_flutter/src/features/match/ui/screens/match_table_card_widget.dart';
 import 'package:root_hub_flutter/src/features/match/ui/sheets/match_share_sheet.dart';
@@ -16,6 +17,12 @@ import 'package:root_hub_flutter/src/global_providers/session_provider.dart';
 import 'package:root_hub_flutter/src/states/activity/activity_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_provider.dart';
 import 'package:root_hub_flutter/src/states/auth_flow/auth_flow_state.dart';
+import 'package:root_hub_flutter/src/states/schedules/schedules_provider.dart';
+
+enum _SchedulesTab {
+  active,
+  past,
+}
 
 class SchedulesScreen extends ConsumerStatefulWidget {
   const SchedulesScreen({
@@ -29,6 +36,8 @@ class SchedulesScreen extends ConsumerStatefulWidget {
 class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
   late DateTime _currentTime;
   Timer? _countdownTimer;
+  final ScrollController _scrollController = ScrollController();
+  _SchedulesTab _selectedTab = _SchedulesTab.active;
 
   @override
   void initState() {
@@ -46,13 +55,14 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
         });
       },
     );
+    _scrollController.addListener(_handleScroll);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
       }
 
-      ref.read(activityProvider.notifier).ensureLoaded();
+      ref.read(schedulesProvider.notifier).ensureActiveSchedulesLoaded();
       ref.read(activityProvider.notifier).ensureUnreadCountLoaded();
     });
   }
@@ -60,73 +70,76 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
   @override
   void dispose() {
     _countdownTimer?.cancel();
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final activityState = ref.watch(activityProvider);
+    final schedulesState = ref.watch(schedulesProvider);
     final authFlowState = ref.watch(authFlowProvider);
     final currentPlayer = authFlowState.maybeWhen(
       authenticated: (playerData) => playerData,
       orElse: () => null,
     );
-    final schedules = activityState.subscribedActiveSchedules;
-    final loadError = activityState.loadError;
 
-    if (activityState.isLoading &&
-        !activityState.hasLoadedOnce &&
-        schedules.isEmpty) {
-      return Center(
-        child: SizedBox(
-          width: 32,
-          height: 32,
-          child: CircularProgressIndicator(strokeWidth: 3),
-        ),
-      );
-    }
-
-    if (loadError != null && schedules.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                loadError.title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                loadError.description,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              SizedBox(height: 18),
-              FilledButton(
-                onPressed: () {
-                  ref.read(activityProvider.notifier).refresh();
-                },
-                child: Text(
-                  t.match.ui_sheets_match_table_info_error_widget.retry,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    final selectedSchedules = switch (_selectedTab) {
+      _SchedulesTab.active => schedulesState.activeSchedules,
+      _SchedulesTab.past => schedulesState.pastSchedules,
+    };
+    final isLoading = switch (_selectedTab) {
+      _SchedulesTab.active => schedulesState.isLoadingActiveSchedules,
+      _SchedulesTab.past => schedulesState.isLoadingPastSchedules,
+    };
+    final hasLoaded = switch (_selectedTab) {
+      _SchedulesTab.active => schedulesState.hasLoadedActiveSchedules,
+      _SchedulesTab.past => schedulesState.hasLoadedPastSchedules,
+    };
+    final isLoadingMore = switch (_selectedTab) {
+      _SchedulesTab.active => schedulesState.isLoadingMoreActiveSchedules,
+      _SchedulesTab.past => schedulesState.isLoadingMorePastSchedules,
+    };
+    final loadError = switch (_selectedTab) {
+      _SchedulesTab.active => schedulesState.activeSchedulesError,
+      _SchedulesTab.past => schedulesState.pastSchedulesError,
+    };
+    final selectedDescription = switch (_selectedTab) {
+      _SchedulesTab.active =>
+        t
+            .activity
+            .ui_screens_activity_screen
+            .tablesYouSubscribedToThatAreStillWithinTheActiveWindow,
+      _SchedulesTab.past =>
+        t
+            .activity
+            .ui_screens_activity_screen
+            .tablesYouSubscribedToThatAlreadyLeftTheActiveWindow,
+    };
+    final emptyTitle = switch (_selectedTab) {
+      _SchedulesTab.active =>
+        t.activity.ui_screens_activity_screen.noActiveSchedules,
+      _SchedulesTab.past =>
+        t.activity.ui_screens_activity_screen.noPastSchedules,
+    };
+    final emptyDescription = switch (_selectedTab) {
+      _SchedulesTab.active =>
+        t
+            .activity
+            .ui_screens_activity_screen
+            .whenYouJoinATableItWillAppearHereAsASwipeableCard,
+      _SchedulesTab.past =>
+        t
+            .activity
+            .ui_screens_activity_screen
+            .onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere,
+    };
 
     return RefreshIndicator(
-      onRefresh: () => ref.read(activityProvider.notifier).refresh(),
+      onRefresh: _refreshSelectedTab,
       child: ListView(
+        controller: _scrollController,
         physics: AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
         ),
@@ -140,12 +153,24 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
               height: 1.02,
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 12),
+          SlidingSegmentedControlWidget<_SchedulesTab>(
+            options: [
+              SlidingSegmentedControlOption(
+                value: _SchedulesTab.active,
+                label: t.activity.ui_screens_activity_screen.activeSchedulesTab,
+              ),
+              SlidingSegmentedControlOption(
+                value: _SchedulesTab.past,
+                label: t.activity.ui_screens_activity_screen.pastSchedulesTab,
+              ),
+            ],
+            selectedValue: _selectedTab,
+            onChanged: _handleTabChanged,
+          ),
+          SizedBox(height: 12),
           Text(
-            t
-                .activity
-                .ui_screens_activity_screen
-                .tablesYouSubscribedToThatAreStillWithinTheActiveWindow,
+            selectedDescription,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,
@@ -153,7 +178,59 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
             ),
           ),
           SizedBox(height: 18),
-          if (schedules.isEmpty)
+          if (isLoading && !hasLoaded && selectedSchedules.isEmpty)
+            Padding(
+              padding: EdgeInsets.only(top: 32),
+              child: Center(
+                child: SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CircularProgressIndicator(strokeWidth: 3),
+                ),
+              ),
+            )
+          else if (loadError != null && selectedSchedules.isEmpty)
+            Container(
+              padding: EdgeInsets.fromLTRB(16, 18, 16, 18),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
+                color: Theme.of(context).colorScheme.surface.withValues(
+                  alpha: 0.9,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    loadError.title,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    loadError.description,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: 18),
+                  FilledButton(
+                    onPressed: _refreshSelectedTab,
+                    child: Text(
+                      t.match.ui_sheets_match_table_info_error_widget.retry,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else if (selectedSchedules.isEmpty)
             Container(
               padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
               decoration: BoxDecoration(
@@ -169,17 +246,14 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    t.activity.ui_screens_activity_screen.noActiveSchedules,
+                    emptyTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   SizedBox(height: 6),
                   Text(
-                    t
-                        .activity
-                        .ui_screens_activity_screen
-                        .whenYouJoinATableItWillAppearHereAsASwipeableCard,
+                    emptyDescription,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w700,
@@ -189,7 +263,7 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
               ),
             )
           else
-            for (final schedule in schedules)
+            for (final schedule in selectedSchedules)
               if (schedule.id != null)
                 Padding(
                   padding: EdgeInsets.only(bottom: 12),
@@ -197,7 +271,7 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
                     table: schedule,
                     currentPlayer: currentPlayer,
                     isSubscribing: false,
-                    canReportResultNow: false,
+                    canReportResultNow: _canReportMatchResultNow(schedule),
                     currentTime: _currentTime,
                     distanceLabel: _distanceLabel(
                       currentPlayer,
@@ -227,8 +301,19 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
                     onShareTable: _openShareSheet,
                   ),
                 ),
-          if (loadError != null) ...[
-            SizedBox(height: 8),
+          if (isLoadingMore)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Center(
+                child: SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: CircularProgressIndicator(strokeWidth: 2.6),
+                ),
+              ),
+            ),
+          if (loadError != null && selectedSchedules.isNotEmpty) ...[
+            SizedBox(height: 4),
             Text(
               '${loadError.title}: ${loadError.description}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -236,10 +321,72 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
                 fontWeight: FontWeight.w700,
               ),
             ),
+            SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: OutlinedButton(
+                onPressed: _refreshSelectedTab,
+                child: Text(
+                  t.match.ui_sheets_match_table_info_error_widget.retry,
+                ),
+              ),
+            ),
           ],
         ],
       ),
     );
+  }
+
+  void _handleTabChanged(_SchedulesTab nextTab) {
+    if (_selectedTab == nextTab) {
+      return;
+    }
+
+    setState(() {
+      _selectedTab = nextTab;
+    });
+    _ensureTabLoaded(nextTab);
+  }
+
+  void _ensureTabLoaded(_SchedulesTab tab) {
+    switch (tab) {
+      case _SchedulesTab.active:
+        ref.read(schedulesProvider.notifier).ensureActiveSchedulesLoaded();
+        return;
+      case _SchedulesTab.past:
+        ref.read(schedulesProvider.notifier).ensurePastSchedulesLoaded();
+        return;
+    }
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients ||
+        _scrollController.position.extentAfter > 280) {
+      return;
+    }
+
+    switch (_selectedTab) {
+      case _SchedulesTab.active:
+        unawaited(
+          ref.read(schedulesProvider.notifier).loadMoreActiveSchedules(),
+        );
+        return;
+      case _SchedulesTab.past:
+        unawaited(ref.read(schedulesProvider.notifier).loadMorePastSchedules());
+        return;
+    }
+  }
+
+  Future<void> _refreshSelectedTab() async {
+    await Future.wait<dynamic>([
+      switch (_selectedTab) {
+        _SchedulesTab.active =>
+          ref.read(schedulesProvider.notifier).refreshActiveSchedules(),
+        _SchedulesTab.past =>
+          ref.read(schedulesProvider.notifier).refreshPastSchedules(),
+      },
+      ref.read(activityProvider.notifier).refreshUnreadCount(),
+    ]);
   }
 
   Future<void> _openChat(int scheduledMatchId, String matchTitle) async {
@@ -252,7 +399,27 @@ class _SchedulesScreenState extends ConsumerState<SchedulesScreen> {
       return;
     }
 
-    await ref.read(activityProvider.notifier).refresh();
+    await Future.wait<dynamic>([
+      switch (_selectedTab) {
+        _SchedulesTab.active =>
+          ref.read(schedulesProvider.notifier).refreshActiveSchedules(),
+        _SchedulesTab.past =>
+          ref.read(schedulesProvider.notifier).refreshPastSchedules(),
+      },
+      ref.read(activityProvider.notifier).refreshUnreadCount(),
+    ]);
+  }
+
+  bool _canReportMatchResultNow(MatchSchedulePairingAttempt schedule) {
+    if (schedule.status != MatchScheduleStatus.scheduled) {
+      return false;
+    }
+
+    final earliestAllowedRegistrationTime = schedule.attemptedAt.subtract(
+      Duration(hours: 2),
+    );
+
+    return !_currentTime.isBefore(earliestAllowedRegistrationTime);
   }
 
   Future<void> _openShareSheet(MatchSchedulePairingAttempt table) async {

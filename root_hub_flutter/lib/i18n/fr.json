@@ -90,6 +90,11 @@
       "passwordRuleNumber": "Contient au moins un chiffre",
       "errors": {
         "invalidEmail": "Adresse e-mail invalide.",
+        "emailAliasNotAllowed": "Les alias d’e-mail comme nom+tag@exemple.com ne sont pas pris en charge. Utilisez votre adresse principale.",
+        "accountAlreadyExists": "Un compte avec cet e-mail existe déjà. Connectez-vous ou réinitialisez votre mot de passe.",
+        "accountNotFound": "Aucun compte n’a été trouvé pour cet e-mail. Vérifiez l’adresse ou créez un nouveau compte.",
+        "invalidPassword": "Ce mot de passe est incorrect. Vérifiez-le puis réessayez.",
+        "accountBlocked": "Ce compte est actuellement bloqué. Contactez le support si cela semble être une erreur.",
         "invalidCredentials": "E-mail ou mot de passe invalide. Vérifiez vos identifiants et réessayez.",
         "tooManyLoginAttempts": "Trop de tentatives de connexion. Réessayez plus tard.",
         "loginFailed": "Une erreur est survenue lors de la connexion. Réessayez.",
@@ -181,9 +186,14 @@
   "activity": {
     "ui_screens_activity_screen": {
       "myScheduledTablesTitle": "Mes Tables Planifiées",
+      "activeSchedulesTab": "Actives",
+      "pastSchedulesTab": "Passées",
       "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tables auxquelles vous êtes inscrit et qui n'ont pas encore commencé ou ont commencé il y a moins de 6 heures.",
+      "tablesYouSubscribedToThatAlreadyLeftTheActiveWindow": "Tables auxquelles vous êtes inscrit et qui ont déjà eu lieu ou ont quitté la fenêtre active.",
       "noActiveSchedules": "Aucun abonnement actif",
       "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Quand vous rejoignez une table, elle apparaît ici sous forme de carte à faire glisser.",
+      "noPastSchedules": "Aucune table passée pour le moment",
+      "onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere": "Quand l'une de vos tables rejointes quitte la fenêtre active, elle apparaît ici.",
       "activeChatsTitle": "Chats Actifs",
       "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats des tables à venir ou récemment lancées, triés d'abord par messages non lus.",
       "noActiveChats": "Aucun chat actif",

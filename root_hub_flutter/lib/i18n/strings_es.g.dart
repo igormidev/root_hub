@@ -437,9 +437,14 @@ class _TranslationsActivityUiScreensActivityScreenEs extends TranslationsActivit
 
 	// Translations
 	@override String get myScheduledTablesTitle => 'Mis Mesas Programadas';
+	@override String get activeSchedulesTab => 'Activas';
+	@override String get pastSchedulesTab => 'Pasadas';
 	@override String get tablesYouSubscribedToThatAreStillWithinTheActiveWindow => 'Mesas a las que te suscribiste y que no han comenzado o comenzaron hace menos de 6 horas.';
+	@override String get tablesYouSubscribedToThatAlreadyLeftTheActiveWindow => 'Mesas a las que te suscribiste y que ya ocurrieron o salieron de la ventana activa.';
 	@override String get noActiveSchedules => 'Sin suscripciones activas';
 	@override String get whenYouJoinATableItWillAppearHereAsASwipeableCard => 'Cuando te unas a una mesa, aparecerá aquí como una tarjeta deslizable.';
+	@override String get noPastSchedules => 'Todavía no hay mesas pasadas';
+	@override String get onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere => 'Cuando una de tus mesas suscritas salga de la ventana activa, aparecerá aquí.';
 	@override String get activeChatsTitle => 'Chats Activos';
 	@override String get chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages => 'Chats de mesas próximas o recién iniciadas, ordenados primero por mensajes no leídos.';
 	@override String get noActiveChats => 'No hay chats activos';
@@ -1702,6 +1707,11 @@ class _TranslationsAuthAuthLoginScreenErrorsEs extends TranslationsAuthAuthLogin
 
 	// Translations
 	@override String get invalidEmail => 'Correo inválido.';
+	@override String get emailAliasNotAllowed => 'No se admiten alias de correo como nombre+tag@ejemplo.com. Usa tu correo principal.';
+	@override String get accountAlreadyExists => 'Ya existe una cuenta con este correo. Inicia sesión o restablece tu contraseña.';
+	@override String get accountNotFound => 'No encontramos una cuenta con este correo. Revisa la dirección o crea una nueva cuenta.';
+	@override String get invalidPassword => 'Esa contraseña es incorrecta. Revísala e inténtalo de nuevo.';
+	@override String get accountBlocked => 'Esta cuenta está bloqueada en este momento. Contacta al soporte si crees que es un error.';
 	@override String get invalidCredentials => 'Correo o contraseña inválidos. Verifica tus datos e inténtalo de nuevo.';
 	@override String get tooManyLoginAttempts => 'Demasiados intentos de inicio de sesión. Inténtalo más tarde.';
 	@override String get loginFailed => 'Ocurrió un error al iniciar sesión. Inténtalo de nuevo.';

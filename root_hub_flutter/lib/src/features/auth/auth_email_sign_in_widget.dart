@@ -153,7 +153,16 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
   }
 
   bool _shouldShowSnackbarForError(Object error) {
-    return error is! InvalidEmailException;
+    if (error is InvalidEmailException) {
+      return false;
+    }
+
+    if (error is AuthFeedbackException) {
+      return error.reason != AuthFeedbackExceptionReason.invalidEmail &&
+          error.reason != AuthFeedbackExceptionReason.emailAliasNotAllowed;
+    }
+
+    return true;
   }
 
   String _formatResendTime(int totalSeconds) {
@@ -166,7 +175,20 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
     final errorsT = context.t.auth.auth_login_screen.errors;
 
     if (error is InvalidEmailException) {
-      return errorsT.invalidEmail;
+      return _resolveInvalidEmailMessage(error);
+    }
+
+    if (error is AuthFeedbackException) {
+      return switch (error.reason) {
+        AuthFeedbackExceptionReason.invalidEmail => errorsT.invalidEmail,
+        AuthFeedbackExceptionReason.emailAliasNotAllowed =>
+          errorsT.emailAliasNotAllowed,
+        AuthFeedbackExceptionReason.accountAlreadyExists =>
+          errorsT.accountAlreadyExists,
+        AuthFeedbackExceptionReason.accountNotFound => errorsT.accountNotFound,
+        AuthFeedbackExceptionReason.invalidPassword => errorsT.invalidPassword,
+        AuthFeedbackExceptionReason.accountBlocked => errorsT.accountBlocked,
+      };
     }
 
     if (error is EmailAccountLoginException) {
@@ -216,6 +238,42 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
     return errorsT.unexpected;
   }
 
+  String _resolveInvalidEmailMessage(InvalidEmailException error) {
+    final errorsT = context.t.auth.auth_login_screen.errors;
+    final reason = error.reason.toLowerCase();
+
+    if (reason.contains('alias')) {
+      return errorsT.emailAliasNotAllowed;
+    }
+
+    return errorsT.invalidEmail;
+  }
+
+  String? _resolveEmailErrorText(String email) {
+    final currentError = _controller.error;
+    if (currentError is InvalidEmailException) {
+      return _resolveInvalidEmailMessage(currentError);
+    }
+
+    if (currentError is AuthFeedbackException &&
+        (currentError.reason == AuthFeedbackExceptionReason.invalidEmail ||
+            currentError.reason ==
+                AuthFeedbackExceptionReason.emailAliasNotAllowed)) {
+      return _resolveErrorMessage(currentError);
+    }
+
+    if (email.isEmpty) {
+      return null;
+    }
+
+    try {
+      _controller.emailValidation.call(email);
+      return null;
+    } on InvalidEmailException catch (error) {
+      return _resolveInvalidEmailMessage(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -229,9 +287,8 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
     final verificationCodeComplete =
         code.length == _verificationCodeConfig.length;
 
-    final emailErrorText = _controller.error is InvalidEmailException
-        ? authT.errors.invalidEmail
-        : null;
+    final emailErrorText = _resolveEmailErrorText(email);
+    final canSubmitEmail = email.isNotEmpty && emailErrorText == null;
 
     final form = switch (currentScreen) {
       EmailFlowScreen.login => FormStandardLayout(
@@ -272,7 +329,7 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
           ],
         ),
         actionButton: ActionButton(
-          onPressed: email.isNotEmpty && password.isNotEmpty && !isLoading
+          onPressed: canSubmitEmail && password.isNotEmpty && !isLoading
               ? () => unawaited(_controller.login())
               : null,
           label: authT.signInButton,
@@ -311,7 +368,7 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
           ],
         ),
         actionButton: ActionButton(
-          onPressed: email.isNotEmpty && !isLoading
+          onPressed: canSubmitEmail && !isLoading
               ? () => unawaited(_controller.startRegistration())
               : null,
           label: authT.continueButton,
@@ -529,7 +586,7 @@ class _AuthEmailSignInWidgetState extends State<AuthEmailSignInWidget> {
           ],
         ),
         actionButton: ActionButton(
-          onPressed: email.isNotEmpty && !isLoading
+          onPressed: canSubmitEmail && !isLoading
               ? () => unawaited(_controller.startPasswordReset())
               : null,
           label: authT.requestResetButton,

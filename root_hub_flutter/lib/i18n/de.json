@@ -90,6 +90,11 @@
       "passwordRuleNumber": "Enthält mindestens eine Zahl",
       "errors": {
         "invalidEmail": "Ungültige E-Mail-Adresse.",
+        "emailAliasNotAllowed": "E-Mail-Aliasse wie name+tag@beispiel.com werden nicht unterstützt. Verwende deine Hauptadresse.",
+        "accountAlreadyExists": "Für diese E-Mail gibt es bereits ein Konto. Melde dich an oder setze dein Passwort zurück.",
+        "accountNotFound": "Für diese E-Mail wurde kein Konto gefunden. Prüfe die Adresse oder erstelle ein neues Konto.",
+        "invalidPassword": "Dieses Passwort ist falsch. Prüfe es und versuche es erneut.",
+        "accountBlocked": "Dieses Konto ist derzeit gesperrt. Kontaktiere den Support, wenn das ein Fehler sein sollte.",
         "invalidCredentials": "Ungültige E-Mail oder Passwort. Bitte überprüfe deine Daten und versuche es erneut.",
         "tooManyLoginAttempts": "Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuche es später erneut.",
         "loginFailed": "Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuche es erneut.",
@@ -181,9 +186,14 @@
   "activity": {
     "ui_screens_activity_screen": {
       "myScheduledTablesTitle": "Meine Geplanten Tische",
+      "activeSchedulesTab": "Aktiv",
+      "pastSchedulesTab": "Vergangen",
       "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tische, denen du beigetreten bist und die noch nicht gestartet sind oder vor weniger als 6 Stunden gestartet haben.",
+      "tablesYouSubscribedToThatAlreadyLeftTheActiveWindow": "Tische, denen du beigetreten bist und die bereits stattgefunden haben oder das aktive Fenster verlassen haben.",
       "noActiveSchedules": "Keine aktiven Anmeldungen",
       "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Wenn du einem Tisch beitrittst, erscheint er hier als wischbare Karte.",
+      "noPastSchedules": "Noch keine vergangenen Tische",
+      "onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere": "Sobald einer deiner abonnierten Tische das aktive Fenster verlässt, erscheint er hier.",
       "activeChatsTitle": "Aktive Chats",
       "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats für kommende oder kürzlich gestartete Tische, zuerst nach ungelesenen Nachrichten sortiert.",
       "noActiveChats": "Keine aktiven Chats",

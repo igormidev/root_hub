@@ -90,6 +90,11 @@
       "passwordRuleNumber": "Contiene al menos un número",
       "errors": {
         "invalidEmail": "Correo inválido.",
+        "emailAliasNotAllowed": "No se admiten alias de correo como nombre+tag@ejemplo.com. Usa tu correo principal.",
+        "accountAlreadyExists": "Ya existe una cuenta con este correo. Inicia sesión o restablece tu contraseña.",
+        "accountNotFound": "No encontramos una cuenta con este correo. Revisa la dirección o crea una nueva cuenta.",
+        "invalidPassword": "Esa contraseña es incorrecta. Revísala e inténtalo de nuevo.",
+        "accountBlocked": "Esta cuenta está bloqueada en este momento. Contacta al soporte si crees que es un error.",
         "invalidCredentials": "Correo o contraseña inválidos. Verifica tus datos e inténtalo de nuevo.",
         "tooManyLoginAttempts": "Demasiados intentos de inicio de sesión. Inténtalo más tarde.",
         "loginFailed": "Ocurrió un error al iniciar sesión. Inténtalo de nuevo.",
@@ -181,9 +186,14 @@
   "activity": {
     "ui_screens_activity_screen": {
       "myScheduledTablesTitle": "Mis Mesas Programadas",
+      "activeSchedulesTab": "Activas",
+      "pastSchedulesTab": "Pasadas",
       "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Mesas a las que te suscribiste y que no han comenzado o comenzaron hace menos de 6 horas.",
+      "tablesYouSubscribedToThatAlreadyLeftTheActiveWindow": "Mesas a las que te suscribiste y que ya ocurrieron o salieron de la ventana activa.",
       "noActiveSchedules": "Sin suscripciones activas",
       "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Cuando te unas a una mesa, aparecerá aquí como una tarjeta deslizable.",
+      "noPastSchedules": "Todavía no hay mesas pasadas",
+      "onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere": "Cuando una de tus mesas suscritas salga de la ventana activa, aparecerá aquí.",
       "activeChatsTitle": "Chats Activos",
       "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats de mesas próximas o recién iniciadas, ordenados primero por mensajes no leídos.",
       "noActiveChats": "No hay chats activos",

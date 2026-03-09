@@ -90,6 +90,11 @@
       "passwordRuleNumber": "Contains at least one number",
       "errors": {
         "invalidEmail": "Invalid email address.",
+        "emailAliasNotAllowed": "Email aliases like name+tag@example.com are not supported. Use your main email address.",
+        "accountAlreadyExists": "An account with this email already exists. Sign in or reset your password instead.",
+        "accountNotFound": "No account was found for this email. Check the address or create a new account.",
+        "invalidPassword": "That password is incorrect. Check it and try again.",
+        "accountBlocked": "This account is blocked right now. Contact support if you think this is a mistake.",
         "invalidCredentials": "Invalid email or password. Please check your credentials and try again.",
         "tooManyLoginAttempts": "Too many failed login attempts. Please try again later.",
         "loginFailed": "An error occurred during login. Please try again.",
@@ -181,9 +186,14 @@
   "activity": {
     "ui_screens_activity_screen": {
       "myScheduledTablesTitle": "My Scheduled Tables",
+      "activeSchedulesTab": "Active",
+      "pastSchedulesTab": "Past",
       "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Tables you subscribed to that have not started yet or started less than 6 hours ago.",
+      "tablesYouSubscribedToThatAlreadyLeftTheActiveWindow": "Tables you subscribed to that already happened or moved out of the active window.",
       "noActiveSchedules": "No active subscriptions",
       "whenYouJoinATableItWillAppearHereAsASwipeableCard": "When you subscribe to a table, it appears here as a swipeable card.",
+      "noPastSchedules": "No past schedules yet",
+      "onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere": "Once one of your subscribed tables leaves the active window, it shows up here.",
       "activeChatsTitle": "Active Chats",
       "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats for upcoming or recently started tables, ordered by unread messages first.",
       "noActiveChats": "No active chats",

@@ -437,9 +437,14 @@ class _TranslationsActivityUiScreensActivityScreenDe extends TranslationsActivit
 
 	// Translations
 	@override String get myScheduledTablesTitle => 'Meine Geplanten Tische';
+	@override String get activeSchedulesTab => 'Aktiv';
+	@override String get pastSchedulesTab => 'Vergangen';
 	@override String get tablesYouSubscribedToThatAreStillWithinTheActiveWindow => 'Tische, denen du beigetreten bist und die noch nicht gestartet sind oder vor weniger als 6 Stunden gestartet haben.';
+	@override String get tablesYouSubscribedToThatAlreadyLeftTheActiveWindow => 'Tische, denen du beigetreten bist und die bereits stattgefunden haben oder das aktive Fenster verlassen haben.';
 	@override String get noActiveSchedules => 'Keine aktiven Anmeldungen';
 	@override String get whenYouJoinATableItWillAppearHereAsASwipeableCard => 'Wenn du einem Tisch beitrittst, erscheint er hier als wischbare Karte.';
+	@override String get noPastSchedules => 'Noch keine vergangenen Tische';
+	@override String get onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere => 'Sobald einer deiner abonnierten Tische das aktive Fenster verlässt, erscheint er hier.';
 	@override String get activeChatsTitle => 'Aktive Chats';
 	@override String get chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages => 'Chats für kommende oder kürzlich gestartete Tische, zuerst nach ungelesenen Nachrichten sortiert.';
 	@override String get noActiveChats => 'Keine aktiven Chats';
@@ -1702,6 +1707,11 @@ class _TranslationsAuthAuthLoginScreenErrorsDe extends TranslationsAuthAuthLogin
 
 	// Translations
 	@override String get invalidEmail => 'Ungültige E-Mail-Adresse.';
+	@override String get emailAliasNotAllowed => 'E-Mail-Aliasse wie name+tag@beispiel.com werden nicht unterstützt. Verwende deine Hauptadresse.';
+	@override String get accountAlreadyExists => 'Für diese E-Mail gibt es bereits ein Konto. Melde dich an oder setze dein Passwort zurück.';
+	@override String get accountNotFound => 'Für diese E-Mail wurde kein Konto gefunden. Prüfe die Adresse oder erstelle ein neues Konto.';
+	@override String get invalidPassword => 'Dieses Passwort ist falsch. Prüfe es und versuche es erneut.';
+	@override String get accountBlocked => 'Dieses Konto ist derzeit gesperrt. Kontaktiere den Support, wenn das ein Fehler sein sollte.';
 	@override String get invalidCredentials => 'Ungültige E-Mail oder Passwort. Bitte überprüfe deine Daten und versuche es erneut.';
 	@override String get tooManyLoginAttempts => 'Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuche es später erneut.';
 	@override String get loginFailed => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuche es erneut.';

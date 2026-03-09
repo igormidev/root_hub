@@ -90,6 +90,11 @@
       "passwordRuleNumber": "Contém pelo menos um número",
       "errors": {
         "invalidEmail": "E-mail inválido.",
+        "emailAliasNotAllowed": "Aliases de e-mail como nome+tag@exemplo.com não são aceitos. Use seu e-mail principal.",
+        "accountAlreadyExists": "Já existe uma conta com este e-mail. Entre nela ou redefina a senha.",
+        "accountNotFound": "Não encontramos uma conta com este e-mail. Confira o endereço ou crie uma nova conta.",
+        "invalidPassword": "Esta senha está incorreta. Confira e tente novamente.",
+        "accountBlocked": "Esta conta está bloqueada no momento. Fale com o suporte se isso parecer um engano.",
         "invalidCredentials": "E-mail ou senha inválidos. Confira os dados e tente novamente.",
         "tooManyLoginAttempts": "Muitas tentativas de login. Tente novamente mais tarde.",
         "loginFailed": "Não foi possível entrar agora. Tente novamente.",
@@ -181,9 +186,14 @@
   "activity": {
     "ui_screens_activity_screen": {
       "myScheduledTablesTitle": "Minhas Mesas Agendadas",
+      "activeSchedulesTab": "Ativas",
+      "pastSchedulesTab": "Passadas",
       "tablesYouSubscribedToThatAreStillWithinTheActiveWindow": "Mesas em que você se inscreveu e que ainda não começaram ou começaram há menos de 6 horas.",
+      "tablesYouSubscribedToThatAlreadyLeftTheActiveWindow": "Mesas em que você se inscreveu e que já aconteceram ou saíram da janela ativa.",
       "noActiveSchedules": "Nenhuma inscrição ativa",
       "whenYouJoinATableItWillAppearHereAsASwipeableCard": "Quando você entrar em uma mesa, ela aparecerá aqui em cartões deslizáveis.",
+      "noPastSchedules": "Ainda não há mesas passadas",
+      "onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere": "Quando uma das suas mesas inscritas sair da janela ativa, ela aparecerá aqui.",
       "activeChatsTitle": "Chats Ativos",
       "chatsForUpcomingOrRecentlyStartedTablesOrderedByUnreadMessages": "Chats de mesas futuras ou que começaram recentemente, ordenados por mensagens não lidas.",
       "noActiveChats": "Nenhum chat ativo",

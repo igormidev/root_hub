@@ -1,0 +1,3 @@
+exception: AuthFeedbackException
+fields:
+  reason: AuthFeedbackExceptionReason

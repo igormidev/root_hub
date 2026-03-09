@@ -1,0 +1,4 @@
+class: PlayerSchedulesPagination
+fields:
+  schedules: List<MatchSchedulePairingAttempt>
+  paginationMetadata: PaginationMetadata

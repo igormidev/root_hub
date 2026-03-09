@@ -719,14 +719,29 @@ class TranslationsActivityUiScreensActivityScreenEn {
 	/// en: 'My Scheduled Tables'
 	String get myScheduledTablesTitle => 'My Scheduled Tables';
 
+	/// en: 'Active'
+	String get activeSchedulesTab => 'Active';
+
+	/// en: 'Past'
+	String get pastSchedulesTab => 'Past';
+
 	/// en: 'Tables you subscribed to that have not started yet or started less than 6 hours ago.'
 	String get tablesYouSubscribedToThatAreStillWithinTheActiveWindow => 'Tables you subscribed to that have not started yet or started less than 6 hours ago.';
+
+	/// en: 'Tables you subscribed to that already happened or moved out of the active window.'
+	String get tablesYouSubscribedToThatAlreadyLeftTheActiveWindow => 'Tables you subscribed to that already happened or moved out of the active window.';
 
 	/// en: 'No active subscriptions'
 	String get noActiveSchedules => 'No active subscriptions';
 
 	/// en: 'When you subscribe to a table, it appears here as a swipeable card.'
 	String get whenYouJoinATableItWillAppearHereAsASwipeableCard => 'When you subscribe to a table, it appears here as a swipeable card.';
+
+	/// en: 'No past schedules yet'
+	String get noPastSchedules => 'No past schedules yet';
+
+	/// en: 'Once one of your subscribed tables leaves the active window, it shows up here.'
+	String get onceOneOfYourSubscribedTablesLeavesTheActiveWindowItShowsUpHere => 'Once one of your subscribed tables leaves the active window, it shows up here.';
 
 	/// en: 'Active Chats'
 	String get activeChatsTitle => 'Active Chats';
@@ -3161,6 +3176,21 @@ class TranslationsAuthAuthLoginScreenErrorsEn {
 
 	/// en: 'Invalid email address.'
 	String get invalidEmail => 'Invalid email address.';
+
+	/// en: 'Email aliases like name+tag@example.com are not supported. Use your main email address.'
+	String get emailAliasNotAllowed => 'Email aliases like name+tag@example.com are not supported. Use your main email address.';
+
+	/// en: 'An account with this email already exists. Sign in or reset your password instead.'
+	String get accountAlreadyExists => 'An account with this email already exists. Sign in or reset your password instead.';
+
+	/// en: 'No account was found for this email. Check the address or create a new account.'
+	String get accountNotFound => 'No account was found for this email. Check the address or create a new account.';
+
+	/// en: 'That password is incorrect. Check it and try again.'
+	String get invalidPassword => 'That password is incorrect. Check it and try again.';
+
+	/// en: 'This account is blocked right now. Contact support if you think this is a mistake.'
+	String get accountBlocked => 'This account is blocked right now. Contact support if you think this is a mistake.';
 
 	/// en: 'Invalid email or password. Please check your credentials and try again.'
 	String get invalidCredentials => 'Invalid email or password. Please check your credentials and try again.';

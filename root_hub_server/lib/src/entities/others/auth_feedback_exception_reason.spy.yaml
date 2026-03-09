@@ -1,0 +1,8 @@
+enum: AuthFeedbackExceptionReason
+values:
+  - invalidEmail
+  - emailAliasNotAllowed
+  - accountAlreadyExists
+  - accountNotFound
+  - invalidPassword
+  - accountBlocked
