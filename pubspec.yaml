@@ -13,4 +13,3 @@ workspace:
 
 dependency_overrides:
   json_annotation: 4.9.0
-  path_provider_foundation: 2.5.1
