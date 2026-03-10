@@ -237,6 +237,11 @@ This script runs:
 
 It ensures cloud archives can resolve Pod-generated file lists before the Xcode archive step.
 
+## iOS Versioning
+- `root_hub_flutter/pubspec.yaml` is the source of truth for iOS app version and build number.
+- Manual Xcode builds and archives run `ios/scripts/sync_pubspec_version.sh`, which rewrites the built app bundle `Info.plist` from the pubspec version before signing.
+- `ios/Flutter/Generated.xcconfig` can still lag until Flutter regenerates it, so do not treat that generated file or Xcode's visible marketing/build version fields as the source of truth.
+
 ## Notes
 - Keep feature modules isolated and composable.
 - Keep API and error handling in providers.

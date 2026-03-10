@@ -102,16 +102,18 @@ AUTO_BUMP_VERSION=0 scripts/deploy/deploy_appstore.sh
 
 ## Android keys still missing
 
-### 1) Release signing (mandatory before Play upload)
+### 1) Android SDK + release signing
 Current project status:
-- `root_hub_flutter/android/app/build.gradle.kts` still signs release with debug key.
+- `root_hub_flutter/android/app/build.gradle.kts` already reads release signing data from `root_hub_flutter/android/key.properties`.
+- The repository currently includes a local upload keystore and alias/password wiring.
 
-What you need:
-- A release keystore (`.jks` / `.keystore`).
-- Keystore alias + passwords.
-- Gradle release signing wired to that keystore (instead of debug signing).
+What still needs to exist on the machine:
+- An Android SDK installation reachable via `ANDROID_HOME`, `ANDROID_SDK_ROOT`, `android/local.properties` (`sdk.dir`), or a standard local path.
+- If you rotate the upload key in the future, update:
+  - `root_hub_flutter/android/upload-keystore.jks`
+  - `root_hub_flutter/android/key.properties`
 
-Where to create/manage it:
+Where to create/manage a replacement keystore:
 - Android Studio: **Build -> Generate Signed Bundle / APK**.
 - Android app signing docs: Android Developers and Play Console help.
 
@@ -123,6 +125,40 @@ Where to create/manage it:
   3. In Google Cloud Console, create a service account and create a JSON key.
   4. Back in Play Console API access, grant this service account app permissions.
   5. Save JSON locally and set `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH` to it.
+
+## CI / Codemagic-style Android upload
+`deploy_playstore.sh` supports both local files and CI secrets.
+
+Required CI secrets for a fully automated Android upload:
+- `ANDROID_KEYSTORE_BASE64` or `ANDROID_KEYSTORE_PATH`
+- `ANDROID_KEYSTORE_PASSWORD`
+- `ANDROID_KEY_ALIAS`
+- `ANDROID_KEY_PASSWORD`
+- `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64` or `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH`
+
+Common non-secret configuration:
+- `ANDROID_PACKAGE_NAME=com.root_hub_flutter`
+- `PLAY_TRACK=internal` (or `alpha`, `beta`, `production`)
+- `PLAY_RELEASE_STATUS=draft`
+
+Example CI invocation:
+
+```bash
+export ANDROID_KEYSTORE_BASE64="..."
+export ANDROID_KEYSTORE_PASSWORD="..."
+export ANDROID_KEY_ALIAS="upload"
+export ANDROID_KEY_PASSWORD="..."
+export GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64="..."
+export PLAY_TRACK="internal"
+export PLAY_RELEASE_STATUS="draft"
+
+scripts/deploy/deploy_playstore.sh
+```
+
+Notes:
+- `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64` is the base64-encoded contents of the JSON key file.
+- `ANDROID_KEYSTORE_BASE64` is the base64-encoded `.jks` file.
+- If you already mount files in CI, use `*_PATH` instead of base64 variables.
 
 ## Web-verified references
 - Flutter iOS deployment (`build ipa`, `export-options-plist`):

@@ -31,6 +31,158 @@ require_env() {
   fi
 }
 
+is_configured() {
+  local value="${1:-}"
+  [[ -n "${value}" && "${value}" != "REPLACE_ME" && "${value}" != "CHANGE_ME" ]]
+}
+
+TEMP_FILES=()
+KEY_PROPERTIES_BACKUP=""
+GENERATED_KEY_PROPERTIES=0
+KEY_PROPERTIES_FILE=""
+
+register_temp_file() {
+  TEMP_FILES+=("$1")
+}
+
+cleanup_temp_artifacts() {
+  local temp_file
+
+  if [[ -n "${KEY_PROPERTIES_BACKUP}" && -f "${KEY_PROPERTIES_BACKUP}" && -n "${KEY_PROPERTIES_FILE}" ]]; then
+    mv "${KEY_PROPERTIES_BACKUP}" "${KEY_PROPERTIES_FILE}"
+  elif [[ "${GENERATED_KEY_PROPERTIES}" == "1" && -n "${KEY_PROPERTIES_FILE}" ]]; then
+    rm -f "${KEY_PROPERTIES_FILE}"
+  fi
+
+  for temp_file in "${TEMP_FILES[@]}"; do
+    rm -f "${temp_file}"
+  done
+}
+
+trap cleanup_temp_artifacts EXIT
+
+decode_base64_to_file() {
+  local encoded_value="$1"
+  local output_file="$2"
+
+  if printf '%s' "${encoded_value}" | base64 --decode > "${output_file}" 2>/dev/null; then
+    return
+  fi
+
+  if printf '%s' "${encoded_value}" | base64 -D > "${output_file}" 2>/dev/null; then
+    return
+  fi
+
+  fail "Failed to decode base64 content into ${output_file}."
+}
+
+read_android_sdk_from_local_properties() {
+  local local_properties_file="$1"
+
+  [[ -f "${local_properties_file}" ]] || return 1
+
+  awk -F'=' '
+    /^sdk\.dir=/ {
+      value = substr($0, index($0, "=") + 1)
+      gsub(/\\\\:/, ":", value)
+      gsub(/\\\\ /, " ", value)
+      print value
+      exit
+    }
+  ' "${local_properties_file}"
+}
+
+ensure_android_sdk() {
+  local local_properties_file="$1"
+  local sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
+
+  if [[ -z "${sdk_root}" ]]; then
+    sdk_root="$(read_android_sdk_from_local_properties "${local_properties_file}" || true)"
+  fi
+
+  if [[ -z "${sdk_root}" ]]; then
+    for candidate in \
+      "${HOME}/Library/Android/sdk" \
+      "/opt/homebrew/share/android-commandlinetools" \
+      "/usr/local/share/android-commandlinetools"; do
+      if [[ -d "${candidate}" ]]; then
+        sdk_root="${candidate}"
+        break
+      fi
+    done
+  fi
+
+  [[ -n "${sdk_root}" ]] || fail "Android SDK not found. Install it and set ANDROID_HOME or ANDROID_SDK_ROOT."
+  [[ -d "${sdk_root}" ]] || fail "Android SDK path does not exist: ${sdk_root}"
+
+  export ANDROID_HOME="${sdk_root}"
+  export ANDROID_SDK_ROOT="${sdk_root}"
+
+  if [[ -d "${ANDROID_HOME}/platform-tools" ]]; then
+    export PATH="${ANDROID_HOME}/platform-tools:${PATH}"
+  fi
+  if [[ -d "${ANDROID_HOME}/cmdline-tools/latest/bin" ]]; then
+    export PATH="${ANDROID_HOME}/cmdline-tools/latest/bin:${PATH}"
+  fi
+}
+
+prepare_android_release_signing() {
+  local android_dir="$1"
+  local keystore_path="${ANDROID_KEYSTORE_PATH:-}"
+  local temp_keystore=""
+
+  if is_configured "${ANDROID_KEYSTORE_BASE64:-}"; then
+    temp_keystore="$(mktemp "${android_dir}/upload-keystore-ci.XXXXXX")"
+    decode_base64_to_file "${ANDROID_KEYSTORE_BASE64}" "${temp_keystore}"
+    register_temp_file "${temp_keystore}"
+    keystore_path="${temp_keystore}"
+  fi
+
+  if ! is_configured "${ANDROID_KEYSTORE_PASSWORD:-}" \
+    && ! is_configured "${ANDROID_KEY_ALIAS:-}" \
+    && ! is_configured "${ANDROID_KEY_PASSWORD:-}" \
+    && ! is_configured "${keystore_path:-}"; then
+    return
+  fi
+
+  require_env ANDROID_KEYSTORE_PASSWORD
+  require_env ANDROID_KEY_ALIAS
+  require_env ANDROID_KEY_PASSWORD
+  [[ -n "${keystore_path}" ]] || fail "ANDROID_KEYSTORE_PATH or ANDROID_KEYSTORE_BASE64 is required when configuring CI signing."
+  [[ -f "${keystore_path}" ]] || fail "Android keystore file does not exist: ${keystore_path}"
+
+  if [[ -f "${KEY_PROPERTIES_FILE}" ]]; then
+    KEY_PROPERTIES_BACKUP="$(mktemp)"
+    cp "${KEY_PROPERTIES_FILE}" "${KEY_PROPERTIES_BACKUP}"
+    register_temp_file "${KEY_PROPERTIES_BACKUP}"
+  else
+    GENERATED_KEY_PROPERTIES=1
+  fi
+
+  cat > "${KEY_PROPERTIES_FILE}" <<EOF
+storePassword=${ANDROID_KEYSTORE_PASSWORD}
+keyPassword=${ANDROID_KEY_PASSWORD}
+keyAlias=${ANDROID_KEY_ALIAS}
+storeFile=${keystore_path}
+EOF
+
+  log "Prepared Android release signing from environment variables"
+}
+
+prepare_google_play_service_account_json() {
+  local temp_json=""
+
+  if ! is_configured "${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64:-}"; then
+    return
+  fi
+
+  temp_json="$(mktemp)"
+  decode_base64_to_file "${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64}" "${temp_json}"
+  register_temp_file "${temp_json}"
+  GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH="${temp_json}"
+  log "Prepared Google Play service account JSON from environment variables"
+}
+
 ensure_java_runtime() {
   if command -v java >/dev/null 2>&1 && java -version >/dev/null 2>&1; then
     return
@@ -57,10 +209,10 @@ ensure_java_runtime() {
 
 ensure_java_runtime
 require_cmd flutter
-require_cmd fastlane
 
 FLUTTER_PROJECT_DIR="${FLUTTER_PROJECT_DIR:-${REPO_ROOT}/root_hub_flutter}"
 ANDROID_GRADLE_FILE="${FLUTTER_PROJECT_DIR}/android/app/build.gradle.kts"
+ANDROID_LOCAL_PROPERTIES_FILE="${FLUTTER_PROJECT_DIR}/android/local.properties"
 PUBSPEC_FILE="${FLUTTER_PROJECT_DIR}/pubspec.yaml"
 ANDROID_AAB_PATH="${ANDROID_AAB_PATH:-}"
 ANDROID_PACKAGE_NAME="${ANDROID_PACKAGE_NAME:-com.root_hub_flutter}"
@@ -70,12 +222,23 @@ PLAY_TRACK="${PLAY_TRACK:-internal}"
 PLAY_RELEASE_STATUS="${PLAY_RELEASE_STATUS:-draft}"
 PLAY_SKIP_UPLOAD="${PLAY_SKIP_UPLOAD:-0}"
 GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH="${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH:-REPLACE_ME}"
+GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64="${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64:-}"
+ANDROID_KEYSTORE_PATH="${ANDROID_KEYSTORE_PATH:-}"
+ANDROID_KEYSTORE_BASE64="${ANDROID_KEYSTORE_BASE64:-}"
+ANDROID_KEYSTORE_PASSWORD="${ANDROID_KEYSTORE_PASSWORD:-}"
+ANDROID_KEY_ALIAS="${ANDROID_KEY_ALIAS:-}"
+ANDROID_KEY_PASSWORD="${ANDROID_KEY_PASSWORD:-}"
 AUTO_BUMP_VERSION="${AUTO_BUMP_VERSION:-1}"
 VERSION_BUMP_PART="${VERSION_BUMP_PART:-patch}"
 
 [[ -d "${FLUTTER_PROJECT_DIR}" ]] || fail "Flutter project directory not found: ${FLUTTER_PROJECT_DIR}"
 [[ -f "${ANDROID_GRADLE_FILE}" ]] || fail "Android Gradle file not found: ${ANDROID_GRADLE_FILE}"
 [[ -f "${PUBSPEC_FILE}" ]] || fail "Flutter pubspec file not found: ${PUBSPEC_FILE}"
+
+KEY_PROPERTIES_FILE="${FLUTTER_PROJECT_DIR}/android/key.properties"
+
+ensure_android_sdk "${ANDROID_LOCAL_PROPERTIES_FILE}"
+prepare_android_release_signing "${FLUTTER_PROJECT_DIR}/android"
 
 if grep -q 'signingConfig = signingConfigs.getByName("debug")' "${ANDROID_GRADLE_FILE}"; then
   fail "Android release still uses debug signing in ${ANDROID_GRADLE_FILE}. Configure release keystore signing before Play Store upload."
@@ -211,6 +374,8 @@ if [[ "${PLAY_SKIP_UPLOAD}" == "1" ]]; then
   exit 0
 fi
 
+require_cmd fastlane
+prepare_google_play_service_account_json
 require_env GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH
 [[ -f "${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH}" ]] || fail "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH does not exist: ${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH}"
 
